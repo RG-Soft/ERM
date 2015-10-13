@@ -1,7 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5">
 	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
-	<AutoCommandBar name="" id="-1"/>
+	<AutoCommandBar name="ФормаКоманднаяПанель" id="-1"/>
+	<Events>
+		<Event name="AfterWrite">ПослеЗаписи</Event>
+		<Event name="OnCreateAtServer">ПриСозданииНаСервере</Event>
+	</Events>
 	<ChildItems>
 		<InputField name="Период" id="1">
 			<DataPath>Запись.Period</DataPath>
@@ -14,14 +18,23 @@
 			<ExtendedTooltip name="ИдентификаторРасширеннаяПодсказка" id="6"/>
 		</InputField>
 		<InputField name="ТипВнешнейСистемы" id="7">
-			<DataPath>Запись.ТипВнешнейСистемы</DataPath>
+			<DataPath>Запись.ТипСоответствия</DataPath>
 			<ContextMenu name="ТипВнешнейСистемыКонтекстноеМеню" id="8"/>
 			<ExtendedTooltip name="ТипВнешнейСистемыРасширеннаяПодсказка" id="9"/>
 		</InputField>
+		<InputField name="ТипОбъектаВнешнейСистемы" id="13">
+			<DataPath>Запись.ТипОбъектаВнешнейСистемы</DataPath>
+			<ContextMenu name="ТипОбъектаВнешнейСистемыКонтекстноеМеню" id="14"/>
+			<ExtendedTooltip name="ТипОбъектаВнешнейСистемыРасширеннаяПодсказка" id="15"/>
+		</InputField>
 		<InputField name="ОбъектПриемника" id="10">
 			<DataPath>Запись.ОбъектПриемника</DataPath>
+			<ChoiceFoldersAndItems>FoldersAndItems</ChoiceFoldersAndItems>
 			<ContextMenu name="ОбъектПриемникаКонтекстноеМеню" id="11"/>
 			<ExtendedTooltip name="ОбъектПриемникаРасширеннаяПодсказка" id="12"/>
+			<Events>
+				<Event name="StartChoice">ОбъектПриемникаНачалоВыбора</Event>
+			</Events>
 		</InputField>
 	</ChildItems>
 	<Attributes>

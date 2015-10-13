@@ -5,6 +5,7 @@
 	<RepostOnWrite>true</RepostOnWrite>
 	<AutoCommandBar name="ФормаКоманднаяПанель" id="-1"/>
 	<Events>
+		<Event name="NotificationProcessing">ОбработкаОповещения</Event>
 		<Event name="BeforeWriteAtServer">ПередЗаписьюНаСервере</Event>
 		<Event name="OnCreateAtServer">ПриСозданииНаСервере</Event>
 	</Events>
@@ -100,16 +101,50 @@
 				</LabelDecoration>
 			</ChildItems>
 		</UsualGroup>
-		<Button name="ПрочитатьФайл" id="35">
-			<Type>UsualButton</Type>
-			<Representation>PictureAndText</Representation>
-			<CommandName>Form.Command.ПрочитатьФайл</CommandName>
-			<Picture>
-				<xr:Ref>StdPicture.DataProcessor</xr:Ref>
-				<xr:LoadTransparent>true</xr:LoadTransparent>
-			</Picture>
-			<ExtendedTooltip name="ПрочитатьФайлРасширеннаяПодсказка" id="36"/>
-		</Button>
+		<UsualGroup name="ГруппаЗагрузкаИПроверкаНастроекСинхронизации" id="106">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Группа загрузка и проверка настроек синхронизации</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Группа загрузка и проверка настроек синхронизации</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="ГруппаЗагрузкаИПроверкаНастроекСинхронизацииРасширеннаяПодсказка" id="107"/>
+			<ChildItems>
+				<Button name="ПрочитатьФайл" id="35">
+					<Type>UsualButton</Type>
+					<Representation>PictureAndText</Representation>
+					<CommandName>Form.Command.ПрочитатьФайл</CommandName>
+					<Picture>
+						<xr:Ref>StdPicture.DataProcessor</xr:Ref>
+						<xr:LoadTransparent>true</xr:LoadTransparent>
+					</Picture>
+					<ExtendedTooltip name="ПрочитатьФайлРасширеннаяПодсказка" id="36"/>
+				</Button>
+				<Button name="ВыполнитьПроверкуНастроекСинхронизации" id="108">
+					<Type>UsualButton</Type>
+					<CommandName>Form.Command.ВыполнитьПроверкуНастроекСинхронизации</CommandName>
+					<ExtendedTooltip name="ВыполнитьПроверкуНастроекСинхронизацииРасширеннаяПодсказка" id="109"/>
+				</Button>
+				<CheckBoxField name="ПоказыватьТолькоНеотработанныеКоллизии" id="113">
+					<DataPath>ПоказыватьТолькоНеотработанныеКоллизии</DataPath>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="ПоказыватьТолькоНеотработанныеКоллизииКонтекстноеМеню" id="114"/>
+					<ExtendedTooltip name="ПоказыватьТолькоНеотработанныеКоллизииРасширеннаяПодсказка" id="115"/>
+					<Events>
+						<Event name="OnChange">ПоказыватьТолькоНеотработанныеКоллизииПриИзменении</Event>
+					</Events>
+				</CheckBoxField>
+			</ChildItems>
+		</UsualGroup>
 		<Pages name="ГруппаСтраницы" id="62">
 			<Title>
 				<v8:item>
@@ -124,560 +159,310 @@
 				</v8:item>
 			</ToolTip>
 			<ExtendedTooltip name="ГруппаСтраницыРасширеннаяПодсказка" id="63"/>
-			<ChildItems>
-				<Page name="ГруппаСтраницаНовыеParentClients" id="164">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>New parent clients</v8:content>
-						</v8:item>
-					</Title>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Группа страница новые parent clients</v8:content>
-						</v8:item>
-					</ToolTip>
-					<ExtendedTooltip name="ГруппаСтраницаНовыеParentClientsРасширеннаяПодсказка" id="165"/>
-					<ChildItems>
-						<Table name="НовыеParentClients" id="166">
-							<AutoInsertNewRow>true</AutoInsertNewRow>
-							<EnableStartDrag>true</EnableStartDrag>
-							<EnableDrag>true</EnableDrag>
-							<DataPath>1/0:b8e6f950-b79e-40aa-b228-3cbd2f86e2eb</DataPath>
-							<RowFilter xsi:nil="true"/>
-							<ContextMenu name="НовыеParentClientsКонтекстноеМеню" id="167"/>
-							<AutoCommandBar name="НовыеParentClientsКоманднаяПанель" id="168">
-								<Autofill>false</Autofill>
-							</AutoCommandBar>
-							<ExtendedTooltip name="НовыеParentClientsРасширеннаяПодсказка" id="169"/>
-							<SearchStringAddition name="НовыеParentClientsСтрокаПоиска" id="170">
-								<AdditionSource>
-									<Item>НовыеParentClients</Item>
-									<Type>SearchStringRepresentation</Type>
-								</AdditionSource>
-								<ContextMenu name="НовыеParentClientsСтрокаПоискаКонтекстноеМеню" id="171"/>
-								<ExtendedTooltip name="НовыеParentClientsСтрокаПоискаРасширеннаяПодсказка" id="172"/>
-							</SearchStringAddition>
-							<ViewStatusAddition name="НовыеParentClientsСостояниеПросмотра" id="173">
-								<AdditionSource>
-									<Item>НовыеParentClients</Item>
-									<Type>ViewStatusRepresentation</Type>
-								</AdditionSource>
-								<ContextMenu name="НовыеParentClientsСостояниеПросмотраКонтекстноеМеню" id="174"/>
-								<ExtendedTooltip name="НовыеParentClientsСостояниеПросмотраРасширеннаяПодсказка" id="175"/>
-							</ViewStatusAddition>
-							<SearchControlAddition name="НовыеParentClientsУправлениеПоиском" id="176">
-								<AdditionSource>
-									<Item>НовыеParentClients</Item>
-									<Type>SearchControl</Type>
-								</AdditionSource>
-								<ContextMenu name="НовыеParentClientsУправлениеПоискомКонтекстноеМеню" id="177"/>
-								<ExtendedTooltip name="НовыеParentClientsУправлениеПоискомРасширеннаяПодсказка" id="178"/>
-							</SearchControlAddition>
-							<ChildItems>
-								<LabelField name="НовыеParentClientsНомерСтроки" id="179">
-									<DataPath>1/0:b8e6f950-b79e-40aa-b228-3cbd2f86e2eb/-2</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="НовыеParentClientsНомерСтрокиКонтекстноеМеню" id="180"/>
-									<ExtendedTooltip name="НовыеParentClientsНомерСтрокиРасширеннаяПодсказка" id="181"/>
-								</LabelField>
-								<CheckBoxField name="НовыеParentClientsПрименить" id="182">
-									<DataPath>1/0:b8e6f950-b79e-40aa-b228-3cbd2f86e2eb/0:613e65e3-2220-4ddf-9e89-1e6c08785245</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<CheckBoxType>Auto</CheckBoxType>
-									<ContextMenu name="НовыеParentClientsПрименитьКонтекстноеМеню" id="183"/>
-									<ExtendedTooltip name="НовыеParentClientsПрименитьРасширеннаяПодсказка" id="184"/>
-								</CheckBoxField>
-								<InputField name="НовыеParentClientsDescription" id="185">
-									<DataPath>1/0:b8e6f950-b79e-40aa-b228-3cbd2f86e2eb/0:117dce67-e054-4b76-9932-7324fbf0342a</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="НовыеParentClientsDescriptionКонтекстноеМеню" id="186"/>
-									<ExtendedTooltip name="НовыеParentClientsDescriptionРасширеннаяПодсказка" id="187"/>
-								</InputField>
-							</ChildItems>
-						</Table>
-					</ChildItems>
-				</Page>
-				<Page name="ГруппаСтраницаНовыеSalesКлиенты" id="64">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>New sales clients</v8:content>
-						</v8:item>
-					</Title>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Группа страница новые sales клиенты</v8:content>
-						</v8:item>
-					</ToolTip>
-					<ExtendedTooltip name="ГруппаСтраницаНовыеSalesКлиентыРасширеннаяПодсказка" id="65"/>
-					<ChildItems>
-						<Table name="НовыеSalesКлиенты" id="13">
-							<Representation>List</Representation>
-							<AutoInsertNewRow>true</AutoInsertNewRow>
-							<EnableStartDrag>true</EnableStartDrag>
-							<EnableDrag>true</EnableDrag>
-							<DataPath>1/0:f66a9673-0824-4a07-b71e-b1af69436654</DataPath>
-							<RowFilter xsi:nil="true"/>
-							<ContextMenu name="НовыеSalesКлиентыКонтекстноеМеню" id="14"/>
-							<AutoCommandBar name="НовыеSalesКлиентыКоманднаяПанель" id="15">
-								<Autofill>false</Autofill>
-							</AutoCommandBar>
-							<ExtendedTooltip name="НовыеSalesКлиентыРасширеннаяПодсказка" id="16"/>
-							<SearchStringAddition name="НовыеSalesКлиентыСтрокаПоиска" id="17">
-								<AdditionSource>
-									<Item>НовыеSalesКлиенты</Item>
-									<Type>SearchStringRepresentation</Type>
-								</AdditionSource>
-								<ContextMenu name="НовыеSalesКлиентыСтрокаПоискаКонтекстноеМеню" id="18"/>
-								<ExtendedTooltip name="НовыеSalesКлиентыСтрокаПоискаРасширеннаяПодсказка" id="19"/>
-							</SearchStringAddition>
-							<ViewStatusAddition name="НовыеSalesКлиентыСостояниеПросмотра" id="20">
-								<AdditionSource>
-									<Item>НовыеSalesКлиенты</Item>
-									<Type>ViewStatusRepresentation</Type>
-								</AdditionSource>
-								<ContextMenu name="НовыеSalesКлиентыСостояниеПросмотраКонтекстноеМеню" id="21"/>
-								<ExtendedTooltip name="НовыеSalesКлиентыСостояниеПросмотраРасширеннаяПодсказка" id="22"/>
-							</ViewStatusAddition>
-							<SearchControlAddition name="НовыеSalesКлиентыУправлениеПоиском" id="23">
-								<AdditionSource>
-									<Item>НовыеSalesКлиенты</Item>
-									<Type>SearchControl</Type>
-								</AdditionSource>
-								<ContextMenu name="НовыеSalesКлиентыУправлениеПоискомКонтекстноеМеню" id="24"/>
-								<ExtendedTooltip name="НовыеSalesКлиентыУправлениеПоискомРасширеннаяПодсказка" id="25"/>
-							</SearchControlAddition>
-							<ChildItems>
-								<LabelField name="НовыеКлиентыНомерСтроки" id="26">
-									<DataPath>1/0:f66a9673-0824-4a07-b71e-b1af69436654/-2</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="НовыеКлиентыНомерСтрокиКонтекстноеМеню" id="27"/>
-									<ExtendedTooltip name="НовыеКлиентыНомерСтрокиРасширеннаяПодсказка" id="28"/>
-								</LabelField>
-								<CheckBoxField name="НовыеКлиентыПрименить" id="29">
-									<DataPath>1/0:f66a9673-0824-4a07-b71e-b1af69436654/0:d735c9c1-6228-47a3-8809-984816b5c9f4</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<CheckBoxType>Auto</CheckBoxType>
-									<ContextMenu name="НовыеКлиентыПрименитьКонтекстноеМеню" id="30"/>
-									<ExtendedTooltip name="НовыеКлиентыПрименитьРасширеннаяПодсказка" id="31"/>
-								</CheckBoxField>
-								<InputField name="НовыеКлиентыCRMID" id="32">
-									<DataPath>1/0:f66a9673-0824-4a07-b71e-b1af69436654/0:b37c7dec-b9bf-4acc-bd7f-d5325ea19e72</DataPath>
-									<ReadOnly>true</ReadOnly>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="НовыеКлиентыCRMIDКонтекстноеМеню" id="33"/>
-									<ExtendedTooltip name="НовыеКлиентыCRMIDРасширеннаяПодсказка" id="34"/>
-								</InputField>
-								<InputField name="НовыеSalesКлиентыDescription" id="78">
-									<DataPath>1/0:f66a9673-0824-4a07-b71e-b1af69436654/0:dd19e7aa-cc62-4cb8-ab8a-bc326331411e</DataPath>
-									<ReadOnly>true</ReadOnly>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="НовыеSalesКлиентыDescriptionКонтекстноеМеню" id="79"/>
-									<ExtendedTooltip name="НовыеSalesКлиентыDescriptionРасширеннаяПодсказка" id="80"/>
-								</InputField>
-								<InputField name="НовыеSalesКлиентыParentClient" id="192">
-									<DataPath>1/0:f66a9673-0824-4a07-b71e-b1af69436654/0:6853f1d4-5ff4-4241-8960-f7bb6e55bcbc</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="НовыеSalesКлиентыParentClientКонтекстноеМеню" id="193"/>
-									<ExtendedTooltip name="НовыеSalesКлиентыParentClientРасширеннаяПодсказка" id="194"/>
-								</InputField>
-							</ChildItems>
-						</Table>
-					</ChildItems>
-				</Page>
-				<Page name="ГруппаСтраницаНовыеBillingКлиенты" id="66">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>New billing clients</v8:content>
-						</v8:item>
-					</Title>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Группа страница новые billing клиенты</v8:content>
-						</v8:item>
-					</ToolTip>
-					<ExtendedTooltip name="ГруппаСтраницаНовыеBillingКлиентыРасширеннаяПодсказка" id="67"/>
-					<ChildItems>
-						<Table name="НовыеBillingКлиенты" id="37">
-							<AutoInsertNewRow>true</AutoInsertNewRow>
-							<EnableStartDrag>true</EnableStartDrag>
-							<EnableDrag>true</EnableDrag>
-							<DataPath>1/0:4db69b38-a166-494d-9d6e-736198926aa4</DataPath>
-							<RowFilter xsi:nil="true"/>
-							<ContextMenu name="НовыеBillingКлиентыКонтекстноеМеню" id="38"/>
-							<AutoCommandBar name="НовыеBillingКлиентыКоманднаяПанель" id="39">
-								<Autofill>false</Autofill>
-							</AutoCommandBar>
-							<ExtendedTooltip name="НовыеBillingКлиентыРасширеннаяПодсказка" id="40"/>
-							<SearchStringAddition name="НовыеBillingКлиентыСтрокаПоиска" id="41">
-								<AdditionSource>
-									<Item>НовыеBillingКлиенты</Item>
-									<Type>SearchStringRepresentation</Type>
-								</AdditionSource>
-								<ContextMenu name="НовыеBillingКлиентыСтрокаПоискаКонтекстноеМеню" id="42"/>
-								<ExtendedTooltip name="НовыеBillingКлиентыСтрокаПоискаРасширеннаяПодсказка" id="43"/>
-							</SearchStringAddition>
-							<ViewStatusAddition name="НовыеBillingКлиентыСостояниеПросмотра" id="44">
-								<AdditionSource>
-									<Item>НовыеBillingКлиенты</Item>
-									<Type>ViewStatusRepresentation</Type>
-								</AdditionSource>
-								<ContextMenu name="НовыеBillingКлиентыСостояниеПросмотраКонтекстноеМеню" id="45"/>
-								<ExtendedTooltip name="НовыеBillingКлиентыСостояниеПросмотраРасширеннаяПодсказка" id="46"/>
-							</ViewStatusAddition>
-							<SearchControlAddition name="НовыеBillingКлиентыУправлениеПоиском" id="47">
-								<AdditionSource>
-									<Item>НовыеBillingКлиенты</Item>
-									<Type>SearchControl</Type>
-								</AdditionSource>
-								<ContextMenu name="НовыеBillingКлиентыУправлениеПоискомКонтекстноеМеню" id="48"/>
-								<ExtendedTooltip name="НовыеBillingКлиентыУправлениеПоискомРасширеннаяПодсказка" id="49"/>
-							</SearchControlAddition>
-							<ChildItems>
-								<LabelField name="НовыеBillingКлиентыНомерСтроки" id="50">
-									<DataPath>1/0:4db69b38-a166-494d-9d6e-736198926aa4/-2</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="НовыеBillingКлиентыНомерСтрокиКонтекстноеМеню" id="51"/>
-									<ExtendedTooltip name="НовыеBillingКлиентыНомерСтрокиРасширеннаяПодсказка" id="52"/>
-								</LabelField>
-								<CheckBoxField name="НовыеBillingКлиентыПрименить" id="53">
-									<DataPath>1/0:4db69b38-a166-494d-9d6e-736198926aa4/0:371b0c31-d253-4c0f-ab23-6149f3bcf52d</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<CheckBoxType>Auto</CheckBoxType>
-									<ContextMenu name="НовыеBillingКлиентыПрименитьКонтекстноеМеню" id="54"/>
-									<ExtendedTooltip name="НовыеBillingКлиентыПрименитьРасширеннаяПодсказка" id="55"/>
-								</CheckBoxField>
-								<InputField name="НовыеBillingКлиентыCRMID" id="56">
-									<DataPath>1/0:4db69b38-a166-494d-9d6e-736198926aa4/0:04dd3909-e9fa-4c27-bdc4-9fe91ceb644a</DataPath>
-									<ReadOnly>true</ReadOnly>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="НовыеBillingКлиентыCRMIDКонтекстноеМеню" id="57"/>
-									<ExtendedTooltip name="НовыеBillingКлиентыCRMIDРасширеннаяПодсказка" id="58"/>
-								</InputField>
-								<InputField name="НовыеBillingКлиентыBillingID" id="59">
-									<DataPath>1/0:4db69b38-a166-494d-9d6e-736198926aa4/0:e3a54a23-24e2-4715-bb25-cf0316b78917</DataPath>
-									<ReadOnly>true</ReadOnly>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="НовыеBillingКлиентыBillingIDКонтекстноеМеню" id="60"/>
-									<ExtendedTooltip name="НовыеBillingКлиентыBillingIDРасширеннаяПодсказка" id="61"/>
-								</InputField>
-								<InputField name="НовыеBillingКлиентыDescription" id="81">
-									<DataPath>1/0:4db69b38-a166-494d-9d6e-736198926aa4/0:d2460785-124c-400e-b676-68bc9c3d29d1</DataPath>
-									<ReadOnly>true</ReadOnly>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="НовыеBillingКлиентыDescriptionКонтекстноеМеню" id="82"/>
-									<ExtendedTooltip name="НовыеBillingКлиентыDescriptionРасширеннаяПодсказка" id="83"/>
-								</InputField>
-								<InputField name="НовыеBillingКлиентыParentClient" id="195">
-									<DataPath>1/0:4db69b38-a166-494d-9d6e-736198926aa4/0:f1b76cd1-670f-47c1-89aa-f335ca372c85</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="НовыеBillingКлиентыParentClientКонтекстноеМеню" id="196"/>
-									<ExtendedTooltip name="НовыеBillingКлиентыParentClientРасширеннаяПодсказка" id="197"/>
-								</InputField>
-							</ChildItems>
-						</Table>
-					</ChildItems>
-				</Page>
-				<Page name="ГруппаСтраницаИзмененныеCRMID" id="84">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Changed CRM ID</v8:content>
-						</v8:item>
-					</Title>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Группа страница измененные CRMID</v8:content>
-						</v8:item>
-					</ToolTip>
-					<ExtendedTooltip name="ГруппаСтраницаИзмененныеCRMIDРасширеннаяПодсказка" id="85"/>
-					<ChildItems>
-						<Table name="ИзмененныеCRMID" id="86">
-							<AutoInsertNewRow>true</AutoInsertNewRow>
-							<EnableStartDrag>true</EnableStartDrag>
-							<EnableDrag>true</EnableDrag>
-							<DataPath>1/0:11e6d33e-9dc6-4d3c-bf78-708c521bdb6f</DataPath>
-							<RowFilter xsi:nil="true"/>
-							<ContextMenu name="ИзмененныеCRMIDКонтекстноеМеню" id="87"/>
-							<AutoCommandBar name="ИзмененныеCRMIDКоманднаяПанель" id="88">
-								<Autofill>false</Autofill>
-							</AutoCommandBar>
-							<ExtendedTooltip name="ИзмененныеCRMIDРасширеннаяПодсказка" id="89"/>
-							<SearchStringAddition name="ИзмененныеCRMIDСтрокаПоиска" id="90">
-								<AdditionSource>
-									<Item>ИзмененныеCRMID</Item>
-									<Type>SearchStringRepresentation</Type>
-								</AdditionSource>
-								<ContextMenu name="ИзмененныеCRMIDСтрокаПоискаКонтекстноеМеню" id="91"/>
-								<ExtendedTooltip name="ИзмененныеCRMIDСтрокаПоискаРасширеннаяПодсказка" id="92"/>
-							</SearchStringAddition>
-							<ViewStatusAddition name="ИзмененныеCRMIDСостояниеПросмотра" id="93">
-								<AdditionSource>
-									<Item>ИзмененныеCRMID</Item>
-									<Type>ViewStatusRepresentation</Type>
-								</AdditionSource>
-								<ContextMenu name="ИзмененныеCRMIDСостояниеПросмотраКонтекстноеМеню" id="94"/>
-								<ExtendedTooltip name="ИзмененныеCRMIDСостояниеПросмотраРасширеннаяПодсказка" id="95"/>
-							</ViewStatusAddition>
-							<SearchControlAddition name="ИзмененныеCRMIDУправлениеПоиском" id="96">
-								<AdditionSource>
-									<Item>ИзмененныеCRMID</Item>
-									<Type>SearchControl</Type>
-								</AdditionSource>
-								<ContextMenu name="ИзмененныеCRMIDУправлениеПоискомКонтекстноеМеню" id="97"/>
-								<ExtendedTooltip name="ИзмененныеCRMIDУправлениеПоискомРасширеннаяПодсказка" id="98"/>
-							</SearchControlAddition>
-							<ChildItems>
-								<LabelField name="ИзмененныеCRMIDНомерСтроки" id="99">
-									<DataPath>1/0:11e6d33e-9dc6-4d3c-bf78-708c521bdb6f/-2</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="ИзмененныеCRMIDНомерСтрокиКонтекстноеМеню" id="100"/>
-									<ExtendedTooltip name="ИзмененныеCRMIDНомерСтрокиРасширеннаяПодсказка" id="101"/>
-								</LabelField>
-								<CheckBoxField name="ИзмененныеCRMIDПрименить" id="102">
-									<DataPath>1/0:11e6d33e-9dc6-4d3c-bf78-708c521bdb6f/0:af6c6bf5-7b0b-4e50-8ba2-c53fdee5c7dc</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<CheckBoxType>Auto</CheckBoxType>
-									<ContextMenu name="ИзмененныеCRMIDПрименитьКонтекстноеМеню" id="103"/>
-									<ExtendedTooltip name="ИзмененныеCRMIDПрименитьРасширеннаяПодсказка" id="104"/>
-								</CheckBoxField>
-								<InputField name="ИзмененныеCRMIDOldCRMID" id="105">
-									<DataPath>1/0:11e6d33e-9dc6-4d3c-bf78-708c521bdb6f/0:a818d23b-cb36-4c1a-9102-15ce305c3314</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="ИзмененныеCRMIDOldCRMIDКонтекстноеМеню" id="106"/>
-									<ExtendedTooltip name="ИзмененныеCRMIDOldCRMIDРасширеннаяПодсказка" id="107"/>
-								</InputField>
-								<InputField name="ИзмененныеCRMIDNewCRMID" id="108">
-									<DataPath>1/0:11e6d33e-9dc6-4d3c-bf78-708c521bdb6f/0:745ec007-25be-4a18-919a-d1e65c72830c</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="ИзмененныеCRMIDNewCRMIDКонтекстноеМеню" id="109"/>
-									<ExtendedTooltip name="ИзмененныеCRMIDNewCRMIDРасширеннаяПодсказка" id="110"/>
-								</InputField>
-								<InputField name="ИзмененныеCRMIDBillingID" id="111">
-									<DataPath>1/0:11e6d33e-9dc6-4d3c-bf78-708c521bdb6f/0:d6519c7b-225f-4bcd-a2f3-a23c0f3291ea</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="ИзмененныеCRMIDBillingIDКонтекстноеМеню" id="112"/>
-									<ExtendedTooltip name="ИзмененныеCRMIDBillingIDРасширеннаяПодсказка" id="113"/>
-								</InputField>
-								<InputField name="ИзмененныеCRMIDDescription" id="114">
-									<DataPath>1/0:11e6d33e-9dc6-4d3c-bf78-708c521bdb6f/0:1e7e0057-c4ab-4c14-977e-dd90dac042db</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="ИзмененныеCRMIDDescriptionКонтекстноеМеню" id="115"/>
-									<ExtendedTooltip name="ИзмененныеCRMIDDescriptionРасширеннаяПодсказка" id="116"/>
-								</InputField>
-								<InputField name="ИзмененныеCRMIDClient" id="117">
-									<DataPath>1/0:11e6d33e-9dc6-4d3c-bf78-708c521bdb6f/0:a965b452-afba-4ed8-9b59-d90ad74940a9</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="ИзмененныеCRMIDClientКонтекстноеМеню" id="118"/>
-									<ExtendedTooltip name="ИзмененныеCRMIDClientРасширеннаяПодсказка" id="119"/>
-								</InputField>
-							</ChildItems>
-						</Table>
-					</ChildItems>
-				</Page>
-				<Page name="ГруппаСтраницаИзмененныеBillingID" id="120">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Changed Billing ID</v8:content>
-						</v8:item>
-					</Title>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Группа страница измененные billing ID</v8:content>
-						</v8:item>
-					</ToolTip>
-					<ExtendedTooltip name="ГруппаСтраницаИзмененныеBillingIDРасширеннаяПодсказка" id="121"/>
-					<ChildItems>
-						<Table name="ИзмененныеBillingID" id="122">
-							<AutoInsertNewRow>true</AutoInsertNewRow>
-							<EnableStartDrag>true</EnableStartDrag>
-							<EnableDrag>true</EnableDrag>
-							<DataPath>1/0:7a73fe2d-7406-4543-acc0-28f4f6e29bc4</DataPath>
-							<RowFilter xsi:nil="true"/>
-							<ContextMenu name="ИзмененныеBillingIDКонтекстноеМеню" id="123"/>
-							<AutoCommandBar name="ИзмененныеBillingIDКоманднаяПанель" id="124">
-								<Autofill>false</Autofill>
-							</AutoCommandBar>
-							<ExtendedTooltip name="ИзмененныеBillingIDРасширеннаяПодсказка" id="125"/>
-							<SearchStringAddition name="ИзмененныеBillingIDСтрокаПоиска" id="126">
-								<AdditionSource>
-									<Item>ИзмененныеBillingID</Item>
-									<Type>SearchStringRepresentation</Type>
-								</AdditionSource>
-								<ContextMenu name="ИзмененныеBillingIDСтрокаПоискаКонтекстноеМеню" id="127"/>
-								<ExtendedTooltip name="ИзмененныеBillingIDСтрокаПоискаРасширеннаяПодсказка" id="128"/>
-							</SearchStringAddition>
-							<ViewStatusAddition name="ИзмененныеBillingIDСостояниеПросмотра" id="129">
-								<AdditionSource>
-									<Item>ИзмененныеBillingID</Item>
-									<Type>ViewStatusRepresentation</Type>
-								</AdditionSource>
-								<ContextMenu name="ИзмененныеBillingIDСостояниеПросмотраКонтекстноеМеню" id="130"/>
-								<ExtendedTooltip name="ИзмененныеBillingIDСостояниеПросмотраРасширеннаяПодсказка" id="131"/>
-							</ViewStatusAddition>
-							<SearchControlAddition name="ИзмененныеBillingIDУправлениеПоиском" id="132">
-								<AdditionSource>
-									<Item>ИзмененныеBillingID</Item>
-									<Type>SearchControl</Type>
-								</AdditionSource>
-								<ContextMenu name="ИзмененныеBillingIDУправлениеПоискомКонтекстноеМеню" id="133"/>
-								<ExtendedTooltip name="ИзмененныеBillingIDУправлениеПоискомРасширеннаяПодсказка" id="134"/>
-							</SearchControlAddition>
-							<ChildItems>
-								<LabelField name="ИзмененныеBillingIDНомерСтроки" id="135">
-									<DataPath>1/0:7a73fe2d-7406-4543-acc0-28f4f6e29bc4/-2</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="ИзмененныеBillingIDНомерСтрокиКонтекстноеМеню" id="136"/>
-									<ExtendedTooltip name="ИзмененныеBillingIDНомерСтрокиРасширеннаяПодсказка" id="137"/>
-								</LabelField>
-								<CheckBoxField name="ИзмененныеBillingIDПрименить" id="138">
-									<DataPath>1/0:7a73fe2d-7406-4543-acc0-28f4f6e29bc4/0:81d47b72-b68a-4a6d-b3ab-38d8605741c0</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<CheckBoxType>Auto</CheckBoxType>
-									<ContextMenu name="ИзмененныеBillingIDПрименитьКонтекстноеМеню" id="139"/>
-									<ExtendedTooltip name="ИзмененныеBillingIDПрименитьРасширеннаяПодсказка" id="140"/>
-								</CheckBoxField>
-								<InputField name="ИзмененныеBillingIDCRMID" id="141">
-									<DataPath>1/0:7a73fe2d-7406-4543-acc0-28f4f6e29bc4/0:dea9a46c-a850-4735-abae-34b745a9f929</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="ИзмененныеBillingIDCRMIDКонтекстноеМеню" id="142"/>
-									<ExtendedTooltip name="ИзмененныеBillingIDCRMIDРасширеннаяПодсказка" id="143"/>
-								</InputField>
-								<InputField name="ИзмененныеBillingIDOldBillingID" id="144">
-									<DataPath>1/0:7a73fe2d-7406-4543-acc0-28f4f6e29bc4/0:126b1e4f-b902-4e9b-8dbc-8da8e304083a</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="ИзмененныеBillingIDOldBillingIDКонтекстноеМеню" id="145"/>
-									<ExtendedTooltip name="ИзмененныеBillingIDOldBillingIDРасширеннаяПодсказка" id="146"/>
-								</InputField>
-								<InputField name="ИзмененныеBillingIDNewOldBillingID" id="147">
-									<DataPath>1/0:7a73fe2d-7406-4543-acc0-28f4f6e29bc4/0:032f477f-df47-4e51-8b89-3a16a4a835ae</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="ИзмененныеBillingIDNewOldBillingIDКонтекстноеМеню" id="148"/>
-									<ExtendedTooltip name="ИзмененныеBillingIDNewOldBillingIDРасширеннаяПодсказка" id="149"/>
-								</InputField>
-								<InputField name="ИзмененныеBillingIDDescription" id="150">
-									<DataPath>1/0:7a73fe2d-7406-4543-acc0-28f4f6e29bc4/0:bf57ce26-be74-426e-b446-d7f6dfc511fe</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="ИзмененныеBillingIDDescriptionКонтекстноеМеню" id="151"/>
-									<ExtendedTooltip name="ИзмененныеBillingIDDescriptionРасширеннаяПодсказка" id="152"/>
-								</InputField>
-								<InputField name="ИзмененныеBillingIDClient" id="153">
-									<DataPath>1/0:7a73fe2d-7406-4543-acc0-28f4f6e29bc4/0:cfb5646b-a4bc-4f66-b916-436a4f67e886</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="ИзмененныеBillingIDClientКонтекстноеМеню" id="154"/>
-									<ExtendedTooltip name="ИзмененныеBillingIDClientРасширеннаяПодсказка" id="155"/>
-								</InputField>
-							</ChildItems>
-						</Table>
-					</ChildItems>
-				</Page>
-				<Page name="ГруппаСтраницаИзмененныеParentClients" id="198">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Changed parent clients</v8:content>
-						</v8:item>
-					</Title>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Группа страница измененные parent clients</v8:content>
-						</v8:item>
-					</ToolTip>
-					<ExtendedTooltip name="ГруппаСтраницаИзмененныеParentClientsРасширеннаяПодсказка" id="199"/>
-					<ChildItems>
-						<Table name="ИзмененныеParentClients" id="200">
-							<AutoInsertNewRow>true</AutoInsertNewRow>
-							<EnableStartDrag>true</EnableStartDrag>
-							<EnableDrag>true</EnableDrag>
-							<DataPath>1/0:10e447b7-156d-4278-8997-66f3aad6ed08</DataPath>
-							<RowFilter xsi:nil="true"/>
-							<ContextMenu name="ИзмененныеParentClientsКонтекстноеМеню" id="201"/>
-							<AutoCommandBar name="ИзмененныеParentClientsКоманднаяПанель" id="202">
-								<Autofill>false</Autofill>
-							</AutoCommandBar>
-							<ExtendedTooltip name="ИзмененныеParentClientsРасширеннаяПодсказка" id="203"/>
-							<SearchStringAddition name="ИзмененныеParentClientsСтрокаПоиска" id="204">
-								<AdditionSource>
-									<Item>ИзмененныеParentClients</Item>
-									<Type>SearchStringRepresentation</Type>
-								</AdditionSource>
-								<ContextMenu name="ИзмененныеParentClientsСтрокаПоискаКонтекстноеМеню" id="205"/>
-								<ExtendedTooltip name="ИзмененныеParentClientsСтрокаПоискаРасширеннаяПодсказка" id="206"/>
-							</SearchStringAddition>
-							<ViewStatusAddition name="ИзмененныеParentClientsСостояниеПросмотра" id="207">
-								<AdditionSource>
-									<Item>ИзмененныеParentClients</Item>
-									<Type>ViewStatusRepresentation</Type>
-								</AdditionSource>
-								<ContextMenu name="ИзмененныеParentClientsСостояниеПросмотраКонтекстноеМеню" id="208"/>
-								<ExtendedTooltip name="ИзмененныеParentClientsСостояниеПросмотраРасширеннаяПодсказка" id="209"/>
-							</ViewStatusAddition>
-							<SearchControlAddition name="ИзмененныеParentClientsУправлениеПоиском" id="210">
-								<AdditionSource>
-									<Item>ИзмененныеParentClients</Item>
-									<Type>SearchControl</Type>
-								</AdditionSource>
-								<ContextMenu name="ИзмененныеParentClientsУправлениеПоискомКонтекстноеМеню" id="211"/>
-								<ExtendedTooltip name="ИзмененныеParentClientsУправлениеПоискомРасширеннаяПодсказка" id="212"/>
-							</SearchControlAddition>
-							<ChildItems>
-								<LabelField name="ИзмененныеParentClientsНомерСтроки" id="213">
-									<DataPath>1/0:10e447b7-156d-4278-8997-66f3aad6ed08/-2</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="ИзмененныеParentClientsНомерСтрокиКонтекстноеМеню" id="214"/>
-									<ExtendedTooltip name="ИзмененныеParentClientsНомерСтрокиРасширеннаяПодсказка" id="215"/>
-								</LabelField>
-								<InputField name="ИзмененныеParentClientsCRMID" id="216">
-									<DataPath>1/0:10e447b7-156d-4278-8997-66f3aad6ed08/0:40e3a293-4357-487f-bdcb-d36937c2c6cc</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="ИзмененныеParentClientsCRMIDКонтекстноеМеню" id="217"/>
-									<ExtendedTooltip name="ИзмененныеParentClientsCRMIDРасширеннаяПодсказка" id="218"/>
-								</InputField>
-								<InputField name="ИзмененныеParentClientsBillingID" id="219">
-									<DataPath>1/0:10e447b7-156d-4278-8997-66f3aad6ed08/0:9fc7cb2c-dae7-4f3a-ac55-5488c93f12b5</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="ИзмененныеParentClientsBillingIDКонтекстноеМеню" id="220"/>
-									<ExtendedTooltip name="ИзмененныеParentClientsBillingIDРасширеннаяПодсказка" id="221"/>
-								</InputField>
-								<InputField name="ИзмененныеParentClientsDescription" id="222">
-									<DataPath>1/0:10e447b7-156d-4278-8997-66f3aad6ed08/0:4a3643bf-d291-4dfb-ace3-5a282c73e914</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="ИзмененныеParentClientsDescriptionКонтекстноеМеню" id="223"/>
-									<ExtendedTooltip name="ИзмененныеParentClientsDescriptionРасширеннаяПодсказка" id="224"/>
-								</InputField>
-								<InputField name="ИзмененныеParentClientsClient" id="225">
-									<DataPath>1/0:10e447b7-156d-4278-8997-66f3aad6ed08/0:0e66b963-f436-43b3-b1bc-2393f5dd3582</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="ИзмененныеParentClientsClientКонтекстноеМеню" id="226"/>
-									<ExtendedTooltip name="ИзмененныеParentClientsClientРасширеннаяПодсказка" id="227"/>
-								</InputField>
-								<InputField name="ИзмененныеParentClientsOldParentClient" id="228">
-									<DataPath>1/0:10e447b7-156d-4278-8997-66f3aad6ed08/0:1b87d714-b387-4783-a595-b53d1a3ef377</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="ИзмененныеParentClientsOldParentClientКонтекстноеМеню" id="229"/>
-									<ExtendedTooltip name="ИзмененныеParentClientsOldParentClientРасширеннаяПодсказка" id="230"/>
-								</InputField>
-								<InputField name="ИзмененныеParentClientsNewParentClient" id="231">
-									<DataPath>1/0:10e447b7-156d-4278-8997-66f3aad6ed08/0:a0941cf4-a418-4d16-96b5-bb53817732ac</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="ИзмененныеParentClientsNewParentClientКонтекстноеМеню" id="232"/>
-									<ExtendedTooltip name="ИзмененныеParentClientsNewParentClientРасширеннаяПодсказка" id="233"/>
-								</InputField>
-							</ChildItems>
-						</Table>
-					</ChildItems>
-				</Page>
-			</ChildItems>
 		</Pages>
+		<Table name="ТаблицаКоллизий" id="78">
+			<Representation>List</Representation>
+			<ReadOnly>true</ReadOnly>
+			<AutoInsertNewRow>true</AutoInsertNewRow>
+			<EnableStartDrag>true</EnableStartDrag>
+			<EnableDrag>true</EnableDrag>
+			<DataPath>ТаблицаКоллизий</DataPath>
+			<RowFilter xsi:nil="true"/>
+			<ContextMenu name="ТаблицаКоллизийКонтекстноеМеню" id="79"/>
+			<AutoCommandBar name="ТаблицаКоллизийКоманднаяПанель" id="80">
+				<Autofill>false</Autofill>
+			</AutoCommandBar>
+			<ExtendedTooltip name="ТаблицаКоллизийРасширеннаяПодсказка" id="81"/>
+			<SearchStringAddition name="ТаблицаКоллизийСтрокаПоиска" id="82">
+				<AdditionSource>
+					<Item>ТаблицаКоллизий</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ТаблицаКоллизийСтрокаПоискаКонтекстноеМеню" id="83"/>
+				<ExtendedTooltip name="ТаблицаКоллизийСтрокаПоискаРасширеннаяПодсказка" id="84"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="ТаблицаКоллизийСостояниеПросмотра" id="85">
+				<AdditionSource>
+					<Item>ТаблицаКоллизий</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ТаблицаКоллизийСостояниеПросмотраКонтекстноеМеню" id="86"/>
+				<ExtendedTooltip name="ТаблицаКоллизийСостояниеПросмотраРасширеннаяПодсказка" id="87"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="ТаблицаКоллизийУправлениеПоиском" id="88">
+				<AdditionSource>
+					<Item>ТаблицаКоллизий</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="ТаблицаКоллизийУправлениеПоискомКонтекстноеМеню" id="89"/>
+				<ExtendedTooltip name="ТаблицаКоллизийУправлениеПоискомРасширеннаяПодсказка" id="90"/>
+			</SearchControlAddition>
+			<Events>
+				<Event name="Selection">ТаблицаКоллизийВыбор</Event>
+			</Events>
+			<ChildItems>
+				<CheckBoxField name="ТаблицаКоллизийКоллизияОтработана" id="103">
+					<DataPath>ТаблицаКоллизий.КоллизияОтработана</DataPath>
+					<ReadOnly>true</ReadOnly>
+					<TitleLocation>None</TitleLocation>
+					<EditMode>EnterOnInput</EditMode>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="ТаблицаКоллизийКоллизияОтработанаКонтекстноеМеню" id="104"/>
+					<ExtendedTooltip name="ТаблицаКоллизийКоллизияОтработанаРасширеннаяПодсказка" id="105"/>
+				</CheckBoxField>
+				<InputField name="ТаблицаКоллизийОписание" id="91">
+					<DataPath>ТаблицаКоллизий.Описание</DataPath>
+					<ReadOnly>true</ReadOnly>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="ТаблицаКоллизийОписаниеКонтекстноеМеню" id="92"/>
+					<ExtendedTooltip name="ТаблицаКоллизийОписаниеРасширеннаяПодсказка" id="93"/>
+				</InputField>
+				<InputField name="ТаблицаКоллизийТипСоответствия" id="94">
+					<DataPath>ТаблицаКоллизий.ТипСоответствия</DataPath>
+					<ReadOnly>true</ReadOnly>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="ТаблицаКоллизийТипСоответствияКонтекстноеМеню" id="95"/>
+					<ExtendedTooltip name="ТаблицаКоллизийТипСоответствияРасширеннаяПодсказка" id="96"/>
+				</InputField>
+				<InputField name="ТаблицаКоллизийТипОбъекта" id="97">
+					<DataPath>ТаблицаКоллизий.ТипОбъектаВнешнейСистемы</DataPath>
+					<ReadOnly>true</ReadOnly>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="ТаблицаКоллизийТипОбъектаКонтекстноеМеню" id="98"/>
+					<ExtendedTooltip name="ТаблицаКоллизийТипОбъектаРасширеннаяПодсказка" id="99"/>
+				</InputField>
+				<InputField name="ТаблицаКоллизийИдентификатор" id="110">
+					<DataPath>ТаблицаКоллизий.Идентификатор</DataPath>
+					<ReadOnly>true</ReadOnly>
+					<EditMode>EnterOnInput</EditMode>
+					<CellHyperlink>true</CellHyperlink>
+					<ContextMenu name="ТаблицаКоллизийИдентификаторКонтекстноеМеню" id="111"/>
+					<ExtendedTooltip name="ТаблицаКоллизийИдентификаторРасширеннаяПодсказка" id="112"/>
+				</InputField>
+			</ChildItems>
+		</Table>
+		<Table name="СтрокиRevenue" id="116">
+			<Representation>List</Representation>
+			<AutoInsertNewRow>true</AutoInsertNewRow>
+			<EnableStartDrag>true</EnableStartDrag>
+			<EnableDrag>true</EnableDrag>
+			<DataPath>СтрокиRevenue</DataPath>
+			<RowFilter xsi:nil="true"/>
+			<ContextMenu name="СтрокиRevenueКонтекстноеМеню" id="117"/>
+			<AutoCommandBar name="СтрокиRevenueКоманднаяПанель" id="118">
+				<Autofill>false</Autofill>
+				<ChildItems>
+					<Button name="СтрокиRevenueЗаполнитьПоДаннымФайла" id="171">
+						<Type>CommandBarButton</Type>
+						<Representation>PictureAndText</Representation>
+						<CommandName>Form.Command.ЗаполнитьПоДаннымФайла</CommandName>
+						<Picture>
+							<xr:Ref>StdPicture.GenerateReport</xr:Ref>
+							<xr:LoadTransparent>true</xr:LoadTransparent>
+						</Picture>
+						<ExtendedTooltip name="СтрокиRevenueЗаполнитьПоДаннымФайлаРасширеннаяПодсказка" id="172"/>
+					</Button>
+				</ChildItems>
+			</AutoCommandBar>
+			<ExtendedTooltip name="СтрокиRevenueРасширеннаяПодсказка" id="119"/>
+			<SearchStringAddition name="СтрокиRevenueСтрокаПоиска" id="120">
+				<AdditionSource>
+					<Item>СтрокиRevenue</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="СтрокиRevenueСтрокаПоискаКонтекстноеМеню" id="121"/>
+				<ExtendedTooltip name="СтрокиRevenueСтрокаПоискаРасширеннаяПодсказка" id="122"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="СтрокиRevenueСостояниеПросмотра" id="123">
+				<AdditionSource>
+					<Item>СтрокиRevenue</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="СтрокиRevenueСостояниеПросмотраКонтекстноеМеню" id="124"/>
+				<ExtendedTooltip name="СтрокиRevenueСостояниеПросмотраРасширеннаяПодсказка" id="125"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="СтрокиRevenueУправлениеПоиском" id="126">
+				<AdditionSource>
+					<Item>СтрокиRevenue</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="СтрокиRevenueУправлениеПоискомКонтекстноеМеню" id="127"/>
+				<ExtendedTooltip name="СтрокиRevenueУправлениеПоискомРасширеннаяПодсказка" id="128"/>
+			</SearchControlAddition>
+			<ChildItems>
+				<ColumnGroup name="СтрокиRevenueГруппаНомераСтрок" id="166">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Строки revenue группа номера строк</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Строки revenue группа номера строк</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="СтрокиRevenueГруппаНомераСтрокРасширеннаяПодсказка" id="167"/>
+					<ChildItems>
+						<InputField name="СтрокиRevenueНомерСтрокиRevenue" id="163">
+							<DataPath>СтрокиRevenue.НомерСтрокиRevenue</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="СтрокиRevenueНомерСтрокиRevenueКонтекстноеМеню" id="164"/>
+							<ExtendedTooltip name="СтрокиRevenueНомерСтрокиRevenueРасширеннаяПодсказка" id="165"/>
+						</InputField>
+						<InputField name="СтрокиRevenueНомерСтрокиФайла" id="168">
+							<DataPath>СтрокиRevenue.НомерСтрокиФайла</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="СтрокиRevenueНомерСтрокиФайлаКонтекстноеМеню" id="169"/>
+							<ExtendedTooltip name="СтрокиRevenueНомерСтрокиФайлаРасширеннаяПодсказка" id="170"/>
+						</InputField>
+					</ChildItems>
+				</ColumnGroup>
+				<InputField name="СтрокиRevenueSegment" id="129">
+					<DataPath>СтрокиRevenue.Segment</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="СтрокиRevenueSegmentКонтекстноеМеню" id="130"/>
+					<ExtendedTooltip name="СтрокиRevenueSegmentРасширеннаяПодсказка" id="131"/>
+				</InputField>
+				<InputField name="СтрокиRevenueSubSegment" id="132">
+					<DataPath>СтрокиRevenue.SubSegment</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="СтрокиRevenueSubSegmentКонтекстноеМеню" id="133"/>
+					<ExtendedTooltip name="СтрокиRevenueSubSegmentРасширеннаяПодсказка" id="134"/>
+				</InputField>
+				<InputField name="СтрокиRevenueSubSubSegment" id="135">
+					<DataPath>СтрокиRevenue.SubSubSegment</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="СтрокиRevenueSubSubSegmentКонтекстноеМеню" id="136"/>
+					<ExtendedTooltip name="СтрокиRevenueSubSubSegmentРасширеннаяПодсказка" id="137"/>
+				</InputField>
+				<ColumnGroup name="СтрокиRevenueГруппаGeomarket" id="159">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Строки revenue группа geomarket</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Строки revenue группа geomarket</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="СтрокиRevenueГруппаGeomarketРасширеннаяПодсказка" id="160"/>
+					<ChildItems>
+						<InputField name="СтрокиRevenueGeomarket" id="138">
+							<DataPath>СтрокиRevenue.Geomarket</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="СтрокиRevenueGeomarketКонтекстноеМеню" id="139"/>
+							<ExtendedTooltip name="СтрокиRevenueGeomarketРасширеннаяПодсказка" id="140"/>
+						</InputField>
+						<InputField name="СтрокиRevenueSubGeomarket" id="141">
+							<DataPath>СтрокиRevenue.SubGeomarket</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="СтрокиRevenueSubGeomarketКонтекстноеМеню" id="142"/>
+							<ExtendedTooltip name="СтрокиRevenueSubGeomarketРасширеннаяПодсказка" id="143"/>
+						</InputField>
+					</ChildItems>
+				</ColumnGroup>
+				<ColumnGroup name="СтрокиRevenueГруппаClient" id="161">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Строки revenue группа client</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Строки revenue группа client</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="СтрокиRevenueГруппаClientРасширеннаяПодсказка" id="162"/>
+					<ChildItems>
+						<InputField name="СтрокиRevenueParentClient" id="147">
+							<DataPath>СтрокиRevenue.ParentClient</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="СтрокиRevenueParentClientКонтекстноеМеню" id="148"/>
+							<ExtendedTooltip name="СтрокиRevenueParentClientРасширеннаяПодсказка" id="149"/>
+						</InputField>
+						<InputField name="СтрокиRevenueClient" id="144">
+							<DataPath>СтрокиRevenue.Client</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="СтрокиRevenueClientКонтекстноеМеню" id="145"/>
+							<ExtendedTooltip name="СтрокиRevenueClientРасширеннаяПодсказка" id="146"/>
+						</InputField>
+					</ChildItems>
+				</ColumnGroup>
+				<ColumnGroup name="СтрокиRevenueГруппаCurrencyAU" id="181">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Строки revenue группа currency AU</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Строки revenue группа currency AU</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="СтрокиRevenueГруппаCurrencyAUРасширеннаяПодсказка" id="182"/>
+					<ChildItems>
+						<InputField name="СтрокиRevenueCurrency" id="150">
+							<DataPath>СтрокиRevenue.Currency</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="СтрокиRevenueCurrencyКонтекстноеМеню" id="151"/>
+							<ExtendedTooltip name="СтрокиRevenueCurrencyРасширеннаяПодсказка" id="152"/>
+						</InputField>
+						<InputField name="СтрокиRevenueAccountingUnit" id="153">
+							<DataPath>СтрокиRevenue.AccountingUnit</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="СтрокиRevenueAccountingUnitКонтекстноеМеню" id="154"/>
+							<ExtendedTooltip name="СтрокиRevenueAccountingUnitРасширеннаяПодсказка" id="155"/>
+						</InputField>
+					</ChildItems>
+				</ColumnGroup>
+				<ColumnGroup name="СтрокиRevenueГруппаContract" id="173">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Строки revenue группа contract</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Строки revenue группа contract</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="СтрокиRevenueГруппаContractРасширеннаяПодсказка" id="174"/>
+					<ChildItems>
+						<InputField name="СтрокиRevenueContractName" id="175">
+							<DataPath>СтрокиRevenue.ContractName</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<Width>20</Width>
+							<ContextMenu name="СтрокиRevenueContractNameКонтекстноеМеню" id="176"/>
+							<ExtendedTooltip name="СтрокиRevenueContractNameРасширеннаяПодсказка" id="177"/>
+						</InputField>
+						<InputField name="СтрокиRevenueClientContract" id="178">
+							<DataPath>СтрокиRevenue.ClientContract</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<Width>20</Width>
+							<ContextMenu name="СтрокиRevenueClientContractКонтекстноеМеню" id="179"/>
+							<ExtendedTooltip name="СтрокиRevenueClientContractРасширеннаяПодсказка" id="180"/>
+						</InputField>
+					</ChildItems>
+				</ColumnGroup>
+				<InputField name="СтрокиRevenueAmount" id="156">
+					<DataPath>СтрокиRevenue.Amount</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="СтрокиRevenueAmountКонтекстноеМеню" id="157"/>
+					<ExtendedTooltip name="СтрокиRevenueAmountРасширеннаяПодсказка" id="158"/>
+				</InputField>
+			</ChildItems>
+		</Table>
 	</ChildItems>
 	<Attributes>
 		<Attribute name="Объект" id="1">
@@ -731,37 +516,206 @@
 				<v8:Type>v8:ValueTable</v8:Type>
 			</Type>
 			<Columns>
-				<Column name="CreditApprover" id="1">
+				<Column name="Segment" id="1">
 					<Title>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
-							<v8:content>Credit approver</v8:content>
+							<v8:content>Segment</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
 						<v8:Type>xs:string</v8:Type>
 						<v8:StringQualifiers>
-							<v8:Length>50</v8:Length>
+							<v8:Length>5</v8:Length>
 							<v8:AllowedLength>Variable</v8:AllowedLength>
 						</v8:StringQualifiers>
 					</Type>
 				</Column>
-				<Column name="CreditAssessment" id="2">
+				<Column name="SubSegment" id="2">
 					<Title>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
-							<v8:content>Credit assessment</v8:content>
+							<v8:content>Sub segment</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
 						<v8:Type>xs:string</v8:Type>
 						<v8:StringQualifiers>
-							<v8:Length>50</v8:Length>
+							<v8:Length>5</v8:Length>
 							<v8:AllowedLength>Variable</v8:AllowedLength>
 						</v8:StringQualifiers>
 					</Type>
 				</Column>
-				<Column name="СтрокаФайла" id="3">
+				<Column name="SubSubSegment" id="3">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Sub sub segment</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>5</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="Geomarket" id="4">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Geomarket</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>5</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="SubGeomarket" id="5">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Sub geomarket</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>5</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="BillingAccount" id="6">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Billing account</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:TypeSet>cfg:DefinedType.НаименованиеКлиента</v8:TypeSet>
+					</Type>
+				</Column>
+				<Column name="CorporateAccount" id="7">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Corporate account</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:TypeSet>cfg:DefinedType.ParentClentAlias</v8:TypeSet>
+					</Type>
+				</Column>
+				<Column name="LawsonCustomerCode" id="8">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Lawson customer code</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:TypeSet>cfg:DefinedType.BillingID</v8:TypeSet>
+					</Type>
+				</Column>
+				<Column name="YearMonth" id="9">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Year month</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>10</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="Revenue" id="10">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Revenue</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>15</v8:Digits>
+							<v8:FractionDigits>2</v8:FractionDigits>
+							<v8:AllowedSign>Any</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="Currency" id="11">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Currency</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>10</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="AccountingUnit" id="12">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Accounting unit</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>7</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="ContractName" id="13">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Contract name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>100</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="ClientContract" id="14">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Client contract</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>100</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="СтрокаФайла" id="15">
 					<Title>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -775,712 +729,6 @@
 							<v8:FractionDigits>0</v8:FractionDigits>
 							<v8:AllowedSign>Nonnegative</v8:AllowedSign>
 						</v8:NumberQualifiers>
-					</Type>
-				</Column>
-				<Column name="CreditLimit" id="4">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Credit limit</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:decimal</v8:Type>
-						<v8:NumberQualifiers>
-							<v8:Digits>15</v8:Digits>
-							<v8:FractionDigits>2</v8:FractionDigits>
-							<v8:AllowedSign>Any</v8:AllowedSign>
-						</v8:NumberQualifiers>
-					</Type>
-				</Column>
-				<Column name="CreditRating" id="5">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Credit rating</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>15</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="EngagementReadiness" id="6">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Engagement readiness</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>10</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="SAPIntegrationId" id="7">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>SAPIntegration id</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>10</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="SAPSyncFlag" id="8">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>SAPSync flag</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>1</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="SISRelationships" id="9">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>SISRelationships</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>10</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="SISRevenues" id="10">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>SISRevenues</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>10</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="SISScope" id="11">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>SISScope</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>10</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="SubCreditRating" id="12">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Sub credit rating</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>50</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="AvailableOffline" id="13">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Available offline</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>10</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="BillingFlag" id="14">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Billing flag</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>1</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="TCCControlled" id="15">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>TCCControlled</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>1</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="BusinessSegment" id="16">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Business segment</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>50</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="HQ" id="17">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>HQ</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>1</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="Id" id="18">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Id</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>9</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="CustomerNumber" id="19">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Customer number</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>9</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="Reference" id="20">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Reference</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>10</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="Stage" id="21">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Stage</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>10</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="HasAttachment" id="22">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Has attachment</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>1</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="CorporateAlias" id="23">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Corporate alias</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>50</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="Category" id="24">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Category</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>15</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="Region" id="25">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Region</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>10</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="MainFax" id="26">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Main fax</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>50</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="New" id="27">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>New</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>1</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="Account" id="28">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Account</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>100</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="Site" id="29">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Site</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>50</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="AccountTeam" id="30">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Account team</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>50</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="MainPhone" id="31">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Main phone</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>50</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="StreetAddress" id="32">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Street address</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>100</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="City" id="33">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>City</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>50</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="Country" id="34">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Country</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>50</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="PostalCode" id="35">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Postal code</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>10</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="Region1" id="36">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Region1</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>50</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="County1" id="37">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>County1</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>50</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="AddressLine2" id="38">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Address line2</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>50</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="ParentAccount" id="39">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Parent account</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>80</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="PrimaryAccountRep" id="40">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Primary account rep</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>50</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="AreaOfOperation" id="41">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Area of operation</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>100</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="ParentAccountSite" id="42">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Parent account site</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>30</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="AccountType" id="43">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Account type</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>12</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="Alias" id="44">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Alias</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>50</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="HomePage" id="45">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Home page</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>50</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="Organization" id="46">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Organization</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>10</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="AccountLegalName" id="47">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Account legal name</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>50</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="LawsonCompany" id="48">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Lawson company</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>50</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="LawsonSynchFlag" id="49">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Lawson synch flag</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>1</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="IntegrationId" id="50">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Integration id</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>19</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
 					</Type>
 				</Column>
 			</Columns>
@@ -1613,6 +861,344 @@
 				<v8:Type>v8:UUID</v8:Type>
 			</Type>
 		</Attribute>
+		<Attribute name="ТаблицаКоллизий" id="11">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Synchronization conflicts</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTable</v8:Type>
+			</Type>
+			<Columns>
+				<Column name="Описание" id="1">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Description</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="ТипСоответствия" id="2">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Matching type</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>cfg:EnumRef.ТипыСоответствий</v8:Type>
+					</Type>
+				</Column>
+				<Column name="ТипОбъектаВнешнейСистемы" id="3">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Object type</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>cfg:EnumRef.ТипыОбъектовВнешнихСистем</v8:Type>
+					</Type>
+				</Column>
+				<Column name="ОбъектПриемника" id="4">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>1C object</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>cfg:CatalogRef.КостЦентры</v8:Type>
+						<v8:Type>cfg:CatalogRef.GeoMarkets</v8:Type>
+						<v8:Type>cfg:CatalogRef.Контрагенты</v8:Type>
+						<v8:Type>cfg:CatalogRef.Сегменты</v8:Type>
+					</Type>
+				</Column>
+				<Column name="КоллизияОтработана" id="5">
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+				</Column>
+				<Column name="Идентификатор" id="6">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Id</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>100</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
+		<Attribute name="ПоказыватьТолькоНеотработанныеКоллизии" id="12">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Show only undone</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="СтрокиRevenue" id="13">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Строки revenue</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTable</v8:Type>
+			</Type>
+			<Columns>
+				<Column name="Segment" id="1">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Segment</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>cfg:CatalogRef.Сегменты</v8:Type>
+					</Type>
+				</Column>
+				<Column name="SubSegment" id="2">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Sub-Segment</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>cfg:CatalogRef.Сегменты</v8:Type>
+					</Type>
+				</Column>
+				<Column name="SubSubSegment" id="3">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Sub-Sub-Segment</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>cfg:CatalogRef.Сегменты</v8:Type>
+					</Type>
+				</Column>
+				<Column name="Geomarket" id="4">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Geomarket</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>cfg:CatalogRef.GeoMarkets</v8:Type>
+					</Type>
+				</Column>
+				<Column name="SubGeomarket" id="5">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Sub-Geomarket</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>cfg:CatalogRef.GeoMarkets</v8:Type>
+					</Type>
+				</Column>
+				<Column name="Client" id="6">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Client</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>cfg:CatalogRef.Контрагенты</v8:Type>
+					</Type>
+				</Column>
+				<Column name="ParentClient" id="7">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Parent client</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>cfg:CatalogRef.Контрагенты</v8:Type>
+					</Type>
+				</Column>
+				<Column name="Currency" id="8">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Currency</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>cfg:CatalogRef.Валюты</v8:Type>
+					</Type>
+				</Column>
+				<Column name="AccountingUnit" id="9">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Accounting unit</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>cfg:CatalogRef.КостЦентры</v8:Type>
+					</Type>
+				</Column>
+				<Column name="Amount" id="10">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Amount</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>15</v8:Digits>
+							<v8:FractionDigits>2</v8:FractionDigits>
+							<v8:AllowedSign>Any</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="НомерСтрокиRevenue" id="11">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>№</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>7</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="НомерСтрокиФайла" id="12">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>№ (file)</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>7</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Any</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="ContractName" id="13">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Contract name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>100</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="ClientContract" id="14">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Client contract</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>100</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="Ссылка" id="15">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Ссылка</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>cfg:CatalogRef.СтрокиRevenue</v8:Type>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
+		<ConditionalAppearance>
+			<dcsset:item>
+				<dcsset:selection>
+					<dcsset:item>
+						<dcsset:field>ТаблицаКоллизий</dcsset:field>
+					</dcsset:item>
+				</dcsset:selection>
+				<dcsset:filter>
+					<dcsset:item xsi:type="dcsset:FilterItemComparison">
+						<dcsset:left xsi:type="dcscor:Field">ТаблицаКоллизий.КоллизияОтработана</dcsset:left>
+						<dcsset:comparisonType>Equal</dcsset:comparisonType>
+						<dcsset:right xsi:type="xs:boolean">false</dcsset:right>
+					</dcsset:item>
+				</dcsset:filter>
+				<dcsset:appearance>
+					<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+						<dcscor:parameter>ЦветТекста</dcscor:parameter>
+						<dcscor:value xsi:type="v8ui:Color">style:SpecialTextColor</dcscor:value>
+					</dcscor:item>
+				</dcsset:appearance>
+			</dcsset:item>
+			<dcsset:item>
+				<dcsset:selection>
+					<dcsset:item>
+						<dcsset:field>ТаблицаКоллизий</dcsset:field>
+					</dcsset:item>
+				</dcsset:selection>
+				<dcsset:filter>
+					<dcsset:item xsi:type="dcsset:FilterItemComparison">
+						<dcsset:left xsi:type="dcscor:Field">ТаблицаКоллизий.КоллизияОтработана</dcsset:left>
+						<dcsset:comparisonType>Equal</dcsset:comparisonType>
+						<dcsset:right xsi:type="xs:boolean">true</dcsset:right>
+					</dcsset:item>
+				</dcsset:filter>
+				<dcsset:appearance>
+					<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+						<dcscor:parameter>ЦветФона</dcscor:parameter>
+						<dcscor:value xsi:type="v8ui:Color">web:LightGreen</dcscor:value>
+					</dcscor:item>
+				</dcsset:appearance>
+			</dcsset:item>
+		</ConditionalAppearance>
 	</Attributes>
 	<Commands>
 		<Command name="ПрочитатьФайл" id="1">
@@ -1630,11 +1216,56 @@
 			</ToolTip>
 			<Action>ПрочитатьФайл</Action>
 		</Command>
+		<Command name="ВыполнитьПроверкуНастроекСинхронизации" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Check conflicts</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Выполнить проверку настроек синхронизации</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.CheckSyntax</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>ВыполнитьПроверкуНастроекСинхронизации</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="ЗаполнитьПоДаннымФайла" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Fill  in according to file</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Заполнить по данным файла</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ЗаполнитьПоДаннымФайла</Action>
+		</Command>
 	</Commands>
 	<CommandInterface>
 		<NavigationPanel>
 			<Item>
 				<Command>InformationRegister.CRMAccountsExtractSourceData.StandardCommand.OpenByRecorder</Command>
+				<Type>Auto</Type>
+				<DefaultVisible>false</DefaultVisible>
+			</Item>
+			<Item>
+				<Command>InformationRegister.RevenueSourceData.StandardCommand.OpenByRecorder</Command>
+				<Type>Auto</Type>
+				<DefaultVisible>false</DefaultVisible>
+			</Item>
+			<Item>
+				<Command>AccumulationRegister.RevenueByClients.StandardCommand.OpenByRecorder</Command>
 				<Type>Auto</Type>
 				<DefaultVisible>false</DefaultVisible>
 			</Item>
