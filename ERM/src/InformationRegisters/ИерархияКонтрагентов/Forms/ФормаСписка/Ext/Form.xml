@@ -6,23 +6,45 @@
 	</AutoCommandBar>
 	<Events>
 		<Event name="OnOpen">ПриОткрытии</Event>
+		<Event name="OnCreateAtServer">ПриСозданииНаСервере</Event>
 	</Events>
 	<ChildItems>
-		<CheckBoxField name="ИмеющиеПодчиненных" id="15">
-			<DataPath>ИмеющиеПодчиненных</DataPath>
+		<UsualGroup name="ГруппаЗначенияДляОтборов" id="62">
 			<Title>
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>Показать контрагентов, назначенных головными </v8:content>
+					<v8:content>Группа значения для отборов</v8:content>
 				</v8:item>
 			</Title>
-			<CheckBoxType>Auto</CheckBoxType>
-			<ContextMenu name="ИмеющиеПодчиненныхКонтекстноеМеню" id="16"/>
-			<ExtendedTooltip name="ИмеющиеПодчиненныхРасширеннаяПодсказка" id="32"/>
-			<Events>
-				<Event name="OnChange">ИмеющиеПодчиненныхПриИзменении</Event>
-			</Events>
-		</CheckBoxField>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Группа значения для отборов</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="ГруппаЗначенияДляОтборовРасширеннаяПодсказка" id="63"/>
+			<ChildItems>
+				<InputField name="ДатаАктуальности" id="56">
+					<DataPath>ДатаАктуальности</DataPath>
+					<ContextMenu name="ДатаАктуальностиКонтекстноеМеню" id="57"/>
+					<ExtendedTooltip name="ДатаАктуальностиРасширеннаяПодсказка" id="58"/>
+					<Events>
+						<Event name="OnChange">ДатаАктуальностиПриИзменении</Event>
+					</Events>
+				</InputField>
+				<InputField name="КонтрагентДляОтбора" id="59">
+					<DataPath>КонтрагентДляОтбора</DataPath>
+					<ContextMenu name="КонтрагентДляОтбораКонтекстноеМеню" id="60"/>
+					<ExtendedTooltip name="КонтрагентДляОтбораРасширеннаяПодсказка" id="61"/>
+					<Events>
+						<Event name="OnChange">КонтрагентДляОтбораПриИзменении</Event>
+					</Events>
+				</InputField>
+			</ChildItems>
+		</UsualGroup>
 		<UsualGroup name="ОсновнаяГруппа" id="22">
 			<Title>
 				<v8:item>
@@ -104,7 +126,7 @@
 							<Title>
 								<v8:item>
 									<v8:lang>ru</v8:lang>
-									<v8:content>Головной контрагент</v8:content>
+									<v8:content>Parent client</v8:content>
 								</v8:item>
 							</Title>
 							<ContextMenu name="СсылкаНаГоловногоКонтекстноеМеню" id="21"/>
@@ -163,13 +185,14 @@
 					<ChildItems>
 						<LabelField name="Контрагент" id="30">
 							<DataPath>Список.Контрагент</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>ru</v8:lang>
+									<v8:content>Client</v8:content>
+								</v8:item>
+							</Title>
 							<ContextMenu name="КонтрагентКонтекстноеМеню" id="31"/>
 							<ExtendedTooltip name="КонтрагентРасширеннаяПодсказка" id="55"/>
-						</LabelField>
-						<LabelField name="ВидИерархии" id="26">
-							<DataPath>~Список.ВидИерархии</DataPath>
-							<ContextMenu name="ВидИерархииКонтекстноеМеню" id="27"/>
-							<ExtendedTooltip name="ВидИерархииРасширеннаяПодсказка" id="56"/>
 						</LabelField>
 					</ChildItems>
 				</Table>
@@ -186,12 +209,13 @@
 				<ManualQuery>true</ManualQuery>
 				<DynamicDataRead>false</DynamicDataRead>
 				<QueryText>ВЫБРАТЬ
-	РегистрСведенийИерархияКонтрагентов.Контрагент,
-	РегистрСведенийИерархияКонтрагентов.ГоловнойКонтрагент
+	ИерархияКонтрагентовСрезПоследних.Контрагент КАК Контрагент,
+	ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент
 ИЗ
-	РегистрСведений.ИерархияКонтрагентов КАК РегистрСведенийИерархияКонтрагентов
+	РегистрСведений.ИерархияКонтрагентов.СрезПоследних({(&amp;Период)}, {(ГоловнойКонтрагент = &amp;ГоловнойКонтрагент)}) КАК ИерархияКонтрагентовСрезПоследних
 {ГДЕ
-	(РегистрСведенийИерархияКонтрагентов.ГоловнойКонтрагент = &amp;Контрагент)}</QueryText>
+	ИерархияКонтрагентовСрезПоследних.Контрагент.*}</QueryText>
+				<MainTable>InformationRegister.ИерархияКонтрагентов.SliceLast</MainTable>
 				<ListSettings>
 					<dcsset:filter>
 						<dcsset:viewMode>Normal</dcsset:viewMode>
@@ -223,10 +247,10 @@
 			<Settings xsi:type="DynamicList">
 				<ManualQuery>true</ManualQuery>
 				<DynamicDataRead>false</DynamicDataRead>
-				<QueryText>ВЫБРАТЬ
-	СправочникКонтрагенты.Ссылка КАК Контрагент
+				<QueryText>ВЫБРАТЬ РАЗЛИЧНЫЕ
+	ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент КАК Контрагент
 ИЗ
-	Справочник.Контрагенты КАК СправочникКонтрагенты</QueryText>
+	РегистрСведений.ИерархияКонтрагентов.СрезПоследних({(&amp;Период)}, {(Контрагент = &amp;Контрагент)}) КАК ИерархияКонтрагентовСрезПоследних</QueryText>
 				<ListSettings>
 					<dcsset:filter>
 						<dcsset:viewMode>Normal</dcsset:viewMode>
@@ -254,6 +278,31 @@
 			</Title>
 			<Type>
 				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="ДатаАктуальности" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Date</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:dateTime</v8:Type>
+				<v8:DateQualifiers>
+					<v8:DateFractions>Date</v8:DateFractions>
+				</v8:DateQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="КонтрагентДляОтбора" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Client</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:CatalogRef.Контрагенты</v8:Type>
 			</Type>
 		</Attribute>
 	</Attributes>
