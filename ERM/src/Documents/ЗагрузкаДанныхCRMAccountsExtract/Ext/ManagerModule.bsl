@@ -90,11 +90,10 @@
 
 Процедура ЗагрузитьИЗаписатьДвижения(Ссылка, ДатаДокумента, ТаблицаДанных)
 	
-	ТаблицаДанных.Колонки.Добавить("Период");
-	ТаблицаДанных.ЗаполнитьЗначения(ДатаДокумента, "Период");
+	ТаблицаДанных.Колонки.Добавить("ДокументЗагрузки");
+	ТаблицаДанных.ЗаполнитьЗначения(Ссылка, "ДокументЗагрузки");
 	
 	НЗ = РегистрыСведений.CRMAccountsExtractSourceData.СоздатьНаборЗаписей();
-	НЗ.Отбор.Регистратор.Установить(Ссылка);
 	НЗ.Загрузить(ТаблицаДанных);
 	НЗ.Записать(Истина);
 	
@@ -110,7 +109,7 @@
 		|ИЗ
 		|	РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
 		|ГДЕ
-		|	CRMAccountsExtractSourceData.Регистратор = &Ссылка
+		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
 		|	И CRMAccountsExtractSourceData.CorporateAlias <> """"
 		|
 		|ИНДЕКСИРОВАТЬ ПО
@@ -151,7 +150,7 @@
 		|ИЗ
 		|	РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
 		|ГДЕ
-		|	CRMAccountsExtractSourceData.Регистратор = &Ссылка
+		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
 		|	И CRMAccountsExtractSourceData.CustomerNumber = """"
 		|	И CRMAccountsExtractSourceData.Id <> """"
 		|
@@ -196,7 +195,7 @@
 		|ИЗ
 		|	РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
 		|ГДЕ
-		|	CRMAccountsExtractSourceData.Регистратор = &Ссылка
+		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
 		|	И CRMAccountsExtractSourceData.CustomerNumber <> """"
 		|
 		|ИНДЕКСИРОВАТЬ ПО
@@ -244,7 +243,7 @@
 		|ИЗ
 		|	РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
 		|ГДЕ
-		|	CRMAccountsExtractSourceData.Регистратор = &Ссылка
+		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
 		|	И CRMAccountsExtractSourceData.CustomerNumber <> """"
 		|
 		|ИНДЕКСИРОВАТЬ ПО
@@ -361,7 +360,7 @@
 		|ИЗ
 		|	РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
 		|ГДЕ
-		|	CRMAccountsExtractSourceData.Регистратор = &Ссылка
+		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
 		|	И CRMAccountsExtractSourceData.CustomerNumber <> """"
 		|
 		|ИНДЕКСИРОВАТЬ ПО
@@ -479,7 +478,7 @@
 		|ИЗ
 		|	РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
 		|ГДЕ
-		|	CRMAccountsExtractSourceData.Регистратор = &Ссылка
+		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
 		|	И CRMAccountsExtractSourceData.Id <> """"
 		|
 		|ИНДЕКСИРОВАТЬ ПО
@@ -533,7 +532,7 @@
 		|ПОМЕСТИТЬ ВТ_ИдентификаторыParentClients
 		|ИЗ
 		|	РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемами
-		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ПоследниеДатыCRM КАК ВТ_ПоследниеДатыParentClients
+		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ПоследниеДатыParentClients КАК ВТ_ПоследниеДатыParentClients
 		|		ПО (НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.ParentClients))
 		|			И НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Период = ВТ_ПоследниеДатыParentClients.Период
 		|			И НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ОбъектПриемника = ВТ_ПоследниеДатыParentClients.ОбъектПриемника
@@ -549,15 +548,19 @@
 		|	ВТ_SalesAccounts.Description,
 		|	ВТ_ИдентификаторыCRM.ОбъектПриемника КАК Client,
 		|	ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент КАК OldParentClient,
-		|	ВТ_ИдентификаторыParentClients.ОбъектПриемника КАК NewParentClient
+		|	ВТ_ИдентификаторыParentClients.ОбъектПриемника КАК NewParentClient,
+		|	ВТ_SalesAccounts.ParentClient КАК NewParentClientDescription
 		|ИЗ
 		|	ВТ_SalesAccounts КАК ВТ_SalesAccounts
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ИдентификаторыCRM КАК ВТ_ИдентификаторыCRM
 		|			ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.ИерархияКонтрагентов.СрезПоследних(&Период, ) КАК ИерархияКонтрагентовСрезПоследних
 		|			ПО ВТ_ИдентификаторыCRM.ОбъектПриемника = ИерархияКонтрагентовСрезПоследних.Контрагент
 		|		ПО ВТ_SalesAccounts.CRMID = ВТ_ИдентификаторыCRM.Идентификатор
-		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ИдентификаторыParentClients КАК ВТ_ИдентификаторыParentClients
-		|		ПО ВТ_SalesAccounts.ParentClient = ВТ_ИдентификаторыParentClients.Идентификатор";
+		|		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ИдентификаторыParentClients КАК ВТ_ИдентификаторыParentClients
+		|		ПО ВТ_SalesAccounts.ParentClient = ВТ_ИдентификаторыParentClients.Идентификатор
+		|ГДЕ
+		|	(ВТ_ИдентификаторыParentClients.ОбъектПриемника ЕСТЬ NULL 
+		|			ИЛИ ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент <> ВТ_ИдентификаторыParentClients.ОбъектПриемника)";
 	
 	Запрос.УстановитьПараметр("Ссылка", Ссылка);
 	Запрос.УстановитьПараметр("Период", Дата);
