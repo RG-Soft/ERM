@@ -302,7 +302,7 @@
 	|	СтрокиRevenue.Currency,
 	|	СтрокиRevenue.ContractName,
 	|	СтрокиRevenue.ClientContract,
-	|	СтрокиRevenue.Amount,
+	|	СтрокиRevenue.AmountUSD,
 	|	СтрокиRevenue.ЗагрузкаДанных,
 	|	СтрокиRevenue.НомерСтрокиRevenue,
 	|	СтрокиRevenue.НомерСтрокиФайла
