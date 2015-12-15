@@ -183,7 +183,7 @@
 		|	&ТипВнешнейСистемы,
 		|	ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Client),
 		|	ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка),
-		|	RevenueSourceData.LawsonCustomerCode
+		|	RevenueSourceData.CustomerCode
 		|ИЗ
 		|	РегистрСведений.RevenueSourceData КАК RevenueSourceData
 		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(
@@ -191,7 +191,7 @@
 		|				ТипСоответствия = &ТипВнешнейСистемы
 		|					И ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Client)) КАК НастройкаСинхронизацииClients
 		|		ПО (RevenueSourceData.ДокументЗагрузки = &ДокументЗагрузки)
-		|			И RevenueSourceData.LawsonCustomerCode = НастройкаСинхронизацииClients.Идентификатор
+		|			И RevenueSourceData.CustomerCode = НастройкаСинхронизацииClients.Идентификатор
 		|ГДЕ
 		|	НастройкаСинхронизацииClients.ОбъектПриемника ЕСТЬ NULL 
 		//|	И (&ТипВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
@@ -315,7 +315,7 @@
 	|	ВТ_СтрокиRevenue.ЗагрузкаДанных,
 	|	ВТ_СтрокиRevenue.НомерСтрокиRevenue,
 	|	ВТ_СтрокиRevenue.НомерСтрокиФайла,
-	|	RevenueSourceData.LawsonCustomerCode КАК BillingID,
+	|	RevenueSourceData.CustomerCode КАК BillingID,
 	|	RevenueSourceData.CorporateAccount КАК ParentClientID
 	|ИЗ
 	|	ВТ_СтрокиRevenue КАК ВТ_СтрокиRevenue

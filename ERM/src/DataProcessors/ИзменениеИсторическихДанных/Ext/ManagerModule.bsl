@@ -71,7 +71,7 @@
 	|	RevenueSourceData.Geomarket КАК GeomarketID,
 	|	RevenueSourceData.SubGeomarket КАК SubGeomarketID,
 	|	RevenueSourceData.CorporateAccount КАК CorporateAccountID,
-	|	RevenueSourceData.LawsonCustomerCode КАК LawsonCustomerCodeID,
+	|	RevenueSourceData.CustomerCode КАК LawsonCustomerCodeID,
 	|	RevenueSourceData.Currency КАК CurrencyID,
 	|	RevenueSourceData.AccountingUnit КАК AccountingUnitID,
 	|	СтрокиRevenue.ЗагрузкаДанных,

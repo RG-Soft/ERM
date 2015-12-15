@@ -338,7 +338,7 @@
 	
 	// Lawson Customer Code
 	СтрокаТЗ = СтруктураКолонок.Добавить();
-	СтрокаТЗ.ИмяПоля = "LawsonCustomerCode";
+	СтрокаТЗ.ИмяПоля = "CustomerCode";
 	СтрокаТЗ.ИмяКолонки = "Lawson Customer Code";
 	СтрокаТЗ.НомерКолонки = 8;
 	
@@ -429,7 +429,7 @@
 	
 	// Lawson Customer Code
 	СтрокаТЗ = СтруктураКолонок.Добавить();
-	СтрокаТЗ.ИмяПоля = "LawsonCustomerCode";
+	СтрокаТЗ.ИмяПоля = "CustomerCode";
 	СтрокаТЗ.ИмяКолонки = "Lawson Customer Code";
 	СтрокаТЗ.НомерКолонки = 8;
 	
@@ -631,7 +631,7 @@
 		|	RevenueSourceData.SubGeomarket,
 		|	RevenueSourceData.BillingAccount,
 		|	RevenueSourceData.CorporateAccount,
-		|	RevenueSourceData.LawsonCustomerCode,
+		|	RevenueSourceData.CustomerCode,
 		|	RevenueSourceData.YearMonth,
 		|	RevenueSourceData.Revenue,
 		|	RevenueSourceData.Currency,
@@ -718,7 +718,7 @@
 		|				И ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Client)
 		|				И Идентификатор В
 		|					(ВЫБРАТЬ РАЗЛИЧНЫЕ
-		|						ВТ_ДанныеФайла.LawsonCustomerCode
+		|						ВТ_ДанныеФайла.CustomerCode
 		|					ИЗ
 		|						ВТ_ДанныеФайла КАК ВТ_ДанныеФайла)) КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних
 		|
@@ -822,7 +822,7 @@
 		|		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_СоответствиеParentClient КАК ВТ_СоответствиеParentClient
 		|		ПО ВТ_ДанныеФайла.CorporateAccount = ВТ_СоответствиеParentClient.Идентификатор
 		|		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_СоответствиеКлиентов КАК ВТ_СоответствиеКлиентов
-		|		ПО ВТ_ДанныеФайла.LawsonCustomerCode = ВТ_СоответствиеКлиентов.Идентификатор
+		|		ПО ВТ_ДанныеФайла.CustomerCode = ВТ_СоответствиеКлиентов.Идентификатор
 		|		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_СоответствиеCurrency КАК ВТ_СоответствиеCurrency
 		|		ПО ВТ_ДанныеФайла.Currency = ВТ_СоответствиеCurrency.Идентификатор
 		//|		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_СоответствиеAccountingUnit КАК ВТ_СоответствиеAccountingUnit
