@@ -155,25 +155,25 @@
 		|ГДЕ
 		|	НастройкаСинхронизацииCurrency.ОбъектПриемника ЕСТЬ NULL 
 		|
-		|ОБЪЕДИНИТЬ
-		|
-		|ВЫБРАТЬ
-		|	ЛОЖЬ,
-		|	""Specify the 1C object"",
-		|	&ТипВнешнейСистемы,
-		|	ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.AccountingUnit),
-		|	ЗНАЧЕНИЕ(Справочник.КостЦентры.ПустаяСсылка),
-		|	RevenueSourceData.AccountingUnit
-		|ИЗ
-		|	РегистрСведений.RevenueSourceData КАК RevenueSourceData
-		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(
-		|				&Период,
-		|				ТипСоответствия = &ТипВнешнейСистемы
-		|					И ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.AccountingUnit)) КАК НастройкаСинхронизацииAccountingUnit
-		|		ПО (RevenueSourceData.ДокументЗагрузки = &ДокументЗагрузки)
-		|			И RevenueSourceData.AccountingUnit = НастройкаСинхронизацииAccountingUnit.Идентификатор
-		|ГДЕ
-		|	НастройкаСинхронизацииAccountingUnit.ОбъектПриемника ЕСТЬ NULL 
+		//|ОБЪЕДИНИТЬ
+		//|
+		//|ВЫБРАТЬ
+		//|	ЛОЖЬ,
+		//|	""Specify the 1C object"",
+		//|	&ТипВнешнейСистемы,
+		//|	ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.AccountingUnit),
+		//|	ЗНАЧЕНИЕ(Справочник.КостЦентры.ПустаяСсылка),
+		//|	RevenueSourceData.AccountingUnit
+		//|ИЗ
+		//|	РегистрСведений.RevenueSourceData КАК RevenueSourceData
+		//|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(
+		//|				&Период,
+		//|				ТипСоответствия = &ТипВнешнейСистемы
+		//|					И ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.AccountingUnit)) КАК НастройкаСинхронизацииAccountingUnit
+		//|		ПО (RevenueSourceData.ДокументЗагрузки = &ДокументЗагрузки)
+		//|			И RevenueSourceData.AccountingUnit = НастройкаСинхронизацииAccountingUnit.Идентификатор
+		//|ГДЕ
+		//|	НастройкаСинхронизацииAccountingUnit.ОбъектПриемника ЕСТЬ NULL 
 		|
 		|ОБЪЕДИНИТЬ
 		|
@@ -280,7 +280,7 @@
 	|	СтрокиRevenue.SubGeomarket,
 	|	СтрокиRevenue.ParentClient,
 	|	СтрокиRevenue.Client,
-	|	СтрокиRevenue.AccountingUnit,
+	//|	СтрокиRevenue.AccountingUnit,
 	|	СтрокиRevenue.Currency,
 	|	СтрокиRevenue.ContractName,
 	|	СтрокиRevenue.ClientContract,
@@ -307,7 +307,7 @@
 	|	ВТ_СтрокиRevenue.SubGeomarket,
 	|	ВТ_СтрокиRevenue.ParentClient,
 	|	ВТ_СтрокиRevenue.Client,
-	|	ВТ_СтрокиRevenue.AccountingUnit,
+	//|	ВТ_СтрокиRevenue.AccountingUnit,
 	|	ВТ_СтрокиRevenue.Currency,
 	|	ВТ_СтрокиRevenue.ContractName,
 	|	ВТ_СтрокиRevenue.ClientContract,
