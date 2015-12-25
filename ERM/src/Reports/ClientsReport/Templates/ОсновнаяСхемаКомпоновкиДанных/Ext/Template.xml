@@ -64,7 +64,10 @@
 	ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент,
 	Контрагенты.Код
 ИЗ
-	РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(&amp;Период, ) КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних
+	РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(
+			&amp;Период,
+			ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Client)
+				И ТипСоответствия &lt;&gt; ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.ParentClients)) КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИерархияКонтрагентов.СрезПоследних(&amp;Период, ) КАК ИерархияКонтрагентовСрезПоследних
 		ПО НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника = ИерархияКонтрагентовСрезПоследних.Контрагент
 		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Контрагенты КАК Контрагенты
@@ -81,7 +84,7 @@
 		<valueType>
 			<v8:Type>xs:dateTime</v8:Type>
 			<v8:DateQualifiers>
-				<v8:DateFractions>DateTime</v8:DateFractions>
+				<v8:DateFractions>Date</v8:DateFractions>
 			</v8:DateQualifiers>
 		</valueType>
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
@@ -113,14 +116,13 @@
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>Период</dcscor:parameter>
 					<dcscor:value xsi:type="v8:StandardBeginningDate">
-						<v8:variant xsi:type="v8:StandardBeginningDateVariant">Custom</v8:variant>
-						<v8:date>2015-12-21T00:00:00</v8:date>
+						<v8:variant xsi:type="v8:StandardBeginningDateVariant">BeginningOfThisDay</v8:variant>
 					</dcscor:value>
 					<dcsset:userSettingID>e93414c9-e1f3-4f3b-91ed-83c5cd74eb0a</dcsset:userSettingID>
 					<dcsset:userSettingPresentation xsi:type="v8:LocalStringType">
 						<v8:item>
 							<v8:lang>ru</v8:lang>
-							<v8:content>Период</v8:content>
+							<v8:content>Period</v8:content>
 						</v8:item>
 					</dcsset:userSettingPresentation>
 				</dcscor:item>
