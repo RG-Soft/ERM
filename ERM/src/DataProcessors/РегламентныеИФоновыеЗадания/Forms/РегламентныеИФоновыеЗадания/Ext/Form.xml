@@ -17,7 +17,6 @@
 		<Event name="NotificationProcessing">ОбработкаОповещения</Event>
 		<Event name="OnOpen">ПриОткрытии</Event>
 		<Event name="OnCreateAtServer">ПриСозданииНаСервере</Event>
-		<Event name="OnClose">ПриЗакрытии</Event>
 		<Event name="BeforeLoadDataFromSettingsAtServer">ПриЗагрузкеДанныхИзНастроекНаСервере</Event>
 	</Events>
 	<ChildItems>
@@ -40,6 +39,39 @@
 					</Picture>
 					<ExtendedTooltip name="РегламентныеЗаданияExtendedTooltip" id="177"/>
 					<ChildItems>
+						<UsualGroup name="ГруппаБлокировкаРаботыСВнешнимиРесурсами" id="283">
+							<Visible>false</Visible>
+							<Group>Horizontal</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="ГруппаБлокировкаРаботыСВнешнимиРесурсамиРасширеннаяПодсказка" id="284"/>
+							<ChildItems>
+								<PictureDecoration name="КартинкаБлокировкаРаботыСВнешнимиРесурсами" id="285">
+									<Width>4</Width>
+									<Height>2</Height>
+									<Picture>
+										<xr:Ref>CommonPicture.Предупреждение32</xr:Ref>
+										<xr:LoadTransparent>true</xr:LoadTransparent>
+									</Picture>
+									<ContextMenu name="КартинкаБлокировкаРаботыСВнешнимиРесурсамиКонтекстноеМеню" id="286"/>
+									<ExtendedTooltip name="КартинкаБлокировкаРаботыСВнешнимиРесурсамиРасширеннаяПодсказка" id="287"/>
+								</PictureDecoration>
+								<LabelDecoration name="ПояснениеБлокировкаРаботыСВнешнимиРесурсами" id="288">
+									<Height>2</Height>
+									<Title formatted="true">
+										<v8:item>
+											<v8:lang>ru</v8:lang>
+											<v8:content>Работа со всеми внешними ресурсами (синхронизация данных, отправка почты и т.п.), выполняемая по расписанию заблокирована для предотвращения конфликтов с основной информационной базой. &lt;link Разблокировать&gt;Разблокировать&lt;/&gt;.</v8:content>
+										</v8:item>
+									</Title>
+									<ContextMenu name="ПояснениеБлокировкаРаботыСВнешнимиРесурсамиКонтекстноеМеню" id="289"/>
+									<ExtendedTooltip name="ПояснениеБлокировкаРаботыСВнешнимиРесурсамиРасширеннаяПодсказка" id="290"/>
+									<Events>
+										<Event name="URLProcessing">ПояснениеБлокировкаРаботыСВнешнимиРесурсамиОбработкаНавигационнойСсылки</Event>
+									</Events>
+								</LabelDecoration>
+							</ChildItems>
+						</UsualGroup>
 						<Table name="ТаблицаРегламентныеЗадания" id="29">
 							<Representation>List</Representation>
 							<SkipOnInput>false</SkipOnInput>
@@ -66,7 +98,7 @@
 									</Button>
 									<Button name="ТаблицаРегламентныеЗаданияКонтекстноеМенюОбновитьДанные" id="165">
 										<Type>CommandBarButton</Type>
-										<CommandName>Form.Command.ОбновитьФоновыеЗадания</CommandName>
+										<CommandName>0</CommandName>
 										<ExtendedTooltip name="ТаблицаРегламентныеЗаданияКонтекстноеМенюОбновитьДанныеExtendedTooltip" id="178"/>
 									</Button>
 									<Button name="ТаблицаРегламентныеЗаданияКонтекстноеМенюВключитьРегламентноеЗадание" id="234">
@@ -162,6 +194,7 @@
 									</Button>
 									<Button name="ТаблицаРегламентныеЗаданияОбновитьДанные" id="146">
 										<Type>CommandBarButton</Type>
+										<Representation>Text</Representation>
 										<SkipOnInput>false</SkipOnInput>
 										<CommandName>Form.Command.ОбновитьРегламентныеЗадания</CommandName>
 										<ExtendedTooltip name="ТаблицаРегламентныеЗаданияОбновитьДанныеExtendedTooltip" id="185"/>
@@ -630,11 +663,11 @@
 											<ContextMenu name="ТаблицаФоновыеЗаданияКонтекстноеМеню" id="66"/>
 											<AutoCommandBar name="ТаблицаФоновыеЗаданияКоманднаяПанель" id="67">
 												<ChildItems>
-													<Button name="ТаблицаФоновыеЗаданияОбновитьДанные" id="92">
+													<Button name="ТаблицаФоновыеЗаданияОбновитьРегламентныеЗадания" id="281">
 														<Type>CommandBarButton</Type>
-														<SkipOnInput>false</SkipOnInput>
-														<CommandName>Form.Command.ОбновитьФоновыеЗадания</CommandName>
-														<ExtendedTooltip name="ТаблицаФоновыеЗаданияОбновитьДанныеExtendedTooltip" id="222"/>
+														<Representation>Text</Representation>
+														<CommandName>Form.Command.ОбновитьРегламентныеЗадания</CommandName>
+														<ExtendedTooltip name="ТаблицаФоновыеЗаданияОбновитьРегламентныеЗаданияРасширеннаяПодсказка" id="282"/>
 													</Button>
 													<Button name="ТаблицаФоновыеЗаданияОткрыть" id="121">
 														<Type>CommandBarButton</Type>
@@ -748,14 +781,25 @@
 									<ExtendedTooltip name="СтраницаДлительнаяОперацияРасширеннаяПодсказка" id="269"/>
 									<ChildItems>
 										<PictureDecoration name="ДлительнаяОперация" id="270">
-											<Width>5</Width>
+											<Width>7</Width>
 											<Height>3</Height>
+											<ToolTipRepresentation>ShowRight</ToolTipRepresentation>
 											<Picture>
 												<xr:Ref>CommonPicture.ДлительнаяОперация48</xr:Ref>
 												<xr:LoadTransparent>true</xr:LoadTransparent>
 											</Picture>
 											<ContextMenu name="ДлительнаяОперацияКонтекстноеМеню" id="271"/>
-											<ExtendedTooltip name="ДлительнаяОперацияРасширеннаяПодсказка" id="272"/>
+											<ExtendedTooltip name="ДлительнаяОперацияРасширеннаяПодсказка" id="272">
+												<Height>3</Height>
+												<Title formatted="false">
+													<v8:item>
+														<v8:lang>ru</v8:lang>
+														<v8:content>Формируется список фоновых заданий.
+Пожалуйста, подождите...</v8:content>
+													</v8:item>
+												</Title>
+												<VerticalAlign>Center</VerticalAlign>
+											</ExtendedTooltip>
 										</PictureDecoration>
 									</ChildItems>
 								</Page>
@@ -965,6 +1009,17 @@
 							<v8:Length>0</v8:Length>
 							<v8:AllowedLength>Variable</v8:AllowedLength>
 						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="Параметризуемое" id="14">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Параметризуемое</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
 					</Type>
 				</Column>
 			</Columns>
@@ -1398,32 +1453,6 @@
 			</Title>
 			<Type/>
 		</Attribute>
-		<Attribute name="ИдентификаторЗадания" id="25">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Идентификатор задания</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>v8:UUID</v8:Type>
-			</Type>
-		</Attribute>
-		<Attribute name="АдресХранилища" id="26">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Адрес хранилища</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:string</v8:Type>
-				<v8:StringQualifiers>
-					<v8:Length>0</v8:Length>
-					<v8:AllowedLength>Variable</v8:AllowedLength>
-				</v8:StringQualifiers>
-			</Type>
-		</Attribute>
 		<Attribute name="ОтключенныеЗадания" id="27">
 			<Title>
 				<v8:item>
@@ -1437,27 +1466,6 @@
 		</Attribute>
 	</Attributes>
 	<Commands>
-		<Command name="ОбновитьФоновыеЗадания" id="1">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Обновить</v8:content>
-				</v8:item>
-			</Title>
-			<ToolTip>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Обновить список фоновых заданий (с учетом отбора)</v8:content>
-				</v8:item>
-			</ToolTip>
-			<Shortcut>F5</Shortcut>
-			<Picture>
-				<xr:Ref>StdPicture.Refresh</xr:Ref>
-				<xr:LoadTransparent>true</xr:LoadTransparent>
-			</Picture>
-			<Action>ОбновитьФоновыеЗадания</Action>
-			<Representation>Text</Representation>
-		</Command>
 		<Command name="ОткрытьФоновоеЗадание" id="2">
 			<Title>
 				<v8:item>
@@ -1575,9 +1583,14 @@
 			<ToolTip>
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>Обновить список регламентных заданий</v8:content>
+					<v8:content>Обновить список заданий</v8:content>
 				</v8:item>
 			</ToolTip>
+			<Shortcut>F5</Shortcut>
+			<Picture>
+				<xr:Ref>StdPicture.Refresh</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
 			<Action>ОбновитьРегламентныеЗадания</Action>
 		</Command>
 		<Command name="ПоказатьВсеЗадания" id="9">

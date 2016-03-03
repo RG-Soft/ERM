@@ -38,23 +38,22 @@
 			<ShowTitle>false</ShowTitle>
 			<ExtendedTooltip name="ШапкаРасширеннаяПодсказка" id="407"/>
 			<ChildItems>
-				<InputField name="ПредставлениеОбластиПоискаДублей" id="9">
-					<DataPath>ПредставлениеОбластиПоискаДублей</DataPath>
+				<InputField name="ОбластьПоискаДублей" id="9">
+					<DataPath>ОбластьПоискаДублей</DataPath>
 					<Width>43</Width>
 					<HorizontalStretch>false</HorizontalStretch>
 					<DropListButton>false</DropListButton>
 					<ChoiceButton>true</ChoiceButton>
 					<ChoiceButtonRepresentation>ShowInInputField</ChoiceButtonRepresentation>
-					<ClearButton>false</ClearButton>
-					<SpinButton>false</SpinButton>
-					<OpenButton>false</OpenButton>
-					<CreateButton>false</CreateButton>
-					<TextEdit>false</TextEdit>
-					<ContextMenu name="ПредставлениеОбластиПоискаДублейКонтекстноеМеню" id="10"/>
-					<ExtendedTooltip name="ПредставлениеОбластиПоискаДублейРасширеннаяПодсказка" id="11"/>
+					<ListChoiceMode>true</ListChoiceMode>
+					<QuickChoice>false</QuickChoice>
+					<ContextMenu name="ОбластьПоискаДублейКонтекстноеМеню" id="10"/>
+					<ExtendedTooltip name="ОбластьПоискаДублейРасширеннаяПодсказка" id="11"/>
 					<Events>
-						<Event name="StartChoice">ПредставлениеОбластиПоискаНачалоВыбора</Event>
-						<Event name="Clearing">ПредставлениеОбластиПоискаДублейОчистка</Event>
+						<Event name="OnChange">ОбластьПоискаДублейПриИзменении</Event>
+						<Event name="StartChoice">ОбластьПоискаДублейНачалоВыбора</Event>
+						<Event name="StartListChoice">ОбластьПоискаДублейНачалоВыбораИзСписка</Event>
+						<Event name="Clearing">ОбластьПоискаДублейОчистка</Event>
 					</Events>
 				</InputField>
 				<InputField name="ПредставлениеПравилОтбора" id="413">
@@ -1390,22 +1389,11 @@
 				</v8:StringQualifiers>
 			</Type>
 		</Attribute>
-		<Attribute name="НастройкиОбъектовМетаданных" id="4">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Настройки объектов метаданных</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>v8:ValueListType</v8:Type>
-			</Type>
-		</Attribute>
 		<Attribute name="ОбластьПоискаДублей" id="5">
 			<Title>
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>Область поиска дублей</v8:content>
+					<v8:content>Искать в</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -1925,21 +1913,6 @@
 				</v8:StringQualifiers>
 			</Type>
 		</Attribute>
-		<Attribute name="ПредставлениеОбластиПоискаДублей" id="26">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Искать в</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:string</v8:Type>
-				<v8:StringQualifiers>
-					<v8:Length>0</v8:Length>
-					<v8:AllowedLength>Variable</v8:AllowedLength>
-				</v8:StringQualifiers>
-			</Type>
-		</Attribute>
 		<Attribute name="НастройкиПошаговогоМастера" id="27">
 			<Title>
 				<v8:item>
@@ -2020,6 +1993,21 @@
 					<v8:FractionDigits>0</v8:FractionDigits>
 					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
 				</v8:NumberQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="АдресНастроек" id="32">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Адрес настроек</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
 			</Type>
 		</Attribute>
 	</Attributes>
