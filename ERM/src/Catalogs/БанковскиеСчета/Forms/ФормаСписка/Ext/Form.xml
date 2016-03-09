@@ -102,7 +102,7 @@
 			</Events>
 			<ChildItems>
 				<PictureField name="Основной" id="55">
-					<DataPath>~Список.Основной</DataPath>
+					<DataPath>Список.Основной</DataPath>
 					<TitleLocation>None</TitleLocation>
 					<HeaderPicture>
 						<xr:Ref>CommonPicture.ОперацияВыполненаУспешно</xr:Ref>
@@ -118,13 +118,13 @@
 					<ExtendedTooltip name="ОсновнойРасширеннаяПодсказка" id="57"/>
 				</PictureField>
 				<LabelField name="Наименование" id="4">
-					<DataPath>~Список.Description</DataPath>
+					<DataPath>Список.Description</DataPath>
 					<DefaultItem>true</DefaultItem>
 					<ContextMenu name="НаименованиеКонтекстноеМеню" id="5"/>
 					<ExtendedTooltip name="НаименованиеExtendedTooltip" id="30"/>
 				</LabelField>
 				<LabelField name="ВалютаДенежныхСредств" id="10">
-					<DataPath>~Список.ВалютаДенежныхСредств</DataPath>
+					<DataPath>Список.ВалютаДенежныхСредств</DataPath>
 					<Title>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -141,7 +141,7 @@
 					<ExtendedTooltip name="ВалютаДенежныхСредствExtendedTooltip" id="34"/>
 				</LabelField>
 				<LabelField name="Банк" id="8">
-					<DataPath>~Список.Банк</DataPath>
+					<DataPath>Список.Банк</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
@@ -149,7 +149,7 @@
 					<ExtendedTooltip name="БанкExtendedTooltip" id="33"/>
 				</LabelField>
 				<LabelField name="НомерСчета" id="19">
-					<DataPath>~Список.НомерСчета</DataPath>
+					<DataPath>Список.НомерСчета</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
@@ -158,7 +158,7 @@
 					<ExtendedTooltip name="НомерСчетаExtendedTooltip" id="32"/>
 				</LabelField>
 				<LabelField name="ДатаОткрытия" id="41">
-					<DataPath>~Список.ДатаОткрытия</DataPath>
+					<DataPath>Список.ДатаОткрытия</DataPath>
 					<Title>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -182,7 +182,7 @@
 					<ExtendedTooltip name="ДатаОткрытияРасширеннаяПодсказка" id="43"/>
 				</LabelField>
 				<LabelField name="ДатаЗакрытия" id="38">
-					<DataPath>~Список.ДатаЗакрытия</DataPath>
+					<DataPath>Список.ДатаЗакрытия</DataPath>
 					<Title>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -206,7 +206,7 @@
 					<ExtendedTooltip name="ДатаЗакрытияРасширеннаяПодсказка" id="40"/>
 				</LabelField>
 				<LabelField name="Код" id="6">
-					<DataPath>~Список.Code</DataPath>
+					<DataPath>Список.Code</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
@@ -214,7 +214,7 @@
 					<ExtendedTooltip name="КодExtendedTooltip" id="31"/>
 				</LabelField>
 				<LabelField name="ВидСчета" id="21">
-					<DataPath>~Список.ВидСчета</DataPath>
+					<DataPath>Список.ВидСчета</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
@@ -233,7 +233,7 @@
 					<ExtendedTooltip name="НастройкаDirectBankРасширеннаяПодсказка" id="63"/>
 				</LabelField>
 				<LabelField name="Ссылка" id="12">
-					<DataPath>~Список.Ref</DataPath>
+					<DataPath>Список.Ref</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
@@ -250,11 +250,11 @@
 			</Type>
 			<MainAttribute>true</MainAttribute>
 			<UseAlways>
-				<Field>~Список.Ref</Field>
+				<Field>Список.Ref</Field>
 			</UseAlways>
 			<Settings xsi:type="DynamicList">
 				<ManualQuery>true</ManualQuery>
-				<DynamicDataRead>true</DynamicDataRead>
+				<DynamicDataRead>false</DynamicDataRead>
 				<QueryText>ВЫБРАТЬ
 	СправочникБанковскиеСчета.Ссылка,
 	СправочникБанковскиеСчета.ВерсияДанных,
@@ -288,23 +288,10 @@
 		КОГДА СправочникБанковскиеСчета.Ссылка = &amp;ОсновнойБанковскийСчет
 			ТОГДА ИСТИНА
 		ИНАЧЕ ЛОЖЬ
-	КОНЕЦ КАК Основной,
-	НастройкиОбменСБанками.Ссылка КАК СоглашениеОбИспользованииЭД,
-	ВЫБОР
-		КОГДА НастройкиОбменСБанками.Ссылка ЕСТЬ NULL 
-			ТОГДА ""
-		КОГДА НастройкиОбменСБанками.Недействительна
-			ТОГДА "Не действует DirectBank"
-		КОГДА НастройкиОбменСБанками.ПометкаУдаления
-			ТОГДА "Не действует DirectBank"
-		ИНАЧЕ "Подключен DirectBank"
-	КОНЕЦ КАК НастройкаDirectBank
+	КОНЕЦ КАК Основной
 ИЗ
 	Справочник.БанковскиеСчета КАК СправочникБанковскиеСчета
-		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.НастройкиОбменСБанками КАК НастройкиОбменСБанками
-		ПО СправочникБанковскиеСчета.Владелец = НастройкиОбменСБанками.Организация
-			И (СправочникБанковскиеСчета.Валютный = ЛОЖЬ)
-			И СправочникБанковскиеСчета.Банк = НастройкиОбменСБанками.Банк</QueryText>
+</QueryText>
 				<MainTable>Catalog.БанковскиеСчета</MainTable>
 				<ListSettings>
 					<dcsset:filter>

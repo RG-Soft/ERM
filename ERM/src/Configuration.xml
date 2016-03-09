@@ -48,7 +48,7 @@
 				<xr:Item xsi:type="xr:MDObjectRef">Role.ПолныеПрава</xr:Item>
 			</DefaultRoles>
 			<Vendor>RG-Soft</Vendor>
-			<Version>0.5.0.0</Version>
+			<Version>0.6.0.0</Version>
 			<UpdateCatalogAddress/>
 			<IncludeHelpInContents>true</IncludeHelpInContents>
 			<UseManagedFormInOrdinaryApplication>false</UseManagedFormInOrdinaryApplication>
@@ -185,6 +185,7 @@
 			<StyleItem>ЦветВыделенияКонтрагентаСОшибкой</StyleItem>
 			<StyleItem>ЦветКонтрагентаОтсутствущегоВРеестре</StyleItem>
 			<StyleItem>ЦветКонтрагентаПрекратившегоДеятельность</StyleItem>
+			<StyleItem>ЦветУспешногоПоиска</StyleItem>
 			<CommonPicture>GoogleMaps</CommonPicture>
 			<CommonPicture>Skype</CommonPicture>
 			<CommonPicture>БыстрыйДоступ</CommonPicture>
@@ -352,6 +353,7 @@
 			<CommonPicture>ОперацияИсправлена</CommonPicture>
 			<CommonPicture>ОперацияПропущена</CommonPicture>
 			<CommonPicture>ИсторияВерсий</CommonPicture>
+			<CommonPicture>ПротоколСОшибкой</CommonPicture>
 			<SessionParameter>АвторизованныйПользователь</SessionParameter>
 			<SessionParameter>БуферОбмена</SessionParameter>
 			<SessionParameter>ВидыДоступаБезГруппДляЗначенияДоступа</SessionParameter>
@@ -420,6 +422,7 @@
 			<Role>ДобавлениеИзменениеДатЗапретаИзменения</Role>
 			<Role>ЧтениеВерсийОбъектов</Role>
 			<Role>ЧтениеИнформацииОВерсияхОбъектов</Role>
+			<Role>ТолькоПросмотр</Role>
 			<CommonTemplate>ИнструкцияКакВыполнитьУстановкуОбновленияВручную</CommonTemplate>
 			<CommonTemplate>ИнструкцияПоПроверкеКонтрагентов</CommonTemplate>
 			<CommonTemplate>КомпонентаПоискаСтрок</CommonTemplate>
@@ -622,6 +625,7 @@
 			<CommonModule>РаботаСБанкамиКлиент</CommonModule>
 			<CommonModule>РаботаСБанкамиКлиентПереопределяемый</CommonModule>
 			<CommonModule>РаботаСБанкамиПереопределяемый</CommonModule>
+			<CommonModule>УчетДенежныхСредствКлиентСервер</CommonModule>
 			<ExchangePlan>ОбновлениеИнформационнойБазы</ExchangePlan>
 			<XDTOPackage>ApplicationPermissions_1_0_0_1</XDTOPackage>
 			<XDTOPackage>ApplicationPermissions_1_0_0_2</XDTOPackage>
@@ -717,7 +721,7 @@
 			<DefinedType>ВладелецНастроекПравОбъект</DefinedType>
 			<DefinedType>НаименованиеКлиента</DefinedType>
 			<DefinedType>CRMID</DefinedType>
-			<DefinedType>BillingID</DefinedType>
+			<DefinedType>LawsonID</DefinedType>
 			<DefinedType>ParentClentAlias</DefinedType>
 			<DefinedType>ВладелецСОграничениемПоНаборамЗначенийДоступаОбъект</DefinedType>
 			<DefinedType>ВнешнийПользователь</DefinedType>
@@ -734,6 +738,8 @@
 			<DefinedType>ФизическоеЛицо</DefinedType>
 			<DefinedType>ВерсионируемыеДанные</DefinedType>
 			<DefinedType>ВерсионируемыеДанныеОбъект</DefinedType>
+			<DefinedType>MIID</DefinedType>
+			<DefinedType>SmithID</DefinedType>
 			<CommonCommand>ДобавитьПользователейСервиса</CommonCommand>
 			<CommonCommand>ДополнительныеОбработкиАдминистрирование</CommonCommand>
 			<CommonCommand>ЗагрузитьКомплектПравил</CommonCommand>
@@ -762,6 +768,8 @@
 			<CommonCommand>УдалитьНастройкуСинхронизации</CommonCommand>
 			<CommonCommand>УстановитьРасширениеРаботыСФайлами</CommonCommand>
 			<CommonCommand>ИсторияИзменений</CommonCommand>
+			<CommonCommand>ДосьеКонтрагента</CommonCommand>
+			<CommonCommand>ДосьеНовогоКонтрагента</CommonCommand>
 			<CommandGroup>Информация</CommandGroup>
 			<CommandGroup>Органайзер</CommandGroup>
 			<CommandGroup>ПараметрыСинхронизацииДанных</CommandGroup>
@@ -895,6 +903,7 @@
 			<Catalog>КонтактныеЛица</Catalog>
 			<Catalog>РолиКонтактныхЛиц</Catalog>
 			<Catalog>ФизическиеЛица</Catalog>
+			<Catalog>BusinessUnits</Catalog>
 			<Document>ЗагрузкаДанныхCRMAccountsExtract</Document>
 			<Document>РедактированиеНастроекСинхронизации</Document>
 			<Document>ЗагрузкаДанныхRevenue</Document>
@@ -935,6 +944,7 @@
 			<Enum>ВариантыВерсионированияОбъектов</Enum>
 			<Enum>СрокиХраненияВерсий</Enum>
 			<Enum>ТипыВерсийОбъекта</Enum>
+			<Enum>СостоянияАктивностиКонтрагентов</Enum>
 			<Report>АнализВерсийОбъектов</Report>
 			<Report>АнализЖурналаРегистрации</Report>
 			<Report>ДатыЗапретаЗагрузки</Report>
@@ -1010,7 +1020,7 @@
 			<InformationRegister>НастройкаСинхронизацииОбъектовСВнешнимиСистемами</InformationRegister>
 			<InformationRegister>ДокументыСОшибкамиПроверкиКонтрагентов</InformationRegister>
 			<InformationRegister>ДомаЗданияСтроения</InformationRegister>
-			<InformationRegister>CRMAccountsExtractSourceData</InformationRegister>
+			<InformationRegister>УдалитьCRMAccountsExtractSourceData</InformationRegister>
 			<InformationRegister>ДополнительныеАдресныеСведения</InformationRegister>
 			<InformationRegister>ЗависимостиПравДоступа</InformationRegister>
 			<InformationRegister>RevenueSourceData</InformationRegister>
@@ -1069,6 +1079,7 @@
 			<InformationRegister>НаличиеДублейУКонтрагентов</InformationRegister>
 			<InformationRegister>ВерсииОбъектов</InformationRegister>
 			<InformationRegister>УдалитьНастройкиВерсионированияОбъектов</InformationRegister>
+			<InformationRegister>CRMAccountsExtractSourceData</InformationRegister>
 			<AccumulationRegister>RevenueByClients</AccumulationRegister>
 			<ChartOfCharacteristicTypes>РазделыДатЗапретаИзменения</ChartOfCharacteristicTypes>
 			<ChartOfCharacteristicTypes>УдалитьВидыДоступа</ChartOfCharacteristicTypes>

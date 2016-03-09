@@ -79,14 +79,14 @@
 			</Events>
 			<ChildItems>
 				<LabelField name="Наименование" id="10">
-					<DataPath>~Список.Description</DataPath>
+					<DataPath>Список.Description</DataPath>
 					<DefaultItem>true</DefaultItem>
 					<Width>35</Width>
 					<ContextMenu name="НаименованиеКонтекстноеМеню" id="11"/>
 					<ExtendedTooltip name="НаименованиеExtendedTooltip" id="29"/>
 				</LabelField>
 				<LabelField name="ГоловнойКонтрагент" id="26">
-					<DataPath>~Список.ГоловнойКонтрагент</DataPath>
+					<DataPath>Список.ГоловнойКонтрагент</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
@@ -94,14 +94,14 @@
 					<ExtendedTooltip name="ГоловнойКонтрагентExtendedTooltip" id="33"/>
 				</LabelField>
 				<LabelField name="ИНН" id="16">
-					<DataPath>~Список.ИНН</DataPath>
+					<DataPath>Список.ИНН</DataPath>
 					<Width>12</Width>
 					<HorizontalStretch>false</HorizontalStretch>
 					<ContextMenu name="ИННКонтекстноеМеню" id="17"/>
 					<ExtendedTooltip name="ИННExtendedTooltip" id="34"/>
 				</LabelField>
 				<LabelField name="КПП" id="38">
-					<DataPath>~Список.КПП</DataPath>
+					<DataPath>Список.КПП</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
@@ -110,7 +110,7 @@
 					<ExtendedTooltip name="КППРасширеннаяПодсказка" id="40"/>
 				</LabelField>
 				<LabelField name="Комментарий" id="14">
-					<DataPath>~Список.Комментарий</DataPath>
+					<DataPath>Список.Комментарий</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
@@ -118,7 +118,7 @@
 					<ExtendedTooltip name="КомментарийExtendedTooltip" id="36"/>
 				</LabelField>
 				<LabelField name="НаименованиеПолное" id="18">
-					<DataPath>~Список.НаименованиеПолное</DataPath>
+					<DataPath>Список.НаименованиеПолное</DataPath>
 					<ContextMenu name="НаименованиеПолноеКонтекстноеМеню" id="19"/>
 					<ExtendedTooltip name="НаименованиеПолноеExtendedTooltip" id="31"/>
 				</LabelField>
@@ -134,7 +134,7 @@
 					<ExtendedTooltip name="ЭДОРасширеннаяПодсказка" id="57"/>
 				</PictureField>
 				<LabelField name="Вид" id="22">
-					<DataPath>~Список.Вид</DataPath>
+					<DataPath>Список.Вид</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
@@ -142,7 +142,7 @@
 					<ExtendedTooltip name="ВидExtendedTooltip" id="32"/>
 				</LabelField>
 				<LabelField name="Код" id="12">
-					<DataPath>~Список.Code</DataPath>
+					<DataPath>Список.Code</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
@@ -150,7 +150,7 @@
 					<ExtendedTooltip name="КодExtendedTooltip" id="30"/>
 				</LabelField>
 				<LabelField name="Ссылка" id="20">
-					<DataPath>~Список.Ref</DataPath>
+					<DataPath>Список.Ref</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
@@ -158,7 +158,7 @@
 					<ExtendedTooltip name="СсылкаExtendedTooltip" id="37"/>
 				</LabelField>
 				<InputField name="ЮридическоеФизическоеЛицо" id="52">
-					<DataPath>~Список.ЮридическоеФизическоеЛицо</DataPath>
+					<DataPath>Список.ЮридическоеФизическоеЛицо</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
@@ -175,17 +175,17 @@
 			</Type>
 			<MainAttribute>true</MainAttribute>
 			<UseAlways>
-				<Field>~Список.Ref</Field>
-				<Field>~Список.Вид</Field>
-				<Field>~Список.ЕстьДубли</Field>
-				<Field>~Список.ИННВведенКорректно</Field>
-				<Field>~Список.КППВведенКорректно</Field>
 				<Field>~Список.КонтрагентНеСуществует</Field>
 				<Field>~Список.Состояние</Field>
+				<Field>Список.Ref</Field>
+				<Field>Список.Вид</Field>
+				<Field>Список.ЕстьДубли</Field>
+				<Field>Список.ИННВведенКорректно</Field>
+				<Field>Список.КППВведенКорректно</Field>
 			</UseAlways>
 			<Settings xsi:type="DynamicList">
 				<ManualQuery>true</ManualQuery>
-				<DynamicDataRead>true</DynamicDataRead>
+				<DynamicDataRead>false</DynamicDataRead>
 				<QueryText>ВЫБРАТЬ
 	СправочникКонтрагенты.Наименование,
 	СправочникКонтрагенты.Код,
@@ -219,12 +219,7 @@
 			ТОГДА ИСТИНА
 		ИНАЧЕ ЛОЖЬ
 	КОНЕЦ КАК ПроверкаКонтрагентовКонтрагентНеСуществует,
-	СостоянияКонтрагентов.Состояние КАК ПроверкаКонтрагентовСостояние,
-	ВЫБОР
-		КОГДА СостоянияКонтрагентовБЭД.Состояние = ЗНАЧЕНИЕ(Перечисление.СостоянияКонтрагентаБЭД.Подключен)
-			ТОГДА 0
-		ИНАЧЕ 1
-	КОНЕЦ КАК ЭДО
+	СостоянияКонтрагентов.Состояние КАК ПроверкаКонтрагентовСостояние
 ИЗ
 	Справочник.Контрагенты КАК СправочникКонтрагенты
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.НаличиеДублейУКонтрагентов КАК НаличиеДублейУКонтрагентов
@@ -233,10 +228,7 @@
 			И СправочникКонтрагенты.КПП = НаличиеДублейУКонтрагентов.КПП
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.СостоянияКонтрагентов КАК СостоянияКонтрагентов
 		ПО СправочникКонтрагенты.Ссылка = СостоянияКонтрагентов.Контрагент
-			И (&amp;ИспользованиеПроверкиВозможно)
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.СостоянияКонтрагентовБЭД КАК СостоянияКонтрагентовБЭД
-		ПО (СостоянияКонтрагентовБЭД.Контрагент = СправочникКонтрагенты.Ссылка)</QueryText>
-				<MainTable>Catalog.Контрагенты</MainTable>
+			И (&amp;ИспользованиеПроверкиВозможно)</QueryText>
 				<ListSettings>
 					<dcsset:filter>
 						<dcsset:viewMode>Normal</dcsset:viewMode>

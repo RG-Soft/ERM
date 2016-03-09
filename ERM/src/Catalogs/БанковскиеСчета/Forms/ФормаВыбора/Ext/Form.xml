@@ -90,7 +90,7 @@
 			</Events>
 			<ChildItems>
 				<LabelField name="НомерСчета" id="10">
-					<DataPath>~Список.НомерСчета</DataPath>
+					<DataPath>Список.НомерСчета</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
@@ -100,7 +100,7 @@
 					<ExtendedTooltip name="НомерСчетаExtendedTooltip" id="30"/>
 				</LabelField>
 				<LabelField name="ВалютаДенежныхСредств" id="16">
-					<DataPath>~Список.ВалютаДенежныхСредств</DataPath>
+					<DataPath>Список.ВалютаДенежныхСредств</DataPath>
 					<Title>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -117,7 +117,7 @@
 					<ExtendedTooltip name="ВалютаДенежныхСредствExtendedTooltip" id="32"/>
 				</LabelField>
 				<LabelField name="Банк" id="12">
-					<DataPath>~Список.Банк</DataPath>
+					<DataPath>Список.Банк</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
@@ -125,13 +125,13 @@
 					<ExtendedTooltip name="БанкExtendedTooltip" id="31"/>
 				</LabelField>
 				<LabelField name="Наименование" id="4">
-					<DataPath>~Список.Description</DataPath>
+					<DataPath>Список.Description</DataPath>
 					<DefaultItem>true</DefaultItem>
 					<ContextMenu name="НаименованиеКонтекстноеМеню" id="5"/>
 					<ExtendedTooltip name="НаименованиеExtendedTooltip" id="28"/>
 				</LabelField>
 				<LabelField name="Код" id="6">
-					<DataPath>~Список.Code</DataPath>
+					<DataPath>Список.Code</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
@@ -139,7 +139,7 @@
 					<ExtendedTooltip name="КодExtendedTooltip" id="29"/>
 				</LabelField>
 				<LabelField name="ВидСчета" id="14">
-					<DataPath>~Список.ВидСчета</DataPath>
+					<DataPath>Список.ВидСчета</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
@@ -159,7 +159,7 @@
 					<ExtendedTooltip name="СоглашениеОПрямомОбменеExtendedTooltip" id="34"/>
 				</LabelField>
 				<InputField name="Ссылка" id="18">
-					<DataPath>~Список.Ref</DataPath>
+					<DataPath>Список.Ref</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
@@ -176,7 +176,7 @@
 			</Type>
 			<MainAttribute>true</MainAttribute>
 			<UseAlways>
-				<Field>~Список.Ref</Field>
+				<Field>Список.Ref</Field>
 			</UseAlways>
 			<Settings xsi:type="DynamicList">
 				<ManualQuery>true</ManualQuery>
@@ -203,16 +203,10 @@
 	СправочникБанковскиеСчета.ТекстНазначения,
 	СправочникБанковскиеСчета.МесяцПрописью,
 	СправочникБанковскиеСчета.СуммаБезКопеек,
-	СправочникБанковскиеСчета.ВсегдаУказыватьКПП,
-	СоглашенияОбИспользованииЭД.СтатусСоглашения КАК СоглашениеОПрямомОбмене,
-	СоглашенияОбИспользованииЭД.Ссылка КАК СоглашениеОбИспользованииЭД
+	СправочникБанковскиеСчета.ВсегдаУказыватьКПП
 ИЗ
 	Справочник.БанковскиеСчета КАК СправочникБанковскиеСчета
-		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.СоглашенияОбИспользованииЭД КАК СоглашенияОбИспользованииЭД
-		ПО СправочникБанковскиеСчета.Банк = СоглашенияОбИспользованииЭД.Контрагент
-			И СправочникБанковскиеСчета.Владелец = СоглашенияОбИспользованииЭД.Организация
-			И (СправочникБанковскиеСчета.Валютный = ЛОЖЬ)
-			И (СоглашенияОбИспользованииЭД.ПометкаУдаления = ЛОЖЬ)</QueryText>
+</QueryText>
 				<MainTable>Catalog.БанковскиеСчета</MainTable>
 				<AutoSaveUserSettings>false</AutoSaveUserSettings>
 				<ListSettings>

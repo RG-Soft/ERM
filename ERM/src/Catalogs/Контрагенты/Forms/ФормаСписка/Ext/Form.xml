@@ -98,14 +98,19 @@
 			</Events>
 			<ChildItems>
 				<LabelField name="Наименование" id="10">
-					<DataPath>~Список.Description</DataPath>
+					<DataPath>Список.Description</DataPath>
 					<DefaultItem>true</DefaultItem>
 					<Width>35</Width>
 					<ContextMenu name="НаименованиеКонтекстноеМеню" id="11"/>
 					<ExtendedTooltip name="НаименованиеExtendedTooltip" id="35"/>
 				</LabelField>
+				<LabelField name="СостояниеАктивности" id="63">
+					<DataPath>Список.СостояниеАктивности</DataPath>
+					<ContextMenu name="СостояниеАктивностиКонтекстноеМеню" id="64"/>
+					<ExtendedTooltip name="СостояниеАктивностиРасширеннаяПодсказка" id="65"/>
+				</LabelField>
 				<LabelField name="ГоловнойКонтрагент" id="27">
-					<DataPath>~Список.ГоловнойКонтрагент</DataPath>
+					<DataPath>Список.ГоловнойКонтрагент</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
@@ -113,14 +118,14 @@
 					<ExtendedTooltip name="ГоловнойКонтрагентExtendedTooltip" id="39"/>
 				</LabelField>
 				<LabelField name="ИНН" id="16">
-					<DataPath>~Список.ИНН</DataPath>
+					<DataPath>Список.ИНН</DataPath>
 					<Width>12</Width>
 					<HorizontalStretch>false</HorizontalStretch>
 					<ContextMenu name="ИННКонтекстноеМеню" id="17"/>
 					<ExtendedTooltip name="ИННExtendedTooltip" id="40"/>
 				</LabelField>
 				<LabelField name="КПП" id="46">
-					<DataPath>~Список.КПП</DataPath>
+					<DataPath>Список.КПП</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
@@ -129,7 +134,7 @@
 					<ExtendedTooltip name="КППРасширеннаяПодсказка" id="48"/>
 				</LabelField>
 				<LabelField name="Комментарий" id="14">
-					<DataPath>~Список.Комментарий</DataPath>
+					<DataPath>Список.Комментарий</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
@@ -137,7 +142,7 @@
 					<ExtendedTooltip name="КомментарийExtendedTooltip" id="42"/>
 				</LabelField>
 				<LabelField name="НаименованиеПолное" id="18">
-					<DataPath>~Список.НаименованиеПолное</DataPath>
+					<DataPath>Список.НаименованиеПолное</DataPath>
 					<ContextMenu name="НаименованиеПолноеКонтекстноеМеню" id="19"/>
 					<ExtendedTooltip name="НаименованиеПолноеExtendedTooltip" id="37"/>
 				</LabelField>
@@ -153,15 +158,21 @@
 					<ExtendedTooltip name="ЭДОРасширеннаяПодсказка" id="62"/>
 				</PictureField>
 				<LabelField name="Вид" id="23">
-					<DataPath>~Список.Вид</DataPath>
+					<DataPath>Список.Вид</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Type</v8:content>
+						</v8:item>
+					</Title>
 					<ContextMenu name="ВидКонтекстноеМеню" id="24"/>
 					<ExtendedTooltip name="ВидExtendedTooltip" id="38"/>
 				</LabelField>
 				<LabelField name="Код" id="12">
-					<DataPath>~Список.Code</DataPath>
+					<DataPath>Список.Code</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
@@ -169,12 +180,18 @@
 					<ExtendedTooltip name="КодExtendedTooltip" id="36"/>
 				</LabelField>
 				<LabelField name="Ссылка" id="20">
-					<DataPath>~Список.Ref</DataPath>
+					<DataPath>Список.Ref</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Ref</v8:content>
+						</v8:item>
+					</Title>
 					<ContextMenu name="СсылкаКонтекстноеМеню" id="21"/>
-					<ExtendedTooltip name="СсылкаExtendedTooltip" id="43"/>
+					<ExtendedTooltip name="СсылкаРасширеннаяПодсказка" id="43"/>
 				</LabelField>
 			</ChildItems>
 		</Table>
@@ -186,18 +203,19 @@
 			</Type>
 			<MainAttribute>true</MainAttribute>
 			<UseAlways>
-				<Field>~Список.IsFolder</Field>
-				<Field>~Список.Ref</Field>
-				<Field>~Список.ЕстьДубли</Field>
-				<Field>~Список.ИННВведенКорректно</Field>
-				<Field>~Список.КППВведенКорректно</Field>
 				<Field>~Список.КонтрагентНеСуществует</Field>
 				<Field>~Список.Состояние</Field>
+				<Field>Список.IsFolder</Field>
+				<Field>Список.Ref</Field>
+				<Field>Список.ЕстьДубли</Field>
+				<Field>Список.ИННВведенКорректно</Field>
+				<Field>Список.КППВведенКорректно</Field>
 			</UseAlways>
 			<Settings xsi:type="DynamicList">
 				<ManualQuery>true</ManualQuery>
 				<DynamicDataRead>true</DynamicDataRead>
 				<QueryText>ВЫБРАТЬ
+	СправочникКонтрагенты.СостояниеАктивности,
 	СправочникКонтрагенты.Наименование,
 	СправочникКонтрагенты.Код,
 	СправочникКонтрагенты.НаименованиеПолное,
@@ -230,12 +248,7 @@
 			ТОГДА ИСТИНА
 		ИНАЧЕ ЛОЖЬ
 	КОНЕЦ КАК ПроверкаКонтрагентовКонтрагентНеСуществует,
-	СостоянияКонтрагентов.Состояние КАК ПроверкаКонтрагентовСостояние,
-	ВЫБОР
-		КОГДА СостоянияКонтрагентовБЭД.Состояние = ЗНАЧЕНИЕ(Перечисление.СостоянияКонтрагентаБЭД.Подключен)
-			ТОГДА 0
-		ИНАЧЕ 1
-	КОНЕЦ КАК ЭДО
+	СостоянияКонтрагентов.Состояние КАК ПроверкаКонтрагентовСостояние
 ИЗ
 	Справочник.Контрагенты КАК СправочникКонтрагенты
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.НаличиеДублейУКонтрагентов КАК НаличиеДублейУКонтрагентов
@@ -244,9 +257,7 @@
 			И СправочникКонтрагенты.КПП = НаличиеДублейУКонтрагентов.КПП
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.СостоянияКонтрагентов КАК СостоянияКонтрагентов
 		ПО СправочникКонтрагенты.Ссылка = СостоянияКонтрагентов.Контрагент
-			И (&amp;ИспользованиеПроверкиВозможно)
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.СостоянияКонтрагентовБЭД КАК СостоянияКонтрагентовБЭД
-		ПО СостоянияКонтрагентовБЭД.Контрагент = СправочникКонтрагенты.Ссылка</QueryText>
+			И (&amp;ИспользованиеПроверкиВозможно)</QueryText>
 				<MainTable>Catalog.Контрагенты</MainTable>
 				<ListSettings>
 					<dcsset:filter>
@@ -275,6 +286,48 @@
 			</Title>
 			<Type/>
 		</Attribute>
+		<ConditionalAppearance>
+			<dcsset:item>
+				<dcsset:selection>
+					<dcsset:item>
+						<dcsset:field>Список</dcsset:field>
+					</dcsset:item>
+				</dcsset:selection>
+				<dcsset:filter>
+					<dcsset:item xsi:type="dcsset:FilterItemComparison">
+						<dcsset:left xsi:type="dcscor:Field">Список.СостояниеАктивности</dcsset:left>
+						<dcsset:comparisonType>Equal</dcsset:comparisonType>
+						<dcsset:right xsi:type="dcscor:DesignTimeValue">Перечисление.СостоянияАктивностиКонтрагентов.ОжидаетАктивации</dcsset:right>
+					</dcsset:item>
+				</dcsset:filter>
+				<dcsset:appearance>
+					<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+						<dcscor:parameter>ЦветФона</dcscor:parameter>
+						<dcscor:value xsi:type="v8ui:Color">style:ТекстЗапрещеннойЯчейкиЦвет</dcscor:value>
+					</dcscor:item>
+				</dcsset:appearance>
+			</dcsset:item>
+			<dcsset:item>
+				<dcsset:selection>
+					<dcsset:item>
+						<dcsset:field>Список</dcsset:field>
+					</dcsset:item>
+				</dcsset:selection>
+				<dcsset:filter>
+					<dcsset:item xsi:type="dcsset:FilterItemComparison">
+						<dcsset:left xsi:type="dcscor:Field">Список.СостояниеАктивности</dcsset:left>
+						<dcsset:comparisonType>Equal</dcsset:comparisonType>
+						<dcsset:right xsi:type="dcscor:DesignTimeValue">Перечисление.СостоянияАктивностиКонтрагентов.Неактивен</dcsset:right>
+					</dcsset:item>
+				</dcsset:filter>
+				<dcsset:appearance>
+					<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+						<dcscor:parameter>ЦветФона</dcscor:parameter>
+						<dcscor:value xsi:type="v8ui:Color">web:Pink</dcscor:value>
+					</dcscor:item>
+				</dcsset:appearance>
+			</dcsset:item>
+		</ConditionalAppearance>
 	</Attributes>
 	<Commands>
 		<Command name="ИзменитьВыделенные" id="2">
