@@ -22,6 +22,7 @@
 	//ТаблицаИзмененныеCRMID = ПолучитьТаблицуИзмененныеCRMID(СтруктураПараметров.Ссылка, СтруктураПараметров.Дата);
 	ТаблицаИзмененныеBillingID = ПолучитьТаблицуИзмененныеBillingID(СтруктураПараметров.Ссылка, СтруктураПараметров.Дата);
 	ТаблицаИзмененныеParentClients = ПолучитьТаблицуИзмененныеParentClients(СтруктураПараметров.Ссылка, СтруктураПараметров.Дата);
+	ТаблицаИзмененныеРеквизиты = ПолучитьТаблицуИзмененныеРеквизиты(СтруктураПараметров.Ссылка);
 	
 	ДанныеДляЗаполнения.Вставить("ТаблицаНовыеParentClients", ТаблицаНовыеParentClients);
 	ДанныеДляЗаполнения.Вставить("ТаблицаНовыеSalesКлиенты", ТаблицаНовыеSalesКлиенты);
@@ -29,6 +30,7 @@
 	//ДанныеДляЗаполнения.Вставить("ТаблицаИзмененныеCRMID", ТаблицаИзмененныеCRMID);
 	ДанныеДляЗаполнения.Вставить("ТаблицаИзмененныеBillingID", ТаблицаИзмененныеBillingID);
 	ДанныеДляЗаполнения.Вставить("ТаблицаИзмененныеParentClients", ТаблицаИзмененныеParentClients);
+	ДанныеДляЗаполнения.Вставить("ТаблицаИзмененныеРеквизиты", ТаблицаИзмененныеРеквизиты);
 	
 	ПоместитьВоВременноеХранилище(ДанныеДляЗаполнения, АдресХранилища);
 	
@@ -72,6 +74,7 @@
 		|	ВТ_ParentClients КАК ВТ_SalesAccounts
 		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Контрагенты КАК Контрагенты
 		|		ПО ВТ_SalesAccounts.CorporateAccountId = Контрагенты.CRMID
+		|			И (НЕ Контрагенты.ПометкаУдаления)
 		|ГДЕ
 		|	Контрагенты.Ссылка ЕСТЬ NULL ";
 	
@@ -122,6 +125,7 @@
 		|	ВТ_SalesAccounts КАК ВТ_SalesAccounts
 		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Контрагенты КАК Контрагенты
 		|		ПО ВТ_SalesAccounts.CRMID = Контрагенты.CRMID
+		|			И (НЕ Контрагенты.ПометкаУдаления)
 		|ГДЕ
 		|	Контрагенты.Ссылка ЕСТЬ NULL ";
 	
@@ -156,6 +160,9 @@
 		|	РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
 		|ГДЕ
 		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
+		|	И (CRMAccountsExtractSourceData.MIIntegrationId <> """"
+		|			ИЛИ CRMAccountsExtractSourceData.SMITHIntegrationId <> """"
+		|			ИЛИ CRMAccountsExtractSourceData.LawsonIntegrationId <> """")
 		|
 		|ИНДЕКСИРОВАТЬ ПО
 		|	CRMAccountsExtractSourceData.AccountId
@@ -174,6 +181,7 @@
 		|	ВТ_BillingAccounts КАК ВТ_BillingAccounts
 		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Контрагенты КАК Контрагенты
 		|		ПО ВТ_BillingAccounts.CRMID = Контрагенты.CRMID
+		|			И (НЕ Контрагенты.ПометкаУдаления)
 		|ГДЕ
 		|	Контрагенты.Ссылка ЕСТЬ NULL ";
 	
@@ -553,6 +561,60 @@
 	ТаблицаИзмененныеParentClients.Колонки.Добавить("Применить", Новый ОписаниеТипов("Булево"));
 	
 	Возврат ТаблицаИзмененныеParentClients;
+	
+КонецФункции
+
+Функция ПолучитьТаблицуИзмененныеРеквизиты(Ссылка)
+	
+	Запрос = Новый Запрос;
+	Запрос.Текст = 
+		"ВЫБРАТЬ
+		|	CRMAccountsExtractSourceData.AccountId КАК CRMID,
+		|	CRMAccountsExtractSourceData.Account КАК NewDescription,
+		|	Контрагенты.Ссылка КАК Client,
+		|	ВЫБОР
+		|		КОГДА CRMAccountsExtractSourceData.CreditRating = ""Banned""
+		|			ТОГДА ЗНАЧЕНИЕ(Перечисление.CreditRating.Banned)
+		|		КОГДА CRMAccountsExtractSourceData.CreditRating = ""Conditional""
+		|			ТОГДА ЗНАЧЕНИЕ(Перечисление.CreditRating.Conditional)
+		|		КОГДА CRMAccountsExtractSourceData.CreditRating = ""Limited""
+		|			ТОГДА ЗНАЧЕНИЕ(Перечисление.CreditRating.Limited)
+		|		КОГДА CRMAccountsExtractSourceData.CreditRating = ""Unlimited""
+		|			ТОГДА ЗНАЧЕНИЕ(Перечисление.CreditRating.Unlimited)
+		|		ИНАЧЕ ЗНАЧЕНИЕ(Перечисление.CreditRating.ПустаяСсылка)
+		|	КОНЕЦ КАК NewCreditRating,
+		|	Контрагенты.CreditRating КАК OldCreditRating,
+		|	Контрагенты.Наименование КАК OldDescription
+		|ИЗ
+		|	РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
+		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.Контрагенты КАК Контрагенты
+		|		ПО CRMAccountsExtractSourceData.AccountId = Контрагенты.CRMID
+		|			И (НЕ Контрагенты.ПометкаУдаления)
+		|ГДЕ
+		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
+		|	И (CRMAccountsExtractSourceData.Account <> Контрагенты.Наименование
+		|			ИЛИ ВЫБОР
+		|				КОГДА CRMAccountsExtractSourceData.CreditRating = ""Banned""
+		|					ТОГДА ЗНАЧЕНИЕ(Перечисление.CreditRating.Banned)
+		|				КОГДА CRMAccountsExtractSourceData.CreditRating = ""Conditional""
+		|					ТОГДА ЗНАЧЕНИЕ(Перечисление.CreditRating.Conditional)
+		|				КОГДА CRMAccountsExtractSourceData.CreditRating = ""Limited""
+		|					ТОГДА ЗНАЧЕНИЕ(Перечисление.CreditRating.Limited)
+		|				КОГДА CRMAccountsExtractSourceData.CreditRating = ""Unlimited""
+		|					ТОГДА ЗНАЧЕНИЕ(Перечисление.CreditRating.Unlimited)
+		|				ИНАЧЕ ЗНАЧЕНИЕ(Перечисление.CreditRating.ПустаяСсылка)
+		|			КОНЕЦ <> Контрагенты.CreditRating)";
+
+	
+	Запрос.УстановитьПараметр("Ссылка", Ссылка);
+	
+	РезультатЗапроса = Запрос.Выполнить();
+	
+	ТаблицаИзмененныеРеквизиты = РезультатЗапроса.Выгрузить();
+	ТаблицаИзмененныеРеквизиты.Колонки.Добавить("Применить", Новый ОписаниеТипов("Булево"));
+	ТаблицаИзмененныеРеквизиты.ЗаполнитьЗначения(Истина, "Применить");
+	
+	Возврат ТаблицаИзмененныеРеквизиты;
 	
 КонецФункции
 
