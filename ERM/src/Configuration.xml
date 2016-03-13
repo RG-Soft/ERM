@@ -140,7 +140,7 @@
 			<Language>Русский</Language>
 			<Subsystem>Администрирование</Subsystem>
 			<Subsystem>Revenue</Subsystem>
-			<Subsystem>CRMAccounts</Subsystem>
+			<Subsystem>Clients</Subsystem>
 			<Subsystem>СтандартныеПодсистемы</Subsystem>
 			<Subsystem>MappingSettings</Subsystem>
 			<StyleItem>ВидимыйВариантОтчетаЦвет</StyleItem>
@@ -354,6 +354,8 @@
 			<CommonPicture>ОперацияПропущена</CommonPicture>
 			<CommonPicture>ИсторияВерсий</CommonPicture>
 			<CommonPicture>ПротоколСОшибкой</CommonPicture>
+			<CommonPicture>ПолнотекстовыйПоискДалее</CommonPicture>
+			<CommonPicture>ПолнотекстовыйПоискНазад</CommonPicture>
 			<SessionParameter>АвторизованныйПользователь</SessionParameter>
 			<SessionParameter>БуферОбмена</SessionParameter>
 			<SessionParameter>ВидыДоступаБезГруппДляЗначенияДоступа</SessionParameter>
@@ -626,6 +628,8 @@
 			<CommonModule>РаботаСБанкамиКлиентПереопределяемый</CommonModule>
 			<CommonModule>РаботаСБанкамиПереопределяемый</CommonModule>
 			<CommonModule>УчетДенежныхСредствКлиентСервер</CommonModule>
+			<CommonModule>ПолнотекстовыйПоискСервер</CommonModule>
+			<CommonModule>ПолнотекстовыйПоискСерверПереопределяемый</CommonModule>
 			<ExchangePlan>ОбновлениеИнформационнойБазы</ExchangePlan>
 			<XDTOPackage>ApplicationPermissions_1_0_0_1</XDTOPackage>
 			<XDTOPackage>ApplicationPermissions_1_0_0_2</XDTOPackage>
@@ -688,6 +692,8 @@
 			<ScheduledJob>УдалениеНеактуальнойИнформацииСинхронизации</ScheduledJob>
 			<ScheduledJob>УдалениеУстаревшихПараметровРаботыВерсийРасширений</ScheduledJob>
 			<ScheduledJob>ОчисткаУстаревшихВерсийОбъектов</ScheduledJob>
+			<ScheduledJob>ОбновлениеИндексаППД</ScheduledJob>
+			<ScheduledJob>СлияниеИндексаППД</ScheduledJob>
 			<SettingsStorage>ХранилищеВариантовОтчетов</SettingsStorage>
 			<FunctionalOption>АктуальнаяДатаОбновленияПовторноИспользуемыхЗначенийМРО</FunctionalOption>
 			<FunctionalOption>ИспользоватьВнешнихПользователей</FunctionalOption>
@@ -711,6 +717,7 @@
 			<FunctionalOption>ВариантыВерсионированияОбъектов</FunctionalOption>
 			<FunctionalOption>ИспользоватьВерсионированиеОбъекта</FunctionalOption>
 			<FunctionalOption>ИспользоватьВерсионированиеОбъектов</FunctionalOption>
+			<FunctionalOption>ИспользоватьПолнотекстовыйПоиск</FunctionalOption>
 			<FunctionalOptionsParameter>ТипВерсионируемогоОбъекта</FunctionalOptionsParameter>
 			<DefinedType>АдресатЗапретаИзменения</DefinedType>
 			<DefinedType>БезопасныйРежим</DefinedType>
@@ -823,9 +830,9 @@
 			<Constant>ИспользоватьДатыЗапретаЗагрузки</Constant>
 			<Constant>ИспользоватьДатыЗапретаИзменения</Constant>
 			<Constant>ИспользоватьВерсионированиеОбъектов</Constant>
+			<Constant>ИспользоватьПолнотекстовыйПоиск</Constant>
 			<CommonForm>АвторизацияНаСайтеПоддержкиПользователей</CommonForm>
 			<CommonForm>БлокировкаРаботыСВнешнимиРесурсами</CommonForm>
-			<CommonForm>ВводЗначенийСпискомСФлажками</CommonForm>
 			<CommonForm>ВключениеПроверкиКонтрагентов</CommonForm>
 			<CommonForm>Вопрос</CommonForm>
 			<CommonForm>ВопросОбУстановкеРасширенияРаботыСФайлами</CommonForm>
@@ -867,6 +874,8 @@
 			<CommonForm>ФормаВариантаОтчета</CommonForm>
 			<CommonForm>ФормаНастроекОтчета</CommonForm>
 			<CommonForm>ФормаОтчета</CommonForm>
+			<CommonForm>ВводЗначенийСпискомСФлажками</CommonForm>
+			<CommonForm>ФормаПоиска</CommonForm>
 			<Catalog>ВидыКонтактнойИнформации</Catalog>
 			<Catalog>ВерсииРасширений</Catalog>
 			<Catalog>Валюты</Catalog>
@@ -961,7 +970,6 @@
 			<Report>УниверсальныйОтчет</Report>
 			<DataProcessor>АвтоматическоеИзвлечениеТекстов</DataProcessor>
 			<DataProcessor>АктивныеПользователи</DataProcessor>
-			<DataProcessor>БлокировкаРаботыПользователей</DataProcessor>
 			<DataProcessor>ВводКонтактнойИнформации</DataProcessor>
 			<DataProcessor>ВыполнениеОбменаДанными</DataProcessor>
 			<DataProcessor>ГрупповоеИзменениеРеквизитов</DataProcessor>
@@ -970,11 +978,11 @@
 			<DataProcessor>ЗагрузкаКурсовВалют</DataProcessor>
 			<DataProcessor>ЗагрузкаПравилРегистрацииОбъектов</DataProcessor>
 			<DataProcessor>ЗаменаИОбъединениеЭлементов</DataProcessor>
+			<DataProcessor>ЗащитаПерсональныхДанных</DataProcessor>
 			<DataProcessor>ИзменениеИсторическихДанных</DataProcessor>
 			<DataProcessor>ЗагрузкаЗаписейИзЭксельВMapping</DataProcessor>
 			<DataProcessor>КонсольЗапросовУправляемыеФормы</DataProcessor>
 			<DataProcessor>КонсольЗапросовОбычныеФормы</DataProcessor>
-			<DataProcessor>ЗащитаПерсональныхДанных</DataProcessor>
 			<DataProcessor>ИнструкцияПоИспользованиюПроверкиКонтрагента</DataProcessor>
 			<DataProcessor>ИнструментыРазработчикаПроверкаКонтрагентов</DataProcessor>
 			<DataProcessor>ИнтерактивноеИзменениеВыгрузки</DataProcessor>
@@ -983,8 +991,8 @@
 			<DataProcessor>КонвертацияОбъектовИнформационныхБаз</DataProcessor>
 			<DataProcessor>КонвертацияОбъектовРаспределенныхИнформационныхБаз</DataProcessor>
 			<DataProcessor>ЛегальностьПолученияОбновлений</DataProcessor>
-			<DataProcessor>ЗагрузкаCRMAccountsExtract</DataProcessor>
 			<DataProcessor>НастройкаРазрешенийНаИспользованиеВнешнихРесурсов</DataProcessor>
+			<DataProcessor>ЗагрузкаCRMAccountsExtract</DataProcessor>
 			<DataProcessor>НастройкаРезервногоКопированияИБ</DataProcessor>
 			<DataProcessor>НастройкиПользователей</DataProcessor>
 			<DataProcessor>НерекомендуемаяВерсияПлатформы</DataProcessor>
@@ -993,6 +1001,7 @@
 			<DataProcessor>ПереносФайловВТома</DataProcessor>
 			<DataProcessor>ПоискИУдалениеДублей</DataProcessor>
 			<DataProcessor>ПоискИУстановкаОбновлений</DataProcessor>
+			<DataProcessor>БлокировкаРаботыПользователей</DataProcessor>
 			<DataProcessor>ПомощникИнтерактивногоОбменаДанными</DataProcessor>
 			<DataProcessor>ПомощникСозданияОбменаДанными</DataProcessor>
 			<DataProcessor>РегистрацияИзмененийДляОбменаДанными</DataProcessor>
@@ -1008,6 +1017,7 @@
 			<DataProcessor>УдалениеПомеченныхОбъектов</DataProcessor>
 			<DataProcessor>УниверсальныйОбменДаннымиXML</DataProcessor>
 			<DataProcessor>УправлениеИтогамиИАгрегатами</DataProcessor>
+			<DataProcessor>ПолнотекстовыйПоискВДанных</DataProcessor>
 			<InformationRegister>АдресныеОбъекты</InformationRegister>
 			<InformationRegister>БлокировкиСеансовОбластейДанных</InformationRegister>
 			<InformationRegister>БезопасноеХранилищеДанныхОбластейДанных</InformationRegister>
