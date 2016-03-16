@@ -56,22 +56,37 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>CRMID</dataPath>
+			<field>CRMID</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>CorporateClientCRMID</dataPath>
+			<field>CorporateClientCRMID</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Corporate client CRM ID</v8:content>
+				</v8:item>
+			</title>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ТипСоответствия,
 	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.Идентификатор,
-	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника,
+	Контрагенты.Ссылка КАК ОбъектПриемника,
 	ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент,
-	Контрагенты.Код
+	Контрагенты.Код,
+	Контрагенты.CRMID,
+	ЕСТЬNULL(ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент.CRMID, "") КАК CorporateClientCRMID
 ИЗ
-	РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(
-			&amp;Период,
-			ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Client)
-				И ТипСоответствия &lt;&gt; ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.ParentClients)) КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних
+	Справочник.Контрагенты КАК Контрагенты
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(&amp;Период, ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Client)) КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних
+		ПО Контрагенты.Ссылка = НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИерархияКонтрагентов.СрезПоследних(&amp;Период, ) КАК ИерархияКонтрагентовСрезПоследних
-		ПО НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника = ИерархияКонтрагентовСрезПоследних.Контрагент
-		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Контрагенты КАК Контрагенты
-		ПО НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника = Контрагенты.Ссылка</query>
+		ПО Контрагенты.Ссылка = ИерархияКонтрагентовСрезПоследних.Контрагент
+ГДЕ
+	НЕ Контрагенты.ПометкаУдаления</query>
 	</dataSet>
 	<parameter>
 		<name>Период</name>
@@ -97,6 +112,12 @@
 		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>CRMID</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>ОбъектПриемника</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>ТипСоответствия</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
@@ -106,7 +127,7 @@
 					<dcsset:field>Код</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>ОбъектПриемника</dcsset:field>
+					<dcsset:field>CorporateClientCRMID</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>ГоловнойКонтрагент</dcsset:field>
@@ -129,19 +150,7 @@
 			</dcsset:dataParameters>
 			<dcsset:order>
 				<dcsset:item xsi:type="dcsset:OrderItemField">
-					<dcsset:field>ТипСоответствия</dcsset:field>
-					<dcsset:orderType>Asc</dcsset:orderType>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:OrderItemField">
-					<dcsset:field>Идентификатор</dcsset:field>
-					<dcsset:orderType>Asc</dcsset:orderType>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:OrderItemField">
-					<dcsset:field>ОбъектПриемника</dcsset:field>
-					<dcsset:orderType>Asc</dcsset:orderType>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:OrderItemField">
-					<dcsset:field>ГоловнойКонтрагент</dcsset:field>
+					<dcsset:field>CRMID</dcsset:field>
 					<dcsset:orderType>Asc</dcsset:orderType>
 				</dcsset:item>
 			</dcsset:order>
