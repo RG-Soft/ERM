@@ -180,6 +180,7 @@
 		<Table name="ТаблицаКоллизий" id="470">
 			<Representation>List</Representation>
 			<ReadOnly>true</ReadOnly>
+			<HeightInTableRows>5</HeightInTableRows>
 			<AutoInsertNewRow>true</AutoInsertNewRow>
 			<EnableStartDrag>true</EnableStartDrag>
 			<EnableDrag>true</EnableDrag>
@@ -292,6 +293,11 @@
 						<Type>CommandBarButton</Type>
 						<CommandName>Form.Command.ЗаполнитьПоДаннымФайла</CommandName>
 						<ExtendedTooltip name="СозданныеПроводкиDSSЗаполнитьПоДаннымФайлаРасширеннаяПодсказка" id="519"/>
+					</Button>
+					<Button name="СозданныеПроводкиDSSПровестиЗагруженныеДокументы" id="520">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.ПровестиЗагруженныеДокументы</CommandName>
+						<ExtendedTooltip name="СозданныеПроводкиDSSПровестиЗагруженныеДокументыРасширеннаяПодсказка" id="521"/>
 					</Button>
 				</ChildItems>
 			</AutoCommandBar>
@@ -974,8 +980,13 @@
 				<v8:Type>cfg:DynamicList</v8:Type>
 			</Type>
 			<Settings xsi:type="DynamicList">
-				<ManualQuery>false</ManualQuery>
+				<ManualQuery>true</ManualQuery>
 				<DynamicDataRead>true</DynamicDataRead>
+				<QueryText>ВЫБРАТЬ
+	РегистрСведенийDSSСформированныеПриЗагрузке.ДокументЗагрузки,
+	РегистрСведенийDSSСформированныеПриЗагрузке.ПроводкаDSS
+ИЗ
+	РегистрСведений.DSSСформированныеПриЗагрузке КАК РегистрСведенийDSSСформированныеПриЗагрузке</QueryText>
 				<MainTable>InformationRegister.DSSСформированныеПриЗагрузке</MainTable>
 				<ListSettings>
 					<dcsset:filter>
@@ -987,6 +998,26 @@
 						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
 					</dcsset:order>
 					<dcsset:conditionalAppearance>
+						<dcsset:item>
+							<dcsset:selection>
+								<dcsset:item>
+									<dcsset:field>ПроводкаDSS</dcsset:field>
+								</dcsset:item>
+							</dcsset:selection>
+							<dcsset:filter>
+								<dcsset:item xsi:type="dcsset:FilterItemComparison">
+									<dcsset:left xsi:type="dcscor:Field">ПроводкаDSS.Проведен</dcsset:left>
+									<dcsset:comparisonType>Equal</dcsset:comparisonType>
+									<dcsset:right xsi:type="xs:boolean">true</dcsset:right>
+								</dcsset:item>
+							</dcsset:filter>
+							<dcsset:appearance>
+								<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+									<dcscor:parameter>ЦветФона</dcscor:parameter>
+									<dcscor:value xsi:type="v8ui:Color">web:MediumGreen</dcscor:value>
+								</dcscor:item>
+							</dcsset:appearance>
+						</dcsset:item>
 						<dcsset:viewMode>Normal</dcsset:viewMode>
 						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
 					</dcsset:conditionalAppearance>
@@ -1050,6 +1081,26 @@
 				<xr:LoadTransparent>true</xr:LoadTransparent>
 			</Picture>
 			<Action>ЗаполнитьПоДаннымФайла</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="ПровестиЗагруженныеДокументы" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Post transactions</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Провести загруженные документы</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.Post</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>ПровестиЗагруженныеДокументы</Action>
 			<Representation>TextPicture</Representation>
 		</Command>
 	</Commands>

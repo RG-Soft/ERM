@@ -23,17 +23,21 @@
 		
 		Если Реквизиты.SourceCode = "DM" ИЛИ Реквизиты.SourceCode = "CM" Тогда
 			
-			// Инвойс, погашается AR unbilled, возникает AR billed
-			// если была отдельная транзакция по sales order, то надо погасить unbilled
-			Если БылоНачислениеUnbilledAR(Реквизиты, ПараметрыПроведения.СвязанныеДокументы) Тогда
-				ВыполнитьСписаниеUnbilledAR(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, Движения, ?(Реквизиты.SourceCode = "DM", Реквизиты.TranAmount, -Реквизиты.TranAmount), Отказ);
-			КонецЕсли;
+			// Инвойс, возникает AR billed
+			//// если была отдельная транзакция по sales order, то надо погасить unbilled
+			//Если БылоНачислениеUnbilledAR(Реквизиты, ПараметрыПроведения.СвязанныеДокументы) Тогда
+			//	ВыполнитьСписаниеUnbilledAR(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, Движения, ?(Реквизиты.SourceCode = "DM", Реквизиты.TranAmount, -Реквизиты.TranAmount), Отказ);
+			//КонецЕсли;
 			ВыполнитьНачислениеBilledAR(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, Движения, ?(Реквизиты.SourceCode = "DM", Реквизиты.TranAmount, -Реквизиты.TranAmount), Отказ);
 			
 		ИначеЕсли Реквизиты.SourceCode = "JE" Тогда
 			
-			// начисление по SalesOrder, приход в AR unbilled
-			ВыполнитьНачислениеUnbilledAR(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, Движения, -Реквизиты.TranAmount, Отказ);
+			// начисление по SalesOrder
+			Если Реквизиты.TranAmount >= 0 Тогда
+				ВыполнитьНачислениеUnbilledAR(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, Движения, Реквизиты.TranAmount, Отказ);
+			Иначе
+				ВыполнитьСписаниеUnbilledAR(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, Движения, -Реквизиты.TranAmount, Отказ);
+			КонецЕсли;
 			
 		КонецЕсли;
 		
@@ -89,9 +93,12 @@
 	НовоеДвижение.GeoMarket = Реквизиты.GeoMarket;
 	НовоеДвижение.SubGeoMarket = Реквизиты.SubGeoMarket;
 	НовоеДвижение.Segment = Реквизиты.Segment;
+	НовоеДвижение.SubSegment = Реквизиты.SubSegment;
+	НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 	НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
 	НовоеДвижение.SalesOrder = СвязанныеДокументы.SalesOrder;
 	НовоеДвижение.Account = Реквизиты.AccountLawson;
+	НовоеДвижение.AU = Реквизиты.AU;
 	НовоеДвижение.Currency = Реквизиты.Currency;
 	
 	НовоеДвижение.Amount = Сумма;
@@ -114,9 +121,12 @@
 	НовоеДвижение.GeoMarket = Реквизиты.GeoMarket;
 	НовоеДвижение.SubGeoMarket = Реквизиты.SubGeoMarket;
 	НовоеДвижение.Segment = Реквизиты.Segment;
+	НовоеДвижение.SubSegment = Реквизиты.SubSegment;
+	НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 	НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
 	НовоеДвижение.SalesOrder = СвязанныеДокументы.SalesOrder;
 	НовоеДвижение.Account = Реквизиты.AccountLawson;
+	НовоеДвижение.AU = Реквизиты.AU;
 	НовоеДвижение.Currency = Реквизиты.Currency;
 	
 	НовоеДвижение.Amount = Сумма;
@@ -139,9 +149,12 @@
 	НовоеДвижение.GeoMarket = Реквизиты.GeoMarket;
 	НовоеДвижение.SubGeoMarket = Реквизиты.SubGeoMarket;
 	НовоеДвижение.Segment = Реквизиты.Segment;
+	НовоеДвижение.SubSegment = Реквизиты.SubSegment;
+	НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 	НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
 	НовоеДвижение.Invoice = СвязанныеДокументы.Invoice;
 	НовоеДвижение.Account = Реквизиты.AccountLawson;
+	НовоеДвижение.AU = Реквизиты.AU;
 	НовоеДвижение.Currency = Реквизиты.Currency;
 	
 	НовоеДвижение.Amount = Сумма;
@@ -164,9 +177,12 @@
 	НовоеДвижение.GeoMarket = Реквизиты.GeoMarket;
 	НовоеДвижение.SubGeoMarket = Реквизиты.SubGeoMarket;
 	НовоеДвижение.Segment = Реквизиты.Segment;
+	НовоеДвижение.SubSegment = Реквизиты.SubSegment;
+	НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 	НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
 	НовоеДвижение.Invoice = СвязанныеДокументы.Invoice;
 	НовоеДвижение.Account = Реквизиты.AccountLawson;
+	НовоеДвижение.AU = Реквизиты.AU;
 	НовоеДвижение.Currency = Реквизиты.Currency;
 	
 	НовоеДвижение.Amount = Сумма;
@@ -218,9 +234,12 @@
 	НовоеДвижение.GeoMarket = Реквизиты.GeoMarket;
 	НовоеДвижение.SubGeoMarket = Реквизиты.SubGeoMarket;
 	НовоеДвижение.Segment = Реквизиты.Segment;
+	НовоеДвижение.SubSegment = Реквизиты.SubSegment;
+	НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 	НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
 	НовоеДвижение.CashBatch = СвязанныеДокументы.CashBatch;
 	НовоеДвижение.Account = Реквизиты.AccountLawson;
+	НовоеДвижение.AU = Реквизиты.AU;
 	НовоеДвижение.Currency = Реквизиты.Currency;
 	
 	НовоеДвижение.Amount = Сумма;
@@ -243,9 +262,12 @@
 	НовоеДвижение.GeoMarket = Реквизиты.GeoMarket;
 	НовоеДвижение.SubGeoMarket = Реквизиты.SubGeoMarket;
 	НовоеДвижение.Segment = Реквизиты.Segment;
+	НовоеДвижение.SubSegment = Реквизиты.SubSegment;
+	НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 	НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
 	НовоеДвижение.CashBatch = СвязанныеДокументы.CashBatch;
 	НовоеДвижение.Account = Реквизиты.AccountLawson;
+	НовоеДвижение.AU = Реквизиты.AU;
 	НовоеДвижение.Currency = Реквизиты.Currency;
 	
 	НовоеДвижение.Amount = Сумма;
@@ -262,17 +284,22 @@
 	
 	НовоеДвижение = Движения.ManualTransactions.Добавить();
 	
+	НовоеДвижение.ВидДвижения = ?(Сумма > 0, ВидДвиженияНакопления.Приход, ВидДвиженияНакопления.Расход);
+	
 	НовоеДвижение.Период = Реквизиты.AccountingPeriod;
 	НовоеДвижение.Company = Реквизиты.Company;
 	НовоеДвижение.GeoMarket = Реквизиты.GeoMarket;
 	НовоеДвижение.SubGeoMarket = Реквизиты.SubGeoMarket;
 	НовоеДвижение.Segment = Реквизиты.Segment;
+	НовоеДвижение.SubSegment = Реквизиты.SubSegment;
+	НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 	НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
 	НовоеДвижение.РучнаяКорректировка = СвязанныеДокументы.РучнаяКорректировка;
 	НовоеДвижение.Account = Реквизиты.AccountLawson;
+	НовоеДвижение.AU = Реквизиты.AU;
 	НовоеДвижение.Currency = Реквизиты.Currency;
 	
-	НовоеДвижение.Amount = Сумма;
+	НовоеДвижение.Amount = ?(Сумма >= 0, Сумма, -Сумма);
 	
 	Движения.ManualTransactions.Записывать = Истина;
 	
