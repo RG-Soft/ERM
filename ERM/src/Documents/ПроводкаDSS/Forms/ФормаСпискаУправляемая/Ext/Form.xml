@@ -1,15 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5">
 	<VerticalScroll>useIfNecessary</VerticalScroll>
-	<AutoCommandBar name="ФормаКоманднаяПанель" id="-1">
-		<ChildItems>
-			<Button name="ФормаУровень" id="138">
-				<Type>CommandBarButton</Type>
-				<CommandName>Form.Command.Уровень</CommandName>
-				<ExtendedTooltip name="ФормаУровеньРасширеннаяПодсказка" id="139"/>
-			</Button>
-		</ChildItems>
-	</AutoCommandBar>
+	<AutoCommandBar name="ФормаКоманднаяПанель" id="-1"/>
 	<ChildItems>
 		<Table name="Отбор" id="8">
 			<Representation>Tree</Representation>
@@ -100,6 +92,11 @@
 				<ExtendedTooltip name="СписокУправлениеПоискомРасширеннаяПодсказка" id="159"/>
 			</SearchControlAddition>
 			<ChildItems>
+				<LabelField name="AccountingPeriod" id="225">
+					<DataPath>Список.AccountingPeriod</DataPath>
+					<ContextMenu name="AccountingPeriodКонтекстноеМеню" id="226"/>
+					<ExtendedTooltip name="AccountingPeriodРасширеннаяПодсказка" id="227"/>
+				</LabelField>
 				<LabelField name="Дата" id="14">
 					<DataPath>Список.Date</DataPath>
 					<Title>
@@ -195,7 +192,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
-							<v8:content>Дата проводки</v8:content>
+							<v8:content>Lawson period</v8:content>
 						</v8:item>
 						<v8:item>
 							<v8:lang>en</v8:lang>
@@ -209,16 +206,6 @@
 					<DataPath>Список.Company</DataPath>
 					<ContextMenu name="CompanyКонтекстноеМеню" id="45"/>
 					<ExtendedTooltip name="CompanyРасширеннаяПодсказка" id="175"/>
-				</LabelField>
-				<LabelField name="Модуль" id="46">
-					<DataPath>Список.Модуль</DataPath>
-					<ContextMenu name="МодульКонтекстноеМеню" id="47"/>
-					<ExtendedTooltip name="МодульРасширеннаяПодсказка" id="176"/>
-				</LabelField>
-				<LabelField name="Документ" id="48">
-					<DataPath>Список.Документ</DataPath>
-					<ContextMenu name="ДокументКонтекстноеМеню" id="49"/>
-					<ExtendedTooltip name="ДокументРасширеннаяПодсказка" id="177"/>
 				</LabelField>
 				<LabelField name="GeoMarket" id="50">
 					<DataPath>Список.GeoMarket</DataPath>
@@ -394,6 +381,12 @@
 				</LabelField>
 				<LabelField name="КонтрагентLawson" id="118">
 					<DataPath>Список.КонтрагентLawson</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Client</v8:content>
+						</v8:item>
+					</Title>
 					<ContextMenu name="КонтрагентLawsonКонтекстноеМеню" id="119"/>
 					<ExtendedTooltip name="КонтрагентLawsonРасширеннаяПодсказка" id="212"/>
 				</LabelField>
@@ -410,11 +403,23 @@
 				</LabelField>
 				<LabelField name="Ответственный" id="124">
 					<DataPath>Список.Ответственный</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Responsible</v8:content>
+						</v8:item>
+					</Title>
 					<ContextMenu name="ОтветственныйКонтекстноеМеню" id="125"/>
 					<ExtendedTooltip name="ОтветственныйРасширеннаяПодсказка" id="215"/>
 				</LabelField>
 				<LabelField name="Комментарий" id="126">
 					<DataPath>Список.Комментарий</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Coment</v8:content>
+						</v8:item>
+					</Title>
 					<ContextMenu name="КомментарийКонтекстноеМеню" id="127"/>
 					<ExtendedTooltip name="КомментарийРасширеннаяПодсказка" id="216"/>
 				</LabelField>
@@ -427,21 +432,6 @@
 					<DataPath>Список.FiscAmount</DataPath>
 					<ContextMenu name="FiscAmountКонтекстноеМеню" id="131"/>
 					<ExtendedTooltip name="FiscAmountРасширеннаяПодсказка" id="218"/>
-				</LabelField>
-				<LabelField name="TempDiff" id="132">
-					<DataPath>Список.TempDiff</DataPath>
-					<ContextMenu name="TempDiffКонтекстноеМеню" id="133"/>
-					<ExtendedTooltip name="TempDiffРасширеннаяПодсказка" id="219"/>
-				</LabelField>
-				<LabelField name="PermDiff" id="134">
-					<DataPath>Список.PermDiff</DataPath>
-					<ContextMenu name="PermDiffКонтекстноеМеню" id="135"/>
-					<ExtendedTooltip name="PermDiffРасширеннаяПодсказка" id="220"/>
-				</LabelField>
-				<LabelField name="ExchDiff" id="136">
-					<DataPath>Список.ExchDiff</DataPath>
-					<ContextMenu name="ExchDiffКонтекстноеМеню" id="137"/>
-					<ExtendedTooltip name="ExchDiffРасширеннаяПодсказка" id="221"/>
 				</LabelField>
 				<LabelField name="Urn" id="222">
 					<DataPath>Список.Urn</DataPath>
