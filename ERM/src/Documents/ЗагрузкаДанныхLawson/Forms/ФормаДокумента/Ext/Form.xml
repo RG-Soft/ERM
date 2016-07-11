@@ -256,6 +256,12 @@
 					<ContextMenu name="ТаблицаКоллизийИдентификаторКонтекстноеМеню" id="496"/>
 					<ExtendedTooltip name="ТаблицаКоллизийИдентификаторРасширеннаяПодсказка" id="497"/>
 				</InputField>
+				<InputField name="ТаблицаКоллизийОбъектПриемника" id="577">
+					<DataPath>ТаблицаКоллизий.ОбъектПриемника</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="ТаблицаКоллизийОбъектПриемникаКонтекстноеМеню" id="578"/>
+					<ExtendedTooltip name="ТаблицаКоллизийОбъектПриемникаРасширеннаяПодсказка" id="579"/>
+				</InputField>
 			</ChildItems>
 		</Table>
 		<UsualGroup name="Группа1" id="528">
@@ -1373,6 +1379,48 @@
 				</ListSettings>
 			</Settings>
 		</Attribute>
+		<ConditionalAppearance>
+			<dcsset:item>
+				<dcsset:selection>
+					<dcsset:item>
+						<dcsset:field>ТаблицаКоллизий</dcsset:field>
+					</dcsset:item>
+				</dcsset:selection>
+				<dcsset:filter>
+					<dcsset:item xsi:type="dcsset:FilterItemComparison">
+						<dcsset:left xsi:type="dcscor:Field">ТаблицаКоллизий.КоллизияОтработана</dcsset:left>
+						<dcsset:comparisonType>Equal</dcsset:comparisonType>
+						<dcsset:right xsi:type="xs:boolean">true</dcsset:right>
+					</dcsset:item>
+				</dcsset:filter>
+				<dcsset:appearance>
+					<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+						<dcscor:parameter>ЦветФона</dcscor:parameter>
+						<dcscor:value xsi:type="v8ui:Color">web:LightGreen</dcscor:value>
+					</dcscor:item>
+				</dcsset:appearance>
+			</dcsset:item>
+			<dcsset:item>
+				<dcsset:selection>
+					<dcsset:item>
+						<dcsset:field>ТаблицаКоллизий</dcsset:field>
+					</dcsset:item>
+				</dcsset:selection>
+				<dcsset:filter>
+					<dcsset:item xsi:type="dcsset:FilterItemComparison">
+						<dcsset:left xsi:type="dcscor:Field">ТаблицаКоллизий.КоллизияОтработана</dcsset:left>
+						<dcsset:comparisonType>Equal</dcsset:comparisonType>
+						<dcsset:right xsi:type="xs:boolean">false</dcsset:right>
+					</dcsset:item>
+				</dcsset:filter>
+				<dcsset:appearance>
+					<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+						<dcscor:parameter>ЦветТекста</dcscor:parameter>
+						<dcscor:value xsi:type="v8ui:Color">style:SpecialTextColor</dcscor:value>
+					</dcscor:item>
+				</dcsset:appearance>
+			</dcsset:item>
+		</ConditionalAppearance>
 	</Attributes>
 	<Commands>
 		<Command name="ПрочитатьФайл" id="1">
