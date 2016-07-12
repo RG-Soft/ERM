@@ -94,6 +94,11 @@
 							<ContextMenu name="BaseAmountКонтекстноеМеню" id="38"/>
 							<ExtendedTooltip name="BaseAmountРасширеннаяПодсказка" id="39"/>
 						</InputField>
+						<InputField name="ExchangeRate" id="114">
+							<DataPath>Объект.ExchangeRate</DataPath>
+							<ContextMenu name="ExchangeRateКонтекстноеМеню" id="115"/>
+							<ExtendedTooltip name="ExchangeRateРасширеннаяПодсказка" id="116"/>
+						</InputField>
 					</ChildItems>
 				</UsualGroup>
 				<UsualGroup name="ГруппаШапкаПравая" id="40">
@@ -124,11 +129,6 @@
 							<ContextMenu name="ClientКонтекстноеМеню" id="46"/>
 							<ExtendedTooltip name="ClientРасширеннаяПодсказка" id="47"/>
 						</InputField>
-						<InputField name="Agreement" id="48">
-							<DataPath>Объект.Agreement</DataPath>
-							<ContextMenu name="AgreementКонтекстноеМеню" id="49"/>
-							<ExtendedTooltip name="AgreementРасширеннаяПодсказка" id="50"/>
-						</InputField>
 						<InputField name="Account" id="51">
 							<DataPath>Объект.Account</DataPath>
 							<ContextMenu name="AccountКонтекстноеМеню" id="52"/>
@@ -138,6 +138,11 @@
 							<DataPath>Объект.AU</DataPath>
 							<ContextMenu name="AUКонтекстноеМеню" id="55"/>
 							<ExtendedTooltip name="AUРасширеннаяПодсказка" id="56"/>
+						</InputField>
+						<InputField name="Status" id="96">
+							<DataPath>Объект.Status</DataPath>
+							<ContextMenu name="StatusКонтекстноеМеню" id="97"/>
+							<ExtendedTooltip name="StatusРасширеннаяПодсказка" id="98"/>
 						</InputField>
 					</ChildItems>
 				</UsualGroup>
@@ -165,7 +170,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
-							<v8:content>Geomarket</v8:content>
+							<v8:content>Geography</v8:content>
 						</v8:item>
 					</Title>
 					<ToolTip>
@@ -179,14 +184,31 @@
 					<ExtendedTooltip name="ГруппаGeomarketРасширеннаяПодсказка" id="60"/>
 					<ChildItems>
 						<InputField name="GeoMarket" id="61">
-							<DataPath>Объект.GeoMarket</DataPath>
+							<DataPath>Объект.Location.GeoMarket.Parent</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>ru</v8:lang>
+									<v8:content>Geo Market</v8:content>
+								</v8:item>
+							</Title>
 							<ContextMenu name="GeoMarketКонтекстноеМеню" id="62"/>
 							<ExtendedTooltip name="GeoMarketРасширеннаяПодсказка" id="63"/>
 						</InputField>
 						<InputField name="SubGeoMarket" id="64">
-							<DataPath>Объект.SubGeoMarket</DataPath>
+							<DataPath>Объект.Location.GeoMarket</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>ru</v8:lang>
+									<v8:content>Sub Geo Market</v8:content>
+								</v8:item>
+							</Title>
 							<ContextMenu name="SubGeoMarketКонтекстноеМеню" id="65"/>
 							<ExtendedTooltip name="SubGeoMarketРасширеннаяПодсказка" id="66"/>
+						</InputField>
+						<InputField name="Location" id="99">
+							<DataPath>Объект.Location</DataPath>
+							<ContextMenu name="LocationКонтекстноеМеню" id="100"/>
+							<ExtendedTooltip name="LocationРасширеннаяПодсказка" id="101"/>
 						</InputField>
 					</ChildItems>
 				</UsualGroup>
@@ -194,7 +216,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
-							<v8:content>Segment</v8:content>
+							<v8:content>Technology</v8:content>
 						</v8:item>
 					</Title>
 					<ToolTip>
@@ -207,12 +229,26 @@
 					<ExtendedTooltip name="ГруппаSegmentРасширеннаяПодсказка" id="68"/>
 					<ChildItems>
 						<InputField name="Segment" id="69">
-							<DataPath>Объект.Segment</DataPath>
+							<DataPath>Объект.SubSubSegment.Parent.Parent</DataPath>
+							<Enabled>false</Enabled>
+							<Title>
+								<v8:item>
+									<v8:lang>ru</v8:lang>
+									<v8:content>Segment</v8:content>
+								</v8:item>
+							</Title>
 							<ContextMenu name="SegmentКонтекстноеМеню" id="70"/>
 							<ExtendedTooltip name="SegmentРасширеннаяПодсказка" id="71"/>
 						</InputField>
 						<InputField name="SubSegment" id="72">
-							<DataPath>Объект.SubSegment</DataPath>
+							<DataPath>Объект.SubSubSegment.Parent</DataPath>
+							<Enabled>false</Enabled>
+							<Title>
+								<v8:item>
+									<v8:lang>ru</v8:lang>
+									<v8:content>Sub Segment</v8:content>
+								</v8:item>
+							</Title>
 							<ContextMenu name="SubSegmentКонтекстноеМеню" id="73"/>
 							<ExtendedTooltip name="SubSegmentРасширеннаяПодсказка" id="74"/>
 						</InputField>
@@ -225,6 +261,109 @@
 				</UsualGroup>
 			</ChildItems>
 		</UsualGroup>
+		<UsualGroup name="ГруппаAgreement" id="78">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Agreement</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Группа agreement</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Horizontal</Group>
+			<ExtendedTooltip name="ГруппаAgreementРасширеннаяПодсказка" id="79"/>
+			<ChildItems>
+				<UsualGroup name="ГруппаAgreementЛевая" id="80">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Группа agreement левая</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Группа agreement левая</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Group>Vertical</Group>
+					<Representation>None</Representation>
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="ГруппаAgreementЛеваяРасширеннаяПодсказка" id="81"/>
+					<ChildItems>
+						<InputField name="Agreement" id="48">
+							<DataPath>Объект.Agreement</DataPath>
+							<ContextMenu name="AgreementКонтекстноеМеню" id="49"/>
+							<ExtendedTooltip name="AgreementРасширеннаяПодсказка" id="50"/>
+						</InputField>
+						<InputField name="Trigger" id="84">
+							<DataPath>Объект.Trigger</DataPath>
+							<ContextMenu name="TriggerКонтекстноеМеню" id="85"/>
+							<ExtendedTooltip name="TriggerРасширеннаяПодсказка" id="86"/>
+						</InputField>
+						<InputField name="TriggerDate" id="87">
+							<DataPath>Объект.TriggerDate</DataPath>
+							<ContextMenu name="TriggerDateКонтекстноеМеню" id="88"/>
+							<ExtendedTooltip name="TriggerDateРасширеннаяПодсказка" id="89"/>
+						</InputField>
+					</ChildItems>
+				</UsualGroup>
+				<UsualGroup name="ГруппаAgreementПравая" id="82">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Группа agreement правая</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Группа agreement левая</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Group>Vertical</Group>
+					<Representation>None</Representation>
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="ГруппаAgreementПраваяРасширеннаяПодсказка" id="83"/>
+					<ChildItems>
+						<InputField name="PTFrom" id="90">
+							<DataPath>Объект.PTFrom</DataPath>
+							<ContextMenu name="PTFromКонтекстноеМеню" id="91"/>
+							<ExtendedTooltip name="PTFromРасширеннаяПодсказка" id="92"/>
+						</InputField>
+						<InputField name="PTTo" id="93">
+							<DataPath>Объект.PTTo</DataPath>
+							<ContextMenu name="PTToКонтекстноеМеню" id="94"/>
+							<ExtendedTooltip name="PTToРасширеннаяПодсказка" id="95"/>
+						</InputField>
+						<InputField name="ForecastDate" id="108">
+							<DataPath>Объект.ForecastDate</DataPath>
+							<ContextMenu name="ForecastDateКонтекстноеМеню" id="109"/>
+							<ExtendedTooltip name="ForecastDateРасширеннаяПодсказка" id="110"/>
+						</InputField>
+						<InputField name="RWDTargetDate" id="111">
+							<DataPath>Объект.RWDTargetDate</DataPath>
+							<ContextMenu name="RWDTargetDateКонтекстноеМеню" id="112"/>
+							<ExtendedTooltip name="RWDTargetDateРасширеннаяПодсказка" id="113"/>
+						</InputField>
+					</ChildItems>
+				</UsualGroup>
+			</ChildItems>
+		</UsualGroup>
+		<InputField name="ConfirmedBy" id="102">
+			<DataPath>Объект.ConfirmedBy</DataPath>
+			<ContextMenu name="ConfirmedByКонтекстноеМеню" id="103"/>
+			<ExtendedTooltip name="ConfirmedByРасширеннаяПодсказка" id="104"/>
+		</InputField>
+		<InputField name="AssignedTo" id="105">
+			<DataPath>Объект.AssignedTo</DataPath>
+			<ContextMenu name="AssignedToКонтекстноеМеню" id="106"/>
+			<ExtendedTooltip name="AssignedToРасширеннаяПодсказка" id="107"/>
+		</InputField>
 	</ChildItems>
 	<Attributes>
 		<Attribute name="Объект" id="1">

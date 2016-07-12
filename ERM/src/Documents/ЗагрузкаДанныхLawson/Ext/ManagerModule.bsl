@@ -863,7 +863,11 @@
 		
 	Иначе
 		
-		ПроводкаDSSОбъект.КонтрагентLawson = ДанныеДляЗаполнения.ClientCustomerNumber;
+		Если ЗначениеЗаполнено(ДанныеДляЗаполнения.ClientCustomerNumber) Тогда
+			ПроводкаDSSОбъект.КонтрагентLawson = ДанныеДляЗаполнения.ClientCustomerNumber;
+		Иначе
+			ВызватьИсключение "Failed to find Client " + ДанныеДляЗаполнения.CustomerNumber;
+		КонецЕсли;
 		
 	КонецЕсли;
 	
@@ -1272,9 +1276,15 @@
 Функция СоздатьИнвойс(ПроводкаDSSОбъект, ПолноеЗаполнение = Ложь)
 	
 	ДокОбъект = Документы.Invoice.СоздатьДокумент();
+	ДокОбъект.Source = Перечисления.ТипыСоответствий.Lawson;
+	ДокОбъект.Company = ПроводкаDSSОбъект.Company;
 	ДокОбъект.Номер = ПроводкаDSSОбъект.ArInvoice;
 	ДокОбъект.Дата = ТекущаяДата();
 	ДокОбъект.Client = ПроводкаDSSОбъект.КонтрагентLawson;
+	ДокОбъект.Location = ПроводкаDSSОбъект.Location;
+	ДокОбъект.SubSubSegment = ПроводкаDSSОбъект.SubSubSegment;
+	ДокОбъект.AU = ПроводкаDSSОбъект.AU;
+	ДокОбъект.Account = ПроводкаDSSОбъект.AccountLawson;
 	Если ПолноеЗаполнение Тогда
 		ДокОбъект.Currency = ПроводкаDSSОбъект.Currency;
 		ДокОбъект.Amount = ПроводкаDSSОбъект.TranAmount;
@@ -1369,10 +1379,10 @@
 	ДокОбъект.Дата = ТекущаяДата();
 	ДокОбъект.Client = ПроводкаDSSОбъект.КонтрагентLawson;
 	ДокОбъект.Company = ПроводкаDSSОбъект.Company;
-	ДокОбъект.GeoMarket = ПроводкаDSSОбъект.GeoMarket;
-	ДокОбъект.SubGeoMarket = ПроводкаDSSОбъект.SubGeoMarket;
-	ДокОбъект.Segment = ПроводкаDSSОбъект.Segment;
-	ДокОбъект.SubSegment = ПроводкаDSSОбъект.SubSegment;
+	ДокОбъект.Location = ПроводкаDSSОбъект.Location;
+	//ДокОбъект.SubGeoMarket = ПроводкаDSSОбъект.SubGeoMarket;
+	//ДокОбъект.Segment = ПроводкаDSSОбъект.Segment;
+	//ДокОбъект.SubSegment = ПроводкаDSSОбъект.SubSegment;
 	ДокОбъект.SubSubSegment = ПроводкаDSSОбъект.SubSubSegment;
 	ДокОбъект.AU = ПроводкаDSSОбъект.AU;
 	ДокОбъект.Source = Перечисления.ТипыСоответствий.Lawson;
