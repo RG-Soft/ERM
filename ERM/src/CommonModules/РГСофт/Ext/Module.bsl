@@ -257,7 +257,7 @@
 		SsubSegmentОбъект = Справочники.Сегменты.СоздатьЭлемент();
 		SsubSegmentОбъект.Код = СокрЛП(Стр.SsubSegment);
 		SsubSegmentОбъект.Наименование = СокрЛП(Стр.SsubSegment);
-		НовыйЭлемент.Source = Перечисления.ТипыСоответствий.Lawson;
+		SsubSegmentОбъект.Source = Перечисления.ТипыСоответствий.Lawson;
 		SsubSegmentОбъект.Родитель = SubSegment;
 		SsubSegmentОбъект.Записать();
 		SsubSegment = SsubSegmentОбъект.Ссылка;
