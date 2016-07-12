@@ -52,12 +52,11 @@
 	|	ПроводкаDSS.Проведен,
 	|	ПроводкаDSS.System,
 	|	ПроводкаDSS.Документ,
-	|	ПроводкаDSS.GeoMarket,
 	|	ПроводкаDSS.Модуль,
 	|	ПроводкаDSS.SourceCode,
 	|	ПроводкаDSS.AccountLawson,
 	|	ПроводкаDSS.AU,
-	|	ПроводкаDSS.LegalEntity,
+	|	ПроводкаDSS.Location,
 	|	ПроводкаDSS.BaseAmount,
 	|	ПроводкаDSS.DateLawson,
 	|	ПроводкаDSS.Reference,
@@ -111,9 +110,6 @@
 	|	ПроводкаDSS.Ваучер,
 	|	ПроводкаDSS.FiscalDate,
 	|	ПроводкаDSS.Urn,
-	|	ПроводкаDSS.SubGeoMarket,
-	|	ПроводкаDSS.Segment,
-	|	ПроводкаDSS.SubSegment,
 	|	ПроводкаDSS.SubSubSegment,
 	|	ПроводкаDSS.AccountingPeriod
 	|ИЗ

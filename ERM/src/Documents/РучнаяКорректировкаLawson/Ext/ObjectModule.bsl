@@ -3,7 +3,7 @@
 	
 	Если Не ЭтоНовый() Тогда
 		ДополнительныеСвойства.Вставить("СтарыеЗначенияКлючей", ОбщегоНазначения.ЗначенияРеквизитовОбъекта(Ссылка,
-			"Source, Company, Client, GeoMarket, SubGeoMarket, Segment, SubSegment, SubSubSegment, AU, Account, Currency"));
+			"Source, Company, Client, Location, SubSubSegment, AU, Account, Currency"));
 	КонецЕсли;
 	
 КонецПроцедуры
@@ -14,19 +14,15 @@
 		
 		СтарыеЗначенияКлючей = ДополнительныеСвойства.СтарыеЗначенияКлючей;
 		Если СтарыеЗначенияКлючей.Source <> Source ИЛИ СтарыеЗначенияКлючей.Company <> Company
-			ИЛИ СтарыеЗначенияКлючей.Client <> Client ИЛИ СтарыеЗначенияКлючей.GeoMarket <> GeoMarket
-			ИЛИ СтарыеЗначенияКлючей.SubGeoMarket <> SubGeoMarket ИЛИ СтарыеЗначенияКлючей.Segment <> Segment
-			ИЛИ СтарыеЗначенияКлючей.SubSegment <> SubSegment ИЛИ СтарыеЗначенияКлючей.SubSubSegment <> SubSubSegment
+			ИЛИ СтарыеЗначенияКлючей.Client <> Client ИЛИ СтарыеЗначенияКлючей.Location <> Location
+			ИЛИ СтарыеЗначенияКлючей.SubSubSegment <> SubSubSegment
 			ИЛИ СтарыеЗначенияКлючей.AU <> AU ИЛИ СтарыеЗначенияКлючей.Account <> Account ИЛИ СтарыеЗначенияКлючей.Currency <> Currency Тогда
 			
 			НЗ = РегистрыСведений.КлючиРучныхКорректировок.СоздатьНаборЗаписей();
 			НЗ.Отбор.Source.Установить(СтарыеЗначенияКлючей.Source);
 			НЗ.Отбор.Company.Установить(СтарыеЗначенияКлючей.Company);
 			НЗ.Отбор.Client.Установить(СтарыеЗначенияКлючей.Client);
-			НЗ.Отбор.GeoMarket.Установить(СтарыеЗначенияКлючей.GeoMarket);
-			НЗ.Отбор.SubGeoMarket.Установить(СтарыеЗначенияКлючей.SubGeoMarket);
-			НЗ.Отбор.Segment.Установить(СтарыеЗначенияКлючей.Segment);
-			НЗ.Отбор.SubSegment.Установить(СтарыеЗначенияКлючей.SubSegment);
+			НЗ.Отбор.Location.Установить(СтарыеЗначенияКлючей.Location);
 			НЗ.Отбор.SubSubSegment.Установить(СтарыеЗначенияКлючей.SubSubSegment);
 			НЗ.Отбор.AU.Установить(СтарыеЗначенияКлючей.AU);
 			НЗ.Отбор.Account.Установить(СтарыеЗначенияКлючей.Account);
@@ -36,10 +32,7 @@
 			НЗ.Отбор.Source.Установить(Source);
 			НЗ.Отбор.Company.Установить(Company);
 			НЗ.Отбор.Client.Установить(Client);
-			НЗ.Отбор.GeoMarket.Установить(GeoMarket);
-			НЗ.Отбор.SubGeoMarket.Установить(SubGeoMarket);
-			НЗ.Отбор.Segment.Установить(Segment);
-			НЗ.Отбор.SubSegment.Установить(SubSegment);
+			НЗ.Отбор.Location.Установить(Location);
 			НЗ.Отбор.SubSubSegment.Установить(SubSubSegment);
 			НЗ.Отбор.AU.Установить(AU);
 			НЗ.Отбор.Account.Установить(Account);
@@ -57,10 +50,7 @@
 		НЗ.Отбор.Source.Установить(Source);
 		НЗ.Отбор.Company.Установить(Company);
 		НЗ.Отбор.Client.Установить(Client);
-		НЗ.Отбор.GeoMarket.Установить(GeoMarket);
-		НЗ.Отбор.SubGeoMarket.Установить(SubGeoMarket);
-		НЗ.Отбор.Segment.Установить(Segment);
-		НЗ.Отбор.SubSegment.Установить(SubSegment);
+		НЗ.Отбор.Location.Установить(Location);
 		НЗ.Отбор.SubSubSegment.Установить(SubSubSegment);
 		НЗ.Отбор.AU.Установить(AU);
 		НЗ.Отбор.Account.Установить(Account);
@@ -80,10 +70,7 @@
 	НЗ.Отбор.Source.Установить(Source);
 	НЗ.Отбор.Company.Установить(Company);
 	НЗ.Отбор.Client.Установить(Client);
-	НЗ.Отбор.GeoMarket.Установить(GeoMarket);
-	НЗ.Отбор.SubGeoMarket.Установить(SubGeoMarket);
-	НЗ.Отбор.Segment.Установить(Segment);
-	НЗ.Отбор.SubSegment.Установить(SubSegment);
+	НЗ.Отбор.Location.Установить(Location);
 	НЗ.Отбор.SubSubSegment.Установить(SubSubSegment);
 	НЗ.Отбор.AU.Установить(AU);
 	НЗ.Отбор.Account.Установить(Account);

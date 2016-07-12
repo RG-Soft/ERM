@@ -7,13 +7,6 @@
 	<dataSet xsi:type="DataSetQuery">
 		<name>НаборДанных1</name>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>SubSegment</dataPath>
-			<field>SubSegment</field>
-			<role>
-				<dcscom:dimension>true</dcscom:dimension>
-			</role>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>Client</dataPath>
 			<field>Client</field>
 			<role>
@@ -27,13 +20,6 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>SubSubSegment</dataPath>
 			<field>SubSubSegment</field>
-			<role>
-				<dcscom:dimension>true</dcscom:dimension>
-			</role>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>Segment</dataPath>
-			<field>Segment</field>
 			<role>
 				<dcscom:dimension>true</dcscom:dimension>
 			</role>
@@ -75,26 +61,12 @@
 			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>SubGeoMarket</dataPath>
-			<field>SubGeoMarket</field>
-			<role>
-				<dcscom:dimension>true</dcscom:dimension>
-			</role>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>SalesOrder</dataPath>
 			<field>SalesOrder</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Company</dataPath>
 			<field>Company</field>
-			<role>
-				<dcscom:dimension>true</dcscom:dimension>
-			</role>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>GeoMarket</dataPath>
-			<field>GeoMarket</field>
 			<role>
 				<dcscom:dimension>true</dcscom:dimension>
 			</role>
@@ -210,15 +182,19 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Location</dataPath>
+			<field>Location</field>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	UnbilledARОстатки.Client КАК Client,
 	UnbilledARОстатки.Company,
 	UnbilledARОстатки.Source КАК Source,
-	UnbilledARОстатки.GeoMarket,
-	UnbilledARОстатки.SubGeoMarket,
-	UnbilledARОстатки.Segment,
-	UnbilledARОстатки.SubSegment,
+	UnbilledARОстатки.Location,
 	UnbilledARОстатки.SubSubSegment,
 	UnbilledARОстатки.SalesOrder КАК Document,
 	UnbilledARОстатки.Account,
@@ -244,10 +220,7 @@
 	BilledARОстатки.Client,
 	BilledARОстатки.Company,
 	BilledARОстатки.Source,
-	BilledARОстатки.GeoMarket,
-	BilledARОстатки.SubGeoMarket,
-	BilledARОстатки.Segment,
-	BilledARОстатки.SubSegment,
+	BilledARОстатки.Location,
 	BilledARОстатки.SubSubSegment,
 	BilledARОстатки.Invoice,
 	BilledARОстатки.Account,
@@ -272,10 +245,7 @@
 	UnallocatedCashОстатки.Client,
 	UnallocatedCashОстатки.Company,
 	UnallocatedCashОстатки.Source,
-	UnallocatedCashОстатки.GeoMarket,
-	UnallocatedCashОстатки.SubGeoMarket,
-	UnallocatedCashОстатки.Segment,
-	UnallocatedCashОстатки.SubSegment,
+	UnallocatedCashОстатки.Location,
 	UnallocatedCashОстатки.SubSubSegment,
 	UnallocatedCashОстатки.CashBatch,
 	UnallocatedCashОстатки.Account,
@@ -305,10 +275,7 @@
 	ManualTransactionsОстатки.Client,
 	ManualTransactionsОстатки.Company,
 	ManualTransactionsОстатки.Source,
-	ManualTransactionsОстатки.GeoMarket,
-	ManualTransactionsОстатки.SubGeoMarket,
-	ManualTransactionsОстатки.Segment,
-	ManualTransactionsОстатки.SubSegment,
+	ManualTransactionsОстатки.Location,
 	ManualTransactionsОстатки.SubSubSegment,
 	ManualTransactionsОстатки.РучнаяКорректировка,
 	ManualTransactionsОстатки.Account,
@@ -364,10 +331,7 @@
 	ВТ_Остатки.Client,
 	ВТ_Остатки.Company,
 	ВТ_Остатки.Source,
-	ВТ_Остатки.GeoMarket,
-	ВТ_Остатки.SubGeoMarket,
-	ВТ_Остатки.Segment,
-	ВТ_Остатки.SubSegment,
+	ВТ_Остатки.Location,
 	ВТ_Остатки.SubSubSegment,
 	ВТ_Остатки.Document,
 	ВТ_Остатки.Account,
@@ -514,13 +478,31 @@
 					<dcsset:field>Source</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>GeoMarket</dcsset:field>
+					<dcsset:field>Location.БазовыйЭлемент.GeoMarket.Родитель</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Geo Market</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>SubGeoMarket</dcsset:field>
+					<dcsset:field>Location.БазовыйЭлемент.GeoMarket</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Sub Geo Market</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Segment</dcsset:field>
+					<dcsset:field>SubSubSegment.БазовыйЭлемент.Родитель.Родитель</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Segment</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>CustomerID</dcsset:field>
@@ -585,7 +567,7 @@
 						<dcsset:lwsTitle>
 							<v8:item>
 								<v8:lang>ru</v8:lang>
-								<v8:content>USD Amount (incl VAT)</v8:content>
+								<v8:content>USD Amount</v8:content>
 							</v8:item>
 						</dcsset:lwsTitle>
 					</dcsset:item>
@@ -612,7 +594,7 @@
 						<dcsset:lwsTitle>
 							<v8:item>
 								<v8:lang>ru</v8:lang>
-								<v8:content>USD Amount (incl VAT)</v8:content>
+								<v8:content>USD Amount</v8:content>
 							</v8:item>
 						</dcsset:lwsTitle>
 					</dcsset:item>
@@ -683,6 +665,10 @@
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>МакетОформления</dcscor:parameter>
 					<dcscor:value xsi:type="xs:string">Море</dcscor:value>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>РасположениеРеквизитов</dcscor:parameter>
+					<dcscor:value xsi:type="dcsset:DataCompositionAttributesPlacement">Separately</dcscor:value>
 				</dcscor:item>
 			</dcsset:outputParameters>
 			<dcsset:item xsi:type="dcsset:StructureItemGroup">
