@@ -368,10 +368,10 @@
 	НовоеДвижение.Период = Реквизиты.AccountingPeriod;
 	НовоеДвижение.Source = Перечисления.ТипыСоответствий.Lawson;
 	НовоеДвижение.Company = Реквизиты.Company;
-	НовоеДвижение.GeoMarket = Реквизиты.GeoMarket;
-	НовоеДвижение.SubGeoMarket = Реквизиты.SubGeoMarket;
-	НовоеДвижение.Segment = Реквизиты.Segment;
-	НовоеДвижение.SubSegment = Реквизиты.SubSegment;
+	НовоеДвижение.Location = Реквизиты.Location;
+	//НовоеДвижение.SubGeoMarket = Реквизиты.SubGeoMarket;
+	//НовоеДвижение.Segment = Реквизиты.Segment;
+	//НовоеДвижение.SubSegment = Реквизиты.SubSegment;
 	НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 	НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
 	НовоеДвижение.Memo = СвязанныеДокументы.Memo;
