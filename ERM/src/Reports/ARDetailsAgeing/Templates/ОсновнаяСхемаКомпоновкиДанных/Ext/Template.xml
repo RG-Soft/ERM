@@ -72,10 +72,6 @@
 			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>BaseAmountОстаток</dataPath>
-			<field>BaseAmountОстаток</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>BilledType</dataPath>
 			<field>BilledType</field>
 			<title xsi:type="v8:LocalStringType">
@@ -102,16 +98,6 @@
 				<v8:item>
 					<v8:lang>ru</v8:lang>
 					<v8:content>Transaction amount</v8:content>
-				</v8:item>
-			</title>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>BaseAmountОстатокТыс</dataPath>
-			<field>BaseAmountОстатокТыс</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Base amount остаток тыс</v8:content>
 				</v8:item>
 			</title>
 		</field>
@@ -189,6 +175,37 @@
 				<dcscom:dimension>true</dcscom:dimension>
 			</role>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>BaseAmountОстатокТыс</dataPath>
+			<field>BaseAmountОстатокТыс</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Base amount остаток тыс</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>BaseAmountОстаток</dataPath>
+			<field>BaseAmountОстаток</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Base amount остаток</v8:content>
+				</v8:item>
+			</title>
+			<appearance>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>Формат</dcscor:parameter>
+					<dcscor:value xsi:type="v8:LocalStringType">
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>ЧЦ=15; ЧДЦ=2</v8:content>
+						</v8:item>
+					</dcscor:value>
+				</dcscor:item>
+			</appearance>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	UnbilledARОстатки.Client КАК Client,
@@ -205,8 +222,6 @@
 	UnbilledARОстатки.SalesOrder.Номер КАК НомерДокумента,
 	UnbilledARОстатки.SalesOrder.Дата КАК ДатаДокумента,
 	UnbilledARОстатки.AmountОстаток,
-	UnbilledARОстатки.BaseAmountОстаток,
-	ВЫРАЗИТЬ(UnbilledARОстатки.BaseAmountОстаток / 1000 КАК ЧИСЛО(15, 0)) КАК BaseAmountОстатокТыс,
 	UnbilledARОстатки.SalesOrder.Amount КАК TransactionAmount,
 	UnbilledARОстатки.SalesOrder.BaseAmount КАК TransactionAmountUSD,
 	UnbilledARОстатки.SalesOrder.Agreement КАК Agreement
@@ -231,8 +246,6 @@
 	BilledARОстатки.Invoice.Номер,
 	BilledARОстатки.Invoice.Дата,
 	BilledARОстатки.AmountОстаток,
-	BilledARОстатки.BaseAmountОстаток,
-	ВЫРАЗИТЬ(BilledARОстатки.BaseAmountОстаток / 1000 КАК ЧИСЛО(15, 0)),
 	BilledARОстатки.Invoice.Amount,
 	BilledARОстатки.Invoice.BaseAmount,
 	BilledARОстатки.Invoice.Agreement
@@ -261,8 +274,6 @@
 	UnallocatedCashОстатки.CashBatch.Номер,
 	UnallocatedCashОстатки.CashBatch.Дата,
 	UnallocatedCashОстатки.AmountОстаток,
-	UnallocatedCashОстатки.BaseAmountОстаток,
-	ВЫРАЗИТЬ(UnallocatedCashОстатки.BaseAmountОстаток / 1000 КАК ЧИСЛО(15, 0)),
 	0,
 	0,
 	UnallocatedCashОстатки.CashBatch.Agreement
@@ -291,8 +302,6 @@
 	ManualTransactionsОстатки.РучнаяКорректировка.Номер,
 	ManualTransactionsОстатки.РучнаяКорректировка.Дата,
 	ManualTransactionsОстатки.AmountОстаток,
-	ManualTransactionsОстатки.BaseAmountОстаток,
-	ВЫРАЗИТЬ(ManualTransactionsОстатки.BaseAmountОстаток / 1000 КАК ЧИСЛО(15, 0)),
 	ManualTransactionsОстатки.РучнаяКорректировка.Amount,
 	ManualTransactionsОстатки.РучнаяКорректировка.BaseAmount,
 	ManualTransactionsОстатки.РучнаяКорректировка.Agreement
@@ -342,8 +351,18 @@
 	ВТ_Остатки.НомерДокумента,
 	ВТ_Остатки.ДатаДокумента,
 	ВТ_Остатки.AmountОстаток,
-	ВТ_Остатки.BaseAmountОстаток,
-	ВТ_Остатки.BaseAmountОстатокТыс,
+	ВЫБОР
+		КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
+				ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+			ТОГДА 0
+		ИНАЧЕ ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс
+	КОНЕЦ КАК BaseAmountОстаток,
+	ВЫБОР
+		КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
+				ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+			ТОГДА 0
+		ИНАЧЕ ВЫРАЗИТЬ(ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс / 1000 КАК ЧИСЛО(15, 0))
+	КОНЕЦ КАК BaseAmountОстатокТыс,
 	ВТ_Остатки.TransactionAmount,
 	ВТ_Остатки.TransactionAmountUSD,
 	ВТ_Остатки.Agreement,
@@ -352,7 +371,9 @@
 	ВТ_Остатки КАК ВТ_Остатки
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_НастройкиСинхронизации КАК ВТ_НастройкиСинхронизации
 		ПО ВТ_Остатки.Source = ВТ_НастройкиСинхронизации.ТипСоответствия
-			И ВТ_Остатки.Client = ВТ_НастройкиСинхронизации.ОбъектПриемника</query>
+			И ВТ_Остатки.Client = ВТ_НастройкиСинхронизации.ОбъектПриемника
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних КАК ВнутренниеКурсыВалютСрезПоследних
+		ПО ВТ_Остатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>Ageing_1_30</dataPath>
