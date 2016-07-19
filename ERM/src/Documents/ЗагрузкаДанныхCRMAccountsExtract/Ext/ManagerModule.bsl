@@ -365,9 +365,21 @@
 	Запрос.Текст = 
 		"ВЫБРАТЬ
 		|	CRMAccountsExtractSourceData.AccountId КАК CRMID,
-		|	CRMAccountsExtractSourceData.LawsonIntegrationId КАК LawsonID,
-		|	CRMAccountsExtractSourceData.MIIntegrationId КАК MIID,
-		|	CRMAccountsExtractSourceData.SMITHIntegrationId КАК SMITHID,
+		|	ВЫБОР
+		|		КОГДА CRMAccountsExtractSourceData.LawsonIntegrationId = """"
+		|			ТОГДА ""#empty#"" + CRMAccountsExtractSourceData.AccountId
+		|		ИНАЧЕ CRMAccountsExtractSourceData.LawsonIntegrationId
+		|	КОНЕЦ КАК LawsonID,
+		|	ВЫБОР
+		|		КОГДА CRMAccountsExtractSourceData.MIIntegrationId = """"
+		|			ТОГДА ""#empty#"" + CRMAccountsExtractSourceData.AccountId
+		|		ИНАЧЕ CRMAccountsExtractSourceData.MIIntegrationId
+		|	КОНЕЦ КАК MIID,
+		|	ВЫБОР
+		|		КОГДА CRMAccountsExtractSourceData.SMITHIntegrationId = """"
+		|			ТОГДА ""#empty#"" + CRMAccountsExtractSourceData.AccountId
+		|		ИНАЧЕ CRMAccountsExtractSourceData.SMITHIntegrationId
+		|	КОНЕЦ КАК SMITHID,
 		|	CRMAccountsExtractSourceData.Account КАК Description
 		|ПОМЕСТИТЬ ВТ_BillingAccounts
 		|ИЗ
