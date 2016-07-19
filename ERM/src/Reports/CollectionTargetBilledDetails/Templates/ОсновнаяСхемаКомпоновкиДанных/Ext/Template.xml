@@ -101,6 +101,35 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Memo</dataPath>
+			<field>Memo</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>CashBatch</dataPath>
+			<field>CashBatch</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Rate</dataPath>
+			<field>Rate</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Rate</v8:content>
+				</v8:item>
+			</title>
+			<appearance>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>Формат</dcscor:parameter>
+					<dcscor:value xsi:type="v8:LocalStringType">
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>ЧЦ=10; ЧДЦ=4</v8:content>
+						</v8:item>
+					</dcscor:value>
+				</dcscor:item>
+			</appearance>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	BilledARОстатки.Client КАК Client,
@@ -112,11 +141,42 @@
 	BilledARОстатки.Account,
 	BilledARОстатки.Currency,
 	BilledARОстатки.AU,
-	BilledARОстатки.AmountОстаток,
-	BilledARОстатки.BaseAmountОстаток
+	BilledARОстатки.AmountОстаток
 ПОМЕСТИТЬ ВТ_Остатки
 ИЗ
 	РегистрНакопления.BilledAR.Остатки КАК BilledARОстатки
+
+ОБЪЕДИНИТЬ ВСЕ
+
+ВЫБРАТЬ
+	UnallocatedCashОстатки.Client,
+	UnallocatedCashОстатки.Company,
+	UnallocatedCashОстатки.Source,
+	UnallocatedCashОстатки.Location,
+	UnallocatedCashОстатки.SubSubSegment,
+	UnallocatedCashОстатки.CashBatch,
+	UnallocatedCashОстатки.Account,
+	UnallocatedCashОстатки.Currency,
+	UnallocatedCashОстатки.AU,
+	UnallocatedCashОстатки.AmountОстаток
+ИЗ
+	РегистрНакопления.UnallocatedCash.Остатки КАК UnallocatedCashОстатки
+
+ОБЪЕДИНИТЬ ВСЕ
+
+ВЫБРАТЬ
+	UnallocatedMemoОстатки.Client,
+	UnallocatedMemoОстатки.Company,
+	UnallocatedMemoОстатки.Source,
+	UnallocatedMemoОстатки.Location,
+	UnallocatedMemoОстатки.SubSubSegment,
+	UnallocatedMemoОстатки.Memo,
+	UnallocatedMemoОстатки.Account,
+	UnallocatedMemoОстатки.Currency,
+	UnallocatedMemoОстатки.AU,
+	UnallocatedMemoОстатки.AmountОстаток
+ИЗ
+	РегистрНакопления.UnallocatedMemo.Остатки КАК UnallocatedMemoОстатки
 
 ИНДЕКСИРОВАТЬ ПО
 	Client,
@@ -175,17 +235,33 @@
 	ВТ_Остатки.Currency,
 	ВТ_Остатки.AU,
 	ВТ_Остатки.AmountОстаток,
-	ВТ_Остатки.BaseAmountОстаток,
+	ВЫБОР
+		КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
+				ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+			ТОГДА 0
+		ИНАЧЕ ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность
+	КОНЕЦ КАК BaseAmountОстаток,
 	ВТ_ИдентификаторыКлиентов.Идентификатор КАК ИдентификаторКлиента,
 	ВТ_ИерархияКлиентов.ГоловнойКонтрагент,
-	"I" КАК TransType
+	ВЫБОР
+		КОГДА ВТ_Остатки.Invoice ССЫЛКА Документ.Invoice
+			ТОГДА "I"
+		КОГДА ВТ_Остатки.Invoice ССЫЛКА Документ.CashBatch
+			ТОГДА "Payment"
+		КОГДА ВТ_Остатки.Invoice ССЫЛКА Документ.Memo
+			ТОГДА "Memo"
+		ИНАЧЕ ""
+	КОНЕЦ КАК TransType,
+	ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0) КАК Rate
 ИЗ
 	ВТ_Остатки КАК ВТ_Остатки
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ИдентификаторыКлиентов КАК ВТ_ИдентификаторыКлиентов
 		ПО ВТ_Остатки.Client = ВТ_ИдентификаторыКлиентов.ОбъектПриемника
 			И ВТ_Остатки.Source = ВТ_ИдентификаторыКлиентов.ТипСоответствия
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ИерархияКлиентов КАК ВТ_ИерархияКлиентов
-		ПО ВТ_Остатки.Client = ВТ_ИерархияКлиентов.Контрагент</query>
+		ПО ВТ_Остатки.Client = ВТ_ИерархияКлиентов.Контрагент
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних КАК ВнутренниеКурсыВалютСрезПоследних
+		ПО ВТ_Остатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>DateFrom</dataPath>
@@ -209,7 +285,7 @@
 	</calculatedField>
 	<calculatedField>
 		<dataPath>DueFrom</dataPath>
-		<expression>ВЫБОР КОГДА ДОБАВИТЬКДАТЕ(Invoice.Дата, "ДЕНЬ", Invoice.PTFrom) &lt; &amp;Период ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Invoice.ExchangeRate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Invoice.ExchangeRate ИНАЧЕ AmountОстаток КОНЕЦ ИНАЧЕ 0 КОНЕЦ</expression>
+		<expression>ВЫБОР КОГДА ДОБАВИТЬКДАТЕ(Invoice.Дата, "ДЕНЬ", Invoice.PTFrom) &lt; &amp;Период ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ ИНАЧЕ 0 КОНЕЦ</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -219,18 +295,13 @@
 		<appearance>
 			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 				<dcscor:parameter>Формат</dcscor:parameter>
-				<dcscor:value xsi:type="v8:LocalStringType">
-					<v8:item>
-						<v8:lang>ru</v8:lang>
-						<v8:content>ЧДЦ=2</v8:content>
-					</v8:item>
-				</dcscor:value>
+				<dcscor:value xsi:type="xs:string">ЧДЦ=2</dcscor:value>
 			</dcscor:item>
 		</appearance>
 	</calculatedField>
 	<calculatedField>
 		<dataPath>USDAmount</dataPath>
-		<expression>ВЫБОР КОГДА Currency = &amp;Рубль И Invoice.ExchangeRate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Invoice.ExchangeRate ИНАЧЕ AmountОстаток КОНЕЦ</expression>
+		<expression>ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -240,18 +311,13 @@
 		<appearance>
 			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 				<dcscor:parameter>Формат</dcscor:parameter>
-				<dcscor:value xsi:type="v8:LocalStringType">
-					<v8:item>
-						<v8:lang>ru</v8:lang>
-						<v8:content>ЧДЦ=2</v8:content>
-					</v8:item>
-				</dcscor:value>
+				<dcscor:value xsi:type="xs:string">ЧДЦ=2</dcscor:value>
 			</dcscor:item>
 		</appearance>
 	</calculatedField>
 	<calculatedField>
 		<dataPath>DueTo</dataPath>
-		<expression>ВЫБОР КОГДА ДОБАВИТЬКДАТЕ(Invoice.Дата, "ДЕНЬ", Invoice.PTTo) &lt; &amp;Период ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Invoice.ExchangeRate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Invoice.ExchangeRate ИНАЧЕ AmountОстаток КОНЕЦ ИНАЧЕ 0 КОНЕЦ</expression>
+		<expression>ВЫБОР КОГДА ДОБАВИТЬКДАТЕ(Invoice.Дата, "ДЕНЬ", Invoice.PTTo) &lt; &amp;Период ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ ИНАЧЕ 0 КОНЕЦ</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -261,18 +327,13 @@
 		<appearance>
 			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 				<dcscor:parameter>Формат</dcscor:parameter>
-				<dcscor:value xsi:type="v8:LocalStringType">
-					<v8:item>
-						<v8:lang>ru</v8:lang>
-						<v8:content>ЧДЦ=2</v8:content>
-					</v8:item>
-				</dcscor:value>
+				<dcscor:value xsi:type="xs:string">ЧДЦ=2</dcscor:value>
 			</dcscor:item>
 		</appearance>
 	</calculatedField>
 	<calculatedField>
 		<dataPath>Paid</dataPath>
-		<expression>ВЫБОР КОГДА Invoice.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid) ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Invoice.ExchangeRate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Invoice.ExchangeRate ИНАЧЕ AmountОстаток КОНЕЦ  ИНАЧЕ 0 КОНЕЦ</expression>
+		<expression>ВЫБОР КОГДА Invoice.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid) ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ  ИНАЧЕ 0 КОНЕЦ</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -282,18 +343,13 @@
 		<appearance>
 			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 				<dcscor:parameter>Формат</dcscor:parameter>
-				<dcscor:value xsi:type="v8:LocalStringType">
-					<v8:item>
-						<v8:lang>ru</v8:lang>
-						<v8:content>ЧДЦ=2</v8:content>
-					</v8:item>
-				</dcscor:value>
+				<dcscor:value xsi:type="xs:string">ЧДЦ=2</dcscor:value>
 			</dcscor:item>
 		</appearance>
 	</calculatedField>
 	<calculatedField>
 		<dataPath>FcstCollect</dataPath>
-		<expression>ВЫБОР КОГДА Invoice.ForecastDate &lt;= &amp;Период И Invoice.ForecastDate &lt;&gt; ДАТАВРЕМЯ(1,1,1) ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Invoice.ExchangeRate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Invoice.ExchangeRate ИНАЧЕ AmountОстаток КОНЕЦ - ВЫБОР КОГДА Invoice.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid) ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Invoice.ExchangeRate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Invoice.ExchangeRate ИНАЧЕ AmountОстаток КОНЕЦ  ИНАЧЕ 0 КОНЕЦ  ИНАЧЕ 0 КОНЕЦ</expression>
+		<expression>ВЫБОР КОГДА Invoice.ForecastDate &lt;= &amp;Период И Invoice.ForecastDate &lt;&gt; ДАТАВРЕМЯ(1,1,1) ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ - ВЫБОР КОГДА Invoice.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid) ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ  ИНАЧЕ 0 КОНЕЦ  ИНАЧЕ 0 КОНЕЦ</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -303,18 +359,13 @@
 		<appearance>
 			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 				<dcscor:parameter>Формат</dcscor:parameter>
-				<dcscor:value xsi:type="v8:LocalStringType">
-					<v8:item>
-						<v8:lang>ru</v8:lang>
-						<v8:content>ЧДЦ=2</v8:content>
-					</v8:item>
-				</dcscor:value>
+				<dcscor:value xsi:type="xs:string">ЧДЦ=2</dcscor:value>
 			</dcscor:item>
 		</appearance>
 	</calculatedField>
 	<calculatedField>
 		<dataPath>NoFrcst</dataPath>
-		<expression>ВЫБОР КОГДА Invoice.ForecastDate = ДАТАВРЕМЯ(1,1,1) ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Invoice.ExchangeRate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Invoice.ExchangeRate ИНАЧЕ AmountОстаток КОНЕЦ ИНАЧЕ 0 КОНЕЦ</expression>
+		<expression>ВЫБОР КОГДА Invoice.ForecastDate = ДАТАВРЕМЯ(1,1,1) ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ ИНАЧЕ 0 КОНЕЦ</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -324,12 +375,7 @@
 		<appearance>
 			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 				<dcscor:parameter>Формат</dcscor:parameter>
-				<dcscor:value xsi:type="v8:LocalStringType">
-					<v8:item>
-						<v8:lang>ru</v8:lang>
-						<v8:content>ЧДЦ=2</v8:content>
-					</v8:item>
-				</dcscor:value>
+				<dcscor:value xsi:type="xs:string">ЧДЦ=2</dcscor:value>
 			</dcscor:item>
 		</appearance>
 	</calculatedField>
@@ -337,7 +383,7 @@
 		<dataPath>Insolvent</dataPath>
 		<expression>Выбор
 	Когда Invoice.Status = Значение(Перечисление.InvoiceStatus.CustomerIsInsolventOrBankrupt)
-		Тогда ВЫБОР КОГДА Currency = &amp;Рубль И Invoice.ExchangeRate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Invoice.ExchangeRate ИНАЧЕ AmountОстаток КОНЕЦ
+		Тогда ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ
 	Иначе 0
 Конец</expression>
 		<title xsi:type="v8:LocalStringType">
@@ -349,12 +395,7 @@
 		<appearance>
 			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 				<dcscor:parameter>Формат</dcscor:parameter>
-				<dcscor:value xsi:type="v8:LocalStringType">
-					<v8:item>
-						<v8:lang>ru</v8:lang>
-						<v8:content>ЧДЦ=2</v8:content>
-					</v8:item>
-				</dcscor:value>
+				<dcscor:value xsi:type="xs:string">ЧДЦ=2</dcscor:value>
 			</dcscor:item>
 		</appearance>
 	</calculatedField>
@@ -607,15 +648,6 @@
 							</v8:item>
 						</dcsset:lwsTitle>
 					</dcsset:item>
-					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>Invoice.BaseAmount</dcsset:field>
-						<dcsset:lwsTitle>
-							<v8:item>
-								<v8:lang>ru</v8:lang>
-								<v8:content>Base Amount</v8:content>
-							</v8:item>
-						</dcsset:lwsTitle>
-					</dcsset:item>
 					<dcsset:placement>Horizontally</dcsset:placement>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemFolder">
@@ -634,19 +666,10 @@
 							</v8:item>
 						</dcsset:lwsTitle>
 					</dcsset:item>
-					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>BaseAmountОстаток</dcsset:field>
-						<dcsset:lwsTitle>
-							<v8:item>
-								<v8:lang>ru</v8:lang>
-								<v8:content>Base Amount</v8:content>
-							</v8:item>
-						</dcsset:lwsTitle>
-					</dcsset:item>
 					<dcsset:placement>Horizontally</dcsset:placement>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.ExchangeRate</dcsset:field>
+					<dcsset:field>Rate</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
