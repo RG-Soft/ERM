@@ -37,9 +37,6 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Currency</dataPath>
 			<field>Currency</field>
-			<role>
-				<dcscom:dimension>true</dcscom:dimension>
-			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Location</dataPath>
@@ -98,50 +95,8 @@
 			<field>РегистраторTranAmount</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>РегистраторCurrency</dataPath>
-			<field>РегистраторCurrency</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>РегистраторAccountingPeriod</dataPath>
 			<field>РегистраторAccountingPeriod</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>AmountОстатокUSD</dataPath>
-			<field>AmountОстатокUSD</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Amount остаток USD</v8:content>
-				</v8:item>
-			</title>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>Курс</dataPath>
-			<field>Курс</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>Кратность</dataPath>
-			<field>Кратность</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>РегистраторAmountUSD</dataPath>
-			<field>РегистраторAmountUSD</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Регистратор amount USD</v8:content>
-				</v8:item>
-			</title>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>BaseCurrencyEquivalent</dataPath>
-			<field>BaseCurrencyEquivalent</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Base currency equivalent</v8:content>
-				</v8:item>
-			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>ClientName</dataPath>
@@ -163,6 +118,28 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Курс</dataPath>
+			<field>Курс</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>РегистраторBaseAmount</dataPath>
+			<field>РегистраторBaseAmount</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>РегистраторCurrency</dataPath>
+			<field>РегистраторCurrency</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>BaseCurrencyEquivalent</dataPath>
+			<field>BaseCurrencyEquivalent</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Base currency equivalent</v8:content>
+				</v8:item>
+			</title>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	BilledARОстатки.Company КАК CompanyCode,
@@ -174,18 +151,10 @@
 	BilledARОстатки.Account КАК Account,
 	BilledARОстатки.Currency КАК Currency,
 	BilledARОстатки.AU КАК AU,
-	BilledARОстатки.AmountОстаток КАК AmountОстаток,
-	ВЫБОР
-		КОГДА BilledARОстатки.Currency = &amp;USD
-			ТОГДА BilledARОстатки.AmountОстаток
-		ИНАЧЕ BilledARОстатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность
-	КОНЕЦ КАК AmountОстатокUSD,
-	ВнутренниеКурсыВалютСрезПоследних.Курс,
-	ВнутренниеКурсыВалютСрезПоследних.Кратность
+	BilledARОстатки.AmountОстаток КАК AmountОстаток
 ПОМЕСТИТЬ Остатки
 ИЗ
-	РегистрНакопления.BilledAR.Остатки КАК BilledARОстатки,
-	РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних(, Валюта = &amp;USD) КАК ВнутренниеКурсыВалютСрезПоследних
+	РегистрНакопления.BilledAR.Остатки КАК BilledARОстатки
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -216,15 +185,10 @@
 	BilledAR.Регистратор.TranAmount,
 	BilledAR.Регистратор.Currency,
 	BilledAR.Регистратор.AccountingPeriod,
-	ВЫБОР
-		КОГДА BilledAR.Регистратор.Currency = &amp;USD
-			ТОГДА BilledAR.Регистратор.TranAmount
-		ИНАЧЕ BilledAR.Регистратор.TranAmount / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность
-	КОНЕЦ КАК РегистраторAmountUSD
+	BilledAR.Регистратор.BaseAmount
 ПОМЕСТИТЬ ВТ_ЦенаДата
 ИЗ
-	РегистрНакопления.BilledAR КАК BilledAR,
-	РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних(, Валюта = &amp;USD) КАК ВнутренниеКурсыВалютСрезПоследних
+	РегистрНакопления.BilledAR КАК BilledAR
 ГДЕ
 	BilledAR.Регистратор.System = "AR"
 	И (BilledAR.Регистратор.SourceCode = "RL"
@@ -243,20 +207,17 @@
 	Остатки.Account,
 	Остатки.Invoice,
 	Остатки.AU,
-	Остатки.Currency,
 	Остатки.AmountОстаток,
-	Остатки.AmountОстатокUSD,
 	ВТ_НастройкиСинхронизации.Идентификатор КАК CustomerID,
-	ВТ_ЦенаДата.РегистраторTranAmount,
-	ВТ_ЦенаДата.РегистраторCurrency,
 	ВТ_ЦенаДата.РегистраторAccountingPeriod,
-	Остатки.Курс,
-	Остатки.Кратность,
-	ВТ_ЦенаДата.РегистраторAmountUSD,
+	ВнутренниеКурсыВалютСрезПоследних.Курс,
+	ВТ_ЦенаДата.РегистраторTranAmount,
+	ВТ_ЦенаДата.РегистраторBaseAmount,
+	ВТ_ЦенаДата.РегистраторCurrency,
 	ВЫБОР
 		КОГДА ВТ_ЦенаДата.РегистраторTranAmount &gt; 0
-			ТОГДА ВТ_ЦенаДата.РегистраторAmountUSD / Остатки.Курс
-		ИНАЧЕ ВТ_ЦенаДата.РегистраторTranAmount
+			ТОГДА ВТ_ЦенаДата.РегистраторTranAmount / ВнутренниеКурсыВалютСрезПоследних.Курс
+		ИНАЧЕ ВТ_ЦенаДата.РегистраторBaseAmount
 	КОНЕЦ КАК BaseCurrencyEquivalent
 ИЗ
 	Остатки КАК Остатки
@@ -264,7 +225,9 @@
 		ПО Остатки.Source = ВТ_НастройкиСинхронизации.ТипСоответствия
 			И Остатки.Client = ВТ_НастройкиСинхронизации.ОбъектПриемника
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ЦенаДата КАК ВТ_ЦенаДата
-		ПО Остатки.Invoice = ВТ_ЦенаДата.Invoice</query>
+		ПО Остатки.Invoice = ВТ_ЦенаДата.Invoice
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних(, ) КАК ВнутренниеКурсыВалютСрезПоследних
+		ПО ВТ_ЦенаДата.РегистраторCurrency = ВнутренниеКурсыВалютСрезПоследних.Валюта</query>
 	</dataSet>
 	<parameter>
 		<name>Период</name>
@@ -283,32 +246,10 @@
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>false</useRestriction>
 	</parameter>
-	<parameter>
-		<name>USD</name>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>USD</v8:content>
-			</v8:item>
-		</title>
-		<valueType>
-			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:CatalogRef.Валюты</v8:Type>
-		</valueType>
-		<value xsi:nil="true"/>
-		<useRestriction>false</useRestriction>
-		<expression>Справочники.Валюты.НайтиПоКоду("840")</expression>
-	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
 		<dcsset:presentation xsi:type="xs:string">Основной</dcsset:presentation>
 		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
-			<dcsset:dataParameters>
-				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:use>false</dcscor:use>
-					<dcscor:parameter>USD</dcscor:parameter>
-					<dcscor:value xsi:type="xs:dateTime">0001-01-01T00:00:00</dcscor:value>
-				</dcscor:item>
-			</dcsset:dataParameters>
 			<dcsset:item xsi:type="dcsset:StructureItemGroup">
 				<dcsset:order>
 					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
@@ -396,22 +337,31 @@
 						</dcsset:lwsTitle>
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>РегистраторAmountUSD</dcsset:field>
+						<dcsset:field>РегистраторBaseAmount</dcsset:field>
 						<dcsset:lwsTitle>
 							<v8:item>
 								<v8:lang>ru</v8:lang>
-								<v8:content>Collected amount USD</v8:content>
+								<v8:content>Collected amount, USD</v8:content>
 							</v8:item>
 						</dcsset:lwsTitle>
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>Currency</dcsset:field>
-					</dcsset:item>
-					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>Курс</dcsset:field>
+						<dcsset:lwsTitle>
+							<v8:item>
+								<v8:lang>ru</v8:lang>
+								<v8:content>SLB rate</v8:content>
+							</v8:item>
+						</dcsset:lwsTitle>
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>BaseCurrencyEquivalent</dcsset:field>
+						<dcsset:field>РегистраторCurrency</dcsset:field>
+						<dcsset:lwsTitle>
+							<v8:item>
+								<v8:lang>ru</v8:lang>
+								<v8:content>Currency</v8:content>
+							</v8:item>
+						</dcsset:lwsTitle>
 					</dcsset:item>
 				</dcsset:selection>
 				<dcsset:outputParameters>
