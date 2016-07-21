@@ -139,6 +139,17 @@
 					<v8:content>Base currency equivalent</v8:content>
 				</v8:item>
 			</title>
+			<appearance>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>Формат</dcscor:parameter>
+					<dcscor:value xsi:type="v8:LocalStringType">
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>ЧЦ=15; ЧДЦ=2</v8:content>
+						</v8:item>
+					</dcscor:value>
+				</dcscor:item>
+			</appearance>
 		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
@@ -223,13 +234,11 @@
 	ВТ_ЦенаДата.Период,
 	ВЫБОР
 		КОГДА ВТ_ЦенаДата.Currency = &amp;USD
-			ТОГДА ВТ_ЦенаДата.BaseAmount
-		ИНАЧЕ ВЫБОР
-				КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
-						ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
-					ТОГДА 0
-				ИНАЧЕ ВТ_ЦенаДата.Amount / ВнутренниеКурсыВалютСрезПоследних.Курс
-			КОНЕЦ
+			ТОГДА ВТ_ЦенаДата.Amount
+		КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
+				ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+			ТОГДА 0
+		ИНАЧЕ ВТ_ЦенаДата.Amount / ВнутренниеКурсыВалютСрезПоследних.Курс
 	КОНЕЦ КАК BaseCurrencyEquivalent
 ИЗ
 	Остатки КАК Остатки
@@ -246,7 +255,7 @@
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
-				<v8:content>period</v8:content>
+				<v8:content>Period</v8:content>
 			</v8:item>
 		</title>
 		<valueType>
@@ -285,12 +294,13 @@
 					</dcscor:value>
 					<dcsset:userSettingID>ceea11c7-a464-40b6-afcb-d6359b887212</dcsset:userSettingID>
 				</dcscor:item>
-				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:use>false</dcscor:use>
-					<dcscor:parameter>USD</dcscor:parameter>
-					<dcscor:value xsi:nil="true"/>
-				</dcscor:item>
 			</dcsset:dataParameters>
+			<dcsset:outputParameters>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>РасположениеРеквизитов</dcscor:parameter>
+					<dcscor:value xsi:type="dcsset:DataCompositionAttributesPlacement">Separately</dcscor:value>
+				</dcscor:item>
+			</dcsset:outputParameters>
 			<dcsset:item xsi:type="dcsset:StructureItemGroup">
 				<dcsset:order>
 					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
@@ -306,7 +316,13 @@
 						</dcsset:lwsTitle>
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>LegalEntity</dcsset:field>
+						<dcsset:field>CompanyCode.БазовыйЭлемент.Наименование</dcsset:field>
+						<dcsset:lwsTitle>
+							<v8:item>
+								<v8:lang>ru</v8:lang>
+								<v8:content>Legal entity</v8:content>
+							</v8:item>
+						</dcsset:lwsTitle>
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>CompanyCode</dcsset:field>
@@ -378,11 +394,21 @@
 						</dcsset:lwsTitle>
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
+						<dcsset:use>false</dcsset:use>
 						<dcsset:field>BaseAmount</dcsset:field>
 						<dcsset:lwsTitle>
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>Collected amount, USD</v8:content>
+							</v8:item>
+						</dcsset:lwsTitle>
+					</dcsset:item>
+					<dcsset:item xsi:type="dcsset:SelectedItemField">
+						<dcsset:field>Currency</dcsset:field>
+						<dcsset:lwsTitle>
+							<v8:item>
+								<v8:lang>ru</v8:lang>
+								<v8:content>Currency</v8:content>
 							</v8:item>
 						</dcsset:lwsTitle>
 					</dcsset:item>
@@ -397,15 +423,6 @@
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>BaseCurrencyEquivalent</dcsset:field>
-					</dcsset:item>
-					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>Currency</dcsset:field>
-						<dcsset:lwsTitle>
-							<v8:item>
-								<v8:lang>ru</v8:lang>
-								<v8:content>Currency</v8:content>
-							</v8:item>
-						</dcsset:lwsTitle>
 					</dcsset:item>
 				</dcsset:selection>
 				<dcsset:outputParameters>
