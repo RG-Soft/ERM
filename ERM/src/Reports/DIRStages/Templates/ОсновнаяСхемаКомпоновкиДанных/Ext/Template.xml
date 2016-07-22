@@ -61,6 +61,7 @@
 			</title>
 			<appearance>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:use>false</dcscor:use>
 					<dcscor:parameter>Формат</dcscor:parameter>
 					<dcscor:value xsi:type="xs:string">ЧДЦ=2</dcscor:value>
 				</dcscor:item>
@@ -69,10 +70,6 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Invoice</dataPath>
 			<field>Invoice</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>BaseAmount</dataPath>
-			<field>BaseAmount</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>CompanyНаименование</dataPath>
@@ -115,6 +112,7 @@
 			</title>
 			<appearance>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:use>false</dcscor:use>
 					<dcscor:parameter>Формат</dcscor:parameter>
 					<dcscor:value xsi:type="xs:string">ЧДЦ=2</dcscor:value>
 				</dcscor:item>
@@ -262,6 +260,23 @@
 			<dataPath>Location</dataPath>
 			<field>Location</field>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>BaseAmount</dataPath>
+			<field>BaseAmount</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Base amount</v8:content>
+				</v8:item>
+			</title>
+			<appearance>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:use>false</dcscor:use>
+					<dcscor:parameter>Формат</dcscor:parameter>
+					<dcscor:value xsi:type="xs:string">ЧЦ=15; ЧДЦ=2</dcscor:value>
+				</dcscor:item>
+			</appearance>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	SalesOrder.Source КАК Source,
@@ -291,13 +306,22 @@
 	SalesOrder.Номер,
 	SalesOrder.InvoiceType,
 	SalesOrder.OrderType,
-	SalesOrder.BaseAmount,
 	SalesOrder.Ссылка,
 	SalesOrder.Company,
-	SalesOrder.SubSubSegment
+	SalesOrder.SubSubSegment,
+	ВЫБОР
+		КОГДА SalesOrder.Currency = &amp;USD
+			ТОГДА SalesOrder.Amount
+		КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
+				ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+			ТОГДА 0
+		ИНАЧЕ SalesOrder.Amount / ВнутренниеКурсыВалютСрезПоследних.Курс
+	КОНЕЦ КАК BaseAmount
 ПОМЕСТИТЬ ВТ_SO
 ИЗ
 	Документ.SalesOrder КАК SalesOrder
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;КонецПериода)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
+		ПО SalesOrder.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
 ГДЕ
 	НЕ SalesOrder.ПометкаУдаления
 	И SalesOrder.InvoiceFlagDate &gt;= &amp;НачалоПериода
@@ -376,7 +400,6 @@
 	ВТ_SO.Invoice,
 	ВТ_SO.Currency,
 	ВТ_SO.Amount,
-	ВТ_SO.BaseAmount,
 	ВТ_SO.Agreement,
 	ВТ_SO.FieldTicket,
 	ВТ_SO.SiebelOrderId,
@@ -400,14 +423,15 @@
 	РАЗНОСТЬДАТ(ВТ_SO.CreationDate, ВТ_SO.ApprovalDate, СЕКУНДА) / 86400 КАК Stage3,
 	РАЗНОСТЬДАТ(ВТ_SO.ApprovalDate, ВТ_SO.FirstSubmissionDate, СЕКУНДА) / 86400 КАК Stage4,
 	РАЗНОСТЬДАТ(ВТ_SO.FirstSubmissionDate, ВТ_SO.InvoiceFlagDate, СЕКУНДА) / 86400 КАК Stage5,
-	РАЗНОСТЬДАТ(ВТ_SO.JobEndDate, ВТ_SO.FTLSubmissionDate, СЕКУНДА) / 86400 + РАЗНОСТЬДАТ(ВТ_SO.FTLSubmissionDate, ВТ_SO.CreationDate, СЕКУНДА) / 86400 + РАЗНОСТЬДАТ(ВТ_SO.CreationDate, ВТ_SO.ApprovalDate, СЕКУНДА) / 86400 + РАЗНОСТЬДАТ(ВТ_SO.ApprovalDate, ВТ_SO.FirstSubmissionDate, СЕКУНДА) / 86400 + РАЗНОСТЬДАТ(ВТ_SO.FirstSubmissionDate, ВТ_SO.InvoiceFlagDate, СЕКУНДА) / 86400 КАК TotalDIR,
-	ВТ_SO.BaseAmount * (РАЗНОСТЬДАТ(ВТ_SO.JobEndDate, ВТ_SO.FTLSubmissionDate, СЕКУНДА) / 86400 + РАЗНОСТЬДАТ(ВТ_SO.FTLSubmissionDate, ВТ_SO.CreationDate, СЕКУНДА) / 86400 + РАЗНОСТЬДАТ(ВТ_SO.CreationDate, ВТ_SO.ApprovalDate, СЕКУНДА) / 86400 + РАЗНОСТЬДАТ(ВТ_SO.ApprovalDate, ВТ_SO.FirstSubmissionDate, СЕКУНДА) / 86400 + РАЗНОСТЬДАТ(ВТ_SO.FirstSubmissionDate, ВТ_SO.InvoiceFlagDate, СЕКУНДА) / 86400) КАК DirFactor,
+	ВЫРАЗИТЬ(РАЗНОСТЬДАТ(ВТ_SO.JobEndDate, ВТ_SO.FTLSubmissionDate, СЕКУНДА) / 86400 + РАЗНОСТЬДАТ(ВТ_SO.FTLSubmissionDate, ВТ_SO.CreationDate, СЕКУНДА) / 86400 + РАЗНОСТЬДАТ(ВТ_SO.CreationDate, ВТ_SO.ApprovalDate, СЕКУНДА) / 86400 + РАЗНОСТЬДАТ(ВТ_SO.ApprovalDate, ВТ_SO.FirstSubmissionDate, СЕКУНДА) / 86400 + РАЗНОСТЬДАТ(ВТ_SO.FirstSubmissionDate, ВТ_SO.InvoiceFlagDate, СЕКУНДА) / 86400 КАК ЧИСЛО(10, 0)) КАК TotalDIR,
+	(ВЫРАЗИТЬ(ВТ_SO.BaseAmount КАК ЧИСЛО(10, 2))) * (ВЫРАЗИТЬ(РАЗНОСТЬДАТ(ВТ_SO.JobEndDate, ВТ_SO.FTLSubmissionDate, СЕКУНДА) / 86400 + РАЗНОСТЬДАТ(ВТ_SO.FTLSubmissionDate, ВТ_SO.CreationDate, СЕКУНДА) / 86400 + РАЗНОСТЬДАТ(ВТ_SO.CreationDate, ВТ_SO.ApprovalDate, СЕКУНДА) / 86400 + РАЗНОСТЬДАТ(ВТ_SO.ApprovalDate, ВТ_SO.FirstSubmissionDate, СЕКУНДА) / 86400 + РАЗНОСТЬДАТ(ВТ_SO.FirstSubmissionDate, ВТ_SO.InvoiceFlagDate, СЕКУНДА) / 86400 КАК ЧИСЛО(10, 0))) КАК DirFactor,
 	ВЫБОР
 		КОГДА ВТ_Остатки.AmountОстаток ЕСТЬ NULL 
 			ТОГДА "Billed"
 		ИНАЧЕ "Unbilled"
 	КОНЕЦ КАК BiilledType,
-	ВТ_SO.SubSubSegment
+	ВТ_SO.SubSubSegment,
+	ВЫРАЗИТЬ(ВТ_SO.BaseAmount КАК ЧИСЛО(10, 2)) КАК BaseAmount
 ИЗ
 	ВТ_SO КАК ВТ_SO
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ИдентификаторыКлиентов КАК ВТ_ИдентификаторыКлиентов
@@ -474,6 +498,21 @@
 			<v8:endDate>0001-01-01T00:00:00</v8:endDate>
 		</value>
 		<useRestriction>false</useRestriction>
+	</parameter>
+	<parameter>
+		<name>USD</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>USD</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:CatalogRef.Валюты</v8:Type>
+		</valueType>
+		<value xsi:nil="true"/>
+		<useRestriction>true</useRestriction>
+		<expression>Справочники.Валюты.НайтиПоКоду("840")</expression>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
@@ -778,6 +817,11 @@
 						<v8:endDate>0001-01-01T00:00:00</v8:endDate>
 					</dcscor:value>
 					<dcsset:userSettingID>c71919e6-38e5-4829-89ae-7bc71b6c0a97</dcsset:userSettingID>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:use>false</dcscor:use>
+					<dcscor:parameter>USD</dcscor:parameter>
+					<dcscor:value xsi:type="xs:dateTime">0001-01-01T00:00:00</dcscor:value>
 				</dcscor:item>
 			</dcsset:dataParameters>
 			<dcsset:outputParameters>
