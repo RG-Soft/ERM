@@ -142,12 +142,7 @@
 			<appearance>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>Формат</dcscor:parameter>
-					<dcscor:value xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>ЧЦ=15; ЧДЦ=2</v8:content>
-						</v8:item>
-					</dcscor:value>
+					<dcscor:value xsi:type="xs:string">ЧЦ=15; ЧДЦ=2</dcscor:value>
 				</dcscor:item>
 			</appearance>
 		</field>
@@ -205,7 +200,6 @@
 	И (BilledAR.Регистратор.SourceCode = "RL"
 			ИЛИ BilledAR.Регистратор.SourceCode = "RY")
 	И BilledAR.Активность
-	И BilledAR.Период &lt;= &amp;Период
 
 СГРУППИРОВАТЬ ПО
 	BilledAR.Invoice,
@@ -246,7 +240,7 @@
 		ПО Остатки.Source = ВТ_НастройкиСинхронизации.ТипСоответствия
 			И Остатки.Client = ВТ_НастройкиСинхронизации.ОбъектПриемника
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ЦенаДата КАК ВТ_ЦенаДата
-			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних(, ) КАК ВнутренниеКурсыВалютСрезПоследних
+			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних(&amp;Период, ) КАК ВнутренниеКурсыВалютСрезПоследних
 			ПО ВТ_ЦенаДата.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
 		ПО Остатки.Invoice = ВТ_ЦенаДата.Invoice</query>
 	</dataSet>
