@@ -69,7 +69,8 @@
 	|	ТранзакцияOracle.DocID,
 	|	ТранзакцияOracle.LineID,
 	|	ТранзакцияOracle.Amount,
-	|	ТранзакцияOracle.BaseAmount
+	|	ТранзакцияOracle.BaseAmount,
+	|	ТранзакцияOracle.Source
 	|ИЗ
 	|	Документ.ТранзакцияOracle КАК ТранзакцияOracle
 	|ГДЕ
