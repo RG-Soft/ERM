@@ -97,14 +97,6 @@
 			<field>ГоловнойКонтрагент</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>Memo</dataPath>
-			<field>Memo</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>CashBatch</dataPath>
-			<field>CashBatch</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>Rate</dataPath>
 			<field>Rate</field>
 			<title xsi:type="v8:LocalStringType">
@@ -179,38 +171,6 @@
 ИЗ
 	РегистрНакопления.UnbilledAR.Остатки(, ) КАК UnbilledARОстатки
 
-ОБЪЕДИНИТЬ ВСЕ
-
-ВЫБРАТЬ
-	UnallocatedCashОстатки.Client,
-	UnallocatedCashОстатки.Company,
-	UnallocatedCashОстатки.Source,
-	UnallocatedCashОстатки.Location,
-	UnallocatedCashОстатки.SubSubSegment,
-	UnallocatedCashОстатки.CashBatch,
-	UnallocatedCashОстатки.Account,
-	UnallocatedCashОстатки.Currency,
-	UnallocatedCashОстатки.AU,
-	UnallocatedCashОстатки.AmountОстаток
-ИЗ
-	РегистрНакопления.UnallocatedCash.Остатки КАК UnallocatedCashОстатки
-
-ОБЪЕДИНИТЬ ВСЕ
-
-ВЫБРАТЬ
-	UnallocatedMemoОстатки.Client,
-	UnallocatedMemoОстатки.Company,
-	UnallocatedMemoОстатки.Source,
-	UnallocatedMemoОстатки.Location,
-	UnallocatedMemoОстатки.SubSubSegment,
-	UnallocatedMemoОстатки.Memo,
-	UnallocatedMemoОстатки.Account,
-	UnallocatedMemoОстатки.Currency,
-	UnallocatedMemoОстатки.AU,
-	UnallocatedMemoОстатки.AmountОстаток
-ИЗ
-	РегистрНакопления.UnallocatedMemo.Остатки КАК UnallocatedMemoОстатки
-
 ИНДЕКСИРОВАТЬ ПО
 	Client,
 	Source
@@ -280,10 +240,10 @@
 	ВЫБОР
 		КОГДА ВТ_Остатки.SalesOrder ССЫЛКА Документ.SalesOrder
 			ТОГДА "А"
-		КОГДА ВТ_Остатки.SalesOrder ССЫЛКА Документ.CashBatch
-			ТОГДА "Payment"
-		КОГДА ВТ_Остатки.SalesOrder ССЫЛКА Документ.Memo
-			ТОГДА "Memo"
+		//КОГДА ВТ_Остатки.SalesOrder ССЫЛКА Документ.CashBatch
+		//	ТОГДА "Payment"
+		//КОГДА ВТ_Остатки.SalesOrder ССЫЛКА Документ.Memo
+		//	ТОГДА "Memo"
 		ИНАЧЕ ""
 	КОНЕЦ КАК TransType,
 	ВТ_Остатки.SalesOrder.Amount,
