@@ -27,17 +27,13 @@
 		ВыполнитьДвиженияПоРучнымКорректировкам(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, Движения, Реквизиты.Amount, Реквизиты.BaseAmount, Отказ);
 		
 		
-	ИначеЕсли Реквизиты.DocType = "INV" Тогда
+	ИначеЕсли Реквизиты.DocType = "INV" ИЛИ Реквизиты.DocType = "DEP" ИЛИ Реквизиты.DocType = "GUAR"
+		ИЛИ Реквизиты.DocType = "PMT" ИЛИ Реквизиты.DocType = "CB" Тогда
 		
 		ВыполнитьНачислениеBilledAR(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, Движения, Реквизиты.Amount, Реквизиты.BaseAmount, Отказ);
 		
 	ИначеЕсли Реквизиты.DocType = "CASH"
-		И (Реквизиты.TransType = "TRADE_UNID" ИЛИ Реквизиты.TransType = "CCURR_UNAPP" ИЛИ Реквизиты.TransType = "TRADE_UNAPP") Тогда
-		
-		ВыполнитьНачислениеUnallocatedCash(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, Движения, Реквизиты.Amount, Реквизиты.BaseAmount, Отказ);
-		
-	ИначеЕсли Реквизиты.DocType = "CASH"
-		И (Реквизиты.TransType = "TRADE_UNID" ИЛИ Реквизиты.TransType = "CCURR_UNAPP" ИЛИ Реквизиты.TransType = "TRADE_UNAPP") Тогда
+		И (Реквизиты.TransType = "TRADE_UNID" ИЛИ Реквизиты.TransType = "CCURR_UNAPP" ИЛИ Реквизиты.TransType = "TRADE_UNAPP" ИЛИ Реквизиты.TransType = "TRADE_ACC") Тогда
 		
 		ВыполнитьНачислениеUnallocatedCash(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, Движения, Реквизиты.Amount, Реквизиты.BaseAmount, Отказ);
 		

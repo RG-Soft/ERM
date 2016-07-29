@@ -960,10 +960,10 @@
 		//
 		//КонецЕсли;
 		// TODO RGS AGorlenko 21.07.2016: переделать поиск
-		ТекCashBatch = ПолучитьCashBatch(ТранзакцияOracleОбъект.DocID, ТранзакцияOracleОбъект.Source);
+		ТекCashBatch = ПолучитьCashBatch(ТранзакцияOracleОбъект.DocID, ТранзакцияOracleОбъект.Source, ТранзакцияOracleОбъект.TransType = "TRADE_ACC");
 		
 		Если Не ЗначениеЗаполнено(ТекCashBatch) Тогда
-			ТекCashBatch = СоздатьCashBatch(ТранзакцияOracleОбъект);
+			ТекCashBatch = СоздатьCashBatch(ТранзакцияOracleОбъект, ТранзакцияOracleОбъект.TransType = "TRADE_ACC");
 		Иначе
 			ДобавитьСвязанныйОбъект(ТранзакцияOracleОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.CashBatch, ТекCashBatch);
 		КонецЕсли;
@@ -1063,7 +1063,7 @@
 	
 КонецФункции
 
-Функция ПолучитьCashBatch(DocID, Source)
+Функция ПолучитьCashBatch(DocID, Source, Prepayment)
 	
 	Запрос = Новый Запрос;
 	Запрос.Текст = 
@@ -1074,10 +1074,12 @@
 		|ГДЕ
 		|	CashBatch.DocID = &DocID
 		|	И НЕ CashBatch.ПометкаУдаления
-		|	И CashBatch.Source = &Source";
+		|	И CashBatch.Source = &Source
+		|	И CashBatch.Prepayment = &Prepayment";
 	
 	Запрос.УстановитьПараметр("DocID", DocID);
 	Запрос.УстановитьПараметр("Source", Source);
+	Запрос.УстановитьПараметр("Prepayment", Prepayment);
 	
 	РезультатЗапроса = Запрос.Выполнить();
 	
@@ -1114,6 +1116,7 @@
 	ДокОбъект.Source = ТранзакцияOracleОбъект.Source;
 	ДокОбъект.Client = ТранзакцияOracleОбъект.Client;
 	ДокОбъект.Company = ТранзакцияOracleОбъект.Company;
+	ДокОбъект.OriginalAnalytics = ТранзакцияOracleОбъект.GL_Account;
 	ДокОбъект.Записать(РежимЗаписиДокумента.Запись);
 	
 	ДобавитьСвязанныйОбъект(ТранзакцияOracleОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.SalesOrder, ДокОбъект.Ссылка);
@@ -1155,6 +1158,7 @@
 	ДокОбъект.Account = ТранзакцияOracleОбъект.Account;
 	ДокОбъект.Currency = ТранзакцияOracleОбъект.Currency;
 	ДокОбъект.DocID = ТранзакцияOracleОбъект.DocID;
+	ДокОбъект.OriginalAnalytics = ТранзакцияOracleОбъект.GL_Account;
 	ДокОбъект.Записать(РежимЗаписиДокумента.Запись);
 	
 	ДобавитьСвязанныйОбъект(ТранзакцияOracleОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.Invoice, ДокОбъект.Ссылка);
@@ -1175,7 +1179,7 @@
 	
 КонецПроцедуры
 
-Функция СоздатьCashBatch(ТранзакцияOracleОбъект)
+Функция СоздатьCashBatch(ТранзакцияOracleОбъект, Prepayment = Ложь)
 	
 	ДокОбъект = Документы.CashBatch.СоздатьДокумент();
 	ДокОбъект.PaymentNumber = ТранзакцияOracleОбъект.DocNumber;
@@ -1188,6 +1192,8 @@
 	ДокОбъект.Account = ТранзакцияOracleОбъект.Account;
 	ДокОбъект.Currency = ТранзакцияOracleОбъект.Currency;
 	ДокОбъект.DocID = ТранзакцияOracleОбъект.DocID;
+	ДокОбъект.Prepayment = Prepayment;
+	ДокОбъект.OriginalAnalytics = ТранзакцияOracleОбъект.GL_Account;
 	ДокОбъект.Записать(РежимЗаписиДокумента.Запись);
 	
 	ДобавитьСвязанныйОбъект(ТранзакцияOracleОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.CashBatch, ДокОбъект.Ссылка);
