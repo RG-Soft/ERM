@@ -2,17 +2,6 @@
 
 Процедура ЗагрузитьДанныеИзФайла(СтруктураПараметров, АдресХранилища) Экспорт
 	
-	// { RGS AGorlenko 27.07.2016 12:21:02 - загрузка через csv
-	//ДанныеДляЗаполнения = Новый Структура();
-	//СтруктураКолонок = СтруктураПараметров.СтруктураКолонок;
-	//ТаблицаДанных = ИнициализироватьТаблицуДанных(СтруктураКолонок);
-	//ТекстОшибки = "";
-	//
-	//ПутьКФайлу = ПолучитьИмяВременногоФайла("xlsx");
-	//ФайлЭксель = СтруктураПараметров.ИсточникДанных.Получить();
-	//ФайлЭксель.Записать(ПутьКФайлу);
-	//
-	//rgsЗагрузкаИзExcel.ВыгрузитьЭксельВТаблицуДанныхПоИменамКолонок(ПутьКФайлу, ТаблицаДанных, ДанныеДляЗаполнения, АдресХранилища, СтруктураПараметров);
 	ДанныеДляЗаполнения = Новый Структура();
 	СтруктураКолонок = СтруктураПараметров.СтруктураКолонок;
 	ТаблицаДанных = ИнициализироватьТаблицуДанных(СтруктураКолонок);
@@ -22,13 +11,21 @@
 	
 	ИмяКаталога = КаталогВременныхФайлов() + Строка(Новый УникальныйИдентификатор());
 	СоздатьКаталог(ИмяКаталога);
-	ПутьКФайлу = ИмяКаталога + "\HOB_accruals.csv";
+	Если СтруктураПараметров.ТипТранзакций = Перечисления.HOBTransactionType.Accrual Тогда
+		ПутьКФайлу = ИмяКаталога + "\HOB_accruals.csv";
+	ИначеЕсли СтруктураПараметров.ТипТранзакций = Перечисления.HOBTransactionType.JV Тогда
+		ПутьКФайлу = ИмяКаталога + "\HOB_JV.csv";
+	КонецЕсли;
 	ФайлДанных.Записать(ПутьКФайлу);
 	
 	ПутьСхемы = ИмяКаталога+"\schema.ini";
 	ФайлСхемы = Новый ТекстовыйДокумент;
 	//ФайлСхемы.ДобавитьСтроку("	" + Символы.ПС + "DecimalSymbol=.");
-	ФайлСхемы.УстановитьТекст(Документы.ЗагрузкаДанныхHOB.ПолучитьМакет("AccrualsSchema").ПолучитьТекст());
+	Если СтруктураПараметров.ТипТранзакций = Перечисления.HOBTransactionType.Accrual Тогда
+		ФайлСхемы.УстановитьТекст(Документы.ЗагрузкаДанныхHOB.ПолучитьМакет("AccrualsSchema").ПолучитьТекст());
+	ИначеЕсли СтруктураПараметров.ТипТранзакций = Перечисления.HOBTransactionType.JV Тогда
+		ФайлСхемы.УстановитьТекст(Документы.ЗагрузкаДанныхHOB.ПолучитьМакет("JVSchema").ПолучитьТекст());
+	КонецЕсли;
 	ФайлСхемы.Записать(ПутьСхемы, КодировкаТекста.OEM);
 	
 	Connection = Новый COMОбъект("ADODB.Connection");
@@ -47,7 +44,11 @@
 	
 	rs = Новый COMObject("ADODB.RecordSet");
 	
-	Стр_SQL = "Select * FROM HOB_accruals.csv";
+	Если СтруктураПараметров.ТипТранзакций = Перечисления.HOBTransactionType.Accrual Тогда
+		Стр_SQL = "Select * FROM HOB_accruals.csv";
+	ИначеЕсли СтруктураПараметров.ТипТранзакций = Перечисления.HOBTransactionType.JV Тогда
+		Стр_SQL = "Select * FROM HOB_JV.csv";
+	КонецЕсли;
 	rs.Open(Стр_SQL, Connection);
 	
 	СтруктураКолонок = СтруктураПараметров.СтруктураКолонок;
@@ -95,9 +96,8 @@
 	Connection.Close();
 	
 	УдалитьФайлы(ИмяКаталога);
-	// } RGS AGorlenko 27.07.2016 12:21:10 - загрузка через csv
 	
-	ЗагрузитьИЗаписатьДвижения(СтруктураПараметров.Ссылка, СтруктураПараметров.Дата, ТаблицаДанных);
+	ЗагрузитьИЗаписатьДвижения(СтруктураПараметров, ТаблицаДанных);
 	
 	ПоместитьВоВременноеХранилище(ДанныеДляЗаполнения, АдресХранилища);
 	
@@ -117,13 +117,17 @@
 	
 КонецФункции
 
-Процедура ЗагрузитьИЗаписатьДвижения(Ссылка, ДатаДокумента, ТаблицаДанных)
+Процедура ЗагрузитьИЗаписатьДвижения(СтруктураПараметров, ТаблицаДанных)
 	
 	ТаблицаДанных.Колонки.Добавить("ДокументЗагрузки");
-	ТаблицаДанных.ЗаполнитьЗначения(Ссылка, "ДокументЗагрузки");
+	ТаблицаДанных.ЗаполнитьЗначения(СтруктураПараметров.Ссылка, "ДокументЗагрузки");
 	
-	НЗ = РегистрыСведений.HOBSourceData.СоздатьНаборЗаписей();
-	НЗ.Отбор.ДокументЗагрузки.Установить(Ссылка);
+	Если СтруктураПараметров.ТипТранзакций = Перечисления.HOBTransactionType.Accrual Тогда
+		НЗ = РегистрыСведений.HOBAccrualsSourceData.СоздатьНаборЗаписей();
+	ИначеЕсли СтруктураПараметров.ТипТранзакций = Перечисления.HOBTransactionType.JV Тогда
+		НЗ = РегистрыСведений.HOBJVSourceData.СоздатьНаборЗаписей();
+	КонецЕсли;
+	НЗ.Отбор.ДокументЗагрузки.Установить(СтруктураПараметров.Ссылка);
 	НЗ.Загрузить(ТаблицаДанных);
 	НЗ.Записать(Истина);
 	
@@ -131,48 +135,75 @@
 
 Процедура ВыполнитьПроверкуНастроекСинхронизации(СтруктураПараметров, АдресХранилища) Экспорт
 	
+	Если СтруктураПараметров.ТипТранзакций = Перечисления.HOBTransactionType.Accrual Тогда
+		ВыполнитьПроверкуНастроекСинхронизацииAccruals(СтруктураПараметров, АдресХранилища);
+	ИначеЕсли СтруктураПараметров.ТипТранзакций = Перечисления.HOBTransactionType.JV Тогда
+		ВыполнитьПроверкуНастроекСинхронизацииJV(СтруктураПараметров, АдресХранилища);
+	Иначе
+		ВызватьИсключение "Unknown type of transactions!";
+	КонецЕсли;
+	
+КонецПроцедуры
+
+Процедура ВыполнитьПроверкуНастроекСинхронизацииAccruals(СтруктураПараметров, АдресХранилища)
+	
 	ДанныеДляЗаполнения = Новый Структура();
 	
 	Запрос = Новый Запрос;
 	Запрос.Текст = 
 		"ВЫБРАТЬ
-		|	HOBSourceData.ДокументЗагрузки,
-		|	HOBSourceData.СтрокаФайла,
-		|	HOBSourceData.TrDate,
-		|	HOBSourceData.TrNumber,
-		|	HOBSourceData.Document,
-		|	HOBSourceData.DocumentType,
-		|	HOBSourceData.Account,
-		|	HOBSourceData.Client,
-		|	HOBSourceData.INN,
-		|	HOBSourceData.Agreement,
-		|	HOBSourceData.SalesOrder,
-		|	HOBSourceData.SalesOrderNumber,
-		|	HOBSourceData.CompanyCode,
-		|	HOBSourceData.CompanyDesc,
-		|	HOBSourceData.Currency,
-		|	HOBSourceData.LocationCode,
-		|	HOBSourceData.LocationDesc,
-		|	HOBSourceData.Amount,
-		|	HOBSourceData.BaseAmount,
-		|	HOBSourceData.JobEndDate,
-		|	HOBSourceData.SalesOrderAmount,
-		|	HOBSourceData.SalesOrderContract,
-		|	HOBSourceData.ERPStatus,
-		|	HOBSourceData.SalesOrderCurrency,
-		|	HOBSourceData.SalesOrderExchangeRate,
-		|	HOBSourceData.SalesOrderApprovalDate,
-		|	HOBSourceData.SalesOrderApprovedBy,
-		|	HOBSourceData.AU,
-		|	HOBSourceData.SubSubSegment,
-		|	HOBSourceData.DocumentGUID,
-		|	HOBSourceData.SalesOrderGUID,
-		|	HOBSourceData.TrID
-		|ПОМЕСТИТЬ ВТ_HOBSourceData
+		|	HOBAccrualsSourceData.TrDate,
+		|	HOBAccrualsSourceData.TrNumber,
+		|	HOBAccrualsSourceData.Document,
+		|	HOBAccrualsSourceData.DocumentType,
+		|	HOBAccrualsSourceData.Account,
+		|	HOBAccrualsSourceData.Client,
+		|	HOBAccrualsSourceData.INN,
+		|	HOBAccrualsSourceData.SalesOrderAgreementCode,
+		|	HOBAccrualsSourceData.SalesOrderAgreement,
+		|	HOBAccrualsSourceData.SalesOrder,
+		|	HOBAccrualsSourceData.SalesOrderNumber,
+		|	HOBAccrualsSourceData.CompanyCode,
+		|	HOBAccrualsSourceData.CompanyDesc,
+		|	HOBAccrualsSourceData.Currency,
+		|	HOBAccrualsSourceData.LocationCode,
+		|	HOBAccrualsSourceData.LocationDesc,
+		|	HOBAccrualsSourceData.Amount,
+		|	HOBAccrualsSourceData.BaseAmount,
+		|	HOBAccrualsSourceData.JobEndDate,
+		|	HOBAccrualsSourceData.SalesOrderAmount,
+		|	HOBAccrualsSourceData.ERPStatus,
+		|	HOBAccrualsSourceData.SalesOrderCurrency,
+		|	HOBAccrualsSourceData.SalesOrderExchangeRate,
+		|	HOBAccrualsSourceData.SalesOrderApprovalDate,
+		|	HOBAccrualsSourceData.SalesOrderApprovedBy,
+		|	HOBAccrualsSourceData.AU,
+		|	HOBAccrualsSourceData.AUType,
+		|	HOBAccrualsSourceData.SubSubSegment,
+		|	HOBAccrualsSourceData.SalesOrderDate,
+		|	HOBAccrualsSourceData.Invoice,
+		|	HOBAccrualsSourceData.InvoiceDate,
+		|	HOBAccrualsSourceData.InvoiceNumber,
+		|	HOBAccrualsSourceData.InvoiceCurrency,
+		|	HOBAccrualsSourceData.InvoiceAmount,
+		|	HOBAccrualsSourceData.InvoiceBilled,
+		|	HOBAccrualsSourceData.InvoicePassedForApproval,
+		|	HOBAccrualsSourceData.InvoicePassedForPayment,
+		|	HOBAccrualsSourceData.InvoicePassedForApprovalDate,
+		|	HOBAccrualsSourceData.InvoicePassedForPaymentDate,
+		|	HOBAccrualsSourceData.ExpectedDateOfPayment,
+		|	HOBAccrualsSourceData.InvoiceAgreementCode,
+		|	HOBAccrualsSourceData.InvoiceAgreement,
+		|	HOBAccrualsSourceData.Reverse,
+		|	HOBAccrualsSourceData.DocumentID,
+		|	HOBAccrualsSourceData.SalesOrderID,
+		|	HOBAccrualsSourceData.InvoiceID,
+		|	HOBAccrualsSourceData.TrID
+		|ПОМЕСТИТЬ ВТ_HOBAccrualsSourceData
 		|ИЗ
-		|	РегистрСведений.HOBSourceData КАК HOBSourceData
+		|	РегистрСведений.HOBAccrualsSourceData КАК HOBAccrualsSourceData
 		|ГДЕ
-		|	HOBSourceData.ДокументЗагрузки = &ДокументЗагрузки
+		|	HOBAccrualsSourceData.ДокументЗагрузки = &ДокументЗагрузки
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
@@ -182,17 +213,55 @@
 		|	&ТипВнешнейСистемы КАК ТипСоответствия,
 		|	ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Currency) КАК ТипОбъектаВнешнейСистемы,
 		|	ЗНАЧЕНИЕ(Справочник.Валюты.ПустаяСсылка) КАК ОбъектПриемника,
-		|	ВТ_HOBSourceData.Currency КАК Идентификатор
+		|	ВТ_HOBAccrualsSourceData.Currency КАК Идентификатор
 		|ИЗ
-		|	ВТ_HOBSourceData КАК ВТ_HOBSourceData
+		|	ВТ_HOBAccrualsSourceData КАК ВТ_HOBAccrualsSourceData
 		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(
 		|				&Период,
 		|				ТипСоответствия = &ТипВнешнейСистемы
 		|					И ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Currency)) КАК НастройкаСинхронизацииCurrency
-		|		ПО ВТ_HOBSourceData.Currency = НастройкаСинхронизацииCurrency.Идентификатор
+		|		ПО ВТ_HOBAccrualsSourceData.Currency = НастройкаСинхронизацииCurrency.Идентификатор
 		|ГДЕ
 		|	НастройкаСинхронизацииCurrency.ОбъектПриемника ЕСТЬ NULL 
-		|	И НЕ ВТ_HOBSourceData.Currency = """"
+		|
+		|ОБЪЕДИНИТЬ ВСЕ
+		|
+		|ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	ЛОЖЬ,
+		|	""Specify the 1C object"",
+		|	&ТипВнешнейСистемы,
+		|	ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Currency),
+		|	ЗНАЧЕНИЕ(Справочник.Валюты.ПустаяСсылка),
+		|	ВТ_HOBAccrualsSourceData.SalesOrderCurrency
+		|ИЗ
+		|	ВТ_HOBAccrualsSourceData КАК ВТ_HOBAccrualsSourceData
+		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(
+		|				&Период,
+		|				ТипСоответствия = &ТипВнешнейСистемы
+		|					И ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Currency)) КАК НастройкаСинхронизацииCurrency
+		|		ПО ВТ_HOBAccrualsSourceData.SalesOrderCurrency = НастройкаСинхронизацииCurrency.Идентификатор
+		|ГДЕ
+		|	НастройкаСинхронизацииCurrency.ОбъектПриемника ЕСТЬ NULL 
+		|
+		|ОБЪЕДИНИТЬ ВСЕ
+		|
+		|ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	ЛОЖЬ,
+		|	""Specify the 1C object"",
+		|	&ТипВнешнейСистемы,
+		|	ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Currency),
+		|	ЗНАЧЕНИЕ(Справочник.Валюты.ПустаяСсылка),
+		|	ВТ_HOBAccrualsSourceData.InvoiceCurrency
+		|ИЗ
+		|	ВТ_HOBAccrualsSourceData КАК ВТ_HOBAccrualsSourceData
+		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(
+		|				&Период,
+		|				ТипСоответствия = &ТипВнешнейСистемы
+		|					И ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Currency)) КАК НастройкаСинхронизацииCurrency
+		|		ПО ВТ_HOBAccrualsSourceData.InvoiceCurrency = НастройкаСинхронизацииCurrency.Идентификатор
+		|ГДЕ
+		|	НастройкаСинхронизацииCurrency.ОбъектПриемника ЕСТЬ NULL 
+		|	И ВТ_HOBAccrualsSourceData.InvoiceCurrency <> """"
 		|
 		|ОБЪЕДИНИТЬ
 		|
@@ -202,12 +271,12 @@
 		|	&ТипВнешнейСистемы,
 		|	ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Account),
 		|	ЗНАЧЕНИЕ(ПланСчетов.Lawson.ПустаяСсылка),
-		|	ВТ_HOBSourceData.Account
+		|	ВТ_HOBAccrualsSourceData.Account
 		|ИЗ
-		|	ВТ_HOBSourceData КАК ВТ_HOBSourceData
+		|	ВТ_HOBAccrualsSourceData КАК ВТ_HOBAccrualsSourceData
 		|		ЛЕВОЕ СОЕДИНЕНИЕ ПланСчетов.Lawson КАК Lawson
-		|		ПО ВТ_HOBSourceData.Account = Lawson.Код
-		|			И (НЕ Lawson.ПометкаУдаления)
+		|		ПО (НЕ Lawson.ПометкаУдаления)
+		|			И ВТ_HOBAccrualsSourceData.Account = Lawson.Код
 		|ГДЕ
 		|	Lawson.Ссылка ЕСТЬ NULL 
 		|
@@ -219,16 +288,15 @@
 		|	&ТипВнешнейСистемы,
 		|	ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Company),
 		|	ЗНАЧЕНИЕ(Справочник.Организации.ПустаяСсылка),
-		|	ВТ_HOBSourceData.CompanyCode
+		|	ВТ_HOBAccrualsSourceData.CompanyCode
 		|ИЗ
-		|	ВТ_HOBSourceData КАК ВТ_HOBSourceData
+		|	ВТ_HOBAccrualsSourceData КАК ВТ_HOBAccrualsSourceData
 		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
 		|		ПО (НЕ Организации.ПометкаУдаления)
-		|			И ВТ_HOBSourceData.CompanyCode = Организации.Код
 		|			И (Организации.Source = &ТипВнешнейСистемы)
+		|			И ВТ_HOBAccrualsSourceData.CompanyCode = Организации.Код
 		|ГДЕ
-		|	ВТ_HOBSourceData.CompanyCode <> 0
-		|	И Организации.Ссылка ЕСТЬ NULL 
+		|	Организации.Ссылка ЕСТЬ NULL 
 		|
 		|ОБЪЕДИНИТЬ
 		|
@@ -240,10 +308,10 @@
 		|	ЗНАЧЕНИЕ(Справочник.Сегменты.ПустаяСсылка),
 		|	КостЦентры.Код
 		|ИЗ
-		|	ВТ_HOBSourceData КАК ВТ_HOBSourceData
+		|	ВТ_HOBAccrualsSourceData КАК ВТ_HOBAccrualsSourceData
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.КостЦентры КАК КостЦентры
-		|		ПО ВТ_HOBSourceData.AU = КостЦентры.Код
-		|			И (НЕ КостЦентры.ПометкаУдаления)
+		|		ПО (НЕ КостЦентры.ПометкаУдаления)
+		|			И ВТ_HOBAccrualsSourceData.AU = КостЦентры.Код
 		|ГДЕ
 		|	КостЦентры.Сегмент = ЗНАЧЕНИЕ(Справочник.Сегменты.ПустаяСсылка)
 		|
@@ -257,14 +325,14 @@
 		|	ЗНАЧЕНИЕ(Справочник.ПодразделенияОрганизаций.ПустаяСсылка),
 		|	КостЦентры.Код
 		|ИЗ
-		|	ВТ_HOBSourceData КАК ВТ_HOBSourceData
+		|	ВТ_HOBAccrualsSourceData КАК ВТ_HOBAccrualsSourceData
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.КостЦентры КАК КостЦентры
-		|		ПО ВТ_HOBSourceData.AU = КостЦентры.Код
-		|			И (НЕ КостЦентры.ПометкаУдаления)
+		|		ПО (НЕ КостЦентры.ПометкаУдаления)
+		|			И ВТ_HOBAccrualsSourceData.AU = КостЦентры.Код
 		|ГДЕ
 		|	КостЦентры.ПодразделениеОрганизации = ЗНАЧЕНИЕ(Справочник.ПодразделенияОрганизаций.ПустаяСсылка)
 		|
-		|ОБЪЕДИНИТЬ ВСЕ
+		|ОБЪЕДИНИТЬ
 		|
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	ЛОЖЬ,
@@ -272,12 +340,12 @@
 		|	&ТипВнешнейСистемы,
 		|	ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.AccountingUnit),
 		|	ЗНАЧЕНИЕ(Справочник.КостЦентры.ПустаяСсылка),
-		|	ВТ_HOBSourceData.AU
+		|	ВТ_HOBAccrualsSourceData.AU
 		|ИЗ
-		|	ВТ_HOBSourceData КАК ВТ_HOBSourceData
+		|	ВТ_HOBAccrualsSourceData КАК ВТ_HOBAccrualsSourceData
 		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.КостЦентры КАК КостЦентры
 		|		ПО (НЕ КостЦентры.ПометкаУдаления)
-		|			И ВТ_HOBSourceData.AU = КостЦентры.Код
+		|			И ВТ_HOBAccrualsSourceData.AU = КостЦентры.Код
 		|ГДЕ
 		|	КостЦентры.Ссылка ЕСТЬ NULL 
 		|;
@@ -288,13 +356,13 @@
 		|	ЕСТЬNULL(HFM_Technology.Ссылка, ЗНАЧЕНИЕ(Справочник.HFM_Technology.ПустаяСсылка)) КАК БазовыйЭлемент,
 		|	КостЦентры.Сегмент.Код КАК Код
 		|ИЗ
-		|	ВТ_HOBSourceData КАК ВТ_HOBSourceData
+		|	ВТ_HOBAccrualsSourceData КАК ВТ_HOBAccrualsSourceData
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.КостЦентры КАК КостЦентры
 		|			ЛЕВОЕ СОЕДИНЕНИЕ Справочник.HFM_Technology КАК HFM_Technology
 		|			ПО КостЦентры.Сегмент.Код = HFM_Technology.Код
 		|				И (НЕ HFM_Technology.ПометкаУдаления)
-		|		ПО ВТ_HOBSourceData.AU = КостЦентры.Код
-		|			И (НЕ КостЦентры.ПометкаУдаления)
+		|		ПО (НЕ КостЦентры.ПометкаУдаления)
+		|			И ВТ_HOBAccrualsSourceData.AU = КостЦентры.Код
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
@@ -303,13 +371,13 @@
 		|	КостЦентры.ПодразделениеОрганизации.Код КАК Код,
 		|	ЕСТЬNULL(HFM_Locations.Ссылка, ЗНАЧЕНИЕ(Справочник.HFM_Locations.ПустаяСсылка)) КАК LocationПоSubGeomarket
 		|ИЗ
-		|	ВТ_HOBSourceData КАК ВТ_HOBSourceData
+		|	ВТ_HOBAccrualsSourceData КАК ВТ_HOBAccrualsSourceData
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.КостЦентры КАК КостЦентры
 		|			ЛЕВОЕ СОЕДИНЕНИЕ Справочник.HFM_Locations КАК HFM_Locations
 		|			ПО КостЦентры.ПодразделениеОрганизации.GeoMarket.Код = HFM_Locations.Код
 		|				И (НЕ HFM_Locations.ПометкаУдаления)
-		|		ПО ВТ_HOBSourceData.AU = КостЦентры.Код
-		|			И (НЕ КостЦентры.ПометкаУдаления)
+		|		ПО (НЕ КостЦентры.ПометкаУдаления)
+		|			И ВТ_HOBAccrualsSourceData.AU = КостЦентры.Код
 		|ГДЕ
 		|	КостЦентры.ПодразделениеОрганизации.БазовыйЭлемент = ЗНАЧЕНИЕ(Справочник.HFM_Locations.ПустаяСсылка)
 		|;
@@ -319,10 +387,10 @@
 		|	Lawson.Ссылка,
 		|	Lawson.Код
 		|ИЗ
-		|	ВТ_HOBSourceData КАК ВТ_HOBSourceData
+		|	ВТ_HOBAccrualsSourceData КАК ВТ_HOBAccrualsSourceData
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ПланСчетов.Lawson КАК Lawson
-		|		ПО ВТ_HOBSourceData.Account = Lawson.Код
-		|			И (НЕ Lawson.ПометкаУдаления)
+		|		ПО (НЕ Lawson.ПометкаУдаления)
+		|			И ВТ_HOBAccrualsSourceData.Account = Lawson.Код
 		|ГДЕ
 		|	Lawson.БазовыйЭлемент = ЗНАЧЕНИЕ(ПланСчетов.HFM_GL_Accounts.ПустаяСсылка)
 		|;
@@ -332,11 +400,300 @@
 		|	Организации.Ссылка,
 		|	Организации.Код
 		|ИЗ
-		|	ВТ_HOBSourceData КАК ВТ_HOBSourceData
+		|	ВТ_HOBAccrualsSourceData КАК ВТ_HOBAccrualsSourceData
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
-		|		ПО ВТ_HOBSourceData.CompanyCode = Организации.Код
-		|			И (НЕ Организации.ПометкаУдаления)
+		|		ПО (НЕ Организации.ПометкаУдаления)
 		|			И (Организации.Source = &ТипВнешнейСистемы)
+		|			И ВТ_HOBAccrualsSourceData.CompanyCode = Организации.Код
+		|ГДЕ
+		|	Организации.БазовыйЭлемент = ЗНАЧЕНИЕ(Справочник.HFM_Companies.ПустаяСсылка)";
+	
+	Запрос.УстановитьПараметр("ДокументЗагрузки", СтруктураПараметров.Ссылка);
+	Запрос.УстановитьПараметр("Период", СтруктураПараметров.Дата);
+	Запрос.УстановитьПараметр("ТипВнешнейСистемы", СтруктураПараметров.ТипВнешнейСистемы);
+	МассивРезультатов = Запрос.ВыполнитьПакет();
+	
+	ТаблицаКоллизий = МассивРезультатов[1].Выгрузить();
+	
+	ВыборкаСегментов = МассивРезультатов[2].Выбрать();
+	
+	Пока ВыборкаСегментов.Следующий() Цикл
+		
+		Если ВыборкаСегментов.БазовыйЭлемент.Пустая() Тогда
+			
+			СтрокаКоллизии = ТаблицаКоллизий.Добавить();
+			СтрокаКоллизии.КоллизияОтработана = Ложь;
+			СтрокаКоллизии.Описание = "Not specified base element";
+			СтрокаКоллизии.ТипСоответствия = Перечисления.ТипыСоответствий.HOBs;
+			СтрокаКоллизии.ТипОбъектаВнешнейСистемы = Перечисления.ТипыОбъектовВнешнихСистем.Segment;
+			СтрокаКоллизии.ОбъектПриемника = ВыборкаСегментов.Ссылка;
+			СтрокаКоллизии.Идентификатор = ВыборкаСегментов.Код;
+			
+		Иначе
+			
+			ТекОбъект = ВыборкаСегментов.Ссылка.ПолучитьОбъект();
+			ТекОбъект.БазовыйЭлемент = ВыборкаСегментов.БазовыйЭлемент;
+			ТекОбъект.Записать();
+			
+		КонецЕсли;
+		
+	КонецЦикла;
+	
+	// локации
+	ВыборкаЛокаций = МассивРезультатов[3].Выбрать();
+	
+	Пока ВыборкаЛокаций.Следующий() Цикл
+		
+		Если НЕ ВыборкаЛокаций.LocationПоSubGeomarket.Пустая() Тогда
+			
+			ТекОбъект = ВыборкаЛокаций.Ссылка.ПолучитьОбъект();
+			ТекОбъект.БазовыйЭлемент = ВыборкаЛокаций.LocationПоSubGeomarket;
+			ТекОбъект.Записать();
+			
+		Иначе
+			
+			СтрокаКоллизии = ТаблицаКоллизий.Добавить();
+			СтрокаКоллизии.КоллизияОтработана = Ложь;
+			СтрокаКоллизии.Описание = "Not specified base element";
+			СтрокаКоллизии.ТипСоответствия = Перечисления.ТипыСоответствий.HOBs;
+			СтрокаКоллизии.ТипОбъектаВнешнейСистемы = Перечисления.ТипыОбъектовВнешнихСистем.Location;
+			СтрокаКоллизии.ОбъектПриемника = ВыборкаЛокаций.Ссылка;
+			СтрокаКоллизии.Идентификатор = ВыборкаЛокаций.Код;
+			
+		КонецЕсли;
+		
+	КонецЦикла;
+	
+	// счета
+	ВыборкаСчетов = МассивРезультатов[4].Выбрать();
+	
+	Пока ВыборкаСчетов.Следующий() Цикл
+		
+		СтрокаКоллизии = ТаблицаКоллизий.Добавить();
+		СтрокаКоллизии.КоллизияОтработана = Ложь;
+		СтрокаКоллизии.Описание = "Not specified base element";
+		СтрокаКоллизии.ТипСоответствия = Перечисления.ТипыСоответствий.HOBs;
+		СтрокаКоллизии.ТипОбъектаВнешнейСистемы = Перечисления.ТипыОбъектовВнешнихСистем.Account;
+		СтрокаКоллизии.ОбъектПриемника = ВыборкаСчетов.Ссылка;
+		СтрокаКоллизии.Идентификатор = ВыборкаСчетов.Код;
+		
+	КонецЦикла;
+	
+	// организации
+	ВыборкаКомпаний = МассивРезультатов[5].Выбрать();
+	
+	Пока ВыборкаКомпаний.Следующий() Цикл
+		
+		СтрокаКоллизии = ТаблицаКоллизий.Добавить();
+		СтрокаКоллизии.КоллизияОтработана = Ложь;
+		СтрокаКоллизии.Описание = "Not specified base element";
+		СтрокаКоллизии.ТипСоответствия = Перечисления.ТипыСоответствий.HOBs;
+		СтрокаКоллизии.ТипОбъектаВнешнейСистемы = Перечисления.ТипыОбъектовВнешнихСистем.Company;
+		СтрокаКоллизии.ОбъектПриемника = ВыборкаКомпаний.Ссылка;
+		СтрокаКоллизии.Идентификатор = ВыборкаКомпаний.Код;
+		
+	КонецЦикла;
+	
+	ДанныеДляЗаполнения.Вставить("ТаблицаКоллизий", ТаблицаКоллизий);
+	
+	ПоместитьВоВременноеХранилище(ДанныеДляЗаполнения, АдресХранилища);
+	
+КонецПроцедуры
+
+Процедура ВыполнитьПроверкуНастроекСинхронизацииJV(СтруктураПараметров, АдресХранилища)
+	
+	ДанныеДляЗаполнения = Новый Структура();
+	
+	Запрос = Новый Запрос;
+	Запрос.Текст = 
+		"ВЫБРАТЬ
+		|	HOBJVSourceData.TrDate,
+		|	HOBJVSourceData.TrNumber,
+		|	HOBJVSourceData.Document,
+		|	HOBJVSourceData.DocumentType,
+		|	HOBJVSourceData.Account,
+		|	HOBJVSourceData.Client,
+		|	HOBJVSourceData.INN,
+		|	HOBJVSourceData.CompanyCode,
+		|	HOBJVSourceData.CompanyDesc,
+		|	HOBJVSourceData.Currency,
+		|	HOBJVSourceData.LocationCode,
+		|	HOBJVSourceData.LocationDesc,
+		|	HOBJVSourceData.Amount,
+		|	HOBJVSourceData.BaseAmount,
+		|	HOBJVSourceData.AU,
+		|	HOBJVSourceData.AUType,
+		|	HOBJVSourceData.SubSubSegment,
+		|	HOBJVSourceData.Reverse,
+		|	HOBJVSourceData.DocumentID,
+		|	HOBJVSourceData.TrID
+		|ПОМЕСТИТЬ ВТ_HOBAccrualsSourceData
+		|ИЗ
+		|	РегистрСведений.HOBJVSourceData КАК HOBJVSourceData
+		|ГДЕ
+		|	HOBJVSourceData.ДокументЗагрузки = &ДокументЗагрузки
+		|;
+		|
+		|////////////////////////////////////////////////////////////////////////////////
+		|ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	ЛОЖЬ КАК КоллизияОтработана,
+		|	""Specify the 1C object"" КАК Описание,
+		|	&ТипВнешнейСистемы КАК ТипСоответствия,
+		|	ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Currency) КАК ТипОбъектаВнешнейСистемы,
+		|	ЗНАЧЕНИЕ(Справочник.Валюты.ПустаяСсылка) КАК ОбъектПриемника,
+		|	ВТ_HOBAccrualsSourceData.Currency КАК Идентификатор
+		|ИЗ
+		|	ВТ_HOBAccrualsSourceData КАК ВТ_HOBAccrualsSourceData
+		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(
+		|				&Период,
+		|				ТипСоответствия = &ТипВнешнейСистемы
+		|					И ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Currency)) КАК НастройкаСинхронизацииCurrency
+		|		ПО ВТ_HOBAccrualsSourceData.Currency = НастройкаСинхронизацииCurrency.Идентификатор
+		|ГДЕ
+		|	НастройкаСинхронизацииCurrency.ОбъектПриемника ЕСТЬ NULL 
+		|
+		|ОБЪЕДИНИТЬ
+		|
+		|ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	ЛОЖЬ,
+		|	""Failed to find Account"",
+		|	&ТипВнешнейСистемы,
+		|	ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Account),
+		|	ЗНАЧЕНИЕ(ПланСчетов.Lawson.ПустаяСсылка),
+		|	ВТ_HOBAccrualsSourceData.Account
+		|ИЗ
+		|	ВТ_HOBAccrualsSourceData КАК ВТ_HOBAccrualsSourceData
+		|		ЛЕВОЕ СОЕДИНЕНИЕ ПланСчетов.Lawson КАК Lawson
+		|		ПО (НЕ Lawson.ПометкаУдаления)
+		|			И ВТ_HOBAccrualsSourceData.Account = Lawson.Код
+		|ГДЕ
+		|	Lawson.Ссылка ЕСТЬ NULL 
+		|
+		|ОБЪЕДИНИТЬ
+		|
+		|ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	ЛОЖЬ,
+		|	""Failed to find Company"",
+		|	&ТипВнешнейСистемы,
+		|	ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Company),
+		|	ЗНАЧЕНИЕ(Справочник.Организации.ПустаяСсылка),
+		|	ВТ_HOBAccrualsSourceData.CompanyCode
+		|ИЗ
+		|	ВТ_HOBAccrualsSourceData КАК ВТ_HOBAccrualsSourceData
+		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
+		|		ПО (НЕ Организации.ПометкаУдаления)
+		|			И (Организации.Source = &ТипВнешнейСистемы)
+		|			И ВТ_HOBAccrualsSourceData.CompanyCode = Организации.Код
+		|ГДЕ
+		|	Организации.Ссылка ЕСТЬ NULL 
+		|
+		|ОБЪЕДИНИТЬ
+		|
+		|ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	ЛОЖЬ,
+		|	""Failed to find Sub-Sub-Segment by AU"",
+		|	&ТипВнешнейСистемы,
+		|	ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Segment),
+		|	ЗНАЧЕНИЕ(Справочник.Сегменты.ПустаяСсылка),
+		|	КостЦентры.Код
+		|ИЗ
+		|	ВТ_HOBAccrualsSourceData КАК ВТ_HOBAccrualsSourceData
+		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.КостЦентры КАК КостЦентры
+		|		ПО (НЕ КостЦентры.ПометкаУдаления)
+		|			И ВТ_HOBAccrualsSourceData.AU = КостЦентры.Код
+		|ГДЕ
+		|	КостЦентры.Сегмент = ЗНАЧЕНИЕ(Справочник.Сегменты.ПустаяСсылка)
+		|
+		|ОБЪЕДИНИТЬ
+		|
+		|ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	ЛОЖЬ,
+		|	""Failed to find Location by AU"",
+		|	&ТипВнешнейСистемы,
+		|	ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Location),
+		|	ЗНАЧЕНИЕ(Справочник.ПодразделенияОрганизаций.ПустаяСсылка),
+		|	КостЦентры.Код
+		|ИЗ
+		|	ВТ_HOBAccrualsSourceData КАК ВТ_HOBAccrualsSourceData
+		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.КостЦентры КАК КостЦентры
+		|		ПО (НЕ КостЦентры.ПометкаУдаления)
+		|			И ВТ_HOBAccrualsSourceData.AU = КостЦентры.Код
+		|ГДЕ
+		|	КостЦентры.ПодразделениеОрганизации = ЗНАЧЕНИЕ(Справочник.ПодразделенияОрганизаций.ПустаяСсылка)
+		|
+		|ОБЪЕДИНИТЬ
+		|
+		|ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	ЛОЖЬ,
+		|	""Failed to find Accounting Unit"",
+		|	&ТипВнешнейСистемы,
+		|	ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.AccountingUnit),
+		|	ЗНАЧЕНИЕ(Справочник.КостЦентры.ПустаяСсылка),
+		|	ВТ_HOBAccrualsSourceData.AU
+		|ИЗ
+		|	ВТ_HOBAccrualsSourceData КАК ВТ_HOBAccrualsSourceData
+		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.КостЦентры КАК КостЦентры
+		|		ПО (НЕ КостЦентры.ПометкаУдаления)
+		|			И ВТ_HOBAccrualsSourceData.AU = КостЦентры.Код
+		|ГДЕ
+		|	КостЦентры.Ссылка ЕСТЬ NULL 
+		|;
+		|
+		|////////////////////////////////////////////////////////////////////////////////
+		|ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	КостЦентры.Сегмент КАК Ссылка,
+		|	ЕСТЬNULL(HFM_Technology.Ссылка, ЗНАЧЕНИЕ(Справочник.HFM_Technology.ПустаяСсылка)) КАК БазовыйЭлемент,
+		|	КостЦентры.Сегмент.Код КАК Код
+		|ИЗ
+		|	ВТ_HOBAccrualsSourceData КАК ВТ_HOBAccrualsSourceData
+		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.КостЦентры КАК КостЦентры
+		|			ЛЕВОЕ СОЕДИНЕНИЕ Справочник.HFM_Technology КАК HFM_Technology
+		|			ПО КостЦентры.Сегмент.Код = HFM_Technology.Код
+		|				И (НЕ HFM_Technology.ПометкаУдаления)
+		|		ПО (НЕ КостЦентры.ПометкаУдаления)
+		|			И ВТ_HOBAccrualsSourceData.AU = КостЦентры.Код
+		|;
+		|
+		|////////////////////////////////////////////////////////////////////////////////
+		|ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	КостЦентры.ПодразделениеОрганизации.Ссылка КАК Ссылка,
+		|	КостЦентры.ПодразделениеОрганизации.Код КАК Код,
+		|	ЕСТЬNULL(HFM_Locations.Ссылка, ЗНАЧЕНИЕ(Справочник.HFM_Locations.ПустаяСсылка)) КАК LocationПоSubGeomarket
+		|ИЗ
+		|	ВТ_HOBAccrualsSourceData КАК ВТ_HOBAccrualsSourceData
+		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.КостЦентры КАК КостЦентры
+		|			ЛЕВОЕ СОЕДИНЕНИЕ Справочник.HFM_Locations КАК HFM_Locations
+		|			ПО КостЦентры.ПодразделениеОрганизации.GeoMarket.Код = HFM_Locations.Код
+		|				И (НЕ HFM_Locations.ПометкаУдаления)
+		|		ПО (НЕ КостЦентры.ПометкаУдаления)
+		|			И ВТ_HOBAccrualsSourceData.AU = КостЦентры.Код
+		|ГДЕ
+		|	КостЦентры.ПодразделениеОрганизации.БазовыйЭлемент = ЗНАЧЕНИЕ(Справочник.HFM_Locations.ПустаяСсылка)
+		|;
+		|
+		|////////////////////////////////////////////////////////////////////////////////
+		|ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	Lawson.Ссылка,
+		|	Lawson.Код
+		|ИЗ
+		|	ВТ_HOBAccrualsSourceData КАК ВТ_HOBAccrualsSourceData
+		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ПланСчетов.Lawson КАК Lawson
+		|		ПО (НЕ Lawson.ПометкаУдаления)
+		|			И ВТ_HOBAccrualsSourceData.Account = Lawson.Код
+		|ГДЕ
+		|	Lawson.БазовыйЭлемент = ЗНАЧЕНИЕ(ПланСчетов.HFM_GL_Accounts.ПустаяСсылка)
+		|;
+		|
+		|////////////////////////////////////////////////////////////////////////////////
+		|ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	Организации.Ссылка,
+		|	Организации.Код
+		|ИЗ
+		|	ВТ_HOBAccrualsSourceData КАК ВТ_HOBAccrualsSourceData
+		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
+		|		ПО (НЕ Организации.ПометкаУдаления)
+		|			И (Организации.Source = &ТипВнешнейСистемы)
+		|			И ВТ_HOBAccrualsSourceData.CompanyCode = Организации.Код
 		|ГДЕ
 		|	Организации.БазовыйЭлемент = ЗНАЧЕНИЕ(Справочник.HFM_Companies.ПустаяСсылка)";
 	
@@ -434,45 +791,348 @@
 
 Процедура СформироватьПроводкиDSS(СтруктураПараметров, АдресХранилища) Экспорт
 	
+	Если СтруктураПараметров.ТипТранзакций = Перечисления.HOBTransactionType.Accrual Тогда
+		СформироватьПроводкиDSSAccruals(СтруктураПараметров, АдресХранилища);
+	ИначеЕсли СтруктураПараметров.ТипТранзакций = Перечисления.HOBTransactionType.JV Тогда
+		СформироватьПроводкиDSSJV(СтруктураПараметров, АдресХранилища);
+	Иначе
+		ВызватьИсключение "Unknown type of transactions!";
+	КонецЕсли;
+	
+КонецПроцедуры
+
+Процедура СформироватьПроводкиDSSAccruals(СтруктураПараметров, АдресХранилища)
+	
 	Запрос = Новый Запрос;
 	Запрос.Текст = 
 		"ВЫБРАТЬ
-		|	HOBSourceData.TrDate,
-		|	HOBSourceData.TrNumber,
-		|	HOBSourceData.Document,
-		|	HOBSourceData.DocumentType,
-		|	HOBSourceData.Account,
-		|	HOBSourceData.Client,
-		|	HOBSourceData.INN,
-		|	HOBSourceData.Agreement,
-		|	HOBSourceData.SalesOrder,
-		|	HOBSourceData.SalesOrderNumber,
-		|	HOBSourceData.CompanyCode,
-		|	HOBSourceData.CompanyDesc,
-		|	HOBSourceData.Currency,
-		|	HOBSourceData.LocationCode,
-		|	HOBSourceData.LocationDesc,
-		|	HOBSourceData.Amount,
-		|	HOBSourceData.BaseAmount,
-		|	HOBSourceData.JobEndDate,
-		|	HOBSourceData.SalesOrderAmount,
-		|	HOBSourceData.SalesOrderContract,
-		|	HOBSourceData.ERPStatus,
-		|	HOBSourceData.SalesOrderCurrency,
-		|	HOBSourceData.SalesOrderExchangeRate,
-		|	HOBSourceData.SalesOrderApprovalDate,
-		|	HOBSourceData.SalesOrderApprovedBy,
-		|	HOBSourceData.AU,
-		|	HOBSourceData.SubSubSegment,
-		|	HOBSourceData.DocumentGUID,
-		|	HOBSourceData.SalesOrderGUID,
-		|	HOBSourceData.TrID,
-		|	HOBSourceData.SalesOrderDate
+		|	HOBAccrualsSourceData.TrDate,
+		|	HOBAccrualsSourceData.TrNumber,
+		|	HOBAccrualsSourceData.Document,
+		|	HOBAccrualsSourceData.DocumentType,
+		|	HOBAccrualsSourceData.Account,
+		|	HOBAccrualsSourceData.Client,
+		|	HOBAccrualsSourceData.INN,
+		|	HOBAccrualsSourceData.SalesOrderAgreementCode,
+		|	HOBAccrualsSourceData.SalesOrderAgreement,
+		|	HOBAccrualsSourceData.SalesOrder,
+		|	HOBAccrualsSourceData.SalesOrderNumber,
+		|	HOBAccrualsSourceData.CompanyCode,
+		|	HOBAccrualsSourceData.CompanyDesc,
+		|	HOBAccrualsSourceData.Currency,
+		|	HOBAccrualsSourceData.LocationCode,
+		|	HOBAccrualsSourceData.LocationDesc,
+		|	HOBAccrualsSourceData.Amount,
+		|	HOBAccrualsSourceData.BaseAmount,
+		|	HOBAccrualsSourceData.JobEndDate,
+		|	HOBAccrualsSourceData.SalesOrderAmount,
+		|	HOBAccrualsSourceData.ERPStatus,
+		|	HOBAccrualsSourceData.SalesOrderCurrency,
+		|	HOBAccrualsSourceData.SalesOrderExchangeRate,
+		|	HOBAccrualsSourceData.SalesOrderApprovalDate,
+		|	HOBAccrualsSourceData.SalesOrderApprovedBy,
+		|	HOBAccrualsSourceData.AU,
+		|	HOBAccrualsSourceData.AUType,
+		|	HOBAccrualsSourceData.SubSubSegment,
+		|	HOBAccrualsSourceData.SalesOrderDate,
+		|	HOBAccrualsSourceData.Invoice,
+		|	HOBAccrualsSourceData.InvoiceDate,
+		|	HOBAccrualsSourceData.InvoiceNumber,
+		|	HOBAccrualsSourceData.InvoiceCurrency,
+		|	HOBAccrualsSourceData.InvoiceAmount,
+		|	HOBAccrualsSourceData.InvoiceBilled,
+		|	HOBAccrualsSourceData.InvoicePassedForApproval,
+		|	HOBAccrualsSourceData.InvoicePassedForPayment,
+		|	HOBAccrualsSourceData.InvoicePassedForApprovalDate,
+		|	HOBAccrualsSourceData.InvoicePassedForPaymentDate,
+		|	HOBAccrualsSourceData.ExpectedDateOfPayment,
+		|	HOBAccrualsSourceData.InvoiceAgreementCode,
+		|	HOBAccrualsSourceData.InvoiceAgreement,
+		|	HOBAccrualsSourceData.Reverse,
+		|	HOBAccrualsSourceData.DocumentID,
+		|	HOBAccrualsSourceData.SalesOrderID,
+		|	HOBAccrualsSourceData.InvoiceID,
+		|	HOBAccrualsSourceData.TrID
 		|ПОМЕСТИТЬ ВТ_ДанныеФайла
 		|ИЗ
-		|	РегистрСведений.HOBSourceData КАК HOBSourceData
+		|	РегистрСведений.HOBAccrualsSourceData КАК HOBAccrualsSourceData
 		|ГДЕ
-		|	HOBSourceData.ДокументЗагрузки = &ДокументЗагрузки
+		|	HOBAccrualsSourceData.ДокументЗагрузки = &ДокументЗагрузки
+		|;
+		|
+		|////////////////////////////////////////////////////////////////////////////////
+		|ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.Идентификатор КАК Идентификатор,
+		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника
+		|ПОМЕСТИТЬ ВТ_СоответствиеКлиентовCustomerNumber
+		|ИЗ
+		|	РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(
+		|			&Период,
+		|			ТипСоответствия = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
+		|				И ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Client)
+		|				И Идентификатор В
+		|					(ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|						ВТ_ДанныеФайла.INN
+		|					ИЗ
+		|						ВТ_ДанныеФайла КАК ВТ_ДанныеФайла)) КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних
+		|
+		|ИНДЕКСИРОВАТЬ ПО
+		|	Идентификатор
+		|;
+		|
+		|////////////////////////////////////////////////////////////////////////////////
+		|ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.Идентификатор КАК Идентификатор,
+		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника
+		|ПОМЕСТИТЬ ВТ_СоответствиеCurrency
+		|ИЗ
+		|	РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(
+		|			&Период,
+		|			ТипСоответствия = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
+		|				И ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Currency)
+		|				И Идентификатор В
+		|					(ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|						ВТ_ДанныеФайла.Currency
+		|					ИЗ
+		|						ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
+		|			
+		|					ОБЪЕДИНИТЬ
+		|			
+		|					ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|						ВТ_ДанныеФайла.SalesOrderCurrency
+		|					ИЗ
+		|						ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
+		|					ГДЕ
+		|						ВТ_ДанныеФайла.SalesOrderCurrency <> """"
+		|			
+		|					ОБЪЕДИНИТЬ
+		|			
+		|					ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|						ВТ_ДанныеФайла.InvoiceCurrency
+		|					ИЗ
+		|						ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
+		|					ГДЕ
+		|						ВТ_ДанныеФайла.InvoiceCurrency <> """")) КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних
+		|
+		|ИНДЕКСИРОВАТЬ ПО
+		|	Идентификатор
+		|;
+		|
+		|////////////////////////////////////////////////////////////////////////////////
+		|ВЫБРАТЬ
+		|	SO.DocID,
+		|	SO.Ссылка
+		|ИЗ
+		|	Документ.SalesOrder КАК SO
+		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
+		|		ПО (НЕ SO.ПометкаУдаления)
+		|			И (SO.Source = &ТипВнешнейСистемы)
+		|			И SO.DocID = ВТ_ДанныеФайла.SalesOrderID
+		|;
+		|
+		|////////////////////////////////////////////////////////////////////////////////
+		|ВЫБРАТЬ
+		|	INV.DocID,
+		|	INV.Ссылка
+		|ИЗ
+		|	Документ.Invoice КАК INV
+		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
+		|		ПО INV.DocID = ВТ_ДанныеФайла.InvoiceID
+		|			И (НЕ INV.ПометкаУдаления)
+		|			И (INV.Source = &ТипВнешнейСистемы)
+		|;
+		|
+		|////////////////////////////////////////////////////////////////////////////////
+		|ВЫБРАТЬ
+		|	DataLoadingStages.GeoMarket,
+		|	DataLoadingStages.StartLoading КАК ДатаНачалаЗагрузки,
+		|	DataLoadingStages.ReconciledBalances КАК ДатаВыверенныхОстатков
+		|ИЗ
+		|	РегистрСведений.DataLoadingStages КАК DataLoadingStages
+		|ГДЕ
+		|	DataLoadingStages.Source = &ТипВнешнейСистемы
+		|;
+		|
+		|////////////////////////////////////////////////////////////////////////////////
+		|ВЫБРАТЬ
+		|	ВТ_ДанныеФайла.TrDate КАК Period,
+		|	Организации.Ссылка КАК Company,
+		|	Lawson.Ссылка КАК Account,
+		|	КостЦентры.ПодразделениеОрганизации КАК Location,
+		|	КостЦентры.Сегмент КАК SubSubSegment,
+		|	ВТ_СоответствиеCurrency.ОбъектПриемника КАК Currency,
+		|	ВТ_СоответствиеКлиентовCustomerNumber.ОбъектПриемника КАК Client,
+		|	ВТ_ДанныеФайла.SalesOrderAgreement КАК Contract,
+		|	ВТ_ДанныеФайла.Amount,
+		|	ВТ_ДанныеФайла.BaseAmount,
+		|	ВТ_ДанныеФайла.DocumentID,
+		|	ВТ_ДанныеФайла.TrNumber,
+		|	ВТ_ДанныеФайла.Document КАК DocumentPresentation,
+		|	ВТ_ДанныеФайла.TrID,
+		|	ТранзакцияHOB.Ссылка КАК Транзакция,
+		|	ВТ_ДанныеФайла.SalesOrderID,
+		|	ВТ_ДанныеФайла.JobEndDate,
+		|	ВТ_ДанныеФайла.SalesOrderAmount,
+		|	ВТ_ДанныеФайла.ERPStatus,
+		|	ВТ_СоответствиеCurrency2.ОбъектПриемника КАК SalesOrderCurrency,
+		|	ВТ_ДанныеФайла.SalesOrderExchangeRate,
+		|	ВТ_ДанныеФайла.SalesOrderApprovalDate,
+		|	ВТ_ДанныеФайла.SalesOrderApprovedBy,
+		|	ВТ_ДанныеФайла.SalesOrder,
+		|	ВТ_ДанныеФайла.SalesOrderNumber,
+		|	ВТ_ДанныеФайла.SalesOrderDate,
+		|	ВТ_СоответствиеCurrency1.ОбъектПриемника КАК InvoiceCurrency,
+		|	ВТ_ДанныеФайла.InvoiceAmount,
+		|	ВТ_ДанныеФайла.InvoiceBilled,
+		|	ВТ_ДанныеФайла.InvoicePassedForApproval,
+		|	ВТ_ДанныеФайла.InvoicePassedForPayment,
+		|	ВТ_ДанныеФайла.InvoicePassedForApprovalDate,
+		|	ВТ_ДанныеФайла.InvoicePassedForPaymentDate,
+		|	ВТ_ДанныеФайла.ExpectedDateOfPayment,
+		|	ВТ_ДанныеФайла.InvoiceAgreementCode,
+		|	ВТ_ДанныеФайла.InvoiceAgreement,
+		|	ВТ_ДанныеФайла.Reverse,
+		|	ВТ_ДанныеФайла.LocationCode КАК CREW,
+		|	ВТ_ДанныеФайла.INN КАК CustomerNumber,
+		|	ВТ_ДанныеФайла.SalesOrderAgreementCode,
+		|	ВТ_ДанныеФайла.SalesOrderAgreement,
+		|	ВТ_ДанныеФайла.CompanyCode,
+		|	ВТ_ДанныеФайла.AU КАК AUCode,
+		|	ВТ_ДанныеФайла.LocationCode,
+		|	ВТ_ДанныеФайла.Account КАК AccountCode,
+		|	КостЦентры.Ссылка КАК AU,
+		|	ВТ_ДанныеФайла.InvoiceID,
+		|	ВТ_ДанныеФайла.InvoiceDate,
+		|	ВТ_ДанныеФайла.InvoiceNumber,
+		|	КостЦентры.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarketHFM
+		|ИЗ
+		|	ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
+		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
+		|		ПО (НЕ Организации.ПометкаУдаления)
+		|			И (Организации.Source = &ТипВнешнейСистемы)
+		|			И ВТ_ДанныеФайла.CompanyCode = Организации.Код
+		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ПланСчетов.Lawson КАК Lawson
+		|		ПО (НЕ Lawson.ПометкаУдаления)
+		|			И ВТ_ДанныеФайла.Account = Lawson.Код
+		|		ЛЕВОЕ СОЕДИНЕНИЕ Документ.ТранзакцияHOB КАК ТранзакцияHOB
+		|		ПО (НЕ ТранзакцияHOB.ПометкаУдаления)
+		|			И ВТ_ДанныеФайла.TrID = ТранзакцияHOB.TrID
+		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.КостЦентры КАК КостЦентры
+		|		ПО ВТ_ДанныеФайла.AU = КостЦентры.Код
+		|			И (НЕ КостЦентры.ПометкаУдаления)
+		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_СоответствиеCurrency КАК ВТ_СоответствиеCurrency
+		|		ПО ВТ_ДанныеФайла.Currency = ВТ_СоответствиеCurrency.Идентификатор
+		|		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_СоответствиеКлиентовCustomerNumber КАК ВТ_СоответствиеКлиентовCustomerNumber
+		|		ПО ВТ_ДанныеФайла.INN = ВТ_СоответствиеКлиентовCustomerNumber.Идентификатор
+		|		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_СоответствиеCurrency КАК ВТ_СоответствиеCurrency1
+		|		ПО ВТ_ДанныеФайла.InvoiceCurrency = ВТ_СоответствиеCurrency1.Идентификатор
+		|		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_СоответствиеCurrency КАК ВТ_СоответствиеCurrency2
+		|		ПО ВТ_ДанныеФайла.SalesOrderCurrency = ВТ_СоответствиеCurrency2.Идентификатор";
+	
+	Запрос.УстановитьПараметр("Период", СтруктураПараметров.Дата);
+	Запрос.УстановитьПараметр("ДокументЗагрузки", СтруктураПараметров.Ссылка);
+	Запрос.УстановитьПараметр("ТипВнешнейСистемы", СтруктураПараметров.ТипВнешнейСистемы);
+	
+	НачатьТранзакцию();
+	РезультатЗапроса = Запрос.ВыполнитьПакет();
+	ЗафиксироватьТранзакцию();
+	
+	
+	КэшSalesOrders = РезультатЗапроса[3].Выгрузить();
+	КэшSalesOrders.Индексы.Добавить("DocID");
+	
+	КэшИнвойсов = РезультатЗапроса[4].Выгрузить();
+	КэшИнвойсов.Индексы.Добавить("DocID");
+	
+	ТаблицаДаты = РезультатЗапроса[5].Выгрузить();
+	ТаблицаДаты.Индексы.Добавить("GeoMarket");
+	
+	ВыборкаДетальныеЗаписи = РезультатЗапроса[6].Выбрать();
+	
+	НЗ = РегистрыСведений.DSSСформированныеПриЗагрузке.СоздатьНаборЗаписей();
+	НЗ.Отбор.ДокументЗагрузки.Установить(СтруктураПараметров.Ссылка);
+	
+	НачатьТранзакцию();
+	
+	Отказ = Ложь;
+	ТекстСообщенияОбОшибках = "";
+	
+	Пока ВыборкаДетальныеЗаписи.Следующий() Цикл
+		
+		Даты = ТаблицаДаты.Найти(ВыборкаДетальныеЗаписи.GeoMarketHFM, "GeoMarket");
+		Если Даты = Неопределено Тогда
+			ТекОшибка = "Data loading stages missing for " + ВыборкаДетальныеЗаписи.GeoMarketHFM;
+			Отказ = Истина;
+			ВызватьИсключение ТекОшибка;
+		ИначеЕсли Даты.ДатаНачалаЗагрузки = '00010101000000' Или Даты.ДатаВыверенныхОстатков = '00010101000000' Тогда
+			ТекОшибка = "Data loading stages missing for " + ВыборкаДетальныеЗаписи.GeoMarketHFM;
+			Отказ = Истина;
+			ВызватьИсключение ТекОшибка;
+		Иначе
+			ДатаНачалаЗагрузки = Даты.ДатаНачалаЗагрузки;
+			ДатаВыверенныхОстатков = Даты.ДатаВыверенныхОстатков;
+		КонецЕсли;
+		
+		Если ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.Транзакция) Тогда
+			ТранзакцияHOBОбъект = ВыборкаДетальныеЗаписи.Транзакция.ПолучитьОбъект();
+		Иначе
+			ТранзакцияHOBОбъект = Документы.ТранзакцияHOB.СоздатьДокумент();
+		КонецЕсли;
+		
+		ЗаполнитьТранзакцию(СтруктураПараметров, ТранзакцияHOBОбъект, ВыборкаДетальныеЗаписи, Отказ, ТекстСообщенияОбОшибках);
+		
+		ТранзакцияHOBОбъект.Записать(РежимЗаписиДокумента.Запись);
+		
+		НайденаОшибкаПриПоискеСвязанныхОбъектов = СформироватьСвязанныеОбъекты(ТранзакцияHOBОбъект, ВыборкаДетальныеЗаписи, КэшSalesOrders, КэшИнвойсов, Неопределено, ДатаНачалаЗагрузки, ДатаВыверенныхОстатков, Отказ, ТекстСообщенияОбОшибках);
+		
+		ЗаписьНабора = НЗ.Добавить();
+		ЗаписьНабора.ДокументЗагрузки = СтруктураПараметров.Ссылка;
+		ЗаписьНабора.ПроводкаDSS = ТранзакцияHOBОбъект.Ссылка;
+		ЗаписьНабора.ОшибкаПриПоискеСвязанныхОбъектов = НайденаОшибкаПриПоискеСвязанныхОбъектов;
+		
+	КонецЦикла;
+	
+	Если Отказ Тогда
+		ОтменитьТранзакцию();
+		ВызватьИсключение ТекстСообщенияОбОшибках;
+	КонецЕсли;
+	
+	НЗ.Записать(Истина);
+	
+	ЗафиксироватьТранзакцию();
+	
+КонецПроцедуры
+
+Процедура СформироватьПроводкиDSSJV(СтруктураПараметров, АдресХранилища)
+	
+	Запрос = Новый Запрос;
+	Запрос.Текст = 
+		"ВЫБРАТЬ
+		|	HOBJVSourceData.TrDate,
+		|	HOBJVSourceData.TrNumber,
+		|	HOBJVSourceData.Document,
+		|	HOBJVSourceData.DocumentType,
+		|	HOBJVSourceData.Account,
+		|	HOBJVSourceData.Client,
+		|	HOBJVSourceData.INN,
+		|	HOBJVSourceData.CompanyCode,
+		|	HOBJVSourceData.CompanyDesc,
+		|	HOBJVSourceData.Currency,
+		|	HOBJVSourceData.LocationCode,
+		|	HOBJVSourceData.LocationDesc,
+		|	HOBJVSourceData.Amount,
+		|	HOBJVSourceData.BaseAmount,
+		|	HOBJVSourceData.AU,
+		|	HOBJVSourceData.AUType,
+		|	HOBJVSourceData.SubSubSegment,
+		|	HOBJVSourceData.Reverse,
+		|	HOBJVSourceData.DocumentID,
+		|	HOBJVSourceData.TrID
+		|ПОМЕСТИТЬ ВТ_ДанныеФайла
+		|ИЗ
+		|	РегистрСведений.HOBJVSourceData КАК HOBJVSourceData
+		|ГДЕ
+		|	HOBJVSourceData.ДокументЗагрузки = &ДокументЗагрузки
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
@@ -517,45 +1177,55 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
-		|	SO.DocID,
-		|	SO.Ссылка
+		|	КлючиРучныхКорректировок.Company,
+		|	КлючиРучныхКорректировок.Client,
+		|	КлючиРучныхКорректировок.Location,
+		|	КлючиРучныхКорректировок.SubSubSegment,
+		|	КлючиРучныхКорректировок.Account,
+		|	КлючиРучныхКорректировок.Currency,
+		|	КлючиРучныхКорректировок.РучнаяКорректировка
 		|ИЗ
-		|	Документ.SalesOrder КАК SO
-		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
-		|		ПО SO.DocID = ВТ_ДанныеФайла.SalesOrderGUID
-		|			И (НЕ SO.ПометкаУдаления)
-		|			И (SO.Source = &ТипВнешнейСистемы)
+		|	РегистрСведений.КлючиРучныхКорректировок КАК КлючиРучныхКорректировок
+		|ГДЕ
+		|	КлючиРучныхКорректировок.Source = &ТипВнешнейСистемы
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
+		|	DataLoadingStages.GeoMarket,
+		|	DataLoadingStages.StartLoading КАК ДатаНачалаЗагрузки,
+		|	DataLoadingStages.ReconciledBalances КАК ДатаВыверенныхОстатков
+		|ИЗ
+		|	РегистрСведений.DataLoadingStages КАК DataLoadingStages
+		|ГДЕ
+		|	DataLoadingStages.Source = &ТипВнешнейСистемы
+		|;
+		|
+		|////////////////////////////////////////////////////////////////////////////////
+		|ВЫБРАТЬ
+		|	ВТ_ДанныеФайла.TrDate КАК Period,
 		|	Организации.Ссылка КАК Company,
 		|	Lawson.Ссылка КАК Account,
 		|	КостЦентры.ПодразделениеОрганизации КАК Location,
 		|	КостЦентры.Сегмент КАК SubSubSegment,
 		|	ВТ_СоответствиеCurrency.ОбъектПриемника КАК Currency,
 		|	ВТ_СоответствиеКлиентовCustomerNumber.ОбъектПриемника КАК Client,
-		|	ВТ_ДанныеФайла.Agreement КАК Contract,
 		|	ВТ_ДанныеФайла.Amount,
 		|	ВТ_ДанныеФайла.BaseAmount,
-		|	ВТ_ДанныеФайла.DocumentGUID,
+		|	ВТ_ДанныеФайла.DocumentID,
 		|	ВТ_ДанныеФайла.TrNumber,
 		|	ВТ_ДанныеФайла.Document КАК DocumentPresentation,
 		|	ВТ_ДанныеФайла.TrID,
 		|	ТранзакцияHOB.Ссылка КАК Транзакция,
-		|	ВТ_ДанныеФайла.DocumentGUID КАК DocumentGUID1,
-		|	ВТ_ДанныеФайла.SalesOrderGUID,
-		|	ВТ_ДанныеФайла.JobEndDate,
-		|	ВТ_ДанныеФайла.SalesOrderAmount,
-		|	ВТ_ДанныеФайла.SalesOrderContract,
-		|	ВТ_ДанныеФайла.ERPStatus,
-		|	ВТ_ДанныеФайла.SalesOrderCurrency,
-		|	ВТ_ДанныеФайла.SalesOrderExchangeRate,
-		|	ВТ_ДанныеФайла.SalesOrderApprovalDate,
-		|	ВТ_ДанныеФайла.SalesOrderApprovedBy,
-		|	ВТ_ДанныеФайла.SalesOrder,
-		|	ВТ_ДанныеФайла.SalesOrderNumber,
-		|	ВТ_ДанныеФайла.SalesOrderDate
+		|	ВТ_ДанныеФайла.Reverse,
+		|	ВТ_ДанныеФайла.LocationCode КАК CREW,
+		|	ВТ_ДанныеФайла.INN КАК CustomerNumber,
+		|	ВТ_ДанныеФайла.CompanyCode,
+		|	ВТ_ДанныеФайла.AU КАК AUCode,
+		|	ВТ_ДанныеФайла.LocationCode,
+		|	ВТ_ДанныеФайла.Account КАК AccountCode,
+		|	КостЦентры.Ссылка КАК AU,
+		|	КостЦентры.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarketHFM
 		|ИЗ
 		|	ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
@@ -584,11 +1254,13 @@
 	РезультатЗапроса = Запрос.ВыполнитьПакет();
 	ЗафиксироватьТранзакцию();
 	
+	КэшРучныхКоррерктировок = РезультатЗапроса[3].Выгрузить();
+	КэшРучныхКоррерктировок.Индексы.Добавить("Company, Client, Location, SubSubSegment, Account, Currency");
 	
-	КэшSalesOrders = РезультатЗапроса[3].Выгрузить();
-	КэшSalesOrders.Индексы.Добавить("DocID");
+	ТаблицаДаты = РезультатЗапроса[4].Выгрузить();
+	ТаблицаДаты.Индексы.Добавить("GeoMarket");
 	
-	ВыборкаДетальныеЗаписи = РезультатЗапроса[4].Выбрать();
+	ВыборкаДетальныеЗаписи = РезультатЗапроса[5].Выбрать();
 	
 	НЗ = РегистрыСведений.DSSСформированныеПриЗагрузке.СоздатьНаборЗаписей();
 	НЗ.Отбор.ДокументЗагрузки.Установить(СтруктураПараметров.Ссылка);
@@ -600,17 +1272,31 @@
 	
 	Пока ВыборкаДетальныеЗаписи.Следующий() Цикл
 		
+		Даты = ТаблицаДаты.Найти(ВыборкаДетальныеЗаписи.GeoMarketHFM, "GeoMarket");
+		Если Даты = Неопределено Тогда
+			ТекОшибка = "Data loading stages missing for " + ВыборкаДетальныеЗаписи.GeoMarketHFM;
+			Отказ = Истина;
+			ВызватьИсключение ТекОшибка;
+		ИначеЕсли Даты.ДатаНачалаЗагрузки = '00010101000000' Или Даты.ДатаВыверенныхОстатков = '00010101000000' Тогда
+			ТекОшибка = "Data loading stages missing for " + ВыборкаДетальныеЗаписи.GeoMarketHFM;
+			Отказ = Истина;
+			ВызватьИсключение ТекОшибка;
+		Иначе
+			ДатаНачалаЗагрузки = Даты.ДатаНачалаЗагрузки;
+			ДатаВыверенныхОстатков = Даты.ДатаВыверенныхОстатков;
+		КонецЕсли;
+		
 		Если ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.Транзакция) Тогда
 			ТранзакцияHOBОбъект = ВыборкаДетальныеЗаписи.Транзакция.ПолучитьОбъект();
 		Иначе
 			ТранзакцияHOBОбъект = Документы.ТранзакцияHOB.СоздатьДокумент();
 		КонецЕсли;
 		
-		ЗаполнитьТранзакцию(ТранзакцияHOBОбъект, ВыборкаДетальныеЗаписи, Отказ, ТекстСообщенияОбОшибках);
+		ЗаполнитьТранзакцию(СтруктураПараметров, ТранзакцияHOBОбъект, ВыборкаДетальныеЗаписи, Отказ, ТекстСообщенияОбОшибках);
 		
 		ТранзакцияHOBОбъект.Записать(РежимЗаписиДокумента.Запись);
 		
-		НайденаОшибкаПриПоискеСвязанныхОбъектов = СформироватьСвязанныеОбъекты(ТранзакцияHOBОбъект, ВыборкаДетальныеЗаписи, КэшSalesOrders);
+		НайденаОшибкаПриПоискеСвязанныхОбъектов = СформироватьСвязанныеОбъекты(ТранзакцияHOBОбъект, ВыборкаДетальныеЗаписи, , , КэшРучныхКоррерктировок, ДатаНачалаЗагрузки, ДатаВыверенныхОстатков, Отказ, ТекстСообщенияОбОшибках);
 		
 		ЗаписьНабора = НЗ.Добавить();
 		ЗаписьНабора.ДокументЗагрузки = СтруктураПараметров.Ссылка;
@@ -630,14 +1316,13 @@
 	
 КонецПроцедуры
 
-Процедура ЗаполнитьТранзакцию(ТранзакцияHOBОбъект, ДанныеДляЗаполнения, Отказ, ТекстСообщенияОбОшибках)
+Процедура ЗаполнитьТранзакцию(СтруктураПараметров, ТранзакцияHOBОбъект, ДанныеДляЗаполнения, Отказ, ТекстСообщенияОбОшибках)
 	
 	ЗаполнитьЗначенияСвойств(ТранзакцияHOBОбъект, ДанныеДляЗаполнения);
 	
-	//ТранзакцияOracleОбъект.Номер = ДанныеДляЗаполнения.ID_ORIG; 
 	ТранзакцияHOBОбъект.Дата = ДанныеДляЗаполнения.Period;
 	
-	ТранзакцияHOBОбъект.TransactionType = Перечисления.HOBTransactionType.Accrual;
+	ТранзакцияHOBОбъект.TransactionType = СтруктураПараметров.ТипТранзакций;
 	
 	ПреобразованиеСокрЛП(ТранзакцияHOBОбъект);
 	
@@ -664,23 +1349,40 @@
 	
 КонецПроцедуры
 
-Функция СформироватьСвязанныеОбъекты(ТранзакцияHOBОбъект, ДанныеДляЗаполнения, КэшSalesOrders)
+Функция СформироватьСвязанныеОбъекты(ТранзакцияHOBОбъект, ДанныеДляЗаполнения, КэшSalesOrders, КэшИнвойсов, КэшРучныхКоррерктировок, ДатаНачалаЗагрузки, ДатаВыверенныхОстатков, Отказ, ТекстСообщенияОбОшибках)
 	
 	НайденаОшибка = Ложь;
 	
-	//СтруктураПоискаРучнойКорректировки = Новый Структура("Source, Company, Client, Location, SubSubSegment, Account, Currency");
+	СтруктураПоискаРучнойКорректировки = Новый Структура("Company, Client, Location, SubSubSegment, Account, Currency");
 	//СтруктураПоискаBatch = Новый Структура("Source, Company, Client, Location, SubSubSegment, Account, Currency");
 	
 	Если ТранзакцияHOBОбъект.TransactionType = Перечисления.HOBTransactionType.Accrual Тогда
 		
-		СтрокаSalesOrder = КэшSalesOrders.Найти(ДанныеДляЗаполнения.SalesOrderGUID, "DocID");
+		СтрокаSalesOrder = КэшSalesOrders.Найти(ДанныеДляЗаполнения.SalesOrderID, "DocID");
 		
 		Если СтрокаSalesOrder = Неопределено Тогда
 
-			ТекSalesOrder = СоздатьSalesOrder(ТранзакцияHOBОбъект, ДанныеДляЗаполнения);
-			НоваяСтрокаКэша = КэшSalesOrders.Добавить();
-			НоваяСтрокаКэша.DocID = ДанныеДляЗаполнения.SalesOrderGUID;
-			НоваяСтрокаКэша.Ссылка = ТекSalesOrder;
+			Если НЕ ТранзакцияHOBОбъект.Reverse Тогда
+				
+				ТекSalesOrder = СоздатьSalesOrder(ТранзакцияHOBОбъект, ДанныеДляЗаполнения);
+				НоваяСтрокаКэша = КэшSalesOrders.Добавить();
+				НоваяСтрокаКэша.DocID = ДанныеДляЗаполнения.SalesOrderID;
+				НоваяСтрокаКэша.Ссылка = ТекSalesOrder;
+				
+			Иначе
+				
+				Если ТранзакцияHOBОбъект.Дата >= ДатаВыверенныхОстатков Тогда
+					ТекОшибка = "Failed to find Sales Order for transaction " + ТранзакцияHOBОбъект.Номер + " (" + ТранзакцияHOBОбъект.TrID +")";
+					Если СтрНайти(ТекстСообщенияОбОшибках, ТекОшибка) = 0 Тогда
+						ТекстСообщенияОбОшибках = ТекстСообщенияОбОшибках + ТекОшибка + Символы.ПС;
+					КонецЕсли;
+					Отказ = Истина;
+				Иначе
+					ОбнулитьСуммыПроводки(ТранзакцияHOBОбъект);
+					ДобавитьСвязанныйОбъект(ТранзакцияHOBОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.SalesOrder, Документы.SalesOrder.ПустаяСсылка());
+				КонецЕсли;
+				
+			КонецЕсли;
 			
 		Иначе
 			
@@ -689,11 +1391,65 @@
 		
 		КонецЕсли;
 		
+		Если Не ПустаяСтрока(ДанныеДляЗаполнения.InvoiceID) Тогда
+			
+			СтрокаИнвойса = КэшИнвойсов.Найти(ДанныеДляЗаполнения.InvoiceID, "DocID");
+			
+			Если СтрокаИнвойса = Неопределено Тогда
+
+				ТекИнвойс = СоздатьИнвойс(ТранзакцияHOBОбъект, ДанныеДляЗаполнения);
+				НоваяСтрокаКэша = КэшИнвойсов.Добавить();
+				НоваяСтрокаКэша.DocID = ДанныеДляЗаполнения.InvoiceID;
+				НоваяСтрокаКэша.Ссылка = ТекИнвойс;
+				
+			Иначе
+				
+				ТекИнвойс = СтрокаИнвойса.Ссылка;
+				ДобавитьСвязанныйОбъект(ТранзакцияHOBОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.Invoice, ТекИнвойс);
+			
+			КонецЕсли;
+			
+		КонецЕсли;
+		
+	ИначеЕсли ТранзакцияHOBОбъект.TransactionType = Перечисления.HOBTransactionType.JV Тогда
+		
+		СтруктураПоискаРучнойКорректировки.Company = ТранзакцияHOBОбъект.Company;
+		СтруктураПоискаРучнойКорректировки.Client = ТранзакцияHOBОбъект.Client;
+		СтруктураПоискаРучнойКорректировки.Location = ТранзакцияHOBОбъект.Location;
+		СтруктураПоискаРучнойКорректировки.SubSubSegment = ТранзакцияHOBОбъект.SubSubSegment;
+		СтруктураПоискаРучнойКорректировки.Account = ТранзакцияHOBОбъект.Account;
+		СтруктураПоискаРучнойКорректировки.Currency = ТранзакцияHOBОбъект.Currency;
+		
+		СтрокиРучнойКорректировки = КэшРучныхКоррерктировок.НайтиСтроки(СтруктураПоискаРучнойКорректировки);
+		Если СтрокиРучнойКорректировки.Количество() = 0 Тогда
+			ТекРучнаяКорректировка = СоздатьРучнуюКорректировку(ТранзакцияHOBОбъект);
+			НоваяСтрокаКэша = КэшРучныхКоррерктировок.Добавить();
+			НоваяСтрокаКэша.Company = ТранзакцияHOBОбъект.Company;
+			НоваяСтрокаКэша.Client = ТранзакцияHOBОбъект.Client;
+			НоваяСтрокаКэша.Location = ТранзакцияHOBОбъект.Location;
+			НоваяСтрокаКэша.SubSubSegment = ТранзакцияHOBОбъект.SubSubSegment;
+			НоваяСтрокаКэша.Account = ТранзакцияHOBОбъект.Account;
+			НоваяСтрокаКэша.Currency = ТранзакцияHOBОбъект.Currency;
+			НоваяСтрокаКэша.РучнаяКорректировка = ТекРучнаяКорректировка;
+		Иначе
+			ДобавитьСвязанныйОбъект(ТранзакцияHOBОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.РучнаяКорректировка, СтрокиРучнойКорректировки[0].РучнаяКорректировка);
+		КонецЕсли;
+		
 	КонецЕсли;
 	
 	Возврат НайденаОшибка;
 	
 КонецФункции
+
+Процедура ОбнулитьСуммыПроводки(ТранзакцияHOBОбъект)
+	
+	ТранзакцияHOBОбъект1 = ТранзакцияHOBОбъект.Ссылка.ПолучитьОбъект();
+	ТранзакцияHOBОбъект1.Amount = 0;
+	ТранзакцияHOBОбъект1.BaseAmount = 0;
+	ТранзакцияHOBОбъект1.ОбменДанными.Загрузка = Истина;
+	ТранзакцияHOBОбъект1.Записать();
+	
+КонецПроцедуры
 
 Процедура ДобавитьСвязанныйОбъект(ТранзакцияHOBОбъект, ТипОбъекта, СвязанныйОбъект)
 	
@@ -721,23 +1477,78 @@
 	ДокОбъект.ExchangeRate = ДанныеДляЗаполнения.SalesOrderExchangeRate;
 	ДокОбъект.ApprovalDate = ДанныеДляЗаполнения.SalesOrderApprovalDate;
 	ДокОбъект.ApprovedBy = ДанныеДляЗаполнения.SalesOrderApprovedBy;
-	ДокОбъект.DocID = ДанныеДляЗаполнения.SalesOrderGUID;
+	ДокОбъект.DocID = ДанныеДляЗаполнения.SalesOrderID;
 	ДокОбъект.JobEndDate = ДанныеДляЗаполнения.JobEndDate;
 	ДокОбъект.Amount = ДанныеДляЗаполнения.SalesOrderAmount;
-	ДокОбъект.Agreement = ДанныеДляЗаполнения.SalesOrderContract;
+	ДокОбъект.AgreementCode = ДанныеДляЗаполнения.SalesOrderAgreementCode;
+	ДокОбъект.Agreement = ДанныеДляЗаполнения.SalesOrderAgreement;
 	ДокОбъект.ERPStatus = ДанныеДляЗаполнения.ERPStatus;
 	ДокОбъект.OrderType = Перечисления.SalesOrederTypes.SalesOrder;
 	ДокОбъект.AU = ТранзакцияHOBОбъект.AU;
 	ДокОбъект.Account = ТранзакцияHOBОбъект.Account;
 	ДокОбъект.Location = ТранзакцияHOBОбъект.Location;
 	ДокОбъект.SubSubSegment = ТранзакцияHOBОбъект.SubSubSegment;
-	ДокОбъект.SubGeoMarket = ТранзакцияHOBОбъект.SubGeoMarket;
+	//ДокОбъект.SubGeoMarket = ТранзакцияHOBОбъект.SubGeoMarket;
+	ДокОбъект.OriginalAnalytics = Формат(ДанныеДляЗаполнения.CompanyCode, "ЧГ=0") + "." + ДанныеДляЗаполнения.AUCode + "." + ДанныеДляЗаполнения.LocationCode + "." + ДанныеДляЗаполнения.AccountCode;
 	
 	ДокОбъект.Записать(РежимЗаписиДокумента.Запись);
 	
 	ДобавитьСвязанныйОбъект(ТранзакцияHOBОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.SalesOrder, ДокОбъект.Ссылка);
 	
 	Возврат ДокОбъект.Ссылка;
+	
+КонецФункции
+
+Функция СоздатьИнвойс(ТранзакцияHOBОбъект, ДанныеДляЗаполнения)
+	
+	ДокОбъект = Документы.Invoice.СоздатьДокумент();
+	ДокОбъект.Source = Перечисления.ТипыСоответствий.HOBs;
+	ДокОбъект.Company = ТранзакцияHOBОбъект.Company;
+	ДокОбъект.Номер = ДанныеДляЗаполнения.InvoiceNumber;
+	//ДокОбъект.DocNumber = ?(ПустаяСтрока(ТранзакцияHOBОбъект.DocNumber2), ТранзакцияHOBОбъект.DocNumber, ТранзакцияOracleОбъект.DocNumber2);
+	ДокОбъект.Дата = ДанныеДляЗаполнения.InvoiceDate;
+	ДокОбъект.Client = ТранзакцияHOBОбъект.Client;
+	ДокОбъект.Location = ТранзакцияHOBОбъект.Location;
+	ДокОбъект.SubSubSegment = ТранзакцияHOBОбъект.SubSubSegment;
+	ДокОбъект.AU = ТранзакцияHOBОбъект.AU;
+	ДокОбъект.Account = ТранзакцияHOBОбъект.Account;
+	ДокОбъект.Currency = ТранзакцияHOBОбъект.Currency;
+	ДокОбъект.DocID = ТранзакцияHOBОбъект.InvoiceID;
+	ДокОбъект.Agreement = ДанныеДляЗаполнения.InvoiceAgreement;
+	ДокОбъект.AgreementCode = ДанныеДляЗаполнения.InvoiceAgreementCode;
+	ДокОбъект.FiscalInvoiceNo = ДанныеДляЗаполнения.InvoiceNumber;
+	ДокОбъект.FiscalInvoiceDate = ДанныеДляЗаполнения.InvoiceDate;
+	ДокОбъект.Amount = ДанныеДляЗаполнения.InvoiceAmount;
+	ДокОбъект.PassedForApproval = ДанныеДляЗаполнения.InvoicePassedForApproval;
+	ДокОбъект.PassedForApprovalDate = ДанныеДляЗаполнения.InvoicePassedForApprovalDate;
+	ДокОбъект.PassedForPayment = ДанныеДляЗаполнения.InvoicePassedForPayment;
+	ДокОбъект.PassedForPaymentDate = ДанныеДляЗаполнения.InvoicePassedForPaymentDate;
+	ДокОбъект.ExpectedDateOfPayment = ДанныеДляЗаполнения.ExpectedDateOfPayment;
+	ДокОбъект.OriginalAnalytics = Формат(ДанныеДляЗаполнения.CompanyCode, "ЧГ=0") + "." + ДанныеДляЗаполнения.AUCode + "." + ДанныеДляЗаполнения.LocationCode + "." + ДанныеДляЗаполнения.AccountCode;
+	ДокОбъект.Записать(РежимЗаписиДокумента.Запись);
+	
+	ДобавитьСвязанныйОбъект(ТранзакцияHOBОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.Invoice, ДокОбъект.Ссылка);
+	
+	Возврат ДокОбъект.Ссылка;
+	
+КонецФункции
+
+Функция СоздатьРучнуюКорректировку(ТранзакцияHOBОбъект)
+	
+	РучнаяКорректировкаОбъект = Документы.РучнаяКорректировка.СоздатьДокумент();
+	РучнаяКорректировкаОбъект.Дата = ТекущаяДата();
+	РучнаяКорректировкаОбъект.Source = Перечисления.ТипыСоответствий.HOBs;
+	РучнаяКорректировкаОбъект.Company = ТранзакцияHOBОбъект.Company;
+	РучнаяКорректировкаОбъект.Client = ТранзакцияHOBОбъект.Client;
+	РучнаяКорректировкаОбъект.Location = ТранзакцияHOBОбъект.Location;
+	РучнаяКорректировкаОбъект.SubSubSegment = ТранзакцияHOBОбъект.SubSubSegment;
+	РучнаяКорректировкаОбъект.Account = ТранзакцияHOBОбъект.Account;
+	РучнаяКорректировкаОбъект.Currency = ТранзакцияHOBОбъект.Currency;
+	РучнаяКорректировкаОбъект.Записать();
+	
+	ДобавитьСвязанныйОбъект(ТранзакцияHOBОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.РучнаяКорректировка, РучнаяКорректировкаОбъект.Ссылка);
+	
+	Возврат РучнаяКорректировкаОбъект.Ссылка;
 	
 КонецФункции
 
