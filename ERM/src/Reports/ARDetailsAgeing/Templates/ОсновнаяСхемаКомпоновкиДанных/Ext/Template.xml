@@ -102,16 +102,6 @@
 			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>CustomerID</dataPath>
-			<field>CustomerID</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Customer ID</v8:content>
-				</v8:item>
-			</title>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>AmountОстаток</dataPath>
 			<field>AmountОстаток</field>
 		</field>
@@ -137,6 +127,17 @@
 					<v8:content>Дата документа</v8:content>
 				</v8:item>
 			</title>
+			<appearance>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>Формат</dcscor:parameter>
+					<dcscor:value xsi:type="v8:LocalStringType">
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>ДФ=MM/dd/yyyy</v8:content>
+						</v8:item>
+					</dcscor:value>
+				</dcscor:item>
+			</appearance>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>НомерДокумента</dataPath>
@@ -200,6 +201,19 @@
 					<dcscor:value xsi:type="xs:string">ЧЦ=15; ЧДЦ=2</dcscor:value>
 				</dcscor:item>
 			</appearance>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>CustomerID</dataPath>
+			<field>CustomerID</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Customer ID</v8:content>
+				</v8:item>
+			</title>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
 		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
@@ -312,24 +326,36 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ВЫБРАТЬ
-	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.Идентификатор,
-	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника КАК ОбъектПриемника,
-	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ТипСоответствия КАК ТипСоответствия
+	МАКСИМУМ(НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Период) КАК Период,
+	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Идентификатор,
+	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия,
+	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипОбъектаВнешнейСистемы
 ПОМЕСТИТЬ ВТ_НастройкиСинхронизации
 ИЗ
-	РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(
-			,
-			ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Client)
-				И (ТипСоответствия, ОбъектПриемника) В
-					(ВЫБРАТЬ
-						ВТ_Остатки.Source,
-						ВТ_Остатки.Client
-					ИЗ
-						ВТ_Остатки КАК ВТ_Остатки)) КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних
+	ВТ_Остатки КАК ВТ_Остатки
+		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемами
+		ПО ВТ_Остатки.Client = НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ОбъектПриемника
+			И ВТ_Остатки.Source = НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия
 
-ИНДЕКСИРОВАТЬ ПО
-	ТипСоответствия,
-	ОбъектПриемника
+СГРУППИРОВАТЬ ПО
+	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия,
+	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Идентификатор,
+	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипОбъектаВнешнейСистемы
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Идентификатор,
+	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия,
+	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ОбъектПриемника
+ПОМЕСТИТЬ ВТ_НастройкиСинхронизацииИтог
+ИЗ
+	ВТ_НастройкиСинхронизации КАК ВТ_НастройкиСинхронизации
+		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемами
+		ПО ВТ_НастройкиСинхронизации.Период = НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Период
+			И ВТ_НастройкиСинхронизации.Идентификатор = НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Идентификатор
+			И ВТ_НастройкиСинхронизации.ТипСоответствия = НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия
+			И ВТ_НастройкиСинхронизации.ТипОбъектаВнешнейСистемы = НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипОбъектаВнешнейСистемы
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -363,14 +389,14 @@
 	ВТ_Остатки.TransactionAmount,
 	ВТ_Остатки.TransactionAmountUSD,
 	ВТ_Остатки.Agreement,
-	ВТ_НастройкиСинхронизации.Идентификатор КАК CustomerID
+	ВТ_НастройкиСинхронизацииИтог.Идентификатор КАК CustomerID
 ИЗ
 	ВТ_Остатки КАК ВТ_Остатки
-		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_НастройкиСинхронизации КАК ВТ_НастройкиСинхронизации
-		ПО ВТ_Остатки.Source = ВТ_НастройкиСинхронизации.ТипСоответствия
-			И ВТ_Остатки.Client = ВТ_НастройкиСинхронизации.ОбъектПриемника
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних КАК ВнутренниеКурсыВалютСрезПоследних
-		ПО ВТ_Остатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта</query>
+		ПО ВТ_Остатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
+		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_НастройкиСинхронизацииИтог КАК ВТ_НастройкиСинхронизацииИтог
+		ПО ВТ_Остатки.Client = ВТ_НастройкиСинхронизацииИтог.ОбъектПриемника
+			И ВТ_Остатки.Source = ВТ_НастройкиСинхронизацииИтог.ТипСоответствия</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>Ageing_1_30</dataPath>
@@ -481,11 +507,22 @@
 		<valueType>
 			<v8:Type>xs:dateTime</v8:Type>
 			<v8:DateQualifiers>
-				<v8:DateFractions>DateTime</v8:DateFractions>
+				<v8:DateFractions>Date</v8:DateFractions>
 			</v8:DateQualifiers>
 		</valueType>
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>false</useRestriction>
+		<inputParameters>
+			<dcscor:item>
+				<dcscor:parameter>ФорматРедактирования</dcscor:parameter>
+				<dcscor:value xsi:type="v8:LocalStringType">
+					<v8:item>
+						<v8:lang>ru</v8:lang>
+						<v8:content>ДФ=MM/dd/yyyy</v8:content>
+					</v8:item>
+				</dcscor:value>
+			</dcscor:item>
+		</inputParameters>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
@@ -521,6 +558,9 @@
 							<v8:content>Segment</v8:content>
 						</v8:item>
 					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Company</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>CustomerID</dcsset:field>
@@ -670,6 +710,14 @@
 					<dcsset:placement>Horizontally</dcsset:placement>
 				</dcsset:item>
 			</dcsset:selection>
+			<dcsset:filter>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:use>false</dcsset:use>
+					<dcsset:left xsi:type="dcscor:Field">Client</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:userSettingID>73e62d15-e190-41e3-8792-372de452a719</dcsset:userSettingID>
+				</dcsset:item>
+			</dcsset:filter>
 			<dcsset:dataParameters>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>Период</dcscor:parameter>
