@@ -1,0 +1,179 @@
+﻿USE ERM;
+
+DECLARE @MySource binary(16);
+SET @MySource = (SELECT EN._IDRRef FROM _#ИмяТаблицыПеречисления# AS EN WHERE EN._EnumOrder = #НомерЭлементаПеречисления#);
+PRINT N'';
+
+-- проводки DSS
+TRUNCATE TABLE _#ИмяТаблицыDSS#;
+
+PRINT N'';
+-- Документ Ручная корректировка
+PRINT N'Начало удаления документов Ручная корректировка '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+DELETE
+FROM dbo._#ИмяТаблицы_РучнаяКорректировка#
+WHERE _#ИмяПоля_РучнаяКорректировка#RRef = @MySource;
+PRINT N'Документы Ручная корректировка удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+
+PRINT N'';
+-- Документ SalesOrder
+PRINT N'Начало удаления документов SalesOrder '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+DELETE
+FROM dbo._#ИмяТаблицы_SalesOrder#
+WHERE _#ИмяПоля_SalesOrder#RRef = @MySource;
+PRINT N'Документы SalesOrder удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+
+PRINT N'';
+-- Документ Invoice
+PRINT N'Начало удаления документов Invoice '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+DELETE
+FROM dbo._#ИмяТаблицы_Invoice#
+WHERE _#ИмяПоля_Invoice#RRef = @MySource;
+PRINT N'Документы Invoice удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+
+PRINT N'';
+-- Документ CashBatch
+PRINT N'Начало удаления документов CashBatch '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+DELETE
+FROM dbo._#ИмяТаблицы_CashBatch#
+WHERE _#ИмяПоля_CashBatch#RRef = @MySource;
+PRINT N'Документы CashBatch удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+
+PRINT N'';
+-- Документ BatchAllocation
+PRINT N'Начало удаления документов BatchAllocation '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+DELETE
+FROM dbo._#ИмяТаблицы_BatchAllocation#
+WHERE _#ИмяПоля_BatchAllocation#RRef = @MySource;
+PRINT N'Документы BatchAllocation удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+
+PRINT N'';
+-- Документ Memo
+PRINT N'Начало удаления документов Memo '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+DELETE
+FROM dbo._#ИмяТаблицы_Memo#
+WHERE _#ИмяПоля_Memo#RRef = @MySource;
+PRINT N'Документы Memo удалены'+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+
+PRINT N'';
+-- КлючиИнвойсов
+PRINT N'Начало удаления движений КлючиИнвойсов '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+DELETE
+FROM dbo._#ИмяТаблицы_КлючиИнвойсов#
+WHERE _#ИмяПоля_КлючиИнвойсов#RRef = @MySource;
+PRINT N'Движения КлючиИнвойсов удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+
+PRINT N'';
+-- КлючиSalesOrders
+PRINT N'Начало удаления движений КлючиSalesOrders '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+TRUNCATE TABLE _#ИмяТаблицы_КлючиSalesOrders#;
+PRINT N'Движения КлючиSalesOrders удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+
+PRINT N'';
+-- КлючиCashBatch
+PRINT N'Начало удаления движений КлючиCashBatch '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+DELETE
+FROM dbo._#ИмяТаблицы_КлючиCashBatch#
+WHERE _#ИмяПоля_КлючиCashBatch#RRef = @MySource;
+PRINT N'Движения КлючиCashBatch удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+
+PRINT N'';
+-- КлючиBatchAllocation
+PRINT N'Начало удаления движений КлючиBatchAllocation '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+DELETE
+FROM dbo._#ИмяТаблицы_КлючиBatchAllocation#
+WHERE _#ИмяПоля_КлючиBatchAllocation#RRef = @MySource;
+PRINT N'Движения КлючиBatchAllocation удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+
+PRINT N'';
+-- КлючиРучныхКорректировок
+PRINT N'Начало удаления движений КлючиРучныхКорректировок '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+DELETE
+FROM dbo._#ИмяТаблицы_КлючиРучныхКорректировок#
+WHERE _#ИмяПоля_КлючиРучныхКорректировок#RRef = @MySource;
+PRINT N'Движения КлючиРучныхКорректировок удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+
+PRINT N'';
+-- КлючиMemo
+PRINT N'Начало удаления движений КлючиMemo '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+TRUNCATE TABLE _#ИмяТаблицы_КлючиMemo#;
+PRINT N'Движения КлючиMemo удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+
+
+PRINT N'';
+-- unbilled AR
+-- движения
+PRINT N'Начало удаления движений UnbilledAR '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+DELETE
+FROM dbo._#ИмяТаблицы_UnbilledAR_Движения#
+WHERE _#ИмяПоля_UnbilledAR#RRef = @MySource;
+
+
+
+-- unbilled AR
+-- итоги
+DELETE
+FROM dbo._#ИмяТаблицы_UnbilledAR_Итоги#
+WHERE _#ИмяПоля_UnbilledAR#RRef = @MySource;
+PRINT N'Движения UnbilledAR удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+PRINT N'';
+PRINT N'Начало удаления движений billedAR '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+-- billed AR
+-- движения
+DELETE
+FROM dbo._#ИмяТаблицы_billedAR_Движения#
+WHERE _#ИмяПоля_billedAR#RRef = @MySource;
+
+
+-- billed AR
+-- итоги
+DELETE
+FROM dbo._#ИмяТаблицы_billedAR_Итоги#
+WHERE _#ИмяПоля_billedAR#RRef = @MySource;
+PRINT N'Движения billedAR удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+PRINT N'';
+PRINT N'Начало удаления движений UnallocatedCash '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+-- UnallocatedCash
+-- движения
+DELETE
+FROM dbo._#ИмяТаблицы_UnallocatedCash_Движения#
+WHERE _#ИмяПоля_UnallocatedCash#RRef = @MySource;
+
+
+-- UnallocatedCash
+-- итоги
+DELETE
+FROM dbo._#ИмяТаблицы_UnallocatedCash_Итоги#
+WHERE _#ИмяПоля_UnallocatedCash#RRef = @MySource;
+PRINT N'Движения UnallocatedCash удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+PRINT N'';
+PRINT N'Начало удаления движений ManualTransactions '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+-- ManualTransactions
+-- движения
+DELETE
+FROM dbo._#ИмяТаблицы_ManualTransactions_Движения#
+WHERE _#ИмяПоля_ManualTransactions#RRef = @MySource;
+
+
+-- ManualTransactions
+-- итоги
+DELETE
+FROM dbo._#ИмяТаблицы_ManualTransactions_Итоги#
+WHERE _#ИмяПоля_ManualTransactions#RRef = @MySource;
+PRINT N'Движения ManualTransactions удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+PRINT N'';
+PRINT N'Начало удаления движений UnallocatedMemo '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+-- UnallocatedMemo
+-- движения
+DELETE
+FROM dbo._#ИмяТаблицы_UnallocatedMemo_Движения#
+WHERE _#ИмяПоля_UnallocatedMemo#RRef = @MySource;
+
+
+-- UnallocatedMemo
+-- итоги
+DELETE
+FROM dbo._#ИмяТаблицы_UnallocatedMemo_Итоги#
+WHERE _#ИмяПоля_UnallocatedMemo#RRef = @MySource;
+PRINT N'Движения UnallocatedMemo удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+PRINT N'';
