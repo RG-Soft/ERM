@@ -72,7 +72,9 @@
 	|	ТранзакцияHOB.InvoiceID,
 	|	ТранзакцияHOB.CREW,
 	|	ТранзакцияHOB.Reverse,
-	|	ТранзакцияHOB.AU
+	|	ТранзакцияHOB.AU,
+	|	ТранзакцияHOB.HOBDocumentType,
+	|	ТранзакцияHOB.HOBInvoiceType
 	|ИЗ
 	|	Документ.ТранзакцияHOB КАК ТранзакцияHOB
 	|ГДЕ
