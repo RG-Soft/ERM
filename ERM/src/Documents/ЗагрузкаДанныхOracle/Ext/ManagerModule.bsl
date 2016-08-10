@@ -1163,7 +1163,10 @@
 	ДокОбъект.Source = ТранзакцияOracleОбъект.Source;
 	ДокОбъект.Company = ТранзакцияOracleОбъект.Company;
 	ДокОбъект.Номер = Формат(ТранзакцияOracleОбъект.DocID, "ЧГ=0");
-	ДокОбъект.DocNumber = ?(ПустаяСтрока(ТранзакцияOracleОбъект.DocNumber2), ТранзакцияOracleОбъект.DocNumber, ТранзакцияOracleОбъект.DocNumber2);
+	// { RGS TAlmazova 10.08.2016 12:22:48 - запись только DocNumber
+	//ДокОбъект.DocNumber = ?(ПустаяСтрока(ТранзакцияOracleОбъект.DocNumber2), ТранзакцияOracleОбъект.DocNumber, ТранзакцияOracleОбъект.DocNumber2);
+	ДокОбъект.DocNumber = ТранзакцияOracleОбъект.DocNumber;
+	// } RGS TAlmazova 10.08.2016 12:23:03 - запись только DocNumber
 	ДокОбъект.Дата = ТранзакцияOracleОбъект.InvDate;
 	ДокОбъект.Client = ТранзакцияOracleОбъект.Client;
 	ДокОбъект.Location = ТранзакцияOracleОбъект.Location;
