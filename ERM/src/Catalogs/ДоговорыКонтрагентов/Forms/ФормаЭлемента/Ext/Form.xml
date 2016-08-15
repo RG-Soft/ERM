@@ -296,6 +296,11 @@
 					<ContextMenu name="ТипЦенКонтекстноеМеню" id="157"/>
 					<ExtendedTooltip name="ТипЦенExtendedTooltip" id="158"/>
 				</InputField>
+				<InputField name="Trigger" id="338">
+					<DataPath>Объект.Trigger</DataPath>
+					<ContextMenu name="TriggerКонтекстноеМеню" id="339"/>
+					<ExtendedTooltip name="TriggerРасширеннаяПодсказка" id="340"/>
+				</InputField>
 				<UsualGroup name="ГруппаСрокОплаты" id="159">
 					<EnableContentChange>true</EnableContentChange>
 					<Title>
@@ -322,6 +327,12 @@
 						</LabelDecoration>
 						<CheckBoxField name="УстановленСрокОплаты" id="161">
 							<DataPath>Объект.УстановленСрокОплаты</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>ru</v8:lang>
+									<v8:content>Set payment period:</v8:content>
+								</v8:item>
+							</Title>
 							<TitleLocation>Right</TitleLocation>
 							<CheckBoxType>Auto</CheckBoxType>
 							<ContextMenu name="УстановленСрокОплатыКонтекстноеМеню" id="162"/>
@@ -330,18 +341,39 @@
 								<Event name="OnChange">УстановленСрокОплатыПриИзменении</Event>
 							</Events>
 						</CheckBoxField>
+						<InputField name="PTDaysFrom" id="326">
+							<DataPath>Объект.PTDaysFrom</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>ru</v8:lang>
+									<v8:content>From</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="PTDaysFromКонтекстноеМеню" id="327"/>
+							<ExtendedTooltip name="PTDaysFromРасширеннаяПодсказка" id="328"/>
+						</InputField>
 						<InputField name="СрокОплаты" id="168">
 							<DataPath>Объект.СрокОплаты</DataPath>
 							<Title>
 								<v8:item>
 									<v8:lang>ru</v8:lang>
-									<v8:content>дней</v8:content>
+									<v8:content>To</v8:content>
 								</v8:item>
 							</Title>
-							<TitleLocation>Right</TitleLocation>
+							<TitleLocation>Left</TitleLocation>
 							<ContextMenu name="СрокОплатыКонтекстноеМеню" id="169"/>
 							<ExtendedTooltip name="СрокОплатыExtendedTooltip" id="170"/>
 						</InputField>
+						<LabelDecoration name="Декорация2" id="329">
+							<Title formatted="false">
+								<v8:item>
+									<v8:lang>ru</v8:lang>
+									<v8:content>days</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="Декорация2КонтекстноеМеню" id="330"/>
+							<ExtendedTooltip name="Декорация2РасширеннаяПодсказка" id="331"/>
+						</LabelDecoration>
 					</ChildItems>
 				</UsualGroup>
 			</ChildItems>
@@ -818,7 +850,7 @@
 					<v8:content>Дополнительная информация</v8:content>
 				</v8:item>
 			</Title>
-			<Group>Vertical</Group>
+			<Group>Horizontal</Group>
 			<Behavior>Collapsible</Behavior>
 			<Collapsed>true</Collapsed>
 			<ControlRepresentation>Picture</ControlRepresentation>
@@ -826,29 +858,215 @@
 			<ShowLeftMargin>false</ShowLeftMargin>
 			<ExtendedTooltip name="ГруппаДополнительнаяИнформацияРасширеннаяПодсказка" id="310"/>
 			<ChildItems>
-				<InputField name="СрокДействия" id="20">
-					<DataPath>Объект.СрокДействия</DataPath>
-					<ContextMenu name="СрокДействияКонтекстноеМеню" id="21"/>
-					<ExtendedTooltip name="СрокДействияExtendedTooltip" id="86"/>
-				</InputField>
-				<InputField name="ВидВзаиморасчетов" id="150">
-					<DataPath>Объект.ВидВзаиморасчетов</DataPath>
-					<ContextMenu name="ВидВзаиморасчетовКонтекстноеМеню" id="151"/>
-					<ExtendedTooltip name="ВидВзаиморасчетовExtendedTooltip" id="152"/>
-				</InputField>
-				<InputField name="ФайлДоговора" id="260">
-					<DataPath>Объект.ФайлДоговора</DataPath>
-					<UserVisible>
-						<xr:Common>false</xr:Common>
-					</UserVisible>
-					<CreateButton>false</CreateButton>
-					<ContextMenu name="ФайлДоговораКонтекстноеМеню" id="261"/>
-					<ExtendedTooltip name="ФайлДоговораРасширеннаяПодсказка" id="262"/>
-					<Events>
-						<Event name="Opening">ФайлДоговораОткрытие</Event>
-						<Event name="Creating">ФайлДоговораСоздание</Event>
-					</Events>
-				</InputField>
+				<UsualGroup name="ГруппаДополнительнаяИнформацияЛевая" id="347">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Группа дополнительная информация левая</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Группа дополнительная информация левая</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Group>Vertical</Group>
+					<Representation>None</Representation>
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="ГруппаДополнительнаяИнформацияЛеваяРасширеннаяПодсказка" id="348"/>
+					<ChildItems>
+						<InputField name="СрокДействия" id="20">
+							<DataPath>Объект.СрокДействия</DataPath>
+							<ContextMenu name="СрокДействияКонтекстноеМеню" id="21"/>
+							<ExtendedTooltip name="СрокДействияExtendedTooltip" id="86"/>
+						</InputField>
+						<InputField name="ВидВзаиморасчетов" id="150">
+							<DataPath>Объект.ВидВзаиморасчетов</DataPath>
+							<ContextMenu name="ВидВзаиморасчетовКонтекстноеМеню" id="151"/>
+							<ExtendedTooltip name="ВидВзаиморасчетовExtendedTooltip" id="152"/>
+						</InputField>
+						<InputField name="ФайлДоговора" id="260">
+							<DataPath>Объект.ФайлДоговора</DataPath>
+							<UserVisible>
+								<xr:Common>false</xr:Common>
+							</UserVisible>
+							<CreateButton>false</CreateButton>
+							<ContextMenu name="ФайлДоговораКонтекстноеМеню" id="261"/>
+							<ExtendedTooltip name="ФайлДоговораРасширеннаяПодсказка" id="262"/>
+							<Events>
+								<Event name="Opening">ФайлДоговораОткрытие</Event>
+								<Event name="Creating">ФайлДоговораСоздание</Event>
+							</Events>
+						</InputField>
+						<InputField name="PIC_ID" id="332">
+							<DataPath>Объект.PIC_ID</DataPath>
+							<ContextMenu name="PIC_IDКонтекстноеМеню" id="333"/>
+							<ExtendedTooltip name="PIC_IDРасширеннаяПодсказка" id="334"/>
+						</InputField>
+						<CheckBoxField name="ChecklistRequired" id="335">
+							<DataPath>Объект.ChecklistRequired</DataPath>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="ChecklistRequiredКонтекстноеМеню" id="336"/>
+							<ExtendedTooltip name="ChecklistRequiredРасширеннаяПодсказка" id="337"/>
+						</CheckBoxField>
+						<InputField name="ContractID" id="341">
+							<DataPath>Объект.ContractID</DataPath>
+							<ContextMenu name="ContractIDКонтекстноеМеню" id="342"/>
+							<ExtendedTooltip name="ContractIDРасширеннаяПодсказка" id="343"/>
+						</InputField>
+						<InputField name="SourceID" id="344">
+							<DataPath>Объект.SourceID</DataPath>
+							<ContextMenu name="SourceIDКонтекстноеМеню" id="345"/>
+							<ExtendedTooltip name="SourceIDРасширеннаяПодсказка" id="346"/>
+						</InputField>
+						<InputField name="crmContractID" id="351">
+							<DataPath>Объект.crmContractID</DataPath>
+							<ContextMenu name="crmContractIDКонтекстноеМеню" id="352"/>
+							<ExtendedTooltip name="crmContractIDРасширеннаяПодсказка" id="353"/>
+						</InputField>
+					</ChildItems>
+				</UsualGroup>
+				<UsualGroup name="ГруппаДополнительнаяИнформацияПравая" id="349">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Группа дополнительная информация правая</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Группа дополнительная информация правая</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Group>Vertical</Group>
+					<Representation>None</Representation>
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="ГруппаДополнительнаяИнформацияПраваяРасширеннаяПодсказка" id="350"/>
+					<ChildItems>
+						<UsualGroup name="Группа3" id="398">
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="Группа3РасширеннаяПодсказка" id="399"/>
+							<ChildItems>
+								<InputField name="crmCreatedBy" id="354">
+									<DataPath>Объект.crmCreatedBy</DataPath>
+									<ContextMenu name="crmCreatedByКонтекстноеМеню" id="355"/>
+									<ExtendedTooltip name="crmCreatedByРасширеннаяПодсказка" id="356"/>
+								</InputField>
+								<InputField name="crmCreatedDate" id="357">
+									<DataPath>Объект.crmCreatedDate</DataPath>
+									<ContextMenu name="crmCreatedDateКонтекстноеМеню" id="358"/>
+									<ExtendedTooltip name="crmCreatedDateРасширеннаяПодсказка" id="359"/>
+								</InputField>
+							</ChildItems>
+						</UsualGroup>
+						<UsualGroup name="Группа1" id="394">
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="Группа1РасширеннаяПодсказка" id="395"/>
+							<ChildItems>
+								<InputField name="crmEffectiveDate" id="360">
+									<DataPath>Объект.crmEffectiveDate</DataPath>
+									<ContextMenu name="crmEffectiveDateКонтекстноеМеню" id="361"/>
+									<ExtendedTooltip name="crmEffectiveDateРасширеннаяПодсказка" id="362"/>
+								</InputField>
+								<InputField name="crmExpiryDate" id="363">
+									<DataPath>Объект.crmExpiryDate</DataPath>
+									<ContextMenu name="crmExpiryDateКонтекстноеМеню" id="364"/>
+									<ExtendedTooltip name="crmExpiryDateРасширеннаяПодсказка" id="365"/>
+								</InputField>
+							</ChildItems>
+						</UsualGroup>
+						<UsualGroup name="Группа2" id="396">
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="Группа2РасширеннаяПодсказка" id="397"/>
+							<ChildItems>
+								<InputField name="crmContractCurrency" id="366">
+									<DataPath>Объект.crmContractCurrency</DataPath>
+									<ContextMenu name="crmContractCurrencyКонтекстноеМеню" id="367"/>
+									<ExtendedTooltip name="crmContractCurrencyРасширеннаяПодсказка" id="368"/>
+								</InputField>
+								<InputField name="crmContractValueUSD" id="369">
+									<DataPath>Объект.crmContractValueUSD</DataPath>
+									<ContextMenu name="crmContractValueUSDКонтекстноеМеню" id="370"/>
+									<ExtendedTooltip name="crmContractValueUSDРасширеннаяПодсказка" id="371"/>
+								</InputField>
+							</ChildItems>
+						</UsualGroup>
+						<InputField name="crmContractName" id="372">
+							<DataPath>Объект.crmContractName</DataPath>
+							<ContextMenu name="crmContractNameКонтекстноеМеню" id="373"/>
+							<ExtendedTooltip name="crmContractNameРасширеннаяПодсказка" id="374"/>
+						</InputField>
+						<InputField name="crmDFNName" id="375">
+							<DataPath>Объект.crmDFNName</DataPath>
+							<ContextMenu name="crmDFNNameКонтекстноеМеню" id="376"/>
+							<ExtendedTooltip name="crmDFNNameРасширеннаяПодсказка" id="377"/>
+						</InputField>
+						<UsualGroup name="ГруппаDocumentFlow" id="390">
+							<Title>
+								<v8:item>
+									<v8:lang>ru</v8:lang>
+									<v8:content>Группа document flow</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>ru</v8:lang>
+									<v8:content>Группа document flow</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="ГруппаDocumentFlowРасширеннаяПодсказка" id="391"/>
+							<ChildItems>
+								<InputField name="DocumentFlowPeriodFrom" id="378">
+									<DataPath>Объект.DocumentFlowPeriodFrom</DataPath>
+									<ContextMenu name="DocumentFlowPeriodFromКонтекстноеМеню" id="379"/>
+									<ExtendedTooltip name="DocumentFlowPeriodFromРасширеннаяПодсказка" id="380"/>
+								</InputField>
+								<InputField name="DocumentFlowPeriodTo" id="381">
+									<DataPath>Объект.DocumentFlowPeriodTo</DataPath>
+									<ContextMenu name="DocumentFlowPeriodToКонтекстноеМеню" id="382"/>
+									<ExtendedTooltip name="DocumentFlowPeriodToРасширеннаяПодсказка" id="383"/>
+								</InputField>
+							</ChildItems>
+						</UsualGroup>
+						<UsualGroup name="ГруппаAmendment" id="392">
+							<Title>
+								<v8:item>
+									<v8:lang>ru</v8:lang>
+									<v8:content>Группа amendment</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>ru</v8:lang>
+									<v8:content>Группа amendment</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="ГруппаAmendmentРасширеннаяПодсказка" id="393"/>
+							<ChildItems>
+								<CheckBoxField name="Amendment" id="384">
+									<DataPath>Объект.Amendment</DataPath>
+									<CheckBoxType>Auto</CheckBoxType>
+									<ContextMenu name="AmendmentКонтекстноеМеню" id="385"/>
+									<ExtendedTooltip name="AmendmentРасширеннаяПодсказка" id="386"/>
+								</CheckBoxField>
+								<InputField name="AmendmentName" id="387">
+									<DataPath>Объект.AmendmentName</DataPath>
+									<ContextMenu name="AmendmentNameКонтекстноеМеню" id="388"/>
+									<ExtendedTooltip name="AmendmentNameРасширеннаяПодсказка" id="389"/>
+								</InputField>
+							</ChildItems>
+						</UsualGroup>
+					</ChildItems>
+				</UsualGroup>
 			</ChildItems>
 		</UsualGroup>
 		<UsualGroup name="ГруппаДополнительныеРеквизиты" id="76">
@@ -865,6 +1083,87 @@
 			<Representation>None</Representation>
 			<ShowLeftMargin>false</ShowLeftMargin>
 			<ExtendedTooltip name="ГруппаДополнительныеРеквизитыExtendedTooltip" id="125"/>
+		</UsualGroup>
+		<UsualGroup name="ГруппаКодыCRMпоСегментам" id="400">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>CRM codes by segments</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Группа коды CRMпо сегментам</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Behavior>Collapsible</Behavior>
+			<Collapsed>true</Collapsed>
+			<ControlRepresentation>Picture</ControlRepresentation>
+			<Representation>None</Representation>
+			<ExtendedTooltip name="ГруппаКодыCRMпоСегментамРасширеннаяПодсказка" id="401"/>
+			<ChildItems>
+				<Table name="КодыCRMпоСегментам" id="402">
+					<AutoInsertNewRow>true</AutoInsertNewRow>
+					<EnableStartDrag>true</EnableStartDrag>
+					<EnableDrag>true</EnableDrag>
+					<DataPath>Объект.КодыCRMпоСегментам</DataPath>
+					<RowFilter xsi:nil="true"/>
+					<ContextMenu name="КодыCRMпоСегментамКонтекстноеМеню" id="403"/>
+					<AutoCommandBar name="КодыCRMпоСегментамКоманднаяПанель" id="404"/>
+					<ExtendedTooltip name="КодыCRMпоСегментамРасширеннаяПодсказка" id="405"/>
+					<SearchStringAddition name="КодыCRMпоСегментамСтрокаПоиска" id="406">
+						<AdditionSource>
+							<Item>КодыCRMпоСегментам</Item>
+							<Type>SearchStringRepresentation</Type>
+						</AdditionSource>
+						<ContextMenu name="КодыCRMпоСегментамСтрокаПоискаКонтекстноеМеню" id="407"/>
+						<ExtendedTooltip name="КодыCRMпоСегментамСтрокаПоискаРасширеннаяПодсказка" id="408"/>
+					</SearchStringAddition>
+					<ViewStatusAddition name="КодыCRMпоСегментамСостояниеПросмотра" id="409">
+						<AdditionSource>
+							<Item>КодыCRMпоСегментам</Item>
+							<Type>ViewStatusRepresentation</Type>
+						</AdditionSource>
+						<ContextMenu name="КодыCRMпоСегментамСостояниеПросмотраКонтекстноеМеню" id="410"/>
+						<ExtendedTooltip name="КодыCRMпоСегментамСостояниеПросмотраРасширеннаяПодсказка" id="411"/>
+					</ViewStatusAddition>
+					<SearchControlAddition name="КодыCRMпоСегментамУправлениеПоиском" id="412">
+						<AdditionSource>
+							<Item>КодыCRMпоСегментам</Item>
+							<Type>SearchControl</Type>
+						</AdditionSource>
+						<ContextMenu name="КодыCRMпоСегментамУправлениеПоискомКонтекстноеМеню" id="413"/>
+						<ExtendedTooltip name="КодыCRMпоСегментамУправлениеПоискомРасширеннаяПодсказка" id="414"/>
+					</SearchControlAddition>
+					<ChildItems>
+						<LabelField name="КодыCRMпоСегментамНомерСтроки" id="415">
+							<DataPath>Объект.КодыCRMпоСегментам.LineNumber</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="КодыCRMпоСегментамНомерСтрокиКонтекстноеМеню" id="416"/>
+							<ExtendedTooltip name="КодыCRMпоСегментамНомерСтрокиРасширеннаяПодсказка" id="417"/>
+						</LabelField>
+						<InputField name="КодыCRMпоСегментамSegment" id="418">
+							<DataPath>Объект.КодыCRMпоСегментам.Segment</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="КодыCRMпоСегментамSegmentКонтекстноеМеню" id="419"/>
+							<ExtendedTooltip name="КодыCRMпоСегментамSegmentРасширеннаяПодсказка" id="420"/>
+						</InputField>
+						<InputField name="КодыCRMпоСегментамcrmContractID" id="421">
+							<DataPath>Объект.КодыCRMпоСегментам.crmContractID</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="КодыCRMпоСегментамcrmContractIDКонтекстноеМеню" id="422"/>
+							<ExtendedTooltip name="КодыCRMпоСегментамcrmContractIDРасширеннаяПодсказка" id="423"/>
+						</InputField>
+						<InputField name="КодыCRMпоСегментамPIC_ID" id="424">
+							<DataPath>Объект.КодыCRMпоСегментам.PIC_ID</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="КодыCRMпоСегментамPIC_IDКонтекстноеМеню" id="425"/>
+							<ExtendedTooltip name="КодыCRMпоСегментамPIC_IDРасширеннаяПодсказка" id="426"/>
+						</InputField>
+					</ChildItems>
+				</Table>
+			</ChildItems>
 		</UsualGroup>
 	</ChildItems>
 	<Attributes>
