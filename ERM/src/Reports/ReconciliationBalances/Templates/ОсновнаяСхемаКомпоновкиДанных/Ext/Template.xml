@@ -154,31 +154,32 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ВЫБРАТЬ
-	ВТ_Остатки.Client,
-	ВТ_Остатки.Company,
-	ВТ_Остатки.Source,
-	ВТ_Остатки.Location,
-	ВТ_Остатки.SubSubSegment,
-	ВТ_Остатки.Invoice,
-	ВТ_Остатки.Account,
-	ВТ_Остатки.Currency,
-	ВТ_Остатки.AU,
-	ВТ_Остатки.AmountОстаток КАК ERMBalance,
-	ARBalanceСрезПоследних.Amount КАК TargetBalance
+	ЕСТЬNULL(ВТ_Остатки.Client, ARBalance.Client) КАК Client,
+	ЕСТЬNULL(ВТ_Остатки.Company, ARBalance.Company) КАК Company,
+	ЕСТЬNULL(ВТ_Остатки.Source, ARBalance.Source) КАК Source,
+	ЕСТЬNULL(ВТ_Остатки.Location, ARBalance.Location) КАК Location,
+	ЕСТЬNULL(ВТ_Остатки.SubSubSegment, ARBalance.SubSubSegment) КАК SubSubSegment,
+	ЕСТЬNULL(ВТ_Остатки.Invoice, ARBalance.Invoice) КАК Invoice,
+	ЕСТЬNULL(ВТ_Остатки.Account, ARBalance.Account) КАК Account,
+	ЕСТЬNULL(ВТ_Остатки.Currency, ARBalance.Currency) КАК Currency,
+	ЕСТЬNULL(ВТ_Остатки.AU, ARBalance.AU) КАК AU,
+	ЕСТЬNULL(ВТ_Остатки.AmountОстаток, 0) КАК ERMBalance,
+	ЕСТЬNULL(ARBalance.Amount, 0) КАК TargetBalance
 ИЗ
 	ВТ_Остатки КАК ВТ_Остатки
-		ПОЛНОЕ СОЕДИНЕНИЕ РегистрСведений.ARBalance.СрезПоследних КАК ARBalanceСрезПоследних
-		ПО ВТ_Остатки.Client = ARBalanceСрезПоследних.Client
-			И ВТ_Остатки.Company = ARBalanceСрезПоследних.Company
-			И ВТ_Остатки.Source = ARBalanceСрезПоследних.Source
-			И ВТ_Остатки.Location = ARBalanceСрезПоследних.Location
-			И ВТ_Остатки.SubSubSegment = ARBalanceСрезПоследних.SubSubSegment
-			И ВТ_Остатки.Invoice = ARBalanceСрезПоследних.Invoice
-			И ВТ_Остатки.Account = ARBalanceСрезПоследних.Account
-			И ВТ_Остатки.Currency = ARBalanceСрезПоследних.Currency
-			И ВТ_Остатки.AU = ARBalanceСрезПоследних.AU
+		ПОЛНОЕ СОЕДИНЕНИЕ РегистрСведений.ARBalance КАК ARBalance
+		ПО ВТ_Остатки.Client = ARBalance.Client
+			И ВТ_Остатки.Company = ARBalance.Company
+			И ВТ_Остатки.Source = ARBalance.Source
+			И ВТ_Остатки.Location = ARBalance.Location
+			И ВТ_Остатки.SubSubSegment = ARBalance.SubSubSegment
+			И ВТ_Остатки.Invoice = ARBalance.Invoice
+			И ВТ_Остатки.Account = ARBalance.Account
+			И ВТ_Остатки.Currency = ARBalance.Currency
+			И ВТ_Остатки.AU = ARBalance.AU
 ГДЕ
-	ARBalanceСрезПоследних.Amount &lt;&gt; ВТ_Остатки.AmountОстаток</query>
+	ЕСТЬNULL(ARBalance.Amount, 0) &lt;&gt; ЕСТЬNULL(ВТ_Остатки.AmountОстаток, 0)
+	И ARBalance.Период = &amp;Период</query>
 	</dataSet>
 	<parameter>
 		<name>Период</name>
@@ -199,12 +200,7 @@
 		<inputParameters>
 			<dcscor:item>
 				<dcscor:parameter>ФорматРедактирования</dcscor:parameter>
-				<dcscor:value xsi:type="v8:LocalStringType">
-					<v8:item>
-						<v8:lang>ru</v8:lang>
-						<v8:content>ДФ=MM/dd/yyyy</v8:content>
-					</v8:item>
-				</dcscor:value>
+				<dcscor:value xsi:type="xs:string">ДФ=MM/dd/yyyy</dcscor:value>
 			</dcscor:item>
 		</inputParameters>
 	</parameter>
