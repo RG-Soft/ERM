@@ -646,7 +646,7 @@
 	|	КлючиCashBatch.AU,
 	|	КлючиCashBatch.Account,
 	|	КлючиCashBatch.Currency,
-	|	КлючиCashBatch.CashBatch КАК CashBatch1
+	|	КлючиCashBatch.CashBatch КАК CashBatch
 	|ИЗ
 	|	РегистрСведений.КлючиCashBatch КАК КлючиCashBatch
 	|ГДЕ
