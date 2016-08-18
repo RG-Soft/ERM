@@ -21,6 +21,10 @@
 			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
+			<dataPath>CashBatch</dataPath>
+			<field>CashBatch</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
 			<dataPath>AU</dataPath>
 			<field>AU</field>
 			<role>
@@ -37,6 +41,9 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Currency</dataPath>
 			<field>Currency</field>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Location</dataPath>
@@ -62,6 +69,19 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Company</dataPath>
 			<field>Company</field>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Amount</dataPath>
+			<field>Amount</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Amount</v8:content>
+				</v8:item>
+			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>CustomerID</dataPath>
@@ -72,136 +92,60 @@
 					<v8:content>Customer ID</v8:content>
 				</v8:item>
 			</title>
-			<role>
-				<dcscom:dimension>true</dcscom:dimension>
-			</role>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>AmountОстаток</dataPath>
-			<field>AmountОстаток</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>CompanyCode</dataPath>
-			<field>CompanyCode</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Company code</v8:content>
-				</v8:item>
-			</title>
-			<role>
-				<dcscom:dimension>true</dcscom:dimension>
-			</role>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>ClientName</dataPath>
-			<field>ClientName</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Client name</v8:content>
-				</v8:item>
-			</title>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>LegalEntity</dataPath>
-			<field>LegalEntity</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Legal entity</v8:content>
-				</v8:item>
-			</title>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>Курс</dataPath>
-			<field>Курс</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>Amount</dataPath>
-			<field>Amount</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>BaseAmount</dataPath>
-			<field>BaseAmount</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>Период</dataPath>
-			<field>Период</field>
-			<role>
-				<dcscom:periodNumber>1</dcscom:periodNumber>
-				<dcscom:periodType>Main</dcscom:periodType>
-			</role>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>BaseCurrencyEquivalent</dataPath>
-			<field>BaseCurrencyEquivalent</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Base currency equivalent</v8:content>
-				</v8:item>
-			</title>
-			<appearance>
-				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:parameter>Формат</dcscor:parameter>
-					<dcscor:value xsi:type="xs:string">ЧЦ=15; ЧДЦ=2</dcscor:value>
-				</dcscor:item>
-			</appearance>
 		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
-	BilledARОстатки.Company КАК CompanyCode,
-	BilledARОстатки.Client КАК Client,
-	BilledARОстатки.Source КАК Source,
-	BilledARОстатки.Location КАК Location,
-	BilledARОстатки.SubSubSegment КАК SubSubSegment,
-	BilledARОстатки.Invoice КАК Invoice,
-	BilledARОстатки.Account КАК Account,
-	BilledARОстатки.Currency КАК Currency,
-	BilledARОстатки.AU КАК AU,
-	BilledARОстатки.AmountОстаток КАК AmountОстаток
-ПОМЕСТИТЬ Остатки
+	BilledARОбороты.Client,
+	BilledARОбороты.Company,
+	BilledARОбороты.Source,
+	BilledARОбороты.Location,
+	BilledARОбороты.SubSubSegment,
+	BilledARОбороты.Invoice,
+	BilledARОбороты.Account,
+	BilledARОбороты.Currency,
+	BilledARОбороты.AU,
+	-BilledARОбороты.AmountОборот КАК Amount
+ПОМЕСТИТЬ ДанныеИзРегистров
 ИЗ
-	РегистрНакопления.BilledAR.Остатки КАК BilledARОстатки
+	РегистрНакопления.BilledAR.Обороты(, , Регистратор, ) КАК BilledARОбороты
+ГДЕ
+	BilledARОбороты.Регистратор.System = "AR"
+	И (BilledARОбороты.Регистратор.SourceCode = "RL"
+			ИЛИ BilledARОбороты.Регистратор.SourceCode = "RY")
+
+ОБЪЕДИНИТЬ ВСЕ
+
+ВЫБРАТЬ
+	UnallocatedCashОбороты.Client,
+	UnallocatedCashОбороты.Company,
+	UnallocatedCashОбороты.Source,
+	UnallocatedCashОбороты.Location,
+	UnallocatedCashОбороты.SubSubSegment,
+	UnallocatedCashОбороты.CashBatch,
+	UnallocatedCashОбороты.Account,
+	UnallocatedCashОбороты.Currency,
+	UnallocatedCashОбороты.AU,
+	UnallocatedCashОбороты.AmountОборот
+ИЗ
+	РегистрНакопления.UnallocatedCash.Обороты КАК UnallocatedCashОбороты
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
 ВЫБРАТЬ
-	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ОбъектПриемника КАК ОбъектПриемника,
-	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия КАК ТипСоответствия,
-	МАКСИМУМ(НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Период) КАК Период,
-	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипОбъектаВнешнейСистемы
+	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.Идентификатор КАК Идентификатор,
+	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника КАК ОбъектПриемника,
+	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ТипСоответствия КАК ТипСоответствия
 ПОМЕСТИТЬ ВТ_НастройкиСинхронизации
 ИЗ
-	Остатки КАК Остатки
-		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемами
-		ПО Остатки.Client = НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ОбъектПриемника
-			И Остатки.Source = НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия
-
-СГРУППИРОВАТЬ ПО
-	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия,
-	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ОбъектПриемника,
-	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипОбъектаВнешнейСистемы
-
-ИНДЕКСИРОВАТЬ ПО
-	ТипСоответствия,
-	ОбъектПриемника
-;
-
-////////////////////////////////////////////////////////////////////////////////
-ВЫБРАТЬ
-	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Идентификатор КАК Идентификатор,
-	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ОбъектПриемника КАК ОбъектПриемника,
-	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия КАК ТипСоответствия
-ПОМЕСТИТЬ ВТ_НастройкиСинхронизацииИтог
-ИЗ
-	РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемами
-		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_НастройкиСинхронизации КАК ВТ_НастройкиСинхронизации
-		ПО НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Период = ВТ_НастройкиСинхронизации.Период
-			И НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия = ВТ_НастройкиСинхронизации.ТипСоответствия
-			И НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипОбъектаВнешнейСистемы = ВТ_НастройкиСинхронизации.ТипОбъектаВнешнейСистемы
-			И НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ОбъектПриемника = ВТ_НастройкиСинхронизации.ОбъектПриемника
+	РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(
+			{(&amp;КонецПериода)},
+			ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Client)
+				И (ТипСоответствия, ОбъектПриемника) В
+					(ВЫБРАТЬ
+						ДанныеИзРегистров.Source,
+						ДанныеИзРегистров.Client
+					ИЗ
+						ДанныеИзРегистров КАК ДанныеИзРегистров)) КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних
 
 ИНДЕКСИРОВАТЬ ПО
 	ТипСоответствия,
@@ -210,63 +154,58 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ВЫБРАТЬ
-	BilledAR.Invoice,
-	СУММА(BilledAR.Amount) КАК Amount,
-	СУММА(BilledAR.BaseAmount) КАК BaseAmount,
-	BilledAR.Currency,
-	BilledAR.Период
-ПОМЕСТИТЬ ВТ_ЦенаДата
+	ДанныеИзРегистров.Client,
+	ДанныеИзРегистров.Company,
+	ДанныеИзРегистров.Source,
+	ДанныеИзРегистров.Location,
+	ДанныеИзРегистров.SubSubSegment,
+	ДанныеИзРегистров.Invoice,
+	ДанныеИзРегистров.Account,
+	ДанныеИзРегистров.Currency,
+	ДанныеИзРегистров.AU,
+	ДанныеИзРегистров.Amount,
+	ВТ_НастройкиСинхронизации.Идентификатор КАК CustomerID
 ИЗ
-	РегистрНакопления.BilledAR КАК BilledAR
-ГДЕ
-	BilledAR.Регистратор.System = "AR"
-	И (BilledAR.Регистратор.SourceCode = "RL"
-			ИЛИ BilledAR.Регистратор.SourceCode = "RY")
-	И BilledAR.Активность
-
-СГРУППИРОВАТЬ ПО
-	BilledAR.Invoice,
-	BilledAR.Currency,
-	BilledAR.Период
-;
-
-////////////////////////////////////////////////////////////////////////////////
-ВЫБРАТЬ
-	Остатки.CompanyCode,
-	Остатки.CompanyCode.Наименование КАК LegalEntity,
-	Остатки.Client,
-	Остатки.Client.Наименование КАК ClientName,
-	Остатки.Source,
-	Остатки.Location,
-	Остатки.SubSubSegment,
-	Остатки.Account,
-	Остатки.Invoice,
-	Остатки.AU,
-	Остатки.AmountОстаток,
-	ВТ_ЦенаДата.Amount,
-	ВТ_ЦенаДата.BaseAmount,
-	ВТ_ЦенаДата.Currency,
-	ВТ_ЦенаДата.Период,
-	ВЫБОР
-		КОГДА ВТ_ЦенаДата.Currency = &amp;USD
-			ТОГДА ВТ_ЦенаДата.Amount
-		КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
-				ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
-			ТОГДА 0
-		ИНАЧЕ ВТ_ЦенаДата.Amount / ВнутренниеКурсыВалютСрезПоследних.Курс
-	КОНЕЦ КАК BaseCurrencyEquivalent,
-	ВнутренниеКурсыВалютСрезПоследних.Курс,
-	ВТ_НастройкиСинхронизацииИтог.Идентификатор КАК CustomerID
-ИЗ
-	Остатки КАК Остатки
-		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ЦенаДата КАК ВТ_ЦенаДата
-			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних(&amp;Период, ) КАК ВнутренниеКурсыВалютСрезПоследних
-			ПО ВТ_ЦенаДата.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
-		ПО Остатки.Invoice = ВТ_ЦенаДата.Invoice
-		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_НастройкиСинхронизацииИтог КАК ВТ_НастройкиСинхронизацииИтог
-		ПО Остатки.Client = ВТ_НастройкиСинхронизацииИтог.ОбъектПриемника
-			И Остатки.Source = ВТ_НастройкиСинхронизацииИтог.ТипСоответствия</query>
+	ДанныеИзРегистров КАК ДанныеИзРегистров
+		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_НастройкиСинхронизации КАК ВТ_НастройкиСинхронизации
+		ПО ДанныеИзРегистров.Client = ВТ_НастройкиСинхронизации.ОбъектПриемника</query>
 	</dataSet>
+	<parameter>
+		<name>НачалоПериода</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Начало периода</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>xs:dateTime</v8:Type>
+			<v8:DateQualifiers>
+				<v8:DateFractions>DateTime</v8:DateFractions>
+			</v8:DateQualifiers>
+		</valueType>
+		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
+		<useRestriction>true</useRestriction>
+		<expression>&amp;Период.ДатаНачала</expression>
+	</parameter>
+	<parameter>
+		<name>КонецПериода</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Конец периода</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>xs:dateTime</v8:Type>
+			<v8:DateQualifiers>
+				<v8:DateFractions>DateTime</v8:DateFractions>
+			</v8:DateQualifiers>
+		</valueType>
+		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
+		<useRestriction>true</useRestriction>
+		<expression>&amp;Период.ДатаОкончания</expression>
+	</parameter>
 	<parameter>
 		<name>Период</name>
 		<title xsi:type="v8:LocalStringType">
@@ -276,66 +215,162 @@
 			</v8:item>
 		</title>
 		<valueType>
-			<v8:Type>xs:dateTime</v8:Type>
-			<v8:DateQualifiers>
-				<v8:DateFractions>Date</v8:DateFractions>
-			</v8:DateQualifiers>
+			<v8:Type>v8:StandardPeriod</v8:Type>
 		</valueType>
-		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
+		<value xsi:type="v8:StandardPeriod">
+			<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
+			<v8:startDate>0001-01-01T00:00:00</v8:startDate>
+			<v8:endDate>0001-01-01T00:00:00</v8:endDate>
+		</value>
 		<useRestriction>false</useRestriction>
-		<inputParameters>
-			<dcscor:item>
-				<dcscor:parameter>ФорматРедактирования</dcscor:parameter>
-				<dcscor:value xsi:type="xs:string">ДФ=MM/dd/yyyy</dcscor:value>
-			</dcscor:item>
-		</inputParameters>
-	</parameter>
-	<parameter>
-		<name>USD</name>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>USD</v8:content>
-			</v8:item>
-		</title>
-		<valueType>
-			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:CatalogRef.Валюты</v8:Type>
-		</valueType>
-		<value xsi:nil="true"/>
-		<useRestriction>true</useRestriction>
-		<expression>Справочники.Валюты.НайтиПоКоду("840")</expression>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
 		<dcsset:presentation xsi:type="xs:string">Основной</dcsset:presentation>
 		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+			<dcsset:selection>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Location.БазовыйЭлемент.GeoMarket.Родитель</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Geo Market</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Company.БазовыйЭлемент.Наименование</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Legal entity</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Company</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Client</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>CustomerID</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Client ID</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Client.Код</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>UID</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Source</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>ERP</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>SubSubSegment.БазовыйЭлемент.Родитель.Родитель</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Segment</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Invoice.Номер</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Invoice</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Invoice.AgreementCode</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Agreement Code</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Invoice.FiscalInvoiceNo</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Fiscal Invoice №</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Invoice.FiscalInvoiceDate</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Fiscal Invoice date</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Currency</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Amount</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Collected amount</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+			</dcsset:selection>
 			<dcsset:dataParameters>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:use>false</dcscor:use>
+					<dcscor:parameter>НачалоПериода</dcscor:parameter>
+					<dcscor:value xsi:type="xs:dateTime">0001-01-01T00:00:00</dcscor:value>
+					<dcsset:userSettingID>3043d737-8a6f-4f85-8eda-d26584a0c8bf</dcsset:userSettingID>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:use>false</dcscor:use>
+					<dcscor:parameter>КонецПериода</dcscor:parameter>
+					<dcscor:value xsi:type="xs:dateTime">0001-01-01T00:00:00</dcscor:value>
+					<dcsset:userSettingID>fcb51f8c-5d05-448a-8fe8-0504e4c02066</dcsset:userSettingID>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:use>false</dcscor:use>
 					<dcscor:parameter>Период</dcscor:parameter>
-					<dcscor:value xsi:type="v8:StandardBeginningDate">
-						<v8:variant xsi:type="v8:StandardBeginningDateVariant">BeginningOfThisDay</v8:variant>
+					<dcscor:value xsi:type="v8:StandardPeriod">
+						<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
+						<v8:startDate>0001-01-01T00:00:00</v8:startDate>
+						<v8:endDate>0001-01-01T00:00:00</v8:endDate>
 					</dcscor:value>
-					<dcsset:userSettingID>ceea11c7-a464-40b6-afcb-d6359b887212</dcsset:userSettingID>
+					<dcsset:userSettingID>d4af046d-921c-4ffa-9ce7-ba6bdb4b8768</dcsset:userSettingID>
 				</dcscor:item>
 			</dcsset:dataParameters>
-			<dcsset:conditionalAppearance>
-				<dcsset:item>
-					<dcsset:selection/>
-					<dcsset:filter/>
-					<dcsset:appearance>
-						<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-							<dcscor:parameter>Формат</dcscor:parameter>
-							<dcscor:value xsi:type="v8:LocalStringType">
-								<v8:item>
-									<v8:lang>ru</v8:lang>
-									<v8:content>ДФ=MM/dd/yyyy</v8:content>
-								</v8:item>
-							</dcscor:value>
-						</dcscor:item>
-					</dcsset:appearance>
-				</dcsset:item>
-			</dcsset:conditionalAppearance>
 			<dcsset:outputParameters>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>МакетОформления</dcscor:parameter>
+					<dcscor:value xsi:type="xs:string">Море</dcscor:value>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>РасположениеПолейГруппировки</dcscor:parameter>
+					<dcscor:value xsi:type="dcsset:DataCompositionGroupFieldsPlacement">Separately</dcscor:value>
+				</dcscor:item>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>РасположениеРеквизитов</dcscor:parameter>
 					<dcscor:value xsi:type="dcsset:DataCompositionAttributesPlacement">Separately</dcscor:value>
@@ -346,191 +381,8 @@
 					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
 				</dcsset:order>
 				<dcsset:selection>
-					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>Location.БазовыйЭлемент.GeoMarket.Родитель</dcsset:field>
-						<dcsset:lwsTitle>
-							<v8:item>
-								<v8:lang>ru</v8:lang>
-								<v8:content>Geo Market</v8:content>
-							</v8:item>
-						</dcsset:lwsTitle>
-					</dcsset:item>
-					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>CompanyCode.БазовыйЭлемент.Наименование</dcsset:field>
-						<dcsset:lwsTitle>
-							<v8:item>
-								<v8:lang>ru</v8:lang>
-								<v8:content>Legal entity</v8:content>
-							</v8:item>
-						</dcsset:lwsTitle>
-					</dcsset:item>
-					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>CompanyCode</dcsset:field>
-						<dcsset:lwsTitle>
-							<v8:item>
-								<v8:lang>ru</v8:lang>
-								<v8:content>Company Code</v8:content>
-							</v8:item>
-						</dcsset:lwsTitle>
-					</dcsset:item>
-					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>ClientName</dcsset:field>
-					</dcsset:item>
-					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>CustomerID</dcsset:field>
-						<dcsset:lwsTitle>
-							<v8:item>
-								<v8:lang>ru</v8:lang>
-								<v8:content>Client ID</v8:content>
-							</v8:item>
-						</dcsset:lwsTitle>
-					</dcsset:item>
-					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>Client.Код</dcsset:field>
-						<dcsset:lwsTitle>
-							<v8:item>
-								<v8:lang>ru</v8:lang>
-								<v8:content>UID</v8:content>
-							</v8:item>
-						</dcsset:lwsTitle>
-					</dcsset:item>
-					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>Source</dcsset:field>
-						<dcsset:lwsTitle>
-							<v8:item>
-								<v8:lang>ru</v8:lang>
-								<v8:content>ERP</v8:content>
-							</v8:item>
-						</dcsset:lwsTitle>
-					</dcsset:item>
-					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>SubSubSegment.БазовыйЭлемент.Родитель.Родитель</dcsset:field>
-						<dcsset:lwsTitle>
-							<v8:item>
-								<v8:lang>ru</v8:lang>
-								<v8:content>Segment</v8:content>
-							</v8:item>
-						</dcsset:lwsTitle>
-					</dcsset:item>
-					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>Invoice.Номер</dcsset:field>
-						<dcsset:lwsTitle>
-							<v8:item>
-								<v8:lang>ru</v8:lang>
-								<v8:content>Invoice</v8:content>
-							</v8:item>
-						</dcsset:lwsTitle>
-					</dcsset:item>
-					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>Invoice.AgreementCode</dcsset:field>
-						<dcsset:lwsTitle>
-							<v8:item>
-								<v8:lang>ru</v8:lang>
-								<v8:content>Agreement Code</v8:content>
-							</v8:item>
-						</dcsset:lwsTitle>
-					</dcsset:item>
-					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>Invoice.FiscalInvoiceNo</dcsset:field>
-						<dcsset:lwsTitle>
-							<v8:item>
-								<v8:lang>ru</v8:lang>
-								<v8:content>Fiscal Invoice №</v8:content>
-							</v8:item>
-						</dcsset:lwsTitle>
-					</dcsset:item>
-					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>Invoice.FiscalInvoiceDate</dcsset:field>
-						<dcsset:lwsTitle>
-							<v8:item>
-								<v8:lang>ru</v8:lang>
-								<v8:content>Fiscal Invoice date</v8:content>
-							</v8:item>
-						</dcsset:lwsTitle>
-					</dcsset:item>
-					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>Период</dcsset:field>
-						<dcsset:lwsTitle>
-							<v8:item>
-								<v8:lang>ru</v8:lang>
-								<v8:content>Date of Collection</v8:content>
-							</v8:item>
-						</dcsset:lwsTitle>
-					</dcsset:item>
-					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>Amount</dcsset:field>
-						<dcsset:lwsTitle>
-							<v8:item>
-								<v8:lang>ru</v8:lang>
-								<v8:content>Collected amount</v8:content>
-							</v8:item>
-						</dcsset:lwsTitle>
-					</dcsset:item>
-					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:use>false</dcsset:use>
-						<dcsset:field>BaseAmount</dcsset:field>
-						<dcsset:lwsTitle>
-							<v8:item>
-								<v8:lang>ru</v8:lang>
-								<v8:content>Collected amount, USD</v8:content>
-							</v8:item>
-						</dcsset:lwsTitle>
-					</dcsset:item>
-					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>Currency</dcsset:field>
-						<dcsset:lwsTitle>
-							<v8:item>
-								<v8:lang>ru</v8:lang>
-								<v8:content>Currency</v8:content>
-							</v8:item>
-						</dcsset:lwsTitle>
-					</dcsset:item>
-					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>Курс</dcsset:field>
-						<dcsset:lwsTitle>
-							<v8:item>
-								<v8:lang>ru</v8:lang>
-								<v8:content>SLB rate</v8:content>
-							</v8:item>
-						</dcsset:lwsTitle>
-					</dcsset:item>
-					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>BaseCurrencyEquivalent</dcsset:field>
-						<dcsset:lwsTitle>
-							<v8:item>
-								<v8:lang>ru</v8:lang>
-								<v8:content>USD amount</v8:content>
-							</v8:item>
-						</dcsset:lwsTitle>
-					</dcsset:item>
+					<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
 				</dcsset:selection>
-				<dcsset:conditionalAppearance>
-					<dcsset:item>
-						<dcsset:selection>
-							<dcsset:item>
-								<dcsset:field>Период</dcsset:field>
-							</dcsset:item>
-						</dcsset:selection>
-						<dcsset:filter/>
-						<dcsset:appearance>
-							<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-								<dcscor:parameter>Формат</dcscor:parameter>
-								<dcscor:value xsi:type="v8:LocalStringType">
-									<v8:item>
-										<v8:lang>ru</v8:lang>
-										<v8:content>ДФ=MM/dd/yyyy</v8:content>
-									</v8:item>
-								</dcscor:value>
-							</dcscor:item>
-						</dcsset:appearance>
-					</dcsset:item>
-				</dcsset:conditionalAppearance>
-				<dcsset:outputParameters>
-					<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-						<dcscor:parameter>МакетОформления</dcscor:parameter>
-						<dcscor:value xsi:type="xs:string">Море</dcscor:value>
-					</dcscor:item>
-				</dcsset:outputParameters>
 			</dcsset:item>
 		</dcsset:settings>
 	</settingsVariant>
