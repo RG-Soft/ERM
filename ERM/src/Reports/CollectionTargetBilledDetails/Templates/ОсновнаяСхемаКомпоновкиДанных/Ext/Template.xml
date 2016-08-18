@@ -283,7 +283,7 @@
 	</dataSet>
 	<calculatedField>
 		<dataPath>DateFrom</dataPath>
-		<expression>ДОБАВИТЬКДАТЕ(Invoice.Дата, "ДЕНЬ", Invoice.PTFrom)</expression>
+		<expression>ДОБАВИТЬКДАТЕ(Invoice.Дата, "ДЕНЬ", Invoice.Contract.PTDaysFrom)</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -293,7 +293,7 @@
 	</calculatedField>
 	<calculatedField>
 		<dataPath>DateTo</dataPath>
-		<expression>ДОБАВИТЬКДАТЕ(Invoice.Дата, "ДЕНЬ", Invoice.PTTo)</expression>
+		<expression>ДОБАВИТЬКДАТЕ(Invoice.Дата, "ДЕНЬ", Invoice.Contract.СрокОплаты)</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -303,7 +303,7 @@
 	</calculatedField>
 	<calculatedField>
 		<dataPath>DueFrom</dataPath>
-		<expression>ВЫБОР КОГДА ДОБАВИТЬКДАТЕ(Invoice.Дата, "ДЕНЬ", Invoice.PTFrom) &lt; &amp;Период ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ ИНАЧЕ 0 КОНЕЦ</expression>
+		<expression>ВЫБОР КОГДА ДОБАВИТЬКДАТЕ(Invoice.Дата, "ДЕНЬ", Invoice.Contract.PTDaysFrom) &lt; &amp;Период ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ ИНАЧЕ 0 КОНЕЦ</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -335,7 +335,7 @@
 	</calculatedField>
 	<calculatedField>
 		<dataPath>DueTo</dataPath>
-		<expression>ВЫБОР КОГДА ДОБАВИТЬКДАТЕ(Invoice.Дата, "ДЕНЬ", Invoice.PTTo) &lt; &amp;Период ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ ИНАЧЕ 0 КОНЕЦ</expression>
+		<expression>ВЫБОР КОГДА ДОБАВИТЬКДАТЕ(Invoice.Дата, "ДЕНЬ", Invoice.Contract.СрокОплаты) &lt; &amp;Период ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ ИНАЧЕ 0 КОНЕЦ</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
