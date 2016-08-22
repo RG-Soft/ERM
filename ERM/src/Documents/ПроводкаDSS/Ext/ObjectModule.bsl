@@ -84,7 +84,7 @@
 				Иначе
 					ОбщегоНазначенияКлиентСервер.СообщитьПользователю("Unexpected combination of of currencies!",,,,Отказ);
 				КонецЕсли;
-			ИначеЕсли Реквизиты.AccountLawson = ПланыСчетов.Lawson.ReceivedNotApplied Тогда // 120102
+			ИначеЕсли Реквизиты.AccountLawson = ПланыСчетов.Lawson.ReceivedNotApplied ИЛИ Реквизиты.AccountLawson = ПланыСчетов.Lawson.AdvancesFromCustomers Тогда // 120102 или 209000
 				ВыполнитьСписаниеUnallocatedCash(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, Движения, Реквизиты.TranAmount, Реквизиты.BaseAmount, Отказ);
 				// { RGS TAlmazova 22.08.2016 9:41:38 - отражение в регистре Payments
 				ВыполнитьДвижениеPayments(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, Движения, Реквизиты.BaseAmount, Отказ);
