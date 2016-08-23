@@ -21,17 +21,6 @@
 			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>CashBatch</dataPath>
-			<field>CashBatch</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>AU</dataPath>
-			<field>AU</field>
-			<role>
-				<dcscom:dimension>true</dcscom:dimension>
-			</role>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>Source</dataPath>
 			<field>Source</field>
 			<role>
@@ -60,13 +49,6 @@
 			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>Account</dataPath>
-			<field>Account</field>
-			<role>
-				<dcscom:dimension>true</dcscom:dimension>
-			</role>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>Company</dataPath>
 			<field>Company</field>
 			<role>
@@ -74,14 +56,22 @@
 			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>Amount</dataPath>
-			<field>Amount</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Amount</v8:content>
-				</v8:item>
-			</title>
+			<dataPath>AmountОборот</dataPath>
+			<field>AmountОборот</field>
+			<appearance>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>Формат</dcscor:parameter>
+					<dcscor:value xsi:type="xs:string">ЧЦ=15; ЧДЦ=2</dcscor:value>
+				</dcscor:item>
+			</appearance>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Курс</dataPath>
+			<field>Курс</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Кратность</dataPath>
+			<field>Кратность</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>CustomerID</dataPath>
@@ -93,82 +83,110 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>BaseAmount</dataPath>
+			<field>BaseAmount</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Base amount</v8:content>
+				</v8:item>
+			</title>
+			<appearance>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>Формат</dcscor:parameter>
+					<dcscor:value xsi:type="xs:string">ЧЦ=15; ЧДЦ=2</dcscor:value>
+				</dcscor:item>
+			</appearance>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Type</dataPath>
+			<field>Type</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Type</v8:content>
+				</v8:item>
+			</title>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
-	BilledARОбороты.Client,
-	BilledARОбороты.Company,
-	BilledARОбороты.Source,
-	BilledARОбороты.Location,
-	BilledARОбороты.SubSubSegment,
-	BilledARОбороты.Invoice,
-	BilledARОбороты.Account,
-	BilledARОбороты.Currency,
-	BilledARОбороты.AU,
-	-BilledARОбороты.AmountОборот КАК Amount
-ПОМЕСТИТЬ ДанныеИзРегистров
+	PaymentsОбороты.Company,
+	PaymentsОбороты.Client,
+	PaymentsОбороты.Source,
+	PaymentsОбороты.Location,
+	PaymentsОбороты.SubSubSegment,
+	PaymentsОбороты.Invoice,
+	PaymentsОбороты.Currency,
+	PaymentsОбороты.AmountОборот
+ПОМЕСТИТЬ Исходные
 ИЗ
-	РегистрНакопления.BilledAR.Обороты(, , Регистратор, ) КАК BilledARОбороты
-ГДЕ
-	BilledARОбороты.Регистратор.System = "AR"
-	И (BilledARОбороты.Регистратор.SourceCode = "RL"
-			ИЛИ BilledARОбороты.Регистратор.SourceCode = "RY")
-
-ОБЪЕДИНИТЬ ВСЕ
-
-ВЫБРАТЬ
-	UnallocatedCashОбороты.Client,
-	UnallocatedCashОбороты.Company,
-	UnallocatedCashОбороты.Source,
-	UnallocatedCashОбороты.Location,
-	UnallocatedCashОбороты.SubSubSegment,
-	UnallocatedCashОбороты.CashBatch,
-	UnallocatedCashОбороты.Account,
-	UnallocatedCashОбороты.Currency,
-	UnallocatedCashОбороты.AU,
-	UnallocatedCashОбороты.AmountОборот
-ИЗ
-	РегистрНакопления.UnallocatedCash.Обороты КАК UnallocatedCashОбороты
+	РегистрНакопления.Payments.Обороты КАК PaymentsОбороты
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
 ВЫБРАТЬ
-	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.Идентификатор КАК Идентификатор,
-	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника КАК ОбъектПриемника,
-	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ТипСоответствия КАК ТипСоответствия
-ПОМЕСТИТЬ ВТ_НастройкиСинхронизации
+	МАКСИМУМ(НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.Период) КАК Период,
+	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ТипСоответствия,
+	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ТипОбъектаВнешнейСистемы,
+	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника
+ПОМЕСТИТЬ Синхронизация
 ИЗ
-	РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(
-			{(&amp;КонецПериода)},
-			ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Client)
-				И (ТипСоответствия, ОбъектПриемника) В
-					(ВЫБРАТЬ
-						ДанныеИзРегистров.Source,
-						ДанныеИзРегистров.Client
-					ИЗ
-						ДанныеИзРегистров КАК ДанныеИзРегистров)) КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних
+	Исходные КАК Исходные
+		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних({(&amp;КонецПериода)}, ) КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних
+		ПО Исходные.Client = НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника
+			И Исходные.Source = НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ТипСоответствия
 
-ИНДЕКСИРОВАТЬ ПО
-	ТипСоответствия,
-	ОбъектПриемника
+СГРУППИРОВАТЬ ПО
+	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ТипСоответствия,
+	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ТипОбъектаВнешнейСистемы,
+	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
 ВЫБРАТЬ
-	ДанныеИзРегистров.Client,
-	ДанныеИзРегистров.Company,
-	ДанныеИзРегистров.Source,
-	ДанныеИзРегистров.Location,
-	ДанныеИзРегистров.SubSubSegment,
-	ДанныеИзРегистров.Invoice,
-	ДанныеИзРегистров.Account,
-	ДанныеИзРегистров.Currency,
-	ДанныеИзРегистров.AU,
-	ДанныеИзРегистров.Amount,
-	ВТ_НастройкиСинхронизации.Идентификатор КАК CustomerID
+	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.Идентификатор,
+	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ТипСоответствия,
+	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника
+ПОМЕСТИТЬ Синхронизация_Итог
 ИЗ
-	ДанныеИзРегистров КАК ДанныеИзРегистров
-		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_НастройкиСинхронизации КАК ВТ_НастройкиСинхронизации
-		ПО ДанныеИзРегистров.Client = ВТ_НастройкиСинхронизации.ОбъектПриемника</query>
+	Синхронизация КАК Синхронизация
+		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних({(&amp;КонецПериода)}, ) КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних
+		ПО Синхронизация.Период = НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.Период
+			И Синхронизация.ТипСоответствия = НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ТипСоответствия
+			И Синхронизация.ТипОбъектаВнешнейСистемы = НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ТипОбъектаВнешнейСистемы
+			И Синхронизация.ОбъектПриемника = НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	Исходные.Client,
+	Исходные.Company,
+	Исходные.Source,
+	Исходные.Location,
+	Исходные.SubSubSegment,
+	Исходные.Invoice,
+	Исходные.Currency,
+	Исходные.AmountОборот,
+	Синхронизация_Итог.Идентификатор КАК CustomerID,
+	ВнутренниеКурсыВалютСрезПоследних.Курс,
+	ВнутренниеКурсыВалютСрезПоследних.Кратность,
+	ВЫБОР
+		КОГДА Исходные.Currency = &amp;USD
+			ТОГДА Исходные.AmountОборот
+		КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
+				ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+			ТОГДА 0
+		ИНАЧЕ Исходные.AmountОборот / ВнутренниеКурсыВалютСрезПоследних.Курс
+	КОНЕЦ КАК BaseAmount,
+	ТИПЗНАЧЕНИЯ(Исходные.Invoice) КАК Type
+ИЗ
+	Исходные КАК Исходные
+		ЛЕВОЕ СОЕДИНЕНИЕ Синхронизация_Итог КАК Синхронизация_Итог
+		ПО Исходные.Client = Синхронизация_Итог.ОбъектПриемника
+			И Исходные.Source = Синхронизация_Итог.ТипСоответствия
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;КонецПериода)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
+		ПО Исходные.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта</query>
 	</dataSet>
 	<parameter>
 		<name>НачалоПериода</name>
@@ -187,17 +205,6 @@
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>true</useRestriction>
 		<expression>&amp;Период.ДатаНачала</expression>
-		<inputParameters>
-			<dcscor:item>
-				<dcscor:parameter>ФорматРедактирования</dcscor:parameter>
-				<dcscor:value xsi:type="v8:LocalStringType">
-					<v8:item>
-						<v8:lang>ru</v8:lang>
-						<v8:content>ДФ=MM/dd/yyyy</v8:content>
-					</v8:item>
-				</dcscor:value>
-			</dcscor:item>
-		</inputParameters>
 	</parameter>
 	<parameter>
 		<name>КонецПериода</name>
@@ -216,17 +223,21 @@
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>true</useRestriction>
 		<expression>&amp;Период.ДатаОкончания</expression>
-		<inputParameters>
-			<dcscor:item>
-				<dcscor:parameter>ФорматРедактирования</dcscor:parameter>
-				<dcscor:value xsi:type="v8:LocalStringType">
-					<v8:item>
-						<v8:lang>ru</v8:lang>
-						<v8:content>ДФ=MM/dd/yyyy</v8:content>
-					</v8:item>
-				</dcscor:value>
-			</dcscor:item>
-		</inputParameters>
+	</parameter>
+	<parameter>
+		<name>USD</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>USD</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:CatalogRef.Валюты</v8:Type>
+		</valueType>
+		<value xsi:nil="true"/>
+		<useRestriction>true</useRestriction>
+		<expression>Справочники.Валюты.НайтиПоКоду("840")</expression>
 	</parameter>
 	<parameter>
 		<name>Период</name>
@@ -245,17 +256,6 @@
 			<v8:endDate>0001-01-01T00:00:00</v8:endDate>
 		</value>
 		<useRestriction>false</useRestriction>
-		<inputParameters>
-			<dcscor:item>
-				<dcscor:parameter>ФорматРедактирования</dcscor:parameter>
-				<dcscor:value xsi:type="v8:LocalStringType">
-					<v8:item>
-						<v8:lang>ru</v8:lang>
-						<v8:content>ДФ=MM/dd/yyyy</v8:content>
-					</v8:item>
-				</dcscor:value>
-			</dcscor:item>
-		</inputParameters>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
@@ -323,6 +323,9 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Type</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Invoice.Номер</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
@@ -362,7 +365,7 @@
 					<dcsset:field>Currency</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Amount</dcsset:field>
+					<dcsset:field>AmountОборот</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -370,19 +373,35 @@
 						</v8:item>
 					</dcsset:lwsTitle>
 				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Курс</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>SLB rate</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>BaseAmount</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>USD amount</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
 			</dcsset:selection>
 			<dcsset:dataParameters>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:use>false</dcscor:use>
-					<dcscor:parameter>НачалоПериода</dcscor:parameter>
-					<dcscor:value xsi:type="xs:dateTime">0001-01-01T00:00:00</dcscor:value>
-					<dcsset:userSettingID>3043d737-8a6f-4f85-8eda-d26584a0c8bf</dcsset:userSettingID>
-				</dcscor:item>
-				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:use>false</dcscor:use>
-					<dcscor:parameter>КонецПериода</dcscor:parameter>
-					<dcscor:value xsi:type="xs:dateTime">0001-01-01T00:00:00</dcscor:value>
-					<dcsset:userSettingID>fcb51f8c-5d05-448a-8fe8-0504e4c02066</dcsset:userSettingID>
+					<dcscor:parameter>USD</dcscor:parameter>
+					<dcscor:value xsi:type="v8:StandardPeriod">
+						<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
+						<v8:startDate>0001-01-01T00:00:00</v8:startDate>
+						<v8:endDate>0001-01-01T00:00:00</v8:endDate>
+					</dcscor:value>
+					<dcsset:userSettingID>c347401d-8715-4263-aae5-e9923be5ccb0</dcsset:userSettingID>
 				</dcscor:item>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:use>false</dcscor:use>
@@ -392,7 +411,7 @@
 						<v8:startDate>0001-01-01T00:00:00</v8:startDate>
 						<v8:endDate>0001-01-01T00:00:00</v8:endDate>
 					</dcscor:value>
-					<dcsset:userSettingID>d4af046d-921c-4ffa-9ce7-ba6bdb4b8768</dcsset:userSettingID>
+					<dcsset:userSettingID>667a0e92-f290-453d-9d47-7de797a7d617</dcsset:userSettingID>
 				</dcscor:item>
 			</dcsset:dataParameters>
 			<dcsset:outputParameters>
