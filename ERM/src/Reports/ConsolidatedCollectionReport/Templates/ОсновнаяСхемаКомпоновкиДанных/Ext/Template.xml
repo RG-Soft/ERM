@@ -109,6 +109,20 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>DateOfCollection</dataPath>
+			<field>DateOfCollection</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Date of collection</v8:content>
+				</v8:item>
+			</title>
+			<role>
+				<dcscom:periodNumber>1</dcscom:periodNumber>
+				<dcscom:periodType>Main</dcscom:periodType>
+			</role>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	PaymentsОбороты.Company,
@@ -118,10 +132,11 @@
 	PaymentsОбороты.SubSubSegment,
 	PaymentsОбороты.Invoice,
 	PaymentsОбороты.Currency,
-	PaymentsОбороты.AmountОборот
+	PaymentsОбороты.AmountОборот,
+	PaymentsОбороты.Период
 ПОМЕСТИТЬ Исходные
 ИЗ
-	РегистрНакопления.Payments.Обороты КАК PaymentsОбороты
+	РегистрНакопления.Payments.Обороты(, , День, ) КАК PaymentsОбороты
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -167,26 +182,63 @@
 	Исходные.SubSubSegment,
 	Исходные.Invoice,
 	Исходные.Currency,
-	Исходные.AmountОборот,
+	СУММА(Исходные.AmountОборот) КАК AmountОборот,
 	Синхронизация_Итог.Идентификатор КАК CustomerID,
 	ВнутренниеКурсыВалютСрезПоследних.Курс,
 	ВнутренниеКурсыВалютСрезПоследних.Кратность,
-	ВЫБОР
-		КОГДА Исходные.Currency = &amp;USD
-			ТОГДА Исходные.AmountОборот
-		КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
-				ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
-			ТОГДА 0
-		ИНАЧЕ Исходные.AmountОборот / ВнутренниеКурсыВалютСрезПоследних.Курс
-	КОНЕЦ КАК BaseAmount,
-	ТИПЗНАЧЕНИЯ(Исходные.Invoice) КАК Type
+	СУММА(ВЫБОР
+			КОГДА Исходные.Currency = &amp;USD
+				ТОГДА Исходные.AmountОборот
+			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
+					ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+				ТОГДА 0
+			ИНАЧЕ Исходные.AmountОборот / ВнутренниеКурсыВалютСрезПоследних.Курс
+		КОНЕЦ) КАК BaseAmount,
+	ТИПЗНАЧЕНИЯ(Исходные.Invoice) КАК Type,
+	МАКСИМУМ(Исходные.Период) КАК DateOfCollection
+ПОМЕСТИТЬ Итоговый
 ИЗ
 	Исходные КАК Исходные
 		ЛЕВОЕ СОЕДИНЕНИЕ Синхронизация_Итог КАК Синхронизация_Итог
 		ПО Исходные.Client = Синхронизация_Итог.ОбъектПриемника
 			И Исходные.Source = Синхронизация_Итог.ТипСоответствия
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;КонецПериода)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
-		ПО Исходные.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта</query>
+		ПО Исходные.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
+
+СГРУППИРОВАТЬ ПО
+	Исходные.Client,
+	Исходные.Company,
+	Исходные.Source,
+	Исходные.SubSubSegment,
+	Исходные.Location,
+	Исходные.Invoice,
+	Исходные.Currency,
+	Синхронизация_Итог.Идентификатор,
+	ВнутренниеКурсыВалютСрезПоследних.Курс,
+	ВнутренниеКурсыВалютСрезПоследних.Кратность,
+	ТИПЗНАЧЕНИЯ(Исходные.Invoice)
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	Итоговый.Client,
+	Итоговый.Company,
+	Итоговый.Source,
+	Итоговый.Location,
+	Итоговый.SubSubSegment,
+	Итоговый.Invoice,
+	Итоговый.Currency,
+	Итоговый.AmountОборот,
+	Итоговый.CustomerID,
+	Итоговый.Курс,
+	Итоговый.Кратность,
+	Итоговый.BaseAmount,
+	Итоговый.Type,
+	Итоговый.DateOfCollection
+ИЗ
+	Итоговый КАК Итоговый
+ГДЕ
+	Итоговый.BaseAmount &lt;&gt; 0</query>
 	</dataSet>
 	<parameter>
 		<name>НачалоПериода</name>
@@ -363,6 +415,15 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Currency</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>DateOfCollection</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Date of collection</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>AmountОборот</dcsset:field>

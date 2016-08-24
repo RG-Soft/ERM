@@ -78,22 +78,22 @@
 			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>ERMBalance</dataPath>
-			<field>ERMBalance</field>
+			<dataPath>ERM_Amount</dataPath>
+			<field>ERM_Amount</field>
 			<title xsi:type="v8:LocalStringType">
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>ERMBalance</v8:content>
+					<v8:content>ERM amount</v8:content>
 				</v8:item>
 			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>TargetBalance</dataPath>
-			<field>TargetBalance</field>
+			<dataPath>AR_Amount</dataPath>
+			<field>AR_Amount</field>
 			<title xsi:type="v8:LocalStringType">
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>Target balance</v8:content>
+					<v8:content>A r amount</v8:content>
 				</v8:item>
 			</title>
 		</field>
@@ -154,32 +154,51 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ВЫБРАТЬ
-	ЕСТЬNULL(ВТ_Остатки.Client, ARBalance.Client) КАК Client,
-	ЕСТЬNULL(ВТ_Остатки.Company, ARBalance.Company) КАК Company,
-	ЕСТЬNULL(ВТ_Остатки.Source, ARBalance.Source) КАК Source,
-	ЕСТЬNULL(ВТ_Остатки.Location, ARBalance.Location) КАК Location,
-	ЕСТЬNULL(ВТ_Остатки.SubSubSegment, ARBalance.SubSubSegment) КАК SubSubSegment,
-	ЕСТЬNULL(ВТ_Остатки.Invoice, ARBalance.Invoice) КАК Invoice,
-	ЕСТЬNULL(ВТ_Остатки.Account, ARBalance.Account) КАК Account,
-	ЕСТЬNULL(ВТ_Остатки.Currency, ARBalance.Currency) КАК Currency,
-	ЕСТЬNULL(ВТ_Остатки.AU, ARBalance.AU) КАК AU,
-	ЕСТЬNULL(ВТ_Остатки.AmountОстаток, 0) КАК ERMBalance,
-	ЕСТЬNULL(ARBalance.Amount, 0) КАК TargetBalance
+	ARBalance.Период,
+	ARBalance.Client,
+	ARBalance.Company,
+	ARBalance.Source,
+	ARBalance.Location,
+	ARBalance.SubSubSegment,
+	ARBalance.Invoice,
+	ARBalance.Account,
+	ARBalance.Currency,
+	ARBalance.AU,
+	ARBalance.Amount
+ПОМЕСТИТЬ AR
+ИЗ
+	РегистрСведений.ARBalance КАК ARBalance
+ГДЕ
+	ARBalance.Период = &amp;Период
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	ЕСТЬNULL(AR.Client, ВТ_Остатки.Client) КАК Client,
+	ЕСТЬNULL(AR.Company, ВТ_Остатки.Company) КАК Company,
+	ЕСТЬNULL(AR.Source, ВТ_Остатки.Source) КАК Source,
+	ЕСТЬNULL(AR.Location, ВТ_Остатки.Location) КАК Location,
+	ЕСТЬNULL(AR.SubSubSegment, ВТ_Остатки.SubSubSegment) КАК SubSubSegment,
+	ЕСТЬNULL(AR.Invoice, ВТ_Остатки.Invoice) КАК Invoice,
+	ЕСТЬNULL(AR.Account, ВТ_Остатки.Account) КАК Account,
+	ЕСТЬNULL(AR.Currency, ВТ_Остатки.Currency) КАК Currency,
+	ЕСТЬNULL(AR.AU, ВТ_Остатки.AU) КАК AU,
+	ЕСТЬNULL(AR.Amount, 0) КАК AR_Amount,
+	ЕСТЬNULL(ВТ_Остатки.AmountОстаток, 0) КАК ERM_Amount
 ИЗ
 	ВТ_Остатки КАК ВТ_Остатки
-		ПОЛНОЕ СОЕДИНЕНИЕ РегистрСведений.ARBalance КАК ARBalance
-		ПО ВТ_Остатки.Client = ARBalance.Client
-			И ВТ_Остатки.Company = ARBalance.Company
-			И ВТ_Остатки.Source = ARBalance.Source
-			И ВТ_Остатки.Location = ARBalance.Location
-			И ВТ_Остатки.SubSubSegment = ARBalance.SubSubSegment
-			И ВТ_Остатки.Invoice = ARBalance.Invoice
-			И ВТ_Остатки.Account = ARBalance.Account
-			И ВТ_Остатки.Currency = ARBalance.Currency
-			И ВТ_Остатки.AU = ARBalance.AU
+		ПОЛНОЕ СОЕДИНЕНИЕ AR КАК AR
+		ПО ВТ_Остатки.Client = AR.Client
+			И ВТ_Остатки.Company = AR.Company
+			И ВТ_Остатки.Source = AR.Source
+			И ВТ_Остатки.Location = AR.Location
+			И ВТ_Остатки.SubSubSegment = AR.SubSubSegment
+			И ВТ_Остатки.Invoice = AR.Invoice
+			И ВТ_Остатки.Account = AR.Account
+			И ВТ_Остатки.Currency = AR.Currency
+			И ВТ_Остатки.AU = AR.AU
 ГДЕ
-	ЕСТЬNULL(ARBalance.Amount, 0) &lt;&gt; ЕСТЬNULL(ВТ_Остатки.AmountОстаток, 0)
-	И ARBalance.Период = &amp;Период</query>
+	ЕСТЬNULL(AR.Amount, 0) &lt;&gt; ЕСТЬNULL(ВТ_Остатки.AmountОстаток, 0)</query>
 	</dataSet>
 	<parameter>
 		<name>Период</name>
@@ -201,12 +220,7 @@
 		<inputParameters>
 			<dcscor:item>
 				<dcscor:parameter>ФорматРедактирования</dcscor:parameter>
-				<dcscor:value xsi:type="v8:LocalStringType">
-					<v8:item>
-						<v8:lang>ru</v8:lang>
-						<v8:content>ДФ=MM/yyyy</v8:content>
-					</v8:item>
-				</dcscor:value>
+				<dcscor:value xsi:type="xs:string">ДФ=MM/yyyy</dcscor:value>
 			</dcscor:item>
 		</inputParameters>
 	</parameter>
@@ -243,7 +257,7 @@
 					<dcsset:field>AU</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>ERMBalance</dcsset:field>
+					<dcsset:field>ERM_Amount</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -252,7 +266,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>TargetBalance</dcsset:field>
+					<dcsset:field>AR_Amount</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
