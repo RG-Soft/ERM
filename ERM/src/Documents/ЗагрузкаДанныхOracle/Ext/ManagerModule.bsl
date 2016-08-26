@@ -470,7 +470,7 @@
 		|ВЫБРАТЬ
 		|	КлючиРучныхКорректировок.Source,
 		|	КлючиРучныхКорректировок.Company,
-		|	КлючиРучныхКорректировок.Client,
+		//|	КлючиРучныхКорректировок.Client,
 		|	КлючиРучныхКорректировок.Location,
 		|	КлючиРучныхКорректировок.SubSubSegment,
 		|	КлючиРучныхКорректировок.Account,
@@ -642,7 +642,8 @@
 	КонецЦикла;
 	
 	КэшРучныхКоррерктировок = РезультатЗапроса[4].Выгрузить();
-	КэшРучныхКоррерктировок.Индексы.Добавить("Source, Company, Client, Location, SubSubSegment, Account, Currency");
+	//КэшРучныхКоррерктировок.Индексы.Добавить("Source, Company, Client, Location, SubSubSegment, Account, Currency");
+	КэшРучныхКоррерктировок.Индексы.Добавить("Source, Company, Location, SubSubSegment, Account, Currency");
 	
 	КэшИнвойсов = РезультатЗапроса[5].Выгрузить();
 	КэшИнвойсов.Индексы.Добавить("ArInvoice");
@@ -689,6 +690,7 @@
 		КонецЕсли;
 		
 		Если ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.Транзакция) Тогда
+			//TODO временно перезаполняем
 			Продолжить;
 			//ТранзакцияOracleОбъект = ВыборкаДетальныеЗаписи.Транзакция.ПолучитьОбъект();
 		Иначе
@@ -797,14 +799,15 @@
 	
 	НайденаОшибка = Ложь;
 	
-	СтруктураПоискаРучнойКорректировки = Новый Структура("Source, Company, Client, Location, SubSubSegment, Account, Currency");
+	//СтруктураПоискаРучнойКорректировки = Новый Структура("Source, Company, Client, Location, SubSubSegment, Account, Currency");
+	СтруктураПоискаРучнойКорректировки = Новый Структура("Source, Company, Location, SubSubSegment, Account, Currency");
 	СтруктураПоискаBatch = Новый Структура("Source, Company, Client, Location, SubSubSegment, Account, Currency");
 	
 	Если ТранзакцияOracleОбъект.DocType = "JV" Тогда
 		
 		СтруктураПоискаРучнойКорректировки.Source = ТранзакцияOracleОбъект.Source;
 		СтруктураПоискаРучнойКорректировки.Company = ТранзакцияOracleОбъект.Company;
-		СтруктураПоискаРучнойКорректировки.Client = ТранзакцияOracleОбъект.Client;
+		//СтруктураПоискаРучнойКорректировки.Client = ТранзакцияOracleОбъект.Client;
 		СтруктураПоискаРучнойКорректировки.Location = ТранзакцияOracleОбъект.Location;
 		СтруктураПоискаРучнойКорректировки.SubSubSegment = ТранзакцияOracleОбъект.SubSubSegment;
 		СтруктураПоискаРучнойКорректировки.Account = ТранзакцияOracleОбъект.Account;
@@ -816,7 +819,7 @@
 			НоваяСтрокаКэша = КэшРучныхКоррерктировок.Добавить();
 			НоваяСтрокаКэша.Source = ТранзакцияOracleОбъект.Source;
 			НоваяСтрокаКэша.Company = ТранзакцияOracleОбъект.Company;
-			НоваяСтрокаКэша.Client = ТранзакцияOracleОбъект.Client;
+			//НоваяСтрокаКэша.Client = ТранзакцияOracleОбъект.Client;
 			НоваяСтрокаКэша.Location = ТранзакцияOracleОбъект.Location;
 			НоваяСтрокаКэша.SubSubSegment = ТранзакцияOracleОбъект.SubSubSegment;
 			НоваяСтрокаКэша.Account = ТранзакцияOracleОбъект.Account;
@@ -1150,7 +1153,7 @@
 	РучнаяКорректировкаОбъект.Дата = ТекущаяДата();
 	РучнаяКорректировкаОбъект.Source = ТранзакцияOracleОбъект.Source;
 	РучнаяКорректировкаОбъект.Company = ТранзакцияOracleОбъект.Company;
-	РучнаяКорректировкаОбъект.Client = ТранзакцияOracleОбъект.Client;
+	//РучнаяКорректировкаОбъект.Client = ТранзакцияOracleОбъект.Client;
 	РучнаяКорректировкаОбъект.Location = ТранзакцияOracleОбъект.Location;
 	РучнаяКорректировкаОбъект.SubSubSegment = ТранзакцияOracleОбъект.SubSubSegment;
 	РучнаяКорректировкаОбъект.Account = ТранзакцияOracleОбъект.Account;
