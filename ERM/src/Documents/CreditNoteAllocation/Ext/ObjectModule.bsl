@@ -43,8 +43,8 @@
 		ДвижениеInvoice.Account = Account;
 		ДвижениеInvoice.Currency = Currency;
 		ДвижениеInvoice.AU = AU;
-		ДвижениеInvoice.Amount = ДвижениеCreditNote.Amount;
-		ДвижениеInvoice.BaseAmount = ДвижениеCreditNote.BaseAmount;
+		ДвижениеInvoice.Amount = -ДвижениеCreditNote.Amount;
+		ДвижениеInvoice.BaseAmount = -ДвижениеCreditNote.BaseAmount;
 		
 	КонецЦикла;
 	
