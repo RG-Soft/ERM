@@ -569,6 +569,18 @@
 		|		ПО КлючиИнвойсов.ArInvoice = ВТ_КлючиПоискаInvoiceSalesOrders.ArInvoice
 		|ГДЕ
 		|	КлючиИнвойсов.Source = &Source
+		|
+		|ОБЪЕДИНИТЬ ВСЕ
+		|
+		|ВЫБРАТЬ
+		|	КлючиИнвойсов.ArInvoice,
+		|	КлючиИнвойсов.Invoice
+		|ИЗ
+		|	РегистрСведений.КлючиИнвойсов КАК КлючиИнвойсов
+		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_КлючиПоискаInvoiceSalesOrders КАК ВТ_КлючиПоискаInvoiceSalesOrders
+		|		ПО (КлючиИнвойсов.ArInvoice = ВТ_КлючиПоискаInvoiceSalesOrders.ArInvoice + ""B"")
+		|ГДЕ
+		|	КлючиИнвойсов.Source = &Source
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
@@ -580,6 +592,18 @@
 		|	РегистрСведений.КлючиSalesOrders КАК КлючиSalesOrders
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_КлючиПоискаInvoiceSalesOrders КАК ВТ_КлючиПоискаInvoiceSalesOrders
 		|		ПО КлючиSalesOrders.ArInvoice = ВТ_КлючиПоискаInvoiceSalesOrders.ArInvoice
+		|			И КлючиSalesOrders.Company = ВТ_КлючиПоискаInvoiceSalesOrders.Company
+		|
+		|ОБЪЕДИНИТЬ ВСЕ
+		|
+		|ВЫБРАТЬ
+		|	КлючиSalesOrders.ArInvoice,
+		|	КлючиSalesOrders.Company,
+		|	КлючиSalesOrders.SalesOrder
+		|ИЗ
+		|	РегистрСведений.КлючиSalesOrders КАК КлючиSalesOrders
+		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_КлючиПоискаInvoiceSalesOrders КАК ВТ_КлючиПоискаInvoiceSalesOrders
+		|		ПО (КлючиSalesOrders.ArInvoice = ВТ_КлючиПоискаInvoiceSalesOrders.ArInvoice + ""B"")
 		|			И КлючиSalesOrders.Company = ВТ_КлючиПоискаInvoiceSalesOrders.Company
 		|;
 		|
@@ -638,7 +662,7 @@
 		|ВЫБРАТЬ
 		|	КлючиРучныхКорректировок.Source,
 		|	КлючиРучныхКорректировок.Company,
-		|	КлючиРучныхКорректировок.Client,
+		//|	КлючиРучныхКорректировок.Client,
 		|	КлючиРучныхКорректировок.Location,
 		|	КлючиРучныхКорректировок.SubSubSegment,
 		|	КлючиРучныхКорректировок.AU,
@@ -775,7 +799,8 @@
 	КэшОрганизаций.Индексы.Добавить("Код");
 	
 	КэшРучныхКоррерктировок = РезультатЗапроса[12].Выгрузить();
-	КэшРучныхКоррерктировок.Индексы.Добавить("Source, Company, Client, Location, SubSubSegment, AU, Account, Currency");
+	//КэшРучныхКоррерктировок.Индексы.Добавить("Source, Company, Client, Location, SubSubSegment, AU, Account, Currency");
+	КэшРучныхКоррерктировок.Индексы.Добавить("Source, Company, Location, SubSubSegment, AU, Account, Currency");
 	
 	КэшМемо = РезультатЗапроса[13].Выгрузить();
 	КэшМемо.Индексы.Добавить("ArInvoice, Client");
@@ -911,7 +936,7 @@
 	КонецЕсли;
 	// { RGS TAlmazova 24.08.2016 9:51:18 - корректировка по счетам 120106 и 120999
 	Если ПроводкаDSSОбъект.AccountLawson = ПланыСчетов.Lawson.ARClearanceControl или ПроводкаDSSОбъект.AccountLawson = ПланыСчетов.Lawson.OtherTradeReceivableBilled Тогда
-		ПроводкаDSSОбъект.Currency = Константы.rgsВалютаUSD;
+		ПроводкаDSSОбъект.Currency = Константы.rgsВалютаUSD.Получить();
 		ПроводкаDSSОбъект.TranAmount = ПроводкаDSSОбъект.BaseAmount;
 	КонецЕсли;
 	
@@ -1090,7 +1115,8 @@
 	СтруктураПоискаМемо = Новый Структура("ArInvoice, Client");
 	СтруктураПоискаBatch = Новый Структура("Source, Company, Client, Location, SubSubSegment, AU, Account, Currency, Prepayment");
 	СтруктураПоискаBatchAllocation = Новый Структура("Source, Company, Client, Location, SubSubSegment, AU, Account, Currency");
-	СтруктураПоискаРучнойКорректировки = Новый Структура("Source, Company, Client, Location, SubSubSegment, AU, Account, Currency");
+	//СтруктураПоискаРучнойКорректировки = Новый Структура("Source, Company, Client, Location, SubSubSegment, AU, Account, Currency");
+	СтруктураПоискаРучнойКорректировки = Новый Структура("Source, Company, Location, SubSubSegment, AU, Account, Currency");
 	
 	Если ПроводкаDSSОбъект.System = "BL" Тогда
 		
@@ -1167,9 +1193,9 @@
 				
 			Иначе
 				
-				//Если ПроводкаDSSОбъект.JeTypeLawson = "A" И НачалоМесяца(ПроводкаDSSОбъект.AccountingPeriod) = НачалоМесяца(ДатаНачалаЗагрузки) Тогда
-				//	ОбнулитьСуммыПроводки(ПроводкаDSSОбъект);
-				//КонецЕсли;
+				Если ПроводкаDSSОбъект.JeTypeLawson = "A" И НачалоМесяца(ПроводкаDSSОбъект.AccountingPeriod) = НачалоМесяца(ДатаНачалаЗагрузки) Тогда
+					ОбнулитьСуммыПроводки(ПроводкаDSSОбъект);
+				КонецЕсли;
 				
 				ДозаполнитьSalesOrder(СтрокиSalesOrder[0].SalesOrder, ПроводкаDSSОбъект);
 				ДобавитьСвязанныйОбъект(ПроводкаDSSОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.SalesOrder, СтрокиSalesOrder[0].SalesOrder);
@@ -1401,7 +1427,7 @@
 			
 			СтруктураПоискаРучнойКорректировки.Source = Перечисления.ТипыСоответствий.Lawson;
 			СтруктураПоискаРучнойКорректировки.Company = ПроводкаDSSОбъект.Company;
-			СтруктураПоискаРучнойКорректировки.Client = ПроводкаDSSОбъект.КонтрагентLawson;
+			//СтруктураПоискаРучнойКорректировки.Client = ПроводкаDSSОбъект.КонтрагентLawson;
 			СтруктураПоискаРучнойКорректировки.Location = ПроводкаDSSОбъект.Location;
 			//СтруктураПоискаРучнойКорректировки.GeoMarket = ПроводкаDSSОбъект.GeoMarket;
 			//СтруктураПоискаРучнойКорректировки.SubGeoMarket = ПроводкаDSSОбъект.SubGeoMarket;
@@ -1418,7 +1444,7 @@
 				НоваяСтрокаКэша = КэшРучныхКоррерктировок.Добавить();
 				НоваяСтрокаКэша.Source = Перечисления.ТипыСоответствий.Lawson;
 				НоваяСтрокаКэша.Company = ПроводкаDSSОбъект.Company;
-				НоваяСтрокаКэша.Client = ПроводкаDSSОбъект.КонтрагентLawson;
+				//НоваяСтрокаКэша.Client = ПроводкаDSSОбъект.КонтрагентLawson;
 				НоваяСтрокаКэша.Location = ПроводкаDSSОбъект.Location;
 				//НоваяСтрокаКэша.GeoMarket = ПроводкаDSSОбъект.GeoMarket;
 				//НоваяСтрокаКэша.SubGeoMarket = ПроводкаDSSОбъект.SubGeoMarket;
@@ -1691,7 +1717,7 @@
 	РучнаяКорректировкаОбъект.Дата = ТекущаяДата();
 	РучнаяКорректировкаОбъект.Source = Перечисления.ТипыСоответствий.Lawson;
 	РучнаяКорректировкаОбъект.Company = ПроводкаDSSОбъект.Company;
-	РучнаяКорректировкаОбъект.Client = ПроводкаDSSОбъект.КонтрагентLawson;
+	//РучнаяКорректировкаОбъект.Client = ПроводкаDSSОбъект.КонтрагентLawson;
 	РучнаяКорректировкаОбъект.Location = ПроводкаDSSОбъект.Location;
 	//РучнаяКорректировкаОбъект.SubGeoMarket = ПроводкаDSSОбъект.SubGeoMarket;
 	//РучнаяКорректировкаОбъект.Segment = ПроводкаDSSОбъект.Segment;
