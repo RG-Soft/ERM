@@ -88,13 +88,17 @@
 					ОбщегоНазначенияКлиентСервер.СообщитьПользователю("Unexpected combination of of currencies!",,,,Отказ);
 				КонецЕсли;
 			ИначеЕсли Реквизиты.AccountLawson = ПланыСчетов.Lawson.ReceivedNotApplied ИЛИ Реквизиты.AccountLawson = ПланыСчетов.Lawson.AdvancesFromCustomers Тогда // 120102 или 209000
-				ВыполнитьСписаниеUnallocatedCash(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, Движения, Реквизиты.TranAmount, Реквизиты.BaseAmount, Отказ);
+				Если Реквизиты.SourceCode = "RY" Тогда // разворот вешаем на последнюю оплату
+					ВыполнитьСписаниеUnallocatedCashРазворот(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, Движения, Реквизиты.TranAmount, Реквизиты.BaseAmount, Отказ);
+				Иначе
+					ВыполнитьСписаниеUnallocatedCash(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, Движения, Реквизиты.TranAmount, Реквизиты.BaseAmount, Отказ);
+				КонецЕсли;
 				// { RGS TAlmazova 22.08.2016 9:41:38 - отражение в регистре Payments
 				ВыполнитьДвижениеPayments(Реквизиты, ПараметрыПроведения.СвязанныеДокументы.CashBatch, Движения, -Реквизиты.TranAmount, Истина, Отказ);
 				// } RGS TAlmazova 22.08.2016 9:41:52 - отражение в регистре Payments
 			КонецЕсли;
 			
-		ИначеЕсли Реквизиты.SourceCode = "RP" ИЛИ Реквизиты.SourceCode = "RQ" Тогда
+		ИначеЕсли Реквизиты.SourceCode = "RP" ИЛИ Реквизиты.SourceCode = "RQ" ИЛИ Реквизиты.SourceCode = "RX" Тогда
 			
 			// поступление денег от клииента. Приход в Unallocated cash. Или корректировка платежа. Корректировка unallocated cash в привязке к CashBatch
 			ВыполнитьНачислениеUnallocatedCash(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, Движения, -Реквизиты.TranAmount, -Реквизиты.BaseAmount, Отказ);
@@ -102,7 +106,7 @@
 			ВыполнитьДвижениеPayments(Реквизиты, ПараметрыПроведения.СвязанныеДокументы.CashBatch, Движения, -Реквизиты.TranAmount, Истина, Отказ);
 			// } RGS TAlmazova 22.08.2016 9:41:52 - отражение в регистре Payments
 			
-		ИначеЕсли Реквизиты.SourceCode = "RU" ИЛИ Реквизиты.SourceCode = "RX" Тогда
+		ИначеЕсли Реквизиты.SourceCode = "RU" Тогда
 			
 			// вопрос, что делать с переоценкой
 			
@@ -295,26 +299,115 @@
 		Возврат;
 	КонецЕсли;
 	
-	НовоеДвижение = Движения.UnallocatedCash.Добавить();
+	Запрос = Новый Запрос;
+	Запрос.Текст =
+	"ВЫБРАТЬ
+	|	UnallocatedCashОстатки.CashBatch,
+	|	UnallocatedCashОстатки.AmountОстаток,
+	|	UnallocatedCashОстатки.BaseAmountОстаток
+	|ИЗ
+	|	РегистрНакопления.UnallocatedCash.Остатки(
+	|			&Период,
+	|			Account = &Account
+	|				И AU = &AU
+	|				И Client = &Client
+	|				И Company = &Company
+	|				И Location = &Location
+	|				И Source = &Source
+	|				И SubSubSegment = &SubSubSegment) КАК UnallocatedCashОстатки
+	|ГДЕ
+	|	UnallocatedCashОстатки.AmountОстаток < 0
+	|
+	|УПОРЯДОЧИТЬ ПО
+	|	UnallocatedCashОстатки.CashBatch.МоментВремени";
 	
-	НовоеДвижение.ВидДвижения = ВидДвиженияНакопления.Приход;
-	НовоеДвижение.Период = Реквизиты.AccountingPeriod;
-	НовоеДвижение.Source = Перечисления.ТипыСоответствий.Lawson;
-	НовоеДвижение.Company = Реквизиты.Company;
-	НовоеДвижение.Location = Реквизиты.Location;
-	//НовоеДвижение.GeoMarket = Реквизиты.GeoMarket;
-	//НовоеДвижение.SubGeoMarket = Реквизиты.SubGeoMarket;
-	//НовоеДвижение.Segment = Реквизиты.Segment;
-	//НовоеДвижение.SubSegment = Реквизиты.SubSegment;
-	НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
-	НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
-	НовоеДвижение.CashBatch = СвязанныеДокументы.CashBatch;
-	НовоеДвижение.Account = Реквизиты.AccountLawson;
-	НовоеДвижение.AU = Реквизиты.AU;
-	НовоеДвижение.Currency = Реквизиты.Currency;
+	Запрос.УстановитьПараметр("Период", Новый Граница(МоментВремени(), ВидГраницы.Исключая));
+	Запрос.УстановитьПараметр("Account", Реквизиты.AccountLawson);
+	Запрос.УстановитьПараметр("AU", Реквизиты.AU);
+	Запрос.УстановитьПараметр("Client", Реквизиты.КонтрагентLawson);
+	Запрос.УстановитьПараметр("Company", Реквизиты.Company);
+	Запрос.УстановитьПараметр("Location", Реквизиты.Location);
+	Запрос.УстановитьПараметр("Source", Перечисления.ТипыСоответствий.Lawson);
+	Запрос.УстановитьПараметр("SubSubSegment", Реквизиты.SubSubSegment);
 	
-	НовоеДвижение.Amount = Сумма;
-	НовоеДвижение.BaseAmount = СуммаUSD;
+	Результат = Запрос.Выполнить();
+	
+	Корректировка = 0;
+	КорректировкаUSD = 0;
+	
+	Если Не Результат.Пустой() И Сумма > 0  Тогда
+		
+		ОсталосьПрихода = Сумма;
+		ОсталосьПриходаUSD = СуммаUSD;
+		
+		ВыборкаОстатков = Результат.Выбрать();
+		
+		Пока ВыборкаОстатков.Следующий() И ОсталосьПрихода > 0 Цикл
+			
+			НовоеДвижение = Движения.UnallocatedCash.Добавить();
+			
+			НовоеДвижение.ВидДвижения = ВидДвиженияНакопления.Приход;
+			НовоеДвижение.Период = Реквизиты.AccountingPeriod;
+			НовоеДвижение.Source = Перечисления.ТипыСоответствий.Lawson;
+			НовоеДвижение.Company = Реквизиты.Company;
+			НовоеДвижение.Location = Реквизиты.Location;
+			НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
+			НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+			НовоеДвижение.CashBatch = ВыборкаОстатков.CashBatch;
+			НовоеДвижение.Account = Реквизиты.AccountLawson;
+			НовоеДвижение.AU = Реквизиты.AU;
+			НовоеДвижение.Currency = Реквизиты.Currency;
+			
+			НовоеДвижение.Amount = ?(-ВыборкаОстатков.AmountОстаток < ОсталосьПрихода, -ВыборкаОстатков.AmountОстаток, ОсталосьПрихода);
+			НовоеДвижение.BaseAmount = ?(-ВыборкаОстатков.BaseAmountОстаток < ОсталосьПриходаUSD, -ВыборкаОстатков.BaseAmountОстаток, ОсталосьПриходаUSD);;
+			
+			ОсталосьПрихода = ОсталосьПрихода - НовоеДвижение.Amount;
+			ОсталосьПриходаUSD = ОсталосьПриходаUSD - НовоеДвижение.BaseAmount;
+			
+		КонецЦикла;
+		
+		Если ОсталосьПрихода > 0 Тогда
+			
+			НовоеДвижение = Движения.UnallocatedCash.Добавить();
+			
+			НовоеДвижение.ВидДвижения = ВидДвиженияНакопления.Приход;
+			НовоеДвижение.Период = Реквизиты.AccountingPeriod;
+			НовоеДвижение.Source = Перечисления.ТипыСоответствий.Lawson;
+			НовоеДвижение.Company = Реквизиты.Company;
+			НовоеДвижение.Location = Реквизиты.Location;
+			НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
+			НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+			НовоеДвижение.CashBatch = СвязанныеДокументы.CashBatch;
+			НовоеДвижение.Account = Реквизиты.AccountLawson;
+			НовоеДвижение.AU = Реквизиты.AU;
+			НовоеДвижение.Currency = Реквизиты.Currency;
+			
+			НовоеДвижение.Amount = ОсталосьПрихода;
+			НовоеДвижение.BaseAmount = ОсталосьПриходаUSD;
+			
+		КонецЕсли;
+		
+	Иначе
+		
+		НовоеДвижение = Движения.UnallocatedCash.Добавить();
+		
+		НовоеДвижение.ВидДвижения = ВидДвиженияНакопления.Приход;
+		НовоеДвижение.Период = Реквизиты.AccountingPeriod;
+		НовоеДвижение.Source = Перечисления.ТипыСоответствий.Lawson;
+		НовоеДвижение.Company = Реквизиты.Company;
+		НовоеДвижение.Location = Реквизиты.Location;
+		НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
+		НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+		НовоеДвижение.CashBatch = СвязанныеДокументы.CashBatch;
+		НовоеДвижение.Account = Реквизиты.AccountLawson;
+		НовоеДвижение.AU = Реквизиты.AU;
+		НовоеДвижение.Currency = Реквизиты.Currency;
+		
+		НовоеДвижение.Amount = Сумма;
+		НовоеДвижение.BaseAmount = СуммаUSD;
+		
+	КонецЕсли;
+	
 	
 	Движения.UnallocatedCash.Записывать = Истина;
 	
@@ -326,27 +419,163 @@
 		Возврат;
 	КонецЕсли;
 	
-	НовоеДвижение = Движения.UnallocatedCash.Добавить();
+	Запрос = Новый Запрос;
+	Запрос.Текст =
+	"ВЫБРАТЬ
+	|	UnallocatedCashОстатки.CashBatch,
+	|	UnallocatedCashОстатки.AmountОстаток,
+	|	UnallocatedCashОстатки.BaseAmountОстаток
+	|ИЗ
+	|	РегистрНакопления.UnallocatedCash.Остатки(
+	|			&Период,
+	|			Account = &Account
+	|				И AU = &AU
+	|				И Client = &Client
+	|				И Company = &Company
+	|				И Location = &Location
+	|				И Source = &Source
+	|				И SubSubSegment = &SubSubSegment) КАК UnallocatedCashОстатки
+	|
+	|УПОРЯДОЧИТЬ ПО
+	|	UnallocatedCashОстатки.CashBatch.МоментВремени";
 	
+	Запрос.УстановитьПараметр("Период", Новый Граница(МоментВремени(), ВидГраницы.Исключая));
+	Запрос.УстановитьПараметр("Account", Реквизиты.AccountLawson);
+	Запрос.УстановитьПараметр("AU", Реквизиты.AU);
+	Запрос.УстановитьПараметр("Client", Реквизиты.КонтрагентLawson);
+	Запрос.УстановитьПараметр("Company", Реквизиты.Company);
+	Запрос.УстановитьПараметр("Location", Реквизиты.Location);
+	Запрос.УстановитьПараметр("Source", Перечисления.ТипыСоответствий.Lawson);
+	Запрос.УстановитьПараметр("SubSubSegment", Реквизиты.SubSubSegment);
+	
+	ВыборкаОстатков = Запрос.Выполнить().Выбрать();
+	
+	ОсталосьСписать = Сумма;
+	ОсталосьСписатьUSD = СуммаUSD;
+	
+	ТаблицаCashBatchAllocation = Движения.CashBatchAllocation.ВыгрузитьКолонки();
+	
+	Пока ВыборкаОстатков.Следующий() И (ОсталосьСписать <> 0 ИЛИ ОсталосьСписатьUSD <> 0) Цикл
+		
+		НовоеДвижение = Движения.UnallocatedCash.Добавить();
+	
+		НовоеДвижение.ВидДвижения = ВидДвиженияНакопления.Расход;
+		НовоеДвижение.Период = Реквизиты.AccountingPeriod;
+		НовоеДвижение.Source = Перечисления.ТипыСоответствий.Lawson;
+		НовоеДвижение.Company = Реквизиты.Company;
+		НовоеДвижение.Location = Реквизиты.Location;
+		НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
+		НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+		НовоеДвижение.CashBatch = ВыборкаОстатков.CashBatch;
+		НовоеДвижение.Account = Реквизиты.AccountLawson;
+		НовоеДвижение.AU = Реквизиты.AU;
+		НовоеДвижение.Currency = Реквизиты.Currency;
+		
+		Если ВыборкаОстатков.AmountОстаток < 0 Тогда
+			НовоеДвижение.Amount = ОсталосьСписать;
+		Иначе
+			НовоеДвижение.Amount = ?(ОсталосьСписать <= ВыборкаОстатков.AmountОстаток, ОсталосьСписать, ВыборкаОстатков.AmountОстаток);
+		КонецЕсли;
+		Если ВыборкаОстатков.BaseAmountОстаток < 0 Тогда
+			НовоеДвижение.BaseAmount = ОсталосьСписатьUSD;
+		Иначе
+			НовоеДвижение.BaseAmount = ?(ОсталосьСписатьUSD <= ВыборкаОстатков.BaseAmountОстаток, ОсталосьСписатьUSD, ВыборкаОстатков.BaseAmountОстаток);
+		КонецЕсли;
+		
+		ОсталосьСписать = ОсталосьСписать - НовоеДвижение.Amount;
+		ОсталосьСписатьUSD = ОсталосьСписатьUSD - НовоеДвижение.BaseAmount;
+		
+		ДвижениеCashBatchAllocation = ТаблицаCashBatchAllocation.Добавить();
+		ДвижениеCashBatchAllocation.Transaction = Ссылка;
+		ДвижениеCashBatchAllocation.BatchAllocation = СвязанныеДокументы.BatchAllocation;
+		ДвижениеCashBatchAllocation.CashBatch = НовоеДвижение.CashBatch;
+		ДвижениеCashBatchAllocation.Amount = НовоеДвижение.Amount;
+		
+	КонецЦикла;
+	
+	Если ОсталосьСписать <> 0 ИЛИ ОсталосьСписатьUSD <> 0 Тогда
+		
+		НовоеДвижение = Движения.UnallocatedCash.Добавить();
+	
+		НовоеДвижение.ВидДвижения = ВидДвиженияНакопления.Расход;
+		НовоеДвижение.Период = Реквизиты.AccountingPeriod;
+		НовоеДвижение.Source = Перечисления.ТипыСоответствий.Lawson;
+		НовоеДвижение.Company = Реквизиты.Company;
+		НовоеДвижение.Location = Реквизиты.Location;
+		НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
+		НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+		НовоеДвижение.CashBatch = Документы.CashBatch.ПустаяСсылка();
+		НовоеДвижение.Account = Реквизиты.AccountLawson;
+		НовоеДвижение.AU = Реквизиты.AU;
+		НовоеДвижение.Currency = Реквизиты.Currency;
+		
+		НовоеДвижение.Amount = ОсталосьСписать;
+		НовоеДвижение.BaseAmount = ОсталосьСписатьUSD;
+		
+		ДвижениеCashBatchAllocation = ТаблицаCashBatchAllocation.Добавить();
+		ДвижениеCashBatchAllocation.Transaction = Ссылка;
+		ДвижениеCashBatchAllocation.BatchAllocation = СвязанныеДокументы.BatchAllocation;
+		ДвижениеCashBatchAllocation.CashBatch = НовоеДвижение.CashBatch;
+		ДвижениеCashBatchAllocation.Amount = НовоеДвижение.Amount;
+		
+	КонецЕсли;
+	
+	ТаблицаCashBatchAllocation.Свернуть("BatchAllocation, CashBatch, Transaction", "Amount");
+	Движения.CashBatchAllocation.Загрузить(ТаблицаCashBatchAllocation);
+	
+	Движения.UnallocatedCash.Записывать = Истина;
+	Движения.CashBatchAllocation.Записывать = Истина;
+	
+КонецПроцедуры
+
+Процедура ВыполнитьСписаниеUnallocatedCashРазворот(Реквизиты, СвязанныеДокументы, Движения, Сумма, СуммаUSD, Отказ)
+	
+	Если Отказ Тогда
+		Возврат;
+	КонецЕсли;
+	
+	Запрос = Новый Запрос;
+	Запрос.Текст =
+	"ВЫБРАТЬ ПЕРВЫЕ 1
+	|	CashBatchAllocation.CashBatch
+	|ИЗ
+	|	РегистрСведений.CashBatchAllocation КАК CashBatchAllocation
+	|ГДЕ
+	|	CashBatchAllocation.BatchAllocation = &BatchAllocation
+	|	И CashBatchAllocation.CashBatch <> ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
+	|
+	|УПОРЯДОЧИТЬ ПО
+	|	CashBatchAllocation.CashBatch.МоментВремени УБЫВ";
+	
+	Запрос.УстановитьПараметр("BatchAllocation", СвязанныеДокументы.BatchAllocation);
+	
+	Результат = Запрос.Выполнить();
+	
+	Если Результат.Пустой() Тогда
+		CashBatch = Документы.CashBatch.ПустаяСсылка();
+	Иначе
+		Выборка = Результат.Выбрать();
+		Выборка.Следующий();
+		CashBatch = Выборка.CashBatch;
+	КонецЕсли;
+	
+	НовоеДвижение = Движения.UnallocatedCash.Добавить();
+
 	НовоеДвижение.ВидДвижения = ВидДвиженияНакопления.Расход;
 	НовоеДвижение.Период = Реквизиты.AccountingPeriod;
 	НовоеДвижение.Source = Перечисления.ТипыСоответствий.Lawson;
 	НовоеДвижение.Company = Реквизиты.Company;
 	НовоеДвижение.Location = Реквизиты.Location;
-	//НовоеДвижение.GeoMarket = Реквизиты.GeoMarket;
-	//НовоеДвижение.SubGeoMarket = Реквизиты.SubGeoMarket;
-	//НовоеДвижение.Segment = Реквизиты.Segment;
-	//НовоеДвижение.SubSegment = Реквизиты.SubSegment;
 	НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 	НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
-	НовоеДвижение.CashBatch = СвязанныеДокументы.CashBatch;
+	НовоеДвижение.CashBatch = CashBatch;
 	НовоеДвижение.Account = Реквизиты.AccountLawson;
 	НовоеДвижение.AU = Реквизиты.AU;
 	НовоеДвижение.Currency = Реквизиты.Currency;
 	
 	НовоеДвижение.Amount = Сумма;
 	НовоеДвижение.BaseAmount = СуммаUSD;
-	
+		
 	Движения.UnallocatedCash.Записывать = Истина;
 	
 КонецПроцедуры

@@ -609,37 +609,27 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
-		|	КлючиCashBatch.Source,
-		|	КлючиCashBatch.Company,
-		|	КлючиCashBatch.Client,
-		|	КлючиCashBatch.Location,
-		|	КлючиCashBatch.SubSubSegment,
-		|	КлючиCashBatch.AU,
-		|	КлючиCashBatch.Account,
-		|	КлючиCashBatch.Currency,
-		|	КлючиCashBatch.CashBatch,
-		|	КлючиCashBatch.Prepayment
+		|	ВТ_ДанныеФайла.ArBatchNbr,
+		|	CashBatch.Prepayment,
+		|	CashBatch.Ссылка КАК CashBatch
 		|ИЗ
-		|	РегистрСведений.КлючиCashBatch КАК КлючиCashBatch
-		|ГДЕ
-		|	КлючиCashBatch.Source = &Source
+		|	Документ.CashBatch КАК CashBatch
+		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
+		|		ПО (CashBatch.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
+		|			И CashBatch.DocID = ВТ_ДанныеФайла.ArBatchNbr
+		|			И (НЕ CashBatch.ПометкаУдаления)
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
-		|	КлючиBatchAllocation.Source,
-		|	КлючиBatchAllocation.Company,
-		|	КлючиBatchAllocation.Client,
-		|	КлючиBatchAllocation.Location,
-		|	КлючиBatchAllocation.SubSubSegment,
-		|	КлючиBatchAllocation.AU,
-		|	КлючиBatchAllocation.Account,
-		|	КлючиBatchAllocation.Currency,
-		|	КлючиBatchAllocation.BatchAllocation
+		|	ВТ_ДанныеФайла.ArBatchNbr,
+		|	BatchAllocation.Ссылка КАК BatchAllocation
 		|ИЗ
-		|	РегистрСведений.КлючиBatchAllocation КАК КлючиBatchAllocation
-		|ГДЕ
-		|	КлючиBatchAllocation.Source = &Source
+		|	Документ.BatchAllocation КАК BatchAllocation
+		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
+		|		ПО BatchAllocation.DocID = ВТ_ДанныеФайла.ArBatchNbr
+		|			И (BatchAllocation.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
+		|			И (НЕ BatchAllocation.ПометкаУдаления)
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
@@ -662,7 +652,6 @@
 		|ВЫБРАТЬ
 		|	КлючиРучныхКорректировок.Source,
 		|	КлючиРучныхКорректировок.Company,
-		//|	КлючиРучныхКорректировок.Client,
 		|	КлючиРучныхКорректировок.Location,
 		|	КлючиРучныхКорректировок.SubSubSegment,
 		|	КлючиРучныхКорректировок.AU,
@@ -750,7 +739,8 @@
 		|	КостЦентры.ПодразделениеОрганизации КАК Location,
 		|	КостЦентры.Ссылка КАК AU,
 		|	КостЦентры.Сегмент КАК SubSubSegment,
-		|	КостЦентры.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarketHFM
+		|	КостЦентры.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarketHFM,
+		|	ВТ_ДанныеФайла.ArBatchNbr
 		|ИЗ
 		|	ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
 		|		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_СоответствиеКлиентовCustomerNumber КАК ВТ_СоответствиеКлиентовCustomerNumber
@@ -787,10 +777,10 @@
 	КэшSalesOrders.Индексы.Добавить("ArInvoice, Company");
 	
 	КэшCashBatch = РезультатЗапроса[8].Выгрузить();
-	КэшCashBatch.Индексы.Добавить("Source, Company, Client, Location, SubSubSegment, AU, Account, Currency, Prepayment");
+	КэшCashBatch.Индексы.Добавить("ARBatchNbr, Prepayment");
 	
 	КэшBatchAllocation = РезультатЗапроса[9].Выгрузить();
-	КэшBatchAllocation.Индексы.Добавить("Source, Company, Client, Location, SubSubSegment, AU, Account, Currency");
+	КэшBatchAllocation.Индексы.Добавить("ARBatchNbr");
 	
 	ТаблицаИсключений = РезультатЗапроса[10].Выгрузить();
 	ТаблицаИсключений.Индексы.Добавить("System, AU");
@@ -904,7 +894,7 @@
 	ЗаполнитьЗначенияСвойств(ПроводкаDSSОбъект, ДанныеДляЗаполнения);
 	
 	Если (Найти(ДанныеДляЗаполнения.Description, "SPLIT INVC") > 0) И (Прав(ПроводкаDSSОбъект.ArInvoice, 1) <> "B") Тогда
-		ПроводкаDSSОбъект.ArInvoice = ПроводкаDSSОбъект.ArInvoice + "B";	
+		ПроводкаDSSОбъект.ArInvoice = ПроводкаDSSОбъект.ArInvoice + "B";
 	КонецЕсли;
 		
 	ПроводкаDSSОбъект.Номер = ДанныеДляЗаполнения.GltObjId; 
@@ -1113,8 +1103,9 @@
 	
 	СтруктураПоискаSalesOrder = Новый Структура("ArInvoice, Company");
 	СтруктураПоискаМемо = Новый Структура("ArInvoice, Client");
-	СтруктураПоискаBatch = Новый Структура("Source, Company, Client, Location, SubSubSegment, AU, Account, Currency, Prepayment");
-	СтруктураПоискаBatchAllocation = Новый Структура("Source, Company, Client, Location, SubSubSegment, AU, Account, Currency");
+	СтруктураПоискаBatch = Новый Структура("ARBatchNbr, Prepayment");
+	//СтруктураПоискаBatchAllocation = Новый Структура("Source, Company, Client, Location, SubSubSegment, AU, Account, Currency");
+	СтруктураПоискаBatchAllocation = Новый Структура("ARBatchNbr");
 	//СтруктураПоискаРучнойКорректировки = Новый Структура("Source, Company, Client, Location, SubSubSegment, AU, Account, Currency");
 	СтруктураПоискаРучнойКорректировки = Новый Структура("Source, Company, Location, SubSubSegment, AU, Account, Currency");
 	
@@ -1208,84 +1199,104 @@
 		
 		Если ПроводкаDSSОбъект.SourceCode = "RL" ИЛИ ПроводкаDSSОбъект.SourceCode = "RY" Тогда
 			
-			// Batch allocation
-			СтруктураПоискаBatchAllocation.Source = Перечисления.ТипыСоответствий.Lawson;
-			СтруктураПоискаBatchAllocation.Company = ПроводкаDSSОбъект.Company;
-			СтруктураПоискаBatchAllocation.Client = ПроводкаDSSОбъект.КонтрагентLawson;
-			СтруктураПоискаBatchAllocation.Location = ПроводкаDSSОбъект.Location;
-			СтруктураПоискаBatchAllocation.SubSubSegment = ПроводкаDSSОбъект.SubSubSegment;
-			СтруктураПоискаBatchAllocation.AU = ПроводкаDSSОбъект.AU;
-			СтруктураПоискаBatchAllocation.Account = ПроводкаDSSОбъект.AccountLawson;
-			СтруктураПоискаBatchAllocation.Currency = ПроводкаDSSОбъект.Currency;
+			//// Batch allocation
+			//СтруктураПоискаBatchAllocation.Source = Перечисления.ТипыСоответствий.Lawson;
+			//СтруктураПоискаBatchAllocation.Company = ПроводкаDSSОбъект.Company;
+			//СтруктураПоискаBatchAllocation.Client = ПроводкаDSSОбъект.КонтрагентLawson;
+			//СтруктураПоискаBatchAllocation.Location = ПроводкаDSSОбъект.Location;
+			//СтруктураПоискаBatchAllocation.SubSubSegment = ПроводкаDSSОбъект.SubSubSegment;
+			//СтруктураПоискаBatchAllocation.AU = ПроводкаDSSОбъект.AU;
+			//СтруктураПоискаBatchAllocation.Account = ПроводкаDSSОбъект.AccountLawson;
+			//СтруктураПоискаBatchAllocation.Currency = ПроводкаDSSОбъект.Currency;
 			
-			СтрокиBatchAllocation = КэшBatchAllocation.НайтиСтроки(СтруктураПоискаBatchAllocation);
-			Если СтрокиBatchAllocation.Количество() = 0 Тогда
+			//СтрокиBatchAllocation = КэшBatchAllocation.НайтиСтроки(СтруктураПоискаBatchAllocation);
+			//Если СтрокиBatchAllocation.Количество() = 0 Тогда
+			//	ТекBatchAllocation = СоздатьBatchAllocation(ПроводкаDSSОбъект);
+			//	НоваяСтрокаКэша = КэшBatchAllocation.Добавить();
+			//	НоваяСтрокаКэша.Source = Перечисления.ТипыСоответствий.Lawson;
+			//	НоваяСтрокаКэша.Company = ПроводкаDSSОбъект.Company;
+			//	НоваяСтрокаКэша.Client = ПроводкаDSSОбъект.КонтрагентLawson;
+			//	НоваяСтрокаКэша.Location = ПроводкаDSSОбъект.Location;
+			//	НоваяСтрокаКэша.SubSubSegment = ПроводкаDSSОбъект.SubSubSegment;
+			//	НоваяСтрокаКэша.AU = ПроводкаDSSОбъект.AU;
+			//	НоваяСтрокаКэша.Account = ПроводкаDSSОбъект.AccountLawson;
+			//	НоваяСтрокаКэша.Currency = ПроводкаDSSОбъект.Currency;
+			//	НоваяСтрокаКэша.BatchAllocation = ТекBatchAllocation;
+			//Иначе
+			//	ДобавитьСвязанныйОбъект(ПроводкаDSSОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.BatchAllocation, СтрокиBatchAllocation[0].BatchAllocation);
+			//КонецЕсли;
+			
+			СтрокаBatchAllocation = КэшBatchAllocation.Найти(ПроводкаDSSОбъект.ARBatchNbr, "ARBatchNbr");
+			Если СтрокаBatchAllocation = Неопределено Тогда
 				ТекBatchAllocation = СоздатьBatchAllocation(ПроводкаDSSОбъект);
 				НоваяСтрокаКэша = КэшBatchAllocation.Добавить();
-				НоваяСтрокаКэша.Source = Перечисления.ТипыСоответствий.Lawson;
-				НоваяСтрокаКэша.Company = ПроводкаDSSОбъект.Company;
-				НоваяСтрокаКэша.Client = ПроводкаDSSОбъект.КонтрагентLawson;
-				НоваяСтрокаКэша.Location = ПроводкаDSSОбъект.Location;
-				НоваяСтрокаКэша.SubSubSegment = ПроводкаDSSОбъект.SubSubSegment;
-				НоваяСтрокаКэша.AU = ПроводкаDSSОбъект.AU;
-				НоваяСтрокаКэша.Account = ПроводкаDSSОбъект.AccountLawson;
-				НоваяСтрокаКэша.Currency = ПроводкаDSSОбъект.Currency;
+				НоваяСтрокаКэша.ARBatchNbr = ПроводкаDSSОбъект.ARBatchNbr;
 				НоваяСтрокаКэша.BatchAllocation = ТекBatchAllocation;
 			Иначе
-				ДобавитьСвязанныйОбъект(ПроводкаDSSОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.BatchAllocation, СтрокиBatchAllocation[0].BatchAllocation);
+				ДобавитьСвязанныйОбъект(ПроводкаDSSОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.BatchAllocation, СтрокаBatchAllocation.BatchAllocation);
 			КонецЕсли;
 			
 			// CASH BATCH
-			СтруктураПоискаBatch.Source = Перечисления.ТипыСоответствий.Lawson;
-			СтруктураПоискаBatch.Company = ПроводкаDSSОбъект.Company;
-			СтруктураПоискаBatch.Client = ПроводкаDSSОбъект.КонтрагентLawson;
-			СтруктураПоискаBatch.Location = ПроводкаDSSОбъект.Location;
-			СтруктураПоискаBatch.SubSubSegment = ПроводкаDSSОбъект.SubSubSegment;
-			СтруктураПоискаBatch.AU = ПроводкаDSSОбъект.AU;
-			СтруктураПоискаBatch.Account = ПроводкаDSSОбъект.AccountLawson;
-			СтруктураПоискаBatch.Currency = ПроводкаDSSОбъект.Currency;
+			//СтруктураПоискаBatch.Source = Перечисления.ТипыСоответствий.Lawson;
+			//СтруктураПоискаBatch.Company = ПроводкаDSSОбъект.Company;
+			//СтруктураПоискаBatch.Client = ПроводкаDSSОбъект.КонтрагентLawson;
+			//СтруктураПоискаBatch.Location = ПроводкаDSSОбъект.Location;
+			//СтруктураПоискаBatch.SubSubSegment = ПроводкаDSSОбъект.SubSubSegment;
+			//СтруктураПоискаBatch.AU = ПроводкаDSSОбъект.AU;
+			//СтруктураПоискаBatch.Account = ПроводкаDSSОбъект.AccountLawson;
+			//СтруктураПоискаBatch.Currency = ПроводкаDSSОбъект.Currency;
+			
+			//СтруктураПоискаBatch.ARBatchNbr = ПроводкаDSSОбъект.ArBatchNbr;
 			
 			Если ПроводкаDSSОбъект.AccountLawson = ПланыСчетов.Lawson.ReceivedNotApplied Тогда // 120102
 				
-				СтруктураПоискаBatch.Prepayment = Ложь;
+				//СтруктураПоискаBatch.Prepayment = Ложь;
+				//
+				//СтрокиCashBatch = КэшCashBatch.НайтиСтроки(СтруктураПоискаBatch);
+				//Если СтрокиCashBatch.Количество() = 0 Тогда
+				//	ТекCashBatch = СоздатьCashBatch(ПроводкаDSSОбъект, Ложь);
+				//	НоваяСтрокаКэша = КэшCashBatch.Добавить();
+					
+				//	НоваяСтрокаКэша.Source = Перечисления.ТипыСоответствий.Lawson;
+				//	НоваяСтрокаКэша.Company = ПроводкаDSSОбъект.Company;
+				//	НоваяСтрокаКэша.Client = ПроводкаDSSОбъект.КонтрагентLawson;
+				//	НоваяСтрокаКэша.Location = ПроводкаDSSОбъект.Location;
+				//	НоваяСтрокаКэша.SubSubSegment = ПроводкаDSSОбъект.SubSubSegment;
+				//	НоваяСтрокаКэша.AU = ПроводкаDSSОбъект.AU;
+				//	НоваяСтрокаКэша.Account = ПроводкаDSSОбъект.AccountLawson;
+				//	НоваяСтрокаКэша.Currency = ПроводкаDSSОбъект.Currency;
 				
-				СтрокиCashBatch = КэшCashBatch.НайтиСтроки(СтруктураПоискаBatch);
-				Если СтрокиCashBatch.Количество() = 0 Тогда
-					ТекCashBatch = СоздатьCashBatch(ПроводкаDSSОбъект, Ложь);
-					НоваяСтрокаКэша = КэшCashBatch.Добавить();
-					НоваяСтрокаКэша.Source = Перечисления.ТипыСоответствий.Lawson;
-					НоваяСтрокаКэша.Company = ПроводкаDSSОбъект.Company;
-					НоваяСтрокаКэша.Client = ПроводкаDSSОбъект.КонтрагентLawson;
-					НоваяСтрокаКэша.Location = ПроводкаDSSОбъект.Location;
-					НоваяСтрокаКэша.SubSubSegment = ПроводкаDSSОбъект.SubSubSegment;
-					НоваяСтрокаКэша.AU = ПроводкаDSSОбъект.AU;
-					НоваяСтрокаКэша.Account = ПроводкаDSSОбъект.AccountLawson;
-					НоваяСтрокаКэша.Currency = ПроводкаDSSОбъект.Currency;
-					НоваяСтрокаКэша.CashBatch = ТекCashBatch;
-				Иначе
-					ДобавитьСвязанныйОбъект(ПроводкаDSSОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.CashBatch, СтрокиCashBatch[0].CashBatch);
-				КонецЕсли;
+				//	НоваяСтрокаКэша.ARBatchNbr = СтруктураПоискаBatch.ARBatchNbr;
+				//	НоваяСтрокаКэша.Prepayment = СтруктураПоискаBatch.Prepayment;
+				//	НоваяСтрокаКэша.CashBatch = ТекCashBatch;
+				//Иначе
+				//	ДобавитьСвязанныйОбъект(ПроводкаDSSОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.CashBatch, СтрокиCashBatch[0].CashBatch);
+				//КонецЕсли;
 				
 			ИначеЕсли ПроводкаDSSОбъект.AccountLawson = ПланыСчетов.Lawson.AdvancesFromCustomers Тогда // 209000
 				
-				СтруктураПоискаBatch.Prepayment = Истина;
+				//СтруктураПоискаBatch.Prepayment = Истина;
+				//
+				//СтрокиCashBatch = КэшCashBatch.НайтиСтроки(СтруктураПоискаBatch);
+				//Если СтрокиCashBatch.Количество() = 0 Тогда
+				//	ТекCashBatch = СоздатьCashBatch(ПроводкаDSSОбъект, Истина);
+				//	НоваяСтрокаКэша = КэшCashBatch.Добавить();
+					
+				//	НоваяСтрокаКэша.Source = Перечисления.ТипыСоответствий.Lawson;
+				//	НоваяСтрокаКэша.Company = ПроводкаDSSОбъект.Company;
+				//	НоваяСтрокаКэша.Client = ПроводкаDSSОбъект.КонтрагентLawson;
+				//	НоваяСтрокаКэша.Location = ПроводкаDSSОбъект.Location;
+				//	НоваяСтрокаКэша.SubSubSegment = ПроводкаDSSОбъект.SubSubSegment;
+				//	НоваяСтрокаКэша.AU = ПроводкаDSSОбъект.AU;
+				//	НоваяСтрокаКэша.Account = ПроводкаDSSОбъект.AccountLawson;
+				//	НоваяСтрокаКэша.Currency = ПроводкаDSSОбъект.Currency;
 				
-				СтрокиCashBatch = КэшCashBatch.НайтиСтроки(СтруктураПоискаBatch);
-				Если СтрокиCashBatch.Количество() = 0 Тогда
-					ТекCashBatch = СоздатьCashBatch(ПроводкаDSSОбъект, Истина);
-					НоваяСтрокаКэша = КэшCashBatch.Добавить();
-					НоваяСтрокаКэша.Source = Перечисления.ТипыСоответствий.Lawson;
-					НоваяСтрокаКэша.Company = ПроводкаDSSОбъект.Company;
-					НоваяСтрокаКэша.Client = ПроводкаDSSОбъект.КонтрагентLawson;
-					НоваяСтрокаКэша.Location = ПроводкаDSSОбъект.Location;
-					НоваяСтрокаКэша.SubSubSegment = ПроводкаDSSОбъект.SubSubSegment;
-					НоваяСтрокаКэша.AU = ПроводкаDSSОбъект.AU;
-					НоваяСтрокаКэша.Account = ПроводкаDSSОбъект.AccountLawson;
-					НоваяСтрокаКэша.Currency = ПроводкаDSSОбъект.Currency;
-					НоваяСтрокаКэша.CashBatch = ТекCashBatch;
-				Иначе
-					ДобавитьСвязанныйОбъект(ПроводкаDSSОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.CashBatch, СтрокиCashBatch[0].CashBatch);
-				КонецЕсли;
+				//	НоваяСтрокаКэша.ARBatchNbr = СтруктураПоискаBatch.ARBatchNbr;
+				//	НоваяСтрокаКэша.Prepayment = СтруктураПоискаBatch.Prepayment;
+				//	НоваяСтрокаКэша.CashBatch = ТекCashBatch;
+				//Иначе
+				//	ДобавитьСвязанныйОбъект(ПроводкаDSSОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.CashBatch, СтрокиCashBatch[0].CashBatch);
+				//КонецЕсли;
 				
 			ИначеЕсли ПроводкаDSSОбъект.AccountLawson = ПланыСчетов.Lawson.TradeReceivables Тогда // 120101
 				
@@ -1338,35 +1349,65 @@
 				
 			КонецЕсли;
 			
-		ИначеЕсли ПроводкаDSSОбъект.SourceCode = "RP" ИЛИ ПроводкаDSSОбъект.SourceCode = "RQ" Тогда
+		ИначеЕсли ПроводкаDSSОбъект.SourceCode = "RP" Тогда
 			
 			// Cash batch
-			СтруктураПоискаBatch.Source = Перечисления.ТипыСоответствий.Lawson;
-			СтруктураПоискаBatch.Company = ПроводкаDSSОбъект.Company;
-			СтруктураПоискаBatch.Client = ПроводкаDSSОбъект.КонтрагентLawson;
-			СтруктураПоискаBatch.Location = ПроводкаDSSОбъект.Location;
-			СтруктураПоискаBatch.SubSubSegment = ПроводкаDSSОбъект.SubSubSegment;
-			СтруктураПоискаBatch.AU = ПроводкаDSSОбъект.AU;
-			СтруктураПоискаBatch.Account = ПроводкаDSSОбъект.AccountLawson;
-			СтруктураПоискаBatch.Currency = ПроводкаDSSОбъект.Currency;
+			//СтруктураПоискаBatch.Source = Перечисления.ТипыСоответствий.Lawson;
+			//СтруктураПоискаBatch.Company = ПроводкаDSSОбъект.Company;
+			//СтруктураПоискаBatch.Client = ПроводкаDSSОбъект.КонтрагентLawson;
+			//СтруктураПоискаBatch.Location = ПроводкаDSSОбъект.Location;
+			//СтруктураПоискаBatch.SubSubSegment = ПроводкаDSSОбъект.SubSubSegment;
+			//СтруктураПоискаBatch.AU = ПроводкаDSSОбъект.AU;
+			//СтруктураПоискаBatch.Account = ПроводкаDSSОбъект.AccountLawson;
+			//СтруктураПоискаBatch.Currency = ПроводкаDSSОбъект.Currency;
+			//
+			//СтруктураПоискаBatch.Prepayment = ПроводкаDSSОбъект.AccountLawson = ПланыСчетов.Lawson.AdvancesFromCustomers;
 			
+			//СтрокиCashBatch = КэшCashBatch.НайтиСтроки(СтруктураПоискаBatch);
+			//Если СтрокиCashBatch.Количество() = 0 Тогда
+			//	ТекCashBatch = СоздатьCashBatch(ПроводкаDSSОбъект, СтруктураПоискаBatch.Prepayment);
+			//	НоваяСтрокаКэша = КэшCashBatch.Добавить();
+			//	НоваяСтрокаКэша.Source = Перечисления.ТипыСоответствий.Lawson;
+			//	НоваяСтрокаКэша.Company = ПроводкаDSSОбъект.Company;
+			//	НоваяСтрокаКэша.Client = ПроводкаDSSОбъект.КонтрагентLawson;
+			//	НоваяСтрокаКэша.Location = ПроводкаDSSОбъект.Location;
+			//	НоваяСтрокаКэша.SubSubSegment = ПроводкаDSSОбъект.SubSubSegment;
+			//	НоваяСтрокаКэша.AU = ПроводкаDSSОбъект.AU;
+			//	НоваяСтрокаКэша.Account = ПроводкаDSSОбъект.AccountLawson;
+			//	НоваяСтрокаКэша.Currency = ПроводкаDSSОбъект.Currency;
+			//	НоваяСтрокаКэша.CashBatch = ТекCashBatch;
+			//Иначе
+			//	ДобавитьСвязанныйОбъект(ПроводкаDSSОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.CashBatch, СтрокиCashBatch[0].CashBatch);
+			//КонецЕсли;
+			СтруктураПоискаBatch.ARBatchNbr = ПроводкаDSSОбъект.ArBatchNbr;
 			СтруктураПоискаBatch.Prepayment = ПроводкаDSSОбъект.AccountLawson = ПланыСчетов.Lawson.AdvancesFromCustomers;
-			
 			СтрокиCashBatch = КэшCashBatch.НайтиСтроки(СтруктураПоискаBatch);
 			Если СтрокиCashBatch.Количество() = 0 Тогда
 				ТекCashBatch = СоздатьCashBatch(ПроводкаDSSОбъект, СтруктураПоискаBatch.Prepayment);
 				НоваяСтрокаКэша = КэшCashBatch.Добавить();
-				НоваяСтрокаКэша.Source = Перечисления.ТипыСоответствий.Lawson;
-				НоваяСтрокаКэша.Company = ПроводкаDSSОбъект.Company;
-				НоваяСтрокаКэша.Client = ПроводкаDSSОбъект.КонтрагентLawson;
-				НоваяСтрокаКэша.Location = ПроводкаDSSОбъект.Location;
-				НоваяСтрокаКэша.SubSubSegment = ПроводкаDSSОбъект.SubSubSegment;
-				НоваяСтрокаКэша.AU = ПроводкаDSSОбъект.AU;
-				НоваяСтрокаКэша.Account = ПроводкаDSSОбъект.AccountLawson;
-				НоваяСтрокаКэша.Currency = ПроводкаDSSОбъект.Currency;
+				НоваяСтрокаКэша.ArBatchNbr = ПроводкаDSSОбъект.ArBatchNbr;
+				НоваяСтрокаКэша.Prepayment = СтруктураПоискаBatch.Prepayment;
 				НоваяСтрокаКэша.CashBatch = ТекCashBatch;
 			Иначе
 				ДобавитьСвязанныйОбъект(ПроводкаDSSОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.CashBatch, СтрокиCashBatch[0].CashBatch);
+			КонецЕсли;
+			
+		ИначеЕсли ПроводкаDSSОбъект.SourceCode = "RQ" ИЛИ ПроводкаDSSОбъект.SourceCode = "RX" Тогда // рассматриваем отдельно, т.к. это должно относиться к существующему бэтчу
+			
+			СтрокаCashBatch = КэшCashBatch.Найти(ПроводкаDSSОбъект.ArBatchNbr, "ArBatchNbr");
+			Если СтрокаCashBatch = Неопределено Тогда
+				Если ПроводкаDSSОбъект.AccountingPeriod >= ДатаВыверенныхОстатков Тогда
+					ТекОшибка = "Failed to find Cash Batch for transaction " + ПроводкаDSSОбъект.Номер;
+					Если СтрНайти(ТекстСообщенияОбОшибках, ТекОшибка) = 0 Тогда
+						ТекстСообщенияОбОшибках = ТекстСообщенияОбОшибках + ТекОшибка + Символы.ПС;
+					КонецЕсли;
+					Отказ = Истина;
+				Иначе
+					ОбнулитьСуммыПроводки(ПроводкаDSSОбъект);
+					ДобавитьСвязанныйОбъект(ПроводкаDSSОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.CashBatch, Документы.CashBatch.ПустаяСсылка());
+				КонецЕсли;
+			Иначе
+				ДобавитьСвязанныйОбъект(ПроводкаDSSОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.CashBatch, СтрокаCashBatch.CashBatch);
 			КонецЕсли;
 			
 		ИначеЕсли ПроводкаDSSОбъект.SourceCode = "RM" Тогда
@@ -1626,6 +1667,8 @@
 	ДокОбъект.Company = ПроводкаDSSОбъект.Company;
 	ДокОбъект.Client = ПроводкаDSSОбъект.КонтрагентLawson;
 	ДокОбъект.Location = ПроводкаDSSОбъект.Location;
+	ДокОбъект.DocID = ПроводкаDSSОбъект.ARBatchNbr;
+	ДокОбъект.PaymentNumber = ПроводкаDSSОбъект.ARBatchNbr;
 	//ДокОбъект.SubGeoMarket = ПроводкаDSSОбъект.SubGeoMarket;
 	//ДокОбъект.Segment = ПроводкаDSSОбъект.Segment;
 	//ДокОбъект.SubSegment = ПроводкаDSSОбъект.SubSegment;
@@ -1666,6 +1709,7 @@
 	ДокОбъект.AU = ПроводкаDSSОбъект.AU;
 	ДокОбъект.Account = ПроводкаDSSОбъект.AccountLawson;
 	ДокОбъект.Currency = ПроводкаDSSОбъект.Currency;
+	ДокОбъект.DocID = ПроводкаDSSОбъект.ARBatchNbr;
 	ДокОбъект.Записать(РежимЗаписиДокумента.Запись);
 	
 	//НЗ = РегистрыСведений.DSSСвязанныеДокументы.СоздатьНаборЗаписей();
@@ -1747,7 +1791,10 @@
 		|ГДЕ
 		|	DSSСформированныеПриЗагрузке.ДокументЗагрузки = &ДокументЗагрузки
 		|	И НЕ DSSСформированныеПриЗагрузке.ИгнорироватьОбработку
-		|	И НЕ DSSСформированныеПриЗагрузке.ОшибкаПриПоискеСвязанныхОбъектов";
+		|	И НЕ DSSСформированныеПриЗагрузке.ОшибкаПриПоискеСвязанныхОбъектов
+		|
+		|УПОРЯДОЧИТЬ ПО
+		|	DSSСформированныеПриЗагрузке.ДокументЗагрузки.Номер";
 	
 	Запрос.УстановитьПараметр("ДокументЗагрузки", СтруктураПараметров.Ссылка);
 	
@@ -1772,9 +1819,38 @@
 	
 	Если Не ПустаяСтрока(ТекстОшибок) Тогда
 		ДанныеДляЗаполнения.Вставить("ОшибкаЗаполнения", ТекстОшибок);
+	Иначе
+		ОбновитьСуммыИнвойсов(СтруктураПараметров.Ссылка);
 	КонецЕсли;
 	
 	ПоместитьВоВременноеХранилище(ДанныеДляЗаполнения, АдресХранилища);
+	
+КонецПроцедуры
+
+Процедура ОбновитьСуммыИнвойсов(ДокументЗагрузки)
+	
+	Запрос = Новый Запрос;
+	Запрос.Текст =
+	"ВЫБРАТЬ РАЗЛИЧНЫЕ
+	|	DSSСвязанныеДокументы.СвязанныйОбъект
+	|ИЗ
+	|	РегистрСведений.DSSСформированныеПриЗагрузке КАК DSSСформированныеПриЗагрузке
+	|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.DSSСвязанныеДокументы КАК DSSСвязанныеДокументы
+	|		ПО (DSSСформированныеПриЗагрузке.ДокументЗагрузки = &ДокументЗагрузки)
+	|			И DSSСформированныеПриЗагрузке.ПроводкаDSS = DSSСвязанныеДокументы.ПроводкаDSS
+	|			И (DSSСвязанныеДокументы.ТипСвязанногоОбъекта = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовСвязанныхСпроводкойDSS.Invoice))
+	|ГДЕ
+	|	DSSСвязанныеДокументы.СвязанныйОбъект <> ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)";
+	
+	Запрос.УстановитьПараметр("ДокументЗагрузки", ДокументЗагрузки);
+	
+	Выборка = Запрос.Выполнить().Выбрать();
+	
+	Пока Выборка.Следующий() Цикл
+		
+		Документы.Invoice.ОбновитьСуммуДокумента(Выборка.СвязанныйОбъект);
+		
+	КонецЦикла;
 	
 КонецПроцедуры
 
