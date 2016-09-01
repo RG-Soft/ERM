@@ -97,6 +97,10 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>РучнаяКорректировка</dataPath>
+			<field>РучнаяКорректировка</field>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	BilledARОстатки.Client КАК Client,
@@ -125,7 +129,7 @@
 	UnallocatedCashОстатки.Account,
 	UnallocatedCashОстатки.Currency,
 	UnallocatedCashОстатки.AU,
-	-UnallocatedCashОстатки.AmountОстаток
+	UnallocatedCashОстатки.AmountОстаток
 ИЗ
 	РегистрНакопления.UnallocatedCash.Остатки КАК UnallocatedCashОстатки
 ГДЕ
@@ -146,6 +150,22 @@
 	UnallocatedMemoОстатки.AmountОстаток
 ИЗ
 	РегистрНакопления.UnallocatedMemo.Остатки КАК UnallocatedMemoОстатки
+
+ОБЪЕДИНИТЬ ВСЕ
+
+ВЫБРАТЬ
+	ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка),
+	ManualTransactionsОстатки.Company,
+	ManualTransactionsОстатки.Source,
+	ManualTransactionsОстатки.Location,
+	ManualTransactionsОстатки.SubSubSegment,
+	ManualTransactionsОстатки.РучнаяКорректировка,
+	ManualTransactionsОстатки.Account,
+	ManualTransactionsОстатки.Currency,
+	ManualTransactionsОстатки.AU,
+	ManualTransactionsОстатки.AmountОстаток
+ИЗ
+	РегистрНакопления.ManualTransactions.Остатки(, ) КАК ManualTransactionsОстатки
 
 ИНДЕКСИРОВАТЬ ПО
 	Client,
