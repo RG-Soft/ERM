@@ -101,6 +101,19 @@
 			<dataPath>РучнаяКорректировка</dataPath>
 			<field>РучнаяКорректировка</field>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>TransType</dataPath>
+			<field>TransType</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Trans type</v8:content>
+				</v8:item>
+			</title>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	BilledARОстатки.Client КАК Client,
@@ -108,6 +121,7 @@
 	BilledARОстатки.Source КАК Source,
 	BilledARОстатки.Location,
 	BilledARОстатки.SubSubSegment,
+	"I" КАК TransType,
 	BilledARОстатки.Invoice,
 	BilledARОстатки.Account,
 	BilledARОстатки.Currency,
@@ -125,6 +139,7 @@
 	UnallocatedCashОстатки.Source,
 	UnallocatedCashОстатки.Location,
 	UnallocatedCashОстатки.SubSubSegment,
+	"P",
 	UnallocatedCashОстатки.CashBatch,
 	UnallocatedCashОстатки.Account,
 	UnallocatedCashОстатки.Currency,
@@ -143,6 +158,7 @@
 	UnallocatedMemoОстатки.Source,
 	UnallocatedMemoОстатки.Location,
 	UnallocatedMemoОстатки.SubSubSegment,
+	"M",
 	UnallocatedMemoОстатки.Memo,
 	UnallocatedMemoОстатки.Account,
 	UnallocatedMemoОстатки.Currency,
@@ -159,6 +175,7 @@
 	ManualTransactionsОстатки.Source,
 	ManualTransactionsОстатки.Location,
 	ManualTransactionsОстатки.SubSubSegment,
+	"JV",
 	ManualTransactionsОстатки.РучнаяКорректировка,
 	ManualTransactionsОстатки.Account,
 	ManualTransactionsОстатки.Currency,
@@ -180,6 +197,7 @@
 	ARBalance.Source,
 	ARBalance.Location,
 	ARBalance.SubSubSegment,
+	ARBalance.TransType,
 	ARBalance.Invoice,
 	ARBalance.Account,
 	ARBalance.Currency,
@@ -190,6 +208,7 @@
 	РегистрСведений.ARBalance КАК ARBalance
 ГДЕ
 	ARBalance.Период = &amp;ПериодARBalance
+	И НЕ ARBalance.Invoice ССЫЛКА Документ.SalesOrder
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -199,6 +218,7 @@
 	ЕСТЬNULL(AR.Source, ВТ_Остатки.Source) КАК Source,
 	ЕСТЬNULL(AR.Location, ВТ_Остатки.Location) КАК Location,
 	ЕСТЬNULL(AR.SubSubSegment, ВТ_Остатки.SubSubSegment) КАК SubSubSegment,
+	ЕСТЬNULL(AR.TransType, ВТ_Остатки.TransType) КАК TransType,
 	ЕСТЬNULL(AR.Invoice, ВТ_Остатки.Invoice) КАК Invoice,
 	ЕСТЬNULL(AR.Account, ВТ_Остатки.Account) КАК Account,
 	ЕСТЬNULL(AR.Currency, ВТ_Остатки.Currency) КАК Currency,
