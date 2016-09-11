@@ -47,6 +47,7 @@
 			<role>
 				<dcscom:dimension>true</dcscom:dimension>
 			</role>
+			<presentationExpression>ПредставлениеДокумента</presentationExpression>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>BaseAmountОстаток</dataPath>
@@ -128,6 +129,28 @@
 				</dcscor:item>
 			</appearance>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Comment</dataPath>
+			<field>Comment</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>ConfirmedBy</dataPath>
+			<field>ConfirmedBy</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Status</dataPath>
+			<field>Status</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>ПредставлениеДокумента</dataPath>
+			<field>ПредставлениеДокумента</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Представление документа</v8:content>
+				</v8:item>
+			</title>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	BilledARОстатки.Client КАК Client,
@@ -139,7 +162,12 @@
 	BilledARОстатки.Account,
 	BilledARОстатки.Currency,
 	BilledARОстатки.AU,
-	BilledARОстатки.AmountОстаток
+	BilledARОстатки.AmountОстаток,
+	ВЫБОР
+		КОГДА BilledARОстатки.Invoice ССЫЛКА Документ.Invoice
+			ТОГДА ВЫРАЗИТЬ(BilledARОстатки.Invoice КАК Документ.Invoice).DocNumber
+		ИНАЧЕ ВЫРАЗИТЬ(BilledARОстатки.Invoice КАК Документ.Memo).Номер
+	КОНЕЦ КАК ПредставлениеДокумента
 ПОМЕСТИТЬ ВТ_Остатки
 ИЗ
 	РегистрНакопления.BilledAR.Остатки КАК BilledARОстатки
@@ -156,7 +184,8 @@
 	UnallocatedCashОстатки.Account,
 	UnallocatedCashОстатки.Currency,
 	UnallocatedCashОстатки.AU,
-	-UnallocatedCashОстатки.AmountОстаток
+	-UnallocatedCashОстатки.AmountОстаток,
+	UnallocatedCashОстатки.CashBatch.PaymentNumber
 ИЗ
 	РегистрНакопления.UnallocatedCash.Остатки КАК UnallocatedCashОстатки
 ГДЕ
@@ -174,7 +203,8 @@
 	UnallocatedMemoОстатки.Account,
 	UnallocatedMemoОстатки.Currency,
 	UnallocatedMemoОстатки.AU,
-	UnallocatedMemoОстатки.AmountОстаток
+	UnallocatedMemoОстатки.AmountОстаток,
+	UnallocatedMemoОстатки.Memo.Номер
 ИЗ
 	РегистрНакопления.UnallocatedMemo.Остатки КАК UnallocatedMemoОстатки
 
@@ -195,8 +225,7 @@
 		ПО НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия = ВТ_Остатки.Source
 			И НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ОбъектПриемника = ВТ_Остатки.Client
 			И (НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Период &lt;= &amp;Период)
-ГДЕ
-	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипОбъектаВнешнейСистемы = &amp;ТипОбъектаВнешнейСистемы
+			И (НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Client))
 
 СГРУППИРОВАТЬ ПО
 	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия,
@@ -218,8 +247,7 @@
 		ПО НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Период = ВТ_ИдентификаторыКлиентов.Период
 			И НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия = ВТ_ИдентификаторыКлиентов.ТипСоответствия
 			И НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ОбъектПриемника = ВТ_ИдентификаторыКлиентов.ОбъектПриемника
-ГДЕ
-	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипОбъектаВнешнейСистемы = &amp;ТипОбъектаВнешнейСистемы
+			И (НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Client))
 
 ИНДЕКСИРОВАТЬ ПО
 	ОбъектПриемника,
@@ -273,7 +301,11 @@
 			ТОГДА "Memo"
 		ИНАЧЕ ""
 	КОНЕЦ КАК TransType,
-	ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0) КАК Rate
+	ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0) КАК Rate,
+	InvoiceCommentsСрезПоследних.Status,
+	InvoiceCommentsСрезПоследних.ConfirmedBy,
+	InvoiceCommentsСрезПоследних.Comment,
+	ВТ_Остатки.ПредставлениеДокумента
 ИЗ
 	ВТ_Остатки КАК ВТ_Остатки
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ИерархияКлиентов КАК ВТ_ИерархияКлиентов
@@ -282,7 +314,9 @@
 		ПО ВТ_Остатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ИдентификаторыКлиентовИтог КАК ВТ_ИдентификаторыКлиентовИтог
 		ПО ВТ_Остатки.Client = ВТ_ИдентификаторыКлиентовИтог.ОбъектПриемника
-			И ВТ_Остатки.Source = ВТ_ИдентификаторыКлиентовИтог.ТипСоответствия</query>
+			И ВТ_Остатки.Source = ВТ_ИдентификаторыКлиентовИтог.ТипСоответствия
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments.СрезПоследних КАК InvoiceCommentsСрезПоследних
+		ПО ВТ_Остатки.Invoice = InvoiceCommentsСрезПоследних.Invoice</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>DateFrom</dataPath>
@@ -455,20 +489,6 @@
 		<useRestriction>true</useRestriction>
 		<expression>Справочники.Валюты.НайтиПоКоду("643")</expression>
 	</parameter>
-	<parameter>
-		<name>ТипОбъектаВнешнейСистемы</name>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Тип объекта внешней системы</v8:content>
-			</v8:item>
-		</title>
-		<valueType>
-			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:EnumRef.ТипыОбъектовВнешнихСистем</v8:Type>
-		</valueType>
-		<value xsi:nil="true"/>
-		<useRestriction>true</useRestriction>
-	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
 		<dcsset:presentation xsi:type="xs:string">Основной</dcsset:presentation>
@@ -620,9 +640,6 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Client.Код</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Client</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
@@ -653,7 +670,7 @@
 					<dcsset:field>TransType</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.Номер</dcsset:field>
+					<dcsset:field>Invoice</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -812,7 +829,7 @@
 					<dcsset:field>DueTo</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.Status</dcsset:field>
+					<dcsset:field>Status</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -821,7 +838,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.ConfirmedBy</dcsset:field>
+					<dcsset:field>ConfirmedBy</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
