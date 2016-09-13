@@ -151,6 +151,34 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>CustInputDate</dataPath>
+			<field>CustInputDate</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>RemedialWorkPlan</dataPath>
+			<field>RemedialWorkPlan</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>CustomerInputDetails</dataPath>
+			<field>CustomerInputDetails</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>ForecastDate</dataPath>
+			<field>ForecastDate</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>SLBAssignedTo</dataPath>
+			<field>SLBAssignedTo</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>RWDTargetDate</dataPath>
+			<field>RWDTargetDate</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>CustomerRepresentative</dataPath>
+			<field>CustomerRepresentative</field>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	BilledARОстатки.Client КАК Client,
@@ -302,10 +330,17 @@
 		ИНАЧЕ ""
 	КОНЕЦ КАК TransType,
 	ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0) КАК Rate,
-	InvoiceCommentsСрезПоследних.Status,
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Status, ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка)) КАК Status,
 	InvoiceCommentsСрезПоследних.ConfirmedBy,
 	InvoiceCommentsСрезПоследних.Comment,
-	ВТ_Остатки.ПредставлениеДокумента
+	ВТ_Остатки.ПредставлениеДокумента,
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.ForecastDate, ДАТАВРЕМЯ(1,1,1)) КАК ForecastDate,
+	InvoiceCommentsСрезПоследних.CustInputDate,
+	InvoiceCommentsСрезПоследних.CustomerRepresentative,
+	InvoiceCommentsСрезПоследних.CustomerInputDetails,
+	InvoiceCommentsСрезПоследних.SLBAssignedTo,
+	InvoiceCommentsСрезПоследних.RemedialWorkPlan,
+	InvoiceCommentsСрезПоследних.RWDTargetDate
 ИЗ
 	ВТ_Остатки КАК ВТ_Остатки
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ИерархияКлиентов КАК ВТ_ИерархияКлиентов
@@ -319,28 +354,8 @@
 		ПО ВТ_Остатки.Invoice = InvoiceCommentsСрезПоследних.Invoice</query>
 	</dataSet>
 	<calculatedField>
-		<dataPath>DateFrom</dataPath>
-		<expression>ДОБАВИТЬКДАТЕ(Invoice.Дата, "ДЕНЬ", Invoice.Contract.PTDaysFrom)</expression>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Date From</v8:content>
-			</v8:item>
-		</title>
-	</calculatedField>
-	<calculatedField>
-		<dataPath>DateTo</dataPath>
-		<expression>ДОБАВИТЬКДАТЕ(Invoice.Дата, "ДЕНЬ", Invoice.Contract.СрокОплаты)</expression>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Date To</v8:content>
-			</v8:item>
-		</title>
-	</calculatedField>
-	<calculatedField>
 		<dataPath>DueFrom</dataPath>
-		<expression>ВЫБОР КОГДА ДОБАВИТЬКДАТЕ(Invoice.Дата, "ДЕНЬ", Invoice.Contract.PTDaysFrom) &lt; &amp;Период ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ ИНАЧЕ 0 КОНЕЦ</expression>
+		<expression>ВЫБОР КОГДА Invoice.DueDateFrom &lt;= &amp;Период ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ ИНАЧЕ 0 КОНЕЦ</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -372,7 +387,7 @@
 	</calculatedField>
 	<calculatedField>
 		<dataPath>DueTo</dataPath>
-		<expression>ВЫБОР КОГДА ДОБАВИТЬКДАТЕ(Invoice.Дата, "ДЕНЬ", Invoice.Contract.СрокОплаты) &lt; &amp;Период ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ ИНАЧЕ 0 КОНЕЦ</expression>
+		<expression>ВЫБОР КОГДА Invoice.DueDateTo &lt;= &amp;Период ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ ИНАЧЕ 0 КОНЕЦ</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -388,7 +403,7 @@
 	</calculatedField>
 	<calculatedField>
 		<dataPath>Paid</dataPath>
-		<expression>ВЫБОР КОГДА Invoice.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid) ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ  ИНАЧЕ 0 КОНЕЦ</expression>
+		<expression>ВЫБОР КОГДА Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid) ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ  ИНАЧЕ 0 КОНЕЦ</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -404,7 +419,7 @@
 	</calculatedField>
 	<calculatedField>
 		<dataPath>FcstCollect</dataPath>
-		<expression>ВЫБОР КОГДА Invoice.ForecastDate &lt;= &amp;Период И Invoice.ForecastDate &lt;&gt; ДАТАВРЕМЯ(1,1,1) ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ - ВЫБОР КОГДА Invoice.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid) ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ  ИНАЧЕ 0 КОНЕЦ  ИНАЧЕ 0 КОНЕЦ</expression>
+		<expression>ВЫБОР КОГДА ForecastDate &lt;= &amp;Период И ForecastDate &lt;&gt; ДАТАВРЕМЯ(1,1,1) ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ - ВЫБОР КОГДА Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid) ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ  ИНАЧЕ 0 КОНЕЦ  ИНАЧЕ 0 КОНЕЦ</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -420,7 +435,7 @@
 	</calculatedField>
 	<calculatedField>
 		<dataPath>NoFrcst</dataPath>
-		<expression>ВЫБОР КОГДА Invoice.ForecastDate = ДАТАВРЕМЯ(1,1,1) ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ ИНАЧЕ 0 КОНЕЦ</expression>
+		<expression>ВЫБОР КОГДА ForecastDate = ДАТАВРЕМЯ(1,1,1) ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ ИНАЧЕ 0 КОНЕЦ</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -437,14 +452,14 @@
 	<calculatedField>
 		<dataPath>Insolvent</dataPath>
 		<expression>Выбор
-	Когда Invoice.Status = Значение(Перечисление.InvoiceStatus.CustomerIsInsolventOrBankrupt)
+	Когда Status = Значение(Перечисление.InvoiceStatus.CustomerIsInsolventOrBankrupt)
 		Тогда ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ
 	Иначе 0
 Конец</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
-				<v8:content>Insolvent</v8:content>
+				<v8:content>Under Litigation</v8:content>
 			</v8:item>
 		</title>
 		<appearance>
@@ -503,13 +518,13 @@
 						</v8:item>
 					</dcsset:lwsTitle>
 					<dcsset:detailExpression>Выбор
-	Когда Invoice.ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
+	Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
 		Тогда USDAmount - FcstCollect - Paid - Insolvent
 	Иначе 0
 Конец</dcsset:detailExpression>
 					<dcsset:detailExpressionPresentation>Выбор
-	Когда [Invoice.Forecast Date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
-		Тогда [USD Amount] - [Fcst Collect] - Paid - Insolvent
+	Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
+		Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation]
 	Иначе 0
 Конец</dcsset:detailExpressionPresentation>
 					<dcsset:totalExpression/>
@@ -524,21 +539,21 @@
 						</v8:item>
 					</dcsset:lwsTitle>
 					<dcsset:detailExpression>Выбор
-	Когда Invoice.ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueFrom &gt; FcstCollect
+	Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueFrom &gt; FcstCollect
 		Тогда USDAmount - FcstCollect - Выбор
-				Когда Invoice.ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
+				Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
 					Тогда USDAmount - FcstCollect - Paid - Insolvent
 				Иначе 0
 			Конец - Paid - Insolvent
 	Иначе 0
 Конец</dcsset:detailExpression>
 					<dcsset:detailExpressionPresentation>Выбор
-	Когда [Invoice.Forecast Date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due From] &gt; [Fcst Collect]
+	Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due From] &gt; [Fcst Collect]
 		Тогда [USD Amount] - [Fcst Collect] - Выбор
-				Когда [Invoice.Forecast Date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
-					Тогда [USD Amount] - [Fcst Collect] - Paid - Insolvent
+				Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
+					Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation]
 				Иначе 0
-			Конец - Paid - Insolvent
+			Конец - Paid - [Under Litigation]
 	Иначе 0
 Конец</dcsset:detailExpressionPresentation>
 					<dcsset:totalExpression/>
@@ -553,36 +568,36 @@
 						</v8:item>
 					</dcsset:lwsTitle>
 					<dcsset:detailExpression>Выбор
-	Когда Invoice.ForecastDate = ДатаВремя(1, 1, 1)
+	Когда ForecastDate = ДатаВремя(1, 1, 1)
 		Тогда 0
 	Иначе USDAmount - Insolvent - Paid - FcstCollect - Выбор
-			Когда Invoice.ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueFrom &gt; FcstCollect
+			Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueFrom &gt; FcstCollect
 				Тогда USDAmount - FcstCollect - Выбор
-						Когда Invoice.ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
+						Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
 							Тогда USDAmount - FcstCollect - Paid - Insolvent
 						Иначе 0
 					Конец - Paid - Insolvent
 			Иначе 0
 		Конец - Выбор
-			Когда Invoice.ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
+			Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
 				Тогда USDAmount - FcstCollect - Paid - Insolvent
 			Иначе 0
 		Конец
 Конец</dcsset:detailExpression>
 					<dcsset:detailExpressionPresentation>Выбор
-	Когда [Invoice.Forecast Date] = ДатаВремя(1, 1, 1)
+	Когда [Forecast date] = ДатаВремя(1, 1, 1)
 		Тогда 0
-	Иначе [USD Amount] - Insolvent - Paid - [Fcst Collect] - Выбор
-			Когда [Invoice.Forecast Date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due From] &gt; [Fcst Collect]
+	Иначе [USD Amount] - [Under Litigation] - Paid - [Fcst Collect] - Выбор
+			Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due From] &gt; [Fcst Collect]
 				Тогда [USD Amount] - [Fcst Collect] - Выбор
-						Когда [Invoice.Forecast Date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
-							Тогда [USD Amount] - [Fcst Collect] - Paid - Insolvent
+						Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
+							Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation]
 						Иначе 0
-					Конец - Paid - Insolvent
+					Конец - Paid - [Under Litigation]
 			Иначе 0
 		Конец - Выбор
-			Когда [Invoice.Forecast Date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
-				Тогда [USD Amount] - [Fcst Collect] - Paid - Insolvent
+			Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
+				Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation]
 			Иначе 0
 		Конец
 Конец</dcsset:detailExpressionPresentation>
@@ -811,7 +826,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>DateFrom</dcsset:field>
+					<dcsset:field>Invoice.DueDateFrom</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -820,7 +835,13 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>DateTo</dcsset:field>
+					<dcsset:field>Invoice.DueDateTo</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Date To</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>DueFrom</dcsset:field>
@@ -847,7 +868,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.ForecastDate</dcsset:field>
+					<dcsset:field>ForecastDate</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -877,7 +898,16 @@
 					<dcsset:field>Insolvent</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.AssignedTo</dcsset:field>
+					<dcsset:field>CustInputDate</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>CustomerRepresentative</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>CustomerInputDetails</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>SLBAssignedTo</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -886,7 +916,10 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.RWDTargetDate</dcsset:field>
+					<dcsset:field>RemedialWorkPlan</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>RWDTargetDate</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
