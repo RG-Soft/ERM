@@ -610,7 +610,7 @@
 &НаСервере
 Процедура СоздатьЗаписиРегистра(ТаблицаДанных, МассивAccountUnit)
 	
-	СтруктураПоискаBatch = Новый Структура("Source, Company, Client, Location, SubSubSegment, AU, Account, Currency");
+	СтруктураПоискаBatch = Новый Структура("ARBatchNbr, Prepayment");
 	ПериодНач = НачалоМесяца(Период);
 	Запрос = Новый Запрос;
 	Запрос.МенеджерВременныхТаблиц = Новый МенеджерВременныхТаблиц;
@@ -654,19 +654,15 @@
 	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|ВЫБРАТЬ
-	|	КлючиCashBatch.Source,
-	|	КлючиCashBatch.Company,
-	|	КлючиCashBatch.Client,
-	|	КлючиCashBatch.Location,
-	|	КлючиCashBatch.SubSubSegment,
-	|	КлючиCashBatch.AU,
-	|	КлючиCashBatch.Account,
-	|	КлючиCashBatch.Currency,
-	|	КлючиCashBatch.CashBatch КАК CashBatch
+	|	ВТ_ДанныеФайла.Invoice КАК ArBatchNbr,
+	|	CashBatch.Prepayment,
+	|	CashBatch.Ссылка КАК CashBatch
 	|ИЗ
-	|	РегистрСведений.КлючиCashBatch КАК КлючиCashBatch
-	|ГДЕ
-	|	КлючиCashBatch.Source = &Source
+	|	Документ.CashBatch КАК CashBatch
+	|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ врТЗТаблицаДанных КАК ВТ_ДанныеФайла
+	|		ПО (CashBatch.Source = &Source)
+	|			И CashBatch.DocID = ВТ_ДанныеФайла.Invoice
+	|			И (НЕ CashBatch.ПометкаУдаления)
 	|;
 	|
 	|////////////////////////////////////////////////////////////////////////////////
@@ -725,7 +721,7 @@
 	КэшИнвойсов.Индексы.Добавить("ArInvoice");
 	
 	КэшCashBatch = РезультатЗапроса[1].Выгрузить();
-	КэшCashBatch.Индексы.Добавить("Source, Company, Client, Location, SubSubSegment, AU, Account, Currency");
+	КэшCashBatch.Индексы.Добавить("ARBatchNbr, Prepayment");
 	
 	КэшГеоМаркеты = РезультатЗапроса[2].Выгрузить();
 	//КэшГеоМаркеты.Индексы.Добавить("GeoMarket");
@@ -762,6 +758,8 @@
 		НаборЗаписей.Записать();
 	КонецЦикла;
 	
+	ТипТранзакции = "";
+	
 	Пока ВыборкаДанные.Следующий() Цикл
 		Если ВыборкаДанные.TransType = "P" или ВыборкаДанные.TransType = "I" или ВыборкаДанные.TransType = "C" или ВыборкаДанные.TransType = "M" Тогда
 			НаборЗаписей = ARBalance.СоздатьНаборЗаписей();
@@ -778,15 +776,11 @@
 				Иначе
 					ПолеИнвойс = Инвойс.Invoice;
 				КонецЕсли;
+				ТипТранзакции = "I";
 			ИначеЕсли ВыборкаДанные.TransType = "P" Тогда
-				СтруктураПоискаBatch.Source = Перечисления.ТипыСоответствий.Lawson;
-				СтруктураПоискаBatch.Company = ВыборкаДанные.Company;
-				СтруктураПоискаBatch.Client = ВыборкаДанные.Client;
-				СтруктураПоискаBatch.Location = ВыборкаДанные.Location;
-				СтруктураПоискаBatch.SubSubSegment = ВыборкаДанные.SubSubSegment;
-				СтруктураПоискаBatch.AU = ВыборкаДанные.AU;
-				СтруктураПоискаBatch.Account = ВыборкаДанные.Account;
-				СтруктураПоискаBatch.Currency = ВыборкаДанные.Currency;
+				
+				СтруктураПоискаBatch.ARBatchNbr = ВыборкаДанные.Invoice;
+				СтруктураПоискаBatch.Prepayment = ВыборкаДанные.Account = ПланыСчетов.Lawson.AdvancesFromCustomers;
 				
 				СтрокиCashBatch = КэшCashBatch.НайтиСтроки(СтруктураПоискаBatch);
 				Если СтрокиCashBatch.Количество() = 0 Тогда
@@ -794,6 +788,7 @@
 				Иначе
 					ПолеИнвойс = СтрокиCashBatch[0].CashBatch;
 				КонецЕсли;
+				ТипТранзакции = "P";
 			Иначе
 				ПолеИнвойс = ВыборкаДанные.Invoice;
 			КонецЕсли;
@@ -811,6 +806,7 @@
 			НоваяЗапись.Source = Перечисления.ТипыСоответствий.Lawson;
 			НоваяЗапись.SubSubSegment = ВыборкаДанные.SubSubSegment;
 			НоваяЗапись.Invoice = ПолеИнвойс;
+			НоваяЗапись.TransType = ТипТранзакции;
 			НоваяЗапись.Account = ВыборкаДанные.Account;
 			НоваяЗапись.Currency = ВыборкаДанные.Currency;
 			НоваяЗапись.AU = ВыборкаДанные.AU;

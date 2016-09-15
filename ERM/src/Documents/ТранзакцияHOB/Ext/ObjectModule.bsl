@@ -82,6 +82,8 @@
 		ИначеЕсли Реквизиты.HOBInvoiceType = Перечисления.HOBDocumentTypes.АктОбОказанииПроизводственныхУслуг
 			ИЛИ Реквизиты.HOBInvoiceType = Перечисления.HOBDocumentTypes.КорректировкаРеализации
 			ИЛИ Реквизиты.HOBInvoiceType = Перечисления.HOBDocumentTypes.РеализацияТоваровУслуг
+			ИЛИ Реквизиты.HOBInvoiceType = Перечисления.HOBDocumentTypes.ПередачаОС
+			ИЛИ Реквизиты.HOBInvoiceType = Перечисления.HOBDocumentTypes.РеализацияУслугПоПереработке
 			ИЛИ Реквизиты.HOBInvoiceType = Перечисления.HOBDocumentTypes.ПрочиеЗатраты Тогда
 			
 			ВыполнитьНачислениеBilledAR(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, Движения, Реквизиты.Amount, Реквизиты.BaseAmount, Отказ);

@@ -11,53 +11,9 @@
 		name="MappingClients"
 		targetNamespace="http://rg-soft.ru/ERM/1.0">
 	<types>
-		<xs:schema xmlns:tns="http://www.1c.ru/SSL/Exchange/Message"
-				xmlns:xs="http://www.w3.org/2001/XMLSchema"
-				targetNamespace="http://www.1c.ru/SSL/Exchange/Message"
-				attributeFormDefault="unqualified"
-				elementFormDefault="qualified">
-			<xs:complexType name="Confirmation">
-				<xs:sequence>
-					<xs:element name="ExchangePlan"
-							type="xs:string"/>
-					<xs:element name="To"
-							type="xs:string"/>
-					<xs:element name="From"
-							type="xs:string"/>
-					<xs:element name="MessageNo"
-							type="xs:integer"/>
-					<xs:element name="ReceivedNo"
-							type="xs:integer"/>
-				</xs:sequence>
-			</xs:complexType>
-			<xs:complexType name="Header">
-				<xs:sequence>
-					<xs:element name="Format"
-							type="xs:string"/>
-					<xs:element name="CreationDate"
-							type="xs:dateTime"/>
-					<xs:element name="Confirmation"
-							type="xsd2:Confirmation"
-							minOccurs="0"/>
-					<xs:element name="AvailableVersion"
-							type="xs:string"
-							maxOccurs="100"/>
-				</xs:sequence>
-			</xs:complexType>
-			<xs:complexType name="Object"
-					abstract="true">
-				<xs:sequence>
-					<xs:element name="AdditionalInfo"
-							minOccurs="0"/>
-				</xs:sequence>
-			</xs:complexType>
-			<xs:simpleType name="Ref">
-				<xs:restriction base="xs:string"/>
-			</xs:simpleType>
-		</xs:schema>
 		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-				xmlns:xs1="http://www.1c.ru/SSL/Exchange/Message"
-				xmlns:xs2="http://rg-soft.ru/ERM/1.0"
+				xmlns:xs1="http://rg-soft.ru/ERM/1.0"
+				xmlns:xs2="http://www.1c.ru/SSL/Exchange/Message"
 				targetNamespace="http://rg-soft.ru/ERM/1.0"
 				attributeFormDefault="unqualified"
 				elementFormDefault="qualified">
@@ -8624,7 +8580,7 @@
 							minOccurs="0">
 						<xs:simpleType>
 							<xs:restriction base="xs:string">
-								<xs:maxLength value="20"/>
+								<xs:maxLength value="100"/>
 							</xs:restriction>
 						</xs:simpleType>
 					</xs:element>
@@ -8873,7 +8829,8 @@
 				<xs:sequence>
 					<xs:element name="КлючевыеСвойства"
 							type="xsd1:КлючевыеСвойстваКонтрагент"/>
-					<xs:element name="Наименование">
+					<xs:element name="Наименование"
+							minOccurs="0">
 						<xs:simpleType>
 							<xs:restriction base="xs:string">
 								<xs:maxLength value="100"/>
@@ -9362,10 +9319,10 @@
 				<xs:restriction base="xsd2:Ref"/>
 			</xs:simpleType>
 			<xs:simpleType name="СправочникСсылка.Банки">
-				<xs:restriction/>
+				<xs:restriction base="xsd2:Ref"/>
 			</xs:simpleType>
 			<xs:simpleType name="СправочникСсылка.БанковскиеСчета">
-				<xs:restriction/>
+				<xs:restriction base="xsd2:Ref"/>
 			</xs:simpleType>
 			<xs:simpleType name="СправочникСсылка.Валюты">
 				<xs:restriction base="xsd2:Ref"/>
@@ -9380,22 +9337,22 @@
 				<xs:restriction/>
 			</xs:simpleType>
 			<xs:simpleType name="СправочникСсылка.ЗаявкаНаИзменениеКлиента">
-				<xs:restriction/>
+				<xs:restriction base="xsd2:Ref"/>
 			</xs:simpleType>
 			<xs:simpleType name="СправочникСсылка.ЗаявкаНаИзменениеКлиентаПрисоединенныеФайлы">
-				<xs:restriction/>
+				<xs:restriction base="xsd2:Ref"/>
 			</xs:simpleType>
 			<xs:simpleType name="СправочникСсылка.КонтактныеЛица">
-				<xs:restriction/>
+				<xs:restriction base="xsd2:Ref"/>
 			</xs:simpleType>
 			<xs:simpleType name="СправочникСсылка.КонтактныеЛицаГруппа">
-				<xs:restriction/>
+				<xs:restriction base="xsd2:Ref"/>
 			</xs:simpleType>
 			<xs:simpleType name="СправочникСсылка.Контрагенты">
-				<xs:restriction/>
+				<xs:restriction base="xsd2:Ref"/>
 			</xs:simpleType>
 			<xs:simpleType name="СправочникСсылка.КонтрагентыГруппа">
-				<xs:restriction/>
+				<xs:restriction base="xsd2:Ref"/>
 			</xs:simpleType>
 			<xs:simpleType name="СправочникСсылка.Номенклатура">
 				<xs:restriction/>
@@ -9416,10 +9373,10 @@
 				<xs:restriction/>
 			</xs:simpleType>
 			<xs:simpleType name="СправочникСсылка.РолиКонтактныхЛиц">
-				<xs:restriction/>
+				<xs:restriction base="xsd2:Ref"/>
 			</xs:simpleType>
 			<xs:simpleType name="СправочникСсылка.РолиКонтактныхЛицГруппа">
-				<xs:restriction/>
+				<xs:restriction base="xsd2:Ref"/>
 			</xs:simpleType>
 			<xs:simpleType name="СправочникСсылка.Сегменты">
 				<xs:restriction base="xsd2:Ref"/>
@@ -9440,7 +9397,7 @@
 				<xs:restriction/>
 			</xs:simpleType>
 			<xs:simpleType name="СправочникСсылка.СтраныМира">
-				<xs:restriction/>
+				<xs:restriction base="xsd2:Ref"/>
 			</xs:simpleType>
 			<xs:simpleType name="СправочникСсылка.ТипыЦен">
 				<xs:restriction/>
@@ -9592,6 +9549,50 @@
 				</xs:complexType>
 			</xs:element>
 		</xs:schema>
+		<xs:schema xmlns:tns="http://www.1c.ru/SSL/Exchange/Message"
+				xmlns:xs="http://www.w3.org/2001/XMLSchema"
+				targetNamespace="http://www.1c.ru/SSL/Exchange/Message"
+				attributeFormDefault="unqualified"
+				elementFormDefault="qualified">
+			<xs:complexType name="Confirmation">
+				<xs:sequence>
+					<xs:element name="ExchangePlan"
+							type="xs:string"/>
+					<xs:element name="To"
+							type="xs:string"/>
+					<xs:element name="From"
+							type="xs:string"/>
+					<xs:element name="MessageNo"
+							type="xs:integer"/>
+					<xs:element name="ReceivedNo"
+							type="xs:integer"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="Header">
+				<xs:sequence>
+					<xs:element name="Format"
+							type="xs:string"/>
+					<xs:element name="CreationDate"
+							type="xs:dateTime"/>
+					<xs:element name="Confirmation"
+							type="xsd2:Confirmation"
+							minOccurs="0"/>
+					<xs:element name="AvailableVersion"
+							type="xs:string"
+							maxOccurs="100"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="Object"
+					abstract="true">
+				<xs:sequence>
+					<xs:element name="AdditionalInfo"
+							minOccurs="0"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:simpleType name="Ref">
+				<xs:restriction base="xs:string"/>
+			</xs:simpleType>
+		</xs:schema>
 	</types>
 	<message name="GetClientsListRequestMessage">
 		<part name="parameters"
@@ -9646,11 +9647,11 @@
 				<wsi:Claim xmlns:wsi="http://ws-i.org/schemas/conformanceClaim/"
 						conformsTo="http://ws-i.org/profiles/basic/1.1"/>
 			</documentation>
-			<soapbind:address location="http://localhost/Billing/ws/MappingClients.1cws"/>
+			<soapbind:address location="http://ru0149app14.dir.slb.com/Billing/ws/MappingClients.1cws"/>
 		</port>
 		<port name="MappingClientsSoap12"
 				binding="tns:MappingClientsSoap12Binding">
-			<soap12bind:address location="http://localhost/Billing/ws/MappingClients.1cws"/>
+			<soap12bind:address location="http://ru0149app14.dir.slb.com/Billing/ws/MappingClients.1cws"/>
 		</port>
 	</service>
 </definitions>

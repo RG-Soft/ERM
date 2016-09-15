@@ -59,9 +59,6 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Invoice</dataPath>
 			<field>Invoice</field>
-			<role>
-				<dcscom:dimension>true</dcscom:dimension>
-			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Account</dataPath>
@@ -126,7 +123,8 @@
 	BilledARОстатки.Account,
 	BilledARОстатки.Currency,
 	BilledARОстатки.AU,
-	BilledARОстатки.AmountОстаток
+	BilledARОстатки.AmountОстаток,
+	BilledARОстатки.Invoice.Номер КАК НомерДокумента
 ПОМЕСТИТЬ ВТ_Остатки
 ИЗ
 	РегистрНакопления.BilledAR.Остатки КАК BilledARОстатки
@@ -144,7 +142,8 @@
 	UnallocatedCashОстатки.Account,
 	UnallocatedCashОстатки.Currency,
 	UnallocatedCashОстатки.AU,
-	UnallocatedCashОстатки.AmountОстаток
+	-UnallocatedCashОстатки.AmountОстаток,
+	UnallocatedCashОстатки.CashBatch.PaymentNumber
 ИЗ
 	РегистрНакопления.UnallocatedCash.Остатки КАК UnallocatedCashОстатки
 ГДЕ
@@ -163,7 +162,8 @@
 	UnallocatedMemoОстатки.Account,
 	UnallocatedMemoОстатки.Currency,
 	UnallocatedMemoОстатки.AU,
-	UnallocatedMemoОстатки.AmountОстаток
+	UnallocatedMemoОстатки.AmountОстаток,
+	UnallocatedMemoОстатки.Memo.Номер
 ИЗ
 	РегистрНакопления.UnallocatedMemo.Остатки КАК UnallocatedMemoОстатки
 
@@ -180,7 +180,8 @@
 	ManualTransactionsОстатки.Account,
 	ManualTransactionsОстатки.Currency,
 	ManualTransactionsОстатки.AU,
-	ManualTransactionsОстатки.AmountОстаток
+	ManualTransactionsОстатки.AmountОстаток,
+	ManualTransactionsОстатки.РучнаяКорректировка.Номер
 ИЗ
 	РегистрНакопления.ManualTransactions.Остатки(, ) КАК ManualTransactionsОстатки
 
@@ -202,7 +203,14 @@
 	ARBalance.Account,
 	ARBalance.Currency,
 	ARBalance.AU,
-	ARBalance.Amount
+	ARBalance.Amount,
+	ВЫБОР
+		КОГДА ТИПЗНАЧЕНИЯ(ARBalance.Invoice) = ТИП(СТРОКА)
+			ТОГДА ARBalance.Invoice
+		КОГДА ARBalance.Invoice ССЫЛКА Документ.CashBatch
+			ТОГДА ВЫРАЗИТЬ(ARBalance.Invoice КАК Документ.CashBatch).PaymentNumber
+		ИНАЧЕ ARBalance.Invoice.Номер
+	КОНЕЦ КАК НомерДокумента
 ПОМЕСТИТЬ AR
 ИЗ
 	РегистрСведений.ARBalance КАК ARBalance
@@ -219,7 +227,7 @@
 	ЕСТЬNULL(AR.Location, ВТ_Остатки.Location) КАК Location,
 	ЕСТЬNULL(AR.SubSubSegment, ВТ_Остатки.SubSubSegment) КАК SubSubSegment,
 	ЕСТЬNULL(AR.TransType, ВТ_Остатки.TransType) КАК TransType,
-	ЕСТЬNULL(AR.Invoice, ВТ_Остатки.Invoice) КАК Invoice,
+	ЕСТЬNULL(AR.НомерДокумента, ВТ_Остатки.НомерДокумента) КАК Invoice,
 	ЕСТЬNULL(AR.Account, ВТ_Остатки.Account) КАК Account,
 	ЕСТЬNULL(AR.Currency, ВТ_Остатки.Currency) КАК Currency,
 	ЕСТЬNULL(AR.AU, ВТ_Остатки.AU) КАК AU,
@@ -303,6 +311,9 @@
 					<dcsset:field>SubSubSegment</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>TransType</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Invoice</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
@@ -338,6 +349,12 @@
 					<dcsset:left xsi:type="dcscor:Field">Source</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
 					<dcsset:userSettingID>4483d190-6aea-4f1b-a0dd-f65e11d87f2d</dcsset:userSettingID>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:left xsi:type="dcscor:Field">TransType</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:right xsi:type="xs:string"/>
+					<dcsset:userSettingID>dc0bf385-0ac5-4b9b-bafb-9564c634773d</dcsset:userSettingID>
 				</dcsset:item>
 			</dcsset:filter>
 			<dcsset:dataParameters>
