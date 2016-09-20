@@ -331,7 +331,7 @@
 		ПО ВТ_Остатки.Client = НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ОбъектПриемника
 			И ВТ_Остатки.Source = НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия
 ГДЕ
-	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипОбъектаВнешнейСистемы = &amp;ТипОбъектаВнешнейСистемы
+	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Client)
 
 СГРУППИРОВАТЬ ПО
 	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия,
@@ -350,6 +350,10 @@
 		ПО ВТ_НастройкиСинхронизации.Период = НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Период
 			И ВТ_НастройкиСинхронизации.ТипСоответствия = НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия
 			И ВТ_НастройкиСинхронизации.ОбъектПриемника = НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ОбъектПриемника
+ГДЕ
+	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ОбъектПриемника &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.Unreconciled)
+	И НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ОбъектПриемника &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)
+	И НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ОбъектПриемника &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.GLNoName)
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -523,20 +527,6 @@
 				<dcscor:value xsi:type="xs:string">ДФ=MM/dd/yyyy</dcscor:value>
 			</dcscor:item>
 		</inputParameters>
-	</parameter>
-	<parameter>
-		<name>ТипОбъектаВнешнейСистемы</name>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Тип объекта внешней системы</v8:content>
-			</v8:item>
-		</title>
-		<valueType>
-			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:EnumRef.ТипыОбъектовВнешнихСистем</v8:Type>
-		</valueType>
-		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыОбъектовВнешнихСистем.Client</value>
-		<useRestriction>true</useRestriction>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
@@ -738,7 +728,7 @@
 					<dcscor:value xsi:type="v8:StandardBeginningDate">
 						<v8:variant xsi:type="v8:StandardBeginningDateVariant">BeginningOfNextDay</v8:variant>
 					</dcscor:value>
-					<dcsset:userSettingID>74a58a63-c540-4e39-a9e6-b25dfd5a60ff</dcsset:userSettingID>
+					<dcsset:userSettingID>ec716ccb-0f0b-4839-ae33-15a287e9c0bf</dcsset:userSettingID>
 				</dcscor:item>
 			</dcsset:dataParameters>
 			<dcsset:outputParameters>
