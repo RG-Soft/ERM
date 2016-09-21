@@ -608,6 +608,27 @@
 					<dcsset:totalExpression/>
 					<dcsset:totalExpressionPresentation/>
 				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:UserFieldExpression">
+					<dcsset:dataPath>ПользовательскиеПоля.Поле4</dcsset:dataPath>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Overdue – Dispute</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+					<dcsset:detailExpression>Выбор
+	Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И Invoice.DueDateFrom &lt;= &amp;Период
+		Тогда USDAmount - Paid - FcstCollect
+	Иначе 0
+Конец</dcsset:detailExpression>
+					<dcsset:detailExpressionPresentation>Выбор
+	Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И [Invoice.Due date from] &lt;= &amp;Period
+		Тогда [USD Amount] - Paid - [Fcst Collect]
+	Иначе 0
+Конец</dcsset:detailExpressionPresentation>
+					<dcsset:totalExpression/>
+					<dcsset:totalExpressionPresentation/>
+				</dcsset:item>
 			</dcsset:userFields>
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
@@ -890,6 +911,9 @@
 					<dcsset:field>ПользовательскиеПоля.Поле2</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>ПользовательскиеПоля.Поле4</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>ПользовательскиеПоля.Поле1</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
@@ -928,6 +952,33 @@
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>RWD Dealdine</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Invoice.StatusOfDispute</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Status of dispute</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Invoice.DisputeDistributedDate</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Dispute Distributed date</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Invoice.DisputeCollectableDate</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Dispute Collectable date</v8:content>
 						</v8:item>
 					</dcsset:lwsTitle>
 				</dcsset:item>
