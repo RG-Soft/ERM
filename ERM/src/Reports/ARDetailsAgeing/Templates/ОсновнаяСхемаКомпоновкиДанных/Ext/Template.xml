@@ -210,6 +210,10 @@
 				<dcscom:dimension>true</dcscom:dimension>
 			</role>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Doc_No</dataPath>
+			<field>Doc_No</field>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	UnbilledARОстатки.Client КАК Client,
@@ -387,7 +391,12 @@
 	ВТ_Остатки.TransactionAmount,
 	ВТ_Остатки.TransactionAmountUSD,
 	ВТ_Остатки.Agreement,
-	ВТ_НастройкиСинхронизацииИтог.Идентификатор КАК CustomerID
+	ВТ_НастройкиСинхронизацииИтог.Идентификатор КАК CustomerID,
+	ВЫБОР
+		КОГДА ВТ_Остатки.Document ССЫЛКА Документ.Invoice
+			ТОГДА ВТ_Остатки.Document.DocNumber
+		ИНАЧЕ ВТ_Остатки.Document.Номер
+	КОНЕЦ КАК Doc_No
 ИЗ
 	ВТ_Остатки КАК ВТ_Остатки
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних КАК ВнутренниеКурсыВалютСрезПоследних
@@ -463,16 +472,6 @@
 			<v8:item>
 				<v8:lang>ru</v8:lang>
 				<v8:content>360+</v8:content>
-			</v8:item>
-		</title>
-	</calculatedField>
-	<calculatedField>
-		<dataPath>Doc_No</dataPath>
-		<expression>Выбор Когда ТипЗначения(Document) = ТипЗначения(Документы.Invoice.ПустаяСсылка()) Тогда Document.DocNumber  Иначе Document.Номер Конец</expression>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Doc numder</v8:content>
 			</v8:item>
 		</title>
 	</calculatedField>
