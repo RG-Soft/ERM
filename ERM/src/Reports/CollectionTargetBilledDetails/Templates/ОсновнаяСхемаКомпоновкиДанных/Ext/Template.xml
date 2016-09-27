@@ -198,7 +198,7 @@
 	КОНЕЦ КАК ПредставлениеДокумента
 ПОМЕСТИТЬ ВТ_Остатки
 ИЗ
-	РегистрНакопления.BilledAR.Остатки КАК BilledARОстатки
+	РегистрНакопления.BilledAR.Остатки({&amp;ПериодОстатков}) КАК BilledARОстатки
 
 ОБЪЕДИНИТЬ ВСЕ
 
@@ -215,7 +215,7 @@
 	-UnallocatedCashОстатки.AmountОстаток,
 	UnallocatedCashОстатки.CashBatch.PaymentNumber
 ИЗ
-	РегистрНакопления.UnallocatedCash.Остатки КАК UnallocatedCashОстатки
+	РегистрНакопления.UnallocatedCash.Остатки({&amp;ПериодОстатков}) КАК UnallocatedCashОстатки
 ГДЕ
 	НЕ UnallocatedCashОстатки.CashBatch.Prepayment
 
@@ -234,7 +234,7 @@
 	UnallocatedMemoОстатки.AmountОстаток,
 	UnallocatedMemoОстатки.Memo.Номер
 ИЗ
-	РегистрНакопления.UnallocatedMemo.Остатки КАК UnallocatedMemoОстатки
+	РегистрНакопления.UnallocatedMemo.Остатки({&amp;ПериодОстатков}) КАК UnallocatedMemoОстатки
 
 ИНДЕКСИРОВАТЬ ПО
 	Client,
@@ -507,6 +507,25 @@
 		<value xsi:nil="true"/>
 		<useRestriction>true</useRestriction>
 		<expression>Справочники.Валюты.НайтиПоКоду("643")</expression>
+	</parameter>
+	<parameter>
+		<name>ПериодОстатков</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Период остатков</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>xs:dateTime</v8:Type>
+			<v8:DateQualifiers>
+				<v8:DateFractions>DateTime</v8:DateFractions>
+			</v8:DateQualifiers>
+		</valueType>
+		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
+		<useRestriction>true</useRestriction>
+		<expression>ДОБАВИТЬКДАТЕ(КонецПериода(&amp;Период,"ДЕНЬ") , "СЕКУНДА", 1)</expression>
+		<availableAsField>false</availableAsField>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
