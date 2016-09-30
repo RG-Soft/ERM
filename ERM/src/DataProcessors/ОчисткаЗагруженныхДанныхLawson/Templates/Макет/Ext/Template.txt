@@ -1,61 +1,61 @@
-﻿USE ERM;
+﻿USE dso_work;
 
 DECLARE @MySource binary(16);
 SET @MySource = (SELECT EN._IDRRef FROM _#ИмяТаблицыПеречисления# AS EN WHERE EN._EnumOrder = #НомерЭлементаПеречисления#);
 PRINT N'';
 
 -- проводки DSS
-TRUNCATE TABLE _#ИмяТаблицыDSS#;
+-- TRUNCATE TABLE _#ИмяТаблицыDSS#;
 
-PRINT N'';
+-- PRINT N'';
 -- Документ Ручная корректировка
-PRINT N'Начало удаления документов Ручная корректировка '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
-DELETE
-FROM dbo._#ИмяТаблицы_РучнаяКорректировка#
-WHERE _#ИмяПоля_РучнаяКорректировка#RRef = @MySource;
-PRINT N'Документы Ручная корректировка удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+-- PRINT N'Начало удаления документов Ручная корректировка '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+-- DELETE
+-- FROM dbo._#ИмяТаблицы_РучнаяКорректировка#
+-- WHERE _#ИмяПоля_РучнаяКорректировка#RRef = @MySource;
+-- PRINT N'Документы Ручная корректировка удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
 
 
-PRINT N'';
+-- PRINT N'';
 -- Документ CashBatch
-PRINT N'Начало удаления документов CashBatch '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
-DELETE
-FROM dbo._#ИмяТаблицы_CashBatch#
-WHERE _#ИмяПоля_CashBatch#RRef = @MySource;
-PRINT N'Документы CashBatch удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+-- PRINT N'Начало удаления документов CashBatch '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+-- DELETE
+-- FROM dbo._#ИмяТаблицы_CashBatch#
+-- WHERE _#ИмяПоля_CashBatch#RRef = @MySource;
+-- PRINT N'Документы CashBatch удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
 
-PRINT N'';
+-- PRINT N'';
 -- Документ BatchAllocation
-PRINT N'Начало удаления документов BatchAllocation '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
-DELETE
-FROM dbo._#ИмяТаблицы_BatchAllocation#
-WHERE _#ИмяПоля_BatchAllocation#RRef = @MySource;
-PRINT N'Документы BatchAllocation удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+-- PRINT N'Начало удаления документов BatchAllocation '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+-- DELETE
+-- FROM dbo._#ИмяТаблицы_BatchAllocation#
+-- WHERE _#ИмяПоля_BatchAllocation#RRef = @MySource;
+-- PRINT N'Документы BatchAllocation удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
 
 
-PRINT N'';
+-- PRINT N'';
 -- КлючиCashBatch
-PRINT N'Начало удаления движений КлючиCashBatch '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
-DELETE
-FROM dbo._#ИмяТаблицы_КлючиCashBatch#
-WHERE _#ИмяПоля_КлючиCashBatch#RRef = @MySource;
-PRINT N'Движения КлючиCashBatch удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+-- PRINT N'Начало удаления движений КлючиCashBatch '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+-- DELETE
+-- FROM dbo._#ИмяТаблицы_КлючиCashBatch#
+-- WHERE _#ИмяПоля_КлючиCashBatch#RRef = @MySource;
+-- PRINT N'Движения КлючиCashBatch удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
 
-PRINT N'';
+-- PRINT N'';
 -- КлючиBatchAllocation
-PRINT N'Начало удаления движений КлючиBatchAllocation '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
-DELETE
-FROM dbo._#ИмяТаблицы_КлючиBatchAllocation#
-WHERE _#ИмяПоля_КлючиBatchAllocation#RRef = @MySource;
-PRINT N'Движения КлючиBatchAllocation удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+-- PRINT N'Начало удаления движений КлючиBatchAllocation '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+-- DELETE
+-- FROM dbo._#ИмяТаблицы_КлючиBatchAllocation#
+-- WHERE _#ИмяПоля_КлючиBatchAllocation#RRef = @MySource;
+-- PRINT N'Движения КлючиBatchAllocation удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
 
-PRINT N'';
+-- PRINT N'';
 -- КлючиРучныхКорректировок
-PRINT N'Начало удаления движений КлючиРучныхКорректировок '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
-DELETE
-FROM dbo._#ИмяТаблицы_КлючиРучныхКорректировок#
-WHERE _#ИмяПоля_КлючиРучныхКорректировок#RRef = @MySource;
-PRINT N'Движения КлючиРучныхКорректировок удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+-- PRINT N'Начало удаления движений КлючиРучныхКорректировок '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
+-- DELETE
+-- FROM dbo._#ИмяТаблицы_КлючиРучныхКорректировок#
+-- WHERE _#ИмяПоля_КлючиРучныхКорректировок#RRef = @MySource;
+-- PRINT N'Движения КлючиРучныхКорректировок удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
 
 
 PRINT N'';
@@ -75,6 +75,7 @@ FROM dbo._#ИмяТаблицы_UnbilledAR_Итоги#
 WHERE _#ИмяПоля_UnbilledAR#RRef = @MySource;
 PRINT N'Движения UnbilledAR удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
 PRINT N'';
+
 PRINT N'Начало удаления движений billedAR '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
 -- billed AR
 -- движения
@@ -90,6 +91,7 @@ FROM dbo._#ИмяТаблицы_billedAR_Итоги#
 WHERE _#ИмяПоля_billedAR#RRef = @MySource;
 PRINT N'Движения billedAR удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
 PRINT N'';
+
 PRINT N'Начало удаления движений UnallocatedCash '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
 -- UnallocatedCash
 -- движения
@@ -105,6 +107,7 @@ FROM dbo._#ИмяТаблицы_UnallocatedCash_Итоги#
 WHERE _#ИмяПоля_UnallocatedCash#RRef = @MySource;
 PRINT N'Движения UnallocatedCash удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
 PRINT N'';
+
 PRINT N'Начало удаления движений ManualTransactions '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
 -- ManualTransactions
 -- движения
@@ -120,6 +123,7 @@ FROM dbo._#ИмяТаблицы_ManualTransactions_Итоги#
 WHERE _#ИмяПоля_ManualTransactions#RRef = @MySource;
 PRINT N'Движения ManualTransactions удалены '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
 PRINT N'';
+
 PRINT N'Начало удаления движений UnallocatedMemo '+ RTRIM(CAST(GETDATE() AS nvarchar(30))) + N'.'; 
 -- UnallocatedMemo
 -- движения
