@@ -29,56 +29,73 @@
 			<ShowTitle>false</ShowTitle>
 			<ExtendedTooltip name="ГруппаБыстрыеОтборыРасширеннаяПодсказка" id="45"/>
 		</UsualGroup>
-		<RadioButtonField name="ActiveState" id="69">
-			<DataPath>СостояниеАктивности</DataPath>
-			<RadioButtonType>Tumbler</RadioButtonType>
-			<ChoiceList>
-				<xr:Item>
-					<xr:Presentation/>
-					<xr:CheckState>0</xr:CheckState>
-					<xr:Value xsi:type="FormChoiceListDesTimeValue">
-						<Presentation>
-							<v8:item>
-								<v8:lang>ru</v8:lang>
-								<v8:content>Active</v8:content>
-							</v8:item>
-						</Presentation>
-						<Value xsi:type="xr:DesignTimeRef">Enum.СостоянияАктивностиКонтрагентов.EnumValue.Активен</Value>
-					</xr:Value>
-				</xr:Item>
-				<xr:Item>
-					<xr:Presentation/>
-					<xr:CheckState>0</xr:CheckState>
-					<xr:Value xsi:type="FormChoiceListDesTimeValue">
-						<Presentation>
-							<v8:item>
-								<v8:lang>ru</v8:lang>
-								<v8:content>Pre-active</v8:content>
-							</v8:item>
-						</Presentation>
-						<Value xsi:type="xr:DesignTimeRef">Enum.СостоянияАктивностиКонтрагентов.EnumValue.ОжидаетАктивации</Value>
-					</xr:Value>
-				</xr:Item>
-				<xr:Item>
-					<xr:Presentation/>
-					<xr:CheckState>0</xr:CheckState>
-					<xr:Value xsi:type="FormChoiceListDesTimeValue">
-						<Presentation>
-							<v8:item>
-								<v8:lang>ru</v8:lang>
-								<v8:content>Inactive</v8:content>
-							</v8:item>
-						</Presentation>
-						<Value xsi:type="xr:DesignTimeRef">Enum.СостоянияАктивностиКонтрагентов.EnumValue.Неактивен</Value>
-					</xr:Value>
-				</xr:Item>
-			</ChoiceList>
-			<ContextMenu name="ActiveStateКонтекстноеМеню" id="70"/>
-			<ExtendedTooltip name="ActiveStateРасширеннаяПодсказка" id="71"/>
-			<Events>
-				<Event name="OnChange">ActiveStateПриИзменении</Event>
-			</Events>
-		</RadioButtonField>
+		<UsualGroup name="Группа1" id="75">
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="Группа1РасширеннаяПодсказка" id="76"/>
+			<ChildItems>
+				<RadioButtonField name="ActiveState" id="69">
+					<DataPath>СостояниеАктивности</DataPath>
+					<RadioButtonType>Tumbler</RadioButtonType>
+					<ChoiceList>
+						<xr:Item>
+							<xr:Presentation/>
+							<xr:CheckState>0</xr:CheckState>
+							<xr:Value xsi:type="FormChoiceListDesTimeValue">
+								<Presentation>
+									<v8:item>
+										<v8:lang>ru</v8:lang>
+										<v8:content>Active</v8:content>
+									</v8:item>
+								</Presentation>
+								<Value xsi:type="xr:DesignTimeRef">Enum.СостоянияАктивностиКонтрагентов.EnumValue.Активен</Value>
+							</xr:Value>
+						</xr:Item>
+						<xr:Item>
+							<xr:Presentation/>
+							<xr:CheckState>0</xr:CheckState>
+							<xr:Value xsi:type="FormChoiceListDesTimeValue">
+								<Presentation>
+									<v8:item>
+										<v8:lang>ru</v8:lang>
+										<v8:content>Pre-active</v8:content>
+									</v8:item>
+								</Presentation>
+								<Value xsi:type="xr:DesignTimeRef">Enum.СостоянияАктивностиКонтрагентов.EnumValue.ОжидаетАктивации</Value>
+							</xr:Value>
+						</xr:Item>
+						<xr:Item>
+							<xr:Presentation/>
+							<xr:CheckState>0</xr:CheckState>
+							<xr:Value xsi:type="FormChoiceListDesTimeValue">
+								<Presentation>
+									<v8:item>
+										<v8:lang>ru</v8:lang>
+										<v8:content>Inactive</v8:content>
+									</v8:item>
+								</Presentation>
+								<Value xsi:type="xr:DesignTimeRef">Enum.СостоянияАктивностиКонтрагентов.EnumValue.Неактивен</Value>
+							</xr:Value>
+						</xr:Item>
+					</ChoiceList>
+					<ContextMenu name="ActiveStateКонтекстноеМеню" id="70"/>
+					<ExtendedTooltip name="ActiveStateРасширеннаяПодсказка" id="71"/>
+					<Events>
+						<Event name="OnChange">ActiveStateПриИзменении</Event>
+					</Events>
+				</RadioButtonField>
+				<CheckBoxField name="ParentClient" id="72">
+					<DataPath>ShowParentClients</DataPath>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="ParentClientКонтекстноеМеню" id="73"/>
+					<ExtendedTooltip name="ParentClientРасширеннаяПодсказка" id="74"/>
+					<Events>
+						<Event name="OnChange">ParentClientПриИзменении</Event>
+					</Events>
+				</CheckBoxField>
+			</ChildItems>
+		</UsualGroup>
 		<Table name="Список" id="7">
 			<CommandBarLocation>None</CommandBarLocation>
 			<SkipOnInput>false</SkipOnInput>
@@ -261,6 +278,7 @@
 				<Field>~Список.КонтрагентНеСуществует</Field>
 				<Field>~Список.Состояние</Field>
 				<Field>Список.IsFolder</Field>
+				<Field>Список.ParentClient</Field>
 				<Field>Список.Ref</Field>
 				<Field>Список.ЕстьДубли</Field>
 				<Field>Список.ИННВведенКорректно</Field>
@@ -304,7 +322,8 @@
 		ИНАЧЕ ЛОЖЬ
 	КОНЕЦ КАК ПроверкаКонтрагентовКонтрагентНеСуществует,
 	СостоянияКонтрагентов.Состояние КАК ПроверкаКонтрагентовСостояние,
-	СправочникКонтрагенты.CRMID
+	СправочникКонтрагенты.CRMID,
+	СправочникКонтрагенты.ParentClient
 ИЗ
 	Справочник.Контрагенты КАК СправочникКонтрагенты
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.НаличиеДублейУКонтрагентов КАК НаличиеДублейУКонтрагентов
@@ -363,6 +382,17 @@
 			</Title>
 			<Type>
 				<v8:Type>cfg:EnumRef.СостоянияАктивностиКонтрагентов</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="ShowParentClients" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Show parent clients</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
 			</Type>
 		</Attribute>
 		<ConditionalAppearance>

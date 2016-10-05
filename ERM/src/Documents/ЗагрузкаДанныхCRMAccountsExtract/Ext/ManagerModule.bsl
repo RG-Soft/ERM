@@ -3,7 +3,8 @@
 Процедура ЗагрузитьДанныеИзФайла(СтруктураПараметров, АдресХранилища) Экспорт
 	
 	ДанныеДляЗаполнения = Новый Структура();
-	ТаблицаДанных = СтруктураПараметров.ТаблицаДанных;
+	СтруктураКолонок = СтруктураПараметров.СтруктураКолонок;
+	ТаблицаДанных = ИнициализироватьТаблицуДанных(СтруктураКолонок);
 	ТекстОшибки = "";
 	
 	ПутьКФайлу = ПолучитьИмяВременногоФайла("xlsx");
@@ -11,7 +12,7 @@
 	ФайлЭксель.Записать(ПутьКФайлу);
 	
 	// { RGS  PMatkov 01.12.2015 16:47:17 - Перенос повторяющегося кода в общий модуль
-	rgsЗагрузкаИзExcel.ВыгрузитьЭксельВТаблицуДанных(ПутьКФайлу, ТаблицаДанных, ДанныеДляЗаполнения, АдресХранилища, СтруктураПараметров);
+	rgsЗагрузкаИзExcel.ВыгрузитьЭксельВТаблицуДанныхПоИменамКолонок(ПутьКФайлу, ТаблицаДанных, ДанныеДляЗаполнения, АдресХранилища, СтруктураПараметров);
 	// } RGS  PMatkov 01.12.2015 16:47:33 - Перенос повторяющегося кода в общий модуль
 	
 	ЗагрузитьИЗаписатьДвижения(СтруктураПараметров.Ссылка, СтруктураПараметров.Дата, ТаблицаДанных);
@@ -19,24 +20,37 @@
 	ТаблицаНовыеParentClients      = ПолучитьТаблицуНовыеParentClients(СтруктураПараметров.Ссылка);
 	ТаблицаНовыеSalesКлиенты       = ПолучитьТаблицуНовыеSalesКлиенты(СтруктураПараметров.Ссылка);
 	ТаблицаНовыеBillingКлиенты     = ПолучитьТаблицуНовыеBillingКлиенты(СтруктураПараметров.Ссылка);
-	//ТаблицаИзмененныеCRMID = ПолучитьТаблицуИзмененныеCRMID(СтруктураПараметров.Ссылка, СтруктураПараметров.Дата);
 	ТаблицаИзмененныеBillingID     = ПолучитьТаблицуИзмененныеBillingID(СтруктураПараметров.Ссылка, СтруктураПараметров.Дата);
 	ТаблицаИзмененныеParentClients = ПолучитьТаблицуИзмененныеParentClients(СтруктураПараметров.Ссылка, СтруктураПараметров.Дата);
 	ТаблицаИзмененныеРеквизиты     = ПолучитьТаблицуИзмененныеРеквизиты(СтруктураПараметров.Ссылка);
-	ТаблицаОтсутствующиеКлиенты    = ПолучитьТаблицуОтсутствующиеКлиенты(СтруктураПараметров.Ссылка);
+	//ТаблицаОтсутствующиеКлиенты    = ПолучитьТаблицуОтсутствующиеКлиенты(СтруктураПараметров.Ссылка);
+	ТаблицаКлиентыДляДективации    = ПолучитьТаблицуКлиентыДляДективации(СтруктураПараметров.Ссылка);
 	
 	ДанныеДляЗаполнения.Вставить("ТаблицаНовыеParentClients", ТаблицаНовыеParentClients);
 	ДанныеДляЗаполнения.Вставить("ТаблицаНовыеSalesКлиенты", ТаблицаНовыеSalesКлиенты);
 	ДанныеДляЗаполнения.Вставить("ТаблицаНовыеBillingКлиенты", ТаблицаНовыеBillingКлиенты);
-	//ДанныеДляЗаполнения.Вставить("ТаблицаИзмененныеCRMID", ТаблицаИзмененныеCRMID);
 	ДанныеДляЗаполнения.Вставить("ТаблицаИзмененныеBillingID", ТаблицаИзмененныеBillingID);
 	ДанныеДляЗаполнения.Вставить("ТаблицаИзмененныеParentClients", ТаблицаИзмененныеParentClients);
 	ДанныеДляЗаполнения.Вставить("ТаблицаИзмененныеРеквизиты", ТаблицаИзмененныеРеквизиты);
-	ДанныеДляЗаполнения.Вставить("ТаблицаОтсутствующиеКлиенты", ТаблицаОтсутствующиеКлиенты);
+	ДанныеДляЗаполнения.Вставить("ТаблицаКлиентыДляДективации", ТаблицаКлиентыДляДективации);
 	
 	ПоместитьВоВременноеХранилище(ДанныеДляЗаполнения, АдресХранилища);
 	
 КонецПроцедуры
+
+Функция ИнициализироватьТаблицуДанных(СтруктураКолонок)
+	
+	ТаблицаДанных = Новый ТаблицаЗначений;
+	
+	Для каждого ТекСтрокаСтруктурыКолонок Из СтруктураКолонок Цикл
+		ТаблицаДанных.Колонки.Добавить(ТекСтрокаСтруктурыКолонок.ИмяПоля);
+	КонецЦикла;
+	
+	ТаблицаДанных.Колонки.Добавить("СтрокаФайла", Новый ОписаниеТипов("Число",,,Новый КвалификаторыЧисла(15, 0, ДопустимыйЗнак.Неотрицательный)));
+	
+	Возврат ТаблицаДанных;
+	
+КонецФункции
 
 Процедура ЗагрузитьИЗаписатьДвижения(Ссылка, ДатаДокумента, ТаблицаДанных)
 	
@@ -55,28 +69,29 @@
 	Запрос = Новый Запрос;
 	Запрос.Текст = 
 		"ВЫБРАТЬ РАЗЛИЧНЫЕ
-		|	CRMAccountsExtractSourceData.CorporateAccountId КАК CorporateAccountId,
 		|	CRMAccountsExtractSourceData.CorporateAccount
 		|ПОМЕСТИТЬ ВТ_ParentClients
 		|ИЗ
 		|	РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
 		|ГДЕ
 		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
-		|	И CRMAccountsExtractSourceData.CorporateAccountId <> """"
+		|	И CRMAccountsExtractSourceData.CorporateAccount <> """"
+		|	И CRMAccountsExtractSourceData.BillingFlag = ""Y""
+		//|	И CRMAccountsExtractSourceData.AccountStatus = ""Active""
 		|
 		|ИНДЕКСИРОВАТЬ ПО
-		|	CorporateAccountId
+		|	CRMAccountsExtractSourceData.CorporateAccount
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
-		|ВЫБРАТЬ
-		|	ВТ_SalesAccounts.CorporateAccountId КАК CRMID,
+		|ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	ВТ_SalesAccounts.CorporateAccount КАК Description
 		|ИЗ
 		|	ВТ_ParentClients КАК ВТ_SalesAccounts
 		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Контрагенты КАК Контрагенты
-		|		ПО ВТ_SalesAccounts.CorporateAccountId = Контрагенты.CRMID
+		|		ПО ВТ_SalesAccounts.CorporateAccount = Контрагенты.Наименование
 		|			И (НЕ Контрагенты.ПометкаУдаления)
+		|			И (Контрагенты.ParentClient)
 		|ГДЕ
 		|	Контрагенты.Ссылка ЕСТЬ NULL ";
 	
@@ -102,7 +117,6 @@
 		"ВЫБРАТЬ
 		|	CRMAccountsExtractSourceData.AccountId КАК CRMID,
 		|	CRMAccountsExtractSourceData.Account КАК Description,
-		|	CRMAccountsExtractSourceData.CorporateAccountId КАК ParentClientID,
 		|	CRMAccountsExtractSourceData.CorporateAccount КАК ParentClientDescription,
 		|	ВЫБОР
 		|		КОГДА CRMAccountsExtractSourceData.CreditRating = ""Banned""
@@ -122,7 +136,9 @@
 		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
 		|	И CRMAccountsExtractSourceData.MIIntegrationId = """"
 		|	И CRMAccountsExtractSourceData.SMITHIntegrationId = """"
-		|	И CRMAccountsExtractSourceData.IntegrationId = """"
+		|	И CRMAccountsExtractSourceData.LawsonIntegrationId = """"
+		|	И CRMAccountsExtractSourceData.AccountStatus = ""Active""
+		|	И CRMAccountsExtractSourceData.BillingFlag = ""Y""
 		|
 		|ИНДЕКСИРОВАТЬ ПО
 		|	CRMID
@@ -133,13 +149,13 @@
 		|	ВТ_SalesAccounts.CRMID,
 		|	ВТ_SalesAccounts.Description,
 		|	ВТ_SalesAccounts.ParentClientDescription,
-		|	ВТ_SalesAccounts.ParentClientID,
 		|	ВТ_SalesAccounts.CreditRating
 		|ИЗ
 		|	ВТ_SalesAccounts КАК ВТ_SalesAccounts
 		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Контрагенты КАК Контрагенты
 		|		ПО ВТ_SalesAccounts.CRMID = Контрагенты.CRMID
 		|			И (НЕ Контрагенты.ПометкаУдаления)
+		|			И (НЕ Контрагенты.ParentClient)
 		|ГДЕ
 		|	Контрагенты.Ссылка ЕСТЬ NULL ";
 	
@@ -165,7 +181,6 @@
 		|	CRMAccountsExtractSourceData.AccountId КАК CRMID,
 		|	CRMAccountsExtractSourceData.Account КАК Description,
 		|	CRMAccountsExtractSourceData.CorporateAccount КАК ParentClientDescription,
-		|	CRMAccountsExtractSourceData.CorporateAccountId КАК ParentClientID,
 		|	CRMAccountsExtractSourceData.MIIntegrationId КАК MIID,
 		|	CRMAccountsExtractSourceData.SMITHIntegrationId КАК SMITHID,
 		|	CRMAccountsExtractSourceData.LawsonIntegrationId КАК LawsonID,
@@ -188,6 +203,8 @@
 		|	И (CRMAccountsExtractSourceData.MIIntegrationId <> """"
 		|			ИЛИ CRMAccountsExtractSourceData.SMITHIntegrationId <> """"
 		|			ИЛИ CRMAccountsExtractSourceData.LawsonIntegrationId <> """")
+		|	И CRMAccountsExtractSourceData.BillingFlag = ""Y""
+		|	И CRMAccountsExtractSourceData.AccountStatus = ""Active""
 		|
 		|ИНДЕКСИРОВАТЬ ПО
 		|	CRMAccountsExtractSourceData.AccountId
@@ -198,7 +215,6 @@
 		|	ВТ_BillingAccounts.CRMID,
 		|	ВТ_BillingAccounts.Description,
 		|	ВТ_BillingAccounts.ParentClientDescription,
-		|	ВТ_BillingAccounts.ParentClientID,
 		|	ВТ_BillingAccounts.MIID,
 		|	ВТ_BillingAccounts.SMITHID,
 		|	ВТ_BillingAccounts.LawsonID,
@@ -208,6 +224,7 @@
 		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Контрагенты КАК Контрагенты
 		|		ПО ВТ_BillingAccounts.CRMID = Контрагенты.CRMID
 		|			И (НЕ Контрагенты.ПометкаУдаления)
+		|			И (НЕ Контрагенты.ParentClient)
 		|ГДЕ
 		|	Контрагенты.Ссылка ЕСТЬ NULL ";
 	
@@ -222,140 +239,6 @@
 	// } RGS PMatkov 25.12.2015 17:14:28 - 
 	
 	Возврат ТаблицаНовыеBillingКлиенты;
-	
-КонецФункции
-
-Функция ПолучитьТаблицуИзмененныеCRMID(Ссылка, Дата)
-	
-	Запрос = Новый Запрос;
-	Запрос.Текст = 
-		"ВЫБРАТЬ
-		|	CRMAccountsExtractSourceData.Id КАК CRMID,
-		|	CRMAccountsExtractSourceData.CustomerNumber КАК BillingID,
-		|	CRMAccountsExtractSourceData.Account КАК Description
-		|ПОМЕСТИТЬ ВТ_BillingAccounts
-		|ИЗ
-		|	РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
-		|ГДЕ
-		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
-		|	И CRMAccountsExtractSourceData.CustomerNumber <> """"
-		|
-		|ИНДЕКСИРОВАТЬ ПО
-		|	CRMAccountsExtractSourceData.Id
-		|;
-		|
-		|////////////////////////////////////////////////////////////////////////////////
-		|ВЫБРАТЬ
-		|	МАКСИМУМ(НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследнихCRM.Период) КАК Период,
-		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследнихCRM.ОбъектПриемника
-		|ПОМЕСТИТЬ ВТ_ПоследниеДатыCRM
-		|ИЗ
-		|	РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(&Период, ТипСоответствия = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.CRM)) КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследнихCRM
-		|
-		|СГРУППИРОВАТЬ ПО
-		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследнихCRM.ОбъектПриемника
-		|;
-		|
-		|////////////////////////////////////////////////////////////////////////////////
-		|ВЫБРАТЬ
-		|	МАКСИМУМ(НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследнихLawson.Период) КАК Период,
-		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследнихLawson.ОбъектПриемника
-		|ПОМЕСТИТЬ ВТ_ПоследниеДатыLawson
-		|ИЗ
-		|	РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(&Период, ТипСоответствия = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)) КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследнихLawson
-		|
-		|СГРУППИРОВАТЬ ПО
-		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследнихLawson.ОбъектПриемника
-		|;
-		|
-		|////////////////////////////////////////////////////////////////////////////////
-		|ВЫБРАТЬ
-		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Идентификатор,
-		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ОбъектПриемника КАК ОбъектПриемника
-		|ПОМЕСТИТЬ ВТ_ИдентификаторыCRM
-		|ИЗ
-		|	РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемами
-		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ПоследниеДатыCRM КАК ВТ_ПоследниеДатыCRM
-		|		ПО (НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.CRM))
-		|			И НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Период = ВТ_ПоследниеДатыCRM.Период
-		|			И НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ОбъектПриемника = ВТ_ПоследниеДатыCRM.ОбъектПриемника
-		|
-		|ИНДЕКСИРОВАТЬ ПО
-		|	ОбъектПриемника
-		|;
-		|
-		|////////////////////////////////////////////////////////////////////////////////
-		|ВЫБРАТЬ
-		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Идентификатор,
-		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ОбъектПриемника КАК ОбъектПриемника
-		|ПОМЕСТИТЬ ВТ_ИдентификаторыLawson
-		|ИЗ
-		|	РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемами
-		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ПоследниеДатыLawson КАК ВТ_ПоследниеДатыLawson
-		|		ПО НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Период = ВТ_ПоследниеДатыLawson.Период
-		|			И НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ОбъектПриемника = ВТ_ПоследниеДатыLawson.ОбъектПриемника
-		|			И (НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
-		// { RGS PMatkov 25.12.2015 17:41:53 - 
-		|ГДЕ
-		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Client)
-		 // } RGS PMatkov 25.12.2015 17:41:54 - 
-		|
-		|ИНДЕКСИРОВАТЬ ПО
-		|	ОбъектПриемника
-		|;
-		|
-		|////////////////////////////////////////////////////////////////////////////////
-		|ВЫБРАТЬ
-		|	ЕСТЬNULL(ВТ_ИдентификаторыCRM.ОбъектПриемника, ВТ_ИдентификаторыLawson.ОбъектПриемника) КАК ОбъектПриемника,
-		|	ЕСТЬNULL(ВТ_ИдентификаторыCRM.Идентификатор, """") КАК CRMID,
-		|	ЕСТЬNULL(ВТ_ИдентификаторыLawson.Идентификатор, """") КАК BillingID
-		|ПОМЕСТИТЬ ВТ_ActualMapping
-		|ИЗ
-		|	ВТ_ИдентификаторыCRM КАК ВТ_ИдентификаторыCRM
-		|		ПОЛНОЕ СОЕДИНЕНИЕ ВТ_ИдентификаторыLawson КАК ВТ_ИдентификаторыLawson
-		|		ПО ВТ_ИдентификаторыCRM.ОбъектПриемника = ВТ_ИдентификаторыLawson.ОбъектПриемника
-		|
-		|ИНДЕКСИРОВАТЬ ПО
-		|	BillingID
-		|;
-		// { RGS PMatkov 25.12.2015 18:41:55 - 
-		|////////////////////////////////////////////////////////////////////////////////
-		|ВЫБРАТЬ
-		|	СтрокиRevenue.Client
-		|ПОМЕСТИТЬ ВТ_ДанныеПоКлиентам
-		|ИЗ
-		|	Справочник.СтрокиRevenue КАК СтрокиRevenue
-		|;
-		|
-		// } RGS PMatkov 25.12.2015 18:41:55 - 
-		|////////////////////////////////////////////////////////////////////////////////
-		|ВЫБРАТЬ
-		|	ВТ_ActualMapping.CRMID КАК OldCRMID,
-		|	ВТ_BillingAccounts.CRMID КАК NewCRMID,
-		|	ВТ_BillingAccounts.BillingID,
-		|	ВТ_BillingAccounts.Description,
-		|	ВТ_ActualMapping.ОбъектПриемника КАК Client
-		|ИЗ
-		|	ВТ_BillingAccounts КАК ВТ_BillingAccounts
-		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ActualMapping КАК ВТ_ActualMapping
-		|		ПО ВТ_BillingAccounts.BillingID = ВТ_ActualMapping.BillingID
-		// { RGS PMatkov 25.12.2015 18:40:44 - 
-		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ДанныеПоКлиентам КАК ВТ_ДанныеПоКлиентам
-		|		ПО (ВТ_ActualMapping.ОбъектПриемника = ВТ_ДанныеПоКлиентам.Client)
-		// } RGS PMatkov 25.12.2015 18:40:44 - 
-		|ГДЕ
-		|	ВТ_BillingAccounts.CRMID <> ВТ_ActualMapping.CRMID
-		|	И ВТ_ActualMapping.CRMID <> """"";
-	
-	Запрос.УстановитьПараметр("Ссылка", Ссылка);
-	Запрос.УстановитьПараметр("Период", Дата);
-	
-	РезультатЗапроса = Запрос.Выполнить();
-	
-	ТаблицаИзмененныеCRMID = РезультатЗапроса.Выгрузить();
-	ТаблицаИзмененныеCRMID.Колонки.Добавить("Применить", Новый ОписаниеТипов("Булево"));
-	
-	Возврат ТаблицаИзмененныеCRMID;
 	
 КонецФункции
 
@@ -386,6 +269,7 @@
 		|	РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
 		|ГДЕ
 		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
+		|	И CRMAccountsExtractSourceData.BillingFlag = ""Y""
 		|
 		|ИНДЕКСИРОВАТЬ ПО
 		|	CRMAccountsExtractSourceData.AccountId
@@ -401,6 +285,7 @@
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.Контрагенты КАК Контрагенты
 		|		ПО ВТ_BillingAccounts.CRMID = Контрагенты.CRMID
 		|			И (НЕ Контрагенты.ПометкаУдаления)
+		|			И (НЕ Контрагенты.ParentClient)
 		|
 		|ИНДЕКСИРОВАТЬ ПО
 		|	ОбъектПриемника
@@ -551,7 +436,6 @@
 		|	CRMAccountsExtractSourceData.AccountId КАК CRMID,
 		|	CRMAccountsExtractSourceData.Account КАК Description,
 		|	CRMAccountsExtractSourceData.CorporateAccount КАК ParentClientDescription,
-		|	CRMAccountsExtractSourceData.CorporateAccountId КАК ParentClientID,
 		|	Контрагенты.Ссылка КАК Client,
 		|	ЕСТЬNULL(Контрагенты1.Ссылка, ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка)) КАК NewParentClient
 		|ПОМЕСТИТЬ ВТ_SalesAccounts
@@ -561,10 +445,12 @@
 		|		ПО CRMAccountsExtractSourceData.AccountId = Контрагенты.CRMID
 		|			И (НЕ Контрагенты.ПометкаУдаления)
 		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Контрагенты КАК Контрагенты1
-		|		ПО CRMAccountsExtractSourceData.CorporateAccountId = Контрагенты1.CRMID
+		|		ПО CRMAccountsExtractSourceData.CorporateAccount = Контрагенты1.Наименование
 		|			И (НЕ Контрагенты1.ПометкаУдаления)
+		|			И (Контрагенты1.ParentClient)
 		|ГДЕ
 		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
+		|	И CRMAccountsExtractSourceData.BillingFlag = ""Y""
 		|
 		|ИНДЕКСИРОВАТЬ ПО
 		|	CRMAccountsExtractSourceData.AccountId
@@ -577,8 +463,7 @@
 		|	ВТ_SalesAccounts.Client,
 		|	ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент КАК OldParentClient,
 		|	ВТ_SalesAccounts.NewParentClient,
-		|	ВТ_SalesAccounts.ParentClientDescription КАК NewParentClientDescription,
-		|	ВТ_SalesAccounts.ParentClientID КАК NewParentClientID
+		|	ВТ_SalesAccounts.ParentClientDescription КАК NewParentClientDescription
 		|ИЗ
 		|	ВТ_SalesAccounts КАК ВТ_SalesAccounts
 		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИерархияКонтрагентов.СрезПоследних(
@@ -634,6 +519,7 @@
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.Контрагенты КАК Контрагенты
 		|		ПО CRMAccountsExtractSourceData.AccountId = Контрагенты.CRMID
 		|			И (НЕ Контрагенты.ПометкаУдаления)
+		|			И (НЕ Контрагенты.ParentClient)
 		|ГДЕ
 		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
 		|	И (CRMAccountsExtractSourceData.Account <> Контрагенты.Наименование
@@ -681,6 +567,30 @@
 		|	И НЕ Контрагенты.ПометкаУдаления
 		|	И CRMAccountsExtractSourceDataParentClient.СтрокаФайла ЕСТЬ NULL";
 
+	
+	Запрос.УстановитьПараметр("Ссылка", Ссылка);
+	
+	РезультатЗапроса = Запрос.Выполнить();
+	
+	ТаблицаОтсутствующиеКлиенты = РезультатЗапроса.Выгрузить();
+	
+	Возврат ТаблицаОтсутствующиеКлиенты;
+	
+КонецФункции
+
+Функция ПолучитьТаблицуКлиентыДляДективации(Ссылка)
+	
+	Запрос = Новый Запрос;
+	Запрос.Текст = 
+		"ВЫБРАТЬ
+		|	Контрагенты.Ссылка КАК Client
+		|ИЗ
+		|	Справочник.Контрагенты КАК Контрагенты
+		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
+		|		ПО Контрагенты.CRMID = CRMAccountsExtractSourceData.AccountId
+		|			И (CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка)
+		|			И (НЕ Контрагенты.ПометкаУдаления)
+		|			И (CRMAccountsExtractSourceData.AccountStatus = ""Inactive"")";
 	
 	Запрос.УстановитьПараметр("Ссылка", Ссылка);
 	
