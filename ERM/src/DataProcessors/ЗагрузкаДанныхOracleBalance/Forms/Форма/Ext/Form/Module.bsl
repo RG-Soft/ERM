@@ -666,11 +666,12 @@
 		|	CashBatch.DocID = &DocID
 		|	И НЕ CashBatch.ПометкаУдаления
 		|	И CashBatch.Source = &Source
-		|	И CashBatch.Prepayment = &Prepayment";
+		//|	И CashBatch.Prepayment = &Prepayment
+		|";
 	
 	Запрос.УстановитьПараметр("DocID", DocID);
 	Запрос.УстановитьПараметр("Source", Source);
-	Запрос.УстановитьПараметр("Prepayment", Prepayment);
+	//Запрос.УстановитьПараметр("Prepayment", Prepayment);
 	
 	РезультатЗапроса = Запрос.Выполнить();
 	
