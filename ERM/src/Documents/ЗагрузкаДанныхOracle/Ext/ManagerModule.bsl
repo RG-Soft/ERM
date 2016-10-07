@@ -788,15 +788,18 @@
 		Возврат Перечисления.OracleGlSourceType.SOAccrual;
 	ИначеЕсли ДанныеДляЗаполнения.GlSourceType = "SAM Accrual" Тогда
 		Возврат Перечисления.OracleGlSourceType.SAMAccrual;
-	ИначеЕсли ДанныеДляЗаполнения.GlSourceType = "Revaluation" Тогда
-		Возврат Перечисления.OracleGlSourceType.Revaluation;
-	ИначеЕсли ДанныеДляЗаполнения.GlSourceType = "JV" Тогда
-		Возврат Перечисления.OracleGlSourceType.JV;
 	ИначеЕсли ДанныеДляЗаполнения.GlSourceType = "Receivables" Тогда
 		Возврат Перечисления.OracleGlSourceType.Receivables;
+	// { RGS TAlmazova 07.10.2016 13:11:22 - если неизвестный тип, то JV
+	//ИначеЕсли ДанныеДляЗаполнения.GlSourceType = "Revaluation" Тогда
+	//	Возврат Перечисления.OracleGlSourceType.Revaluation;
+	//ИначеЕсли ДанныеДляЗаполнения.GlSourceType = "JV" Тогда
+	//	Возврат Перечисления.OracleGlSourceType.JV;
 	КонецЕсли;
-	
-	Возврат Перечисления.OracleGlSourceType.ПустаяСсылка();
+	//
+	//Возврат Перечисления.OracleGlSourceType.ПустаяСсылка();
+	Возврат Перечисления.OracleGlSourceType.JV;
+	// } RGS TAlmazova 07.10.2016 13:11:53 - если неизвестный тип, то JV
 	
 КонецФункции
 
@@ -881,7 +884,7 @@
 		
 		КонецЕсли;
 		
-	ИначеЕсли ТранзакцияOracleОбъект.GlSourceType = Перечисления.OracleGlSourceType.Receivables Тогда	
+	ИначеЕсли ТранзакцияOracleОбъект.GlSourceType = Перечисления.OracleGlSourceType.Receivables Тогда
 		Если ТранзакцияOracleОбъект.DocType = "DEP" ИЛИ ТранзакцияOracleОбъект.DocType = "GUAR"
 			ИЛИ ТранзакцияOracleОбъект.DocType = "INV" ИЛИ ТранзакцияOracleОбъект.DocType = "PMT"
 			ИЛИ ТранзакцияOracleОбъект.DocType = "CB" Тогда
@@ -1054,9 +1057,9 @@
 						ОбнулитьСуммыПроводки(ТранзакцияOracleОбъект);
 						ДобавитьСвязанныйОбъект(ТранзакцияOracleОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.Invoice, Документы.Invoice.ПустаяСсылка());
 					КонецЕсли;
-				КонецЕсли;	
+				КонецЕсли;
 			КонецЕсли;
-		КонецЕсли;		
+		КонецЕсли;
 	Иначе
 		СтруктураПоискаРучнойКорректировки.Source = ТранзакцияOracleОбъект.Source;
 		СтруктураПоискаРучнойКорректировки.Company = ТранзакцияOracleОбъект.Company;
