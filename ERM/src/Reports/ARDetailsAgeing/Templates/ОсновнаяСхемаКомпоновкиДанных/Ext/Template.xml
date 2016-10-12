@@ -288,7 +288,9 @@
 ИЗ
 	РегистрНакопления.UnallocatedCash.Остатки КАК UnallocatedCashОстатки
 ГДЕ
-	НЕ UnallocatedCashОстатки.CashBatch.Prepayment
+	(НЕ UnallocatedCashОстатки.CashBatch.Prepayment
+			ИЛИ UnallocatedCashОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
+			ИЛИ UnallocatedCashОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith))
 
 ОБЪЕДИНИТЬ ВСЕ
 
