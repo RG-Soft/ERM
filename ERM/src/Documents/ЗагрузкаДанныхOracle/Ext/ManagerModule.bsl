@@ -695,13 +695,13 @@
 			//TODO временно перезаполняем
 			// { RGS TAlmazova 30.09.2016 14:30:56 - перезаполнение по новым заведенным клиентам
 			//Продолжить;
-			Если (ВыборкаДетальныеЗаписи.Транзакция.Client  = Справочники.Контрагенты.Unreconciled и ВыборкаДетальныеЗаписи.Client <> Справочники.Контрагенты.Unreconciled) ИЛИ
-				НЕ (ВыборкаДетальныеЗаписи.GlSourceType = "Receivables")
-			Тогда
+			//Если (ВыборкаДетальныеЗаписи.Транзакция.Client  = Справочники.Контрагенты.Unreconciled и ВыборкаДетальныеЗаписи.Client <> Справочники.Контрагенты.Unreconciled) ИЛИ
+			//	НЕ (ВыборкаДетальныеЗаписи.GlSourceType = "Receivables")
+			//Тогда
 				ТранзакцияOracleОбъект = ВыборкаДетальныеЗаписи.Транзакция.ПолучитьОбъект();
-			Иначе
-				Продолжить;
-			КонецЕсли;
+			//Иначе
+			//	Продолжить;
+			//КонецЕсли;
 			// } RGS TAlmazova 30.09.2016 14:31:21 - перезаполнение по новым заведенным клиентам
 			//ТранзакцияOracleОбъект = ВыборкаДетальныеЗаписи.Транзакция.ПолучитьОбъект();
 		Иначе
@@ -764,11 +764,12 @@
 	Если НЕ ЗначениеЗаполнено(ТранзакцияOracleОбъект.Client) Тогда
 		// { RGS TAlmazova 03.10.2016 14:44:33 - поиск по OracleGlSourceType
 		//Если ТранзакцияOracleОбъект.DocType = "JV" 
-		Если НЕ (ТранзакцияOracleОбъект.GlSourceType = Перечисления.OracleGlSourceType.Receivables ИЛИ ТранзакцияOracleОбъект.GlSourceType = Перечисления.OracleGlSourceType.SAMAccrual
-			ИЛИ ТранзакцияOracleОбъект.GlSourceType = Перечисления.OracleGlSourceType.SOAccrual)  
+		Если ТранзакцияOracleОбъект.GlSourceType = Перечисления.OracleGlSourceType.JV  
 		// } RGS TAlmazova 03.10.2016 14:44:47 - поиск по OracleGlSourceType
 			ИЛИ ТранзакцияOracleОбъект.DocType = "CASH" И ТранзакцияOracleОбъект.TransType = "TRADE_UNID" Тогда
 			ТранзакцияOracleОбъект.Client = Справочники.Контрагенты.GLNoName;
+		ИначеЕсли ДанныеДляЗаполнения.CustomerNumber = "" Тогда
+			ТранзакцияOracleОбъект.Client = Справочники.Контрагенты.Undefined;
 		Иначе
 			//ВызватьИсключение "Failed to find client " + ДанныеДляЗаполнения.CustomerNumber;
 			ТекОшибка = "Failed to find client " + ДанныеДляЗаполнения.CustomerNumber;
