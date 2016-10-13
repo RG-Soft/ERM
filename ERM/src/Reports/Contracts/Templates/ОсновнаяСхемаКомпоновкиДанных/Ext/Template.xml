@@ -43,10 +43,6 @@
 			<field>crmCreatedDate</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>УдалитьPTDaysTo</dataPath>
-			<field>УдалитьPTDaysTo</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>PTDaysFrom</dataPath>
 			<field>PTDaysFrom</field>
 		</field>
@@ -85,6 +81,12 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Ссылка</dataPath>
 			<field>Ссылка</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Contract</v8:content>
+				</v8:item>
+			</title>
 		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
@@ -100,13 +102,12 @@
 	ДоговорыКонтрагентов.crmContractName,
 	ДоговорыКонтрагентов.crmDFNName,
 	ДоговорыКонтрагентов.PTDaysFrom,
-	ДоговорыКонтрагентов.УдалитьPTDaysTo,
+	ДоговорыКонтрагентов.СрокОплаты,
 	ДоговорыКонтрагентов.PTType,
 	ДоговорыКонтрагентов.DocumentFlowPeriodFrom,
 	ДоговорыКонтрагентов.DocumentFlowPeriodTo,
 	ДоговорыКонтрагентов.Amendment,
 	ДоговорыКонтрагентов.AmendmentName,
-	ДоговорыКонтрагентов.СрокОплаты,
 	ДоговорыКонтрагентов.Ссылка
 ИЗ
 	Справочник.ДоговорыКонтрагентов КАК ДоговорыКонтрагентов</query>
@@ -159,7 +160,7 @@
 					<dcsset:field>PTDaysFrom</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>УдалитьPTDaysTo</dcsset:field>
+					<dcsset:field>СрокОплаты</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>PTType</dcsset:field>
@@ -173,9 +174,6 @@
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>AmendmentName</dcsset:field>
 				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>СрокОплаты</dcsset:field>
-				</dcsset:item>
 			</dcsset:selection>
 			<dcsset:order>
 				<dcsset:item xsi:type="dcsset:OrderItemField">
@@ -183,6 +181,12 @@
 					<dcsset:orderType>Asc</dcsset:orderType>
 				</dcsset:item>
 			</dcsset:order>
+			<dcsset:outputParameters>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>МакетОформления</dcscor:parameter>
+					<dcscor:value xsi:type="xs:string">Море</dcscor:value>
+				</dcscor:item>
+			</dcsset:outputParameters>
 			<dcsset:item xsi:type="dcsset:StructureItemGroup">
 				<dcsset:order>
 					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
