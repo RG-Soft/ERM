@@ -56,6 +56,12 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Account</dataPath>
 			<field>Account</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Account</v8:content>
+				</v8:item>
+			</title>
 			<role>
 				<dcscom:dimension>true</dcscom:dimension>
 			</role>
@@ -153,6 +159,12 @@
 					<v8:content>Transaction amount USD</v8:content>
 				</v8:item>
 			</title>
+			<appearance>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>Формат</dcscor:parameter>
+					<dcscor:value xsi:type="xs:string">ЧЦ=15; ЧДЦ=2</dcscor:value>
+				</dcscor:item>
+			</appearance>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Agreement</dataPath>
@@ -231,11 +243,10 @@
 	UnbilledARОстатки.SalesOrder.Дата КАК ДатаДокумента,
 	UnbilledARОстатки.AmountОстаток,
 	UnbilledARОстатки.SalesOrder.Amount КАК TransactionAmount,
-	UnbilledARОстатки.SalesOrder.BaseAmount КАК TransactionAmountUSD,
 	UnbilledARОстатки.SalesOrder.Agreement КАК Agreement
 ПОМЕСТИТЬ ВТ_Остатки
 ИЗ
-	РегистрНакопления.UnbilledAR.Остатки КАК UnbilledARОстатки
+	РегистрНакопления.UnbilledAR.Остатки(&amp;Период, ) КАК UnbilledARОстатки
 
 ОБЪЕДИНИТЬ ВСЕ
 
@@ -255,10 +266,9 @@
 	BilledARОстатки.Invoice.Дата,
 	BilledARОстатки.AmountОстаток,
 	BilledARОстатки.Invoice.Amount,
-	BilledARОстатки.Invoice.BaseAmount,
 	BilledARОстатки.Invoice.Agreement
 ИЗ
-	РегистрНакопления.BilledAR.Остатки КАК BilledARОстатки
+	РегистрНакопления.BilledAR.Остатки(&amp;Период, ) КАК BilledARОстатки
 
 ОБЪЕДИНИТЬ ВСЕ
 
@@ -283,10 +293,9 @@
 	UnallocatedCashОстатки.CashBatch.Дата,
 	-UnallocatedCashОстатки.AmountОстаток,
 	0,
-	0,
 	UnallocatedCashОстатки.CashBatch.Agreement
 ИЗ
-	РегистрНакопления.UnallocatedCash.Остатки КАК UnallocatedCashОстатки
+	РегистрНакопления.UnallocatedCash.Остатки(&amp;Период, ) КАК UnallocatedCashОстатки
 ГДЕ
 	(НЕ UnallocatedCashОстатки.CashBatch.Prepayment
 			ИЛИ UnallocatedCashОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
@@ -315,10 +324,9 @@
 	ManualTransactionsОстатки.РучнаяКорректировка.Дата,
 	ManualTransactionsОстатки.AmountОстаток,
 	ManualTransactionsОстатки.РучнаяКорректировка.Amount,
-	ManualTransactionsОстатки.РучнаяКорректировка.BaseAmount,
 	ManualTransactionsОстатки.РучнаяКорректировка.Agreement
 ИЗ
-	РегистрНакопления.ManualTransactions.Остатки КАК ManualTransactionsОстатки
+	РегистрНакопления.ManualTransactions.Остатки(&amp;Период, ) КАК ManualTransactionsОстатки
 
 ИНДЕКСИРОВАТЬ ПО
 	Source,
@@ -391,14 +399,19 @@
 		ИНАЧЕ ВЫРАЗИТЬ(ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс / 1000 КАК ЧИСЛО(15, 0))
 	КОНЕЦ КАК BaseAmountОстатокТыс,
 	ВТ_Остатки.TransactionAmount,
-	ВТ_Остатки.TransactionAmountUSD,
 	ВТ_Остатки.Agreement,
 	ВТ_НастройкиСинхронизацииИтог.Идентификатор КАК CustomerID,
 	ВЫБОР
 		КОГДА ВТ_Остатки.Document ССЫЛКА Документ.Invoice
 			ТОГДА ВТ_Остатки.Document.DocNumber
 		ИНАЧЕ ВТ_Остатки.Document.Номер
-	КОНЕЦ КАК Doc_No
+	КОНЕЦ КАК Doc_No,
+	ВЫБОР
+		КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
+				ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+			ТОГДА 0
+		ИНАЧЕ ВТ_Остатки.TransactionAmount / ВнутренниеКурсыВалютСрезПоследних.Курс
+	КОНЕЦ КАК TransactionAmountUSD
 ИЗ
 	ВТ_Остатки КАК ВТ_Остатки
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних КАК ВнутренниеКурсыВалютСрезПоследних
