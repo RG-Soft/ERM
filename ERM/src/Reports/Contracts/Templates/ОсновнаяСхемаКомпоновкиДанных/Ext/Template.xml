@@ -17,6 +17,12 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>crmContractID</dataPath>
 			<field>crmContractID</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>CRM/HOB Contract ID</v8:content>
+				</v8:item>
+			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>DocumentFlowPeriodTo</dataPath>
@@ -146,20 +152,9 @@
 			<dataPath>Trigger</dataPath>
 			<field>Trigger</field>
 		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>УзелБазы</dataPath>
-			<field>УзелБазы</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Exchange node</v8:content>
-				</v8:item>
-			</title>
-		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	ДоговорыКонтрагентов.Ссылка,
-	ПубличныеИдентификаторыСинхронизируемыхОбъектов.УзелИнформационнойБазы.Наименование КАК УзелБазы,
 	ДоговорыКонтрагентов.ContractID,
 	ДоговорыКонтрагентов.SourceID,
 	ДоговорыКонтрагентов.crmContractID,
@@ -181,8 +176,7 @@
 	ДоговорыКонтрагентов.AmendmentName
 ИЗ
 	Справочник.ДоговорыКонтрагентов КАК ДоговорыКонтрагентов
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ПубличныеИдентификаторыСинхронизируемыхОбъектов КАК ПубличныеИдентификаторыСинхронизируемыхОбъектов
-		ПО ДоговорыКонтрагентов.Ссылка = ПубличныеИдентификаторыСинхронизируемыхОбъектов.Ссылка</query>
+</query>
 	</dataSet>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
@@ -193,7 +187,13 @@
 					<dcsset:field>Ссылка</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>УзелБазы</dcsset:field>
+					<dcsset:field>Ссылка.Организация</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Legal entity</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>ContractID</dcsset:field>
@@ -235,6 +235,15 @@
 					<dcsset:field>Trigger</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Ссылка.Владелец</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Customer</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>ContractName</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
@@ -263,6 +272,10 @@
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>МакетОформления</dcscor:parameter>
 					<dcscor:value xsi:type="xs:string">Море</dcscor:value>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>РасположениеРеквизитов</dcscor:parameter>
+					<dcscor:value xsi:type="dcsset:DataCompositionAttributesPlacement">Separately</dcscor:value>
 				</dcscor:item>
 			</dcsset:outputParameters>
 			<dcsset:item xsi:type="dcsset:StructureItemGroup">
