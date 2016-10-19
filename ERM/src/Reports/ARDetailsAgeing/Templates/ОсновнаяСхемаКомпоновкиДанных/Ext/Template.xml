@@ -330,7 +330,7 @@
 		ИНАЧЕ "Unbilled"
 	КОНЕЦ,
 	"JV",
-	ManualTransactionsОстатки.РучнаяКорректировка.Номер,
+	"",
 	ManualTransactionsОстатки.РучнаяКорректировка.Дата,
 	ManualTransactionsОстатки.AmountОстаток,
 	ManualTransactionsОстатки.РучнаяКорректировка.Amount,
@@ -414,6 +414,8 @@
 	ВЫБОР
 		КОГДА ВТ_Остатки.Document ССЫЛКА Документ.Invoice
 			ТОГДА ВТ_Остатки.Document.DocNumber
+		КОГДА ВТ_Остатки.Document ССЫЛКА Документ.РучнаяКорректировка
+			ТОГДА ""
 		ИНАЧЕ ВТ_Остатки.Document.Номер
 	КОНЕЦ КАК Doc_No,
 	ВЫБОР
