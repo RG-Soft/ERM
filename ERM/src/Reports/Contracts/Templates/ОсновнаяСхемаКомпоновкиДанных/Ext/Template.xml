@@ -15,16 +15,6 @@
 			<field>ContractID</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>crmContractID</dataPath>
-			<field>crmContractID</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>CRM/HOB Contract ID</v8:content>
-				</v8:item>
-			</title>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>DocumentFlowPeriodTo</dataPath>
 			<field>DocumentFlowPeriodTo</field>
 		</field>
@@ -152,16 +142,38 @@
 			<dataPath>Trigger</dataPath>
 			<field>Trigger</field>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>crmContractID</dataPath>
+			<field>crmContractID</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>CRM/HOB Contract ID</v8:content>
+				</v8:item>
+			</title>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	ДоговорыКонтрагентов.Ссылка,
 	ДоговорыКонтрагентов.ContractID,
 	ДоговорыКонтрагентов.SourceID,
-	ДоговорыКонтрагентов.crmContractID,
+	ВЫБОР
+		КОГДА ДоговорыКонтрагентов.SourceID = "HOB"
+			ТОГДА ДоговорыКонтрагентов.Номер
+		ИНАЧЕ ДоговорыКонтрагентов.crmContractID
+	КОНЕЦ КАК crmContractID,
 	ДоговорыКонтрагентов.crmCreatedBy КАК CreatedBy,
 	ДоговорыКонтрагентов.crmCreatedDate КАК CreatedDate,
-	ДоговорыКонтрагентов.crmEffectiveDate КАК EffectiveDate,
-	ДоговорыКонтрагентов.crmExpiryDate КАК ExpiryDate,
+	ВЫБОР
+		КОГДА ДоговорыКонтрагентов.SourceID = "HOB"
+			ТОГДА ДоговорыКонтрагентов.Дата
+		ИНАЧЕ ДоговорыКонтрагентов.crmEffectiveDate
+	КОНЕЦ КАК EffectiveDate,
+	ВЫБОР
+		КОГДА ДоговорыКонтрагентов.SourceID = "HOB"
+			ТОГДА ДоговорыКонтрагентов.СрокДействия
+		ИНАЧЕ ДоговорыКонтрагентов.crmExpiryDate
+	КОНЕЦ КАК ExpiryDate,
 	ДоговорыКонтрагентов.crmContractCurrency КАК ContractCurrency,
 	ДоговорыКонтрагентов.crmContractValueUSD КАК ContractValueUSD,
 	ДоговорыКонтрагентов.PTDaysFrom,
@@ -273,6 +285,12 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>DFNName</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Business Unit</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>DocumentFlowPeriodFrom</dcsset:field>
