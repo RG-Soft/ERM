@@ -192,6 +192,13 @@
 					<v8:content>Base amount остаток тыс</v8:content>
 				</v8:item>
 			</title>
+			<appearance>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:use>false</dcscor:use>
+					<dcscor:parameter>Формат</dcscor:parameter>
+					<dcscor:value xsi:type="v8:LocalStringType"/>
+				</dcscor:item>
+			</appearance>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>BaseAmountОстаток</dataPath>
@@ -406,7 +413,7 @@
 		КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
 				ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
 			ТОГДА 0
-		ИНАЧЕ ВЫРАЗИТЬ(ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс / 1000 КАК ЧИСЛО(15, 0))
+		ИНАЧЕ ВЫРАЗИТЬ(ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс / 1000 КАК ЧИСЛО(15, 3))
 	КОНЕЦ КАК BaseAmountОстатокТыс,
 	ВТ_Остатки.TransactionAmount,
 	ВТ_Остатки.Agreement,
