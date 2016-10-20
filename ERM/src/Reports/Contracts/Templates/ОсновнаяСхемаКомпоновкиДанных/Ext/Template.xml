@@ -39,16 +39,6 @@
 			<field>DocumentFlowPeriodFrom</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>Ссылка</dataPath>
-			<field>Ссылка</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Contract</v8:content>
-				</v8:item>
-			</title>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>ExpiryDate</dataPath>
 			<field>ExpiryDate</field>
 			<title xsi:type="v8:LocalStringType">
@@ -152,9 +142,49 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Наименование</dataPath>
+			<field>Наименование</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Contract</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>ОрганизацияБазовыйЭлемент</dataPath>
+			<field>ОрганизацияБазовыйЭлемент</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Base element</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Владелец</dataPath>
+			<field>Владелец</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Customer</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>ВладелецCRMID</dataPath>
+			<field>ВладелецCRMID</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Customer ID</v8:content>
+				</v8:item>
+			</title>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
-		<query>ВЫБРАТЬ
-	ДоговорыКонтрагентов.Ссылка,
+		<query>ВЫБРАТЬ РАЗЛИЧНЫЕ
+	ДоговорыКонтрагентов.Наименование,
 	ДоговорыКонтрагентов.ContractID,
 	ДоговорыКонтрагентов.SourceID,
 	ВЫБОР
@@ -185,7 +215,10 @@
 	ДоговорыКонтрагентов.DocumentFlowPeriodFrom,
 	ДоговорыКонтрагентов.DocumentFlowPeriodTo,
 	ДоговорыКонтрагентов.Amendment,
-	ДоговорыКонтрагентов.AmendmentName
+	ДоговорыКонтрагентов.AmendmentName,
+	ДоговорыКонтрагентов.Организация.БазовыйЭлемент,
+	ДоговорыКонтрагентов.Владелец,
+	ДоговорыКонтрагентов.Владелец.CRMID
 ИЗ
 	Справочник.ДоговорыКонтрагентов КАК ДоговорыКонтрагентов
 ГДЕ
@@ -198,19 +231,10 @@
 		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Ссылка</dcsset:field>
+					<dcsset:field>Наименование</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Ссылка.Организация</dcsset:field>
-					<dcsset:lwsTitle>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Legal entity</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Ссылка.Организация.БазовыйЭлемент</dcsset:field>
+					<dcsset:field>ОрганизацияБазовыйЭлемент</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -219,7 +243,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Ссылка.SourceID</dcsset:field>
+					<dcsset:field>SourceID</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -264,7 +288,7 @@
 					<dcsset:field>Trigger</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Ссылка.Владелец.CRMID</dcsset:field>
+					<dcsset:field>ВладелецCRMID</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -273,7 +297,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Ссылка.Владелец</dcsset:field>
+					<dcsset:field>Владелец</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
