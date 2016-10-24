@@ -111,6 +111,10 @@
 				<dcscom:dimension>true</dcscom:dimension>
 			</role>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>SalesOrder</dataPath>
+			<field>SalesOrder</field>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	BilledARОстатки.Client КАК Client,
@@ -183,6 +187,24 @@
 ИЗ
 	РегистрНакопления.ManualTransactions.Остатки(, ) КАК ManualTransactionsОстатки
 
+ОБЪЕДИНИТЬ ВСЕ
+
+ВЫБРАТЬ
+	UnbilledARОстатки.Client,
+	UnbilledARОстатки.Company,
+	UnbilledARОстатки.Source,
+	UnbilledARОстатки.Location,
+	UnbilledARОстатки.SubSubSegment,
+	"A",
+	UnbilledARОстатки.SalesOrder,
+	UnbilledARОстатки.Account,
+	UnbilledARОстатки.Currency,
+	UnbilledARОстатки.AU,
+	UnbilledARОстатки.AmountОстаток,
+	UnbilledARОстатки.SalesOrder.Номер
+ИЗ
+	РегистрНакопления.UnbilledAR.Остатки(, ) КАК UnbilledARОстатки
+
 ИНДЕКСИРОВАТЬ ПО
 	Client,
 	Source
@@ -214,7 +236,7 @@
 	РегистрСведений.ARBalance КАК ARBalance
 ГДЕ
 	ARBalance.Период = &amp;ПериодARBalance
-	И НЕ ARBalance.Invoice ССЫЛКА Документ.SalesOrder
+	//И НЕ ARBalance.Invoice ССЫЛКА Документ.SalesOrder
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
