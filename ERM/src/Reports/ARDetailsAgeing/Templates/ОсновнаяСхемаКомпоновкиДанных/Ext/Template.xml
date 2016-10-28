@@ -98,16 +98,6 @@
 			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>TransactionAmount</dataPath>
-			<field>TransactionAmount</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Transaction amount</v8:content>
-				</v8:item>
-			</title>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>AmountОстаток</dataPath>
 			<field>AmountОстаток</field>
 		</field>
@@ -151,22 +141,6 @@
 			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>TransactionAmountUSD</dataPath>
-			<field>TransactionAmountUSD</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Transaction amount USD</v8:content>
-				</v8:item>
-			</title>
-			<appearance>
-				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:parameter>Формат</dcscor:parameter>
-					<dcscor:value xsi:type="xs:string">ЧЦ=15; ЧДЦ=2</dcscor:value>
-				</dcscor:item>
-			</appearance>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>Agreement</dataPath>
 			<field>Agreement</field>
 			<title xsi:type="v8:LocalStringType">
@@ -192,13 +166,6 @@
 					<v8:content>Base amount остаток тыс</v8:content>
 				</v8:item>
 			</title>
-			<appearance>
-				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:use>false</dcscor:use>
-					<dcscor:parameter>Формат</dcscor:parameter>
-					<dcscor:value xsi:type="v8:LocalStringType"/>
-				</dcscor:item>
-			</appearance>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>BaseAmountОстаток</dataPath>
@@ -242,6 +209,32 @@
 					<v8:content>Base amount остаток модуль</v8:content>
 				</v8:item>
 			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>TransactionAmount</dataPath>
+			<field>TransactionAmount</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Transaction amount</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>TransactionAmountUSD</dataPath>
+			<field>TransactionAmountUSD</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Transaction amount USD</v8:content>
+				</v8:item>
+			</title>
+			<appearance>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>Формат</dcscor:parameter>
+					<dcscor:value xsi:type="xs:string">ЧЦ=15; ЧДЦ=2</dcscor:value>
+				</dcscor:item>
+			</appearance>
 		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
@@ -340,7 +333,7 @@
 	"",
 	ManualTransactionsОстатки.РучнаяКорректировка.Дата,
 	ManualTransactionsОстатки.AmountОстаток,
-	ManualTransactionsОстатки.РучнаяКорректировка.Amount,
+	ManualTransactionsОстатки.AmountОстаток,
 	ManualTransactionsОстатки.РучнаяКорректировка.Agreement
 ИЗ
 	РегистрНакопления.ManualTransactions.Остатки(&amp;Период, ) КАК ManualTransactionsОстатки
@@ -544,6 +537,14 @@
 	<totalField>
 		<dataPath>Ageing_91_120</dataPath>
 		<expression>Сумма(Ageing_91_120)</expression>
+	</totalField>
+	<totalField>
+		<dataPath>BaseAmountОстаток</dataPath>
+		<expression>Сумма(BaseAmountОстаток)</expression>
+	</totalField>
+	<totalField>
+		<dataPath>BaseAmountОстатокТыс</dataPath>
+		<expression>Сумма(BaseAmountОстатокТыс)</expression>
 	</totalField>
 	<parameter>
 		<name>Период</name>
@@ -810,7 +811,7 @@
 				</dcscor:item>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>РасположениеПолейГруппировки</dcscor:parameter>
-					<dcscor:value xsi:type="dcsset:DataCompositionGroupFieldsPlacement">Separately</dcscor:value>
+					<dcscor:value xsi:type="dcsset:DataCompositionGroupFieldsPlacement">Together</dcscor:value>
 				</dcscor:item>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>РасположениеРеквизитов</dcscor:parameter>
@@ -823,6 +824,10 @@
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>ВыводитьОтбор</dcscor:parameter>
 					<dcscor:value xsi:type="dcsset:DataCompositionTextOutputType">Output</dcscor:value>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>АвтоПозицияРесурсов</dcscor:parameter>
+					<dcscor:value xsi:type="dcsset:DataCompositionResourcesAutoPosition">DontUse</dcscor:value>
 				</dcscor:item>
 			</dcsset:outputParameters>
 			<dcsset:item xsi:type="dcsset:StructureItemGroup">
