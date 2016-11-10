@@ -198,7 +198,7 @@
 	КОНЕЦ КАК ПредставлениеДокумента
 ПОМЕСТИТЬ ВТ_Остатки
 ИЗ
-	РегистрНакопления.BilledAR.Остатки({&amp;ПериодОстатков}) КАК BilledARОстатки
+	РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, ) КАК BilledARОстатки
 
 ОБЪЕДИНИТЬ ВСЕ
 
@@ -215,7 +215,7 @@
 	-UnallocatedCashОстатки.AmountОстаток,
 	UnallocatedCashОстатки.CashBatch.PaymentNumber
 ИЗ
-	РегистрНакопления.UnallocatedCash.Остатки({&amp;ПериодОстатков}) КАК UnallocatedCashОстатки
+	РегистрНакопления.UnallocatedCash.Остатки({(&amp;ПериодОстатков)}, ) КАК UnallocatedCashОстатки
 ГДЕ
 	НЕ UnallocatedCashОстатки.CashBatch.Prepayment
 
@@ -234,7 +234,7 @@
 	UnallocatedMemoОстатки.AmountОстаток,
 	UnallocatedMemoОстатки.Memo.Номер
 ИЗ
-	РегистрНакопления.UnallocatedMemo.Остатки({&amp;ПериодОстатков}) КАК UnallocatedMemoОстатки
+	РегистрНакопления.UnallocatedMemo.Остатки({(&amp;ПериодОстатков)}, ) КАК UnallocatedMemoОстатки
 
 ИНДЕКСИРОВАТЬ ПО
 	Client,
@@ -354,7 +354,7 @@
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ИдентификаторыКлиентовИтог КАК ВТ_ИдентификаторыКлиентовИтог
 		ПО ВТ_Остатки.Client = ВТ_ИдентификаторыКлиентовИтог.ОбъектПриемника
 			И ВТ_Остатки.Source = ВТ_ИдентификаторыКлиентовИтог.ТипСоответствия
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments.СрезПоследних КАК InvoiceCommentsСрезПоследних
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments.СрезПоследних(, ) КАК InvoiceCommentsСрезПоследних
 		ПО ВТ_Остатки.Invoice = InvoiceCommentsСрезПоследних.Invoice</query>
 	</dataSet>
 	<calculatedField>
@@ -1002,6 +1002,14 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 			</dcsset:selection>
+			<dcsset:filter>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:use>false</dcsset:use>
+					<dcsset:left xsi:type="dcscor:Field">Source</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:userSettingID>a775f9fe-a968-47fc-a695-0791acdd4a9f</dcsset:userSettingID>
+				</dcsset:item>
+			</dcsset:filter>
 			<dcsset:dataParameters>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>Период</dcscor:parameter>

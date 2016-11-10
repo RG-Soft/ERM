@@ -345,6 +345,198 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ВЫБРАТЬ
+	UnbilledARОбороты.Client КАК Client,
+	UnbilledARОбороты.Company КАК Company,
+	UnbilledARОбороты.Source КАК Source,
+	UnbilledARОбороты.Location КАК Location,
+	UnbilledARОбороты.SubSubSegment КАК SubSubSegment,
+	UnbilledARОбороты.SalesOrder КАК Document,
+	UnbilledARОбороты.Account КАК Account,
+	UnbilledARОбороты.AU КАК AU,
+	UnbilledARОбороты.Currency КАК Currency,
+	СУММА(-UnbilledARОбороты.AmountОборот) КАК AmountОборот
+ПОМЕСТИТЬ ВТ_Обороты
+ИЗ
+	РегистрНакопления.UnbilledAR.Обороты(
+			,
+			&amp;Период,
+			Регистратор,
+			(Account, AU, Client, Company, Currency, Location, SalesOrder, Source, SubSubSegment) В
+				(ВЫБРАТЬ
+					ВТ_Остатки.Account,
+					ВТ_Остатки.AU,
+					ВТ_Остатки.Client,
+					ВТ_Остатки.Company,
+					ВТ_Остатки.Currency,
+					ВТ_Остатки.Location,
+					ВТ_Остатки.Document,
+					ВТ_Остатки.Source,
+					ВТ_Остатки.SubSubSegment
+				ИЗ
+					ВТ_Остатки КАК ВТ_Остатки)) КАК UnbilledARОбороты
+ГДЕ
+	UnbilledARОбороты.Регистратор ССЫЛКА Документ.КорректировкаРегистров
+
+СГРУППИРОВАТЬ ПО
+	UnbilledARОбороты.Client,
+	UnbilledARОбороты.Company,
+	UnbilledARОбороты.Source,
+	UnbilledARОбороты.Location,
+	UnbilledARОбороты.SubSubSegment,
+	UnbilledARОбороты.SalesOrder,
+	UnbilledARОбороты.Account,
+	UnbilledARОбороты.Currency,
+	UnbilledARОбороты.AU
+
+ОБЪЕДИНИТЬ ВСЕ
+
+ВЫБРАТЬ
+	BilledARОбороты.Client,
+	BilledARОбороты.Company,
+	BilledARОбороты.Source,
+	BilledARОбороты.Location,
+	BilledARОбороты.SubSubSegment,
+	BilledARОбороты.Invoice,
+	BilledARОбороты.Account,
+	BilledARОбороты.AU,
+	BilledARОбороты.Currency,
+	СУММА(-BilledARОбороты.AmountОборот)
+ИЗ
+	РегистрНакопления.BilledAR.Обороты(
+			,
+			&amp;Период,
+			Регистратор,
+			(Account, AU, Client, Company, Currency, Location, Invoice, Source, SubSubSegment) В
+				(ВЫБРАТЬ
+					ВТ_Остатки.Account,
+					ВТ_Остатки.AU,
+					ВТ_Остатки.Client,
+					ВТ_Остатки.Company,
+					ВТ_Остатки.Currency,
+					ВТ_Остатки.Location,
+					ВТ_Остатки.Document,
+					ВТ_Остатки.Source,
+					ВТ_Остатки.SubSubSegment
+				ИЗ
+					ВТ_Остатки КАК ВТ_Остатки)) КАК BilledARОбороты
+ГДЕ
+	(BilledARОбороты.Регистратор ССЫЛКА Документ.КорректировкаРегистров
+			ИЛИ BilledARОбороты.Регистратор ССЫЛКА Документ.MemoAllocation
+			ИЛИ BilledARОбороты.Регистратор ССЫЛКА Документ.CreditNoteAllocation)
+
+СГРУППИРОВАТЬ ПО
+	BilledARОбороты.Client,
+	BilledARОбороты.Company,
+	BilledARОбороты.Source,
+	BilledARОбороты.Location,
+	BilledARОбороты.SubSubSegment,
+	BilledARОбороты.Account,
+	BilledARОбороты.Currency,
+	BilledARОбороты.AU,
+	BilledARОбороты.Invoice
+
+ОБЪЕДИНИТЬ ВСЕ
+
+ВЫБРАТЬ
+	UnallocatedCashОбороты.Client,
+	UnallocatedCashОбороты.Company,
+	UnallocatedCashОбороты.Source,
+	UnallocatedCashОбороты.Location,
+	UnallocatedCashОбороты.SubSubSegment,
+	UnallocatedCashОбороты.CashBatch,
+	UnallocatedCashОбороты.Account,
+	UnallocatedCashОбороты.AU,
+	UnallocatedCashОбороты.Currency,
+	СУММА(UnallocatedCashОбороты.AmountОборот)
+ИЗ
+	РегистрНакопления.UnallocatedCash.Обороты(
+			,
+			&amp;Период,
+			Регистратор,
+			(Account, AU, Client, Company, Currency, Location, CashBatch, Source, SubSubSegment) В
+				(ВЫБРАТЬ
+					ВТ_Остатки.Account,
+					ВТ_Остатки.AU,
+					ВТ_Остатки.Client,
+					ВТ_Остатки.Company,
+					ВТ_Остатки.Currency,
+					ВТ_Остатки.Location,
+					ВТ_Остатки.Document,
+					ВТ_Остатки.Source,
+					ВТ_Остатки.SubSubSegment
+				ИЗ
+					ВТ_Остатки КАК ВТ_Остатки)) КАК UnallocatedCashОбороты
+ГДЕ
+	UnallocatedCashОбороты.Регистратор ССЫЛКА Документ.КорректировкаРегистров
+
+СГРУППИРОВАТЬ ПО
+	UnallocatedCashОбороты.Client,
+	UnallocatedCashОбороты.Company,
+	UnallocatedCashОбороты.Source,
+	UnallocatedCashОбороты.Location,
+	UnallocatedCashОбороты.SubSubSegment,
+	UnallocatedCashОбороты.Account,
+	UnallocatedCashОбороты.Currency,
+	UnallocatedCashОбороты.AU,
+	UnallocatedCashОбороты.CashBatch
+
+ОБЪЕДИНИТЬ ВСЕ
+
+ВЫБРАТЬ
+	ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка),
+	ManualTransactionsОбороты.Company,
+	ManualTransactionsОбороты.Source,
+	ManualTransactionsОбороты.Location,
+	ManualTransactionsОбороты.SubSubSegment,
+	ManualTransactionsОбороты.РучнаяКорректировка,
+	ManualTransactionsОбороты.Account,
+	ManualTransactionsОбороты.AU,
+	ManualTransactionsОбороты.Currency,
+	СУММА(-ManualTransactionsОбороты.AmountОборот)
+ИЗ
+	РегистрНакопления.ManualTransactions.Обороты(
+			,
+			&amp;Период,
+			Регистратор,
+			(Account, AU, Company, Currency, Location, РучнаяКорректировка, Source, SubSubSegment) В
+				(ВЫБРАТЬ
+					ВТ_Остатки.Account,
+					ВТ_Остатки.AU,
+					ВТ_Остатки.Company,
+					ВТ_Остатки.Currency,
+					ВТ_Остатки.Location,
+					ВТ_Остатки.Document,
+					ВТ_Остатки.Source,
+					ВТ_Остатки.SubSubSegment
+				ИЗ
+					ВТ_Остатки КАК ВТ_Остатки)) КАК ManualTransactionsОбороты
+ГДЕ
+	ManualTransactionsОбороты.Регистратор ССЫЛКА Документ.КорректировкаРегистров
+
+СГРУППИРОВАТЬ ПО
+	ManualTransactionsОбороты.Company,
+	ManualTransactionsОбороты.Source,
+	ManualTransactionsОбороты.Location,
+	ManualTransactionsОбороты.SubSubSegment,
+	ManualTransactionsОбороты.Account,
+	ManualTransactionsОбороты.Currency,
+	ManualTransactionsОбороты.AU,
+	ManualTransactionsОбороты.РучнаяКорректировка
+
+ИНДЕКСИРОВАТЬ ПО
+	Source,
+	Client,
+	AU,
+	Currency,
+	Document,
+	SubSubSegment,
+	Location,
+	Company,
+	Account
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
 	МАКСИМУМ(НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Период) КАК Период,
 	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия,
 	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ОбъектПриемника
@@ -395,18 +587,18 @@
 	ВТ_Остатки.TransactionType,
 	ВТ_Остатки.НомерДокумента,
 	ВТ_Остатки.ДатаДокумента,
-	ВТ_Остатки.AmountОстаток,
+	ВТ_Остатки.AmountОстаток + ЕСТЬNULL(ВТ_Обороты.AmountОборот, 0) КАК AmountОстаток,
 	ВЫБОР
 		КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
 				ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
 			ТОГДА 0
-		ИНАЧЕ ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс
+		ИНАЧЕ (ВТ_Остатки.AmountОстаток + ЕСТЬNULL(ВТ_Обороты.AmountОборот, 0)) / ВнутренниеКурсыВалютСрезПоследних.Курс
 	КОНЕЦ КАК BaseAmountОстаток,
 	ВЫБОР
 		КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
 				ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
 			ТОГДА 0
-		ИНАЧЕ ВЫРАЗИТЬ(ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс / 1000 КАК ЧИСЛО(15, 3))
+		ИНАЧЕ ВЫРАЗИТЬ((ВТ_Остатки.AmountОстаток + ЕСТЬNULL(ВТ_Обороты.AmountОборот, 0)) / ВнутренниеКурсыВалютСрезПоследних.Курс / 1000 КАК ЧИСЛО(15, 3))
 	КОНЕЦ КАК BaseAmountОстатокТыс,
 	ВТ_Остатки.TransactionAmount,
 	ВТ_Остатки.Agreement,
@@ -428,9 +620,9 @@
 		КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
 				ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
 			ТОГДА 0
-		КОГДА ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс &lt; 0
-			ТОГДА -ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс
-		ИНАЧЕ ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс
+		КОГДА (ВТ_Остатки.AmountОстаток + ЕСТЬNULL(ВТ_Обороты.AmountОборот, 0)) / ВнутренниеКурсыВалютСрезПоследних.Курс &lt; 0
+			ТОГДА -(ВТ_Остатки.AmountОстаток + ЕСТЬNULL(ВТ_Обороты.AmountОборот, 0)) / ВнутренниеКурсыВалютСрезПоследних.Курс
+		ИНАЧЕ (ВТ_Остатки.AmountОстаток + ЕСТЬNULL(ВТ_Обороты.AmountОборот, 0)) / ВнутренниеКурсыВалютСрезПоследних.Курс
 	КОНЕЦ КАК BaseAmountОстатокМодуль
 ИЗ
 	ВТ_Остатки КАК ВТ_Остатки
@@ -438,7 +630,17 @@
 		ПО ВТ_Остатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_НастройкиСинхронизацииИтог КАК ВТ_НастройкиСинхронизацииИтог
 		ПО ВТ_Остатки.Client = ВТ_НастройкиСинхронизацииИтог.ОбъектПриемника
-			И ВТ_Остатки.Source = ВТ_НастройкиСинхронизацииИтог.ТипСоответствия</query>
+			И ВТ_Остатки.Source = ВТ_НастройкиСинхронизацииИтог.ТипСоответствия
+		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_Обороты КАК ВТ_Обороты
+		ПО ВТ_Остатки.Source = ВТ_Обороты.Source
+			И ВТ_Остатки.Client = ВТ_Обороты.Client
+			И ВТ_Остатки.Company = ВТ_Обороты.Company
+			И ВТ_Остатки.Location = ВТ_Обороты.Location
+			И ВТ_Остатки.SubSubSegment = ВТ_Обороты.SubSubSegment
+			И ВТ_Остатки.Document = ВТ_Обороты.Document
+			И ВТ_Остатки.Account = ВТ_Обороты.Account
+			И ВТ_Остатки.AU = ВТ_Обороты.AU
+			И ВТ_Остатки.Currency = ВТ_Обороты.Currency</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>Ageing_1_30</dataPath>
@@ -569,6 +771,40 @@
 				<dcscor:value xsi:type="xs:string">ДФ=MM/dd/yyyy</dcscor:value>
 			</dcscor:item>
 		</inputParameters>
+	</parameter>
+	<parameter>
+		<name>НачалоПериода</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Начало периода</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>xs:dateTime</v8:Type>
+			<v8:DateQualifiers>
+				<v8:DateFractions>DateTime</v8:DateFractions>
+			</v8:DateQualifiers>
+		</valueType>
+		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
+		<useRestriction>false</useRestriction>
+	</parameter>
+	<parameter>
+		<name>КонецПериода</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Конец периода</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>xs:dateTime</v8:Type>
+			<v8:DateQualifiers>
+				<v8:DateFractions>DateTime</v8:DateFractions>
+			</v8:DateQualifiers>
+		</valueType>
+		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
+		<useRestriction>false</useRestriction>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>

@@ -187,11 +187,7 @@
 	ДоговорыКонтрагентов.Наименование,
 	ДоговорыКонтрагентов.ContractID,
 	ДоговорыКонтрагентов.SourceID,
-	ВЫБОР
-		КОГДА ДоговорыКонтрагентов.SourceID = "HOB"
-			ТОГДА ДоговорыКонтрагентов.Номер
-		ИНАЧЕ ДоговорыКонтрагентов.crmContractID
-	КОНЕЦ КАК crmContractID,
+	ДоговорыКонтрагентов.crmContractID КАК crmContractID,
 	ДоговорыКонтрагентов.crmCreatedBy КАК CreatedBy,
 	ДоговорыКонтрагентов.crmCreatedDate КАК CreatedDate,
 	ВЫБОР
@@ -210,8 +206,17 @@
 	ДоговорыКонтрагентов.СрокОплаты КАК PTDaysTo,
 	ДоговорыКонтрагентов.PTType,
 	ДоговорыКонтрагентов.Trigger,
-	ДоговорыКонтрагентов.crmContractName КАК ContractName,
-	ДоговорыКонтрагентов.crmDFNName КАК DFNName,
+	ВЫБОР
+		КОГДА ДоговорыКонтрагентов.SourceID = "HOB"
+			ТОГДА ДоговорыКонтрагентов.Номер
+		ИНАЧЕ ДоговорыКонтрагентов.crmContractName
+	КОНЕЦ КАК ContractName,
+	ВЫБОР
+		КОГДА ДоговорыКонтрагентов.SourceID = "HOB"
+				И ДоговорыКонтрагентов.Организация.БазовыйЭлемент.Код = "EPU"
+			ТОГДА "ALS"
+		ИНАЧЕ ДоговорыКонтрагентов.crmDFNName
+	КОНЕЦ КАК DFNName,
 	ДоговорыКонтрагентов.DocumentFlowPeriodFrom,
 	ДоговорыКонтрагентов.DocumentFlowPeriodTo,
 	ДоговорыКонтрагентов.Amendment,
@@ -223,7 +228,8 @@
 	Справочник.ДоговорыКонтрагентов КАК ДоговорыКонтрагентов
 ГДЕ
 	НЕ ДоговорыКонтрагентов.ПометкаУдаления
-	И ДоговорыКонтрагентов.Владелец &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)</query>
+	И ДоговорыКонтрагентов.Владелец &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)
+	И ДоговорыКонтрагентов.Владелец &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.Unreconciled)</query>
 	</dataSet>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
@@ -232,6 +238,24 @@
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Наименование</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>ВладелецCRMID</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Customer ID</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Владелец</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Customer</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>ОрганизацияБазовыйЭлемент</dcsset:field>
@@ -255,12 +279,6 @@
 					<dcsset:field>ContractID</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>CreatedBy</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>CreatedDate</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>crmContractID</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
@@ -274,6 +292,12 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>ContractValueUSD</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Contract value</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>PTDaysFrom</dcsset:field>
@@ -288,24 +312,6 @@
 					<dcsset:field>Trigger</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>ВладелецCRMID</dcsset:field>
-					<dcsset:lwsTitle>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Customer ID</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Владелец</dcsset:field>
-					<dcsset:lwsTitle>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Customer</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>ContractName</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
@@ -316,12 +322,6 @@
 							<v8:content>Business Unit</v8:content>
 						</v8:item>
 					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>DocumentFlowPeriodFrom</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>DocumentFlowPeriodTo</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Amendment</dcsset:field>
