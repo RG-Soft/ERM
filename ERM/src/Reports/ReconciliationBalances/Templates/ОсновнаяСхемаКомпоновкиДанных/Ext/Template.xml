@@ -115,6 +115,16 @@
 			<dataPath>SalesOrder</dataPath>
 			<field>SalesOrder</field>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Difference</dataPath>
+			<field>Difference</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Difference</v8:content>
+				</v8:item>
+			</title>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	BilledARОстатки.Client КАК Client,
@@ -236,7 +246,6 @@
 	РегистрСведений.ARBalance КАК ARBalance
 ГДЕ
 	ARBalance.Период = &amp;ПериодARBalance
-	//И НЕ ARBalance.Invoice ССЫЛКА Документ.SalesOrder
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -252,7 +261,8 @@
 	ЕСТЬNULL(AR.Currency, ВТ_Остатки.Currency) КАК Currency,
 	ЕСТЬNULL(AR.AU, ВТ_Остатки.AU) КАК AU,
 	ЕСТЬNULL(AR.Amount, 0) КАК AR_Amount,
-	ЕСТЬNULL(ВТ_Остатки.AmountОстаток, 0) КАК ERM_Amount
+	ЕСТЬNULL(ВТ_Остатки.AmountОстаток, 0) КАК ERM_Amount,
+	ЕСТЬNULL(AR.Amount, 0) - ЕСТЬNULL(ВТ_Остатки.AmountОстаток, 0) КАК Difference
 ИЗ
 	ВТ_Остатки КАК ВТ_Остатки
 		ПОЛНОЕ СОЕДИНЕНИЕ AR КАК AR
@@ -362,6 +372,9 @@
 							<v8:content>Target Balance</v8:content>
 						</v8:item>
 					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Difference</dcsset:field>
 				</dcsset:item>
 			</dcsset:selection>
 			<dcsset:filter>
