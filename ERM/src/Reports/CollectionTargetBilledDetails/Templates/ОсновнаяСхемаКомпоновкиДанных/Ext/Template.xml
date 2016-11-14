@@ -267,7 +267,7 @@
 ВЫБРАТЬ
 	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия КАК ТипСоответствия,
 	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ОбъектПриемника КАК ОбъектПриемника,
-	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Идентификатор
+	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Идентификатор КАК Идентификатор
 ПОМЕСТИТЬ ВТ_ИдентификаторыКлиентовИтог
 ИЗ
 	РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемами
@@ -355,7 +355,10 @@
 		ПО ВТ_Остатки.Client = ВТ_ИдентификаторыКлиентовИтог.ОбъектПриемника
 			И ВТ_Остатки.Source = ВТ_ИдентификаторыКлиентовИтог.ТипСоответствия
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments.СрезПоследних(, ) КАК InvoiceCommentsСрезПоследних
-		ПО ВТ_Остатки.Invoice = InvoiceCommentsСрезПоследних.Invoice</query>
+		ПО ВТ_Остатки.Invoice = InvoiceCommentsСрезПоследних.Invoice
+ГДЕ
+	ВТ_Остатки.Client &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)
+	И ВТ_Остатки.Client &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.Unreconciled)</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>DueFrom</dataPath>
@@ -562,6 +565,8 @@
 						</v8:item>
 					</dcsset:lwsTitle>
 					<dcsset:detailExpression>Выбор
+	Когда DueFrom &lt;&gt; 0 И DueTo = 0
+		Тогда USDAmount
 	Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueFrom &gt; FcstCollect
 		Тогда USDAmount - FcstCollect - Выбор
 				Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
@@ -571,6 +576,8 @@
 	Иначе 0
 Конец</dcsset:detailExpression>
 					<dcsset:detailExpressionPresentation>Выбор
+	Когда [Due From] &lt;&gt; 0 И [Due To] = 0
+		Тогда [USD Amount]
 	Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due From] &gt; [Fcst Collect]
 		Тогда [USD Amount] - [Fcst Collect] - Выбор
 				Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
@@ -591,6 +598,8 @@
 						</v8:item>
 					</dcsset:lwsTitle>
 					<dcsset:detailExpression>Выбор
+	Когда DueFrom = 0 И DueTo = 0
+		Тогда USDAmount
 	Когда ForecastDate = ДатаВремя(1, 1, 1)
 		Тогда 0
 	Иначе USDAmount - Insolvent - Paid - FcstCollect - Выбор
@@ -608,6 +617,8 @@
 		Конец
 Конец</dcsset:detailExpression>
 					<dcsset:detailExpressionPresentation>Выбор
+	Когда [Due From] = 0 И [Due To] = 0
+		Тогда [USD Amount]
 	Когда [Forecast date] = ДатаВремя(1, 1, 1)
 		Тогда 0
 	Иначе [USD Amount] - [Under Litigation] - Paid - [Fcst Collect] - Выбор
