@@ -2944,6 +2944,7 @@
 	ДокОбъект.Company = ТранзакцияHOBОбъект.Company;
 	//ДокОбъект.Номер = ДанныеДляЗаполнения.InvoiceNumber;
 	//ДокОбъект.DocNumber = ?(ПустаяСтрока(ТранзакцияHOBОбъект.DocNumber2), ТранзакцияHOBОбъект.DocNumber, ТранзакцияOracleОбъект.DocNumber2);
+	ДокОбъект.DocNumber = ДанныеДляЗаполнения.InvoiceNumber;
 	ДокОбъект.Дата = ДанныеДляЗаполнения.InvoiceDate;
 	ДокОбъект.Client = ТранзакцияHOBОбъект.Client;
 	ДокОбъект.Location = ТранзакцияHOBОбъект.Location;
