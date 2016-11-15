@@ -256,7 +256,7 @@
 	UnbilledARОстатки.SalesOrder.Agreement КАК Agreement
 ПОМЕСТИТЬ ВТ_Остатки
 ИЗ
-	РегистрНакопления.UnbilledAR.Остатки(&amp;Период, ) КАК UnbilledARОстатки
+	РегистрНакопления.UnbilledAR.Остатки({(&amp;ПериодОстатков)}, ) КАК UnbilledARОстатки
 
 ОБЪЕДИНИТЬ ВСЕ
 
@@ -278,7 +278,7 @@
 	BilledARОстатки.Invoice.Amount,
 	BilledARОстатки.Invoice.Agreement
 ИЗ
-	РегистрНакопления.BilledAR.Остатки(&amp;Период, ) КАК BilledARОстатки
+	РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, ) КАК BilledARОстатки
 
 ОБЪЕДИНИТЬ ВСЕ
 
@@ -305,7 +305,7 @@
 	0,
 	UnallocatedCashОстатки.CashBatch.Agreement
 ИЗ
-	РегистрНакопления.UnallocatedCash.Остатки(&amp;Период, ) КАК UnallocatedCashОстатки
+	РегистрНакопления.UnallocatedCash.Остатки({(&amp;ПериодОстатков)}, ) КАК UnallocatedCashОстатки
 ГДЕ
 	(НЕ UnallocatedCashОстатки.CashBatch.Prepayment
 			ИЛИ UnallocatedCashОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
@@ -336,7 +336,7 @@
 	ManualTransactionsОстатки.AmountОстаток,
 	ManualTransactionsОстатки.РучнаяКорректировка.Agreement
 ИЗ
-	РегистрНакопления.ManualTransactions.Остатки(&amp;Период, ) КАК ManualTransactionsОстатки
+	РегистрНакопления.ManualTransactions.Остатки({(&amp;ПериодОстатков)}, ) КАК ManualTransactionsОстатки
 
 ИНДЕКСИРОВАТЬ ПО
 	Source,
@@ -569,6 +569,25 @@
 				<dcscor:value xsi:type="xs:string">ДФ=MM/dd/yyyy</dcscor:value>
 			</dcscor:item>
 		</inputParameters>
+	</parameter>
+	<parameter>
+		<name>ПериодОстатков</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Период остатков</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>xs:dateTime</v8:Type>
+			<v8:DateQualifiers>
+				<v8:DateFractions>DateTime</v8:DateFractions>
+			</v8:DateQualifiers>
+		</valueType>
+		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
+		<useRestriction>true</useRestriction>
+		<expression>ДОБАВИТЬКДАТЕ(КонецПериода(&amp;Период,"ДЕНЬ") , "СЕКУНДА", 1)</expression>
+		<availableAsField>false</availableAsField>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
