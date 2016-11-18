@@ -78,6 +78,15 @@
 						<Event name="OnChange">AccountПриИзменении</Event>
 					</Events>
 				</InputField>
+				<CheckBoxField name="Comment" id="87">
+					<DataPath>NoComments</DataPath>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="CommentКонтекстноеМеню" id="88"/>
+					<ExtendedTooltip name="CommentРасширеннаяПодсказка" id="89"/>
+					<Events>
+						<Event name="OnChange">CommentПриИзменении</Event>
+					</Events>
+				</CheckBoxField>
 			</ChildItems>
 		</UsualGroup>
 		<Table name="Invoices" id="1">
@@ -315,9 +324,16 @@
 		КОГДА BilledARОстатки.Invoice В (&amp;МассивОтмеченныхИнвойсов)
 			ТОГДА ИСТИНА
 		ИНАЧЕ ЛОЖЬ
-	КОНЕЦ КАК Пометка
+	КОНЕЦ КАК Пометка,
+	ВЫБОР
+		КОГДА InvoiceCommentsСрезПоследних.Invoice ЕСТЬ NULL 
+			ТОГДА Истина
+		ИНАЧЕ Ложь
+	КОНЕЦ КАК НетКомментария
 ИЗ
 	РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, Invoice ССЫЛКА Документ.Invoice {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket)}) КАК BilledARОстатки
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments.СрезПоследних(, ) КАК InvoiceCommentsСрезПоследних
+		ПО (BilledARОстатки.Invoice = InvoiceCommentsСрезПоследних.Invoice)
 {ГДЕ
 	BilledARОстатки.Source.*,
 	BilledARОстатки.Company.*,
@@ -419,6 +435,17 @@
 			<Type>
 				<v8:Type>cfg:ChartOfAccountsRef.Lawson</v8:Type>
 				<v8:Type>cfg:ChartOfAccountsRef.Oracle</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="NoComments" id="10">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Without comments</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
 			</Type>
 		</Attribute>
 	</Attributes>
