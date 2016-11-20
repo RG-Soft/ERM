@@ -200,8 +200,13 @@
 			ТОГДА ДоговорыКонтрагентов.СрокДействия
 		ИНАЧЕ ДоговорыКонтрагентов.crmExpiryDate
 	КОНЕЦ КАК ExpiryDate,
-	ДоговорыКонтрагентов.crmContractCurrency КАК ContractCurrency,
-	ДоговорыКонтрагентов.crmContractValueUSD КАК ContractValueUSD,
+	ВЫБОР
+		КОГДА ДоговорыКонтрагентов.SourceID = "HOB"
+			ТОГДА ДоговорыКонтрагентов.ВалютаВзаиморасчетов
+		Иначе ДоговорыКонтрагентов.crmContractCurrency
+	Конец КАК ContractCurrency,
+	ДоговорыКонтрагентов.crmContractValueUSD
+	ContractValueUSD,
 	ДоговорыКонтрагентов.PTDaysFrom,
 	ДоговорыКонтрагентов.СрокОплаты КАК PTDaysTo,
 	ДоговорыКонтрагентов.PTType,
