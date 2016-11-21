@@ -13,16 +13,35 @@
 	Запрос.Текст = 
 		"ВЫБРАТЬ
 		|	BilledARОстатки.Invoice КАК Invoice,
-		|	BilledARОстатки.Invoice.Дата как InvoiceДата
+		|	BilledARОстатки.Invoice.DueDateTo
+		|ПОМЕСТИТЬ Инвойсы
 		|ИЗ
 		|	РегистрНакопления.BilledAR.Остатки(&Дата, ) КАК BilledARОстатки
+		|
+		|ОБЪЕДИНИТЬ ВСЕ
+		|
+		|ВЫБРАТЬ
+		|	BilledAR.Invoice,
+		|	BilledAR.Invoice.DueDateTo
+		|ИЗ
+		|	РегистрНакопления.BilledAR КАК BilledAR
+		|ГДЕ
+		|	BilledAR.Период >= &НачалоТекущегоМесяца
+		|;
+		|
+		|////////////////////////////////////////////////////////////////////////////////
+		|ВЫБРАТЬ
+		|	Инвойсы.Invoice
+		|ИЗ
+		|	Инвойсы КАК Инвойсы
 		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments КАК InvoiceComments
-		|		ПО BilledARОстатки.Invoice = InvoiceComments.Invoice
+		|		ПО Инвойсы.Invoice = InvoiceComments.Invoice
 		|ГДЕ
 		|	InvoiceComments.Invoice ЕСТЬ NULL 
-		|	И BilledARОстатки.Invoice.DueDateTo > &Дата";
+		|	И Инвойсы.InvoiceDueDateTo > &Дата";
 	
 	Запрос.УстановитьПараметр("Дата", ДатаОстатков);
+	Запрос.УстановитьПараметр("НачалоТекущегоМесяца", НачалоМесяца(ТекущаяДата()));
 	
 	РезультатЗапроса = Запрос.Выполнить();
 	
