@@ -202,6 +202,10 @@
 			<dataPath>InvoiceКомментарийСтатусаВозвратаКС</dataPath>
 			<field>InvoiceКомментарийСтатусаВозвратаКС</field>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Collector</dataPath>
+			<field>Collector</field>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	BilledARОстатки.Client КАК Client,
@@ -376,7 +380,8 @@
 	ВТ_Остатки.Invoice.ДатаВозвратаКС,
 	ВТ_Остатки.Invoice.ДатаОтправкиКС,
 	ВТ_Остатки.Invoice.СтатусВозвратаКС,
-	ВТ_Остатки.Invoice.КомментарийСтатусаВозвратаКС
+	ВТ_Остатки.Invoice.КомментарийСтатусаВозвратаКС,
+	Collectors.Collector
 ИЗ
 	ВТ_Остатки КАК ВТ_Остатки
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ИерархияКлиентов КАК ВТ_ИерархияКлиентов
@@ -388,9 +393,13 @@
 			И ВТ_Остатки.Source = ВТ_ИдентификаторыКлиентовИтог.ТипСоответствия
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments.СрезПоследних({(&amp;ПериодОстатков)}, ) КАК InvoiceCommentsСрезПоследних
 		ПО ВТ_Остатки.Invoice = InvoiceCommentsСрезПоследних.Invoice
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.Collectors КАК Collectors
+		ПО ВТ_Остатки.Client = Collectors.Client
 ГДЕ
 	ВТ_Остатки.Client &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)
-	И ВТ_Остатки.Client &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.Unreconciled)</query>
+	И ВТ_Остатки.Client &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.Unreconciled)
+	И (Collectors.GeoMarket = ВТ_Остатки.Location.GeoMarket.Родитель
+			ИЛИ Collectors.GeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка))</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>DueFrom</dataPath>
@@ -754,7 +763,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Client.CollectionSpecialist</dcsset:field>
+					<dcsset:field>Collector</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
