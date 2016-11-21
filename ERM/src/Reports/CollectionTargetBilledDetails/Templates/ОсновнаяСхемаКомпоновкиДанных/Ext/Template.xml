@@ -357,12 +357,7 @@
 		ИНАЧЕ ""
 	КОНЕЦ КАК TransType,
 	ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0) КАК Rate,
-	ЕСТЬNULL(ВЫБОР
-			КОГДА ВТ_Остатки.Invoice.DueDateTo &lt;= &amp;Период
-					И InvoiceCommentsСрезПоследних.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
-				ТОГДА ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка)
-			ИНАЧЕ InvoiceCommentsСрезПоследних.Status
-		КОНЕЦ, ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка)) КАК Status,
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Status, ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка)) КАК Status,
 	InvoiceCommentsСрезПоследних.ConfirmedBy,
 	InvoiceCommentsСрезПоследних.Comment,
 	ВТ_Остатки.ПредставлениеДокумента,
