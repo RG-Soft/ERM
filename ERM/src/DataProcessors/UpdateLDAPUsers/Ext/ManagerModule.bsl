@@ -22,7 +22,7 @@
 	
 	//Получаем имя домена к которому принадлежит данный компьютер 
 	Попытка
-		RootDSE = ПолучитьCOMОбъект("LDAP://RootDSE");
+		RootDSE = ПолучитьCOMОбъект("LDAP://slb.com/RootDSE");
 	Исключение
 		СтруктураВозврата.Вставить("ОшибкаЗаполнения", "Ошибка ПолучитьCOMОбъект(LDAP://RootDSE): " + ОписаниеОшибки());
 		СоединениеАДО.Close();
@@ -31,19 +31,19 @@
 	
 	ТекущийДомен = RootDSE.Get("defaultNamingContext");
 	
-	//Подключаемся к текущему домену
-	Попытка
-		ОбъектТекущегоДомена = ПолучитьCOMОбъект("LDAP://" + ТекущийДомен); 
-	Исключение
-		СтруктураВозврата.Вставить("ОшибкаЗаполнения", "Ошибка ПолучитьCOMОбъект "+"LDAP://" + ТекущийДомен+": " + ОписаниеОшибки());
-		СоединениеАДО.Close();
-		Возврат;
-	КонецПопытки;
-	
-	ИмяДомена = ОбъектТекущегоДомена.dc;
+	////Подключаемся к текущему домену
+	//Попытка
+	//	ОбъектТекущегоДомена = ПолучитьCOMОбъект("LDAP://" + ТекущийДомен); 
+	//Исключение
+	//	СтруктураВозврата.Вставить("ОшибкаЗаполнения", "Ошибка ПолучитьCOMОбъект "+"LDAP://" + ТекущийДомен+": " + ОписаниеОшибки());
+	//	СоединениеАДО.Close();
+	//	Возврат;
+	//КонецПопытки;
+	//
+	//ИмяДомена = ОбъектТекущегоДомена.dc;
 	
 	//Формируем команду получения групп из блока Groups
-	КомандаАДО.CommandText = "<LDAP://OU=RU,OU=rca," + ТекущийДомен + ">" + ";(&(objectClass=top)(objectClass=organizationalUnit));name;onelevel";
+	КомандаАДО.CommandText = "<LDAP://DIR.slb.com/OU=RU,OU=rca,DC=DIR," + ТекущийДомен + ">" + ";(&(objectClass=top)(objectClass=organizationalUnit));name;onelevel";
 	КомандаАДО.Properties("Page Size").Value     = 100;
 	КомандаАДО.Properties("Timeout").Value       = 30;
 	КомандаАДО.Properties("Cache Results").Value = Ложь;
@@ -74,7 +74,7 @@
 		
 		// получаем пользователей текущей группы
 		
-		КомандаАДО.CommandText = "<LDAP://ou=Users,OU=Tyumen-RU0994,OU=RU,OU=rca," + ТекущийДомен + ">" + ";(&(objectCategory=person)(objectClass=user));sAMAccountName,userAccountControl,displayName,department,mail,telephoneNumber;onelevel";
+		КомандаАДО.CommandText = "<LDAP://DIR.slb.com/ou=Users,OU=Tyumen-RU0994,OU=RU,OU=rca,DC=DIR," + ТекущийДомен + ">" + ";(&(objectCategory=person)(objectClass=user));sAMAccountName,userAccountControl,displayName,department,mail,telephoneNumber;onelevel";
 		
 		Попытка
 			ВыборкаПользователейГруппы = КомандаАДО.Execute();  
