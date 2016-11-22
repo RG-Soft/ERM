@@ -206,6 +206,16 @@
 			<dataPath>Collector</dataPath>
 			<field>Collector</field>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Agreement</dataPath>
+			<field>Agreement</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Agreement</v8:content>
+				</v8:item>
+			</title>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	BilledARОстатки.Client КАК Client,
@@ -381,7 +391,12 @@
 	ВТ_Остатки.Invoice.ДатаОтправкиКС,
 	ВТ_Остатки.Invoice.СтатусВозвратаКС,
 	ВТ_Остатки.Invoice.КомментарийСтатусаВозвратаКС,
-	Collectors.Collector
+	Collectors.Collector,
+	ВЫБОР
+		КОГДА ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Radius)
+			ТОГДА ВТ_Остатки.Invoice.Agreement
+		ИНАЧЕ ВТ_Остатки.Invoice.Contract.crmContractName
+	КОНЕЦ КАК Agreement
 ИЗ
 	ВТ_Остатки КАК ВТ_Остатки
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ИерархияКлиентов КАК ВТ_ИерархияКлиентов
@@ -868,7 +883,7 @@
 					<dcsset:field>USDAmount</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.Contract.crmContractName</dcsset:field>
+					<dcsset:field>Agreement</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
