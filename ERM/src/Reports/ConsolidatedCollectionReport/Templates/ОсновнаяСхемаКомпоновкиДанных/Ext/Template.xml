@@ -110,18 +110,24 @@
 			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>DateOfCollection</dataPath>
-			<field>DateOfCollection</field>
+			<dataPath>InvoiceNum</dataPath>
+			<field>InvoiceNum</field>
 			<title xsi:type="v8:LocalStringType">
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>Date of collection</v8:content>
+					<v8:content>Invoice num</v8:content>
 				</v8:item>
 			</title>
-			<role>
-				<dcscom:periodNumber>1</dcscom:periodNumber>
-				<dcscom:periodType>Main</dcscom:periodType>
-			</role>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>ДатаПлатежа</dataPath>
+			<field>ДатаПлатежа</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Дата платежа</v8:content>
+				</v8:item>
+			</title>
 		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
@@ -133,10 +139,14 @@
 	PaymentsОбороты.Invoice,
 	PaymentsОбороты.Currency,
 	PaymentsОбороты.AmountОборот,
-	PaymentsОбороты.Период
+	ВЫБОР
+		КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.ПроводкаDSS
+			ТОГДА PaymentsОбороты.Регистратор.DateLawson
+		ИНАЧЕ PaymentsОбороты.Регистратор.Дата
+	КОНЕЦ КАК ДатаПлатежа
 ПОМЕСТИТЬ Исходные
 ИЗ
-	РегистрНакопления.Payments.Обороты(, , День, ) КАК PaymentsОбороты
+	РегистрНакопления.Payments.Обороты(, , Авто, ) КАК PaymentsОбороты
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -161,7 +171,7 @@
 			ИНАЧЕ Исходные.AmountОборот / ВнутренниеКурсыВалютСрезПоследних.Курс
 		КОНЕЦ) КАК BaseAmount,
 	ТИПЗНАЧЕНИЯ(Исходные.Invoice) КАК Type,
-	МАКСИМУМ(Исходные.Период) КАК DateOfCollection
+	МАКСИМУМ(Исходные.ДатаПлатежа) КАК ДатаПлатежа
 ПОМЕСТИТЬ Итоговый
 ИЗ
 	Исходные КАК Исходные
@@ -189,7 +199,11 @@
 	Итоговый.Source,
 	Итоговый.Location,
 	Итоговый.SubSubSegment,
-	Итоговый.Invoice,
+	ВЫБОР
+		КОГДА Итоговый.Invoice ССЫЛКА Документ.Invoice
+			ТОГДА Итоговый.Invoice.DocNumber
+		ИНАЧЕ Итоговый.Invoice.PaymentNumber
+	КОНЕЦ КАК InvoiceNum,
 	Итоговый.Currency,
 	Итоговый.AmountОборот,
 	Итоговый.CustomerID,
@@ -197,11 +211,14 @@
 	Итоговый.Кратность,
 	Итоговый.BaseAmount,
 	Итоговый.Type,
-	Итоговый.DateOfCollection
+	Итоговый.Invoice,
+	Итоговый.ДатаПлатежа
 ИЗ
 	Итоговый КАК Итоговый
 ГДЕ
-	Итоговый.BaseAmount &lt;&gt; 0</query>
+	Итоговый.BaseAmount &lt;&gt; 0
+	И (Итоговый.Invoice ССЫЛКА Документ.Invoice
+			ИЛИ Итоговый.Invoice ССЫЛКА Документ.CashBatch)</query>
 	</dataSet>
 	<parameter>
 		<name>НачалоПериода</name>
@@ -341,7 +358,7 @@
 					<dcsset:field>Type</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.Номер</dcsset:field>
+					<dcsset:field>InvoiceNum</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -380,7 +397,7 @@
 					<dcsset:field>Currency</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>DateOfCollection</dcsset:field>
+					<dcsset:field>ДатаПлатежа</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
