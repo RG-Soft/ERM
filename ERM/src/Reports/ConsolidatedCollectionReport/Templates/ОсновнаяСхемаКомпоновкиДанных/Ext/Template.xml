@@ -44,9 +44,6 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Invoice</dataPath>
 			<field>Invoice</field>
-			<role>
-				<dcscom:dimension>true</dcscom:dimension>
-			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Company</dataPath>
@@ -74,16 +71,6 @@
 			<field>Кратность</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>CustomerID</dataPath>
-			<field>CustomerID</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Customer ID</v8:content>
-				</v8:item>
-			</title>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>BaseAmount</dataPath>
 			<field>BaseAmount</field>
 			<title xsi:type="v8:LocalStringType">
@@ -100,14 +87,12 @@
 			</appearance>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>Type</dataPath>
-			<field>Type</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Type</v8:content>
-				</v8:item>
-			</title>
+			<dataPath>CashBatch</dataPath>
+			<field>CashBatch</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>CashBatchДата</dataPath>
+			<field>CashBatchДата</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>InvoiceNum</dataPath>
@@ -120,12 +105,12 @@
 			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>ДатаПлатежа</dataPath>
-			<field>ДатаПлатежа</field>
+			<dataPath>Type</dataPath>
+			<field>Type</field>
 			<title xsi:type="v8:LocalStringType">
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>Дата платежа</v8:content>
+					<v8:content>Type</v8:content>
 				</v8:item>
 			</title>
 		</field>
@@ -136,17 +121,20 @@
 	PaymentsОбороты.Source,
 	PaymentsОбороты.Location,
 	PaymentsОбороты.SubSubSegment,
-	PaymentsОбороты.Invoice,
+	ВЫБОР
+		КОГДА PaymentsОбороты.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
+			ТОГДА PaymentsОбороты.Invoice
+		ИНАЧЕ PaymentsОбороты.CashBatch
+	КОНЕЦ КАК Invoice,
 	PaymentsОбороты.Currency,
 	PaymentsОбороты.AmountОборот,
-	ВЫБОР
-		КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.ПроводкаDSS
-			ТОГДА PaymentsОбороты.Регистратор.DateLawson
-		ИНАЧЕ PaymentsОбороты.Регистратор.Дата
-	КОНЕЦ КАК ДатаПлатежа
+	PaymentsОбороты.CashBatch.Дата
 ПОМЕСТИТЬ Исходные
 ИЗ
-	РегистрНакопления.Payments.Обороты(, , Авто, ) КАК PaymentsОбороты
+	РегистрНакопления.Payments.Обороты(, , , ) КАК PaymentsОбороты
+ГДЕ
+	(PaymentsОбороты.Invoice ССЫЛКА Документ.Invoice
+			ИЛИ PaymentsОбороты.Invoice ССЫЛКА Документ.CashBatch)
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -156,10 +144,8 @@
 	Исходные.Source,
 	Исходные.Location,
 	Исходные.SubSubSegment,
-	Исходные.Invoice,
 	Исходные.Currency,
 	СУММА(Исходные.AmountОборот) КАК AmountОборот,
-	Исходные.Invoice.ClientID КАК CustomerID,
 	ВнутренниеКурсыВалютСрезПоследних.Курс,
 	ВнутренниеКурсыВалютСрезПоследних.Кратность,
 	СУММА(ВЫБОР
@@ -170,9 +156,14 @@
 				ТОГДА 0
 			ИНАЧЕ Исходные.AmountОборот / ВнутренниеКурсыВалютСрезПоследних.Курс
 		КОНЕЦ) КАК BaseAmount,
+	Исходные.CashBatchДата,
+	ВЫБОР
+		КОГДА Исходные.Invoice ССЫЛКА Документ.Invoice
+			ТОГДА Исходные.Invoice.DocNumber
+		ИНАЧЕ Исходные.Invoice.PaymentNumber
+	КОНЕЦ КАК InvoiceNum,
 	ТИПЗНАЧЕНИЯ(Исходные.Invoice) КАК Type,
-	МАКСИМУМ(Исходные.ДатаПлатежа) КАК ДатаПлатежа
-ПОМЕСТИТЬ Итоговый
+	Исходные.Invoice
 ИЗ
 	Исходные КАК Исходные
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;КонецПериода)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
@@ -184,41 +175,20 @@
 	Исходные.Source,
 	Исходные.SubSubSegment,
 	Исходные.Location,
-	Исходные.Invoice,
 	Исходные.Currency,
 	ВнутренниеКурсыВалютСрезПоследних.Курс,
 	ВнутренниеКурсыВалютСрезПоследних.Кратность,
-	ТИПЗНАЧЕНИЯ(Исходные.Invoice),
-	Исходные.Invoice.ClientID
-;
-
-////////////////////////////////////////////////////////////////////////////////
-ВЫБРАТЬ
-	Итоговый.Client,
-	Итоговый.Company,
-	Итоговый.Source,
-	Итоговый.Location,
-	Итоговый.SubSubSegment,
+	Исходные.CashBatchДата,
 	ВЫБОР
-		КОГДА Итоговый.Invoice ССЫЛКА Документ.Invoice
-			ТОГДА Итоговый.Invoice.DocNumber
-		ИНАЧЕ Итоговый.Invoice.PaymentNumber
-	КОНЕЦ КАК InvoiceNum,
-	Итоговый.Currency,
-	Итоговый.AmountОборот,
-	Итоговый.CustomerID,
-	Итоговый.Курс,
-	Итоговый.Кратность,
-	Итоговый.BaseAmount,
-	Итоговый.Type,
-	Итоговый.Invoice,
-	Итоговый.ДатаПлатежа
-ИЗ
-	Итоговый КАК Итоговый
-ГДЕ
-	Итоговый.BaseAmount &lt;&gt; 0
-	И (Итоговый.Invoice ССЫЛКА Документ.Invoice
-			ИЛИ Итоговый.Invoice ССЫЛКА Документ.CashBatch)</query>
+		КОГДА Исходные.Invoice ССЫЛКА Документ.Invoice
+			ТОГДА Исходные.Invoice.DocNumber
+		ИНАЧЕ Исходные.Invoice.PaymentNumber
+	КОНЕЦ,
+	ТИПЗНАЧЕНИЯ(Исходные.Invoice),
+	Исходные.Invoice
+
+ИМЕЮЩИЕ
+	СУММА(Исходные.AmountОборот) &lt;&gt; 0</query>
 	</dataSet>
 	<parameter>
 		<name>НачалоПериода</name>
@@ -319,7 +289,7 @@
 					<dcsset:field>Client</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>CustomerID</dcsset:field>
+					<dcsset:field>Invoice.ClientID</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -397,7 +367,7 @@
 					<dcsset:field>Currency</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>ДатаПлатежа</dcsset:field>
+					<dcsset:field>CashBatchДата</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -433,6 +403,14 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 			</dcsset:selection>
+			<dcsset:filter>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:use>false</dcsset:use>
+					<dcsset:left xsi:type="dcscor:Field">Source</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:userSettingID>1984ea6c-3b71-4bc4-990e-3a0442ec1301</dcsset:userSettingID>
+				</dcsset:item>
+			</dcsset:filter>
 			<dcsset:dataParameters>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:use>false</dcscor:use>
