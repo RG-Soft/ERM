@@ -1,0 +1,434 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5">
+	<AutoCommandBar name="ФормаКоманднаяПанель" id="-1"/>
+	<Events>
+		<Event name="OnCreateAtServer">ПриСозданииНаСервере</Event>
+	</Events>
+	<ChildItems>
+		<UsualGroup name="ГруппаОтборы" id="56">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Группа отборы</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Группа отборы</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="ГруппаОтборыРасширеннаяПодсказка" id="57"/>
+			<ChildItems>
+				<InputField name="Period" id="70">
+					<DataPath>Period</DataPath>
+					<ContextMenu name="PeriodКонтекстноеМеню" id="71"/>
+					<ExtendedTooltip name="PeriodРасширеннаяПодсказка" id="72"/>
+					<Events>
+						<Event name="OnChange">PeriodПриИзменении</Event>
+					</Events>
+				</InputField>
+				<InputField name="Source" id="58">
+					<DataPath>Source</DataPath>
+					<ContextMenu name="SourceКонтекстноеМеню" id="59"/>
+					<ExtendedTooltip name="SourceРасширеннаяПодсказка" id="60"/>
+					<Events>
+						<Event name="OnChange">SourceПриИзменении</Event>
+					</Events>
+				</InputField>
+				<InputField name="GeoMarket" id="64">
+					<DataPath>GeoMarket</DataPath>
+					<ContextMenu name="GeoMarketКонтекстноеМеню" id="65"/>
+					<ExtendedTooltip name="GeoMarketРасширеннаяПодсказка" id="66"/>
+					<Events>
+						<Event name="OnChange">GeoMarketПриИзменении</Event>
+					</Events>
+				</InputField>
+				<InputField name="Client" id="61">
+					<DataPath>Client</DataPath>
+					<ContextMenu name="ClientКонтекстноеМеню" id="62"/>
+					<ExtendedTooltip name="ClientРасширеннаяПодсказка" id="63"/>
+					<Events>
+						<Event name="OnChange">ClientПриИзменении</Event>
+					</Events>
+				</InputField>
+				<InputField name="Company" id="67">
+					<DataPath>Company</DataPath>
+					<ChoiceParameterLinks>
+						<xr:Link>
+							<xr:Name>Отбор.Source</xr:Name>
+							<xr:DataPath xsi:type="xs:string">Source</xr:DataPath>
+							<xr:ValueChange>Clear</xr:ValueChange>
+						</xr:Link>
+					</ChoiceParameterLinks>
+					<ContextMenu name="CompanyКонтекстноеМеню" id="68"/>
+					<ExtendedTooltip name="CompanyРасширеннаяПодсказка" id="69"/>
+					<Events>
+						<Event name="OnChange">CompanyПриИзменении</Event>
+					</Events>
+				</InputField>
+				<InputField name="Account" id="81">
+					<DataPath>Account</DataPath>
+					<ContextMenu name="AccountКонтекстноеМеню" id="82"/>
+					<ExtendedTooltip name="AccountРасширеннаяПодсказка" id="83"/>
+					<Events>
+						<Event name="OnChange">AccountПриИзменении</Event>
+					</Events>
+				</InputField>
+				<CheckBoxField name="Comment" id="87">
+					<DataPath>NoComments</DataPath>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="CommentКонтекстноеМеню" id="88"/>
+					<ExtendedTooltip name="CommentРасширеннаяПодсказка" id="89"/>
+					<Events>
+						<Event name="OnChange">CommentПриИзменении</Event>
+					</Events>
+				</CheckBoxField>
+			</ChildItems>
+		</UsualGroup>
+		<Table name="SalesOrders" id="90">
+			<UseAlternationRowColor>true</UseAlternationRowColor>
+			<EnableStartDrag>true</EnableStartDrag>
+			<DataPath>SalesOrders</DataPath>
+			<RowPictureDataPath>SalesOrders.DefaultPicture</RowPictureDataPath>
+			<AutoRefresh>false</AutoRefresh>
+			<AutoRefreshPeriod>60</AutoRefreshPeriod>
+			<Period>
+				<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
+				<v8:startDate>0001-01-01T00:00:00</v8:startDate>
+				<v8:endDate>0001-01-01T00:00:00</v8:endDate>
+			</Period>
+			<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
+			<RestoreCurrentRow>false</RestoreCurrentRow>
+			<TopLevelParent xsi:nil="true"/>
+			<ShowRoot>true</ShowRoot>
+			<AllowRootChoice>false</AllowRootChoice>
+			<UpdateOnDataChange>Auto</UpdateOnDataChange>
+			<ContextMenu name="SalesOrdersКонтекстноеМеню" id="91"/>
+			<AutoCommandBar name="SalesOrdersКоманднаяПанель" id="92"/>
+			<ExtendedTooltip name="SalesOrdersРасширеннаяПодсказка" id="93"/>
+			<SearchStringAddition name="SalesOrdersСтрокаПоиска" id="94">
+				<AdditionSource>
+					<Item>SalesOrders</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="SalesOrdersСтрокаПоискаКонтекстноеМеню" id="95"/>
+				<ExtendedTooltip name="SalesOrdersСтрокаПоискаРасширеннаяПодсказка" id="96"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="SalesOrdersСостояниеПросмотра" id="97">
+				<AdditionSource>
+					<Item>SalesOrders</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="SalesOrdersСостояниеПросмотраКонтекстноеМеню" id="98"/>
+				<ExtendedTooltip name="SalesOrdersСостояниеПросмотраРасширеннаяПодсказка" id="99"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="SalesOrdersУправлениеПоиском" id="100">
+				<AdditionSource>
+					<Item>SalesOrders</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="SalesOrdersУправлениеПоискомКонтекстноеМеню" id="101"/>
+				<ExtendedTooltip name="SalesOrdersУправлениеПоискомРасширеннаяПодсказка" id="102"/>
+			</SearchControlAddition>
+			<Events>
+				<Event name="Selection">SalesOrdersВыбор</Event>
+				<Event name="OnActivateCell">SalesOrdersПриАктивизацииЯчейки</Event>
+			</Events>
+			<ChildItems>
+				<CheckBoxField name="SalesOrdersПометка" id="142">
+					<DataPath>SalesOrders.Пометка</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content> </v8:content>
+						</v8:item>
+					</Title>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="SalesOrdersПометкаКонтекстноеМеню" id="143"/>
+					<ExtendedTooltip name="SalesOrdersПометкаРасширеннаяПодсказка" id="144"/>
+				</CheckBoxField>
+				<LabelField name="SalesOrdersClient" id="109">
+					<DataPath>SalesOrders.Client</DataPath>
+					<ContextMenu name="SalesOrdersClientКонтекстноеМеню" id="110"/>
+					<ExtendedTooltip name="SalesOrdersClientРасширеннаяПодсказка" id="111"/>
+				</LabelField>
+				<LabelField name="SalesOrdersSalesNo" id="133">
+					<DataPath>SalesOrders.SalesNo</DataPath>
+					<ContextMenu name="SalesOrdersSalesNoКонтекстноеМеню" id="134"/>
+					<ExtendedTooltip name="SalesOrdersSalesNoРасширеннаяПодсказка" id="135"/>
+				</LabelField>
+				<LabelField name="SalesOrdersSalesDate" id="130">
+					<DataPath>SalesOrders.SalesDate</DataPath>
+					<ContextMenu name="SalesOrdersSalesDateКонтекстноеМеню" id="131"/>
+					<ExtendedTooltip name="SalesOrdersSalesDateРасширеннаяПодсказка" id="132"/>
+				</LabelField>
+				<LabelField name="SalesOrdersSource" id="136">
+					<DataPath>SalesOrders.Source</DataPath>
+					<ContextMenu name="SalesOrdersSourceКонтекстноеМеню" id="137"/>
+					<ExtendedTooltip name="SalesOrdersSourceРасширеннаяПодсказка" id="138"/>
+				</LabelField>
+				<LabelField name="SalesOrdersGeoMarket" id="118">
+					<DataPath>SalesOrders.GeoMarket</DataPath>
+					<ContextMenu name="SalesOrdersGeoMarketКонтекстноеМеню" id="119"/>
+					<ExtendedTooltip name="SalesOrdersGeoMarketРасширеннаяПодсказка" id="120"/>
+				</LabelField>
+				<LabelField name="SalesOrdersCompany" id="112">
+					<DataPath>SalesOrders.Company</DataPath>
+					<ContextMenu name="SalesOrdersCompanyКонтекстноеМеню" id="113"/>
+					<ExtendedTooltip name="SalesOrdersCompanyРасширеннаяПодсказка" id="114"/>
+				</LabelField>
+				<LabelField name="SalesOrdersSubSubSegment" id="139">
+					<DataPath>SalesOrders.SubSubSegment</DataPath>
+					<ContextMenu name="SalesOrdersSubSubSegmentКонтекстноеМеню" id="140"/>
+					<ExtendedTooltip name="SalesOrdersSubSubSegmentРасширеннаяПодсказка" id="141"/>
+				</LabelField>
+				<LabelField name="SalesOrdersLocation" id="121">
+					<DataPath>SalesOrders.Location</DataPath>
+					<ContextMenu name="SalesOrdersLocationКонтекстноеМеню" id="122"/>
+					<ExtendedTooltip name="SalesOrdersLocationРасширеннаяПодсказка" id="123"/>
+				</LabelField>
+				<LabelField name="SalesOrdersCurrency" id="115">
+					<DataPath>SalesOrders.Currency</DataPath>
+					<ContextMenu name="SalesOrdersCurrencyКонтекстноеМеню" id="116"/>
+					<ExtendedTooltip name="SalesOrdersCurrencyРасширеннаяПодсказка" id="117"/>
+				</LabelField>
+				<LabelField name="SalesOrdersSalesAmount" id="127">
+					<DataPath>SalesOrders.SalesAmount</DataPath>
+					<ContextMenu name="SalesOrdersSalesAmountКонтекстноеМеню" id="128"/>
+					<ExtendedTooltip name="SalesOrdersSalesAmountРасширеннаяПодсказка" id="129"/>
+				</LabelField>
+				<LabelField name="SalesOrdersRemainingAmount" id="124">
+					<DataPath>SalesOrders.RemainingAmount</DataPath>
+					<ContextMenu name="SalesOrdersRemainingAmountКонтекстноеМеню" id="125"/>
+					<ExtendedTooltip name="SalesOrdersRemainingAmountРасширеннаяПодсказка" id="126"/>
+				</LabelField>
+			</ChildItems>
+		</Table>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Объект" id="1">
+			<Type>
+				<v8:Type>cfg:DataProcessorObject.BillingSpecialistDesktop</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+		</Attribute>
+		<Attribute name="SalesOrders" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Sales orders</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:DynamicList</v8:Type>
+			</Type>
+			<UseAlways>
+				<Field>~SalesOrders.Invoice</Field>
+			</UseAlways>
+			<Settings xsi:type="DynamicList">
+				<ManualQuery>true</ManualQuery>
+				<DynamicDataRead>false</DynamicDataRead>
+				<QueryText>ВЫБРАТЬ
+	UnbilledARОстатки.Client КАК Client,
+	UnbilledARОстатки.Company,
+	UnbilledARОстатки.Source,
+	UnbilledARОстатки.Account.БазовыйЭлемент КАК Account,
+	UnbilledARОстатки.Location.БазовыйЭлемент КАК Location,
+	UnbilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
+	UnbilledARОстатки.SubSubSegment.БазовыйЭлемент КАК SubSubSegment,
+	UnbilledARОстатки.Currency,
+	UnbilledARОстатки.AU,
+	UnbilledARОстатки.AmountОстаток КАК RemainingAmount,
+	ВЫБОР
+		КОГДА SalesOrdersCommentsСрезПоследних.SalesOrder ЕСТЬ NULL 
+			ТОГДА ИСТИНА
+		ИНАЧЕ ЛОЖЬ
+	КОНЕЦ КАК НетКомментария,
+	ВЫБОР
+		КОГДА UnbilledARОстатки.SalesOrder В (&amp;МассивОтмеченныхSalesOrders)
+			ТОГДА ИСТИНА
+		ИНАЧЕ ЛОЖЬ
+	КОНЕЦ КАК Пометка,
+	SalesOrdersCommentsСрезПоследних.SalesOrder.Номер КАК SalesNo,
+	SalesOrdersCommentsСрезПоследних.SalesOrder.Дата КАК SalesDate,
+	UnbilledARОстатки.SalesOrder.Amount КАК SalesAmount
+ИЗ
+	РегистрНакопления.UnbilledAR.Остатки({(&amp;ПериодОстатков)}, {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket)}) КАК UnbilledARОстатки,
+	РегистрСведений.SalesOrdersComments.СрезПоследних(, ) КАК SalesOrdersCommentsСрезПоследних
+{ГДЕ
+	UnbilledARОстатки.Source.*,
+	UnbilledARОстатки.Company.*,
+	UnbilledARОстатки.Client.*}</QueryText>
+				<ListSettings>
+					<dcsset:filter>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>dfcece9d-5077-440b-b6b3-45a5cb4538eb</dcsset:userSettingID>
+					</dcsset:filter>
+					<dcsset:order>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
+					</dcsset:order>
+					<dcsset:conditionalAppearance>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
+					</dcsset:conditionalAppearance>
+					<dcsset:itemsViewMode>Normal</dcsset:itemsViewMode>
+					<dcsset:itemsUserSettingID>911b6018-f537-43e8-a417-da56b22f9aec</dcsset:itemsUserSettingID>
+				</ListSettings>
+			</Settings>
+		</Attribute>
+		<Attribute name="ОтмеченныеSalesOrders" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Отмеченные sales orders</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueListType</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="Source" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Source</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:EnumRef.ТипыСоответствий</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="Client" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Client</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:CatalogRef.Контрагенты</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="GeoMarket" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Geo market</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:CatalogRef.HFM_Geomarkets</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="Company" id="7">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Company</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:CatalogRef.Организации</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="Period" id="8">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Period</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:dateTime</v8:Type>
+				<v8:DateQualifiers>
+					<v8:DateFractions>Date</v8:DateFractions>
+				</v8:DateQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="Account" id="9">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Account</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:ChartOfAccountsRef.Lawson</v8:Type>
+				<v8:Type>cfg:ChartOfAccountsRef.Oracle</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="NoComments" id="10">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Without comments</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="УстановитьФлажки" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Установить флажки</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Установить флажки</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.CheckAll</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>УстановитьФлажки</Action>
+			<Representation>Picture</Representation>
+		</Command>
+		<Command name="СнятьФлажки" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Снять флажки</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Снять флажки</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.UncheckAll</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>СнятьФлажки</Action>
+			<Representation>Picture</Representation>
+		</Command>
+		<Command name="AddStatus" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Add status</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Add status</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>AddStatus</Action>
+		</Command>
+	</Commands>
+</Form>
