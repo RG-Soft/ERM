@@ -47,29 +47,26 @@
 	
 	Для каждого ЭлементСписка Из СписокSalesOrders Цикл
 		
-		НЗ.Очистить();
-		НЗ.Отбор.SalesOrder.Установить(ЭлементСписка.Значение);
-		
-		Запись = НЗ.Добавить();
-		Запись.Период = Период;
-		//Запись.Invoice = ЭлементСписка.Значение;
-		//Запись.User = User;
-		//Запись.Status = Status;
-		//Запись.ConfirmedBy = ConfirmedBy;
-		//Запись.Comment = Comment;
-		//Запись.ForecastDate = ForecastDate;
-		//Запись.CustInputDate = CustInputDate;
-		//Запись.CustomerRepresentative = CustomerRepresentative;
-		//Запись.CustomerInputDetails = CustomerInputDetails;
-		//Запись.SLBAssignedTo = SLBAssignedTo;
-		//Запись.RemedialWorkPlan = RemedialWorkPlan;
-		//Запись.RWDTargetDate = RWDTargetDate;
-		
-		НЗ.Записать(Ложь);
-		
+	СтруктураРеквизитовПроблемы = Новый Структура("Дата, SalesOrder, User, Reason, Billed, ExpectedDateForInvoice, EscalateTo, Details, Responsibles");
+	
+	ЗаполнитьЗначенияСвойств(СтруктураРеквизитовПроблемы, ЭтотОбъект);
+	
+	СтруктураРеквизитовПроблемы.Дата = Период;
+	СтруктураРеквизитовПроблемы.SalesOrder = ЭлементСписка.Значение;
+	
+	Problem = РегистрыСведений.SalesOrdersComments.СоздатьSalesOrderProblem(СтруктураРеквизитовПроблемы);
+
+	НЗ.Очистить();
+	НЗ.Отбор.SalesOrder.Установить(ЭлементСписка.Значение);
+
+	Запись = НЗ.Добавить();
+	Запись.Период = Период;
+	Запись.SalesOrder = ЭлементСписка.Значение;
+	Запись.Problem = Problem;
+	НЗ.Записать(Ложь);
+	
 	КонецЦикла;
 
-	
 КонецПроцедуры
 
 &НаКлиенте

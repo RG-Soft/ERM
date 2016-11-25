@@ -108,7 +108,30 @@
 			<AllowRootChoice>false</AllowRootChoice>
 			<UpdateOnDataChange>Auto</UpdateOnDataChange>
 			<ContextMenu name="SalesOrdersКонтекстноеМеню" id="91"/>
-			<AutoCommandBar name="SalesOrdersКоманднаяПанель" id="92"/>
+			<AutoCommandBar name="SalesOrdersКоманднаяПанель" id="92">
+				<ChildItems>
+					<Button name="SalesOrdersУстановитьФлажки" id="145">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.УстановитьФлажки</CommandName>
+						<ExtendedTooltip name="SalesOrdersУстановитьФлажкиРасширеннаяПодсказка" id="146"/>
+					</Button>
+					<Button name="SalesOrdersСнятьФлажки" id="147">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.СнятьФлажки</CommandName>
+						<ExtendedTooltip name="SalesOrdersСнятьФлажкиРасширеннаяПодсказка" id="148"/>
+					</Button>
+					<Button name="SalesOrdersОбновить" id="151">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Item.SalesOrders.StandardCommand.Refresh</CommandName>
+						<ExtendedTooltip name="SalesOrdersОбновитьРасширеннаяПодсказка" id="152"/>
+					</Button>
+					<Button name="SalesOrdersAddStatus" id="149">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.AddStatus</CommandName>
+						<ExtendedTooltip name="SalesOrdersAddStatusРасширеннаяПодсказка" id="150"/>
+					</Button>
+				</ChildItems>
+			</AutoCommandBar>
 			<ExtendedTooltip name="SalesOrdersРасширеннаяПодсказка" id="93"/>
 			<SearchStringAddition name="SalesOrdersСтрокаПоиска" id="94">
 				<AdditionSource>
@@ -206,6 +229,12 @@
 					<ContextMenu name="SalesOrdersRemainingAmountКонтекстноеМеню" id="125"/>
 					<ExtendedTooltip name="SalesOrdersRemainingAmountРасширеннаяПодсказка" id="126"/>
 				</LabelField>
+				<LabelField name="SalesOrdersSalesOrder" id="153">
+					<DataPath>SalesOrders.SalesOrder</DataPath>
+					<Visible>false</Visible>
+					<ContextMenu name="SalesOrdersSalesOrderКонтекстноеМеню" id="154"/>
+					<ExtendedTooltip name="SalesOrdersSalesOrderРасширеннаяПодсказка" id="155"/>
+				</LabelField>
 			</ChildItems>
 		</Table>
 	</ChildItems>
@@ -234,14 +263,14 @@
 				<DynamicDataRead>false</DynamicDataRead>
 				<QueryText>ВЫБРАТЬ
 	UnbilledARОстатки.Client КАК Client,
-	UnbilledARОстатки.Company,
-	UnbilledARОстатки.Source,
+	UnbilledARОстатки.Company КАК Company,
+	UnbilledARОстатки.Source КАК Source,
 	UnbilledARОстатки.Account.БазовыйЭлемент КАК Account,
 	UnbilledARОстатки.Location.БазовыйЭлемент КАК Location,
 	UnbilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
 	UnbilledARОстатки.SubSubSegment.БазовыйЭлемент КАК SubSubSegment,
-	UnbilledARОстатки.Currency,
-	UnbilledARОстатки.AU,
+	UnbilledARОстатки.Currency КАК Currency,
+	UnbilledARОстатки.AU КАК AU,
 	UnbilledARОстатки.AmountОстаток КАК RemainingAmount,
 	ВЫБОР
 		КОГДА SalesOrdersCommentsСрезПоследних.SalesOrder ЕСТЬ NULL 
@@ -253,12 +282,14 @@
 			ТОГДА ИСТИНА
 		ИНАЧЕ ЛОЖЬ
 	КОНЕЦ КАК Пометка,
-	SalesOrdersCommentsСрезПоследних.SalesOrder.Номер КАК SalesNo,
-	SalesOrdersCommentsСрезПоследних.SalesOrder.Дата КАК SalesDate,
-	UnbilledARОстатки.SalesOrder.Amount КАК SalesAmount
+	UnbilledARОстатки.SalesOrder.Amount КАК SalesAmount,
+	UnbilledARОстатки.SalesOrder,
+	UnbilledARОстатки.SalesOrder.Дата КАК SalesDate,
+	UnbilledARОстатки.SalesOrder.Номер КАК SalesNo
 ИЗ
-	РегистрНакопления.UnbilledAR.Остатки({(&amp;ПериодОстатков)}, {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket)}) КАК UnbilledARОстатки,
-	РегистрСведений.SalesOrdersComments.СрезПоследних(, ) КАК SalesOrdersCommentsСрезПоследних
+	РегистрНакопления.UnbilledAR.Остатки({(&amp;ПериодОстатков)}, SalesOrder ССЫЛКА Документ.SalesOrder {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket)}) КАК UnbilledARОстатки
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних(, ) КАК SalesOrdersCommentsСрезПоследних
+		ПО UnbilledARОстатки.SalesOrder = SalesOrdersCommentsСрезПоследних.SalesOrder
 {ГДЕ
 	UnbilledARОстатки.Source.*,
 	UnbilledARОстатки.Company.*,
