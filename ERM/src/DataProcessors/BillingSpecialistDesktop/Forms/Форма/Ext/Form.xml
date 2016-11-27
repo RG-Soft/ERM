@@ -5,6 +5,14 @@
 		<Event name="OnCreateAtServer">ПриСозданииНаСервере</Event>
 	</Events>
 	<ChildItems>
+		<InputField name="Дата" id="188">
+			<DataPath>Объект.Дата</DataPath>
+			<ContextMenu name="ДатаКонтекстноеМеню" id="189"/>
+			<ExtendedTooltip name="ДатаРасширеннаяПодсказка" id="190"/>
+			<Events>
+				<Event name="OnChange">ДатаПриИзменении</Event>
+			</Events>
+		</InputField>
 		<UsualGroup name="ГруппаОтборы" id="56">
 			<Title>
 				<v8:item>
@@ -261,6 +269,16 @@
 					<ContextMenu name="SalesOrdersDetailsКонтекстноеМеню" id="169"/>
 					<ExtendedTooltip name="SalesOrdersDetailsРасширеннаяПодсказка" id="170"/>
 				</LabelField>
+				<LabelField name="SalesOrdersJobEndDate" id="185">
+					<DataPath>SalesOrders.JobEndDate</DataPath>
+					<ContextMenu name="SalesOrdersJobEndDateКонтекстноеМеню" id="186"/>
+					<ExtendedTooltip name="SalesOrdersJobEndDateРасширеннаяПодсказка" id="187"/>
+				</LabelField>
+				<LabelField name="SalesOrdersAging" id="191">
+					<DataPath>SalesOrders.Aging</DataPath>
+					<ContextMenu name="SalesOrdersAgingКонтекстноеМеню" id="192"/>
+					<ExtendedTooltip name="SalesOrdersAgingРасширеннаяПодсказка" id="193"/>
+				</LabelField>
 				<ColumnGroup name="Invoice" id="183">
 					<Title>
 						<v8:item>
@@ -382,14 +400,18 @@
 	SalesOrdersCommentsСрезПоследних.Problem.EscalateTo КАК EscalateTo,
 	SalesOrdersCommentsСрезПоследних.Problem.Details КАК Details,
 	SalesOrdersCommentsСрезПоследних.Problem.ResponsiblesList КАК ResponsiblesList,
-	SalesOrdersCommentsСрезПоследних.Problem.МоментВремени КАК МоментВремени,
-	SalesOrdersCommentsСрезПоследних.SalesOrder.Invoice.Дата КАК InvoiceДата,
-	SalesOrdersCommentsСрезПоследних.SalesOrder.Invoice.Номер КАК InvoiceНомер,
-	SalesOrdersCommentsСрезПоследних.SalesOrder.Invoice.Currency КАК InvoiceCurrency,
-	SalesOrdersCommentsСрезПоследних.SalesOrder.Invoice.Amount КАК InvoiceAmount
+	UnbilledARОстатки.SalesOrder.JobEndDate КАК JobEndDate,
+	ВЫБОР
+		КОГДА UnbilledARОстатки.SalesOrder.JobEndDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1, 0, 0, 0)
+			ТОГДА РАЗНОСТЬДАТ(UnbilledARОстатки.SalesOrder.JobEndDate, &amp;Дата, ДЕНЬ)
+	КОНЕЦ КАК Aging,
+	UnbilledARОстатки.SalesOrder.Invoice.Дата КАК InvoiceДата,
+	UnbilledARОстатки.SalesOrder.Invoice.Номер КАК InvoiceНомер,
+	UnbilledARОстатки.SalesOrder.Invoice.Currency КАК InvoiceCurrency,
+	UnbilledARОстатки.SalesOrder.Invoice.Amount КАК InvoiceAmount
 ИЗ
-	РегистрНакопления.UnbilledAR.Остатки({(&amp;ПериодОстатков)}, SalesOrder ССЫЛКА Документ.SalesOrder {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket)}) КАК UnbilledARОстатки
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних(, ) КАК SalesOrdersCommentsСрезПоследних
+	РегистрНакопления.UnbilledAR.Остатки(&amp;Дата {(&amp;ПериодОстатков)}, SalesOrder ССЫЛКА Документ.SalesOrder {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket)}) КАК UnbilledARОстатки
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних(&amp;Дата, ) КАК SalesOrdersCommentsСрезПоследних
 		ПО UnbilledARОстатки.SalesOrder = SalesOrdersCommentsСрезПоследних.SalesOrder
 {ГДЕ
 	UnbilledARОстатки.Source.*,
