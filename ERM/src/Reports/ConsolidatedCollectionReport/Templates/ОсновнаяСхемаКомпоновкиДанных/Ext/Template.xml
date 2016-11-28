@@ -123,6 +123,8 @@
 	PaymentsОбороты.SubSubSegment,
 	ВЫБОР
 		КОГДА PaymentsОбороты.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
+				И PaymentsОбороты.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
+				И PaymentsОбороты.Invoice &lt;&gt; НЕОПРЕДЕЛЕНО
 			ТОГДА PaymentsОбороты.Invoice
 		ИНАЧЕ PaymentsОбороты.CashBatch
 	КОНЕЦ КАК Invoice,
@@ -131,10 +133,14 @@
 	PaymentsОбороты.CashBatch.Дата
 ПОМЕСТИТЬ Исходные
 ИЗ
-	РегистрНакопления.Payments.Обороты(, , , ) КАК PaymentsОбороты
-ГДЕ
-	(PaymentsОбороты.Invoice ССЫЛКА Документ.Invoice
-			ИЛИ PaymentsОбороты.Invoice ССЫЛКА Документ.CashBatch)
+	РегистрНакопления.Payments.Обороты(
+			,
+			,
+			,
+			Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
+					И Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
+					И Invoice &lt;&gt; НЕОПРЕДЕЛЕНО
+				ИЛИ CashBatch &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)) КАК PaymentsОбороты
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
