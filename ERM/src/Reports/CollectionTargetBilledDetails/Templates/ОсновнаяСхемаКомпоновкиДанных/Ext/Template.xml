@@ -44,9 +44,6 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Invoice</dataPath>
 			<field>Invoice</field>
-			<role>
-				<dcscom:dimension>true</dcscom:dimension>
-			</role>
 			<presentationExpression>ПредставлениеДокумента</presentationExpression>
 		</field>
 		<field xsi:type="DataSetFieldField">
@@ -213,6 +210,82 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>InvoiceНомер</dataPath>
+			<field>InvoiceНомер</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Invoice номер</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>InvoiceНомерДокумента</dataPath>
+			<field>InvoiceНомерДокумента</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Invoice номер документа</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>InvoiceStatusOfDispute</dataPath>
+			<field>InvoiceStatusOfDispute</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>InvoiceAmount</dataPath>
+			<field>InvoiceAmount</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>InvoiceTriggerDate</dataPath>
+			<field>InvoiceTriggerDate</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>InvoiceContractTrigger</dataPath>
+			<field>InvoiceContractTrigger</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>InvoiceDisputeCollectableDate</dataPath>
+			<field>InvoiceDisputeCollectableDate</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>InvoiceDueDateFrom</dataPath>
+			<field>InvoiceDueDateFrom</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>InvoiceContractPTDaysFrom</dataPath>
+			<field>InvoiceContractPTDaysFrom</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>InvoiceContractСрокОплаты</dataPath>
+			<field>InvoiceContractСрокОплаты</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>InvoiceDueDateTo</dataPath>
+			<field>InvoiceDueDateTo</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>InvoiceDisputeDistributedDate</dataPath>
+			<field>InvoiceDisputeDistributedDate</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>InvoiceДата</dataPath>
+			<field>InvoiceДата</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>InvoiceFiscalInvoiceNo</dataPath>
+			<field>InvoiceFiscalInvoiceNo</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>InvoiceFiscalInvoiceDate</dataPath>
+			<field>InvoiceFiscalInvoiceDate</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>InvoiceContractAmendmentName</dataPath>
+			<field>InvoiceContractAmendmentName</field>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	BilledARОстатки.Client КАК Client,
@@ -300,18 +373,17 @@
 	ВТ_Остатки.Source,
 	ВТ_Остатки.Location,
 	ВТ_Остатки.SubSubSegment,
-	ВТ_Остатки.Invoice,
 	ВТ_Остатки.Account,
 	ВТ_Остатки.Currency,
 	ВТ_Остатки.AU,
 	ВТ_Остатки.Invoice.ClientID КАК ИдентификаторКлиента,
-	ВТ_Остатки.AmountОстаток,
-	ВЫБОР
-		КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
-				ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
-			ТОГДА 0
-		ИНАЧЕ ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность
-	КОНЕЦ КАК BaseAmountОстаток,
+	СУММА(ВТ_Остатки.AmountОстаток) КАК AmountОстаток,
+	СУММА(ВЫБОР
+			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
+					ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+				ТОГДА 0
+			ИНАЧЕ ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность
+		КОНЕЦ) КАК BaseAmountОстаток,
 	ВТ_ИерархияКлиентов.ГоловнойКонтрагент,
 	ВЫБОР
 		КОГДА ВТ_Остатки.Invoice ССЫЛКА Документ.Invoice
@@ -348,7 +420,29 @@
 		КОГДА ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Radius)
 			ТОГДА ВТ_Остатки.Invoice.Agreement
 		ИНАЧЕ ВТ_Остатки.Invoice.Contract.crmContractName
-	КОНЕЦ КАК Agreement
+	КОНЕЦ КАК Agreement,
+	ВЫБОР
+		КОГДА ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
+				И ВТ_Остатки.Invoice ССЫЛКА Документ.Invoice
+				И ВТ_Остатки.Invoice.FiscalInvoiceNo &lt;&gt; ""
+			ТОГДА ВТ_Остатки.Invoice.FiscalInvoiceNo
+		ИНАЧЕ ВТ_Остатки.ПредставлениеДокумента
+	КОНЕЦ КАК InvoiceНомер,
+	ВТ_Остатки.Invoice.Номер КАК InvoiceНомерДокумента,
+	ВТ_Остатки.Invoice.Дата КАК InvoiceДата,
+	ВТ_Остатки.Invoice.FiscalInvoiceNo КАК InvoiceFiscalInvoiceNo,
+	ВТ_Остатки.Invoice.FiscalInvoiceDate КАК InvoiceFiscalInvoiceDate,
+	СУММА(ВТ_Остатки.Invoice.Amount) КАК InvoiceAmount,
+	ВТ_Остатки.Invoice.Contract.Trigger КАК InvoiceContractTrigger,
+	ВТ_Остатки.Invoice.TriggerDate КАК InvoiceTriggerDate,
+	ВТ_Остатки.Invoice.Contract.PTDaysFrom КАК InvoiceContractPTDaysFrom,
+	ВТ_Остатки.Invoice.Contract.СрокОплаты КАК InvoiceContractСрокОплаты,
+	ВТ_Остатки.Invoice.DueDateFrom КАК InvoiceDueDateFrom,
+	ВТ_Остатки.Invoice.DueDateTo КАК InvoiceDueDateTo,
+	ВТ_Остатки.Invoice.StatusOfDispute КАК InvoiceStatusOfDispute,
+	ВТ_Остатки.Invoice.DisputeDistributedDate КАК InvoiceDisputeDistributedDate,
+	ВТ_Остатки.Invoice.DisputeCollectableDate КАК InvoiceDisputeCollectableDate,
+	ВТ_Остатки.Invoice.Contract.AmendmentName КАК InvoiceContractAmendmentName
 ИЗ
 	ВТ_Остатки КАК ВТ_Остатки
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ИерархияКлиентов КАК ВТ_ИерархияКлиентов
@@ -363,11 +457,80 @@
 				ИЛИ Collectors.GeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка))
 ГДЕ
 	ВТ_Остатки.Client &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)
-	И ВТ_Остатки.Client &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.Unreconciled)</query>
+	И ВТ_Остатки.Client &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.Unreconciled)
+
+СГРУППИРОВАТЬ ПО
+	ВТ_ИерархияКлиентов.ГоловнойКонтрагент,
+	ВТ_Остатки.SubSubSegment,
+	ВЫБОР
+		КОГДА ВТ_Остатки.Invoice.DueDateTo &lt;= &amp;Период
+				И InvoiceCommentsСрезПоследних.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
+			ТОГДА ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка)
+		ИНАЧЕ InvoiceCommentsСрезПоследних.Status
+	КОНЕЦ,
+	InvoiceCommentsСрезПоследних.ConfirmedBy,
+	InvoiceCommentsСрезПоследних.RemedialWorkPlan,
+	InvoiceCommentsСрезПоследних.Comment,
+	InvoiceCommentsСрезПоследних.CustomerInputDetails,
+	ВТ_Остатки.Account,
+	InvoiceCommentsСрезПоследних.SLBAssignedTo,
+	InvoiceCommentsСрезПоследних.RWDTargetDate,
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.ForecastDate, ДАТАВРЕМЯ(1, 1, 1)),
+	ВТ_Остатки.ПредставлениеДокумента,
+	InvoiceCommentsСрезПоследних.CustomerRepresentative,
+	InvoiceCommentsСрезПоследних.CustInputDate,
+	ВТ_Остатки.Client,
+	ВТ_Остатки.Company,
+	ВТ_Остатки.Currency,
+	ВТ_Остатки.AU,
+	ВТ_Остатки.Source,
+	ВТ_Остатки.Location,
+	Collectors.Collector,
+	ВЫБОР
+		КОГДА ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Radius)
+			ТОГДА ВТ_Остатки.Invoice.Agreement
+		ИНАЧЕ ВТ_Остатки.Invoice.Contract.crmContractName
+	КОНЕЦ,
+	ВТ_Остатки.Invoice.ClientID,
+	ВЫБОР
+		КОГДА ВТ_Остатки.Invoice ССЫЛКА Документ.Invoice
+			ТОГДА "I"
+		КОГДА ВТ_Остатки.Invoice ССЫЛКА Документ.CashBatch
+			ТОГДА "Payment"
+		КОГДА ВТ_Остатки.Invoice ССЫЛКА Документ.Memo
+			ТОГДА "Memo"
+		ИНАЧЕ ""
+	КОНЕЦ,
+	ВТ_Остатки.Invoice.ДатаВозвратаКС,
+	ВТ_Остатки.Invoice.ДатаОтправкиКС,
+	ВТ_Остатки.Invoice.СтатусВозвратаКС,
+	ВТ_Остатки.Invoice.КомментарийСтатусаВозвратаКС,
+	ВЫБОР
+		КОГДА ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
+				И ВТ_Остатки.Invoice ССЫЛКА Документ.Invoice
+				И ВТ_Остатки.Invoice.FiscalInvoiceNo &lt;&gt; ""
+			ТОГДА ВТ_Остатки.Invoice.FiscalInvoiceNo
+		ИНАЧЕ ВТ_Остатки.ПредставлениеДокумента
+	КОНЕЦ,
+	ВТ_Остатки.Invoice.Номер,
+	ВТ_Остатки.Invoice.Дата,
+	ВТ_Остатки.Invoice.FiscalInvoiceNo,
+	ВТ_Остатки.Invoice.FiscalInvoiceDate,
+	ВТ_Остатки.Invoice.Contract.Trigger,
+	ВТ_Остатки.Invoice.TriggerDate,
+	ВТ_Остатки.Invoice.Contract.PTDaysFrom,
+	ВТ_Остатки.Invoice.Contract.СрокОплаты,
+	ВТ_Остатки.Invoice.DueDateFrom,
+	ВТ_Остатки.Invoice.DueDateTo,
+	ВТ_Остатки.Invoice.StatusOfDispute,
+	ВТ_Остатки.Invoice.DisputeDistributedDate,
+	ВТ_Остатки.Invoice.DisputeCollectableDate,
+	ВТ_Остатки.Invoice.Contract.AmendmentName,
+	ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0)</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>DueFrom</dataPath>
-		<expression>ВЫБОР КОГДА Invoice.DueDateFrom &lt;= &amp;Период ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ ИНАЧЕ 0 КОНЕЦ</expression>
+		<expression>ВЫБОР КОГДА InvoiceDueDateFrom &lt;= &amp;Период ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ ИНАЧЕ 0 КОНЕЦ</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -399,7 +562,7 @@
 	</calculatedField>
 	<calculatedField>
 		<dataPath>DueTo</dataPath>
-		<expression>ВЫБОР КОГДА Invoice.DueDateTo &lt;= &amp;Период ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ ИНАЧЕ 0 КОНЕЦ</expression>
+		<expression>ВЫБОР КОГДА InvoiceDueDateTo &lt;= &amp;Период ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ ИНАЧЕ 0 КОНЕЦ</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -537,7 +700,12 @@
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
-		<dcsset:presentation xsi:type="xs:string">Основной</dcsset:presentation>
+		<dcsset:presentation xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Основной</v8:content>
+			</v8:item>
+		</dcsset:presentation>
 		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:userFields>
 				<dcsset:item xsi:type="dcsset:UserFieldExpression">
@@ -652,7 +820,7 @@
 						</v8:item>
 					</dcsset:lwsTitle>
 					<dcsset:detailExpression>Выбор
-	Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И Invoice.DueDateFrom &lt;= &amp;Период
+	Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И InvoiceDueDateFrom &lt;= &amp;Период
 		Тогда USDAmount - Paid - FcstCollect
 	Иначе 0
 Конец</dcsset:detailExpression>
@@ -745,7 +913,7 @@
 					<dcsset:field>TransType</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice</dcsset:field>
+					<dcsset:field>InvoiceНомер</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -754,7 +922,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.Дата</dcsset:field>
+					<dcsset:field>InvoiceДата</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -763,7 +931,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.FiscalInvoiceNo</dcsset:field>
+					<dcsset:field>InvoiceFiscalInvoiceNo</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -772,7 +940,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.FiscalInvoiceDate</dcsset:field>
+					<dcsset:field>InvoiceFiscalInvoiceDate</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -791,7 +959,7 @@
 						</v8:item>
 					</dcsset:lwsTitle>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>Invoice.Amount</dcsset:field>
+						<dcsset:field>InvoiceAmount</dcsset:field>
 						<dcsset:lwsTitle>
 							<v8:item>
 								<v8:lang>ru</v8:lang>
@@ -841,7 +1009,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.Contract.AmendmentName</dcsset:field>
+					<dcsset:field>InvoiceContractAmendmentName</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -850,7 +1018,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.Contract.Trigger</dcsset:field>
+					<dcsset:field>InvoiceContractTrigger</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -859,7 +1027,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.TriggerDate</dcsset:field>
+					<dcsset:field>InvoiceTriggerDate</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -868,7 +1036,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.Contract.PTDaysFrom</dcsset:field>
+					<dcsset:field>InvoiceContractPTDaysFrom</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -877,7 +1045,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.Contract.СрокОплаты</dcsset:field>
+					<dcsset:field>InvoiceContractСрокОплаты</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -886,7 +1054,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.DueDateFrom</dcsset:field>
+					<dcsset:field>InvoiceDueDateFrom</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -895,7 +1063,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.DueDateTo</dcsset:field>
+					<dcsset:field>InvoiceDueDateTo</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -991,7 +1159,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.StatusOfDispute</dcsset:field>
+					<dcsset:field>InvoiceStatusOfDispute</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -1000,7 +1168,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.DisputeDistributedDate</dcsset:field>
+					<dcsset:field>InvoiceDisputeDistributedDate</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -1009,7 +1177,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.DisputeCollectableDate</dcsset:field>
+					<dcsset:field>InvoiceDisputeCollectableDate</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -1100,13 +1268,7 @@
 				<dcsset:item>
 					<dcsset:selection>
 						<dcsset:item>
-							<dcsset:field>DateFrom</dcsset:field>
-						</dcsset:item>
-						<dcsset:item>
-							<dcsset:field>DateTo</dcsset:field>
-						</dcsset:item>
-						<dcsset:item>
-							<dcsset:field>Invoice.Дата</dcsset:field>
+							<dcsset:field>InvoiceДата</dcsset:field>
 						</dcsset:item>
 					</dcsset:selection>
 					<dcsset:filter/>
