@@ -170,7 +170,11 @@
 	|	BilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель.CountryCode КАК CountryCode
 	|ПОМЕСТИТЬ ВТ_Остатки
 	|ИЗ
-	|	РегистрНакопления.BilledAR.Остатки(, Source В (&Sources)) КАК BilledARОстатки
+	|	РегистрНакопления.BilledAR.Остатки(
+	|			,
+	|			Source В (&Sources)
+	|				И Client <> ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)
+	|				И Client <> ЗНАЧЕНИЕ(Справочник.Контрагенты.Unreconciled)) КАК BilledARОстатки
 	|
 	|ОБЪЕДИНИТЬ
 	|
@@ -181,7 +185,11 @@
 	|	UnallocatedCashОстатки.Company.Код,
 	|	UnallocatedCashОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель.CountryCode
 	|ИЗ
-	|	РегистрНакопления.UnallocatedCash.Остатки(, Source В (&Sources)) КАК UnallocatedCashОстатки
+	|	РегистрНакопления.UnallocatedCash.Остатки(
+	|			,
+	|			Source В (&Sources)
+	|				И Client <> ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)
+	|				И Client <> ЗНАЧЕНИЕ(Справочник.Контрагенты.Unreconciled)) КАК UnallocatedCashОстатки
 	|
 	|ОБЪЕДИНИТЬ ВСЕ
 	|
@@ -244,7 +252,6 @@
 	|			ТОГДА ВТ_ИдентификаторыКлиентов.Идентификатор + ""-101""
 	|		ИНАЧЕ ВТ_ИдентификаторыКлиентов.Идентификатор
 	|	КОНЕЦ КАК CUSTNO,
-	//|	ЕСТЬNULL(ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент.CRMID, """") КАК PARENT,
 	|	ВТ_Остатки.Client.CRMID КАК PARENT,
 	|	ВТ_Остатки.Client.Наименование КАК COMPANY,
 	|	ВТ_Остатки.Client.CreditLimit КАК CRD_LIMIT,
@@ -313,7 +320,11 @@
 	|	BilledARОстатки.Invoice.ClientID КАК ClientID
 	|ПОМЕСТИТЬ ВТ_Остатки
 	|ИЗ
-	|	РегистрНакопления.BilledAR.Остатки(, Source В (&Sources)) КАК BilledARОстатки
+	|	РегистрНакопления.BilledAR.Остатки(
+	|			,
+	|			Source В (&Sources)
+	|				И Client <> ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)
+	|				И Client <> ЗНАЧЕНИЕ(Справочник.Контрагенты.Unreconciled)) КАК BilledARОстатки
 	|
 	|ОБЪЕДИНИТЬ ВСЕ
 	|
@@ -341,7 +352,11 @@
 	|	UnallocatedCashОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель.CountryCode,
 	|	UnallocatedCashОстатки.CashBatch.ClientID
 	|ИЗ
-	|	РегистрНакопления.UnallocatedCash.Остатки(, Source В (&Sources)) КАК UnallocatedCashОстатки
+	|	РегистрНакопления.UnallocatedCash.Остатки(
+	|			,
+	|			Source В (&Sources)
+	|				И Client <> ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)
+	|				И Client <> ЗНАЧЕНИЕ(Справочник.Контрагенты.Unreconciled)) КАК UnallocatedCashОстатки
 	|;
 	|
 	|////////////////////////////////////////////////////////////////////////////////
