@@ -5,14 +5,6 @@
 		<Event name="OnCreateAtServer">ПриСозданииНаСервере</Event>
 	</Events>
 	<ChildItems>
-		<InputField name="Дата" id="188">
-			<DataPath>Объект.Дата</DataPath>
-			<ContextMenu name="ДатаКонтекстноеМеню" id="189"/>
-			<ExtendedTooltip name="ДатаРасширеннаяПодсказка" id="190"/>
-			<Events>
-				<Event name="OnChange">ДатаПриИзменении</Event>
-			</Events>
-		</InputField>
 		<UsualGroup name="ГруппаОтборы" id="56">
 			<Title>
 				<v8:item>
@@ -33,7 +25,6 @@
 			<ChildItems>
 				<InputField name="Period" id="70">
 					<DataPath>Period</DataPath>
-					<Visible>false</Visible>
 					<ContextMenu name="PeriodКонтекстноеМеню" id="71"/>
 					<ExtendedTooltip name="PeriodРасширеннаяПодсказка" id="72"/>
 					<Events>
@@ -129,10 +120,12 @@
 						<CommandName>Form.Command.СнятьФлажки</CommandName>
 						<ExtendedTooltip name="SalesOrdersСнятьФлажкиРасширеннаяПодсказка" id="148"/>
 					</Button>
-					<Button name="SalesOrdersОбновить" id="151">
+					<Button name="SalesOrdersОбновить" id="200">
 						<Type>CommandBarButton</Type>
+						<Representation>PictureAndText</Representation>
+						<OnlyInAllActions>true</OnlyInAllActions>
 						<CommandName>Form.Item.SalesOrders.StandardCommand.Refresh</CommandName>
-						<ExtendedTooltip name="SalesOrdersОбновитьРасширеннаяПодсказка" id="152"/>
+						<ExtendedTooltip name="SalesOrdersОбновитьРасширеннаяПодсказка" id="201"/>
 					</Button>
 					<Button name="SalesOrdersAddStatus" id="149">
 						<Type>CommandBarButton</Type>
@@ -280,6 +273,11 @@
 					<ContextMenu name="SalesOrdersAgingКонтекстноеМеню" id="192"/>
 					<ExtendedTooltip name="SalesOrdersAgingРасширеннаяПодсказка" id="193"/>
 				</LabelField>
+				<LabelField name="SalesOrdersAgedDeferral" id="197">
+					<DataPath>SalesOrders.AgedDeferral</DataPath>
+					<ContextMenu name="SalesOrdersAgedDeferralКонтекстноеМеню" id="198"/>
+					<ExtendedTooltip name="SalesOrdersAgedDeferralРасширеннаяПодсказка" id="199"/>
+				</LabelField>
 				<ColumnGroup name="Invoice" id="183">
 					<Title>
 						<v8:item>
@@ -410,15 +408,16 @@
 	UnbilledARОстатки.SalesOrder.JobEndDate КАК JobEndDate,
 	ВЫБОР
 		КОГДА UnbilledARОстатки.SalesOrder.JobEndDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1, 0, 0, 0)
-			ТОГДА РАЗНОСТЬДАТ(UnbilledARОстатки.SalesOrder.JobEndDate, &amp;Дата, ДЕНЬ)
+			ТОГДА РАЗНОСТЬДАТ(UnbilledARОстатки.SalesOrder.JobEndDate, &amp;ДатаДляСравнения, ДЕНЬ)
 	КОНЕЦ КАК Aging,
 	UnbilledARОстатки.SalesOrder.Invoice.Дата КАК InvoiceДата,
 	UnbilledARОстатки.SalesOrder.Invoice.Номер КАК InvoiceНомер,
 	UnbilledARОстатки.SalesOrder.Invoice.Currency КАК InvoiceCurrency,
-	UnbilledARОстатки.SalesOrder.Invoice.Amount КАК InvoiceAmount
+	UnbilledARОстатки.SalesOrder.Invoice.Amount КАК InvoiceAmount,
+	UnbilledARОстатки.SalesOrder.AmountUSD КАК AgedDeferral
 ИЗ
-	РегистрНакопления.UnbilledAR.Остатки(&amp;Дата {(&amp;ПериодОстатков)}, SalesOrder ССЫЛКА Документ.SalesOrder {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket)}) КАК UnbilledARОстатки
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних(&amp;Дата, ) КАК SalesOrdersCommentsСрезПоследних
+	РегистрНакопления.UnbilledAR.Остатки({(&amp;ПериодОстатков)}, SalesOrder ССЫЛКА Документ.SalesOrder {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket)}) КАК UnbilledARОстатки
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних(, ) КАК SalesOrdersCommentsСрезПоследних
 		ПО UnbilledARОстатки.SalesOrder = SalesOrdersCommentsСрезПоследних.SalesOrder
 {ГДЕ
 	UnbilledARОстатки.Source.*,
