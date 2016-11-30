@@ -2,7 +2,7 @@
 &НаСервере
 Процедура ПередЗаписьюНаСервере(Отказ, ТекущийОбъект, ПараметрыЗаписи)
 	
-	СтруктураРеквизитовПроблемы = Новый Структура("Дата, SalesOrder, User, Reason, Billed, ExpectedDateForInvoice, EscalateTo, Details, Responsibles");
+	СтруктураРеквизитовПроблемы = Новый Структура("Дата, SalesOrder, User, Reason, Billed, ExpectedDateForInvoice, EscalateTo, Details, Responsibles, FollowUpDate, ActionItem");
 	ЗаполнитьЗначенияСвойств(СтруктураРеквизитовПроблемы, ЭтотОбъект);
 	СтруктураРеквизитовПроблемы.Дата = ТекущийОбъект.Период;
 	СтруктураРеквизитовПроблемы.SalesOrder = ТекущийОбъект.SalesOrder;
