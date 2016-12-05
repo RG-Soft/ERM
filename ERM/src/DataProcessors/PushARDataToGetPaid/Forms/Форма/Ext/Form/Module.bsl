@@ -204,6 +204,39 @@
 	|	BilledARОстатки.Invoice.ClientID,
 	|	BilledARОстатки.Invoice
 	|
+	|ОБЪЕДИНИТЬ ВСЕ
+	|
+	|ВЫБРАТЬ
+	|	UnbilledARОстатки.Source,
+	|	UnbilledARОстатки.Client,
+	|	UnbilledARОстатки.Currency,
+	|	СУММА(ВЫБОР
+	|			КОГДА UnbilledARОстатки.Currency = &ВалютаUSD
+	|				ТОГДА UnbilledARОстатки.AmountОстаток
+	|			ИНАЧЕ ВЫРАЗИТЬ(UnbilledARОстатки.AmountОстаток / ВТ_ВнутренниеКурсыВалют.Курс * ВТ_ВнутренниеКурсыВалют.Кратность КАК ЧИСЛО(15, 2))
+	|		КОНЕЦ),
+	|	UnbilledARОстатки.Company.Код,
+	|	UnbilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель.CountryCode,
+	|	UnbilledARОстатки.SalesOrder.ClientID,
+	|	UnbilledARОстатки.SalesOrder
+	|ИЗ
+	|	РегистрНакопления.UnbilledAR.Остатки(
+	|			,
+	|			Source В (&Sources)
+	|				И Client <> ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)
+	|				И Client <> ЗНАЧЕНИЕ(Справочник.Контрагенты.Unreconciled)) КАК UnbilledARОстатки
+	|		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ВнутренниеКурсыВалют КАК ВТ_ВнутренниеКурсыВалют
+	|		ПО UnbilledARОстатки.Currency = ВТ_ВнутренниеКурсыВалют.Валюта
+	|
+	|СГРУППИРОВАТЬ ПО
+	|	UnbilledARОстатки.Source,
+	|	UnbilledARОстатки.Client,
+	|	UnbilledARОстатки.Currency,
+	|	UnbilledARОстатки.Company.Код,
+	|	UnbilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель.CountryCode,
+	|	UnbilledARОстатки.SalesOrder.ClientID,
+	|	UnbilledARОстатки.SalesOrder
+	|
 	|ОБЪЕДИНИТЬ
 	|
 	|ВЫБРАТЬ
@@ -269,7 +302,8 @@
 	|	ВТ_Остатки.Client.CreditLimit КАК CRD_LIMIT,
 	|	ВТ_Остатки.CompanyКод,
 	|	ВТ_Остатки.CountryCode,
-	|	СУММА(ВТ_Остатки.BALANCE) КАК BALANCE
+	|	СУММА(ВТ_Остатки.BALANCE) КАК BALANCE,
+	|	""RC13"" КАК TERR
 	|ИЗ
 	|	ВТ_Остатки КАК ВТ_Остатки
 	|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИерархияКонтрагентов.СрезПоследних(
@@ -382,6 +416,34 @@
 	|			Source В (&Sources)
 	|				И Client <> ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)
 	|				И Client <> ЗНАЧЕНИЕ(Справочник.Контрагенты.Unreconciled)) КАК UnallocatedCashОстатки
+	|
+	|ОБЪЕДИНИТЬ ВСЕ
+	|
+	|ВЫБРАТЬ
+	|	UnbilledARОстатки.Client.Код,
+	|	UnbilledARОстатки.SalesOrder.Номер,
+	|	UnbilledARОстатки.AmountОстаток,
+	|	UnbilledARОстатки.SalesOrder.Amount,
+	|	""O"",
+	|	UnbilledARОстатки.SalesOrder.Amount,
+	|	UnbilledARОстатки.AmountОстаток,
+	|	UnbilledARОстатки.SalesOrder.Amount,
+	|	UnbilledARОстатки.AmountОстаток,
+	|	UnbilledARОстатки.Source,
+	|	UnbilledARОстатки.Client,
+	|	UnbilledARОстатки.SalesOrder,
+	|	UnbilledARОстатки.Company,
+	|	UnbilledARОстатки.Currency,
+	|	UnbilledARОстатки.SalesOrder.Дата,
+	|	UnbilledARОстатки.SalesOrder.Currency.Наименование,
+	|	UnbilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель.CountryCode,
+	|	UnbilledARОстатки.SalesOrder.ClientID
+	|ИЗ
+	|	РегистрНакопления.UnbilledAR.Остатки(
+	|			,
+	|			Source В (&Sources)
+	|				И Client <> ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)
+	|				И Client <> ЗНАЧЕНИЕ(Справочник.Контрагенты.Unreconciled)) КАК UnbilledARОстатки
 	|;
 	|
 	|////////////////////////////////////////////////////////////////////////////////
@@ -479,6 +541,8 @@
 		
 		Если СтрокаТаблицы.Source = Перечисления.ТипыСоответствий.Lawson И СтрокаТаблицы.ARSTAT = "I" Тогда
 			СтрокаТаблицы.INVNO = "I-" + СтрокаТаблицы.INVNO + "-" + Строка(СтрокаТаблицы.CompanyCode);
+		ИначеЕсли СтрокаТаблицы.Source = Перечисления.ТипыСоответствий.HOBs И СтрокаТаблицы.ARSTAT = "O" Тогда
+			СтрокаТаблицы.INVNO = "O-" + СтрокаТаблицы.INVNO;
 		КонецЕсли;
 		
 		Если ЗначениеЗаполнено(СтрокаТаблицы.CUSTNO) Тогда

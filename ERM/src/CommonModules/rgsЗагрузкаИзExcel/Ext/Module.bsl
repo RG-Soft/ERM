@@ -87,13 +87,13 @@
 Процедура ВыгрузитьЭксельВТаблицуДанныхПоИменамКолонок(ПутьКФайлу, ТаблицаДанных, ДанныеДляЗаполнения, АдресХранилища, СтруктураПараметров) Экспорт
 	
 	Connection = Новый COMОбъект("ADODB.Connection");
-	СтрокаПодключения = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + СокрЛП(ПутьКФайлу) + ";Extended Properties=""Excel 12.0 Xml;HDR=" + ?(СтруктураПараметров.ИменаКолонокВПервойСтроке, "Yes", "No") + """";
+	СтрокаПодключения = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + СокрЛП(ПутьКФайлу) + ";Extended Properties=""Excel 12.0 Xml;IMEX=1;MAXSCANROWS=0;HDR=" + ?(СтруктураПараметров.ИменаКолонокВПервойСтроке, "Yes", "No") + """";
 	
 	Попытка
 		Connection.Open(СтрокаПодключения);
 	Исключение
 		Попытка
-			СтрокаПодключения = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + СокрЛП(ПутьКФайлу) + ";Extended Properties=""Excel 8.0;HDR=" + ?(СтруктураПараметров.ИменаКолонокВПервойСтроке, "Yes", "No") + """";
+			СтрокаПодключения = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + СокрЛП(ПутьКФайлу) + ";Extended Properties=""Excel 8.0;IMEX=1;MAXSCANROWS=0;HDR=" + ?(СтруктураПараметров.ИменаКолонокВПервойСтроке, "Yes", "No") + """";
 			Connection.Open(СтрокаПодключения);
 		Исключение
 			ТекстОшибки = ОписаниеОшибки();
