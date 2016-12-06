@@ -234,7 +234,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
-							<v8:content>Sales order number</v8:content>
+							<v8:content>SO No.</v8:content>
 						</v8:item>
 					</Title>
 					<ContextMenu name="SalesOrdersSalesNoКонтекстноеМеню" id="134"/>
@@ -245,7 +245,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
-							<v8:content>Sales order date</v8:content>
+							<v8:content>SO Date</v8:content>
 						</v8:item>
 					</Title>
 					<ContextMenu name="SalesOrdersSalesDateКонтекстноеМеню" id="131"/>
@@ -260,7 +260,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
-							<v8:content>Sales order amount</v8:content>
+							<v8:content>SO Amount</v8:content>
 						</v8:item>
 					</Title>
 					<Group>Horizontal</Group>
@@ -295,7 +295,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
-							<v8:content>Remaining amount</v8:content>
+							<v8:content>Remaining Amount</v8:content>
 						</v8:item>
 					</Title>
 					<Group>Horizontal</Group>
@@ -349,6 +349,12 @@
 				</CheckBoxField>
 				<LabelField name="SalesOrdersExpectedDateForInvoice" id="159">
 					<DataPath>SalesOrders.ExpectedDateForInvoice</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Expected date for Invoice </v8:content>
+						</v8:item>
+					</Title>
 					<ContextMenu name="SalesOrdersExpectedDateForInvoiceКонтекстноеМеню" id="160"/>
 					<ExtendedTooltip name="SalesOrdersExpectedDateForInvoiceРасширеннаяПодсказка" id="161"/>
 				</LabelField>
@@ -374,6 +380,12 @@
 				</LabelField>
 				<LabelField name="SalesOrdersJobEndDate" id="185">
 					<DataPath>SalesOrders.JobEndDate</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Job End Date</v8:content>
+						</v8:item>
+					</Title>
 					<ContextMenu name="SalesOrdersJobEndDateКонтекстноеМеню" id="186"/>
 					<ExtendedTooltip name="SalesOrdersJobEndDateРасширеннаяПодсказка" id="187"/>
 				</LabelField>
@@ -384,6 +396,12 @@
 				</LabelField>
 				<LabelField name="SalesOrdersAgedDeferral" id="197">
 					<DataPath>SalesOrders.AgedDeferral</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Aged Deferral</v8:content>
+						</v8:item>
+					</Title>
 					<ContextMenu name="SalesOrdersAgedDeferralКонтекстноеМеню" id="198"/>
 					<ExtendedTooltip name="SalesOrdersAgedDeferralРасширеннаяПодсказка" id="199"/>
 				</LabelField>
@@ -410,7 +428,7 @@
 							<Title>
 								<v8:item>
 									<v8:lang>ru</v8:lang>
-									<v8:content>Дата</v8:content>
+									<v8:content>Date</v8:content>
 								</v8:item>
 							</Title>
 							<ContextMenu name="SalesOrdersInvoiceДатаКонтекстноеМеню" id="172"/>
@@ -421,7 +439,7 @@
 							<Title>
 								<v8:item>
 									<v8:lang>ru</v8:lang>
-									<v8:content>Номер</v8:content>
+									<v8:content>Number</v8:content>
 								</v8:item>
 							</Title>
 							<ContextMenu name="SalesOrdersInvoiceНомерКонтекстноеМеню" id="175"/>
@@ -523,7 +541,7 @@
 	UnbilledARОстатки.SalesOrder.Invoice.Currency КАК InvoiceCurrency,
 	UnbilledARОстатки.SalesOrder.Invoice.Amount КАК InvoiceAmount,
 	UnbilledARОстатки.SalesOrder.AmountUSD КАК AgedDeferral,
-	SalesOrdersCommentsСрезПоследних.Problem.User КАК ResponsibleAR,
+	SalesOrdersCommentsСрезПервых.Problem.User КАК ResponsibleAR,
 	UnbilledARОстатки.Location.БазовыйЭлемент.GeoMarket КАК GeoMarket,
 	UnbilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель КАК SubGeoMarket,
 	SalesOrdersCommentsСрезПоследних.SalesOrder.Agreement КАК Agreement,
@@ -547,6 +565,8 @@
 		ПО UnbilledARОстатки.SalesOrder = SalesOrdersCommentsСрезПоследних.SalesOrder
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних КАК ВнутренниеКурсыВалютСрезПоследних
 		ПО UnbilledARОстатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПервых КАК SalesOrdersCommentsСрезПервых
+		ПО UnbilledARОстатки.SalesOrder = SalesOrdersCommentsСрезПервых.SalesOrder
 {ГДЕ
 	UnbilledARОстатки.Source.*,
 	UnbilledARОстатки.Company.*,

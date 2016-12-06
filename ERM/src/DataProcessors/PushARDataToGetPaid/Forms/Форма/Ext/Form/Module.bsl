@@ -303,7 +303,52 @@
 	|	ВТ_Остатки.CompanyКод,
 	|	ВТ_Остатки.CountryCode,
 	|	СУММА(ВТ_Остатки.BALANCE) КАК BALANCE,
-	|	""RC13"" КАК TERR
+	|	""RC13"" КАК TERR,
+	|	"""" КАК ARCOMMENT,
+	|	"""" КАК REFKEY1,
+	|	"""" КАК REFKEY2,
+	|	"""" КАК CREDITSCOR,
+	|	"""" КАК RESOLVER01,
+	|	"""" КАК RESOLVER02,
+	|	"""" КАК RESOLVER03,
+	|	"""" КАК RESOLVER04,
+	|	"""" КАК RESOLVER05,
+	|	"""" КАК RESOLVER06,
+	|	"""" КАК RESOLVER07,
+	|	"""" КАК RESOLVER08,
+	|	"""" КАК RESOLVER09,
+	|	"""" КАК RESOLVER10,
+	|	0 КАК HIGHBAL,
+	|	0 КАК LASTYSALES,
+	|	0 КАК LASTQSALES,
+	|	"""" КАК DUNS,
+	|	"""" КАК ULTIMATEDUNS,
+	|	"""" КАК FEDID,
+	|	"""" КАК BNKRTNUM,
+	|	0 КАК YTDSALES,
+	|	0 КАК LTDSALES,
+	|	ДАТАВРЕМЯ(1, 1, 1) КАК FINYE,
+	|	ДАТАВРЕМЯ(1, 1, 1) КАК LCVDTE,
+	|	"""" КАК CREDIT_ACCT,
+	|	"""" КАК TICKER,
+	|	"""" КАК SIC_CODE,
+	|	ДАТАВРЕМЯ(1, 1, 1) КАК CRSCDT,
+	|	ДАТАВРЕМЯ(1, 1, 1) КАК CRSTDT,
+	|	ДАТАВРЕМЯ(1, 1, 1) КАК CRLIDT,
+	|	ДАТАВРЕМЯ(1, 1, 1) КАК EXPCRDLMTDTE,
+	|	"""" КАК ARBDR,
+	|	"""" КАК CMACCT_ID,
+	|	"""" КАК REQ_SATISFIED,
+	|	"""" КАК CMPARENT,
+	|	"""" КАК SMS_PHONE,
+	|	0 КАК RELORDERS,
+	|	0 КАК PENDINGORD,
+	|	"""" КАК SLPNEMAIL,
+	|	"""" КАК SLPN_LANG_ID,
+	|	0 КАК PAY_INST_TOTAL,
+	|	0 КАК PAY_INST_TOTAL_AMT,
+	|	ДАТАВРЕМЯ(1, 1, 1) КАК PAY_INST_NEXT_DATE,
+	|	0 КАК PAY_INST_NEXT_AMT
 	|ИЗ
 	|	ВТ_Остатки КАК ВТ_Остатки
 	|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИерархияКонтрагентов.СрезПоследних(
@@ -376,7 +421,11 @@
 	|	BilledARОстатки.Invoice.Дата КАК INVDTE,
 	|	BilledARОстатки.Invoice.Currency.Наименование КАК TRANCURR,
 	|	BilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель.CountryCode КАК CountryCode,
-	|	BilledARОстатки.Invoice.ClientID КАК ClientID
+	|	BilledARОстатки.Invoice.ClientID КАК ClientID,
+	|	BilledARОстатки.SubSubSegment.БазовыйЭлемент.Код КАК SubSubSegment,
+	|	BilledARОстатки.SubSubSegment.БазовыйЭлемент.Родитель.Код КАК SubSegment,
+	|	BilledARОстатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель.Код КАК Segment,
+	|	BilledARОстатки.Company.Код
 	|ПОМЕСТИТЬ ВТ_Остатки
 	|ИЗ
 	|	РегистрНакопления.BilledAR.Остатки(
@@ -392,11 +441,7 @@
 	|	UnallocatedCashОстатки.CashBatch.PaymentNumber,
 	|	UnallocatedCashОстатки.AmountОстаток,
 	|	UnallocatedCashОстатки.CashBatch.Amount,
-	|	ВЫБОР
-	|		КОГДА UnallocatedCashОстатки.CashBatch.Prepayment
-	|			ТОГДА ""O""
-	|		ИНАЧЕ ""U""
-	|	КОНЕЦ,
+	|	""U"",
 	|	UnallocatedCashОстатки.CashBatch.Amount,
 	|	UnallocatedCashОстатки.AmountОстаток,
 	|	UnallocatedCashОстатки.CashBatch.Amount,
@@ -409,7 +454,11 @@
 	|	UnallocatedCashОстатки.CashBatch.Дата,
 	|	UnallocatedCashОстатки.CashBatch.Currency.Наименование,
 	|	UnallocatedCashОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель.CountryCode,
-	|	UnallocatedCashОстатки.CashBatch.ClientID
+	|	UnallocatedCashОстатки.CashBatch.ClientID,
+	|	UnallocatedCashОстатки.SubSubSegment.БазовыйЭлемент.Код,
+	|	UnallocatedCashОстатки.SubSubSegment.БазовыйЭлемент.Родитель.Код,
+	|	UnallocatedCashОстатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель.Код,
+	|	UnallocatedCashОстатки.Company.Код
 	|ИЗ
 	|	РегистрНакопления.UnallocatedCash.Остатки(
 	|			,
@@ -437,7 +486,11 @@
 	|	UnbilledARОстатки.SalesOrder.Дата,
 	|	UnbilledARОстатки.SalesOrder.Currency.Наименование,
 	|	UnbilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель.CountryCode,
-	|	UnbilledARОстатки.SalesOrder.ClientID
+	|	UnbilledARОстатки.SalesOrder.ClientID,
+	|	UnbilledARОстатки.SubSubSegment.БазовыйЭлемент.Код,
+	|	UnbilledARОстатки.SubSubSegment.БазовыйЭлемент.Родитель.Код,
+	|	UnbilledARОстатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель.Код,
+	|	UnbilledARОстатки.Company.Код
 	|ИЗ
 	|	РегистрНакопления.UnbilledAR.Остатки(
 	|			,
@@ -516,7 +569,14 @@
 	|	ВТ_Остатки.Source,
 	|	ВТ_Остатки.INVDTE,
 	|	ВТ_Остатки.TRANCURR,
-	|	ВТ_Остатки.CountryCode
+	|	ВТ_Остатки.CountryCode,
+	|	ВТ_Остатки.SubSubSegment КАК Flexfield5,
+	|	ВТ_Остатки.SubSegment КАК Flexfield11,
+	|	ВТ_Остатки.Segment КАК Flexfield13,
+	|	ВТ_Остатки.Invoice.FiscalInvoiceNo КАК Flexfield14,
+	|	""RCA"" КАК Flexfield15,
+	|	ВТ_Остатки.CompanyКод КАК Flexfield10,
+	|	ВТ_Остатки.CountryCode КАК Flexfield12
 	|ИЗ
 	|	ВТ_Остатки КАК ВТ_Остатки
 	|		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ВнутренниеКурсыВалют КАК ВТ_ВнутренниеКурсыВалют
@@ -563,6 +623,7 @@
 Процедура СоздатьКоллекциюПараметровКоманды(Command, Знач ОписаниеСтруктурыПриемника)
 	
 	Для каждого ЭлементСтруктурыПриемника Из ОписаниеСтруктурыПриемника Цикл
+		
 		Параметр = Command.CreateParameter("@" + ЭлементСтруктурыПриемника.ИмяПоля, ЭлементСтруктурыПриемника.ТипПараметраЗапросаЧисло, 1, ЭлементСтруктурыПриемника.Ширина);
 		Если ЭлементСтруктурыПриемника.Разрядность <> 0 Тогда
 			Параметр.Precision = ЭлементСтруктурыПриемника.Разрядность;
