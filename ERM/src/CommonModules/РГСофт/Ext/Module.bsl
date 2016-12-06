@@ -452,7 +452,7 @@
 		Для Каждого Получатель из УникальныеПолучатели Цикл 
 			
 			СуммаUSD = 0;
-			Тема = "Тестовое сообщение нотификации";
+			Тема = "Unbilled notification";
 			
 			ТелоHTML = "<HTML><HEAD>
 			|<META content=""text/html; charset=utf-8"" http-equiv=Content-Type><LINK rel=stylesheet type=text/css href=""v8help://service_book/service_style""><BASE href=""v8config://d349bc7e-06e3-4fc1-b24f-9709087cc83c/mdobject/id44c3769f-050d-4f0a-ae52-7c2a9e753714/038b5c85-fb1c-4082-9c4c-e69f8928bf3a"">
