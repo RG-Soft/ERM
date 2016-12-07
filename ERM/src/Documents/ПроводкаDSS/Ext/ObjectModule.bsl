@@ -149,7 +149,7 @@
 			
 		ИначеЕсли Реквизиты.SourceCode = "RP" ИЛИ Реквизиты.SourceCode = "RQ" ИЛИ Реквизиты.SourceCode = "RX" Тогда
 			
-			Если Реквизиты.AccountLawson = ПланыСчетов.Lawson.ReceivedNotApplied Тогда //120102
+			Если Реквизиты.AccountLawson = ПланыСчетов.Lawson.ReceivedNotApplied  ИЛИ Реквизиты.AccountLawson = ПланыСчетов.Lawson.AdvancesFromCustomers Тогда //120102 или 209000
 			
 				// поступление денег от клииента. Приход в Unallocated cash. Или корректировка платежа. Корректировка unallocated cash в привязке к CashBatch
 				ВыполнитьНачислениеUnallocatedCash(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, Движения, -Реквизиты.TranAmount, -Реквизиты.BaseAmount, Отказ);
