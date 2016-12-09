@@ -1433,7 +1433,7 @@
 			
 		ИначеЕсли ПроводкаDSSОбъект.SourceCode = "RQ" ИЛИ ПроводкаDSSОбъект.SourceCode = "RX" Тогда // рассматриваем отдельно, т.к. это должно относиться к существующему бэтчу
 			
-			Если ПроводкаDSSОбъект.AccountLawson = ПланыСчетов.Lawson.ReceivedNotApplied Тогда // 120102
+			Если ПроводкаDSSОбъект.AccountLawson = ПланыСчетов.Lawson.ReceivedNotApplied ИЛИ ПроводкаDSSОбъект.AccountLawson = ПланыСчетов.Lawson.AdvancesFromCustomers Тогда // 120102 или 209000
 				СтрокаCashBatch = КэшCashBatch.Найти(ПроводкаDSSОбъект.ArBatchNbr, "ArBatchNbr");
 				Если СтрокаCashBatch = Неопределено Тогда
 					// { RGS TAlmazova 09.11.2016 10:53:28 - костыль для октября 2016
