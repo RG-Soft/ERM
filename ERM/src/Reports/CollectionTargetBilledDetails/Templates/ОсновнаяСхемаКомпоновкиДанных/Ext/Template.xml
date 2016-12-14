@@ -90,22 +90,8 @@
 			<field>ГоловнойКонтрагент</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>TransType</dataPath>
-			<field>TransType</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Trans type</v8:content>
-				</v8:item>
-			</title>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>Memo</dataPath>
 			<field>Memo</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>CashBatch</dataPath>
-			<field>CashBatch</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Rate</dataPath>
@@ -286,17 +272,31 @@
 			<dataPath>InvoiceContractAmendmentName</dataPath>
 			<field>InvoiceContractAmendmentName</field>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>CashBatch</dataPath>
+			<field>CashBatch</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>TransType</dataPath>
+			<field>TransType</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Trans type</v8:content>
+				</v8:item>
+			</title>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	BilledARОстатки.Client КАК Client,
-	BilledARОстатки.Company,
+	BilledARОстатки.Company КАК Company,
 	BilledARОстатки.Source КАК Source,
-	BilledARОстатки.Location,
-	BilledARОстатки.SubSubSegment,
-	BilledARОстатки.Invoice,
+	BilledARОстатки.Location КАК Location,
+	BilledARОстатки.SubSubSegment КАК SubSubSegment,
+	BilledARОстатки.Invoice КАК Invoice,
 	BilledARОстатки.Account,
-	BilledARОстатки.Currency,
-	BilledARОстатки.AU,
+	BilledARОстатки.Currency КАК Currency,
+	BilledARОстатки.AU КАК AU,
 	BilledARОстатки.AmountОстаток,
 	ВЫБОР
 		КОГДА BilledARОстатки.Invoice ССЫЛКА Документ.Invoice
@@ -306,25 +306,6 @@
 ПОМЕСТИТЬ ВТ_Остатки
 ИЗ
 	РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, ) КАК BilledARОстатки
-
-ОБЪЕДИНИТЬ ВСЕ
-
-ВЫБРАТЬ
-	UnallocatedCashОстатки.Client,
-	UnallocatedCashОстатки.Company,
-	UnallocatedCashОстатки.Source,
-	UnallocatedCashОстатки.Location,
-	UnallocatedCashОстатки.SubSubSegment,
-	UnallocatedCashОстатки.CashBatch,
-	UnallocatedCashОстатки.Account,
-	UnallocatedCashОстатки.Currency,
-	UnallocatedCashОстатки.AU,
-	-UnallocatedCashОстатки.AmountОстаток,
-	UnallocatedCashОстатки.CashBatch.PaymentNumber
-ИЗ
-	РегистрНакопления.UnallocatedCash.Остатки({(&amp;ПериодОстатков)}, Client &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.Undefined)) КАК UnallocatedCashОстатки
-ГДЕ
-	НЕ UnallocatedCashОстатки.CashBatch.Prepayment
 
 ОБЪЕДИНИТЬ ВСЕ
 
@@ -344,6 +325,197 @@
 	РегистрНакопления.UnallocatedMemo.Остатки({(&amp;ПериодОстатков)}, ) КАК UnallocatedMemoОстатки
 
 ИНДЕКСИРОВАТЬ ПО
+	Invoice,
+	Client,
+	Company,
+	Source,
+	Location,
+	SubSubSegment,
+	Currency,
+	AU
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	BilledARОбороты.Client КАК Client,
+	BilledARОбороты.Company КАК Company,
+	BilledARОбороты.Source КАК Source,
+	BilledARОбороты.Location КАК Location,
+	BilledARОбороты.SubSubSegment КАК SubSubSegment,
+	BilledARОбороты.Invoice КАК Invoice,
+	BilledARОбороты.Account,
+	BilledARОбороты.Currency КАК Currency,
+	BilledARОбороты.AU КАК AU,
+	BilledARОбороты.AmountОборот,
+	ВЫБОР
+		КОГДА BilledARОбороты.Invoice ССЫЛКА Документ.Invoice
+			ТОГДА ВЫРАЗИТЬ(BilledARОбороты.Invoice КАК Документ.Invoice).DocNumber
+		ИНАЧЕ ВЫРАЗИТЬ(BilledARОбороты.Invoice КАК Документ.Memo).Номер
+	КОНЕЦ КАК ПредставлениеДокумента
+ПОМЕСТИТЬ ВТ_Обороты
+ИЗ
+	РегистрНакопления.BilledAR.Обороты({(&amp;ПериодОстатков)}, {(&amp;КонецДняФормированияОтчета)}, , ) КАК BilledARОбороты
+
+ОБЪЕДИНИТЬ ВСЕ
+
+ВЫБРАТЬ
+	UnallocatedMemoОбороты.Client,
+	UnallocatedMemoОбороты.Company,
+	UnallocatedMemoОбороты.Source,
+	UnallocatedMemoОбороты.Location,
+	UnallocatedMemoОбороты.SubSubSegment,
+	UnallocatedMemoОбороты.Memo,
+	UnallocatedMemoОбороты.Account,
+	UnallocatedMemoОбороты.Currency,
+	UnallocatedMemoОбороты.AU,
+	UnallocatedMemoОбороты.AmountОборот,
+	UnallocatedMemoОбороты.Memo.Номер
+ИЗ
+	РегистрНакопления.UnallocatedMemo.Обороты({(&amp;ПериодОстатков)}, {(&amp;КонецДняФормированияОтчета)}, , ) КАК UnallocatedMemoОбороты
+
+ИНДЕКСИРОВАТЬ ПО
+	Invoice,
+	Client,
+	Company,
+	Source,
+	Location,
+	SubSubSegment,
+	Currency,
+	AU
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	PaymentsОбороты.Client КАК Client,
+	PaymentsОбороты.Company КАК Company,
+	PaymentsОбороты.Source КАК Source,
+	PaymentsОбороты.Location КАК Location,
+	PaymentsОбороты.SubSubSegment КАК SubSubSegment,
+	PaymentsОбороты.Invoice КАК Invoice,
+	PaymentsОбороты.Currency КАК Currency,
+	PaymentsОбороты.AU КАК AU,
+	PaymentsОбороты.AmountОборот КАК AmountОборот
+ПОМЕСТИТЬ ВТ_Оплаты
+ИЗ
+	РегистрНакопления.Payments.Обороты(
+			{(&amp;ПериодОстатков)},
+			{(&amp;КонецДняФормированияОтчета)},
+			,
+			(Client, Company, Source, Location, SubSubSegment, Invoice, Currency, AU) В
+				(ВЫБРАТЬ РАЗЛИЧНЫЕ
+					ВТ_Обороты.Client,
+					ВТ_Обороты.Company,
+					ВТ_Обороты.Source,
+					ВТ_Обороты.Location,
+					ВТ_Обороты.SubSubSegment,
+					ВТ_Обороты.Invoice,
+					ВТ_Обороты.Currency,
+					ВТ_Обороты.AU
+				ИЗ
+					ВТ_Обороты КАК ВТ_Обороты
+				ГДЕ
+					ВТ_Обороты.Invoice ССЫЛКА Документ.Invoice)) КАК PaymentsОбороты
+
+ИНДЕКСИРОВАТЬ ПО
+	Invoice,
+	Client,
+	Company,
+	Source,
+	Location,
+	SubSubSegment,
+	Currency,
+	AU
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	ВТ_Обороты.Client,
+	ВТ_Обороты.Company,
+	ВТ_Обороты.Source,
+	ВТ_Обороты.Location,
+	ВТ_Обороты.SubSubSegment,
+	ВТ_Обороты.Invoice,
+	ВТ_Обороты.Account,
+	ВТ_Обороты.Currency,
+	ВТ_Обороты.AU,
+	ВТ_Обороты.AmountОборот + ЕСТЬNULL(ВТ_Оплаты.AmountОборот, 0) КАК AmountОстаток,
+	ВТ_Обороты.ПредставлениеДокумента
+ПОМЕСТИТЬ ВТ_ОборотыБезОплат
+ИЗ
+	ВТ_Обороты КАК ВТ_Обороты
+		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_Оплаты КАК ВТ_Оплаты
+		ПО ВТ_Обороты.Client = ВТ_Оплаты.Client
+			И ВТ_Обороты.Company = ВТ_Оплаты.Company
+			И ВТ_Обороты.Source = ВТ_Оплаты.Source
+			И ВТ_Обороты.Location = ВТ_Оплаты.Location
+			И ВТ_Обороты.SubSubSegment = ВТ_Оплаты.SubSubSegment
+			И ВТ_Обороты.Invoice = ВТ_Оплаты.Invoice
+			И ВТ_Обороты.Currency = ВТ_Оплаты.Currency
+			И ВТ_Обороты.AU = ВТ_Оплаты.AU
+ГДЕ
+	ВТ_Обороты.AmountОборот + ЕСТЬNULL(ВТ_Оплаты.AmountОборот, 0) &lt;&gt; 0
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	ВложенныйЗапрос.Client КАК Client,
+	ВложенныйЗапрос.Company,
+	ВложенныйЗапрос.Source КАК Source,
+	ВложенныйЗапрос.Location,
+	ВложенныйЗапрос.SubSubSegment,
+	ВложенныйЗапрос.Invoice,
+	ВложенныйЗапрос.Account,
+	ВложенныйЗапрос.Currency,
+	ВложенныйЗапрос.AU,
+	СУММА(ВложенныйЗапрос.AmountОстаток) КАК AmountОстаток,
+	ВложенныйЗапрос.ПредставлениеДокумента
+ПОМЕСТИТЬ ВТ_ОстаткиБезОплатТекущегоПериода
+ИЗ
+	(ВЫБРАТЬ
+		ВТ_Остатки.Client КАК Client,
+		ВТ_Остатки.Company КАК Company,
+		ВТ_Остатки.Source КАК Source,
+		ВТ_Остатки.Location КАК Location,
+		ВТ_Остатки.SubSubSegment КАК SubSubSegment,
+		ВТ_Остатки.Invoice КАК Invoice,
+		ВТ_Остатки.Account КАК Account,
+		ВТ_Остатки.Currency КАК Currency,
+		ВТ_Остатки.AU КАК AU,
+		ВТ_Остатки.AmountОстаток КАК AmountОстаток,
+		ВТ_Остатки.ПредставлениеДокумента КАК ПредставлениеДокумента
+	ИЗ
+		ВТ_Остатки КАК ВТ_Остатки
+	
+	ОБЪЕДИНИТЬ ВСЕ
+	
+	ВЫБРАТЬ
+		ВТ_ОборотыБезОплат.Client,
+		ВТ_ОборотыБезОплат.Company,
+		ВТ_ОборотыБезОплат.Source,
+		ВТ_ОборотыБезОплат.Location,
+		ВТ_ОборотыБезОплат.SubSubSegment,
+		ВТ_ОборотыБезОплат.Invoice,
+		ВТ_ОборотыБезОплат.Account,
+		ВТ_ОборотыБезОплат.Currency,
+		ВТ_ОборотыБезОплат.AU,
+		ВТ_ОборотыБезОплат.AmountОстаток,
+		ВТ_ОборотыБезОплат.ПредставлениеДокумента
+	ИЗ
+		ВТ_ОборотыБезОплат КАК ВТ_ОборотыБезОплат) КАК ВложенныйЗапрос
+
+СГРУППИРОВАТЬ ПО
+	ВложенныйЗапрос.Client,
+	ВложенныйЗапрос.Company,
+	ВложенныйЗапрос.Source,
+	ВложенныйЗапрос.Location,
+	ВложенныйЗапрос.SubSubSegment,
+	ВложенныйЗапрос.Invoice,
+	ВложенныйЗапрос.Account,
+	ВложенныйЗапрос.Currency,
+	ВложенныйЗапрос.AU,
+	ВложенныйЗапрос.ПредставлениеДокумента
+
+ИНДЕКСИРОВАТЬ ПО
 	Client,
 	Source
 ;
@@ -358,9 +530,9 @@
 			,
 			Контрагент В
 				(ВЫБРАТЬ
-					ВТ_Остатки.Client
+					ВТ_ОстаткиБезОплатТекущегоПериода.Client
 				ИЗ
-					ВТ_Остатки КАК ВТ_Остатки)) КАК ИерархияКонтрагентовСрезПоследних
+					ВТ_ОстаткиБезОплатТекущегоПериода КАК ВТ_ОстаткиБезОплатТекущегоПериода)) КАК ИерархияКонтрагентовСрезПоследних
 
 ИНДЕКСИРОВАТЬ ПО
 	Контрагент
@@ -385,15 +557,6 @@
 			ИНАЧЕ ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность
 		КОНЕЦ) КАК BaseAmountОстаток,
 	ВТ_ИерархияКлиентов.ГоловнойКонтрагент,
-	ВЫБОР
-		КОГДА ВТ_Остатки.Invoice ССЫЛКА Документ.Invoice
-			ТОГДА "I"
-		КОГДА ВТ_Остатки.Invoice ССЫЛКА Документ.CashBatch
-			ТОГДА "Payment"
-		КОГДА ВТ_Остатки.Invoice ССЫЛКА Документ.Memo
-			ТОГДА "Memo"
-		ИНАЧЕ ""
-	КОНЕЦ КАК TransType,
 	ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0) КАК Rate,
 	ВЫБОР
 		КОГДА ВТ_Остатки.Invoice.DueDateTo &lt;= &amp;Период
@@ -442,9 +605,16 @@
 	ВТ_Остатки.Invoice.StatusOfDispute КАК InvoiceStatusOfDispute,
 	ВТ_Остатки.Invoice.DisputeDistributedDate КАК InvoiceDisputeDistributedDate,
 	ВТ_Остатки.Invoice.DisputeCollectableDate КАК InvoiceDisputeCollectableDate,
-	ВТ_Остатки.Invoice.Contract.AmendmentName КАК InvoiceContractAmendmentName
+	ВТ_Остатки.Invoice.Contract.AmendmentName КАК InvoiceContractAmendmentName,
+	ВЫБОР
+		КОГДА ВТ_Остатки.Invoice ССЫЛКА Документ.Invoice
+			ТОГДА "I"
+		КОГДА ВТ_Остатки.Invoice ССЫЛКА Документ.Memo
+			ТОГДА "Memo"
+		ИНАЧЕ ""
+	КОНЕЦ КАК TransType
 ИЗ
-	ВТ_Остатки КАК ВТ_Остатки
+	ВТ_ОстаткиБезОплатТекущегоПериода КАК ВТ_Остатки
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ИерархияКлиентов КАК ВТ_ИерархияКлиентов
 		ПО ВТ_Остатки.Client = ВТ_ИерархияКлиентов.Контрагент
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних КАК ВнутренниеКурсыВалютСрезПоследних
@@ -492,15 +662,6 @@
 		ИНАЧЕ ВТ_Остатки.Invoice.Contract.crmContractName
 	КОНЕЦ,
 	ВТ_Остатки.Invoice.ClientID,
-	ВЫБОР
-		КОГДА ВТ_Остатки.Invoice ССЫЛКА Документ.Invoice
-			ТОГДА "I"
-		КОГДА ВТ_Остатки.Invoice ССЫЛКА Документ.CashBatch
-			ТОГДА "Payment"
-		КОГДА ВТ_Остатки.Invoice ССЫЛКА Документ.Memo
-			ТОГДА "Memo"
-		ИНАЧЕ ""
-	КОНЕЦ,
 	ВТ_Остатки.Invoice.ДатаВозвратаКС,
 	ВТ_Остатки.Invoice.ДатаОтправкиКС,
 	ВТ_Остатки.Invoice.СтатусВозвратаКС,
@@ -526,7 +687,14 @@
 	ВТ_Остатки.Invoice.DisputeDistributedDate,
 	ВТ_Остатки.Invoice.DisputeCollectableDate,
 	ВТ_Остатки.Invoice.Contract.AmendmentName,
-	ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0)</query>
+	ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0),
+	ВЫБОР
+		КОГДА ВТ_Остатки.Invoice ССЫЛКА Документ.Invoice
+			ТОГДА "I"
+		КОГДА ВТ_Остатки.Invoice ССЫЛКА Документ.Memo
+			ТОГДА "Memo"
+		ИНАЧЕ ""
+	КОНЕЦ</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>DueFrom</dataPath>
@@ -695,7 +863,20 @@
 		</valueType>
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>true</useRestriction>
-		<expression>ДОБАВИТЬКДАТЕ(КонецПериода(&amp;Период,"ДЕНЬ") , "СЕКУНДА", 1)</expression>
+		<expression>НачалоПериода(&amp;Период,"МЕСЯЦ") </expression>
+		<availableAsField>false</availableAsField>
+	</parameter>
+	<parameter>
+		<name>КонецДняФормированияОтчета</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Конец дня формирования отчета</v8:content>
+			</v8:item>
+		</title>
+		<value xsi:nil="true"/>
+		<useRestriction>true</useRestriction>
+		<expression>КонецПериода(&amp;Период,"ДЕНЬ")</expression>
 		<availableAsField>false</availableAsField>
 	</parameter>
 	<settingsVariant>
