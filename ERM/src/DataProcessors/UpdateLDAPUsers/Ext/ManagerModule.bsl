@@ -74,7 +74,7 @@
 		
 		// получаем пользователей текущей группы
 		
-		КомандаАДО.CommandText = "<LDAP://DIR.slb.com/ou=Users,OU=Tyumen-RU0994,OU=RU,OU=rca,DC=DIR," + ТекущийДомен + ">" + ";(&(objectCategory=person)(objectClass=user));sAMAccountName,userAccountControl,displayName,department,mail,telephoneNumber;onelevel";
+		КомандаАДО.CommandText = "<LDAP://DIR.slb.com/ou=Users,OU=" + ТекГруппаДомена + ",OU=RU,OU=rca,DC=DIR," + ТекущийДомен + ">" + ";(&(objectCategory=person)(objectClass=user));sAMAccountName,userAccountControl,displayName,department,mail,telephoneNumber,title;onelevel";
 		
 		Попытка
 			ВыборкаПользователейГруппы = КомандаАДО.Execute();  
@@ -120,6 +120,7 @@
 			РГСофтКлиентСервер.УстановитьЗначение(ТекПользовательОбъект.Department, СокрЛП(ВыборкаПользователейГруппы.Fields("department").Value));
 			РГСофтКлиентСервер.УстановитьЗначение(ТекПользовательОбъект.Mail, СокрЛП(ВыборкаПользователейГруппы.Fields("mail").Value));
 			РГСофтКлиентСервер.УстановитьЗначение(ТекПользовательОбъект.TelephoneNumber, СокрЛП(ВыборкаПользователейГруппы.Fields("telephoneNumber").Value));
+			РГСофтКлиентСервер.УстановитьЗначение(ТекПользовательОбъект.JobTitle, СокрЛП(ВыборкаПользователейГруппы.Fields("title").Value));
 			
 			Если ТекПользовательОбъект.Модифицированность() Тогда
 				ТекПользовательОбъект.Записать();
