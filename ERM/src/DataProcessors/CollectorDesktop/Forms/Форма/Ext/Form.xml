@@ -78,6 +78,14 @@
 						<Event name="OnChange">AccountПриИзменении</Event>
 					</Events>
 				</InputField>
+				<InputField name="Collector" id="93">
+					<DataPath>Collector</DataPath>
+					<ContextMenu name="CollectorКонтекстноеМеню" id="94"/>
+					<ExtendedTooltip name="CollectorРасширеннаяПодсказка" id="95"/>
+					<Events>
+						<Event name="OnChange">CollectorПриИзменении</Event>
+					</Events>
+				</InputField>
 				<CheckBoxField name="Comment" id="87">
 					<DataPath>NoComments</DataPath>
 					<CheckBoxType>Auto</CheckBoxType>
@@ -332,13 +340,18 @@
 	КОНЕЦ КАК Пометка,
 	ВЫБОР
 		КОГДА InvoiceCommentsСрезПоследних.Invoice ЕСТЬ NULL 
-			ТОГДА Истина
-		ИНАЧЕ Ложь
-	КОНЕЦ КАК НетКомментария
+			ТОГДА ИСТИНА
+		ИНАЧЕ ЛОЖЬ
+	КОНЕЦ КАК НетКомментария,
+	Collectors.Collector КАК Collector
 ИЗ
 	РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, Invoice ССЫЛКА Документ.Invoice {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket)}) КАК BilledARОстатки
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments.СрезПоследних(, ) КАК InvoiceCommentsСрезПоследних
-		ПО (BilledARОстатки.Invoice = InvoiceCommentsСрезПоследних.Invoice)
+		ПО BilledARОстатки.Invoice = InvoiceCommentsСрезПоследних.Invoice
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.Collectors КАК Collectors
+		ПО BilledARОстатки.Client = Collectors.Client
+			И (Collectors.GeoMarket = BilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель
+				ИЛИ Collectors.GeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка))
 {ГДЕ
 	BilledARОстатки.Source.*,
 	BilledARОстатки.Company.*,
@@ -451,6 +464,17 @@
 			</Title>
 			<Type>
 				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="Collector" id="11">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Collector</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:CatalogRef.Пользователи</v8:Type>
 			</Type>
 		</Attribute>
 	</Attributes>
