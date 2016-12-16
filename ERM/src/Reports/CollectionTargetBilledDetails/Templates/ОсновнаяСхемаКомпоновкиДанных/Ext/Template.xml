@@ -567,7 +567,11 @@
 	InvoiceCommentsСрезПоследних.ConfirmedBy,
 	InvoiceCommentsСрезПоследних.Comment,
 	ВТ_Остатки.ПредставлениеДокумента,
-	ЕСТЬNULL(InvoiceCommentsСрезПоследних.ForecastDate, ДАТАВРЕМЯ(1, 1, 1)) КАК ForecastDate,
+	ВЫБОР
+		КОГДА InvoiceCommentsСрезПоследних.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
+			ТОГДА ВТ_Остатки.Invoice.DueDateTo
+		ИНАЧЕ ЕСТЬNULL(InvoiceCommentsСрезПоследних.ForecastDate, ДАТАВРЕМЯ(1, 1, 1))
+	КОНЕЦ КАК ForecastDate,
 	InvoiceCommentsСрезПоследних.CustInputDate,
 	InvoiceCommentsСрезПоследних.CustomerRepresentative,
 	InvoiceCommentsСрезПоследних.CustomerInputDetails,
@@ -645,7 +649,6 @@
 	ВТ_Остатки.Account,
 	InvoiceCommentsСрезПоследних.SLBAssignedTo,
 	InvoiceCommentsСрезПоследних.RWDTargetDate,
-	ЕСТЬNULL(InvoiceCommentsСрезПоследних.ForecastDate, ДАТАВРЕМЯ(1, 1, 1)),
 	ВТ_Остатки.ПредставлениеДокумента,
 	InvoiceCommentsСрезПоследних.CustomerRepresentative,
 	InvoiceCommentsСрезПоследних.CustInputDate,
@@ -694,6 +697,11 @@
 		КОГДА ВТ_Остатки.Invoice ССЫЛКА Документ.Memo
 			ТОГДА "Memo"
 		ИНАЧЕ ""
+	КОНЕЦ,
+	ВЫБОР
+		КОГДА InvoiceCommentsСрезПоследних.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
+			ТОГДА ВТ_Остатки.Invoice.DueDateTo
+		ИНАЧЕ ЕСТЬNULL(InvoiceCommentsСрезПоследних.ForecastDate, ДАТАВРЕМЯ(1, 1, 1))
 	КОНЕЦ</query>
 	</dataSet>
 	<calculatedField>
