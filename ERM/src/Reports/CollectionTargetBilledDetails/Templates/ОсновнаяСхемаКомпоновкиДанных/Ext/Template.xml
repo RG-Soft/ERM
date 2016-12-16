@@ -286,6 +286,48 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Paid</dataPath>
+			<field>Paid</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Paid</v8:content>
+				</v8:item>
+			</title>
+			<appearance>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>Формат</dcscor:parameter>
+					<dcscor:value xsi:type="v8:LocalStringType">
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>ЧДЦ=2</v8:content>
+						</v8:item>
+					</dcscor:value>
+				</dcscor:item>
+			</appearance>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>PaimentDate</dataPath>
+			<field>PaimentDate</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Paiment date</v8:content>
+				</v8:item>
+			</title>
+			<appearance>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>Формат</dcscor:parameter>
+					<dcscor:value xsi:type="v8:LocalStringType">
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>ДФ=MM/dd/yyyy</v8:content>
+						</v8:item>
+					</dcscor:value>
+				</dcscor:item>
+			</appearance>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	BilledARОстатки.Client КАК Client,
@@ -395,7 +437,7 @@
 	PaymentsОбороты.Currency КАК Currency,
 	PaymentsОбороты.AU КАК AU,
 	PaymentsОбороты.AmountОборот КАК AmountОборот
-ПОМЕСТИТЬ ВТ_Оплаты
+ПОМЕСТИТЬ ВТ_ОплатыТекущегоПериода
 ИЗ
 	РегистрНакопления.Payments.Обороты(
 			{(&amp;ПериодОстатков)},
@@ -443,7 +485,7 @@
 ПОМЕСТИТЬ ВТ_ОборотыБезОплат
 ИЗ
 	ВТ_Обороты КАК ВТ_Обороты
-		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_Оплаты КАК ВТ_Оплаты
+		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ОплатыТекущегоПериода КАК ВТ_Оплаты
 		ПО ВТ_Обороты.Client = ВТ_Оплаты.Client
 			И ВТ_Обороты.Company = ВТ_Оплаты.Company
 			И ВТ_Обороты.Source = ВТ_Оплаты.Source
@@ -518,6 +560,93 @@
 ИНДЕКСИРОВАТЬ ПО
 	Client,
 	Source
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	PaymentsОбороты.Client КАК Client,
+	PaymentsОбороты.Company КАК Company,
+	PaymentsОбороты.Source КАК Source,
+	PaymentsОбороты.Location КАК Location,
+	PaymentsОбороты.SubSubSegment КАК SubSubSegment,
+	PaymentsОбороты.Invoice КАК Invoice,
+	PaymentsОбороты.Currency КАК Currency,
+	PaymentsОбороты.AU КАК AU,
+	СУММА(PaymentsОбороты.AmountОборот) КАК Paid,
+	МАКСИМУМ(ВЫБОР
+			КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.ПроводкаDSS
+				ТОГДА PaymentsОбороты.Регистратор.DateLawson
+			ИНАЧЕ PaymentsОбороты.Регистратор.Дата
+		КОНЕЦ) КАК PaymentDate
+ПОМЕСТИТЬ ВТ_ОплатыПоПроводкам
+ИЗ
+	РегистрНакопления.Payments.Обороты(
+			{(&amp;ПериодНачалаАнализаОплат)},
+			{(&amp;КонецДняФормированияОтчета)},
+			Регистратор,
+			(Client, Company, Source, Location, SubSubSegment, Invoice, Currency, AU) В
+				(ВЫБРАТЬ РАЗЛИЧНЫЕ
+					ВТ_ОстаткиБезОплатТекущегоПериода.Client,
+					ВТ_ОстаткиБезОплатТекущегоПериода.Company,
+					ВТ_ОстаткиБезОплатТекущегоПериода.Source,
+					ВТ_ОстаткиБезОплатТекущегоПериода.Location,
+					ВТ_ОстаткиБезОплатТекущегоПериода.SubSubSegment,
+					ВТ_ОстаткиБезОплатТекущегоПериода.Invoice,
+					ВТ_ОстаткиБезОплатТекущегоПериода.Currency,
+					ВТ_ОстаткиБезОплатТекущегоПериода.AU
+				ИЗ
+					ВТ_ОстаткиБезОплатТекущегоПериода КАК ВТ_ОстаткиБезОплатТекущегоПериода
+						ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИсточникиСЗаполнениемОплатИзОбмена КАК ИсточникиСЗаполнениемОплатИзОбмена
+						ПО
+							ВТ_ОстаткиБезОплатТекущегоПериода.Source = ИсточникиСЗаполнениемОплатИзОбмена.Source
+								И (ВТ_ОстаткиБезОплатТекущегоПериода.Company = ИсточникиСЗаполнениемОплатИзОбмена.Company
+									ИЛИ ИсточникиСЗаполнениемОплатИзОбмена.Company = ЗНАЧЕНИЕ(Справочник.Организации.ПустаяСсылка))
+				ГДЕ
+					ВТ_ОстаткиБезОплатТекущегоПериода.Invoice ССЫЛКА Документ.Invoice
+					И ИсточникиСЗаполнениемОплатИзОбмена.Source ЕСТЬ NULL )) КАК PaymentsОбороты
+
+СГРУППИРОВАТЬ ПО
+	PaymentsОбороты.Client,
+	PaymentsОбороты.Company,
+	PaymentsОбороты.Source,
+	PaymentsОбороты.Location,
+	PaymentsОбороты.SubSubSegment,
+	PaymentsОбороты.Invoice,
+	PaymentsОбороты.Currency,
+	PaymentsОбороты.AU
+
+ИНДЕКСИРОВАТЬ ПО
+	Invoice,
+	Client,
+	Company,
+	Source,
+	Location,
+	SubSubSegment,
+	Currency,
+	AU
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	FiscalPayments.Source,
+	FiscalPayments.Company,
+	FiscalPayments.Invoice,
+	FiscalPayments.Currency,
+	СУММА(FiscalPayments.Amount) КАК Paid,
+	МАКСИМУМ(FiscalPayments.PaymentDate) КАК PaymentDate
+ПОМЕСТИТЬ ВТ_ОплатыИзОбмена
+ИЗ
+	РегистрСведений.FiscalPayments КАК FiscalPayments
+		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.ИсточникиСЗаполнениемОплатИзОбмена КАК ИсточникиСЗаполнениемОплатИзОбмена
+		ПО FiscalPayments.Source = ИсточникиСЗаполнениемОплатИзОбмена.Source
+			И (FiscalPayments.Company = ИсточникиСЗаполнениемОплатИзОбмена.Company
+				ИЛИ ИсточникиСЗаполнениемОплатИзОбмена.Company = ЗНАЧЕНИЕ(Справочник.Организации.ПустаяСсылка))
+
+СГРУППИРОВАТЬ ПО
+	FiscalPayments.Invoice,
+	FiscalPayments.Currency,
+	FiscalPayments.Source,
+	FiscalPayments.Company
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -616,7 +745,17 @@
 		КОГДА ВТ_Остатки.Invoice ССЫЛКА Документ.Memo
 			ТОГДА "Memo"
 		ИНАЧЕ ""
-	КОНЕЦ КАК TransType
+	КОНЕЦ КАК TransType,
+	ВЫБОР
+		КОГДА ВТ_ОплатыИзОбмена.Source ЕСТЬ NULL 
+			ТОГДА ВТ_ОплатыПоПроводкам.Paid / ВнутренниеКурсыВалютСрезПоследнихОплатыПоПроводкам.Курс * ВнутренниеКурсыВалютСрезПоследнихОплатыПоПроводкам.Кратность
+		ИНАЧЕ ВТ_ОплатыИзОбмена.Paid / ВнутренниеКурсыВалютСрезПоследнихОплатыИзОбмена.Курс * ВнутренниеКурсыВалютСрезПоследнихОплатыИзОбмена.Кратность
+	КОНЕЦ КАК Paid,
+	ВЫБОР
+		КОГДА ВТ_ОплатыИзОбмена.Source ЕСТЬ NULL 
+			ТОГДА ВТ_ОплатыПоПроводкам.PaymentDate
+		ИНАЧЕ ВТ_ОплатыИзОбмена.PaymentDate
+	КОНЕЦ КАК PaimentDate
 ИЗ
 	ВТ_ОстаткиБезОплатТекущегоПериода КАК ВТ_Остатки
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ИерархияКлиентов КАК ВТ_ИерархияКлиентов
@@ -629,6 +768,22 @@
 		ПО ВТ_Остатки.Client = Collectors.Client
 			И (Collectors.GeoMarket = ВТ_Остатки.Location.БазовыйЭлемент.GeoMarket.Родитель
 				ИЛИ Collectors.GeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка))
+		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ОплатыИзОбмена КАК ВТ_ОплатыИзОбмена
+			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних КАК ВнутренниеКурсыВалютСрезПоследнихОплатыИзОбмена
+			ПО ВТ_ОплатыИзОбмена.Currency = ВнутренниеКурсыВалютСрезПоследнихОплатыИзОбмена.Валюта
+		ПО ВТ_Остатки.Company = ВТ_ОплатыИзОбмена.Company
+			И ВТ_Остатки.Source = ВТ_ОплатыИзОбмена.Source
+			И ВТ_Остатки.Invoice = ВТ_ОплатыИзОбмена.Invoice
+		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ОплатыПоПроводкам КАК ВТ_ОплатыПоПроводкам
+			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних КАК ВнутренниеКурсыВалютСрезПоследнихОплатыПоПроводкам
+			ПО ВТ_ОплатыПоПроводкам.Currency = ВнутренниеКурсыВалютСрезПоследнихОплатыПоПроводкам.Валюта
+		ПО ВТ_Остатки.Client = ВТ_ОплатыПоПроводкам.Client
+			И ВТ_Остатки.Company = ВТ_ОплатыПоПроводкам.Company
+			И ВТ_Остатки.Source = ВТ_ОплатыПоПроводкам.Source
+			И ВТ_Остатки.Location = ВТ_ОплатыПоПроводкам.Location
+			И ВТ_Остатки.SubSubSegment = ВТ_ОплатыПоПроводкам.SubSubSegment
+			И ВТ_Остатки.Invoice = ВТ_ОплатыПоПроводкам.Invoice
+			И ВТ_Остатки.AU = ВТ_ОплатыПоПроводкам.AU
 ГДЕ
 	ВТ_Остатки.Client &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)
 	И ВТ_Остатки.Client &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.Unreconciled)
@@ -702,6 +857,16 @@
 		КОГДА InvoiceCommentsСрезПоследних.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
 			ТОГДА ВТ_Остатки.Invoice.DueDateTo
 		ИНАЧЕ ЕСТЬNULL(InvoiceCommentsСрезПоследних.ForecastDate, ДАТАВРЕМЯ(1, 1, 1))
+	КОНЕЦ,
+	ВЫБОР
+		КОГДА ВТ_ОплатыИзОбмена.Source ЕСТЬ NULL 
+			ТОГДА ВТ_ОплатыПоПроводкам.PaymentDate
+		ИНАЧЕ ВТ_ОплатыИзОбмена.PaymentDate
+	КОНЕЦ,
+	ВЫБОР
+		КОГДА ВТ_ОплатыИзОбмена.Source ЕСТЬ NULL 
+			ТОГДА ВТ_ОплатыПоПроводкам.Paid / ВнутренниеКурсыВалютСрезПоследнихОплатыПоПроводкам.Курс * ВнутренниеКурсыВалютСрезПоследнихОплатыПоПроводкам.Кратность
+		ИНАЧЕ ВТ_ОплатыИзОбмена.Paid / ВнутренниеКурсыВалютСрезПоследнихОплатыИзОбмена.Курс * ВнутренниеКурсыВалютСрезПоследнихОплатыИзОбмена.Кратность
 	КОНЕЦ</query>
 	</dataSet>
 	<calculatedField>
@@ -743,22 +908,6 @@
 			<v8:item>
 				<v8:lang>ru</v8:lang>
 				<v8:content>Due To</v8:content>
-			</v8:item>
-		</title>
-		<appearance>
-			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-				<dcscor:parameter>Формат</dcscor:parameter>
-				<dcscor:value xsi:type="xs:string">ЧДЦ=2</dcscor:value>
-			</dcscor:item>
-		</appearance>
-	</calculatedField>
-	<calculatedField>
-		<dataPath>Paid</dataPath>
-		<expression>ВЫБОР КОГДА Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid) ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ  ИНАЧЕ 0 КОНЕЦ</expression>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Paid</v8:content>
 			</v8:item>
 		</title>
 		<appearance>
@@ -886,6 +1035,23 @@
 		<useRestriction>true</useRestriction>
 		<expression>КонецПериода(&amp;Период,"ДЕНЬ")</expression>
 		<availableAsField>false</availableAsField>
+	</parameter>
+	<parameter>
+		<name>ПериодНачалаАнализаОплат</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Период начала анализа оплат</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>xs:dateTime</v8:Type>
+			<v8:DateQualifiers>
+				<v8:DateFractions>DateTime</v8:DateFractions>
+			</v8:DateQualifiers>
+		</valueType>
+		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
+		<useRestriction>false</useRestriction>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
@@ -1409,6 +1575,9 @@
 							<v8:content>KS Return status</v8:content>
 						</v8:item>
 					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>PaimentDate</dcsset:field>
 				</dcsset:item>
 			</dcsset:selection>
 			<dcsset:filter>
