@@ -298,12 +298,7 @@
 			<appearance>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>Формат</dcscor:parameter>
-					<dcscor:value xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>ЧДЦ=2</v8:content>
-						</v8:item>
-					</dcscor:value>
+					<dcscor:value xsi:type="xs:string">ЧДЦ=2</dcscor:value>
 				</dcscor:item>
 			</appearance>
 		</field>
@@ -319,12 +314,7 @@
 			<appearance>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>Формат</dcscor:parameter>
-					<dcscor:value xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>ДФ=MM/dd/yy</v8:content>
-						</v8:item>
-					</dcscor:value>
+					<dcscor:value xsi:type="xs:string">ДФ=MM/dd/yy</dcscor:value>
 				</dcscor:item>
 			</appearance>
 		</field>
@@ -641,6 +631,8 @@
 		ПО FiscalPayments.Source = ИсточникиСЗаполнениемОплатИзОбмена.Source
 			И (FiscalPayments.Company = ИсточникиСЗаполнениемОплатИзОбмена.Company
 				ИЛИ ИсточникиСЗаполнениемОплатИзОбмена.Company = ЗНАЧЕНИЕ(Справочник.Организации.ПустаяСсылка))
+ГДЕ
+	FiscalPayments.PaymentDate &lt;= &amp;КонецДняФормированияОтчета
 
 СГРУППИРОВАТЬ ПО
 	FiscalPayments.Invoice,
@@ -746,16 +738,16 @@
 			ТОГДА "Memo"
 		ИНАЧЕ ""
 	КОНЕЦ КАК TransType,
-	ВЫБОР
-		КОГДА ВТ_ОплатыИзОбмена.Source ЕСТЬ NULL 
-			ТОГДА ВТ_ОплатыПоПроводкам.Paid / ВнутренниеКурсыВалютСрезПоследнихОплатыПоПроводкам.Курс * ВнутренниеКурсыВалютСрезПоследнихОплатыПоПроводкам.Кратность
-		ИНАЧЕ ВТ_ОплатыИзОбмена.Paid / ВнутренниеКурсыВалютСрезПоследнихОплатыИзОбмена.Курс * ВнутренниеКурсыВалютСрезПоследнихОплатыИзОбмена.Кратность
-	КОНЕЦ КАК Paid,
-	ВЫБОР
-		КОГДА ВТ_ОплатыИзОбмена.Source ЕСТЬ NULL 
-			ТОГДА ВТ_ОплатыПоПроводкам.PaymentDate
-		ИНАЧЕ ВТ_ОплатыИзОбмена.PaymentDate
-	КОНЕЦ КАК PaymentDate
+	СУММА(ВЫБОР
+			КОГДА ВТ_ОплатыИзОбмена.Source ЕСТЬ NULL 
+				ТОГДА ВТ_ОплатыПоПроводкам.Paid / ВнутренниеКурсыВалютСрезПоследнихОплатыПоПроводкам.Курс * ВнутренниеКурсыВалютСрезПоследнихОплатыПоПроводкам.Кратность
+			ИНАЧЕ ВТ_ОплатыИзОбмена.Paid / ВнутренниеКурсыВалютСрезПоследнихОплатыИзОбмена.Курс * ВнутренниеКурсыВалютСрезПоследнихОплатыИзОбмена.Кратность
+		КОНЕЦ) КАК Paid,
+	МАКСИМУМ(ВЫБОР
+			КОГДА ВТ_ОплатыИзОбмена.Source ЕСТЬ NULL 
+				ТОГДА ВТ_ОплатыПоПроводкам.PaymentDate
+			ИНАЧЕ ВТ_ОплатыИзОбмена.PaymentDate
+		КОНЕЦ) КАК PaymentDate
 ИЗ
 	ВТ_ОстаткиБезОплатТекущегоПериода КАК ВТ_Остатки
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ИерархияКлиентов КАК ВТ_ИерархияКлиентов
@@ -857,16 +849,6 @@
 		КОГДА InvoiceCommentsСрезПоследних.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
 			ТОГДА ВТ_Остатки.Invoice.DueDateTo
 		ИНАЧЕ ЕСТЬNULL(InvoiceCommentsСрезПоследних.ForecastDate, ДАТАВРЕМЯ(1, 1, 1))
-	КОНЕЦ,
-	ВЫБОР
-		КОГДА ВТ_ОплатыИзОбмена.Source ЕСТЬ NULL 
-			ТОГДА ВТ_ОплатыПоПроводкам.PaymentDate
-		ИНАЧЕ ВТ_ОплатыИзОбмена.PaymentDate
-	КОНЕЦ,
-	ВЫБОР
-		КОГДА ВТ_ОплатыИзОбмена.Source ЕСТЬ NULL 
-			ТОГДА ВТ_ОплатыПоПроводкам.Paid / ВнутренниеКурсыВалютСрезПоследнихОплатыПоПроводкам.Курс * ВнутренниеКурсыВалютСрезПоследнихОплатыПоПроводкам.Кратность
-		ИНАЧЕ ВТ_ОплатыИзОбмена.Paid / ВнутренниеКурсыВалютСрезПоследнихОплатыИзОбмена.Курс * ВнутренниеКурсыВалютСрезПоследнихОплатыИзОбмена.Кратность
 	КОНЕЦ</query>
 	</dataSet>
 	<calculatedField>
