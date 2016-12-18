@@ -3065,6 +3065,7 @@
 	ДокОбъект.SubSubSegment = ТранзакцияHOBОбъект.SubSubSegment;
 	ДокОбъект.ClientID = ДанныеДляЗаполнения.CustomerNumber;
 	//ДокОбъект.SubGeoMarket = ТранзакцияHOBОбъект.SubGeoMarket;
+	ДокОбъект.CREW = ДанныеДляЗаполнения.LocationCode;
 	ДокОбъект.OriginalAnalytics = Формат(ДанныеДляЗаполнения.CompanyCode, "ЧГ=0") + "." + ДанныеДляЗаполнения.AUCode + "." + ДанныеДляЗаполнения.LocationCode + "." + ДанныеДляЗаполнения.AccountCode;
 	
 	ДокОбъект.Записать(РежимЗаписиДокумента.Запись);
