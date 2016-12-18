@@ -849,7 +849,10 @@
 		КОГДА InvoiceCommentsСрезПоследних.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
 			ТОГДА ВТ_Остатки.Invoice.DueDateTo
 		ИНАЧЕ ЕСТЬNULL(InvoiceCommentsСрезПоследних.ForecastDate, ДАТАВРЕМЯ(1, 1, 1))
-	КОНЕЦ</query>
+	КОНЕЦ
+
+ИМЕЮЩИЕ
+	СУММА(ВТ_Остатки.AmountОстаток) &lt;&gt; 0</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>DueFrom</dataPath>
