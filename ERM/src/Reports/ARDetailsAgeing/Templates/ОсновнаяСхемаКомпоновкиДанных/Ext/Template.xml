@@ -308,9 +308,13 @@
 ИЗ
 	РегистрНакопления.UnallocatedCash.Остатки({(&amp;ПериодОстатков)}, ) КАК UnallocatedCashОстатки
 ГДЕ
-	(НЕ UnallocatedCashОстатки.CashBatch.Prepayment
-			ИЛИ UnallocatedCashОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
-			ИЛИ UnallocatedCashОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith))
+	ВЫБОР
+			КОГДА НЕ UnallocatedCashОстатки.CashBatch.Ссылка ЕСТЬ NULL 
+				ТОГДА НЕ UnallocatedCashОстатки.CashBatch.Prepayment
+						ИЛИ UnallocatedCashОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
+						ИЛИ UnallocatedCashОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith)
+			ИНАЧЕ ИСТИНА
+		КОНЕЦ
 
 ОБЪЕДИНИТЬ ВСЕ
 
