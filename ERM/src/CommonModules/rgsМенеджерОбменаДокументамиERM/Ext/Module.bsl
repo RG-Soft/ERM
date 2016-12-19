@@ -482,12 +482,10 @@
 	
 	Запрос = Новый Запрос;
 	Запрос.Текст = "ВЫБРАТЬ
-	|	SalesOrdersCommentsСрезПоследних.SalesOrder,
-	|	SalesOrdersCommentsСрезПоследних.Problem.Billed КАК Billed
-	|ИЗ
-	|	РегистрСведений.SalesOrdersComments.СрезПоследних КАК SalesOrdersCommentsСрезПоследних
-	|ГДЕ
-	|	SalesOrdersCommentsСрезПоследних.SalesOrder = &SalesOrder";
+	               |	SalesOrdersCommentsСрезПоследних.SalesOrder,
+	               |	SalesOrdersCommentsСрезПоследних.Problem.Billed КАК Billed
+	               |ИЗ
+	               |	РегистрСведений.SalesOrdersComments.СрезПоследних(, SalesOrder = &SalesOrder) КАК SalesOrdersCommentsСрезПоследних";
 	Запрос.УстановитьПараметр("SalesOrder", СсылкаНаSalesOrder);
 	Результат = Запрос.Выполнить();
 	Выборка = Результат.Выбрать();
