@@ -86,6 +86,14 @@
 						<Event name="OnChange">AccountПриИзменении</Event>
 					</Events>
 				</InputField>
+				<InputField name="Billed" id="248">
+					<DataPath>Billed</DataPath>
+					<ContextMenu name="BilledКонтекстноеМеню" id="249"/>
+					<ExtendedTooltip name="BilledРасширеннаяПодсказка" id="250"/>
+					<Events>
+						<Event name="OnChange">BilledПриИзменении</Event>
+					</Events>
+				</InputField>
 				<CheckBoxField name="Comment" id="87">
 					<DataPath>NoComments</DataPath>
 					<CheckBoxType>Auto</CheckBoxType>
@@ -481,8 +489,8 @@
 	UnbilledARОстатки.SalesOrder.Invoice.Amount КАК InvoiceAmount,
 	UnbilledARОстатки.SalesOrder.AmountUSD КАК AgedDeferral,
 	SalesOrdersCommentsСрезПервых.Problem.User КАК ResponsibleAR,
-	UnbilledARОстатки.Location.БазовыйЭлемент.GeoMarket КАК GeoMarket,
-	UnbilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель КАК SubGeoMarket,
+	UnbilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
+	UnbilledARОстатки.Location.БазовыйЭлемент.GeoMarket КАК SubGeoMarket,
 	SalesOrdersCommentsСрезПоследних.SalesOrder.Agreement КАК Agreement,
 	UnbilledARОстатки.SalesOrder.ClientID КАК CustomerID,
 	ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0) КАК Rate,
@@ -520,6 +528,10 @@
 						<dcsset:userSettingID>dfcece9d-5077-440b-b6b3-45a5cb4538eb</dcsset:userSettingID>
 					</dcsset:filter>
 					<dcsset:order>
+						<dcsset:item xsi:type="dcsset:OrderItemField">
+							<dcsset:field>SalesOrder</dcsset:field>
+							<dcsset:orderType>Asc</dcsset:orderType>
+						</dcsset:item>
 						<dcsset:viewMode>Normal</dcsset:viewMode>
 						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
 					</dcsset:order>
@@ -644,6 +656,17 @@
 			</Title>
 			<Type>
 				<v8:Type>cfg:CatalogRef.HFM_Technology</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="Billed" id="13">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Billed</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:EnumRef.SalesOrderBilledStatus</v8:Type>
 			</Type>
 		</Attribute>
 	</Attributes>
