@@ -125,7 +125,7 @@
 					<ExtendedTooltip name="CustomerInputDetailsРасширеннаяПодсказка" id="45"/>
 				</LabelField>
 				<LabelField name="SLBAssignedTo" id="46">
-					<DataPath>Список.SLBAssignedTo</DataPath>
+					<DataPath>Список.SLBAssignedToList</DataPath>
 					<ContextMenu name="SLBAssignedToКонтекстноеМеню" id="47"/>
 					<ExtendedTooltip name="SLBAssignedToРасширеннаяПодсказка" id="48"/>
 				</LabelField>
@@ -149,8 +149,24 @@
 			</Type>
 			<MainAttribute>true</MainAttribute>
 			<Settings xsi:type="DynamicList">
-				<ManualQuery>false</ManualQuery>
+				<ManualQuery>true</ManualQuery>
 				<DynamicDataRead>true</DynamicDataRead>
+				<QueryText>ВЫБРАТЬ
+	InvoiceComments.Период,
+	InvoiceComments.Invoice,
+	InvoiceComments.Problem.User КАК User,
+	InvoiceComments.Problem.Status КАК Status,
+	InvoiceComments.Problem.ConfirmedBy КАК ConfirmedBy,
+	InvoiceComments.Problem.ForecastDate КАК ForecastDate,
+	InvoiceComments.Problem.CustInputDate КАК CustInputDate,
+	InvoiceComments.Problem.CustomerRepresentative КАК CustomerRepresentative,
+	InvoiceComments.Problem.CustomerInputDetails КАК CustomerInputDetails,
+	InvoiceComments.Problem.RemedialWorkPlan КАК RemedialWorkPlan,
+	InvoiceComments.Problem.RWDTargetDate КАК RWDTargetDate,
+	InvoiceComments.Problem.Comment КАК Comment,
+	InvoiceComments.Problem.SLBAssignedToList КАК SLBAssignedToList
+ИЗ
+	РегистрСведений.InvoiceComments КАК InvoiceComments</QueryText>
 				<MainTable>InformationRegister.InvoiceComments</MainTable>
 				<ListSettings>
 					<dcsset:filter>
