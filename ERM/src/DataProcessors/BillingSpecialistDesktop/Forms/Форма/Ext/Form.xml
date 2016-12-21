@@ -47,6 +47,14 @@
 						<Event name="OnChange">GeoMarketПриИзменении</Event>
 					</Events>
 				</InputField>
+				<InputField name="SubGeoMarket" id="251">
+					<DataPath>SubGeoMarket</DataPath>
+					<ContextMenu name="SubGeoMarketКонтекстноеМеню" id="252"/>
+					<ExtendedTooltip name="SubGeoMarketРасширеннаяПодсказка" id="253"/>
+					<Events>
+						<Event name="OnChange">SubGeoMarketПриИзменении</Event>
+					</Events>
+				</InputField>
 				<InputField name="Segment" id="242">
 					<DataPath>Segment</DataPath>
 					<ContextMenu name="SegmentКонтекстноеМеню" id="243"/>
@@ -272,41 +280,6 @@
 					<ContextMenu name="SalesOrdersCurrencyКонтекстноеМеню" id="116"/>
 					<ExtendedTooltip name="SalesOrdersCurrencyРасширеннаяПодсказка" id="117"/>
 				</LabelField>
-				<ColumnGroup name="SalesOrdersГруппа1" id="232">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>SO Amount</v8:content>
-						</v8:item>
-					</Title>
-					<Group>Horizontal</Group>
-					<ShowInHeader>true</ShowInHeader>
-					<ExtendedTooltip name="SalesOrdersГруппа1РасширеннаяПодсказка" id="233"/>
-					<ChildItems>
-						<LabelField name="SalesOrdersSalesAmount" id="226">
-							<DataPath>SalesOrders.SalesAmount</DataPath>
-							<Title>
-								<v8:item>
-									<v8:lang>ru</v8:lang>
-									<v8:content>Orig. curr</v8:content>
-								</v8:item>
-							</Title>
-							<ContextMenu name="SalesOrdersSalesAmountКонтекстноеМеню" id="227"/>
-							<ExtendedTooltip name="SalesOrdersSalesAmountРасширеннаяПодсказка" id="228"/>
-						</LabelField>
-						<LabelField name="SalesOrdersSalesAmountUSD" id="229">
-							<DataPath>SalesOrders.SalesAmountUSD</DataPath>
-							<Title>
-								<v8:item>
-									<v8:lang>ru</v8:lang>
-									<v8:content>USD</v8:content>
-								</v8:item>
-							</Title>
-							<ContextMenu name="SalesOrdersSalesAmountUSDКонтекстноеМеню" id="230"/>
-							<ExtendedTooltip name="SalesOrdersSalesAmountUSDРасширеннаяПодсказка" id="231"/>
-						</LabelField>
-					</ChildItems>
-				</ColumnGroup>
 				<ColumnGroup name="SalesOrdersГруппа2" id="240">
 					<Title>
 						<v8:item>
@@ -473,7 +446,11 @@
 	UnbilledARОстатки.SalesOrder.Дата КАК SalesDate,
 	UnbilledARОстатки.SalesOrder.Номер КАК SalesNo,
 	SalesOrdersCommentsСрезПоследних.Problem.Reason КАК Reason,
-	SalesOrdersCommentsСрезПоследних.Problem.Billed КАК Billed,
+	ВЫБОР
+		КОГДА SalesOrdersCommentsСрезПоследних.Problem.Billed ЕСТЬ NULL 
+			ТОГДА ЗНАЧЕНИЕ(Перечисление.SalesOrderBilledStatus.Unbilled)
+		ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.Billed
+	КОНЕЦ КАК Billed,
 	SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice КАК ExpectedDateForInvoice,
 	SalesOrdersCommentsСрезПоследних.Problem.EscalateTo КАК EscalateTo,
 	SalesOrdersCommentsСрезПоследних.Problem.Details КАК Details,
@@ -667,6 +644,17 @@
 			</Title>
 			<Type>
 				<v8:Type>cfg:EnumRef.SalesOrderBilledStatus</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="SubGeoMarket" id="14">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Sub Geo market</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:CatalogRef.HFM_Geomarkets</v8:Type>
 			</Type>
 		</Attribute>
 	</Attributes>
