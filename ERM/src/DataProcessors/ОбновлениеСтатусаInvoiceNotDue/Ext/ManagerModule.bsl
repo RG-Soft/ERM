@@ -34,14 +34,30 @@
 	НаборЗаписей = РегистрыСведений.InvoiceComments.СоздатьНаборЗаписей();
 	
 	Пока ВыборкаДетальныеЗаписи.Следующий() Цикл
+		
 		НаборЗаписей.Очистить();
 		НаборЗаписей.Отбор.Invoice.Установить(ВыборкаДетальныеЗаписи.Invoice);
+		
+		СтруктураРеквизитовПроблемы = Новый Структура("Дата, Invoice, User, Status, ConfirmedBy, CustomerRepresentative, CustomerInputDetails, Comment, CustInputDate, ForecastDate, RemedialWorkPlan, RWDTargetDate, SLBAssignedTo");
+		СтруктураРеквизитовПроблемы.Дата = Дата;
+		СтруктураРеквизитовПроблемы.Invoice = ВыборкаДетальныеЗаписи.Invoice;
+		СтруктураРеквизитовПроблемы.Status = Перечисления.InvoiceStatus.InvoiceNotDue;
+		СтруктураРеквизитовПроблемы.User = User;
+		
+		НачатьТранзакцию();
+		
+		Problem = РегистрыСведений.InvoiceComments.СоздатьInvoiceProblem(СтруктураРеквизитовПроблемы);
+		
 		НоваяЗапись = НаборЗаписей.Добавить();
-		НоваяЗапись.Invoice = ВыборкаДетальныеЗаписи.Invoice;
-		НоваяЗапись.Status = Перечисления.InvoiceStatus.InvoiceNotDue;
 		НоваяЗапись.Период = Дата;
-		НоваяЗапись.User = User;
+		НоваяЗапись.Invoice = ВыборкаДетальныеЗаписи.Invoice;
+		//НоваяЗапись.Status = Перечисления.InvoiceStatus.InvoiceNotDue;
+		//НоваяЗапись.User = User;
+		НоваяЗапись.Problem = Problem;
 		НаборЗаписей.Записать(Ложь);
+		
+		ЗафиксироватьТранзакцию();
+		
 	КонецЦикла;
 	
 КонецПроцедуры

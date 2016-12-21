@@ -29,25 +29,37 @@
 	
 	Для каждого ЭлементСписка Из СписокИнвойсов Цикл
 		
+		СтруктураРеквизитовПроблемы = Новый Структура("Дата, Invoice, User, Status, ConfirmedBy, CustomerRepresentative, CustomerInputDetails, Comment, CustInputDate, ForecastDate, RemedialWorkPlan, RWDTargetDate, SLBAssignedTo");
+		ЗаполнитьЗначенияСвойств(СтруктураРеквизитовПроблемы, ЭтотОбъект);
+		СтруктураРеквизитовПроблемы.Дата = Период;
+		СтруктураРеквизитовПроблемы.Invoice = ЭлементСписка.Значение;
+		
+		НачатьТранзакцию();
+		
+		Problem = РегистрыСведений.InvoiceComments.СоздатьInvoiceProblem(СтруктураРеквизитовПроблемы);
+		
 		НЗ.Очистить();
 		НЗ.Отбор.Invoice.Установить(ЭлементСписка.Значение);
 		
 		Запись = НЗ.Добавить();
 		Запись.Период = Период;
 		Запись.Invoice = ЭлементСписка.Значение;
-		Запись.User = User;
-		Запись.Status = Status;
-		Запись.ConfirmedBy = ConfirmedBy;
-		Запись.Comment = Comment;
-		Запись.ForecastDate = ForecastDate;
-		Запись.CustInputDate = CustInputDate;
-		Запись.CustomerRepresentative = CustomerRepresentative;
-		Запись.CustomerInputDetails = CustomerInputDetails;
-		Запись.SLBAssignedTo = SLBAssignedTo;
-		Запись.RemedialWorkPlan = RemedialWorkPlan;
-		Запись.RWDTargetDate = RWDTargetDate;
+		//Запись.User = User;
+		//Запись.Status = Status;
+		//Запись.ConfirmedBy = ConfirmedBy;
+		//Запись.Comment = Comment;
+		//Запись.ForecastDate = ForecastDate;
+		//Запись.CustInputDate = CustInputDate;
+		//Запись.CustomerRepresentative = CustomerRepresentative;
+		//Запись.CustomerInputDetails = CustomerInputDetails;
+		//Запись.SLBAssignedTo = SLBAssignedTo;
+		//Запись.RemedialWorkPlan = RemedialWorkPlan;
+		//Запись.RWDTargetDate = RWDTargetDate;
+		Запись.Problem = Problem;
 		
 		НЗ.Записать(Ложь);
+		
+		ЗафиксироватьТранзакцию();
 		
 	КонецЦикла;
 	
