@@ -1001,12 +1001,33 @@
 		|				,
 		|				SalesOrder В
 		|					(ВЫБРАТЬ РАЗЛИЧНЫЕ
-		|						ОчередьУведомлений.Проблема.SalesOrder
+		|						ВЫРАЗИТЬ(ОчередьУведомлений.Проблема КАК Документ.SalesOrderProblem).SalesOrder
 		|					ИЗ
-		|						РегистрСведений.ОчередьУведомлений КАК ОчередьУведомлений)) КАК SalesOrdersCommentsСрезПоследних
-		|		ПО ОчередьУведомлений.Проблема.SalesOrder = SalesOrdersCommentsСрезПоследних.SalesOrder
+		|						РегистрСведений.ОчередьУведомлений КАК ОчередьУведомлений
+		|					ГДЕ
+		|						ОчередьУведомлений.Проблема ССЫЛКА Документ.SalesOrderProblem)) КАК SalesOrdersCommentsСрезПоследних
+		|		ПО (ВЫРАЗИТЬ(ОчередьУведомлений.Проблема КАК Документ.SalesOrderProblem).SalesOrder = SalesOrdersCommentsСрезПоследних.SalesOrder)
 		|ГДЕ
-		|	ОчередьУведомлений.Проблема <> SalesOrdersCommentsСрезПоследних.Problem";
+		|	ОчередьУведомлений.Проблема <> SalesOrdersCommentsСрезПоследних.Problem
+		|
+		|ОБЪЕДИНИТЬ ВСЕ
+		|
+		|ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	ОчередьУведомлений.Проблема
+		|ИЗ
+		|	РегистрСведений.ОчередьУведомлений КАК ОчередьУведомлений
+		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments.СрезПоследних(
+		|				,
+		|				Invoice В
+		|					(ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|						ВЫРАЗИТЬ(ОчередьУведомлений.Проблема КАК Документ.InvoiceProblem).Invoice
+		|					ИЗ
+		|						РегистрСведений.ОчередьУведомлений КАК ОчередьУведомлений
+		|					ГДЕ
+		|						ОчередьУведомлений.Проблема ССЫЛКА Документ.InvoiceProblem)) КАК InvoiceCommentsСрезПоследних
+		|		ПО (ВЫРАЗИТЬ(ОчередьУведомлений.Проблема КАК Документ.InvoiceProblem).Invoice = InvoiceCommentsСрезПоследних.Invoice)
+		|ГДЕ
+		|	ОчередьУведомлений.Проблема <> InvoiceCommentsСрезПоследних.Problem";
 	
 	РезультатЗапроса = Запрос.Выполнить();
 	
@@ -1044,3 +1065,388 @@
 	Обработки.UpdateLDAPUsers.ОбновитьСправочникLDAPUsers(СтруктураПараметров, АдресХранилища);
 	
 КонецПроцедуры
+
+Процедура ОтправкаНотификацийRWDDeadline() Экспорт
+	
+	НачатьТранзакцию();
+	
+	Блокировка = Новый БлокировкаДанных();
+	ЭлементБлокировки = Блокировка.Добавить("РегистрСведений.ОчередьУведомлений");
+	ЭлементБлокировки.Режим = РежимБлокировкиДанных.Исключительный;
+	Блокировка.Заблокировать();
+	
+	АктуализироватьРегистрОчередьУведомлений();
+	
+	Период = ТекущаяДата();
+	РезультатЗапроса = ПолучитьДанныеПоRWDDeadline(Период);
+	
+	ВыборкаMail = РезультатЗапроса.Выбрать(ОбходРезультатаЗапроса.ПоГруппировкам);
+	
+	Тема = "TEST RWD deadline notification";
+	НЗ_Очередь = РегистрыСведений.ОчередьУведомлений.СоздатьНаборЗаписей();
+	Календарь = КалендарныеГрафики.ПроизводственныйКалендарьРоссийскойФедерации();
+	
+	Пока ВыборкаMail.Следующий() Цикл
+		
+		СуммаAmountUSD = 0;
+		СуммаRemainingAmountUSD = 0;
+		
+		ТелоHTML = "<HTML><HEAD>
+		|<META content=""text/html; charset=utf-8"" http-equiv=Content-Type><LINK rel=stylesheet type=text/css href=""v8help://service_book/service_style""><BASE href=""v8config://d349bc7e-06e3-4fc1-b24f-9709087cc83c/mdobject/id44c3769f-050d-4f0a-ae52-7c2a9e753714/038b5c85-fb1c-4082-9c4c-e69f8928bf3a"">
+		|<META name=GENERATOR content=""MSHTML 11.00.9600.18525""></HEAD>
+		|<BODY>
+		|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Dear Collector,.</P>
+		|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Please be informed that for below invoices the RWD deadline has come, please ensure that</P>
+		|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Remedial work plan is performed and update data in the Collection target.</P>
+		|<TABLE border=1>
+		|<TBODY>
+		|<TR style=""BACKGROUND-COLOR:#A4D3EE"" align=""center"">
+		|<TD>RWD Target Date</TD>
+		|<TD>CRM ID</TD>
+		|<TD>Client</TD>
+		|<TD>Inv. No</TD>
+		|<TD>Inv. Date</TD>
+		|<TD>Fiscal Inv. No</TD>
+		|<TD>Fiscal Inv. Date</TD>
+		|<TD>Orig. currency</TD>
+		|<TD>Amount, orig. currency</TD>
+		|<TD>Remaining Amount, orig. currency</TD>
+		|<TD>Amount, USD</TD>
+		|<TD>Remaining Amount, USD</TD>
+		|</TR>";
+		
+		ВыборкаДетальныеЗаписи = ВыборкаMail.Выбрать();
+		
+		Пока ВыборкаДетальныеЗаписи.Следующий() Цикл
+			
+			СтрокаВТелоСообщения = "<TR>
+			|<TD>" + ?(ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.RWDTargetDate), Формат(ВыборкаДетальныеЗаписи.RWDTargetDate, "ДФ=MM/dd/yyyy"), " ") + "</TD>
+			|<TD>" + ?(ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.CRMID), ВыборкаДетальныеЗаписи.CRMID, " ") + "</TD>
+			|<TD>" + ?(ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.Client), ВыборкаДетальныеЗаписи.Client, " ") + "</TD>
+			|<TD>" + ?(ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.DocNumber), ВыборкаДетальныеЗаписи.DocNumber, " ") + "</TD>
+			|<TD>" + ?(ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.Дата), Формат(ВыборкаДетальныеЗаписи.Дата, "ДФ=MM/dd/yyyy"), " ") + "</TD>
+			|<TD>" + ?(ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.FiscalInvoiceNo), ВыборкаДетальныеЗаписи.FiscalInvoiceNo, " ") + "</TD>
+			|<TD>" + ?(ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.FiscalInvoiceDate), Формат(ВыборкаДетальныеЗаписи.FiscalInvoiceDate, "ДФ=MM/dd/yyyy"), " ") + "</TD>
+			|<TD>" + ?(ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.Currency), ВыборкаДетальныеЗаписи.Currency, " ") + "</TD>
+			|<TD>" + ?(ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.Amount), ВыборкаДетальныеЗаписи.Amount, " ") + "</TD>
+			|<TD>" + ?(ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.RemainingAmount), ВыборкаДетальныеЗаписи.RemainingAmount, " ") + "</TD>
+			|<TD>" + ?(ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.AmountUSD), ВыборкаДетальныеЗаписи.AmountUSD, " ") + "</TD>
+			|<TD>" + ?(ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.RemainingAmountUSD), ВыборкаДетальныеЗаписи.RemainingAmountUSD, " ") + "</TD>
+			|</TR>";
+			ТелоHTML = ТелоHTML + СтрокаВТелоСообщения;
+			
+			СуммаAmountUSD = СуммаAmountUSD + ВыборкаДетальныеЗаписи.AmountUSD;
+			СуммаRemainingAmountUSD = СуммаRemainingAmountUSD + ВыборкаДетальныеЗаписи.RemainingAmountUSD;
+			
+			// передвигаем на след дату
+			НЗ_Очередь.Очистить();
+			НЗ_Очередь.Отбор.Проблема.Установить(ВыборкаДетальныеЗаписи.Проблема);
+			
+			Если ВыборкаДетальныеЗаписи.ВидУведомления = Справочники.ВидыУведомлений.RWDDeadlinePrimary Тогда
+				НЗ_Очередь.Отбор.ВидУведомления.Установить(Справочники.ВидыУведомлений.RWDDeadlinePrimary);
+				НЗ_Очередь.Записать(Истина);
+			КонецЕсли;
+			
+			НЗ_Очередь.Отбор.ВидУведомления.Установить(Справочники.ВидыУведомлений.RWDDeadline);
+			
+			ЗаписьОчереди = НЗ_Очередь.Добавить();
+			ЗаписьОчереди.Проблема = ВыборкаДетальныеЗаписи.Проблема;
+			ЗаписьОчереди.ВидУведомления = Справочники.ВидыУведомлений.RWDDeadline;
+			ЗаписьОчереди.ДатаУведомления = КалендарныеГрафики.ПолучитьДатуПоКалендарю(Календарь, ВыборкаДетальныеЗаписи.ДатаУведомления, ?(ВыборкаДетальныеЗаписи.ВидУведомления = Справочники.ВидыУведомлений.RWDDeadlinePrimary, 1, 2));
+			
+			НЗ_Очередь.Записать();
+			
+		КонецЦикла;
+		
+		ТелоHTML = ТелоHTML + "<tr style=""BACKGROUND-COLOR:#A4D3EE"">
+		|<td colspan=""10"">Grand total</td>
+		|<td>" + СуммаAmountUSD + "</td>
+		|<td>" + СуммаRemainingAmountUSD + "</td>
+		|</tr></TABLE>
+		|</TBODY>
+		|</BODY></HTML>"; 
+		ТелоHTML = СтрЗаменить(ТелоHTML, Символы.ПС, "");
+		РГСофт.ЗарегистрироватьПочтовоеСообщение(ВыборкаMail.Mail, Тема, ТелоHTML, , ТипТекстаПочтовогоСообщения.HTML);
+		
+	КонецЦикла;
+	
+	ЗафиксироватьТранзакцию();
+	
+КонецПроцедуры
+
+Функция ПолучитьДанныеПоRWDDeadline(Период)
+	
+	Запрос = Новый Запрос;
+	Запрос.Текст = 
+		"ВЫБРАТЬ
+		|	ОчередьУведомлений.Проблема,
+		|	ОчередьУведомлений.Проблема.Invoice.Client КАК Client,
+		|	ОчередьУведомлений.Проблема.Invoice.DocNumber КАК DocNumber,
+		|	ОчередьУведомлений.Проблема.Invoice.Дата КАК Дата,
+		|	ОчередьУведомлений.Проблема.Invoice.FiscalInvoiceNo КАК FiscalInvoiceNo,
+		|	ОчередьУведомлений.Проблема.Invoice.FiscalInvoiceDate КАК FiscalInvoiceDate,
+		|	ОчередьУведомлений.Проблема.Invoice.Amount КАК Amount,
+		|	ОчередьУведомлений.Проблема.Invoice.Client.CRMID КАК CRMID,
+		|	ОчередьУведомлений.Проблема.RWDTargetDate КАК RWDTargetDate,
+		|	ОчередьУведомлений.Проблема.Invoice.Currency КАК Currency,
+		|	BilledARОстатки.AmountОстаток КАК RemainingAmount,
+		|	Collectors.Collector,
+		|	Collectors.Collector.ПользовательLDAP.Mail КАК Mail,
+		|	ВЫРАЗИТЬ(ОчередьУведомлений.Проблема.Invoice.Amount / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2)) КАК AmountUSD,
+		|	ВЫРАЗИТЬ(BilledARОстатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2)) КАК RemainingAmountUSD,
+		|	ОчередьУведомлений.ВидУведомления,
+		|	ОчередьУведомлений.ДатаУведомления
+		|ИЗ
+		|	РегистрСведений.ОчередьУведомлений КАК ОчередьУведомлений
+		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.Collectors КАК Collectors
+		|		ПО (ОчередьУведомлений.Проблема.Invoice.Location.БазовыйЭлемент.GeoMarket.Родитель = Collectors.GeoMarket
+		|				ИЛИ Collectors.GeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_GeoMarkets.ПустаяСсылка))
+		|			И ОчередьУведомлений.Проблема.Invoice.Client = Collectors.Client
+		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних КАК ВнутренниеКурсыВалютСрезПоследних
+		|		ПО ОчередьУведомлений.Проблема.Invoice.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
+		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрНакопления.BilledAR.Остатки(
+		|				,
+		|				Invoice В
+		|					(ВЫБРАТЬ
+		|						ОчередьУведомлений.Проблема.Invoice
+		|					ИЗ
+		|						РегистрСведений.ОчередьУведомлений КАК ОчередьУведомлений
+		|					ГДЕ
+		|						(ОчередьУведомлений.ВидУведомления = ЗНАЧЕНИЕ(Справочник.ВидыУведомлений.RWDDeadlinePrimary)
+		|							ИЛИ ОчередьУведомлений.ВидУведомления = ЗНАЧЕНИЕ(Справочник.ВидыУведомлений.RWDDeadline))
+		|						И ОчередьУведомлений.ДатаУведомления <= &ТекущаяДата)) КАК BilledARОстатки
+		|		ПО ОчередьУведомлений.Проблема.Invoice = BilledARОстатки.Invoice
+		|ГДЕ
+		|	(ОчередьУведомлений.ВидУведомления = ЗНАЧЕНИЕ(Справочник.ВидыУведомлений.RWDDeadlinePrimary)
+		|			ИЛИ ОчередьУведомлений.ВидУведомления = ЗНАЧЕНИЕ(Справочник.ВидыУведомлений.RWDDeadline))
+		|	И ОчередьУведомлений.ДатаУведомления <= &ТекущаяДата
+		|ИТОГИ ПО
+		|	Mail";
+	
+	Запрос.УстановитьПараметр("ТекущаяДата", Период);
+	
+	РезультатЗапроса = Запрос.Выполнить();
+	
+	Возврат РезультатЗапроса;
+	
+КонецФункции
+
+Процедура ОтправкаНотификацийBrokenPromises() Экспорт
+	
+	НачатьТранзакцию();
+	
+	Блокировка = Новый БлокировкаДанных();
+	ЭлементБлокировки = Блокировка.Добавить("РегистрСведений.ОчередьУведомлений");
+	ЭлементБлокировки.Режим = РежимБлокировкиДанных.Исключительный;
+	Блокировка.Заблокировать();
+	
+	АктуализироватьРегистрОчередьУведомлений();
+	
+	Период = ТекущаяДата();
+	РезультатЗапроса = ПолучитьДанныеПоBrokenPromises(Период);
+	
+	ВыборкаMail = РезультатЗапроса.Выбрать(ОбходРезультатаЗапроса.ПоГруппировкам);
+	
+	Тема = "TEST Broken Promises notification";
+	НЗ_Очередь = РегистрыСведений.ОчередьУведомлений.СоздатьНаборЗаписей();
+	Календарь = КалендарныеГрафики.ПроизводственныйКалендарьРоссийскойФедерации();
+	
+	Пока ВыборкаMail.Следующий() Цикл
+		
+		СуммаAmountUSD = 0;
+		СуммаRemainingAmountUSD = 0;
+		
+		ТелоHTML = "<HTML><HEAD>
+		|<META content=""text/html; charset=utf-8"" http-equiv=Content-Type><LINK rel=stylesheet type=text/css href=""v8help://service_book/service_style""><BASE href=""v8config://d349bc7e-06e3-4fc1-b24f-9709087cc83c/mdobject/id44c3769f-050d-4f0a-ae52-7c2a9e753714/038b5c85-fb1c-4082-9c4c-e69f8928bf3a"">
+		|<META name=GENERATOR content=""MSHTML 11.00.9600.18525""></HEAD>
+		|<BODY>
+		|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Dear Collector,.</P>
+		|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Please be informed that for below invoices the Forecast Date has come, please ensure that</P>
+		|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Remedial work plan is performed and update data in the Collection target.</P>
+		|<TABLE border=1>
+		|<TBODY>
+		|<TR style=""BACKGROUND-COLOR:#A4D3EE"" align=""center"">
+		|<TD>Forecast Date</TD>
+		|<TD>CRM ID</TD>
+		|<TD>Client</TD>
+		|<TD>Inv. No</TD>
+		|<TD>Inv. Date</TD>
+		|<TD>Fiscal Inv. No</TD>
+		|<TD>Fiscal Inv. Date</TD>
+		|<TD>Orig. currency</TD>
+		|<TD>Amount, orig. currency</TD>
+		|<TD>Remaining Amount, orig. currency</TD>
+		|<TD>Amount, USD</TD>
+		|<TD>Remaining Amount, USD</TD>
+		|</TR>";
+		
+		ВыборкаДетальныеЗаписи = ВыборкаMail.Выбрать();
+		
+		Пока ВыборкаДетальныеЗаписи.Следующий() Цикл
+			
+			СтрокаВТелоСообщения = "<TR>
+			|<TD>" + ?(ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.ForecastDate), Формат(ВыборкаДетальныеЗаписи.ForecastDate, "ДФ=MM/dd/yyyy"), " ") + "</TD>
+			|<TD>" + ?(ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.CRMID), ВыборкаДетальныеЗаписи.CRMID, " ") + "</TD>
+			|<TD>" + ?(ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.Client), ВыборкаДетальныеЗаписи.Client, " ") + "</TD>
+			|<TD>" + ?(ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.DocNumber), ВыборкаДетальныеЗаписи.DocNumber, " ") + "</TD>
+			|<TD>" + ?(ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.Дата), Формат(ВыборкаДетальныеЗаписи.Дата, "ДФ=MM/dd/yyyy"), " ") + "</TD>
+			|<TD>" + ?(ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.FiscalInvoiceNo), ВыборкаДетальныеЗаписи.FiscalInvoiceNo, " ") + "</TD>
+			|<TD>" + ?(ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.FiscalInvoiceDate), Формат(ВыборкаДетальныеЗаписи.FiscalInvoiceDate, "ДФ=MM/dd/yyyy"), " ") + "</TD>
+			|<TD>" + ?(ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.Currency), ВыборкаДетальныеЗаписи.Currency, " ") + "</TD>
+			|<TD>" + ?(ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.Amount), ВыборкаДетальныеЗаписи.Amount, " ") + "</TD>
+			|<TD>" + ?(ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.RemainingAmount), ВыборкаДетальныеЗаписи.RemainingAmount, " ") + "</TD>
+			|<TD>" + ?(ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.AmountUSD), ВыборкаДетальныеЗаписи.AmountUSD, " ") + "</TD>
+			|<TD>" + ?(ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.RemainingAmountUSD), ВыборкаДетальныеЗаписи.RemainingAmountUSD, " ") + "</TD>
+			|</TR>";
+			ТелоHTML = ТелоHTML + СтрокаВТелоСообщения;
+			
+			СуммаAmountUSD = СуммаAmountUSD + ВыборкаДетальныеЗаписи.AmountUSD;
+			СуммаRemainingAmountUSD = СуммаRemainingAmountUSD + ВыборкаДетальныеЗаписи.RemainingAmountUSD;
+			
+			// передвигаем на след дату
+			НЗ_Очередь.Очистить();
+			НЗ_Очередь.Отбор.Проблема.Установить(ВыборкаДетальныеЗаписи.Проблема);
+			НЗ_Очередь.Отбор.ВидУведомления.Установить(Справочники.ВидыУведомлений.BrokenPromises);
+			
+			ЗаписьОчереди = НЗ_Очередь.Добавить();
+			ЗаписьОчереди.Проблема = ВыборкаДетальныеЗаписи.Проблема;
+			ЗаписьОчереди.ВидУведомления = Справочники.ВидыУведомлений.BrokenPromises;
+			ЗаписьОчереди.ДатаУведомления = КалендарныеГрафики.ПолучитьДатуПоКалендарю(Календарь, ВыборкаДетальныеЗаписи.ДатаУведомления, 2);
+			
+			НЗ_Очередь.Записать();
+			
+		КонецЦикла;
+		
+		ТелоHTML = ТелоHTML + "<tr style=""BACKGROUND-COLOR:#A4D3EE"">
+		|<td colspan=""10"">Grand total</td>
+		|<td>" + СуммаAmountUSD + "</td>
+		|<td>" + СуммаRemainingAmountUSD + "</td>
+		|</tr></TABLE>
+		|</TBODY>
+		|</BODY></HTML>"; 
+		ТелоHTML = СтрЗаменить(ТелоHTML, Символы.ПС, "");
+		РГСофт.ЗарегистрироватьПочтовоеСообщение(ВыборкаMail.Mail, Тема, ТелоHTML, , ТипТекстаПочтовогоСообщения.HTML);
+		
+	КонецЦикла;
+	
+	ЗафиксироватьТранзакцию();
+	
+КонецПроцедуры
+
+Функция ПолучитьДанныеПоBrokenPromises(Период)
+	
+	Запрос = Новый Запрос;
+	Запрос.Текст = 
+		"ВЫБРАТЬ
+		|	ОчередьУведомлений.Проблема,
+		|	ОчередьУведомлений.Проблема.Invoice.Client КАК Client,
+		|	ОчередьУведомлений.Проблема.Invoice.DocNumber КАК DocNumber,
+		|	ОчередьУведомлений.Проблема.Invoice.Дата КАК Дата,
+		|	ОчередьУведомлений.Проблема.Invoice.FiscalInvoiceNo КАК FiscalInvoiceNo,
+		|	ОчередьУведомлений.Проблема.Invoice.FiscalInvoiceDate КАК FiscalInvoiceDate,
+		|	ОчередьУведомлений.Проблема.Invoice.Amount КАК Amount,
+		|	ОчередьУведомлений.Проблема.Invoice.Client.CRMID КАК CRMID,
+		|	ОчередьУведомлений.Проблема.ForecastDate КАК ForecastDate,
+		|	ОчередьУведомлений.Проблема.Invoice.Currency КАК Currency,
+		|	BilledARОстатки.AmountОстаток КАК RemainingAmount,
+		|	Collectors.Collector,
+		|	Collectors.Collector.ПользовательLDAP.Mail КАК Mail,
+		|	ВЫРАЗИТЬ(ОчередьУведомлений.Проблема.Invoice.Amount / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2)) КАК AmountUSD,
+		|	ВЫРАЗИТЬ(BilledARОстатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2)) КАК RemainingAmountUSD,
+		|	ОчередьУведомлений.ВидУведомления,
+		|	ОчередьУведомлений.ДатаУведомления
+		|ИЗ
+		|	РегистрСведений.ОчередьУведомлений КАК ОчередьУведомлений
+		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.Collectors КАК Collectors
+		|		ПО (ОчередьУведомлений.Проблема.Invoice.Location.БазовыйЭлемент.GeoMarket.Родитель = Collectors.GeoMarket
+		|				ИЛИ Collectors.GeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_GeoMarkets.ПустаяСсылка))
+		|			И ОчередьУведомлений.Проблема.Invoice.Client = Collectors.Client
+		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних КАК ВнутренниеКурсыВалютСрезПоследних
+		|		ПО ОчередьУведомлений.Проблема.Invoice.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
+		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрНакопления.BilledAR.Остатки(
+		|				,
+		|				Invoice В
+		|					(ВЫБРАТЬ
+		|						ОчередьУведомлений.Проблема.Invoice
+		|					ИЗ
+		|						РегистрСведений.ОчередьУведомлений КАК ОчередьУведомлений
+		|					ГДЕ
+		|						ОчередьУведомлений.ВидУведомления = ЗНАЧЕНИЕ(Справочник.ВидыУведомлений.BrokenPromises)
+		|						И ОчередьУведомлений.ДатаУведомления <= &ТекущаяДата)) КАК BilledARОстатки
+		|		ПО ОчередьУведомлений.Проблема.Invoice = BilledARОстатки.Invoice
+		|ГДЕ
+		|	ОчередьУведомлений.ВидУведомления = ЗНАЧЕНИЕ(Справочник.ВидыУведомлений.BrokenPromises)
+		|	И ОчередьУведомлений.ДатаУведомления <= &ТекущаяДата
+		|ИТОГИ ПО
+		|	Mail";
+	
+	Запрос.УстановитьПараметр("ТекущаяДата", Период);
+	
+	РезультатЗапроса = Запрос.Выполнить();
+	
+	Возврат РезультатЗапроса;
+	
+КонецФункции
+
+/////////////////////////////////////////////////////////////////////////////////
+// РАБОТА С ЗАПРОСАМИ
+
+Функция ПолучитьСтруктуруРезультатовТекстовЗапросов(СтруктураТекстовЗапросов, СтруктураПараметровЗапросов = Неопределено) Экспорт
+	
+	// Принимает структуру с текстами запросов и структуру с параметрами запросов,
+	// сооружает из них пакет запросов,
+	// из массива результатов формирует структуру результатов с теми же ключами, что и в структуре текстов запросов
+	
+	Если СтруктураТекстовЗапросов.Количество() = 0 Тогда
+		Возврат Новый Структура;
+	КонецЕсли; 
+	
+	Запрос = Новый Запрос;
+	
+	// Установим текст пакета запросов
+	Запрос.Текст = "";
+	ы = 0;
+	Для Каждого КлючИЗначение Из СтруктураТекстовЗапросов Цикл
+		
+		ы = ы + 1;
+		Если ы <> 1 Тогда
+			
+			Запрос.Текст = Запрос.Текст + "
+				|;
+				|
+				|////////////////////////////////////////////////////////////////////////////////
+				|
+				|";
+					
+		КонецЕсли;
+			
+		Запрос.Текст = Запрос.Текст + КлючИЗначение.Значение;
+		
+	КонецЦикла;
+	
+	// Установим параметры запросов
+	Если СтруктураПараметровЗапросов <> Неопределено Тогда
+		
+		Для Каждого КлючИЗначение Из СтруктураПараметровЗапросов Цикл
+			
+			Запрос.УстановитьПараметр(КлючИЗначение.Ключ, КлючИЗначение.Значение);
+			
+		КонецЦикла;
+		
+	КонецЕсли;
+	
+	МассивРезультатов = Запрос.ВыполнитьПакет();
+	
+	// Засунем результаты в структуру
+	СтруктураРезультатов = Новый Структура;	
+	ы = 0;
+	Для Каждого КлючИЗначение Из СтруктураТекстовЗапросов Цикл
+		
+		СтруктураРезультатов.Вставить(КлючИЗначение.Ключ, МассивРезультатов[ы]);
+		ы = ы + 1;
+		
+	КонецЦикла;
+	
+	Возврат СтруктураРезультатов; 
+	
+КонецФункции

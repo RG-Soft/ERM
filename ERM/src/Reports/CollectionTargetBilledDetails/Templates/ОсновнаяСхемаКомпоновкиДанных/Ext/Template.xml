@@ -110,14 +110,6 @@
 			</appearance>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>Comment</dataPath>
-			<field>Comment</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>ConfirmedBy</dataPath>
-			<field>ConfirmedBy</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>Status</dataPath>
 			<field>Status</field>
 			<appearance>
@@ -139,32 +131,12 @@
 			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>CustInputDate</dataPath>
-			<field>CustInputDate</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>RemedialWorkPlan</dataPath>
-			<field>RemedialWorkPlan</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>CustomerInputDetails</dataPath>
-			<field>CustomerInputDetails</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>ForecastDate</dataPath>
 			<field>ForecastDate</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>SLBAssignedTo</dataPath>
 			<field>SLBAssignedTo</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>RWDTargetDate</dataPath>
-			<field>RWDTargetDate</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>CustomerRepresentative</dataPath>
-			<field>CustomerRepresentative</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>InvoiceДатаОтправкиКС</dataPath>
@@ -317,6 +289,76 @@
 					<dcscor:value xsi:type="xs:string">ДФ=MM/dd/yy</dcscor:value>
 				</dcscor:item>
 			</appearance>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Comment</dataPath>
+			<field>Comment</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Comment</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>ConfirmedBy</dataPath>
+			<field>ConfirmedBy</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Confirmed by</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>CustInputDate</dataPath>
+			<field>CustInputDate</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Cust input date</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>RWDTargetDate</dataPath>
+			<field>RWDTargetDate</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>RWDTarget date</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>CustomerRepresentative</dataPath>
+			<field>CustomerRepresentative</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Customer representative</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>RemedialWorkPlan</dataPath>
+			<field>RemedialWorkPlan</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Remedial work plan</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>CustomerInputDetails</dataPath>
+			<field>CustomerInputDetails</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Customer input details</v8:content>
+				</v8:item>
+			</title>
 		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
@@ -623,7 +665,8 @@
 	FiscalPayments.Invoice,
 	FiscalPayments.Currency,
 	СУММА(FiscalPayments.Amount) КАК Paid,
-	МАКСИМУМ(FiscalPayments.PaymentDate) КАК PaymentDate
+	МАКСИМУМ(FiscalPayments.PaymentDate) КАК PaymentDate,
+	FiscalPayments.SettlementAmount
 ПОМЕСТИТЬ ВТ_ОплатыИзОбмена
 ИЗ
 	РегистрСведений.FiscalPayments КАК FiscalPayments
@@ -638,7 +681,8 @@
 	FiscalPayments.Invoice,
 	FiscalPayments.Currency,
 	FiscalPayments.Source,
-	FiscalPayments.Company
+	FiscalPayments.Company,
+	FiscalPayments.SettlementAmount
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -681,24 +725,24 @@
 	ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0) КАК Rate,
 	ВЫБОР
 		КОГДА ВТ_Остатки.Invoice.DueDateTo &lt;= &amp;Период
-				И InvoiceCommentsСрезПоследних.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
+				И InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
 			ТОГДА ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка)
-		ИНАЧЕ InvoiceCommentsСрезПоследних.Status
+		ИНАЧЕ InvoiceCommentsСрезПоследних.Problem.Status
 	КОНЕЦ КАК Status,
-	InvoiceCommentsСрезПоследних.ConfirmedBy,
-	InvoiceCommentsСрезПоследних.Comment,
+	InvoiceCommentsСрезПоследних.Problem.ConfirmedBy КАК ConfirmedBy,
+	InvoiceCommentsСрезПоследних.Problem.Comment КАК Comment,
 	ВТ_Остатки.ПредставлениеДокумента,
 	ВЫБОР
-		КОГДА InvoiceCommentsСрезПоследних.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
+		КОГДА InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
 			ТОГДА ВТ_Остатки.Invoice.DueDateTo
-		ИНАЧЕ ЕСТЬNULL(InvoiceCommentsСрезПоследних.ForecastDate, ДАТАВРЕМЯ(1, 1, 1))
+		ИНАЧЕ ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.ForecastDate, ДАТАВРЕМЯ(1, 1, 1))
 	КОНЕЦ КАК ForecastDate,
-	InvoiceCommentsСрезПоследних.CustInputDate,
-	InvoiceCommentsСрезПоследних.CustomerRepresentative,
-	InvoiceCommentsСрезПоследних.CustomerInputDetails,
-	InvoiceCommentsСрезПоследних.SLBAssignedTo,
-	InvoiceCommentsСрезПоследних.RemedialWorkPlan,
-	InvoiceCommentsСрезПоследних.RWDTargetDate,
+	InvoiceCommentsСрезПоследних.Problem.CustInputDate КАК CustInputDate,
+	InvoiceCommentsСрезПоследних.Problem.CustomerRepresentative КАК CustomerRepresentative,
+	InvoiceCommentsСрезПоследних.Problem.CustomerInputDetails КАК CustomerInputDetails,
+	InvoiceCommentsСрезПоследних.Problem.SLBAssignedToList КАК SLBAssignedTo,
+	InvoiceCommentsСрезПоследних.Problem.RemedialWorkPlan КАК RemedialWorkPlan,
+	InvoiceCommentsСрезПоследних.Problem.RWDTargetDate КАК RWDTargetDate,
 	ВТ_Остатки.Invoice.ДатаВозвратаКС,
 	ВТ_Остатки.Invoice.ДатаОтправкиКС,
 	ВТ_Остатки.Invoice.СтатусВозвратаКС,
@@ -741,7 +785,7 @@
 	СУММА(ВЫБОР
 			КОГДА ВТ_ОплатыИзОбмена.Source ЕСТЬ NULL 
 				ТОГДА ВТ_ОплатыПоПроводкам.Paid / ВнутренниеКурсыВалютСрезПоследнихОплатыПоПроводкам.Курс * ВнутренниеКурсыВалютСрезПоследнихОплатыПоПроводкам.Кратность
-			ИНАЧЕ ВТ_ОплатыИзОбмена.Paid / ВнутренниеКурсыВалютСрезПоследнихОплатыИзОбмена.Курс * ВнутренниеКурсыВалютСрезПоследнихОплатыИзОбмена.Кратность
+			ИНАЧЕ ВТ_ОплатыИзОбмена.SettlementAmount / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность
 		КОНЕЦ) КАК Paid,
 	МАКСИМУМ(ВЫБОР
 			КОГДА ВТ_ОплатыИзОбмена.Source ЕСТЬ NULL 
@@ -785,20 +829,20 @@
 	ВТ_Остатки.SubSubSegment,
 	ВЫБОР
 		КОГДА ВТ_Остатки.Invoice.DueDateTo &lt;= &amp;Период
-				И InvoiceCommentsСрезПоследних.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
+				И InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
 			ТОГДА ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка)
-		ИНАЧЕ InvoiceCommentsСрезПоследних.Status
+		ИНАЧЕ InvoiceCommentsСрезПоследних.Problem.Status
 	КОНЕЦ,
-	InvoiceCommentsСрезПоследних.ConfirmedBy,
-	InvoiceCommentsСрезПоследних.RemedialWorkPlan,
-	InvoiceCommentsСрезПоследних.Comment,
-	InvoiceCommentsСрезПоследних.CustomerInputDetails,
+	InvoiceCommentsСрезПоследних.Problem.ConfirmedBy,
+	InvoiceCommentsСрезПоследних.Problem.RemedialWorkPlan,
+	InvoiceCommentsСрезПоследних.Problem.Comment,
+	InvoiceCommentsСрезПоследних.Problem.CustomerInputDetails,
 	ВТ_Остатки.Account,
-	InvoiceCommentsСрезПоследних.SLBAssignedTo,
-	InvoiceCommentsСрезПоследних.RWDTargetDate,
+	InvoiceCommentsСрезПоследних.Problem.SLBAssignedToList,
+	InvoiceCommentsСрезПоследних.Problem.RWDTargetDate,
 	ВТ_Остатки.ПредставлениеДокумента,
-	InvoiceCommentsСрезПоследних.CustomerRepresentative,
-	InvoiceCommentsСрезПоследних.CustInputDate,
+	InvoiceCommentsСрезПоследних.Problem.CustomerRepresentative,
+	InvoiceCommentsСрезПоследних.Problem.CustInputDate,
 	ВТ_Остатки.Client,
 	ВТ_Остатки.Company,
 	ВТ_Остатки.Currency,
@@ -846,9 +890,9 @@
 		ИНАЧЕ ""
 	КОНЕЦ,
 	ВЫБОР
-		КОГДА InvoiceCommentsСрезПоследних.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
+		КОГДА InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
 			ТОГДА ВТ_Остатки.Invoice.DueDateTo
-		ИНАЧЕ ЕСТЬNULL(InvoiceCommentsСрезПоследних.ForecastDate, ДАТАВРЕМЯ(1, 1, 1))
+		ИНАЧЕ ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.ForecastDate, ДАТАВРЕМЯ(1, 1, 1))
 	КОНЕЦ
 
 ИМЕЮЩИЕ
@@ -1445,6 +1489,9 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>PaymentDate</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Paid</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
@@ -1560,9 +1607,6 @@
 							<v8:content>KS Return status</v8:content>
 						</v8:item>
 					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>PaymentDate</dcsset:field>
 				</dcsset:item>
 			</dcsset:selection>
 			<dcsset:filter>
