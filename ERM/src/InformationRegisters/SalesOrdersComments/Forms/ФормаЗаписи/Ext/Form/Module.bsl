@@ -2,17 +2,36 @@
 &НаСервере
 Процедура ПередЗаписьюНаСервере(Отказ, ТекущийОбъект, ПараметрыЗаписи)
 	
-	СтруктураРеквизитовПроблемы = Новый Структура("Дата, SalesOrder, User, Reason, Billed, ExpectedDateForInvoice, EscalateTo, Details, Responsibles, FollowUpDate, ActionItem");
-	ЗаполнитьЗначенияСвойств(СтруктураРеквизитовПроблемы, ЭтотОбъект);
-	СтруктураРеквизитовПроблемы.Дата = ТекущийОбъект.Период;
-	СтруктураРеквизитовПроблемы.SalesOrder = ТекущийОбъект.SalesOrder;
+	Запрос = Новый Запрос;
+	Запрос.Текст = 
+		"ВЫБРАТЬ
+		|	SalesOrdersCommentsСрезПоследних.Problem
+		|ИЗ
+		|	РегистрСведений.SalesOrdersComments.СрезПоследних(, SalesOrder = &SalesOrder) КАК SalesOrdersCommentsСрезПоследних";
 	
-	Если ЗначениеЗаполнено(ТекущийОбъект.Problem) Тогда
-		РегистрыСведений.SalesOrdersComments.ПерезаполнитьРеквизитыSalesOrderProblem(ТекущийОбъект.Problem, СтруктураРеквизитовПроблемы);
+	Запрос.УстановитьПараметр("SalesOrder", ТекущийОбъект.SalesOrder);
+	
+	НачатьТранзакцию();
+	ВыборкаДетальныеЗаписи = Запрос.Выполнить().Выбрать();
+	ЗафиксироватьТранзакцию();
+	
+	Если ВыборкаДетальныеЗаписи.Следующий() И ВыборкаДетальныеЗаписи.Problem <> LastProblem Тогда
+		ТекстСообщенияОбОшибках = "The status of the Sales Order has been changed by another user.";
+		ВызватьИсключение ТекстСообщенияОбОшибках;
+		Отказ = Истина;
 	Иначе
-		ТекущийОбъект.Problem = РегистрыСведений.SalesOrdersComments.СоздатьSalesOrderProblem(СтруктураРеквизитовПроблемы);
+		СтруктураРеквизитовПроблемы = Новый Структура("Дата, SalesOrder, User, Reason, Billed, ExpectedDateForInvoice, EscalateTo, Details, Responsibles, FollowUpDate, ActionItem");
+		ЗаполнитьЗначенияСвойств(СтруктураРеквизитовПроблемы, ЭтотОбъект);
+		СтруктураРеквизитовПроблемы.Дата = ТекущийОбъект.Период;
+		СтруктураРеквизитовПроблемы.SalesOrder = ТекущийОбъект.SalesOrder;
+		
+		Если ЗначениеЗаполнено(ТекущийОбъект.Problem) Тогда
+			РегистрыСведений.SalesOrdersComments.ПерезаполнитьРеквизитыSalesOrderProblem(ТекущийОбъект.Problem, СтруктураРеквизитовПроблемы);
+		Иначе
+			ТекущийОбъект.Problem = РегистрыСведений.SalesOrdersComments.СоздатьSalesOrderProblem(СтруктураРеквизитовПроблемы);
+		КонецЕсли;
 	КонецЕсли;
-	
+		
 КонецПроцедуры
 
 &НаСервере
@@ -29,6 +48,49 @@
 			НоваяСтрока = Responsibles.Добавить();
 			НоваяСтрока.Responsible = ТекОтветственный;
 		КонецЦикла;
+	КонецЕсли;
+	
+	Если Запись.Problem.Пустая() Тогда
+		
+		Если Не ЗначениеЗаполнено(Billed) Тогда
+			Billed = Перечисления.SalesOrderBilledStatus.Unbilled;
+		КонецЕсли;
+	
+		
+		Запрос = Новый Запрос;
+		Запрос.Текст = 
+			"ВЫБРАТЬ
+			|	SalesOrdersCommentsСрезПоследних.Problem,
+			|	SalesOrdersCommentsСрезПоследних.Problem.Reason как Reason,
+			|	SalesOrdersCommentsСрезПоследних.Problem.Billed как Billed,
+			|	SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice как ExpectedDateForInvoice,
+			|	SalesOrdersCommentsСрезПоследних.Problem.EscalateTo как EscalateTo,
+			|	SalesOrdersCommentsСрезПоследних.Problem.Details как Details
+			|ИЗ
+			|	РегистрСведений.SalesOrdersComments.СрезПоследних(, SalesOrder = &SalesOrder) КАК SalesOrdersCommentsСрезПоследних";
+		
+		Запрос.УстановитьПараметр("SalesOrder", Запись.SalesOrder);
+		
+		НачатьТранзакцию();
+		ВыборкаДетальныеЗаписи = Запрос.Выполнить().Выбрать();
+		ЗафиксироватьТранзакцию();
+		
+		Если ВыборкаДетальныеЗаписи.Количество() > 0 Тогда
+			ВыборкаДетальныеЗаписи.Следующий();
+			Если ВыборкаДетальныеЗаписи.Billed = Перечисления.SalesOrderBilledStatus.Billed Тогда
+				ТекстСообщенияОбОшибках = "Adding a status is impossible! Selected Sales Order in status billed.";
+				ВызватьИсключение ТекстСообщенияОбОшибках;
+				Отказ = Истина;
+			Иначе
+				Billed = ВыборкаДетальныеЗаписи.Billed;
+				Reason = ВыборкаДетальныеЗаписи.Reason;
+				ExpectedDateForInvoice = ВыборкаДетальныеЗаписи.ExpectedDateForInvoice;
+				EscalateTo = ВыборкаДетальныеЗаписи.EscalateTo;
+				Details = ВыборкаДетальныеЗаписи.Details;
+				LastProblem = ВыборкаДетальныеЗаписи.Problem;
+			КонецЕсли;
+		КонецЕсли;
+		
 	КонецЕсли;
 	
 КонецПроцедуры
