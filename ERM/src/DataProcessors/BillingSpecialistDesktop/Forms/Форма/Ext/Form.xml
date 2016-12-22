@@ -94,10 +94,10 @@
 						<Event name="OnChange">AccountПриИзменении</Event>
 					</Events>
 				</InputField>
-				<InputField name="Billed" id="248">
-					<DataPath>Billed</DataPath>
-					<ContextMenu name="BilledКонтекстноеМеню" id="249"/>
-					<ExtendedTooltip name="BilledРасширеннаяПодсказка" id="250"/>
+				<InputField name="Status" id="248">
+					<DataPath>Status</DataPath>
+					<ContextMenu name="StatusКонтекстноеМеню" id="249"/>
+					<ExtendedTooltip name="StatusРасширеннаяПодсказка" id="250"/>
 					<Events>
 						<Event name="OnChange">BilledПриИзменении</Event>
 					</Events>
@@ -188,18 +188,6 @@
 				<Event name="OnActivateCell">SalesOrdersПриАктивизацииЯчейки</Event>
 			</Events>
 			<ChildItems>
-				<CheckBoxField name="SalesOrdersПометка" id="142">
-					<DataPath>SalesOrders.Пометка</DataPath>
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content> </v8:content>
-						</v8:item>
-					</Title>
-					<CheckBoxType>Auto</CheckBoxType>
-					<ContextMenu name="SalesOrdersПометкаКонтекстноеМеню" id="143"/>
-					<ExtendedTooltip name="SalesOrdersПометкаРасширеннаяПодсказка" id="144"/>
-				</CheckBoxField>
 				<LabelField name="SalesOrdersSource" id="136">
 					<DataPath>SalesOrders.Source</DataPath>
 					<ContextMenu name="SalesOrdersSourceКонтекстноеМеню" id="137"/>
@@ -330,12 +318,11 @@
 					<ContextMenu name="SalesOrdersReasonКонтекстноеМеню" id="154"/>
 					<ExtendedTooltip name="SalesOrdersReasonРасширеннаяПодсказка" id="155"/>
 				</LabelField>
-				<CheckBoxField name="SalesOrdersBilled" id="156">
-					<DataPath>SalesOrders.Billed</DataPath>
-					<CheckBoxType>Auto</CheckBoxType>
+				<InputField name="SalesOrdersBilled" id="156">
+					<DataPath>SalesOrders.Status</DataPath>
 					<ContextMenu name="SalesOrdersBilledКонтекстноеМеню" id="157"/>
 					<ExtendedTooltip name="SalesOrdersBilledРасширеннаяПодсказка" id="158"/>
-				</CheckBoxField>
+				</InputField>
 				<LabelField name="SalesOrdersExpectedDateForInvoice" id="159">
 					<DataPath>SalesOrders.ExpectedDateForInvoice</DataPath>
 					<Title>
@@ -450,7 +437,7 @@
 		КОГДА SalesOrdersCommentsСрезПоследних.Problem.Billed ЕСТЬ NULL 
 			ТОГДА ЗНАЧЕНИЕ(Перечисление.SalesOrderBilledStatus.Unbilled)
 		ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.Billed
-	КОНЕЦ КАК Billed,
+	КОНЕЦ КАК Status,
 	SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice КАК ExpectedDateForInvoice,
 	SalesOrdersCommentsСрезПоследних.Problem.EscalateTo КАК EscalateTo,
 	SalesOrdersCommentsСрезПоследних.Problem.Details КАК Details,
@@ -635,11 +622,11 @@
 				<v8:Type>cfg:CatalogRef.HFM_Technology</v8:Type>
 			</Type>
 		</Attribute>
-		<Attribute name="Billed" id="13">
+		<Attribute name="Status" id="13">
 			<Title>
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>Billed</v8:content>
+					<v8:content>Status</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
