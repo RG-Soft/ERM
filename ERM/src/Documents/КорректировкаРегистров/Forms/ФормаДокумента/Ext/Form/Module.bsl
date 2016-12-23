@@ -374,4 +374,71 @@
 
 КонецПроцедуры
 
+&НаСервере
+Процедура ЗаполнитьPaymentsНаСервере()
+	Док = Объект.Ссылка;
+	ДокОбъект = Док.ПолучитьОбъект();
+	Запрос = Новый Запрос;
+	Запрос.Текст = 
+		"ВЫБРАТЬ
+		|	UnallocatedCash.Регистратор КАК Регистратор,
+		|	UnallocatedCash.Client КАК Client,
+		|	UnallocatedCash.Company КАК Company,
+		|	UnallocatedCash.Source КАК Source,
+		|	UnallocatedCash.Location КАК Location,
+		|	UnallocatedCash.SubSubSegment КАК SubSubSegment,
+		|	UnallocatedCash.CashBatch КАК CashBatch,
+		|	UnallocatedCash.Account КАК Account,
+		|	UnallocatedCash.Currency КАК Currency,
+		|	UnallocatedCash.AU КАК AU,
+		|	ВЫБОР
+		|		КОГДА UnallocatedCash.ВидДвижения = ЗНАЧЕНИЕ(ВидДвиженияНакопления.Приход)
+		|			ТОГДА UnallocatedCash.Amount
+		|		ИНАЧЕ -UnallocatedCash.Amount
+		|	КОНЕЦ КАК Amount,
+		|	UnallocatedCash.Период
+		|ИЗ
+		|	РегистрНакопления.UnallocatedCash КАК UnallocatedCash
+		|ГДЕ
+		|	UnallocatedCash.Регистратор = &Регистратор";
+	
+	Запрос.УстановитьПараметр("Регистратор", Док);
+	
+	РезультатЗапроса = Запрос.Выполнить();
+	
+	ВыборкаДетальныеЗаписи = РезультатЗапроса.Выбрать();
+	
+	ПустойИнвойс = Документы.Invoice.ПустаяСсылка();
+	
+	Пока ВыборкаДетальныеЗаписи.Следующий() Цикл
+		Движение = Объект.Движения.Payments.Добавить();
+		Движение.Период = ВыборкаДетальныеЗаписи.Период;
+		Движение.Активность = Истина;
+		Движение.Source = ВыборкаДетальныеЗаписи.Source;
+		Движение.Client = ВыборкаДетальныеЗаписи.Client;
+		Движение.AU = ВыборкаДетальныеЗаписи.AU;
+		Движение.Company = ВыборкаДетальныеЗаписи.Company;
+		Движение.Invoice = ПустойИнвойс;
+		Движение.CashBatch = ВыборкаДетальныеЗаписи.CashBatch;
+		Движение.SubSubSegment = ВыборкаДетальныеЗаписи.SubSubSegment;
+		Движение.Location = ВыборкаДетальныеЗаписи.Location;
+		Движение.Currency = ВыборкаДетальныеЗаписи.Currency;
+		Движение.Amount = ВыборкаДетальныеЗаписи.Amount;
+	КонецЦикла;
+	
+КонецПроцедуры
+
+&НаКлиенте
+Процедура ЗаполнитьPayments(Команда)
+	
+	ЗаполнитьPaymentsНаСервере();
+	
+	СписокИспользуемыхРегистров = Новый СписокЗначений;
+
+	СписокИспользуемыхРегистров.Добавить("Payments", "Payments", Истина);
+	
+	ОбработатьИзменениеРегистров(СписокИспользуемыхРегистров);
+	
+КонецПроцедуры
+
 #КонецОбласти
