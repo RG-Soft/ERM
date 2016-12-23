@@ -1,11 +1,45 @@
 ﻿
 &НаСервере
 Процедура ПриСозданииНаСервере(Отказ, СтандартнаяОбработка)
+	
 	Запись.Период = РГСофт.ПолучитьДатуСервера();
 	Если Не ЗначениеЗаполнено(User) Тогда
 		User = Пользователи.ТекущийПользователь();
 	КонецЕсли;
-
+	
+	Если Запись.Problem.Пустая() Тогда
+		
+		Запрос = Новый Запрос;
+		Запрос.Текст = 
+			"ВЫБРАТЬ
+			|	InvoiceCommentsСрезПоследних.Problem.Status КАК Status,
+			|	InvoiceCommentsСрезПоследних.Problem.ConfirmedBy КАК ConfirmedBy,
+			|	InvoiceCommentsСрезПоследних.Problem.ForecastDate КАК ForecastDate,
+			|	InvoiceCommentsСрезПоследних.Problem.CustInputDate КАК CustInputDate,
+			|	InvoiceCommentsСрезПоследних.Problem.CustomerRepresentative КАК CustomerRepresentative,
+			|	InvoiceCommentsСрезПоследних.Problem.CustomerInputDetails КАК CustomerInputDetails,
+			|	InvoiceCommentsСрезПоследних.Problem.RemedialWorkPlan КАК RemedialWorkPlan,
+			|	InvoiceCommentsСрезПоследних.Problem.RWDTargetDate КАК RWDTargetDate
+			|ИЗ
+			|	РегистрСведений.InvoiceComments.СрезПоследних(, Invoice = &Invoice) КАК InvoiceCommentsСрезПоследних";
+		
+		Запрос.УстановитьПараметр("Invoice", Запись.Invoice);
+		
+		НачатьТранзакцию();
+		РезультатЗапроса = Запрос.Выполнить();
+		ЗафиксироватьТранзакцию();
+		
+		Если НЕ РезультатЗапроса.Пустой() Тогда
+			
+			ВыборкаДетальныеЗаписи = РезультатЗапроса.Выбрать();
+			ВыборкаДетальныеЗаписи.Следующий();
+			
+			ЗаполнитьЗначенияСвойств(ЭтаФорма, ВыборкаДетальныеЗаписи);
+			
+		КонецЕсли;
+		
+	КонецЕсли;
+	
 КонецПроцедуры
 
 &НаСервере
