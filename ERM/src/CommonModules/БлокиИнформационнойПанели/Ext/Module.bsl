@@ -380,20 +380,20 @@
 	
 	Данные = Новый Структура;
 	Данные.Вставить("BrokenPromises_Today", 0);
-	Данные.Вставить("BrokenPromises_5days", 3);
-	Данные.Вставить("BrokenPromises_More5days", 5);
-	Данные.Вставить("BrokenPromises_Total", 8);
+	Данные.Вставить("BrokenPromises_5days", 0);
+	Данные.Вставить("BrokenPromises_More5days", 0);
+	Данные.Вставить("BrokenPromises_Total", 0);
 	
 	Запрос = Новый Запрос;
 	Запрос.Текст = 
 		"ВЫБРАТЬ
 		|	ЕСТЬNULL(СУММА(ВЫБОР
-		|				КОГДА РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.ForecastDate, &ТекущаяДата, ДЕНЬ) = 0
+		|				КОГДА РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.ForecastDate, &ТекущаяДата, ДЕНЬ) = 1
 		|					ТОГДА 1
 		|				ИНАЧЕ 0
 		|			КОНЕЦ), 0) КАК BrokenPromises_Today,
 		|	ЕСТЬNULL(СУММА(ВЫБОР
-		|				КОГДА РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.ForecastDate, &ТекущаяДата, ДЕНЬ) > 0
+		|				КОГДА РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.ForecastDate, &ТекущаяДата, ДЕНЬ) > 1
 		|						И РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.ForecastDate, &ТекущаяДата, ДЕНЬ) <= 5
 		|					ТОГДА 1
 		|				ИНАЧЕ 0
@@ -413,7 +413,8 @@
 		|			И (Collectors.Collector = &ТекущийПользователь)
 		|ГДЕ
 		|	InvoiceCommentsСрезПоследних.Problem.ForecastDate <> ДАТАВРЕМЯ(1, 1, 1)
-		|	И InvoiceCommentsСрезПоследних.Problem.ForecastDate <= &ТекущаяДата";
+		|	И InvoiceCommentsСрезПоследних.Problem.Status <> ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid)
+		|	И РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.ForecastDate, &ТекущаяДата, ДЕНЬ) > 0";
 	
 	Запрос.УстановитьПараметр("ТекущаяДата", КонецДня(ТекущаяДата()));
 	Запрос.УстановитьПараметр("ТекущийПользователь", Пользователи.ТекущийПользователь());

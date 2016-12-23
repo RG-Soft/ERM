@@ -360,6 +360,16 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>BrokenPromises</dataPath>
+			<field>BrokenPromises</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Broken promises</v8:content>
+				</v8:item>
+			</title>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	BilledARОстатки.Client КАК Client,
@@ -791,7 +801,16 @@
 			КОГДА ВТ_ОплатыИзОбмена.Source ЕСТЬ NULL 
 				ТОГДА ВТ_ОплатыПоПроводкам.PaymentDate
 			ИНАЧЕ ВТ_ОплатыИзОбмена.PaymentDate
-		КОНЕЦ) КАК PaymentDate
+		КОНЕЦ) КАК PaymentDate,
+	ВЫБОР
+		КОГДА ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.ForecastDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+			ТОГДА ЛОЖЬ
+		КОГДА ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.Status, ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка)) = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid)
+			ТОГДА ЛОЖЬ
+		КОГДА РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.ForecastDate, &amp;ТекущаяДата, ДЕНЬ) &gt; 0
+			ТОГДА ИСТИНА
+		ИНАЧЕ ЛОЖЬ
+	КОНЕЦ КАК BrokenPromises
 ИЗ
 	ВТ_ОстаткиБезОплатТекущегоПериода КАК ВТ_Остатки
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ИерархияКлиентов КАК ВТ_ИерархияКлиентов
@@ -893,6 +912,15 @@
 		КОГДА InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
 			ТОГДА ВТ_Остатки.Invoice.DueDateTo
 		ИНАЧЕ ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.ForecastDate, ДАТАВРЕМЯ(1, 1, 1))
+	КОНЕЦ,
+	ВЫБОР
+		КОГДА ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.ForecastDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+			ТОГДА ЛОЖЬ
+		КОГДА ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.Status, ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка)) = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid)
+			ТОГДА ЛОЖЬ
+		КОГДА РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.ForecastDate, &amp;ТекущаяДата, ДЕНЬ) &gt; 0
+			ТОГДА ИСТИНА
+		ИНАЧЕ ЛОЖЬ
 	КОНЕЦ
 
 ИМЕЮЩИЕ
@@ -1081,6 +1109,25 @@
 		</valueType>
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>false</useRestriction>
+	</parameter>
+	<parameter>
+		<name>ТекущаяДата</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Текущая дата</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>xs:dateTime</v8:Type>
+			<v8:DateQualifiers>
+				<v8:DateFractions>DateTime</v8:DateFractions>
+			</v8:DateQualifiers>
+		</valueType>
+		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
+		<useRestriction>true</useRestriction>
+		<expression>КонецПериода(ТекущаяДата(), "ДЕНЬ")</expression>
+		<availableAsField>false</availableAsField>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
@@ -1607,6 +1654,9 @@
 							<v8:content>KS Return status</v8:content>
 						</v8:item>
 					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>BrokenPromises</dcsset:field>
 				</dcsset:item>
 			</dcsset:selection>
 			<dcsset:filter>

@@ -1269,7 +1269,8 @@
 				ИЛИ Collectors.GeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка))
 ГДЕ
 	InvoiceCommentsСрезПоследних.Problem.ForecastDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
-	И InvoiceCommentsСрезПоследних.Problem.ForecastDate &lt;= &amp;ForecastDateГраница
+	И РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.ForecastDate, &amp;ForecastDateГраница, ДЕНЬ) &gt; 0
+	И InvoiceCommentsСрезПоследних.Problem.Status &lt;&gt; ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid)
 	И Collectors.Collector = &amp;Collector
 {ГДЕ
 	InvoiceДокумент.Source.*,
