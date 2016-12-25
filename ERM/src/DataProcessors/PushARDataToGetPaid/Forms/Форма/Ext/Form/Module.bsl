@@ -16,6 +16,10 @@
 &НаСервере
 Процедура ВыгрузитьДанныеНаСервере()
 	
+	Если не ToFile Тогда 
+		ВнешниеИсточникиДанных.ERM_GP.dbo_insert_BATCHES();
+	КонецЕсли;
+	
 	ВыгрузитьARCUST();
 	ВыгрузитьARMAST();
 	
@@ -89,7 +93,9 @@
 	УдалитьФайлы(ИмяКаталога);
 	
 Иначе 
+	
 	ТаблицаДанныхARCUST = ПолучитьТаблицуДанныхARCUST();
+	BATCH_ID = ПолучитьBatchID();
 	
 	Для Каждого Запись из ТаблицаДанныхARCUST Цикл 
 		
@@ -97,11 +103,55 @@
 		Запись.CUSTNO,
 		Запись.PARENT,
 		Запись.COMPANY,
+		Запись.ARCOMMENT,
 		Запись.CRD_LIMIT,
+		Запись.TERR,
 		Запись.BALANCE,
-		0,
-		ТекущаяДата(),
-		0);
+		Запись.REFKEY1,
+		Запись.REFKEY2,
+		Запись.CREDITSCOR,
+		Запись.RESOLVER01,
+		Запись.RESOLVER02,
+		Запись.RESOLVER03,
+		Запись.RESOLVER04,
+		Запись.RESOLVER05,
+		Запись.RESOLVER06,
+		Запись.RESOLVER07,
+		Запись.RESOLVER08,
+		Запись.RESOLVER09,
+		Запись.RESOLVER10,
+		Запись.HIGHBAL,
+		Запись.LASTYSALES,
+		Запись.LASTQSALES,
+		Запись.DUNS,
+		Запись.ULTIMATEDUNS,
+		Запись.FEDID,
+		Запись.BNKRTNUM,
+		Запись.YTDSALES,
+		Запись.LTDSALES,
+		00010101,//Запись.FINYE,
+		00010101,//Запись.LCVDTE,
+		Запись.CREDIT_ACCT,
+		Запись.TICKER,
+		Запись.SIC_CODE,
+		00010101,//Запись.CRSCDT,
+		00010101,//Запись.CRSTDT,
+		00010101,//Запись.CRLIDT,
+		00010101,//Запись.EXPCRDLMTDTE,
+		Запись.ARBDR,
+		Запись.CMACCT_ID,
+		Запись.REQ_SATISFIED,
+		Запись.CMPARENT,
+		Запись.SMS_PHONE,
+		Запись.RELORDERS,
+		Запись.PENDINGORD,
+		Запись.SLPNEMAIL,
+		Запись.SLPN_LANG_ID,
+		Запись.PAY_INST_TOTAL,
+		Запись.PAY_INST_TOTAL_AMT,
+		00010101,//Запись.PAY_INST_NEXT_DATE,
+		Запись.PAY_INST_NEXT_AMT,
+		BATCH_ID);
 		
 	КонецЦикла;
 КонецЕсли;
@@ -178,6 +228,7 @@
 Иначе 
 	
 	ТаблицаДанныхARMAST = ПолучитьТаблицуДанныхARMAST();
+	BATCH_ID = ПолучитьBatchID();
 	
 	Для Каждого Запись Из ТаблицаДанныхARMAST Цикл 
 
@@ -193,9 +244,14 @@
 		Запись.TRANBAL,
 		Запись.LOCORIG,
 		Запись.LOCBAL,
-		0,
-		ТекущаяДата(),
-		0);
+		Запись.FLEXFIELD5,
+		Запись.FLEXFIELD10,
+		Запись.FLEXFIELD11,
+		Запись.FLEXFIELD12,
+		Запись.FLEXFIELD13,
+		Запись.FLEXFIELD14,
+		Запись.FLEXFIELD15,
+		BATCH_ID);
 		
 	КонецЦикла;
 	
@@ -899,3 +955,22 @@
 	Элементы.КаталогВыгрузки.Доступность = ?(ToFile, Истина, Ложь);
 	Элементы.ФорматФайла.Доступность = ?(ToFile, Истина, Ложь);
 КонецПроцедуры
+
+&НаСервере
+Функция ПолучитьBatchID()	
+
+	Запрос = Новый Запрос;
+	Запрос.Текст = 
+		"ВЫБРАТЬ ПЕРВЫЕ 1
+		|	dbo_BATCHES.BATCH_ID КАК BATCH_ID
+		|ИЗ
+		|	ВнешнийИсточникДанных.ERM_GP.Таблица.dbo_BATCHES КАК dbo_BATCHES
+		|
+		|УПОРЯДОЧИТЬ ПО
+		|	BATCH_ID УБЫВ";
+	
+	РезультатЗапроса = Запрос.Выполнить().Выгрузить();
+	Возврат РезультатЗапроса[0].BATCH_ID;
+	
+КонецФункции
+
