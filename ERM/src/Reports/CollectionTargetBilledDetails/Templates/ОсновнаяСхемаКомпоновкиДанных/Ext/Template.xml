@@ -370,6 +370,16 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>EscalationSent</dataPath>
+			<field>EscalationSent</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Escalation sent</v8:content>
+				</v8:item>
+			</title>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	BilledARОстатки.Client КАК Client,
@@ -810,14 +820,19 @@
 		КОГДА РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.ForecastDate, &amp;ТекущаяДата, ДЕНЬ) &gt; 0
 			ТОГДА ИСТИНА
 		ИНАЧЕ ЛОЖЬ
-	КОНЕЦ КАК BrokenPromises
+	КОНЕЦ КАК BrokenPromises,
+	ВЫБОР
+		КОГДА ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.SLBAssignedToList, "") = ""
+			ТОГДА ЛОЖЬ
+		ИНАЧЕ ИСТИНА
+	КОНЕЦ КАК EscalationSent
 ИЗ
 	ВТ_ОстаткиБезОплатТекущегоПериода КАК ВТ_Остатки
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ИерархияКлиентов КАК ВТ_ИерархияКлиентов
 		ПО ВТ_Остатки.Client = ВТ_ИерархияКлиентов.Контрагент
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних КАК ВнутренниеКурсыВалютСрезПоследних
 		ПО ВТ_Остатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments.СрезПоследних(, ) КАК InvoiceCommentsСрезПоследних
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments.СрезПоследних({(&amp;КонецМесяцаФормированияОтчета)}, ) КАК InvoiceCommentsСрезПоследних
 		ПО ВТ_Остатки.Invoice = InvoiceCommentsСрезПоследних.Invoice
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.Collectors КАК Collectors
 		ПО ВТ_Остатки.Client = Collectors.Client
@@ -1129,6 +1144,19 @@
 		<expression>КонецПериода(ТекущаяДата(), "ДЕНЬ")</expression>
 		<availableAsField>false</availableAsField>
 	</parameter>
+	<parameter>
+		<name>КонецМесяцаФормированияОтчета</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Конец месяца формирования отчета</v8:content>
+			</v8:item>
+		</title>
+		<value xsi:nil="true"/>
+		<useRestriction>true</useRestriction>
+		<expression>КонецПериода(&amp;Период,"МЕСЯЦ")</expression>
+		<availableAsField>false</availableAsField>
+	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
 		<dcsset:presentation xsi:type="v8:LocalStringType">
@@ -1314,6 +1342,15 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Client.CRMID</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>CRM ID</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Client</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
@@ -1419,6 +1456,9 @@
 					<dcsset:placement>Horizontally</dcsset:placement>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>USDAmount</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Rate</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
@@ -1426,9 +1466,6 @@
 							<v8:content>Rate</v8:content>
 						</v8:item>
 					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>USDAmount</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Agreement</dcsset:field>
@@ -1454,6 +1491,24 @@
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>Trigger</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceДатаОтправкиКС</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>KS Departure date</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceДатаВозвратаКС</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>KS Return date</v8:content>
 						</v8:item>
 					</dcsset:lwsTitle>
 				</dcsset:item>
@@ -1561,6 +1616,12 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Insolvent</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Under Litigation</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>CustInputDate</dcsset:field>
@@ -1588,7 +1649,7 @@
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
-							<v8:content>RWD Dealdine</v8:content>
+							<v8:content>RWD Deadline</v8:content>
 						</v8:item>
 					</dcsset:lwsTitle>
 				</dcsset:item>
@@ -1620,24 +1681,6 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>InvoiceДатаВозвратаКС</dcsset:field>
-					<dcsset:lwsTitle>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>KS Return date</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>InvoiceДатаОтправкиКС</dcsset:field>
-					<dcsset:lwsTitle>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>KS Departure date</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>InvoiceКомментарийСтатусаВозвратаКС</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
@@ -1658,6 +1701,9 @@
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>BrokenPromises</dcsset:field>
 				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>EscalationSent</dcsset:field>
+				</dcsset:item>
 			</dcsset:selection>
 			<dcsset:filter>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
@@ -1674,6 +1720,11 @@
 						<v8:variant xsi:type="v8:StandardBeginningDateVariant">BeginningOfNextDay</v8:variant>
 					</dcscor:value>
 					<dcsset:userSettingID>6a13f980-6f34-4eea-91c0-a7e9314c4df5</dcsset:userSettingID>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:use>false</dcscor:use>
+					<dcscor:parameter>КонецМесяцаФормированияОтчета</dcscor:parameter>
+					<dcscor:value xsi:nil="true"/>
 				</dcscor:item>
 			</dcsset:dataParameters>
 			<dcsset:conditionalAppearance>
