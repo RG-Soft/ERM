@@ -1,25 +1,32 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5">
-	<AutoCommandBar name="ФормаКоманднаяПанель" id="-1"/>
+	<AutoCommandBar name="ФормаКоманднаяПанель" id="-1">
+		<ChildItems>
+			<Button name="ВыгрузитьДанные" id="4">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.Command.ВыгрузитьДанные</CommandName>
+				<ExtendedTooltip name="ВыгрузитьДанныеРасширеннаяПодсказка" id="5"/>
+			</Button>
+			<Button name="SetUploadedLastBatches" id="16">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.Command.MarkAsUploadedToGetPaid</CommandName>
+				<ExtendedTooltip name="SetUploadedLastBatchesРасширеннаяПодсказка" id="17"/>
+			</Button>
+		</ChildItems>
+	</AutoCommandBar>
 	<Events>
 		<Event name="OnCreateAtServer">ПриСозданииНаСервере</Event>
 	</Events>
 	<ChildItems>
-		<UsualGroup name="Группа2" id="14">
-			<ExtendedTooltip name="Группа2РасширеннаяПодсказка" id="15"/>
-			<ChildItems>
-				<Button name="ВыгрузитьДанные" id="4">
-					<Type>UsualButton</Type>
-					<CommandName>Form.Command.ВыгрузитьДанные</CommandName>
-					<ExtendedTooltip name="ВыгрузитьДанныеРасширеннаяПодсказка" id="5"/>
-				</Button>
-				<Button name="SetUploadedLastBatches" id="16">
-					<Type>UsualButton</Type>
-					<CommandName>Form.Command.MarkedAsUploaded</CommandName>
-					<ExtendedTooltip name="SetUploadedLastBatchesРасширеннаяПодсказка" id="17"/>
-				</Button>
-			</ChildItems>
-		</UsualGroup>
+		<CheckBoxField name="ToFile" id="11">
+			<DataPath>ToFile</DataPath>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="ToFileКонтекстноеМеню" id="12"/>
+			<ExtendedTooltip name="ToFileРасширеннаяПодсказка" id="13"/>
+			<Events>
+				<Event name="OnChange">ToFileПриИзменении</Event>
+			</Events>
+		</CheckBoxField>
 		<RadioButtonField name="ФорматФайла" id="8">
 			<DataPath>ФорматФайла</DataPath>
 			<Enabled>false</Enabled>
@@ -75,15 +82,6 @@
 				</InputField>
 			</ChildItems>
 		</UsualGroup>
-		<CheckBoxField name="ToFile" id="11">
-			<DataPath>ToFile</DataPath>
-			<CheckBoxType>Auto</CheckBoxType>
-			<ContextMenu name="ToFileКонтекстноеМеню" id="12"/>
-			<ExtendedTooltip name="ToFileРасширеннаяПодсказка" id="13"/>
-			<Events>
-				<Event name="OnChange">ToFileПриИзменении</Event>
-			</Events>
-		</CheckBoxField>
 	</ChildItems>
 	<Attributes>
 		<Attribute name="Объект" id="1">
@@ -156,7 +154,7 @@
 			<Title>
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>Upload to file</v8:content>
+					<v8:content>Unload to file</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -180,17 +178,17 @@
 			</ToolTip>
 			<Action>ВыгрузитьДанные</Action>
 		</Command>
-		<Command name="MarkedAsUploaded" id="2">
+		<Command name="MarkAsUploadedToGetPaid" id="2">
 			<Title>
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>Marked as uploaded</v8:content>
+					<v8:content>Mark as uploaded to GetPaid</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>Marked as uploaded</v8:content>
+					<v8:content>Mark as uploaded to get paid</v8:content>
 				</v8:item>
 			</ToolTip>
 			<Action>MarkedAsUploaded</Action>

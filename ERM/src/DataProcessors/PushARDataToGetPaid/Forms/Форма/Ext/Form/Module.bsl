@@ -30,233 +30,233 @@
 &НаСервере
 Процедура ВыгрузитьARCUST()
 	
-Если ToFile Тогда 
-	
-	ОписаниеСтруктурыARCUST = ПолучитьОписаниеСтруктурыПриемника("ARCUST");
-	
-	ИмяКаталога = КаталогВременныхФайлов() + Строка(Новый УникальныйИдентификатор());
-	СоздатьКаталог(ИмяКаталога);
-	ПутьКФайлу = ИмяКаталога + "\ARCUST.txt";
-	
-	ПутьСхемы = ИмяКаталога+"\schema.ini";
-	ФайлСхемы = Новый ТекстовыйДокумент;
-	ФайлСхемы.УстановитьТекст(ПолучитьТекстФайлаСхемы("ARCUST", ОписаниеСтруктурыARCUST, ФорматФайла));
-	ФайлСхемы.Записать(ПутьСхемы, КодировкаТекста.OEM);
-	
-	Connection = Новый COMОбъект("ADODB.Connection");
-	
-	Попытка
-		СтрокаПодключения = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + ИмяКаталога + ";Extended Properties=""text;HDR=No;IMEX=0;Readonly=False""";
-		Connection.CursorLocation = 3;
-		Connection.Mode = 3;
-		Connection.Open(СтрокаПодключения);
-	Исключение
+	Если ToFile Тогда 
+		
+		ОписаниеСтруктурыARCUST = ПолучитьОписаниеСтруктурыПриемника("ARCUST");
+		
+		ИмяКаталога = КаталогВременныхФайлов() + Строка(Новый УникальныйИдентификатор());
+		СоздатьКаталог(ИмяКаталога);
+		ПутьКФайлу = ИмяКаталога + "\ARCUST.txt";
+		
+		ПутьСхемы = ИмяКаталога+"\schema.ini";
+		ФайлСхемы = Новый ТекстовыйДокумент;
+		ФайлСхемы.УстановитьТекст(ПолучитьТекстФайлаСхемы("ARCUST", ОписаниеСтруктурыARCUST, ФорматФайла));
+		ФайлСхемы.Записать(ПутьСхемы, КодировкаТекста.OEM);
+		
+		Connection = Новый COMОбъект("ADODB.Connection");
+		
 		Попытка
-			СтрокаПодключения = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + ИмяКаталога + ";Extended Properties=""text;HDR=No;IMEX=0;Readonly=False""";
+			СтрокаПодключения = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + ИмяКаталога + ";Extended Properties=""text;HDR=No;IMEX=0;Readonly=False""";
+			Connection.CursorLocation = 3;
 			Connection.Mode = 3;
 			Connection.Open(СтрокаПодключения);
 		Исключение
-			ВызватьИсключение "Can't open connection! " + ОписаниеОшибки();
+			Попытка
+				СтрокаПодключения = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + ИмяКаталога + ";Extended Properties=""text;HDR=No;IMEX=0;Readonly=False""";
+				Connection.Mode = 3;
+				Connection.Open(СтрокаПодключения);
+			Исключение
+				ВызватьИсключение "Can't open connection! " + ОписаниеОшибки();
+			КонецПопытки;
 		КонецПопытки;
-	КонецПопытки;
-	
-	// создадим таблицу
-	Connection.Execute(ПолучитьТекстКомандыСозданияТаблицы("ARCUST", ОписаниеСтруктурыARCUST));
-	
-	Command = Новый COMОбъект("ADODB.Command");
-	Command.ActiveConnection = Connection;
-	Command.CommandType = 1;
-	
-	Command.CommandText = ПолучитьТекстКомандыЗапроса("ARCUST", ОписаниеСтруктурыARCUST);
-	СоздатьКоллекциюПараметровКоманды(Command, ОписаниеСтруктурыARCUST);
-	
-	ТаблицаДанныхARCUST = ПолучитьТаблицуДанныхARCUST();
-	КоллекцияКолонокРезультата = ТаблицаДанныхARCUST.Колонки;
-	
-	Для каждого СтрокаТаблицы Из ТаблицаДанныхARCUST Цикл
 		
-		Для каждого ТекКолонка Из КоллекцияКолонокРезультата Цикл
+		// создадим таблицу
+		Connection.Execute(ПолучитьТекстКомандыСозданияТаблицы("ARCUST", ОписаниеСтруктурыARCUST));
+		
+		Command = Новый COMОбъект("ADODB.Command");
+		Command.ActiveConnection = Connection;
+		Command.CommandType = 1;
+		
+		Command.CommandText = ПолучитьТекстКомандыЗапроса("ARCUST", ОписаниеСтруктурыARCUST);
+		СоздатьКоллекциюПараметровКоманды(Command, ОписаниеСтруктурыARCUST);
+		
+		ТаблицаДанныхARCUST = ПолучитьТаблицуДанныхARCUST();
+		КоллекцияКолонокРезультата = ТаблицаДанныхARCUST.Колонки;
+		
+		Для каждого СтрокаТаблицы Из ТаблицаДанныхARCUST Цикл
 			
-			ТекЗначение = СтрокаТаблицы[ТекКолонка.Имя];
-			Command.Parameters("@" + ТекКолонка.Имя).Value = ?(ТипЗнч(ТекЗначение) = Тип("Строка"), СокрЛП(ТекЗначение), ТекЗначение);
+			Для каждого ТекКолонка Из КоллекцияКолонокРезультата Цикл
+				
+				ТекЗначение = СтрокаТаблицы[ТекКолонка.Имя];
+				Command.Parameters("@" + ТекКолонка.Имя).Value = ?(ТипЗнч(ТекЗначение) = Тип("Строка"), СокрЛП(ТекЗначение), ТекЗначение);
+				
+			КонецЦикла;
+			
+			Command.Execute();
 			
 		КонецЦикла;
 		
-		Command.Execute();
+		АдресФайлаВХранилищеARCUST = ПоместитьВоВременноеХранилище(Новый ДвоичныеДанные(ПутьКФайлу), УникальныйИдентификатор);
 		
-	КонецЦикла;
-	
-	АдресФайлаВХранилищеARCUST = ПоместитьВоВременноеХранилище(Новый ДвоичныеДанные(ПутьКФайлу), УникальныйИдентификатор);
-	
-	// Закрываем соединение
-	Command = Неопределено;
-	Connection.Close();
-	Connection = Неопределено;
-	
-	УдалитьФайлы(ИмяКаталога);
-	
-Иначе 
-	
-	ТаблицаДанныхARCUST = ПолучитьТаблицуДанныхARCUST();
-	
-	Для Каждого Запись из ТаблицаДанныхARCUST Цикл 
+		// Закрываем соединение
+		Command = Неопределено;
+		Connection.Close();
+		Connection = Неопределено;
 		
-	ВнешниеИсточникиДанных.ERM_GP.dbo_insert_ARCUST(
-		Запись.CUSTNO,
-		Запись.PARENT,
-		Запись.COMPANY,
-		Запись.ARCOMMENT,
-		Запись.CRD_LIMIT,
-		Запись.TERR,
-		Запись.BALANCE,
-		Запись.REFKEY1,
-		Запись.REFKEY2,
-		Запись.CREDITSCOR,
-		Запись.RESOLVER01,
-		Запись.RESOLVER02,
-		Запись.RESOLVER03,
-		Запись.RESOLVER04,
-		Запись.RESOLVER05,
-		Запись.RESOLVER06,
-		Запись.RESOLVER07,
-		Запись.RESOLVER08,
-		Запись.RESOLVER09,
-		Запись.RESOLVER10,
-		Запись.HIGHBAL,
-		Запись.LASTYSALES,
-		Запись.LASTQSALES,
-		Запись.DUNS,
-		Запись.ULTIMATEDUNS,
-		Запись.FEDID,
-		Запись.BNKRTNUM,
-		Запись.YTDSALES,
-		Запись.LTDSALES,
-		00010101,//Запись.FINYE,
-		00010101,//Запись.LCVDTE,
-		Запись.CREDIT_ACCT,
-		Запись.TICKER,
-		Запись.SIC_CODE,
-		00010101,//Запись.CRSCDT,
-		00010101,//Запись.CRSTDT,
-		00010101,//Запись.CRLIDT,
-		00010101,//Запись.EXPCRDLMTDTE,
-		Запись.ARBDR,
-		Запись.CMACCT_ID,
-		Запись.REQ_SATISFIED,
-		Запись.CMPARENT,
-		Запись.SMS_PHONE,
-		Запись.RELORDERS,
-		Запись.PENDINGORD,
-		Запись.SLPNEMAIL,
-		Запись.SLPN_LANG_ID,
-		Запись.PAY_INST_TOTAL,
-		Запись.PAY_INST_TOTAL_AMT,
-		00010101,//Запись.PAY_INST_NEXT_DATE,
-		Запись.PAY_INST_NEXT_AMT,
-		Объект.LastBatchID);
+		УдалитьФайлы(ИмяКаталога);
 		
-	КонецЦикла;
-КонецЕсли;
-
+	Иначе 
+		
+		ТаблицаДанныхARCUST = ПолучитьТаблицуДанныхARCUST();
+		
+		Для Каждого Запись из ТаблицаДанныхARCUST Цикл 
+			
+			ВнешниеИсточникиДанных.ERM_GP.dbo_insert_ARCUST(
+			Запись.CUSTNO,
+			Запись.PARENT,
+			Запись.COMPANY,
+			Запись.ARCOMMENT,
+			Запись.CRD_LIMIT,
+			Запись.TERR,
+			Запись.BALANCE,
+			Запись.REFKEY1,
+			Запись.REFKEY2,
+			Запись.CREDITSCOR,
+			Запись.RESOLVER01,
+			Запись.RESOLVER02,
+			Запись.RESOLVER03,
+			Запись.RESOLVER04,
+			Запись.RESOLVER05,
+			Запись.RESOLVER06,
+			Запись.RESOLVER07,
+			Запись.RESOLVER08,
+			Запись.RESOLVER09,
+			Запись.RESOLVER10,
+			Запись.HIGHBAL,
+			Запись.LASTYSALES,
+			Запись.LASTQSALES,
+			Запись.DUNS,
+			Запись.ULTIMATEDUNS,
+			Запись.FEDID,
+			Запись.BNKRTNUM,
+			Запись.YTDSALES,
+			Запись.LTDSALES,
+			00010101,//Запись.FINYE,
+			00010101,//Запись.LCVDTE,
+			Запись.CREDIT_ACCT,
+			Запись.TICKER,
+			Запись.SIC_CODE,
+			00010101,//Запись.CRSCDT,
+			00010101,//Запись.CRSTDT,
+			00010101,//Запись.CRLIDT,
+			00010101,//Запись.EXPCRDLMTDTE,
+			Запись.ARBDR,
+			Запись.CMACCT_ID,
+			Запись.REQ_SATISFIED,
+			Запись.CMPARENT,
+			Запись.SMS_PHONE,
+			Запись.RELORDERS,
+			Запись.PENDINGORD,
+			Запись.SLPNEMAIL,
+			Запись.SLPN_LANG_ID,
+			Запись.PAY_INST_TOTAL,
+			Запись.PAY_INST_TOTAL_AMT,
+			00010101,//Запись.PAY_INST_NEXT_DATE,
+			Запись.PAY_INST_NEXT_AMT,
+			Объект.LastBatchID);
+			
+		КонецЦикла;
+	КонецЕсли;
+	
 КонецПроцедуры
 
 &НаСервере
 Процедура ВыгрузитьARMAST()
 	
-Если ToFile Тогда 
-	
-	ОписаниеСтруктурыARMAST = ПолучитьОписаниеСтруктурыПриемника("ARMAST");
-	
-	ИмяКаталога = КаталогВременныхФайлов() + Строка(Новый УникальныйИдентификатор());
-	СоздатьКаталог(ИмяКаталога);
-	ПутьКФайлу = ИмяКаталога + "\ARMAST.txt";
-	
-	ПутьСхемы = ИмяКаталога+"\schema.ini";
-	ФайлСхемы = Новый ТекстовыйДокумент;
-	ФайлСхемы.УстановитьТекст(ПолучитьТекстФайлаСхемы("ARMAST", ОписаниеСтруктурыARMAST, ФорматФайла));
-	ФайлСхемы.Записать(ПутьСхемы, КодировкаТекста.OEM);
-	
-	Connection = Новый COMОбъект("ADODB.Connection");
-	
-	Попытка
-		СтрокаПодключения = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + ИмяКаталога + ";Extended Properties=""text;HDR=No;IMEX=0;Readonly=False""";
-		Connection.CursorLocation = 3;
-		Connection.Mode = 3;
-		Connection.Open(СтрокаПодключения);
-	Исключение
+	Если ToFile Тогда 
+		
+		ОписаниеСтруктурыARMAST = ПолучитьОписаниеСтруктурыПриемника("ARMAST");
+		
+		ИмяКаталога = КаталогВременныхФайлов() + Строка(Новый УникальныйИдентификатор());
+		СоздатьКаталог(ИмяКаталога);
+		ПутьКФайлу = ИмяКаталога + "\ARMAST.txt";
+		
+		ПутьСхемы = ИмяКаталога+"\schema.ini";
+		ФайлСхемы = Новый ТекстовыйДокумент;
+		ФайлСхемы.УстановитьТекст(ПолучитьТекстФайлаСхемы("ARMAST", ОписаниеСтруктурыARMAST, ФорматФайла));
+		ФайлСхемы.Записать(ПутьСхемы, КодировкаТекста.OEM);
+		
+		Connection = Новый COMОбъект("ADODB.Connection");
+		
 		Попытка
-			СтрокаПодключения = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + ИмяКаталога + ";Extended Properties=""text;HDR=No;IMEX=0;Readonly=False""";
+			СтрокаПодключения = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + ИмяКаталога + ";Extended Properties=""text;HDR=No;IMEX=0;Readonly=False""";
+			Connection.CursorLocation = 3;
 			Connection.Mode = 3;
 			Connection.Open(СтрокаПодключения);
 		Исключение
-			ВызватьИсключение "Can't open connection! " + ОписаниеОшибки();
+			Попытка
+				СтрокаПодключения = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + ИмяКаталога + ";Extended Properties=""text;HDR=No;IMEX=0;Readonly=False""";
+				Connection.Mode = 3;
+				Connection.Open(СтрокаПодключения);
+			Исключение
+				ВызватьИсключение "Can't open connection! " + ОписаниеОшибки();
+			КонецПопытки;
 		КонецПопытки;
-	КонецПопытки;
-	
-	// создадим таблицу
-	Connection.Execute(ПолучитьТекстКомандыСозданияТаблицы("ARMAST", ОписаниеСтруктурыARMAST));
-	
-	Command = Новый COMОбъект("ADODB.Command");
-	Command.ActiveConnection = Connection;
-	Command.CommandType = 1;
-	
-	Command.CommandText = ПолучитьТекстКомандыЗапроса("ARMAST", ОписаниеСтруктурыARMAST);
-	СоздатьКоллекциюПараметровКоманды(Command, ОписаниеСтруктурыARMAST);
-	
-	ТаблицаДанныхARMAST = ПолучитьТаблицуДанныхARMAST();
-	КоллекцияКолонокРезультата = ТаблицаДанныхARMAST.Колонки;
-	
-	Для каждого СтрокаТаблицы Из ТаблицаДанныхARMAST Цикл
 		
-		Для каждого ТекКолонка Из КоллекцияКолонокРезультата Цикл
+		// создадим таблицу
+		Connection.Execute(ПолучитьТекстКомандыСозданияТаблицы("ARMAST", ОписаниеСтруктурыARMAST));
+		
+		Command = Новый COMОбъект("ADODB.Command");
+		Command.ActiveConnection = Connection;
+		Command.CommandType = 1;
+		
+		Command.CommandText = ПолучитьТекстКомандыЗапроса("ARMAST", ОписаниеСтруктурыARMAST);
+		СоздатьКоллекциюПараметровКоманды(Command, ОписаниеСтруктурыARMAST);
+		
+		ТаблицаДанныхARMAST = ПолучитьТаблицуДанныхARMAST();
+		КоллекцияКолонокРезультата = ТаблицаДанныхARMAST.Колонки;
+		
+		Для каждого СтрокаТаблицы Из ТаблицаДанныхARMAST Цикл
 			
-			ТекЗначение = СтрокаТаблицы[ТекКолонка.Имя];
-			Command.Parameters("@" + ТекКолонка.Имя).Value = ?(ТипЗнч(ТекЗначение) = Тип("Строка"), СокрЛП(ТекЗначение), ТекЗначение);
+			Для каждого ТекКолонка Из КоллекцияКолонокРезультата Цикл
+				
+				ТекЗначение = СтрокаТаблицы[ТекКолонка.Имя];
+				Command.Parameters("@" + ТекКолонка.Имя).Value = ?(ТипЗнч(ТекЗначение) = Тип("Строка"), СокрЛП(ТекЗначение), ТекЗначение);
+				
+			КонецЦикла;
+			
+			Command.Execute();
 			
 		КонецЦикла;
 		
-		Command.Execute();
+		АдресФайлаВХранилищеARMAST = ПоместитьВоВременноеХранилище(Новый ДвоичныеДанные(ПутьКФайлу), УникальныйИдентификатор);
 		
-	КонецЦикла;
-	
-	АдресФайлаВХранилищеARMAST = ПоместитьВоВременноеХранилище(Новый ДвоичныеДанные(ПутьКФайлу), УникальныйИдентификатор);
-	
-	// Закрываем соединение
-	Command = Неопределено;
-	Connection.Close();
-	Connection = Неопределено;
-	
-	УдалитьФайлы(ИмяКаталога);
-	
-Иначе 
-	
-	ТаблицаДанныхARMAST = ПолучитьТаблицуДанныхARMAST();
-	
-	Для Каждого Запись Из ТаблицаДанныхARMAST Цикл 
-
-	ВнешниеИсточникиДанных.ERM_GP.dbo_insert_ARMAST(
-		Запись.CUSTNO,
-		Запись.INVNO,
-		Запись.INVDTE,
-		Запись.BALANCE,
-		Запись.INVAMT,
-		Запись.ARSTAT,
-		Запись.TRANCURR,
-		Запись.TRANORIG,
-		Запись.TRANBAL,
-		Запись.LOCORIG,
-		Запись.LOCBAL,
-		Запись.FLEXFIELD5,
-		Запись.FLEXFIELD10,
-		Запись.FLEXFIELD11,
-		Запись.FLEXFIELD12,
-		Запись.FLEXFIELD13,
-		Запись.FLEXFIELD14,
-		Запись.FLEXFIELD15,
-		Объект.LastBatchID);
+		// Закрываем соединение
+		Command = Неопределено;
+		Connection.Close();
+		Connection = Неопределено;
 		
-	КонецЦикла;
-КонецЕсли;
+		УдалитьФайлы(ИмяКаталога);
+		
+	Иначе 
+		
+		ТаблицаДанныхARMAST = ПолучитьТаблицуДанныхARMAST();
+		
+		Для Каждого Запись Из ТаблицаДанныхARMAST Цикл 
+			
+			ВнешниеИсточникиДанных.ERM_GP.dbo_insert_ARMAST(
+			Запись.CUSTNO,
+			Запись.INVNO,
+			Запись.INVDTE,
+			Запись.BALANCE,
+			Запись.INVAMT,
+			Запись.ARSTAT,
+			Запись.TRANCURR,
+			Запись.TRANORIG,
+			Запись.TRANBAL,
+			Запись.LOCORIG,
+			Запись.LOCBAL,
+			Запись.FLEXFIELD5,
+			Запись.FLEXFIELD10,
+			Запись.FLEXFIELD11,
+			Запись.FLEXFIELD12,
+			Запись.FLEXFIELD13,
+			Запись.FLEXFIELD14,
+			Запись.FLEXFIELD15,
+			Объект.LastBatchID);
+			
+		КонецЦикла;
+	КонецЕсли;
 	
 КонецПроцедуры
 
