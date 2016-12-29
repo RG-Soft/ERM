@@ -551,6 +551,10 @@
 	
 	Для Каждого Получатель из МассивПолучателей Цикл 
 		
+		Если НЕ ЗначениеЗаполнено(Получатель) Тогда
+			Продолжить
+		КонецЕсли;
+		
 		СтруктураОтбора.Получатель = Получатель;
 		СуммаUSD = 0;
 		Тема = "TEST Unbilled SO notification";
@@ -561,36 +565,44 @@
 		|<BODY>
 		|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Please be kindly informed that there are some unbilled invoices which have job end but not yet billed.</P>
 		|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Your immediate actions are required in order to billed this invoices as soon as possible because you are involved in problem decision.</P>
-		|<TABLE border=1>
+		|<TABLE style=""border-collapse: collapse;width:84.2%;border:solid black 1.5pt"">
 		|<TBODY>
-		|<TR style=""BACKGROUND-COLOR:#A4D3EE"" align=""center"">
-		|<TD>Geomarket</TD>
-		|<TD>Subgeomarket</TD>
-		|<TD>Segment</TD>
-		|<TD>Client</TD>
-		|<TD>Orig. currency</TD>
-		|<TD>Amount, orig. currency</TD>
-		|<TD>Amount, USD</TD>
+		|<TR align=""center"" style=""width:6.38%;background:#000099;padding:1.5pt 1.5pt 1.5pt 1.5pt;font-size:10pt;font-family:Tahoma,sans-serif;color:white;"">
+		|<TD style=""padding: 5px; border: 2px solid #000;"">Geomarket</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000;"">Segment</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000;"">Customer ID</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000;"">Customer name</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000;"">Invoice Reference</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000;"">Job End Date</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000;"">Invoice transaction date</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000;"">Currency</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000;"">Amount</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000;"">Well number</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000;"">Reason</TD>
 		|</TR>";
 		
 		ПолныеДанныеУведомления = ДанныеSalesOrders.Скопировать(СтруктураОтбора);
 		ПолныеДанныеУведомления.Колонки.Удалить("Получатель");
-		ДанныеДляТелаПисьма = ПолныеДанныеУведомления.Скопировать(, "GeoMarket, SubGeoMarket, Segment, Client, Currency, Amount, AmountUSD");
-		ДанныеДляТелаПисьма.Свернуть("GeoMarket, SubGeoMarket, Segment, Client, Currency", "Amount, AmountUSD");
+		ДанныеДляТелаПисьма = ПолныеДанныеУведомления.Скопировать(, "GeoMarket, Segment, CustumerId, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, SalesOrderAmount, Reason");
+		ДанныеДляТелаПисьма.Свернуть("GeoMarket, Segment, CustumerId, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Reason", "SalesOrderAmount");
 		
 		Для Каждого СтрокаДанных из ДанныеДляТелаПисьма Цикл
 				
 			СтрокаВТелоСообщения = "<TR>
-			|<TD>" + ?(ЗначениеЗаполнено(СтрокаДанных.GeoMarket), СтрокаДанных.GeoMarket, " ") + "</TD>
-			|<TD>" + ?(ЗначениеЗаполнено(СтрокаДанных.SubGeoMarket), СтрокаДанных.SubGeoMarket, " ") + "</TD>
-			|<TD>" + ?(ЗначениеЗаполнено(СтрокаДанных.Segment), СтрокаДанных.Segment, " ") + "</TD>
-			|<TD>" + ?(ЗначениеЗаполнено(СтрокаДанных.Client), СтрокаДанных.Client, " ") + "</TD>
-			|<TD>" + ?(ЗначениеЗаполнено(СтрокаДанных.Currency), СтрокаДанных.Currency, " ") + "</TD>
-			|<TD>" + СтрокаДанных.Amount + "</TD>
-			|<TD>" + СтрокаДанных.AmountUSD + "</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.GeoMarket), СтрокаДанных.GeoMarket, " ") + "</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Segment), СтрокаДанных.Segment, " ") + "</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.CustumerId), СтрокаДанных.CustumerId, " ") + "</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Client), СтрокаДанных.Client, " ") + "</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.InvoiceNumber), СтрокаДанных.InvoiceNumber, " ") + "</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.JobEndDate), СтрокаДанных.JobEndDate, " ") + "</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.InvoiceDate), СтрокаДанных.InvoiceDate, " ") + "</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Currency), СтрокаДанных.Currency, " ") + "</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">" + СтрокаДанных.SalesOrderAmount + "</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">" "</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Reason), СтрокаДанных.Reason, " ") + "</TD>
 			|</TR>";
 			ТелоHTML = ТелоHTML + СтрокаВТелоСообщения;
-			СуммаUSD = СуммаUSD + СтрокаДанных.AmountUSD;
+			//СуммаUSD = СуммаUSD + СтрокаДанных.AmountUSD;
 			
 			//НаборЗаписей = РегистрыСведений.ОчередьУведомлений.СоздатьНаборЗаписей();
 			//НаборЗаписей.Отбор.Проблема.Установить(Проблема.Проблема);
@@ -599,12 +611,16 @@
 				
 		КонецЦикла;
 		
-		ТелоHTML = ТелоHTML + "<tr style=""BACKGROUND-COLOR:#A4D3EE"">
-		|<td colspan=""6"">Grand total</td>
-		|<td>"+СуммаUSD+"</td>
-		|</tr></TABLE>
+		//ТелоHTML = ТелоHTML + "<tr style=""BACKGROUND-COLOR:#A4D3EE"">
+		//|<td colspan=""6"">Grand total</td>
+		//|<td>"+СуммаUSD+"</td>
+		//|</tr></TABLE>
+		//|</TBODY>
+		//|</BODY></HTML>";
+		
+		ТелоHTML = ТелоHTML + "</TABLE>
 		|</TBODY>
-		|</BODY></HTML>"; 
+		|</BODY></HTML>";
 		ТелоHTML = СтрЗаменить(ТелоHTML, Символы.ПС, "");
 		Attach = ПолучитьAttachДляUnbilledNotification(ПолныеДанныеУведомления);
 		РГСофт.ЗарегистрироватьПочтовоеСообщение(Получатель, Тема, ТелоHTML, Attach, ТипТекстаПочтовогоСообщения.HTML);
@@ -789,7 +805,8 @@
 	                |		КОГДА ВТ_SO.SalesOrder.JobEndDate <> ДАТАВРЕМЯ(1, 1, 1)
 	                |			ТОГДА РАЗНОСТЬДАТ(ВТ_SO.SalesOrder.JobEndDate, &ДатаУведомления, ДЕНЬ)
 	                |		ИНАЧЕ 0
-	                |	КОНЕЦ КАК Ageing
+	                |	КОНЕЦ КАК Ageing,
+	                |	ВТ_SO.SalesOrder.Amount
 	                |ИЗ
 	                |	ВТ_SO КАК ВТ_SO
 	                |		ЛЕВОЕ СОЕДИНЕНИЕ РегистрНакопления.UnbilledAR.Остатки(
