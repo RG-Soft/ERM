@@ -3219,6 +3219,9 @@
 	ДокОбъект.PaymentDate = ДанныеДляЗаполнения.PaymentDate;
 	ДокОбъект.PaymentNumber = ДанныеДляЗаполнения.PaymentNumber;
 	ДокОбъект.ClientID = ДанныеДляЗаполнения.CustomerNumber;
+	// { RGS TAlmazova 30.12.2016 0:16:23 - заполнение Amount
+	ДокОбъект.Amount = ДанныеДляЗаполнения.InvoiceAmount;
+	// } RGS TAlmazova 30.12.2016 0:16:36 - заполнение Amount
 	ДокОбъект.OriginalAnalytics = Формат(ДанныеДляЗаполнения.CompanyCode, "ЧГ=0") + "." + ДанныеДляЗаполнения.AUCode + "." + ДанныеДляЗаполнения.LocationCode + "." + ДанныеДляЗаполнения.AccountCode;
 	ДокОбъект.Записать(РежимЗаписиДокумента.Запись);
 	
