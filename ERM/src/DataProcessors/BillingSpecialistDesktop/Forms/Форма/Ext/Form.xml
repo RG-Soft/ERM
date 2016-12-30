@@ -478,7 +478,7 @@
 	РегистрНакопления.UnbilledAR.Остатки({(&amp;ПериодОстатков)}, SalesOrder ССЫЛКА Документ.SalesOrder {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК UnbilledARОстатки
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних(, ) КАК SalesOrdersCommentsСрезПоследних
 		ПО UnbilledARОстатки.SalesOrder = SalesOrdersCommentsСрезПоследних.SalesOrder
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних КАК ВнутренниеКурсыВалютСрезПоследних
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаДляСравнения)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
 		ПО UnbilledARОстатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПервых КАК SalesOrdersCommentsСрезПервых
 		ПО UnbilledARОстатки.SalesOrder = SalesOrdersCommentsСрезПервых.SalesOrder
