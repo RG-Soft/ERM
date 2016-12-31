@@ -516,7 +516,15 @@
 		|		ИНАЧЕ ЗНАЧЕНИЕ(Перечисление.CreditRating.ПустаяСсылка)
 		|	КОНЕЦ КАК NewCreditRating,
 		|	Контрагенты.CreditRating КАК OldCreditRating,
-		|	Контрагенты.Наименование КАК OldDescription
+		|	Контрагенты.Наименование КАК OldDescription,
+		|	CRMAccountsExtractSourceData.Country КАК NewCountry,
+		|	CRMAccountsExtractSourceData.City КАК NewCity,
+		|	CRMAccountsExtractSourceData.StreetAddress КАК NewStreetAddress,
+		|	Контрагенты.crmCountry КАК OldCountry,
+		|	Контрагенты.crmCity КАК OldCity,
+		|	Контрагенты.crmStreetAddress КАК OldStreetAddress,
+		|	CRMAccountsExtractSourceData.PostalCode КАК NewPostalCode,
+		|	Контрагенты.crmPostalCode КАК OldPostalCode
 		|ИЗ
 		|	РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.Контрагенты КАК Контрагенты
@@ -536,7 +544,11 @@
 		|				КОГДА CRMAccountsExtractSourceData.CreditRating = ""Unlimited""
 		|					ТОГДА ЗНАЧЕНИЕ(Перечисление.CreditRating.Unlimited)
 		|				ИНАЧЕ ЗНАЧЕНИЕ(Перечисление.CreditRating.ПустаяСсылка)
-		|			КОНЕЦ <> Контрагенты.CreditRating)";
+		|			КОНЕЦ <> Контрагенты.CreditRating
+		|			ИЛИ CRMAccountsExtractSourceData.Country <> Контрагенты.crmCountry
+		|			ИЛИ CRMAccountsExtractSourceData.City <> Контрагенты.crmCity
+		|			ИЛИ Контрагенты.crmStreetAddress <> CRMAccountsExtractSourceData.StreetAddress
+		|			ИЛИ CRMAccountsExtractSourceData.PostalCode <> Контрагенты.crmPostalCode)";
 
 	
 	Запрос.УстановитьПараметр("Ссылка", Ссылка);

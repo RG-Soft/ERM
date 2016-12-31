@@ -558,7 +558,10 @@
 		|            <xsl:apply-templates select=""/"" mode=""domestic"" />
 		|          </xsl:when>
 		|          <xsl:otherwise>
-		|            <xsl:apply-templates select=""/"" mode=""foreign"" />
+		// { RGS AGorlenko 31.12.2016 18:52:24 - 
+		//|            <xsl:apply-templates select=""/"" mode=""foreign"" />
+		|            <xsl:apply-templates select=""/"" mode=""domestic"" />
+		// } RGS AGorlenko 31.12.2016 18:52:25 - 
 		|          </xsl:otherwise> 
 		|        </xsl:choose>
 		|
