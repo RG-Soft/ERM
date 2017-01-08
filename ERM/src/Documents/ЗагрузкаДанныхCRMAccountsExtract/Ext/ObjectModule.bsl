@@ -645,14 +645,14 @@
 			Продолжить;
 		КонецЕсли;
 		
-		Если ТекСтрокаТЧ.NewParentClient.Пустая() Тогда
+		Если ТекСтрокаТЧ.NewParentClient.Пустая() И НЕ ПустаяСтрока(ТекСтрокаТЧ.NewParentClientDescription) Тогда
 			// попытаемся найти по идентификатору
 			NewParentClient = ГоловныеКонтрагенты[ТекСтрокаТЧ.NewParentClientDescription];
 		Иначе
 			NewParentClient = ТекСтрокаТЧ.NewParentClient;
 		КонецЕсли;
 		
-		Если Не ЗначениеЗаполнено(NewParentClient) Тогда
+		Если Не ЗначениеЗаполнено(NewParentClient) И НЕ ПустаяСтрока(ТекСтрокаТЧ.NewParentClientDescription) Тогда
 			ОбщегоНазначенияКлиентСервер.СообщитьПользователю("Failed to find new parent client for '" + ТекСтрокаТЧ.Client + "'",,,, Отказ);
 		КонецЕсли;
 		
