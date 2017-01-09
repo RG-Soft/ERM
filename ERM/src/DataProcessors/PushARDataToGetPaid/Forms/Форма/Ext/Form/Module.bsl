@@ -814,7 +814,8 @@
 	|	BilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель.GetPaidCode КАК DIVCODE,
 	|	BilledARОстатки.Location.MgmtCountryCode КАК SALESAREA,
 	|	NULL КАК JobEndDate,
-	|	BilledARОстатки.Location.БазовыйЭлемент.Код КАК FLEXFIELD8
+	|	BilledARОстатки.Location.БазовыйЭлемент.Код КАК FLEXFIELD8,
+	|	BilledARОстатки.Invoice.Responsible КАК FLEXFIELD6
 	|ПОМЕСТИТЬ ВТ_Остатки
 	|ИЗ
 	|	РегистрНакопления.BilledAR.Остатки(
@@ -852,7 +853,8 @@
 	|	UnallocatedCashОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель.GetPaidCode,
 	|	UnallocatedCashОстатки.Location.MgmtCountryCode,
 	|	NULL,
-	|	UnallocatedCashОстатки.Location.БазовыйЭлемент.Код
+	|	UnallocatedCashОстатки.Location.БазовыйЭлемент.Код,
+	|	UnallocatedCashОстатки.CashBatch.Responsible
 	|ИЗ
 	|	РегистрНакопления.UnallocatedCash.Остатки(
 	|			,
@@ -889,7 +891,8 @@
 	|	UnbilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель.GetPaidCode,
 	|	UnbilledARОстатки.Location.MgmtCountryCode,
 	|	UnbilledARОстатки.SalesOrder.JobEndDate,
-	|	UnbilledARОстатки.Location.БазовыйЭлемент.Код
+	|	UnbilledARОстатки.Location.БазовыйЭлемент.Код,
+	|	UnbilledARОстатки.SalesOrder.Responsible
 	|ИЗ
 	|	РегистрНакопления.UnbilledAR.Остатки(
 	|			,
@@ -1004,7 +1007,8 @@
 	|	КОНЕЦ КАК FLEXDATE1,
 	|	ЕСТЬNULL(ВТ_Остатки.Invoice.FiscalInvoiceNo, """") КАК FLEXFIELD7,
 	|	ВТ_Остатки.FLEXFIELD8 КАК FLEXFIELD8,
-	|	ВТ_Остатки.ClientID КАК FLEXFIELD14
+	|	ВТ_Остатки.ClientID КАК FLEXFIELD14,
+	|	ВТ_Остатки.FLEXFIELD6
 	|ИЗ
 	|	ВТ_Остатки КАК ВТ_Остатки
 	|		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ВнутренниеКурсыВалют КАК ВТ_ВнутренниеКурсыВалют
