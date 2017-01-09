@@ -1012,8 +1012,10 @@
 	
 	Если Результат Тогда
 		ТекстСообщения = НСтр("ru = 'Balances loaded'");
-	Иначе
+	ИначеЕсли ТаблицаКоллизий.Количество() <> 0 Тогда
 		ТекстСообщения = НСтр("ru = 'Balances are not loaded, add the missing data and download it again'");
+	Иначе
+		ТекстСообщения = НСтр("ru = 'Balances are not loaded, incorrect file format'");
 	КонецЕсли;
 	ПоказатьПредупреждение(, ТекстСообщения);
 	
