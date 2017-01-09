@@ -1089,6 +1089,7 @@
 	|	1 КАК OPERATION,
 	|	""C"" КАК TYPE_IND,
 	|	PaymentsОбороты.Company.Код КАК CompanyCode,
+	|	PaymentsОбороты.Location.БазовыйЭлемент.GeoMarket.Родитель.CountryCode КАК CountryCode,
 	|	PaymentsОбороты.Source,
 	|	""I"" КАК ARSTAT
 	|ИЗ
@@ -1127,6 +1128,7 @@
 	КонецЦикла;
 	
 	ТаблицаДанных.Колонки.Удалить("CompanyCode");
+	ТаблицаДанных.Колонки.Удалить("CountryCode");
 	ТаблицаДанных.Колонки.Удалить("Source");
 	ТаблицаДанных.Колонки.Удалить("ARSTAT");
 	
