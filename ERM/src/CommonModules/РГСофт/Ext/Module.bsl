@@ -557,14 +557,14 @@
 		
 		СтруктураОтбора.Получатель = Получатель;
 		СуммаUSD = 0;
-		Тема = "TEST Unbilled SO notification";
-		ТекДата = Формат(ТекущаяДата(),"ДЛФ=DD");
+		Тема = "List of unbilled invoices";
+		//ТекДата = Формат(ТекущаяДата(),"ДЛФ=DD");
 		ТелоHTML = "<HTML><HEAD>
 		|<META content=""text/html; charset=utf-8"" http-equiv=Content-Type><LINK rel=stylesheet type=text/css href=""v8help://service_book/service_style""><BASE href=""v8config://d349bc7e-06e3-4fc1-b24f-9709087cc83c/mdobject/id44c3769f-050d-4f0a-ae52-7c2a9e753714/038b5c85-fb1c-4082-9c4c-e69f8928bf3a"">
 		|<META name=GENERATOR content=""MSHTML 11.00.9600.18525""></HEAD>
 		|<BODY>
-		|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Date: " + ТекДата +"</P>
-		|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Subject:  List of unbilled invoices.</P>
+		//|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Date: " + ТекДата +"</P>
+		//|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Subject:  List of unbilled invoices.</P>
 		|<br>
 		|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Please be kindly informed that there are some unbilled items that have been assigned to you for resolution.</P>
 		|<BR>
@@ -597,8 +597,8 @@
 			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.CustumerId), СтрокаДанных.CustumerId, " ") + "</TD>
 			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Client), СтрокаДанных.Client, " ") + "</TD>
 			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.InvoiceNumber), СтрокаДанных.InvoiceNumber, " ") + "</TD>
-			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.JobEndDate), СтрокаДанных.JobEndDate, " ") + "</TD>
-			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.InvoiceDate), СтрокаДанных.InvoiceDate, " ") + "</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.JobEndDate), Формат(СтрокаДанных.JobEndDate, "ДФ=MM/dd/yyyy"), " ") + "</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.InvoiceDate), Формат(СтрокаДанных.InvoiceDate, "ДФ=MM/dd/yyyy"), " ") + "</TD>
 			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Currency), СтрокаДанных.Currency, " ") + "</TD>
 			|<TD style=""padding: 5px; border: 2px solid #000;"">" + СтрокаДанных.SalesOrderAmount + "</TD>
 			|<TD style=""padding: 5px; border: 2px solid #000;"">" "</TD>
@@ -868,14 +868,14 @@
 	                |
 	                |////////////////////////////////////////////////////////////////////////////////
 	                |ВЫБРАТЬ
-	                |	UnbilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
-	                |	UnbilledARОстатки.Location.БазовыйЭлемент.GeoMarket КАК SubGeoMarket,
-	                |	UnbilledARОстатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель КАК Segment,
-	                |	UnbilledARОстатки.Client КАК Client,
-	                |	UnbilledARОстатки.Currency КАК Currency,
-	                |	UnbilledARОстатки.AmountОстаток КАК Amount,
-	                |	ВЫРАЗИТЬ(ЕСТЬNULL(UnbilledARОстатки.AmountОстаток, 0) / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2)) КАК AmountUSD,
-	                |	UnbilledARОстатки.Client.CRMID КАК CustumerId,
+	                |	ВТ.SalesOrder.Location.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
+	                |	ВТ.SalesOrder.Location.БазовыйЭлемент.GeoMarket КАК SubGeoMarket,
+	                |	ВТ.SalesOrder.SubSubSegment.БазовыйЭлемент.Родитель.Родитель КАК Segment,
+	                |	ВТ.SalesOrder.Client КАК Client,
+	                |	ВТ.SalesOrder.Currency КАК Currency,
+	                |	ВТ.SalesOrder.Amount КАК Amount,
+	                |	ВЫРАЗИТЬ(ВТ.SalesOrder.Amount / ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 1) * ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Кратность, 1) КАК ЧИСЛО(15, 2)) КАК AmountUSD,
+	                |	ВТ.SalesOrder.Client.CRMID КАК CustumerId,
 	                |	ВТ.Получатель.Mail КАК Получатель,
 	                |	ВТ.SalesOrder.Номер КАК InvoiceNumber,
 	                |	ВТ.SalesOrder.Дата КАК InvoiceDate,
@@ -894,16 +894,8 @@
 	                |	ВТ.SalesOrder.Amount
 	                |ИЗ
 	                |	ВТ КАК ВТ
-	                |		ЛЕВОЕ СОЕДИНЕНИЕ РегистрНакопления.UnbilledAR.Остатки(
-	                |				&ДатаУведомления,
-	                |				SalesOrder В
-	                |					(ВЫБРАТЬ
-	                |						ВТ.SalesOrder
-	                |					ИЗ
-	                |						ВТ_SO КАК ВТ)) КАК UnbilledARОстатки
-	                |			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних(&ДатаУведомления, ) КАК ВнутренниеКурсыВалютСрезПоследних
-	                |			ПО UnbilledARОстатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
-	                |		ПО ВТ.SalesOrder = UnbilledARОстатки.SalesOrder";
+	                |		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних(&ДатаУведомления, ) КАК ВнутренниеКурсыВалютСрезПоследних
+	                |		ПО ВТ.SalesOrder.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта";
 	
 	Запрос.УстановитьПараметр("ДатаУведомления", Период);
 	Результат = Запрос.Выполнить().Выгрузить();
