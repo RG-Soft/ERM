@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5">
-	<AutoCommandBar name="ФормаКоманднаяПанель" id="-1"/>
+	<AutoCommandBar name="ФормаКоманднаяПанель" id="-1">
+		<Autofill>false</Autofill>
+	</AutoCommandBar>
 	<Events>
 		<Event name="OnCreateAtServer">ПриСозданииНаСервере</Event>
 	</Events>
@@ -104,11 +106,22 @@
 				</InputField>
 				<CheckBoxField name="Comment" id="87">
 					<DataPath>NoComments</DataPath>
+					<TitleLocation>Top</TitleLocation>
 					<CheckBoxType>Auto</CheckBoxType>
 					<ContextMenu name="CommentКонтекстноеМеню" id="88"/>
 					<ExtendedTooltip name="CommentРасширеннаяПодсказка" id="89"/>
 					<Events>
 						<Event name="OnChange">CommentПриИзменении</Event>
+					</Events>
+				</CheckBoxField>
+				<CheckBoxField name="OnlyMyItems" id="257">
+					<DataPath>OnlyMyItems</DataPath>
+					<TitleLocation>Top</TitleLocation>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="OnlyMyItemsКонтекстноеМеню" id="258"/>
+					<ExtendedTooltip name="OnlyMyItemsРасширеннаяПодсказка" id="259"/>
+					<Events>
+						<Event name="OnChange">OnlyMyItemsПриИзменении</Event>
 					</Events>
 				</CheckBoxField>
 			</ChildItems>
@@ -153,7 +166,12 @@
 					</Button>
 					<Button name="SalesOrdersAddStatus" id="149">
 						<Type>CommandBarButton</Type>
+						<Representation>PictureAndText</Representation>
 						<CommandName>Form.Command.AddStatus</CommandName>
+						<Picture>
+							<xr:Ref>CommonPicture.ПриложитьФайл</xr:Ref>
+							<xr:LoadTransparent>true</xr:LoadTransparent>
+						</Picture>
 						<ExtendedTooltip name="SalesOrdersAddStatusРасширеннаяПодсказка" id="150"/>
 					</Button>
 				</ChildItems>
@@ -487,10 +505,13 @@
 		ПО UnbilledARОстатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПервых КАК SalesOrdersCommentsСрезПервых
 		ПО UnbilledARОстатки.SalesOrder = SalesOrdersCommentsСрезПервых.SalesOrder
+		{ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrderResponsibles КАК SalesOrderResponsibles
+		ПО UnbilledARОстатки.SalesOrder = SalesOrderResponsibles.SalesOrder}
 {ГДЕ
 	UnbilledARОстатки.Source.*,
 	UnbilledARОстатки.Company.*,
-	UnbilledARОстатки.Client.*}</QueryText>
+	UnbilledARОстатки.Client.*,
+	SalesOrderResponsibles.ResponsibleAR.*}</QueryText>
 				<ListSettings>
 					<dcsset:filter>
 						<dcsset:viewMode>Normal</dcsset:viewMode>
@@ -647,6 +668,28 @@
 			</Title>
 			<Type>
 				<v8:Type>cfg:CatalogRef.HFM_Geomarkets</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="OnlyMyItems" id="15">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Only my items</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="CurrentLDAPUser" id="16">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Current LDAPUser</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:CatalogRef.LDAPUsers</v8:Type>
 			</Type>
 		</Attribute>
 	</Attributes>
