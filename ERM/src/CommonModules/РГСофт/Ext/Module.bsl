@@ -558,13 +558,16 @@
 		СтруктураОтбора.Получатель = Получатель;
 		СуммаUSD = 0;
 		Тема = "TEST Unbilled SO notification";
-		
+		ТекДата = Формат(ТекущаяДата(),"ДЛФ=DD");
 		ТелоHTML = "<HTML><HEAD>
 		|<META content=""text/html; charset=utf-8"" http-equiv=Content-Type><LINK rel=stylesheet type=text/css href=""v8help://service_book/service_style""><BASE href=""v8config://d349bc7e-06e3-4fc1-b24f-9709087cc83c/mdobject/id44c3769f-050d-4f0a-ae52-7c2a9e753714/038b5c85-fb1c-4082-9c4c-e69f8928bf3a"">
 		|<META name=GENERATOR content=""MSHTML 11.00.9600.18525""></HEAD>
 		|<BODY>
-		|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Please be kindly informed that there are some unbilled invoices which have job end but not yet billed.</P>
-		|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Your immediate actions are required in order to billed this invoices as soon as possible because you are involved in problem decision.</P>
+		|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Date: " + ТекДата +"</P>
+		|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Subject:  List of unbilled invoices.</P>
+		|<br>
+		|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Please be kindly informed that there are some unbilled items that have been assigned to you for resolution.</P>
+		|<BR>
 		|<TABLE style=""border-collapse: collapse;width:84.2%;border:solid black 1.5pt"">
 		|<TBODY>
 		|<TR align=""center"" style=""width:6.38%;background:#000099;padding:1.5pt 1.5pt 1.5pt 1.5pt;font-size:10pt;font-family:Tahoma,sans-serif;color:white;"">
@@ -619,8 +622,16 @@
 		//|</BODY></HTML>";
 		
 		ТелоHTML = ТелоHTML + "</TABLE>
-		|</TBODY>
-		|</BODY></HTML>";
+		|<BR>
+		|<P FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: WORD-SPACING: TEXT-TRANSFORM: none; FONT-WEIGHT: COLOR: rgb(0,0,0); FONT-STYLE: ORPHANS: WIDOWS: 2; LETTER-SPACING: BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: font-variant-caps: normal; -webkit-text-stroke-width: 0px??>Please review and respond within the next days. If after 10 business days the issue remains unresolved, it will be escalated to GM Controller.</P>
+		|<BR>
+		|<P FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: WORD-SPACING: TEXT-TRANSFORM: none; FONT-WEIGHT: COLOR: rgb(0,0,0); FONT-STYLE: ORPHANS: WIDOWS: 2; LETTER-SPACING: BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: font-variant-caps: normal; -webkit-text-stroke-width: 0px??><STRONG>Thank you for your assistance for resolving this issue in a timely manner.</STRONG></P>
+		|<P FONT-SIZE: FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: WORD-SPACING: TEXT-TRANSFORM: none; FONT-WEIGHT: COLOR: rgb(0,0,0); FONT-STYLE: ORPHANS: WIDOWS: 2; LETTER-SPACING: BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: font-variant-caps: normal; -webkit-text-stroke-width: 0px?? 17px;><FONT size=4>ERM Team</FONT></P>
+		|<BR>
+		|<P FONT-SIZE: FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: WORD-SPACING: TEXT-TRANSFORM: none; FONT-WEIGHT: COLOR: rgb(0,0,0); FONT-STYLE: ORPHANS: WIDOWS: 2; LETTER-SPACING: BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: font-variant-caps: normal; -webkit-text-stroke-width: 0px?? 25px;><FONT size=4,5><STRONG>Do not reply to this email address</STRONG></FONT></P>
+		|<P FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: WORD-SPACING: TEXT-TRANSFORM: none; FONT-WEIGHT: COLOR: rgb(0,0,0); FONT-STYLE: ORPHANS: WIDOWS: 2; LETTER-SPACING: BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: font-variant-caps: normal; -webkit-text-stroke-width: 0px??>Please contact your Area/GM/Country Accounts Receivable Lead if you encounter any issue.</P>
+		|</BODY>
+		|</HTML>";
 		ТелоHTML = СтрЗаменить(ТелоHTML, Символы.ПС, "");
 		Attach = ПолучитьAttachДляUnbilledNotification(ПолныеДанныеУведомления);
 		РГСофт.ЗарегистрироватьПочтовоеСообщение(Получатель, Тема, ТелоHTML, Attach, ТипТекстаПочтовогоСообщения.HTML);
