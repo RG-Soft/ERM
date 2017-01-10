@@ -566,7 +566,7 @@
 		//|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Date: " + ТекДата +"</P>
 		//|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Subject:  List of unbilled invoices.</P>
 		|<br>
-		|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Please be kindly informed that there are some unbilled items that have been assigned to you for resolution.</P>
+		|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Please be kindly informed that there are some unbilled items that have been assigned to you for resolution.</P>
 		|<BR>
 		|<TABLE style=""border-collapse: collapse;width:84.2%;border:solid black 1.5pt"">
 		|<TBODY>
@@ -594,13 +594,13 @@
 			СтрокаВТелоСообщения = "<TR>
 			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.GeoMarket), СтрокаДанных.GeoMarket, " ") + "</TD>
 			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Segment), СтрокаДанных.Segment, " ") + "</TD>
-			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.CustumerId), СтрокаДанных.CustumerId, " ") + "</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.CustumerId), СтрокаДанных.CustumerId, " ") + "</TD>
 			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Client), СтрокаДанных.Client, " ") + "</TD>
-			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.InvoiceNumber), СтрокаДанных.InvoiceNumber, " ") + "</TD>
-			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.JobEndDate), Формат(СтрокаДанных.JobEndDate, "ДФ=MM/dd/yyyy"), " ") + "</TD>
-			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.InvoiceDate), Формат(СтрокаДанных.InvoiceDate, "ДФ=MM/dd/yyyy"), " ") + "</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.InvoiceNumber), СтрокаДанных.InvoiceNumber, " ") + "</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.JobEndDate), Формат(СтрокаДанных.JobEndDate, "ДФ=MM/dd/yyyy"), " ") + "</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.InvoiceDate), Формат(СтрокаДанных.InvoiceDate, "ДФ=MM/dd/yyyy"), " ") + "</TD>
 			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Currency), СтрокаДанных.Currency, " ") + "</TD>
-			|<TD style=""padding: 5px; border: 2px solid #000;"">" + СтрокаДанных.SalesOrderAmount + "</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.SalesOrderAmount + "</TD>
 			|<TD style=""padding: 5px; border: 2px solid #000;"">" "</TD>
 			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Reason), СтрокаДанных.Reason, " ") + "</TD>
 			|</TR>";
@@ -623,13 +623,13 @@
 		
 		ТелоHTML = ТелоHTML + "</TABLE>
 		|<BR>
-		|<P FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: WORD-SPACING: TEXT-TRANSFORM: none; FONT-WEIGHT: COLOR: rgb(0,0,0); FONT-STYLE: ORPHANS: WIDOWS: 2; LETTER-SPACING: BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: font-variant-caps: normal; -webkit-text-stroke-width: 0px??>Please review and respond within the next days. If after 10 business days the issue remains unresolved, it will be escalated to GM Controller.</P>
+		|<P FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: WORD-SPACING: TEXT-TRANSFORM: none; FONT-WEIGHT: COLOR: rgb(0,0,0); FONT-STYLE: ORPHANS: WIDOWS: 2; TEXT-INDENT: 0px; font-variant-ligatures: font-variant-caps: normal; -webkit-text-stroke-width: 0px??>Please review and respond within the next days. If after 10 business days the issue remains unresolved, it will be escalated to GM Controller.</P>
 		|<BR>
-		|<P FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: WORD-SPACING: TEXT-TRANSFORM: none; FONT-WEIGHT: COLOR: rgb(0,0,0); FONT-STYLE: ORPHANS: WIDOWS: 2; LETTER-SPACING: BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: font-variant-caps: normal; -webkit-text-stroke-width: 0px??><STRONG>Thank you for your assistance for resolving this issue in a timely manner.</STRONG></P>
-		|<P FONT-SIZE: FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: WORD-SPACING: TEXT-TRANSFORM: none; FONT-WEIGHT: COLOR: rgb(0,0,0); FONT-STYLE: ORPHANS: WIDOWS: 2; LETTER-SPACING: BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: font-variant-caps: normal; -webkit-text-stroke-width: 0px?? 17px;><FONT size=4>ERM Team</FONT></P>
+		|<P FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: WORD-SPACING: TEXT-TRANSFORM: none; FONT-WEIGHT: COLOR: rgb(0,0,0); FONT-STYLE: ORPHANS: WIDOWS: 2; TEXT-INDENT: 0px; font-variant-ligatures: font-variant-caps: normal; -webkit-text-stroke-width: 0px??><STRONG>Thank you for your assistance for resolving this issue in a timely manner.</STRONG></P>
+		|<P FONT-SIZE: FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: WORD-SPACING: TEXT-TRANSFORM: none; FONT-WEIGHT: COLOR: rgb(0,0,0); FONT-STYLE: ORPHANS: WIDOWS: 2; TEXT-INDENT: 0px; font-variant-ligatures: font-variant-caps: normal; -webkit-text-stroke-width: 0px?? 17px;><FONT size=4>ERM Team</FONT></P>
 		|<BR>
-		|<P FONT-SIZE: FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: WORD-SPACING: TEXT-TRANSFORM: none; FONT-WEIGHT: COLOR: rgb(0,0,0); FONT-STYLE: ORPHANS: WIDOWS: 2; LETTER-SPACING: BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: font-variant-caps: normal; -webkit-text-stroke-width: 0px?? 25px;><FONT size=4,5><STRONG>Do not reply to this email address</STRONG></FONT></P>
-		|<P FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: WORD-SPACING: TEXT-TRANSFORM: none; FONT-WEIGHT: COLOR: rgb(0,0,0); FONT-STYLE: ORPHANS: WIDOWS: 2; LETTER-SPACING: BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: font-variant-caps: normal; -webkit-text-stroke-width: 0px??>Please contact your Area/GM/Country Accounts Receivable Lead if you encounter any issue.</P>
+		|<P FONT-SIZE: FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: WORD-SPACING: TEXT-TRANSFORM: none; FONT-WEIGHT: COLOR: rgb(0,0,0); FONT-STYLE: ORPHANS: WIDOWS: 2; TEXT-INDENT: 0px; font-variant-ligatures: font-variant-caps: normal; -webkit-text-stroke-width: 0px?? 25px;><FONT size=4,5><STRONG>Do not reply to this email address</STRONG></FONT></P>
+		|<P FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: WORD-SPACING: TEXT-TRANSFORM: none; FONT-WEIGHT: COLOR: rgb(0,0,0); FONT-STYLE: ORPHANS: WIDOWS: 2; TEXT-INDENT: 0px; font-variant-ligatures: font-variant-caps: normal; -webkit-text-stroke-width: 0px??>Please contact your Area/GM/Country Accounts Receivable Lead if you encounter any issue.</P>
 		|</BODY>
 		|</HTML>";
 		ТелоHTML = СтрЗаменить(ТелоHTML, Символы.ПС, "");
