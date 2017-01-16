@@ -239,7 +239,7 @@
 					<ExtendedTooltip name="SalesOrdersSegmentРасширеннаяПодсказка" id="213"/>
 				</LabelField>
 				<LabelField name="SalesOrdersCompany" id="254">
-					<DataPath>SalesOrders.Company</DataPath>
+					<DataPath>SalesOrders.Company.Code</DataPath>
 					<ContextMenu name="SalesOrdersCompanyКонтекстноеМеню" id="255"/>
 					<ExtendedTooltip name="SalesOrdersCompanyРасширеннаяПодсказка" id="256"/>
 				</LabelField>
@@ -474,7 +474,18 @@
 	UnbilledARОстатки.SalesOrder.Invoice.Номер КАК InvoiceНомер,
 	UnbilledARОстатки.SalesOrder.Invoice.Currency КАК InvoiceCurrency,
 	UnbilledARОстатки.SalesOrder.Invoice.Amount КАК InvoiceAmount,
-	UnbilledARОстатки.SalesOrder.AmountUSD КАК AgedDeferral,
+	ВЫБОР
+		КОГДА UnbilledARОстатки.SalesOrder.JobEndDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1, 0, 0, 0)
+				И РАЗНОСТЬДАТ(UnbilledARОстатки.SalesOrder.JobEndDate, &amp;ДатаДляСравнения, ДЕНЬ) &gt;= 120
+			ТОГДА ВЫБОР
+					КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
+							ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+						ТОГДА 0
+					КОГДА UnbilledARОстатки.Currency.Код = "USD"
+						ТОГДА UnbilledARОстатки.AmountОстаток
+					ИНАЧЕ ВЫРАЗИТЬ(UnbilledARОстатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2))
+				КОНЕЦ
+	КОНЕЦ КАК AgedDeferral,
 	SalesOrdersCommentsСрезПервых.Problem.User КАК ResponsibleAR,
 	UnbilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
 	UnbilledARОстатки.Location.БазовыйЭлемент.GeoMarket КАК SubGeoMarket,
@@ -498,10 +509,13 @@
 		ИНАЧЕ ВЫРАЗИТЬ(UnbilledARОстатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2))
 	КОНЕЦ КАК RemainingAmountUSD
 ИЗ
-	РегистрНакопления.UnbilledAR.Остатки({(&amp;ПериодОстатков)}, SalesOrder ССЫЛКА Документ.SalesOrder {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК UnbilledARОстатки
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних(, ) КАК SalesOrdersCommentsСрезПоследних
+	РегистрНакопления.UnbilledAR.Остатки(
+			{(&amp;ПериодОстатков)},
+			SalesOrder ССЫЛКА Документ.SalesOrder
+				И ПОДСТРОКА(Account.Код, 1, 6) &lt;&gt; "209000" {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК UnbilledARОстатки
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних({(&amp;ДатаКомментария)}, ) КАК SalesOrdersCommentsСрезПоследних
 		ПО UnbilledARОстатки.SalesOrder = SalesOrdersCommentsСрезПоследних.SalesOrder
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаДляСравнения)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
 		ПО UnbilledARОстатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПервых КАК SalesOrdersCommentsСрезПервых
 		ПО UnbilledARОстатки.SalesOrder = SalesOrdersCommentsСрезПервых.SalesOrder
@@ -526,6 +540,47 @@
 						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
 					</dcsset:order>
 					<dcsset:conditionalAppearance>
+						<dcsset:item>
+							<dcsset:selection>
+								<dcsset:item>
+									<dcsset:field>Company.Код</dcsset:field>
+								</dcsset:item>
+							</dcsset:selection>
+							<dcsset:filter/>
+							<dcsset:appearance>
+								<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+									<dcscor:parameter>Формат</dcscor:parameter>
+									<dcscor:value xsi:type="v8:LocalStringType">
+										<v8:item>
+											<v8:lang>ru</v8:lang>
+											<v8:content>ЧРГ=; ЧГ=</v8:content>
+										</v8:item>
+									</dcscor:value>
+								</dcscor:item>
+							</dcsset:appearance>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:selection>
+								<dcsset:item>
+									<dcsset:field>JobEndDate</dcsset:field>
+								</dcsset:item>
+								<dcsset:item>
+									<dcsset:field>SalesDate</dcsset:field>
+								</dcsset:item>
+							</dcsset:selection>
+							<dcsset:filter/>
+							<dcsset:appearance>
+								<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+									<dcscor:parameter>Формат</dcscor:parameter>
+									<dcscor:value xsi:type="v8:LocalStringType">
+										<v8:item>
+											<v8:lang>ru</v8:lang>
+											<v8:content>ДФ=MM/dd/yyyy</v8:content>
+										</v8:item>
+									</dcscor:value>
+								</dcscor:item>
+							</dcsset:appearance>
+						</dcsset:item>
 						<dcsset:viewMode>Normal</dcsset:viewMode>
 						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
 					</dcsset:conditionalAppearance>
