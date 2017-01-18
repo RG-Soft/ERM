@@ -600,8 +600,7 @@
 		               |	SalesOrdersCommentsСрезПоследних.Problem.Reason КАК Reason,
 		               |	SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice КАК ExpectedDateForInvoice,
 		               |	SalesOrdersCommentsСрезПоследних.Problem.EscalateTo КАК EscalateTo,
-		               |	SalesOrdersCommentsСрезПоследних.Problem.Details КАК Details,
-		               |	SalesOrdersCommentsСрезПоследних.Problem.ResponsiblesList КАК ResponsiblesList
+		               |	SalesOrdersCommentsСрезПоследних.Problem.Details КАК Details
 		               |ИЗ
 		               |	РегистрСведений.SalesOrdersComments.СрезПоследних(, SalesOrder = &SalesOrder) КАК SalesOrdersCommentsСрезПоследних";
 		Запрос.УстановитьПараметр("SalesOrder", СсылкаНаSalesOrder);
@@ -617,7 +616,6 @@
 				ТекExpectedDateForInvoice = Выборка.ExpectedDateForInvoice;
 				ТекEscalateTo = Выборка.EscalateTo;
 				ТекDetails = Выборка.Details;
-				ТекResponsiblesList = Выборка.ResponsiblesList;
 			КонецЕсли;
 		КонецЕсли;
 		
@@ -643,13 +641,15 @@
 			СтруктураРеквизитовПроблемы.ExpectedDateForInvoice = ТекExpectedDateForInvoice;
 			СтруктураРеквизитовПроблемы.EscalateTo = ТекEscalateTo;
 			СтруктураРеквизитовПроблемы.Details = ТекDetails;
-			СтруктураРеквизитовПроблемы.Responsibles.Очистить();
-			МассивОтветственных = Документы.SalesOrder.ПолучитьОтветственныхПоSO(СсылкаНаSalesOrder, ТекEscalateTo);
-			СтруктураРеквизитовПроблемы.Responsibles.Колонки.Добавить("Responsible", Новый ОписаниеТипов("СправочникСсылка.LDAPUsers"));
-			Для каждого ТекОтветственный Из МассивОтветственных Цикл
-				НоваяСтрока = СтруктураРеквизитовПроблемы.Responsibles.Добавить();
-				НоваяСтрока.Responsible = ТекОтветственный;
-			КонецЦикла;
+			Если ЗначениеЗаполнено(ТекEscalateTo) Тогда
+				СтруктураРеквизитовПроблемы.Responsibles.Очистить();
+				МассивОтветственных = Документы.SalesOrder.ПолучитьОтветственныхПоSO(СсылкаНаSalesOrder, ТекEscalateTo);
+				СтруктураРеквизитовПроблемы.Responsibles.Колонки.Добавить("Responsible", Новый ОписаниеТипов("СправочникСсылка.LDAPUsers"));
+				Для каждого ТекОтветственный Из МассивОтветственных Цикл
+					НоваяСтрока = СтруктураРеквизитовПроблемы.Responsibles.Добавить();
+					НоваяСтрока.Responsible = ТекОтветственный;
+				КонецЦикла;
+			КонецЕсли;
 		КонецЕсли;
 		
 		Problem = РегистрыСведений.SalesOrdersComments.СоздатьSalesOrderProblem(СтруктураРеквизитовПроблемы);
