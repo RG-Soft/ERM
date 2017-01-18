@@ -240,6 +240,12 @@
 				</LabelField>
 				<LabelField name="SalesOrdersCompany" id="254">
 					<DataPath>SalesOrders.Company.Code</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Company</v8:content>
+						</v8:item>
+					</Title>
 					<ContextMenu name="SalesOrdersCompanyКонтекстноеМеню" id="255"/>
 					<ExtendedTooltip name="SalesOrdersCompanyРасширеннаяПодсказка" id="256"/>
 				</LabelField>
@@ -269,7 +275,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
-							<v8:content>SO No.</v8:content>
+							<v8:content>Transaction Number</v8:content>
 						</v8:item>
 					</Title>
 					<ContextMenu name="SalesOrdersSalesNoКонтекстноеМеню" id="134"/>
@@ -280,7 +286,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
-							<v8:content>SO Date</v8:content>
+							<v8:content>Transaction Date</v8:content>
 						</v8:item>
 					</Title>
 					<ContextMenu name="SalesOrdersSalesDateКонтекстноеМеню" id="131"/>
@@ -454,7 +460,11 @@
 	UnbilledARОстатки.SalesOrder.Amount КАК SalesAmount,
 	UnbilledARОстатки.SalesOrder КАК SalesOrder,
 	UnbilledARОстатки.SalesOrder.Дата КАК SalesDate,
-	UnbilledARОстатки.SalesOrder.Номер КАК SalesNo,
+	ВЫБОР
+		КОГДА UnbilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
+			ТОГДА UnbilledARОстатки.SalesOrder.ArInvoice
+		ИНАЧЕ UnbilledARОстатки.SalesOrder.Номер
+	КОНЕЦ КАК SalesNo,
 	SalesOrdersCommentsСрезПоследних.Problem.Reason КАК Reason,
 	ВЫБОР
 		КОГДА SalesOrdersCommentsСрезПоследних.Problem.Billed ЕСТЬ NULL 
@@ -550,12 +560,7 @@
 							<dcsset:appearance>
 								<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 									<dcscor:parameter>Формат</dcscor:parameter>
-									<dcscor:value xsi:type="v8:LocalStringType">
-										<v8:item>
-											<v8:lang>ru</v8:lang>
-											<v8:content>ЧРГ=; ЧГ=</v8:content>
-										</v8:item>
-									</dcscor:value>
+									<dcscor:value xsi:type="xs:string">ЧРГ=; ЧГ=</dcscor:value>
 								</dcscor:item>
 							</dcsset:appearance>
 						</dcsset:item>
@@ -572,12 +577,7 @@
 							<dcsset:appearance>
 								<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 									<dcscor:parameter>Формат</dcscor:parameter>
-									<dcscor:value xsi:type="v8:LocalStringType">
-										<v8:item>
-											<v8:lang>ru</v8:lang>
-											<v8:content>ДФ=MM/dd/yyyy</v8:content>
-										</v8:item>
-									</dcscor:value>
+									<dcscor:value xsi:type="xs:string">ДФ=MM/dd/yyyy</dcscor:value>
 								</dcscor:item>
 							</dcsset:appearance>
 						</dcsset:item>
