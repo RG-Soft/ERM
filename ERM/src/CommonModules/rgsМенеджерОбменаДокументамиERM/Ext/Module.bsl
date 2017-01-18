@@ -591,19 +591,33 @@
 			СтатусSalesOrder = Перечисления.SalesOrderBilledStatus.Canceled	
 		КонецЕсли;
 		
+		НаличиеКомментария = Ложь;
+		
 		Запрос = Новый Запрос;
 		Запрос.Текст = "ВЫБРАТЬ
-		|	SalesOrdersCommentsСрезПоследних.SalesOrder,
-		|	SalesOrdersCommentsСрезПоследних.Problem.Billed КАК Billed
-		|ИЗ
-		|	РегистрСведений.SalesOrdersComments.СрезПоследних(, SalesOrder = &SalesOrder) КАК SalesOrdersCommentsСрезПоследних";
+		               |	SalesOrdersCommentsСрезПоследних.SalesOrder,
+		               |	SalesOrdersCommentsСрезПоследних.Problem.Billed КАК Billed,
+		               |	SalesOrdersCommentsСрезПоследних.Problem.Reason КАК Reason,
+		               |	SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice КАК ExpectedDateForInvoice,
+		               |	SalesOrdersCommentsСрезПоследних.Problem.EscalateTo КАК EscalateTo,
+		               |	SalesOrdersCommentsСрезПоследних.Problem.Details КАК Details,
+		               |	SalesOrdersCommentsСрезПоследних.Problem.ResponsiblesList КАК ResponsiblesList
+		               |ИЗ
+		               |	РегистрСведений.SalesOrdersComments.СрезПоследних(, SalesOrder = &SalesOrder) КАК SalesOrdersCommentsСрезПоследних";
 		Запрос.УстановитьПараметр("SalesOrder", СсылкаНаSalesOrder);
 		Результат = Запрос.Выполнить();
 		Выборка = Результат.Выбрать();
 		Если Выборка.Количество() > 0 Тогда
 			Выборка.Следующий();
+			НаличиеКомментария = Истина;
 			Если Выборка.Billed = СтатусSalesOrder Тогда
 				Возврат;
+			Иначе
+				ТекReason = Выборка.Reason;
+				ТекExpectedDateForInvoice = Выборка.ExpectedDateForInvoice;
+				ТекEscalateTo = Выборка.EscalateTo;
+				ТекDetails = Выборка.Details;
+				ТекResponsiblesList = Выборка.ResponsiblesList;
 			КонецЕсли;
 		КонецЕсли;
 		
@@ -622,8 +636,21 @@
 			СтруктураРеквизитовПроблемы.Вставить("User", AutoUser);	;
 		КонецЕсли;
 		
-		СтруктураРеквизитовПроблемы.Дата = Период;
-		СтруктураРеквизитовПроблемы.SalesOrder = СсылкаНаSalesOrder;
+		//СтруктураРеквизитовПроблемы.Дата = Период;
+		//СтруктураРеквизитовПроблемы.SalesOrder = СсылкаНаSalesOrder;
+		Если НаличиеКомментария Тогда
+			СтруктураРеквизитовПроблемы.Reason = ТекReason;
+			СтруктураРеквизитовПроблемы.ExpectedDateForInvoice = ТекExpectedDateForInvoice;
+			СтруктураРеквизитовПроблемы.EscalateTo = ТекEscalateTo;
+			СтруктураРеквизитовПроблемы.Details = ТекDetails;
+			СтруктураРеквизитовПроблемы.Responsibles.Очистить();
+			МассивОтветственных = Документы.SalesOrder.ПолучитьОтветственныхПоSO(СсылкаНаSalesOrder, ТекEscalateTo);
+			СтруктураРеквизитовПроблемы.Responsibles.Колонки.Добавить("Responsible", Новый ОписаниеТипов("СправочникСсылка.LDAPUsers"));
+			Для каждого ТекОтветственный Из МассивОтветственных Цикл
+				НоваяСтрока = СтруктураРеквизитовПроблемы.Responsibles.Добавить();
+				НоваяСтрока.Responsible = ТекОтветственный;
+			КонецЦикла;
+		КонецЕсли;
 		
 		Problem = РегистрыСведений.SalesOrdersComments.СоздатьSalesOrderProblem(СтруктураРеквизитовПроблемы);
 		
