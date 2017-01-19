@@ -74,7 +74,8 @@
 	|	ТранзакцияHOB.Reverse,
 	|	ТранзакцияHOB.AU,
 	|	ТранзакцияHOB.HOBDocumentType,
-	|	ТранзакцияHOB.HOBInvoiceType
+	|	ТранзакцияHOB.HOBInvoiceType,
+	|	ТранзакцияHOB.LegalEntity
 	|ИЗ
 	|	Документ.ТранзакцияHOB КАК ТранзакцияHOB
 	|ГДЕ
