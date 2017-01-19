@@ -257,6 +257,7 @@
 		|	HOBAccrualsSourceData.InvoiceAgreementCode,
 		|	HOBAccrualsSourceData.InvoiceAgreement,
 		|	HOBAccrualsSourceData.Reverse,
+		|	HOBAccrualsSourceData.LegalEntity,
 		|	HOBAccrualsSourceData.DocumentID,
 		|	HOBAccrualsSourceData.SalesOrderID,
 		|	HOBAccrualsSourceData.InvoiceID,
@@ -459,6 +460,21 @@
 		|ГДЕ
 		|	КостЦентры.Ссылка ЕСТЬ NULL 
 		|	И ВТ_HOBAccrualsSourceData.AUType = ""Lawson""
+		|
+		|ОБЪЕДИНИТЬ
+		|
+		|ВЫБРАТЬ
+		|	ЛОЖЬ,
+		|	""Failed to find Legal entity"",
+		|	&ТипВнешнейСистемы,
+		|	ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.LegalEntity),
+		|	ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка),
+		|	ВТ_HOBAccrualsSourceData.LegalEntity
+		|ИЗ
+		|	ВТ_HOBAccrualsSourceData КАК ВТ_HOBAccrualsSourceData
+		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.LegalEntiites КАК LegalEntiites
+		|		ПО ВТ_HOBAccrualsSourceData.LegalEntity = LegalEntiites.Код
+		|			И (НЕ LegalEntiites.ПометкаУдаления)
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
@@ -565,7 +581,18 @@
 		|			И (Организации.Source = &ТипВнешнейСистемы)
 		|			И ВТ_HOBAccrualsSourceData.CompanyCode = Организации.Код
 		|ГДЕ
-		|	Организации.БазовыйЭлемент = ЗНАЧЕНИЕ(Справочник.HFM_Companies.ПустаяСсылка)";
+		|	Организации.БазовыйЭлемент = ЗНАЧЕНИЕ(Справочник.HFM_Companies.ПустаяСсылка)
+		|;
+		|
+		|////////////////////////////////////////////////////////////////////////////////
+		|ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	LegalEntiites.Ссылка КАК Ссылка,
+		|	LegalEntiites.Код КАК Код
+		|ИЗ
+		|	ВТ_HOBAccrualsSourceData КАК ВТ_HOBAccrualsSourceData
+		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.LegalEntiites КАК LegalEntiites
+		|		ПО ВТ_HOBAccrualsSourceData.LegalEntity = LegalEntiites.Код
+		|			И (НЕ LegalEntiites.ПометкаУдаления)";
 	
 	Запрос.УстановитьПараметр("ДокументЗагрузки", СтруктураПараметров.Ссылка);
 	Запрос.УстановитьПараметр("Период", СтруктураПараметров.Дата);
@@ -653,6 +680,22 @@
 		
 	КонецЦикла;
 	
+	// LegalEntity
+	ВыборкаLegalEntity = МассивРезультатов[6].Выбрать();
+	
+	Пока ВыборкаLegalEntity.Следующий() Цикл
+		
+		СтрокаКоллизии = ТаблицаКоллизий.Добавить();
+		СтрокаКоллизии.КоллизияОтработана = Ложь;
+		СтрокаКоллизии.Описание = "Not specified base element";
+		СтрокаКоллизии.ТипСоответствия = Перечисления.ТипыСоответствий.HOBs;
+		СтрокаКоллизии.ТипОбъектаВнешнейСистемы = Перечисления.ТипыОбъектовВнешнихСистем.LegalEntity;
+		СтрокаКоллизии.ОбъектПриемника = ВыборкаКомпаний.Ссылка;
+		СтрокаКоллизии.Идентификатор = ВыборкаLegalEntity.Код;
+		
+	КонецЦикла;
+
+	
 	Если ТаблицаКоллизий.Количество() = 0 Тогда
 		ДокументЗагрузки = СтруктураПараметров.Ссылка.ПолучитьОбъект();
 		ДокументЗагрузки.СтатусЗагрузки = Перечисления.СтатусыЗагрузки.CheckedConflicts;
@@ -691,7 +734,8 @@
 		|	HOBJVSourceData.SubSubSegment,
 		|	HOBJVSourceData.Reverse,
 		|	HOBJVSourceData.DocumentID,
-		|	HOBJVSourceData.TrID
+		|	HOBJVSourceData.TrID,
+		|	HOBJVSourceData.LegalEntity
 		|ПОМЕСТИТЬ ВТ_HOBJVSourceData
 		|ИЗ
 		|	РегистрСведений.HOBJVSourceData КАК HOBJVSourceData
@@ -850,6 +894,23 @@
 		|ГДЕ
 		|	КостЦентры.Ссылка ЕСТЬ NULL 
 		|	И ВТ_HOBJVSourceData.AUType = ""Lawson""
+		|
+		|ОБЪЕДИНИТЬ ВСЕ
+		|
+		|ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	ЛОЖЬ,
+		|	""Failed to find Legal entity"",
+		|	&ТипВнешнейСистемы,
+		|	ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.LegalEntity),
+		|	ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка),
+		|	ВТ_HOBJVSourceData.LegalEntity
+		|ИЗ
+		|	ВТ_HOBJVSourceData КАК ВТ_HOBJVSourceData
+		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.LegalEntiites КАК LegalEntiites
+		|		ПО ВТ_HOBJVSourceData.LegalEntity = LegalEntiites.Код
+		|			И (НЕ LegalEntiites.ПометкаУдаления)
+		|ГДЕ
+		|	LegalEntiites.Ссылка ЕСТЬ NULL 
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
@@ -956,7 +1017,18 @@
 		|			И (Организации.Source = &ТипВнешнейСистемы)
 		|			И ВТ_HOBJVSourceData.CompanyCode = Организации.Код
 		|ГДЕ
-		|	Организации.БазовыйЭлемент = ЗНАЧЕНИЕ(Справочник.HFM_Companies.ПустаяСсылка)";
+		|	Организации.БазовыйЭлемент = ЗНАЧЕНИЕ(Справочник.HFM_Companies.ПустаяСсылка)
+		|;
+		|
+		|////////////////////////////////////////////////////////////////////////////////
+		|ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	LegalEntiites.Ссылка,
+		|	LegalEntiites.Код
+		|ИЗ
+		|	ВТ_HOBJVSourceData КАК ВТ_HOBJVSourceData
+		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.LegalEntiites КАК LegalEntiites
+		|		ПО ВТ_HOBJVSourceData.LegalEntity = LegalEntiites.Код
+		|			И (НЕ LegalEntiites.ПометкаУдаления)";
 	
 	Запрос.УстановитьПараметр("ДокументЗагрузки", СтруктураПараметров.Ссылка);
 	Запрос.УстановитьПараметр("Период", СтруктураПараметров.Дата);
@@ -1044,6 +1116,21 @@
 		
 	КонецЦикла;
 	
+	// Legal entity
+	ВыборкаLegalEntity = МассивРезультатов[6].Выбрать();
+	
+	Пока ВыборкаLegalEntity.Следующий() Цикл
+		
+		СтрокаКоллизии = ТаблицаКоллизий.Добавить();
+		СтрокаКоллизии.КоллизияОтработана = Ложь;
+		СтрокаКоллизии.Описание = "Not specified base element";
+		СтрокаКоллизии.ТипСоответствия = Перечисления.ТипыСоответствий.HOBs;
+		СтрокаКоллизии.ТипОбъектаВнешнейСистемы = Перечисления.ТипыОбъектовВнешнихСистем.LegalEntity;
+		СтрокаКоллизии.ОбъектПриемника = ВыборкаLegalEntity.Ссылка;
+		СтрокаКоллизии.Идентификатор = ВыборкаLegalEntity.Код;
+		
+	КонецЦикла;
+	
 	Если ТаблицаКоллизий.Количество() = 0 Тогда
 		ДокументЗагрузки = СтруктураПараметров.Ссылка.ПолучитьОбъект();
 		ДокументЗагрузки.СтатусЗагрузки = Перечисления.СтатусыЗагрузки.CheckedConflicts;
@@ -1096,7 +1183,8 @@
 		|	HOBReceivablesSourceData.Reverse,
 		|	HOBReceivablesSourceData.DocumentID,
 		|	HOBReceivablesSourceData.InvoiceID,
-		|	HOBReceivablesSourceData.TrID
+		|	HOBReceivablesSourceData.TrID,
+		|	HOBReceivablesSourceData.LegalEntity
 		|ПОМЕСТИТЬ ВТ_HOBReceivablesSourceData
 		|ИЗ
 		|	РегистрСведений.HOBReceivablesSourceData КАК HOBReceivablesSourceData
@@ -1276,6 +1364,23 @@
 		|ГДЕ
 		|	КостЦентры.Ссылка ЕСТЬ NULL 
 		|	И ВТ_HOBReceivablesSourceData.AUType = ""Lawson""
+		|
+		|ОБЪЕДИНИТЬ
+		|
+		|ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	ЛОЖЬ,
+		|	""Failed to find Legal entity"",
+		|	&ТипВнешнейСистемы,
+		|	ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.LegalEntity),
+		|	ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка),
+		|	ВТ_HOBReceivablesSourceData.LegalEntity
+		|ИЗ
+		|	ВТ_HOBReceivablesSourceData КАК ВТ_HOBReceivablesSourceData
+		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.LegalEntiites КАК LegalEntiites
+		|		ПО ВТ_HOBReceivablesSourceData.LegalEntity = LegalEntiites.Код
+		|			И (НЕ LegalEntiites.ПометкаУдаления)
+		|ГДЕ
+		|	LegalEntiites.Ссылка ЕСТЬ NULL 
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
@@ -1382,7 +1487,18 @@
 		|			И (Организации.Source = &ТипВнешнейСистемы)
 		|			И ВТ_HOBReceivablesSourceData.CompanyCode = Организации.Код
 		|ГДЕ
-		|	Организации.БазовыйЭлемент = ЗНАЧЕНИЕ(Справочник.HFM_Companies.ПустаяСсылка)";
+		|	Организации.БазовыйЭлемент = ЗНАЧЕНИЕ(Справочник.HFM_Companies.ПустаяСсылка)
+		|;
+		|
+		|////////////////////////////////////////////////////////////////////////////////
+		|ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	LegalEntiites.Ссылка,
+		|	LegalEntiites.Код
+		|ИЗ
+		|	ВТ_HOBReceivablesSourceData КАК ВТ_HOBReceivablesSourceData
+		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.LegalEntiites КАК LegalEntiites
+		|		ПО ВТ_HOBReceivablesSourceData.LegalEntity = LegalEntiites.Код
+		|			И (НЕ LegalEntiites.ПометкаУдаления)";
 	
 	Запрос.УстановитьПараметр("ДокументЗагрузки", СтруктураПараметров.Ссылка);
 	Запрос.УстановитьПараметр("Период", СтруктураПараметров.Дата);
@@ -1467,6 +1583,21 @@
 		СтрокаКоллизии.ТипОбъектаВнешнейСистемы = Перечисления.ТипыОбъектовВнешнихСистем.Company;
 		СтрокаКоллизии.ОбъектПриемника = ВыборкаКомпаний.Ссылка;
 		СтрокаКоллизии.Идентификатор = ВыборкаКомпаний.Код;
+		
+	КонецЦикла;
+	
+	// LegalEntity
+	ВыборкаLegalEntity = МассивРезультатов[6].Выбрать();
+	
+	Пока ВыборкаLegalEntity.Следующий() Цикл
+		
+		СтрокаКоллизии = ТаблицаКоллизий.Добавить();
+		СтрокаКоллизии.КоллизияОтработана = Ложь;
+		СтрокаКоллизии.Описание = "Not specified base element";
+		СтрокаКоллизии.ТипСоответствия = Перечисления.ТипыСоответствий.HOBs;
+		СтрокаКоллизии.ТипОбъектаВнешнейСистемы = Перечисления.ТипыОбъектовВнешнихСистем.LegalEntity;
+		СтрокаКоллизии.ОбъектПриемника = ВыборкаLegalEntity.Ссылка;
+		СтрокаКоллизии.Идентификатор = ВыборкаLegalEntity.Код;
 		
 	КонецЦикла;
 	
