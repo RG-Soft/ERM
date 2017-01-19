@@ -380,6 +380,10 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>LegalEntity</dataPath>
+			<field>LegalEntity</field>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	BilledARОстатки.Client КАК Client,
@@ -396,7 +400,8 @@
 		КОГДА BilledARОстатки.Invoice ССЫЛКА Документ.Invoice
 			ТОГДА ВЫРАЗИТЬ(BilledARОстатки.Invoice КАК Документ.Invoice).DocNumber
 		ИНАЧЕ ВЫРАЗИТЬ(BilledARОстатки.Invoice КАК Документ.Memo).Номер
-	КОНЕЦ КАК ПредставлениеДокумента
+	КОНЕЦ КАК ПредставлениеДокумента,
+	BilledARОстатки.LegalEntity
 ПОМЕСТИТЬ ВТ_Остатки
 ИЗ
 	РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, ) КАК BilledARОстатки
@@ -414,7 +419,8 @@
 	UnallocatedMemoОстатки.Currency,
 	UnallocatedMemoОстатки.AU,
 	UnallocatedMemoОстатки.AmountОстаток,
-	UnallocatedMemoОстатки.Memo.Номер
+	UnallocatedMemoОстатки.Memo.Номер,
+	UnallocatedMemoОстатки.LegalEntity
 ИЗ
 	РегистрНакопления.UnallocatedMemo.Остатки({(&amp;ПериодОстатков)}, ) КАК UnallocatedMemoОстатки
 
@@ -445,7 +451,8 @@
 		КОГДА BilledARОбороты.Invoice ССЫЛКА Документ.Invoice
 			ТОГДА ВЫРАЗИТЬ(BilledARОбороты.Invoice КАК Документ.Invoice).DocNumber
 		ИНАЧЕ ВЫРАЗИТЬ(BilledARОбороты.Invoice КАК Документ.Memo).Номер
-	КОНЕЦ КАК ПредставлениеДокумента
+	КОНЕЦ КАК ПредставлениеДокумента,
+	BilledARОбороты.LegalEntity
 ПОМЕСТИТЬ ВТ_Обороты
 ИЗ
 	РегистрНакопления.BilledAR.Обороты({(&amp;ПериодОстатков)}, {(&amp;КонецДняФормированияОтчета)}, , ) КАК BilledARОбороты
@@ -463,7 +470,8 @@
 	UnallocatedMemoОбороты.Currency,
 	UnallocatedMemoОбороты.AU,
 	UnallocatedMemoОбороты.AmountОборот,
-	UnallocatedMemoОбороты.Memo.Номер
+	UnallocatedMemoОбороты.Memo.Номер,
+	UnallocatedMemoОбороты.LegalEntity
 ИЗ
 	РегистрНакопления.UnallocatedMemo.Обороты({(&amp;ПериодОстатков)}, {(&amp;КонецДняФормированияОтчета)}, , ) КАК UnallocatedMemoОбороты
 
@@ -488,14 +496,15 @@
 	PaymentsОбороты.Invoice КАК Invoice,
 	PaymentsОбороты.Currency КАК Currency,
 	PaymentsОбороты.AU КАК AU,
-	PaymentsОбороты.AmountОборот КАК AmountОборот
+	PaymentsОбороты.AmountОборот КАК AmountОборот,
+	PaymentsОбороты.LegalEntity
 ПОМЕСТИТЬ ВТ_ОплатыТекущегоПериода
 ИЗ
 	РегистрНакопления.Payments.Обороты(
 			{(&amp;ПериодОстатков)},
 			{(&amp;КонецДняФормированияОтчета)},
 			,
-			(Client, Company, Source, Location, SubSubSegment, Invoice, Currency, AU) В
+			(Client, Company, Source, Location, SubSubSegment, Invoice, Currency, AU, LegalEntity) В
 				(ВЫБРАТЬ РАЗЛИЧНЫЕ
 					ВТ_Обороты.Client,
 					ВТ_Обороты.Company,
@@ -504,7 +513,8 @@
 					ВТ_Обороты.SubSubSegment,
 					ВТ_Обороты.Invoice,
 					ВТ_Обороты.Currency,
-					ВТ_Обороты.AU
+					ВТ_Обороты.AU,
+					ВТ_Обороты.LegalEntity
 				ИЗ
 					ВТ_Обороты КАК ВТ_Обороты
 				ГДЕ
@@ -533,7 +543,8 @@
 	ВТ_Обороты.Currency,
 	ВТ_Обороты.AU,
 	ВТ_Обороты.AmountОборот + ЕСТЬNULL(ВТ_Оплаты.AmountОборот, 0) КАК AmountОстаток,
-	ВТ_Обороты.ПредставлениеДокумента
+	ВТ_Обороты.ПредставлениеДокумента,
+	ВТ_Обороты.LegalEntity
 ПОМЕСТИТЬ ВТ_ОборотыБезОплат
 ИЗ
 	ВТ_Обороты КАК ВТ_Обороты
@@ -546,6 +557,7 @@
 			И ВТ_Обороты.Invoice = ВТ_Оплаты.Invoice
 			И ВТ_Обороты.Currency = ВТ_Оплаты.Currency
 			И ВТ_Обороты.AU = ВТ_Оплаты.AU
+			И ВТ_Обороты.LegalEntity = ВТ_Оплаты.LegalEntity
 ГДЕ
 	ВТ_Обороты.AmountОборот + ЕСТЬNULL(ВТ_Оплаты.AmountОборот, 0) &lt;&gt; 0
 ;
@@ -562,7 +574,8 @@
 	ВложенныйЗапрос.Currency,
 	ВложенныйЗапрос.AU,
 	СУММА(ВложенныйЗапрос.AmountОстаток) КАК AmountОстаток,
-	ВложенныйЗапрос.ПредставлениеДокумента
+	ВложенныйЗапрос.ПредставлениеДокумента,
+	ВложенныйЗапрос.LegalEntity
 ПОМЕСТИТЬ ВТ_ОстаткиБезОплатТекущегоПериода
 ИЗ
 	(ВЫБРАТЬ
@@ -576,7 +589,8 @@
 		ВТ_Остатки.Currency КАК Currency,
 		ВТ_Остатки.AU КАК AU,
 		ВТ_Остатки.AmountОстаток КАК AmountОстаток,
-		ВТ_Остатки.ПредставлениеДокумента КАК ПредставлениеДокумента
+		ВТ_Остатки.ПредставлениеДокумента КАК ПредставлениеДокумента,
+		ВТ_Остатки.LegalEntity КАК LegalEntity
 	ИЗ
 		ВТ_Остатки КАК ВТ_Остатки
 	
@@ -593,7 +607,8 @@
 		ВТ_ОборотыБезОплат.Currency,
 		ВТ_ОборотыБезОплат.AU,
 		ВТ_ОборотыБезОплат.AmountОстаток,
-		ВТ_ОборотыБезОплат.ПредставлениеДокумента
+		ВТ_ОборотыБезОплат.ПредставлениеДокумента,
+		ВТ_ОборотыБезОплат.LegalEntity
 	ИЗ
 		ВТ_ОборотыБезОплат КАК ВТ_ОборотыБезОплат) КАК ВложенныйЗапрос
 
@@ -607,7 +622,8 @@
 	ВложенныйЗапрос.Account,
 	ВложенныйЗапрос.Currency,
 	ВложенныйЗапрос.AU,
-	ВложенныйЗапрос.ПредставлениеДокумента
+	ВложенныйЗапрос.ПредставлениеДокумента,
+	ВложенныйЗапрос.LegalEntity
 
 ИНДЕКСИРОВАТЬ ПО
 	Client,
@@ -629,14 +645,15 @@
 			КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.ПроводкаDSS
 				ТОГДА PaymentsОбороты.Регистратор.DateLawson
 			ИНАЧЕ PaymentsОбороты.Регистратор.Дата
-		КОНЕЦ) КАК PaymentDate
+		КОНЕЦ) КАК PaymentDate,
+	PaymentsОбороты.LegalEntity
 ПОМЕСТИТЬ ВТ_ОплатыПоПроводкам
 ИЗ
 	РегистрНакопления.Payments.Обороты(
 			{(&amp;ПериодНачалаАнализаОплат)},
 			{(&amp;КонецДняФормированияОтчета)},
 			Регистратор,
-			(Client, Company, Source, Location, SubSubSegment, Invoice, Currency, AU) В
+			(Client, Company, Source, Location, SubSubSegment, Invoice, Currency, AU, LegalEntity) В
 				(ВЫБРАТЬ РАЗЛИЧНЫЕ
 					ВТ_ОстаткиБезОплатТекущегоПериода.Client,
 					ВТ_ОстаткиБезОплатТекущегоПериода.Company,
@@ -645,7 +662,8 @@
 					ВТ_ОстаткиБезОплатТекущегоПериода.SubSubSegment,
 					ВТ_ОстаткиБезОплатТекущегоПериода.Invoice,
 					ВТ_ОстаткиБезОплатТекущегоПериода.Currency,
-					ВТ_ОстаткиБезОплатТекущегоПериода.AU
+					ВТ_ОстаткиБезОплатТекущегоПериода.AU,
+					ВТ_ОстаткиБезОплатТекущегоПериода.LegalEntity
 				ИЗ
 					ВТ_ОстаткиБезОплатТекущегоПериода КАК ВТ_ОстаткиБезОплатТекущегоПериода
 						ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИсточникиСЗаполнениемОплатИзОбмена КАК ИсточникиСЗаполнениемОплатИзОбмена
@@ -665,7 +683,8 @@
 	PaymentsОбороты.SubSubSegment,
 	PaymentsОбороты.Invoice,
 	PaymentsОбороты.Currency,
-	PaymentsОбороты.AU
+	PaymentsОбороты.AU,
+	PaymentsОбороты.LegalEntity
 
 ИНДЕКСИРОВАТЬ ПО
 	Invoice,
@@ -825,7 +844,12 @@
 		КОГДА ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.SLBAssignedToList, "") = ""
 			ТОГДА ЛОЖЬ
 		ИНАЧЕ ИСТИНА
-	КОНЕЦ КАК EscalationSent
+	КОНЕЦ КАК EscalationSent,
+	ВЫБОР
+		КОГДА ВТ_Остатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+			ТОГДА ВТ_Остатки.LegalEntity
+		ИНАЧЕ ВТ_Остатки.Company.DefaultLegalEntity
+	КОНЕЦ КАК LegalEntity
 ИЗ
 	ВТ_ОстаткиБезОплатТекущегоПериода КАК ВТ_Остатки
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ИерархияКлиентов КАК ВТ_ИерархияКлиентов
@@ -936,6 +960,11 @@
 		КОГДА РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.ForecastDate, &amp;ТекущаяДата, ДЕНЬ) &gt; 0
 			ТОГДА ИСТИНА
 		ИНАЧЕ ЛОЖЬ
+	КОНЕЦ,
+	ВЫБОР
+		КОГДА ВТ_Остатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+			ТОГДА ВТ_Остатки.LegalEntity
+		ИНАЧЕ ВТ_Остатки.Company.DefaultLegalEntity
 	КОНЕЦ
 
 ИМЕЮЩИЕ
@@ -1311,6 +1340,9 @@
 							<v8:content>Company</v8:content>
 						</v8:item>
 					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>LegalEntity</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Source</dcsset:field>
