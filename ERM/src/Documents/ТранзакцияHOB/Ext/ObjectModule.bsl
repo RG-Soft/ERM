@@ -172,7 +172,9 @@
 	НовоеДвижение.Account = Реквизиты.Account;
 	НовоеДвижение.AU = Реквизиты.AU;
 	НовоеДвижение.Currency = Реквизиты.Currency;
-	
+	//{RGS AArsentev 18.01.2017
+	НовоеДвижение.LegalEntity = Реквизиты.LegalEntity;
+	//}RGS AArsentev 18.01.2017
 	НовоеДвижение.Amount = Сумма;
 	НовоеДвижение.BaseAmount = СуммаФВ;
 	
@@ -199,6 +201,9 @@
 	НовоеДвижение.Account = Реквизиты.Account;
 	НовоеДвижение.AU = Реквизиты.AU;
 	НовоеДвижение.Currency = Реквизиты.Currency;
+	//{RGS AArsentev 18.01.2017
+	НовоеДвижение.LegalEntity = Реквизиты.LegalEntity;
+	//}RGS AArsentev 18.01.2017
 	
 	НовоеДвижение.Amount = Сумма;
 	НовоеДвижение.BaseAmount = СуммаФВ;
@@ -227,6 +232,9 @@
 	НовоеДвижение.Account = Реквизиты.Account;
 	НовоеДвижение.AU = Реквизиты.AU;
 	НовоеДвижение.Currency = Реквизиты.Currency;
+	//{RGS AArsentev 18.01.2017
+	НовоеДвижение.LegalEntity = Реквизиты.LegalEntity;
+	//}RGS AArsentev 18.01.2017
 	
 	НовоеДвижение.Amount = ?(Сумма >= 0, Сумма, -Сумма);
 	НовоеДвижение.BaseAmount = ?(Сумма >= 0, СуммаФВ, -СуммаФВ);
@@ -254,6 +262,9 @@
 	НовоеДвижение.Account = Реквизиты.Account;
 	НовоеДвижение.AU = Реквизиты.AU;
 	НовоеДвижение.Currency = Реквизиты.Currency;
+	//{RGS AArsentev 18.01.2017
+	НовоеДвижение.LegalEntity = Реквизиты.LegalEntity;
+	//}RGS AArsentev 18.01.2017
 	
 	НовоеДвижение.Amount = Сумма;
 	НовоеДвижение.BaseAmount = СуммаФВ;
@@ -281,6 +292,9 @@
 	НовоеДвижение.Account = Реквизиты.Account;
 	НовоеДвижение.AU = Реквизиты.AU;
 	НовоеДвижение.Currency = Реквизиты.Currency;
+	//{RGS AArsentev 18.01.2017
+	НовоеДвижение.LegalEntity = Реквизиты.LegalEntity;
+	//}RGS AArsentev 18.01.2017
 	
 	НовоеДвижение.Amount = Сумма;
 	НовоеДвижение.BaseAmount = СуммаФВ;
@@ -308,6 +322,9 @@
 	НовоеДвижение.Account = Реквизиты.Account;
 	НовоеДвижение.AU = Реквизиты.AU;
 	НовоеДвижение.Currency = Реквизиты.Currency;
+	//{RGS AArsentev 18.01.2017
+	НовоеДвижение.LegalEntity = Реквизиты.LegalEntity;
+	//}RGS AArsentev 18.01.2017
 	
 	НовоеДвижение.Amount = Сумма;
 	НовоеДвижение.BaseAmount = СуммаФВ;
@@ -339,6 +356,9 @@
 	Иначе
 		НовоеДвижение.Currency = Константы.rgsВалютаUSD.Получить();
 	КонецЕсли;
+	//{RGS AArsentev 18.01.2017
+	НовоеДвижение.LegalEntity = Реквизиты.LegalEntity;
+	//}RGS AArsentev 18.01.2017
 	
 	НовоеДвижение.Amount = Сумма;
 	НовоеДвижение.BaseAmount = СуммаФВ;
@@ -366,6 +386,9 @@
 	НовоеДвижение.Account = Реквизиты.Account;
 	НовоеДвижение.AU = Реквизиты.AU;
 	НовоеДвижение.Currency = Реквизиты.Currency;
+	//{RGS AArsentev 18.01.2017
+	НовоеДвижение.LegalEntity = Реквизиты.LegalEntity;
+	//}RGS AArsentev 18.01.2017
 	
 	НовоеДвижение.Amount = Сумма;
 	НовоеДвижение.BaseAmount = СуммаФВ;
@@ -402,6 +425,9 @@
 		Иначе
 			НовоеДвижение.Currency = Константы.rgsВалютаUSD.Получить();
 		КонецЕсли;
+		//{RGS AArsentev 18.01.2017
+		НовоеДвижение.LegalEntity = Реквизиты.LegalEntity;
+		//}RGS AArsentev 18.01.2017
 		
 		НовоеДвижение.Amount = Сумма;
 		
