@@ -547,135 +547,168 @@
 				<ManualQuery>true</ManualQuery>
 				<DynamicDataRead>false</DynamicDataRead>
 				<QueryText>ВЫБРАТЬ
-	UnbilledARОстатки.Client КАК Customer,
-	UnbilledARОстатки.Company КАК Company,
-	UnbilledARОстатки.Source КАК Source,
-	UnbilledARОстатки.Account КАК Account,
-	UnbilledARОстатки.Location КАК Location,
-	UnbilledARОстатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель КАК Segment,
-	UnbilledARОстатки.Currency КАК Currency,
-	UnbilledARОстатки.AU КАК AU,
-	UnbilledARОстатки.AmountОстаток КАК RemainingAmount,
-	ВЫБОР
-		КОГДА SalesOrdersCommentsСрезПоследних.SalesOrder ЕСТЬ NULL 
-			ТОГДА ИСТИНА
-		ИНАЧЕ ЛОЖЬ
-	КОНЕЦ КАК НетКомментария,
-	UnbilledARОстатки.SalesOrder.Amount КАК SalesAmount,
-	UnbilledARОстатки.SalesOrder КАК SalesOrder,
-	UnbilledARОстатки.SalesOrder.Дата КАК SalesDate,
-	ВЫБОР
-		КОГДА UnbilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
-			ТОГДА UnbilledARОстатки.SalesOrder.ArInvoice
-		ИНАЧЕ UnbilledARОстатки.SalesOrder.Номер
-	КОНЕЦ КАК SalesNo,
-	SalesOrdersCommentsСрезПоследних.Problem.Reason КАК Reason,
-	ВЫБОР
-		КОГДА SalesOrdersCommentsСрезПоследних.Problem.Billed ЕСТЬ NULL 
-			ТОГДА ЗНАЧЕНИЕ(Перечисление.SalesOrderBilledStatus.Unbilled)
-		ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.Billed
-	КОНЕЦ КАК Status,
-	SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice КАК ExpectedDateForInvoice,
-	SalesOrdersCommentsСрезПоследних.Problem.EscalateTo КАК EscalateTo,
-	SalesOrdersCommentsСрезПоследних.Problem.Details КАК Details,
-	SalesOrdersCommentsСрезПоследних.Problem.ResponsiblesList КАК ResponsiblesList,
-	UnbilledARОстатки.SalesOrder.JobEndDate КАК JobEndDate,
-	ВЫБОР
-		КОГДА UnbilledARОстатки.SalesOrder.JobEndDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1, 0, 0, 0)
-			ТОГДА РАЗНОСТЬДАТ(UnbilledARОстатки.SalesOrder.JobEndDate, &amp;ДатаДляСравнения, ДЕНЬ)
-	КОНЕЦ КАК Aging,
-	ВЫБОР
-		КОГДА UnbilledARОстатки.SalesOrder.JobEndDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1, 0, 0, 0)
-				И РАЗНОСТЬДАТ(UnbilledARОстатки.SalesOrder.JobEndDate, &amp;ДатаДляСравнения, ДЕНЬ) &gt;= 120
-			ТОГДА ВЫБОР
-					КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
-							ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
-						ТОГДА 0
-					КОГДА UnbilledARОстатки.Currency.Код = "USD"
-						ТОГДА UnbilledARОстатки.AmountОстаток
-					ИНАЧЕ ВЫРАЗИТЬ(UnbilledARОстатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2))
-				КОНЕЦ
-	КОНЕЦ КАК AgedDeferral,
-	SalesOrderResponsibles.ResponsibleAR КАК ResponsibleAR,
-	UnbilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
-	UnbilledARОстатки.Location.БазовыйЭлемент.GeoMarket КАК SubGeoMarket,
-	SalesOrdersCommentsСрезПоследних.SalesOrder.Agreement КАК Agreement,
-	UnbilledARОстатки.SalesOrder.ClientID КАК CustomerID,
-	ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0) КАК Rate,
-	ВЫБОР
-		КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
-				ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
-			ТОГДА 0
-		КОГДА UnbilledARОстатки.Currency.Код = "USD"
-			ТОГДА UnbilledARОстатки.AmountОстаток
-		ИНАЧЕ ВЫРАЗИТЬ(UnbilledARОстатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2))
-	КОНЕЦ КАК RemainingAmountUSD
+	ВложенныйЗапрос.Customer,
+	ВложенныйЗапрос.Company,
+	ВложенныйЗапрос.Source,
+	ВложенныйЗапрос.Account,
+	ВложенныйЗапрос.Location,
+	ВложенныйЗапрос.Segment,
+	ВложенныйЗапрос.Currency,
+	ВложенныйЗапрос.AU,
+	ВложенныйЗапрос.RemainingAmount,
+	ВложенныйЗапрос.НетКомментария,
+	ВложенныйЗапрос.SalesAmount,
+	ВложенныйЗапрос.SalesOrder,
+	ВложенныйЗапрос.SalesDate,
+	ВложенныйЗапрос.SalesNo,
+	ВложенныйЗапрос.Reason,
+	ВложенныйЗапрос.Status,
+	ВложенныйЗапрос.ExpectedDateForInvoice,
+	ВложенныйЗапрос.EscalateTo,
+	ВложенныйЗапрос.Details,
+	ВложенныйЗапрос.ResponsiblesList,
+	ВложенныйЗапрос.JobEndDate,
+	ВложенныйЗапрос.Aging,
+	ВложенныйЗапрос.AgedDeferral,
+	ВложенныйЗапрос.ResponsibleAR,
+	ВложенныйЗапрос.GeoMarket,
+	ВложенныйЗапрос.SubGeoMarket,
+	ВложенныйЗапрос.Agreement,
+	ВложенныйЗапрос.CustomerID,
+	ВложенныйЗапрос.Rate,
+	ВложенныйЗапрос.RemainingAmountUSD
 ИЗ
-	РегистрНакопления.UnbilledAR.Остатки(
-			{(&amp;ПериодОстатков)},
-			SalesOrder ССЫЛКА Документ.SalesOrder
-				И ПОДСТРОКА(Account.Код, 1, 6) &lt;&gt; "209000" {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК UnbilledARОстатки
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних({(&amp;ДатаКомментария)}, ) КАК SalesOrdersCommentsСрезПоследних
-		ПО UnbilledARОстатки.SalesOrder = SalesOrdersCommentsСрезПоследних.SalesOrder
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
-		ПО UnbilledARОстатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПервых КАК SalesOrdersCommentsСрезПервых
-		ПО UnbilledARОстатки.SalesOrder = SalesOrdersCommentsСрезПервых.SalesOrder
-		{ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrderResponsibles КАК SalesOrderResponsibles
-		ПО UnbilledARОстатки.SalesOrder = SalesOrderResponsibles.SalesOrder}
-{ГДЕ
-	UnbilledARОстатки.Source.*,
-	UnbilledARОстатки.Company.*,
-	UnbilledARОстатки.Client.*,
-	SalesOrderResponsibles.ResponsibleAR.*}
-
-ОБЪЕДИНИТЬ ВСЕ
-
-ВЫБРАТЬ
-	ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка),
-	ManualTransactionsОстатки.Company,
-	ManualTransactionsОстатки.Source,
-	ManualTransactionsОстатки.Account,
-	ManualTransactionsОстатки.Location,
-	ManualTransactionsОстатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель,
-	ManualTransactionsОстатки.Currency,
-	ManualTransactionsОстатки.AU,
-	ManualTransactionsОстатки.AmountОстаток,
-	ИСТИНА,
-	ManualTransactionsОстатки.AmountОстаток,
-	ManualTransactionsОстатки.РучнаяКорректировка.Ссылка,
-	ManualTransactionsОстатки.РучнаяКорректировка.Дата,
-	ManualTransactionsОстатки.РучнаяКорректировка.Номер,
-	ЗНАЧЕНИЕ(Перечисление.SalesOrderStatus.ПустаяСсылка),
-	ЗНАЧЕНИЕ(Перечисление.SalesOrderBilledStatus.Unbilled),
-	ДАТАВРЕМЯ(1, 1, 1),
-	ЗНАЧЕНИЕ(Справочник.EscalationLevels.ПустаяСсылка),
-	"",
-	"",
-	ДАТАВРЕМЯ(1, 1, 1),
-	0,
-	0,
-	ЗНАЧЕНИЕ(Справочник.LDAPUsers.ПустаяСсылка),
-	ManualTransactionsОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель,
-	ManualTransactionsОстатки.Location.БазовыйЭлемент.GeoMarket,
-	"",
-	"",
-	ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0),
-	ВЫБОР
-		КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
-				ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
-			ТОГДА 0
-		КОГДА ManualTransactionsОстатки.Currency.Код = "USD"
-			ТОГДА ManualTransactionsОстатки.AmountОстаток
-		ИНАЧЕ ВЫРАЗИТЬ(ManualTransactionsОстатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2))
-	КОНЕЦ
-ИЗ
-	РегистрНакопления.ManualTransactions.Остатки({(&amp;ПериодОстатков)}, Account.БазовыйЭлемент = &amp;HFMUnbilledAccount {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК ManualTransactionsОстатки
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
-		ПО ManualTransactionsОстатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
-{ГДЕ
-	ManualTransactionsОстатки.Source.*,
-	ManualTransactionsОстатки.Company.*}</QueryText>
+	(ВЫБРАТЬ
+		UnbilledARОстатки.Client КАК Customer,
+		UnbilledARОстатки.Company КАК Company,
+		UnbilledARОстатки.Source КАК Source,
+		UnbilledARОстатки.Account КАК Account,
+		UnbilledARОстатки.Location КАК Location,
+		UnbilledARОстатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель КАК Segment,
+		UnbilledARОстатки.Currency КАК Currency,
+		UnbilledARОстатки.AU КАК AU,
+		UnbilledARОстатки.AmountОстаток КАК RemainingAmount,
+		ВЫБОР
+			КОГДА SalesOrdersCommentsСрезПоследних.SalesOrder ЕСТЬ NULL 
+				ТОГДА ИСТИНА
+			ИНАЧЕ ЛОЖЬ
+		КОНЕЦ КАК НетКомментария,
+		UnbilledARОстатки.SalesOrder.Amount КАК SalesAmount,
+		UnbilledARОстатки.SalesOrder КАК SalesOrder,
+		UnbilledARОстатки.SalesOrder.Дата КАК SalesDate,
+		ВЫБОР
+			КОГДА UnbilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
+				ТОГДА UnbilledARОстатки.SalesOrder.ArInvoice
+			ИНАЧЕ UnbilledARОстатки.SalesOrder.Номер
+		КОНЕЦ КАК SalesNo,
+		SalesOrdersCommentsСрезПоследних.Problem.Reason КАК Reason,
+		ВЫБОР
+			КОГДА SalesOrdersCommentsСрезПоследних.Problem.Billed ЕСТЬ NULL 
+				ТОГДА ЗНАЧЕНИЕ(Перечисление.SalesOrderBilledStatus.Unbilled)
+			ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.Billed
+		КОНЕЦ КАК Status,
+		SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice КАК ExpectedDateForInvoice,
+		SalesOrdersCommentsСрезПоследних.Problem.EscalateTo КАК EscalateTo,
+		SalesOrdersCommentsСрезПоследних.Problem.Details КАК Details,
+		SalesOrdersCommentsСрезПоследних.Problem.ResponsiblesList КАК ResponsiblesList,
+		UnbilledARОстатки.SalesOrder.JobEndDate КАК JobEndDate,
+		ВЫБОР
+			КОГДА UnbilledARОстатки.SalesOrder.JobEndDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1, 0, 0, 0)
+				ТОГДА РАЗНОСТЬДАТ(UnbilledARОстатки.SalesOrder.JobEndDate, &amp;ДатаДляСравнения, ДЕНЬ)
+		КОНЕЦ КАК Aging,
+		ВЫБОР
+			КОГДА UnbilledARОстатки.SalesOrder.JobEndDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1, 0, 0, 0)
+					И РАЗНОСТЬДАТ(UnbilledARОстатки.SalesOrder.JobEndDate, &amp;ДатаДляСравнения, ДЕНЬ) &gt;= 120
+				ТОГДА ВЫБОР
+						КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
+								ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+							ТОГДА 0
+						КОГДА UnbilledARОстатки.Currency.Код = "USD"
+							ТОГДА UnbilledARОстатки.AmountОстаток
+						ИНАЧЕ ВЫРАЗИТЬ(UnbilledARОстатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2))
+					КОНЕЦ
+		КОНЕЦ КАК AgedDeferral,
+		SalesOrderResponsibles.ResponsibleAR КАК ResponsibleAR,
+		UnbilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
+		UnbilledARОстатки.Location.БазовыйЭлемент.GeoMarket КАК SubGeoMarket,
+		SalesOrdersCommentsСрезПоследних.SalesOrder.Agreement КАК Agreement,
+		UnbilledARОстатки.SalesOrder.ClientID КАК CustomerID,
+		ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0) КАК Rate,
+		ВЫБОР
+			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
+					ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+				ТОГДА 0
+			КОГДА UnbilledARОстатки.Currency.Код = "USD"
+				ТОГДА UnbilledARОстатки.AmountОстаток
+			ИНАЧЕ ВЫРАЗИТЬ(UnbilledARОстатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2))
+		КОНЕЦ КАК RemainingAmountUSD
+	ИЗ
+		РегистрНакопления.UnbilledAR.Остатки(
+				{(&amp;ПериодОстатков)},
+				SalesOrder ССЫЛКА Документ.SalesOrder
+					И ПОДСТРОКА(Account.Код, 1, 6) &lt;&gt; "209000" {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК UnbilledARОстатки
+			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних({(&amp;ДатаКомментария)}, ) КАК SalesOrdersCommentsСрезПоследних
+			ПО UnbilledARОстатки.SalesOrder = SalesOrdersCommentsСрезПоследних.SalesOrder
+			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
+			ПО UnbilledARОстатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
+			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПервых КАК SalesOrdersCommentsСрезПервых
+			ПО UnbilledARОстатки.SalesOrder = SalesOrdersCommentsСрезПервых.SalesOrder
+			{ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrderResponsibles КАК SalesOrderResponsibles
+			ПО UnbilledARОстатки.SalesOrder = SalesOrderResponsibles.SalesOrder}
+	{ГДЕ
+		UnbilledARОстатки.Source.*,
+		UnbilledARОстатки.Company.*,
+		UnbilledARОстатки.Client.*,
+		SalesOrderResponsibles.ResponsibleAR.*,
+		UnbilledARОстатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель.* КАК Segment}
+	
+	ОБЪЕДИНИТЬ ВСЕ
+	
+	ВЫБРАТЬ
+		ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка),
+		ManualTransactionsОстатки.Company,
+		ManualTransactionsОстатки.Source,
+		ManualTransactionsОстатки.Account,
+		ManualTransactionsОстатки.Location,
+		ManualTransactionsОстатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель,
+		ManualTransactionsОстатки.Currency,
+		ManualTransactionsОстатки.AU,
+		ManualTransactionsОстатки.AmountОстаток,
+		ИСТИНА,
+		ManualTransactionsОстатки.AmountОстаток,
+		ManualTransactionsОстатки.РучнаяКорректировка.Ссылка,
+		ManualTransactionsОстатки.РучнаяКорректировка.Дата,
+		ManualTransactionsОстатки.РучнаяКорректировка.Номер,
+		ЗНАЧЕНИЕ(Перечисление.SalesOrderStatus.ПустаяСсылка),
+		ЗНАЧЕНИЕ(Перечисление.SalesOrderBilledStatus.Unbilled),
+		ДАТАВРЕМЯ(1, 1, 1),
+		ЗНАЧЕНИЕ(Справочник.EscalationLevels.ПустаяСсылка),
+		"",
+		"",
+		ДАТАВРЕМЯ(1, 1, 1),
+		0,
+		0,
+		ЗНАЧЕНИЕ(Справочник.LDAPUsers.ПустаяСсылка),
+		ManualTransactionsОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель,
+		ManualTransactionsОстатки.Location.БазовыйЭлемент.GeoMarket,
+		"",
+		"",
+		ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0),
+		ВЫБОР
+			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
+					ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+				ТОГДА 0
+			КОГДА ManualTransactionsОстатки.Currency.Код = "USD"
+				ТОГДА ManualTransactionsОстатки.AmountОстаток
+			ИНАЧЕ ВЫРАЗИТЬ(ManualTransactionsОстатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2))
+		КОНЕЦ
+	ИЗ
+		РегистрНакопления.ManualTransactions.Остатки({(&amp;ПериодОстатков)}, Account.БазовыйЭлемент = &amp;HFMUnbilledAccount {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК ManualTransactionsОстатки
+			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
+			ПО ManualTransactionsОстатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
+	{ГДЕ
+		ManualTransactionsОстатки.Source.*,
+		ManualTransactionsОстатки.Company.*}) КАК ВложенныйЗапрос</QueryText>
 				<ListSettings>
 					<dcsset:filter>
 						<dcsset:viewMode>Normal</dcsset:viewMode>
