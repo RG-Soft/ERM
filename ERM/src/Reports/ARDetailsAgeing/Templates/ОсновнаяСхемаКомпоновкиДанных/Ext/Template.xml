@@ -237,6 +237,20 @@
 			<dataPath>Memo</dataPath>
 			<field>Memo</field>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>LegalEntity</dataPath>
+			<field>LegalEntity</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>DocumentFiscalInvoiceNo</dataPath>
+			<field>DocumentFiscalInvoiceNo</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Document fiscal invoice no</v8:content>
+				</v8:item>
+			</title>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	UnbilledARОстатки.Client КАК Client,
@@ -294,8 +308,7 @@
 	UnallocatedCashОстатки.AU,
 	UnallocatedCashОстатки.Currency,
 	ВЫБОР
-		КОГДА ПОДСТРОКА(UnallocatedCashОстатки.Account.Код, 1, 4) = "1201"
-				ИЛИ ПОДСТРОКА(UnallocatedCashОстатки.Account.Код, 1, 6) = "120206"
+		КОГДА UnallocatedCashОстатки.Account.БазовыйЭлемент.Код = "12001"
 			ТОГДА "Billed"
 		ИНАЧЕ "Unbilled"
 	КОНЕЦ,
@@ -330,8 +343,7 @@
 	ManualTransactionsОстатки.AU,
 	ManualTransactionsОстатки.Currency,
 	ВЫБОР
-		КОГДА ПОДСТРОКА(ManualTransactionsОстатки.Account.Код, 1, 4) = "1201"
-				ИЛИ ПОДСТРОКА(ManualTransactionsОстатки.Account.Код, 1, 6) = "120206"
+		КОГДА ManualTransactionsОстатки.Account.БазовыйЭлемент.Код = "12001"
 			ТОГДА "Billed"
 		ИНАЧЕ "Unbilled"
 	КОНЕЦ,
@@ -357,8 +369,7 @@
 	UnallocatedMemoОстатки.AU,
 	UnallocatedMemoОстатки.Currency,
 	ВЫБОР
-		КОГДА ПОДСТРОКА(UnallocatedMemoОстатки.Account.Код, 1, 4) = "1201"
-				ИЛИ ПОДСТРОКА(UnallocatedMemoОстатки.Account.Код, 1, 6) = "120206"
+		КОГДА UnallocatedMemoОстатки.Account.БазовыйЭлемент.Код = "12001"
 			ТОГДА "Billed"
 		ИНАЧЕ "Unbilled"
 	КОНЕЦ,
@@ -431,7 +442,8 @@
 		КОГДА ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс &lt; 0
 			ТОГДА -ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс
 		ИНАЧЕ ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс
-	КОНЕЦ КАК BaseAmountОстатокМодуль
+	КОНЕЦ КАК BaseAmountОстатокМодуль,
+	ВТ_Остатки.Document.FiscalInvoiceNo
 ИЗ
 	ВТ_Остатки КАК ВТ_Остатки
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних КАК ВнутренниеКурсыВалютСрезПоследних
@@ -721,6 +733,15 @@
 						</dcsset:lwsTitle>
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
+						<dcsset:field>DocumentFiscalInvoiceNo</dcsset:field>
+						<dcsset:lwsTitle>
+							<v8:item>
+								<v8:lang>ru</v8:lang>
+								<v8:content>Fiscal Invoice No. </v8:content>
+							</v8:item>
+						</dcsset:lwsTitle>
+					</dcsset:item>
+					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>ДатаДокумента</dcsset:field>
 						<dcsset:lwsTitle>
 							<v8:item>
@@ -892,6 +913,27 @@
 					<dcsset:userSettingID>ec716ccb-0f0b-4839-ae33-15a287e9c0bf</dcsset:userSettingID>
 				</dcscor:item>
 			</dcsset:dataParameters>
+			<dcsset:conditionalAppearance>
+				<dcsset:item>
+					<dcsset:selection>
+						<dcsset:item>
+							<dcsset:field>ДатаДокумента</dcsset:field>
+						</dcsset:item>
+					</dcsset:selection>
+					<dcsset:filter/>
+					<dcsset:appearance>
+						<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+							<dcscor:parameter>Формат</dcscor:parameter>
+							<dcscor:value xsi:type="v8:LocalStringType">
+								<v8:item>
+									<v8:lang>ru</v8:lang>
+									<v8:content>ДФ=MM/dd/yyyy</v8:content>
+								</v8:item>
+							</dcscor:value>
+						</dcscor:item>
+					</dcsset:appearance>
+				</dcsset:item>
+			</dcsset:conditionalAppearance>
 			<dcsset:outputParameters>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>МакетОформления</dcscor:parameter>
