@@ -435,8 +435,9 @@
 		
 		Если ДанныеИБ <> Неопределено Тогда
 			
-			СтруктураРеквизитов = ОбщегоНазначения.ЗначенияРеквизитовОбъекта(ДанныеИБ.Ссылка, "Номер, DocID, DocNumber, Amount, Agreement, AgreementCode, PassedForApproval, PassedForApprovalDate, PassedForPayment, PassedForPaymentDate, ExpectedDateOfPayment");
+			СтруктураРеквизитов = ОбщегоНазначения.ЗначенияРеквизитовОбъекта(ДанныеИБ.Ссылка, "Номер, Дата, DocID, DocNumber, Amount, Agreement, AgreementCode, PassedForApproval, PassedForApprovalDate, PassedForPayment, PassedForPaymentDate, ExpectedDateOfPayment");
 			ПолученныеДанные.Номер = СтруктураРеквизитов.Номер;
+			ПолученныеДанные.Дата = СтруктураРеквизитов.Дата;
 			ПолученныеДанные.DocID = СтруктураРеквизитов.DocID;
 			ПолученныеДанные.DocNumber = СтруктураРеквизитов.DocNumber;
 			
