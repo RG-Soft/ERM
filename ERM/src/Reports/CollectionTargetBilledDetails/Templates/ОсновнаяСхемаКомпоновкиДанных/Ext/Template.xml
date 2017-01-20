@@ -420,6 +420,16 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>BU</dataPath>
+			<field>BU</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>BU</v8:content>
+				</v8:item>
+			</title>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	BilledARОстатки.Client КАК Client,
@@ -780,6 +790,33 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ВЫБРАТЬ
+	BUMapping.Company,
+	BUMapping.GeoMarket,
+	BUMapping.Segment,
+	BUMapping.BU
+ПОМЕСТИТЬ ВТ_BUБезAU
+ИЗ
+	РегистрСведений.BUMapping КАК BUMapping
+ГДЕ
+	BUMapping.AU = ЗНАЧЕНИЕ(Справочник.КостЦентры.ПустаяСсылка)
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	BUMapping.Company,
+	BUMapping.GeoMarket,
+	BUMapping.Segment,
+	BUMapping.AU,
+	BUMapping.BU
+ПОМЕСТИТЬ ВТ_BUcAU
+ИЗ
+	РегистрСведений.BUMapping КАК BUMapping
+ГДЕ
+	BUMapping.AU &lt;&gt; ЗНАЧЕНИЕ(Справочник.КостЦентры.ПустаяСсылка)
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
 	ВТ_Остатки.Client,
 	ВТ_Остатки.Company,
 	ВТ_Остатки.Source,
@@ -887,7 +924,12 @@
 		ИНАЧЕ ВТ_Остатки.Company.DefaultLegalEntity
 	КОНЕЦ КАК LegalEntity,
 	ВТ_Остатки.Client.CRMID КАК UID,
-	ВТ_Остатки.Client.Наименование КАК CustUName
+	ВТ_Остатки.Client.Наименование КАК CustUName,
+	ВЫБОР
+		КОГДА ВТ_BUcAU.BU ЕСТЬ NULL 
+			ТОГДА ЕСТЬNULL(ВТ_BUБезAU.BU, ЗНАЧЕНИЕ(Справочник.BusinessUnits.ПустаяСсылка))
+		ИНАЧЕ ВТ_BUcAU.BU
+	КОНЕЦ КАК BU
 ИЗ
 	ВТ_ОстаткиБезОплатТекущегоПериода КАК ВТ_Остатки
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ИерархияКлиентов КАК ВТ_ИерархияКлиентов
@@ -916,6 +958,15 @@
 			И ВТ_Остатки.SubSubSegment = ВТ_ОплатыПоПроводкам.SubSubSegment
 			И ВТ_Остатки.Invoice = ВТ_ОплатыПоПроводкам.Invoice
 			И ВТ_Остатки.AU = ВТ_ОплатыПоПроводкам.AU
+		{ЛЕВОЕ СОЕДИНЕНИЕ ВТ_BUcAU КАК ВТ_BUcAU
+		ПО ВТ_Остатки.Company = ВТ_BUcAU.Company
+			И ВТ_Остатки.Location.БазовыйЭлемент.GeoMarket.Родитель = ВТ_BUcAU.GeoMarket
+			И ВТ_Остатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель = ВТ_BUcAU.Segment
+			И ВТ_Остатки.AU = ВТ_BUcAU.AU
+		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_BUБезAU КАК ВТ_BUБезAU
+		ПО ВТ_Остатки.Company = ВТ_BUБезAU.Company
+			И ВТ_Остатки.Location.БазовыйЭлемент.GeoMarket.Родитель = ВТ_BUБезAU.GeoMarket
+			И ВТ_Остатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель = ВТ_BUБезAU.Segment}
 ГДЕ
 	ВТ_Остатки.Client &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)
 	И ВТ_Остатки.Client &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.Unreconciled)
@@ -1003,6 +1054,13 @@
 		КОГДА ВТ_Остатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
 			ТОГДА ВТ_Остатки.LegalEntity
 		ИНАЧЕ ВТ_Остатки.Company.DefaultLegalEntity
+	КОНЕЦ,
+	ВТ_Остатки.Client.CRMID,
+	ВТ_Остатки.Client.Наименование,
+	ВЫБОР
+		КОГДА ВТ_BUcAU.BU ЕСТЬ NULL 
+			ТОГДА ЕСТЬNULL(ВТ_BUБезAU.BU, ЗНАЧЕНИЕ(Справочник.BusinessUnits.ПустаяСсылка))
+		ИНАЧЕ ВТ_BUcAU.BU
 	КОНЕЦ
 
 ИМЕЮЩИЕ
@@ -1889,6 +1947,10 @@
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>РасположениеРеквизитов</dcscor:parameter>
 					<dcscor:value xsi:type="dcsset:DataCompositionAttributesPlacement">Separately</dcscor:value>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>АвтоПозицияРесурсов</dcscor:parameter>
+					<dcscor:value xsi:type="dcsset:DataCompositionResourcesAutoPosition">DontUse</dcscor:value>
 				</dcscor:item>
 			</dcsset:outputParameters>
 			<dcsset:item xsi:type="dcsset:StructureItemGroup">
