@@ -88,6 +88,22 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>ГоловнойКонтрагент</dataPath>
 			<field>ГоловнойКонтрагент</field>
+			<inputParameters>
+				<dcscor:item>
+					<dcscor:parameter>ПараметрыВыбора</dcscor:parameter>
+					<dcscor:value xsi:type="dcscor:ChoiceParameters">
+						<dcscor:item>
+							<dcscor:choiceParameter>Отбор.ParentClient</dcscor:choiceParameter>
+							<dcscor:value xsi:type="xs:boolean">true</dcscor:value>
+						</dcscor:item>
+					</dcscor:value>
+				</dcscor:item>
+				<dcscor:item>
+					<dcscor:use>false</dcscor:use>
+					<dcscor:parameter>ФормаВыбора</dcscor:parameter>
+					<dcscor:value xsi:type="xs:string">ФормаВыбора</dcscor:value>
+				</dcscor:item>
+			</inputParameters>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Memo</dataPath>
@@ -383,6 +399,26 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>LegalEntity</dataPath>
 			<field>LegalEntity</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>UID</dataPath>
+			<field>UID</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>UID</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>CustUName</dataPath>
+			<field>CustUName</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>CustUName</v8:content>
+				</v8:item>
+			</title>
 		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
@@ -849,7 +885,9 @@
 		КОГДА ВТ_Остатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
 			ТОГДА ВТ_Остатки.LegalEntity
 		ИНАЧЕ ВТ_Остатки.Company.DefaultLegalEntity
-	КОНЕЦ КАК LegalEntity
+	КОНЕЦ КАК LegalEntity,
+	ВТ_Остатки.Client.CRMID КАК UID,
+	ВТ_Остатки.Client.Наименование КАК CustUName
 ИЗ
 	ВТ_ОстаткиБезОплатТекущегоПериода КАК ВТ_Остатки
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ИерархияКлиентов КАК ВТ_ИерархияКлиентов
@@ -1080,6 +1118,22 @@
 			</v8:item>
 		</title>
 	</calculatedField>
+	<totalField>
+		<dataPath>USDAmount</dataPath>
+		<expression>Сумма(USDAmount)</expression>
+	</totalField>
+	<totalField>
+		<dataPath>Paid</dataPath>
+		<expression>Сумма(Paid)</expression>
+	</totalField>
+	<totalField>
+		<dataPath>FcstCollect</dataPath>
+		<expression>Сумма(FcstCollect)</expression>
+	</totalField>
+	<totalField>
+		<dataPath>Insolvent</dataPath>
+		<expression>Сумма(Insolvent)</expression>
+	</totalField>
 	<parameter>
 		<name>Период</name>
 		<title xsi:type="v8:LocalStringType">
@@ -1838,6 +1892,423 @@
 				</dcscor:item>
 			</dcsset:outputParameters>
 			<dcsset:item xsi:type="dcsset:StructureItemGroup">
+				<dcsset:order>
+					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
+				</dcsset:order>
+				<dcsset:selection>
+					<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
+				</dcsset:selection>
+			</dcsset:item>
+		</dcsset:settings>
+	</settingsVariant>
+	<settingsVariant>
+		<dcsset:name>PerformanceDashboard</dcsset:name>
+		<dcsset:presentation xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Performance Dashboard</v8:content>
+			</v8:item>
+		</dcsset:presentation>
+		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+			<dcsset:userFields>
+				<dcsset:item xsi:type="dcsset:UserFieldExpression">
+					<dcsset:dataPath>ПользовательскиеПоля.Поле1</dcsset:dataPath>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Overdue</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+					<dcsset:detailExpression>Выбор
+	Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
+		Тогда USDAmount - FcstCollect - Paid - Insolvent
+	Иначе 0
+Конец</dcsset:detailExpression>
+					<dcsset:detailExpressionPresentation>Выбор
+	Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
+		Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation]
+	Иначе 0
+Конец</dcsset:detailExpressionPresentation>
+					<dcsset:totalExpression>Выбор
+	Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
+		Тогда USDAmount - FcstCollect - Paid - Insolvent
+	Иначе 0
+Конец</dcsset:totalExpression>
+					<dcsset:totalExpressionPresentation>Выбор
+	Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
+		Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation]
+	Иначе 0
+Конец</dcsset:totalExpressionPresentation>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:UserFieldExpression">
+					<dcsset:dataPath>ПользовательскиеПоля.Поле2</dcsset:dataPath>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>In Range No Fcst Coll</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+					<dcsset:detailExpression>Выбор
+	Когда DueFrom &lt;&gt; 0 И DueTo = 0
+		Тогда USDAmount
+	Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueFrom &gt; FcstCollect
+		Тогда USDAmount - FcstCollect - Выбор
+				Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
+					Тогда USDAmount - FcstCollect - Paid - Insolvent
+				Иначе 0
+			Конец - Paid - Insolvent
+	Иначе 0
+Конец</dcsset:detailExpression>
+					<dcsset:detailExpressionPresentation>Выбор
+	Когда [Due From] &lt;&gt; 0 И [Due To] = 0
+		Тогда [USD Amount]
+	Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due From] &gt; [Fcst Collect]
+		Тогда [USD Amount] - [Fcst Collect] - Выбор
+				Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
+					Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation]
+				Иначе 0
+			Конец - Paid - [Under Litigation]
+	Иначе 0
+Конец</dcsset:detailExpressionPresentation>
+					<dcsset:totalExpression>Выбор
+	Когда DueFrom &lt;&gt; 0 И DueTo = 0
+		Тогда USDAmount
+	Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueFrom &gt; FcstCollect
+		Тогда USDAmount - FcstCollect - Выбор
+				Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
+					Тогда USDAmount - FcstCollect - Paid - Insolvent
+				Иначе 0
+			Конец - Paid - Insolvent
+	Иначе 0
+Конец</dcsset:totalExpression>
+					<dcsset:totalExpressionPresentation>Выбор
+	Когда [Due From] &lt;&gt; 0 И [Due To] = 0
+		Тогда [USD Amount]
+	Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due From] &gt; [Fcst Collect]
+		Тогда [USD Amount] - [Fcst Collect] - Выбор
+				Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
+					Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation]
+				Иначе 0
+			Конец - Paid - [Under Litigation]
+	Иначе 0
+Конец</dcsset:totalExpressionPresentation>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:UserFieldExpression">
+					<dcsset:dataPath>ПользовательскиеПоля.Поле3</dcsset:dataPath>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Not Due</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+					<dcsset:detailExpression>Выбор
+	Когда DueFrom = 0 И DueTo = 0
+		Тогда USDAmount
+	Когда ForecastDate = ДатаВремя(1, 1, 1)
+		Тогда 0
+	Иначе USDAmount - Insolvent - Paid - FcstCollect - Выбор
+			Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueFrom &gt; FcstCollect
+				Тогда USDAmount - FcstCollect - Выбор
+						Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
+							Тогда USDAmount - FcstCollect - Paid - Insolvent
+						Иначе 0
+					Конец - Paid - Insolvent
+			Иначе 0
+		Конец - Выбор
+			Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
+				Тогда USDAmount - FcstCollect - Paid - Insolvent
+			Иначе 0
+		Конец
+Конец</dcsset:detailExpression>
+					<dcsset:detailExpressionPresentation>Выбор
+	Когда [Due From] = 0 И [Due To] = 0
+		Тогда [USD Amount]
+	Когда [Forecast date] = ДатаВремя(1, 1, 1)
+		Тогда 0
+	Иначе [USD Amount] - [Under Litigation] - Paid - [Fcst Collect] - Выбор
+			Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due From] &gt; [Fcst Collect]
+				Тогда [USD Amount] - [Fcst Collect] - Выбор
+						Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
+							Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation]
+						Иначе 0
+					Конец - Paid - [Under Litigation]
+			Иначе 0
+		Конец - Выбор
+			Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
+				Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation]
+			Иначе 0
+		Конец
+Конец</dcsset:detailExpressionPresentation>
+					<dcsset:totalExpression>Выбор
+	Когда DueFrom = 0 И DueTo = 0
+		Тогда USDAmount
+	Когда ForecastDate = ДатаВремя(1, 1, 1)
+		Тогда 0
+	Иначе USDAmount - Insolvent - Paid - FcstCollect - Выбор
+			Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueFrom &gt; FcstCollect
+				Тогда USDAmount - FcstCollect - Выбор
+						Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
+							Тогда USDAmount - FcstCollect - Paid - Insolvent
+						Иначе 0
+					Конец - Paid - Insolvent
+			Иначе 0
+		Конец - Выбор
+			Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
+				Тогда USDAmount - FcstCollect - Paid - Insolvent
+			Иначе 0
+		Конец
+Конец</dcsset:totalExpression>
+					<dcsset:totalExpressionPresentation>Выбор
+	Когда [Due From] = 0 И [Due To] = 0
+		Тогда [USD Amount]
+	Когда [Forecast date] = ДатаВремя(1, 1, 1)
+		Тогда 0
+	Иначе [USD Amount] - [Under Litigation] - Paid - [Fcst Collect] - Выбор
+			Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due From] &gt; [Fcst Collect]
+				Тогда [USD Amount] - [Fcst Collect] - Выбор
+						Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
+							Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation]
+						Иначе 0
+					Конец - Paid - [Under Litigation]
+			Иначе 0
+		Конец - Выбор
+			Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
+				Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation]
+			Иначе 0
+		Конец
+Конец</dcsset:totalExpressionPresentation>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:UserFieldExpression">
+					<dcsset:dataPath>ПользовательскиеПоля.Поле4</dcsset:dataPath>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Overdue Disputed</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+					<dcsset:detailExpression>Выбор
+	Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И InvoiceDueDateFrom &lt;= &amp;Период
+		Тогда USDAmount - Paid - FcstCollect
+	Иначе 0
+Конец</dcsset:detailExpression>
+					<dcsset:detailExpressionPresentation>Выбор
+	Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И [Invoice.Due date from] &lt;= &amp;Period
+		Тогда [USD Amount] - Paid - [Fcst Collect]
+	Иначе 0
+Конец</dcsset:detailExpressionPresentation>
+					<dcsset:totalExpression>Выбор
+	Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И InvoiceDueDateFrom &lt;= &amp;Период
+		Тогда USDAmount - Paid - FcstCollect
+	Иначе 0
+Конец</dcsset:totalExpression>
+					<dcsset:totalExpressionPresentation>Выбор
+	Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И [Invoice.Due date from] &lt;= &amp;Period
+		Тогда [USD Amount] - Paid - [Fcst Collect]
+	Иначе 0
+Конец</dcsset:totalExpressionPresentation>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:UserFieldExpression">
+					<dcsset:dataPath>ПользовательскиеПоля.Поле5</dcsset:dataPath>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Overdue Not Forecasted</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+					<dcsset:detailExpression>Выбор
+	Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И InvoiceDueDateFrom &lt;= &amp;Период
+		Тогда USDAmount - Paid - FcstCollect
+	Иначе 0
+Конец + Выбор
+	Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
+		Тогда USDAmount - FcstCollect - Paid - Insolvent
+	Иначе 0
+Конец</dcsset:detailExpression>
+					<dcsset:detailExpressionPresentation>Выбор
+	Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И [Invoice.Due date from] &lt;= &amp;Period
+		Тогда [USD Amount] - Paid - [Fcst Collect]
+	Иначе 0
+Конец + Выбор
+	Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
+		Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation]
+	Иначе 0
+Конец</dcsset:detailExpressionPresentation>
+					<dcsset:totalExpression>Выбор
+	Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И InvoiceDueDateFrom &lt;= &amp;Период
+		Тогда USDAmount - Paid - FcstCollect
+	Иначе 0
+Конец + Выбор
+	Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
+		Тогда USDAmount - FcstCollect - Paid - Insolvent
+	Иначе 0
+Конец</dcsset:totalExpression>
+					<dcsset:totalExpressionPresentation>Выбор
+	Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И [Invoice.Due date from] &lt;= &amp;Period
+		Тогда [USD Amount] - Paid - [Fcst Collect]
+	Иначе 0
+Конец + Выбор
+	Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
+		Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation]
+	Иначе 0
+Конец</dcsset:totalExpressionPresentation>
+				</dcsset:item>
+			</dcsset:userFields>
+			<dcsset:selection>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>CustUName</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemFolder">
+					<dcsset:item xsi:type="dcsset:SelectedItemField">
+						<dcsset:field>Paid</dcsset:field>
+					</dcsset:item>
+					<dcsset:item xsi:type="dcsset:SelectedItemField">
+						<dcsset:field>FcstCollect</dcsset:field>
+						<dcsset:lwsTitle>
+							<v8:item>
+								<v8:lang>ru</v8:lang>
+								<v8:content>Forecasted Collections</v8:content>
+							</v8:item>
+						</dcsset:lwsTitle>
+					</dcsset:item>
+					<dcsset:item xsi:type="dcsset:SelectedItemFolder">
+						<dcsset:lwsTitle>
+							<v8:item>
+								<v8:lang>ru</v8:lang>
+								<v8:content>  </v8:content>
+							</v8:item>
+						</dcsset:lwsTitle>
+						<dcsset:item xsi:type="dcsset:SelectedItemField">
+							<dcsset:field>ПользовательскиеПоля.Поле1</dcsset:field>
+						</dcsset:item>
+						<dcsset:item xsi:type="dcsset:SelectedItemField">
+							<dcsset:field>ПользовательскиеПоля.Поле4</dcsset:field>
+						</dcsset:item>
+						<dcsset:item xsi:type="dcsset:SelectedItemField">
+							<dcsset:field>ПользовательскиеПоля.Поле5</dcsset:field>
+						</dcsset:item>
+						<dcsset:placement>Horizontally</dcsset:placement>
+					</dcsset:item>
+					<dcsset:item xsi:type="dcsset:SelectedItemField">
+						<dcsset:field>ПользовательскиеПоля.Поле2</dcsset:field>
+					</dcsset:item>
+					<dcsset:item xsi:type="dcsset:SelectedItemField">
+						<dcsset:field>ПользовательскиеПоля.Поле3</dcsset:field>
+					</dcsset:item>
+					<dcsset:item xsi:type="dcsset:SelectedItemField">
+						<dcsset:field>Insolvent</dcsset:field>
+						<dcsset:lwsTitle>
+							<v8:item>
+								<v8:lang>ru</v8:lang>
+								<v8:content>Under Litigation</v8:content>
+							</v8:item>
+						</dcsset:lwsTitle>
+					</dcsset:item>
+					<dcsset:item xsi:type="dcsset:SelectedItemField">
+						<dcsset:field>USDAmount</dcsset:field>
+						<dcsset:lwsTitle>
+							<v8:item>
+								<v8:lang>ru</v8:lang>
+								<v8:content>AR Billed Balance</v8:content>
+							</v8:item>
+						</dcsset:lwsTitle>
+					</dcsset:item>
+					<dcsset:placement>Horizontally</dcsset:placement>
+				</dcsset:item>
+			</dcsset:selection>
+			<dcsset:filter>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:left xsi:type="dcscor:Field">ГоловнойКонтрагент</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:right xsi:type="dcscor:DesignTimeValue">Справочник.Контрагенты.NonTrade</dcsset:right>
+					<dcsset:userSettingID>4a89347b-af7d-44db-9f28-8e3e0dc103d8</dcsset:userSettingID>
+					<dcsset:userSettingPresentation xsi:type="v8:LocalStringType">
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Corporate</v8:content>
+						</v8:item>
+					</dcsset:userSettingPresentation>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:left xsi:type="dcscor:Field">SubSubSegment.БазовыйЭлемент.Родитель.Родитель</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:right xsi:type="dcscor:DesignTimeValue">Справочник.HFM_Technology.ПустаяСсылка</dcsset:right>
+					<dcsset:userSettingID>a6551a64-859c-44b1-a8ac-69d180d38a57</dcsset:userSettingID>
+					<dcsset:userSettingPresentation xsi:type="v8:LocalStringType">
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Segment</v8:content>
+						</v8:item>
+					</dcsset:userSettingPresentation>
+				</dcsset:item>
+			</dcsset:filter>
+			<dcsset:dataParameters>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>Период</dcscor:parameter>
+					<dcscor:value xsi:type="v8:StandardBeginningDate">
+						<v8:variant xsi:type="v8:StandardBeginningDateVariant">BeginningOfNextDay</v8:variant>
+					</dcscor:value>
+				</dcscor:item>
+			</dcsset:dataParameters>
+			<dcsset:conditionalAppearance>
+				<dcsset:item>
+					<dcsset:selection>
+						<dcsset:item>
+							<dcsset:field>ПользовательскиеПоля.Поле1</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>ПользовательскиеПоля.Поле2</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>ПользовательскиеПоля.Поле3</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>ПользовательскиеПоля.Поле4</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>ПользовательскиеПоля.Поле5</dcsset:field>
+						</dcsset:item>
+					</dcsset:selection>
+					<dcsset:filter/>
+					<dcsset:appearance>
+						<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+							<dcscor:parameter>Формат</dcscor:parameter>
+							<dcscor:value xsi:type="v8:LocalStringType">
+								<v8:item>
+									<v8:lang>ru</v8:lang>
+									<v8:content>ЧДЦ=2</v8:content>
+								</v8:item>
+							</dcscor:value>
+						</dcscor:item>
+					</dcsset:appearance>
+				</dcsset:item>
+			</dcsset:conditionalAppearance>
+			<dcsset:outputParameters>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>МакетОформления</dcscor:parameter>
+					<dcscor:value xsi:type="xs:string">Море</dcscor:value>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>РасположениеРеквизитов</dcscor:parameter>
+					<dcscor:value xsi:type="dcsset:DataCompositionAttributesPlacement">Separately</dcscor:value>
+				</dcscor:item>
+			</dcsset:outputParameters>
+			<dcsset:item xsi:type="dcsset:StructureItemGroup">
+				<dcsset:groupItems>
+					<dcsset:item xsi:type="dcsset:GroupItemField">
+						<dcsset:field>UID</dcsset:field>
+						<dcsset:groupType>Items</dcsset:groupType>
+						<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
+						<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
+						<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
+					</dcsset:item>
+					<dcsset:item xsi:type="dcsset:GroupItemField">
+						<dcsset:field>CustUName</dcsset:field>
+						<dcsset:groupType>Items</dcsset:groupType>
+						<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
+						<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
+						<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
+					</dcsset:item>
+				</dcsset:groupItems>
 				<dcsset:order>
 					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
 				</dcsset:order>
