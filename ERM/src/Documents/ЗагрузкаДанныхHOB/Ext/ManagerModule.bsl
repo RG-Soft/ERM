@@ -475,6 +475,7 @@
 		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.LegalEntiites КАК LegalEntiites
 		|		ПО ВТ_HOBAccrualsSourceData.LegalEntity = LegalEntiites.Код
 		|			И (НЕ LegalEntiites.ПометкаУдаления)
+		|			И (LegalEntiites.Source = &ТипВнешнейСистемы)
 		|ГДЕ
 		|	LegalEntiites.Ссылка ЕСТЬ NULL 
 		|;
@@ -884,6 +885,7 @@
 		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.LegalEntiites КАК LegalEntiites
 		|		ПО ВТ_HOBJVSourceData.LegalEntity = LegalEntiites.Код
 		|			И (НЕ LegalEntiites.ПометкаУдаления)
+		|			И (LegalEntiites.Source = &ТипВнешнейСистемы)
 		|ГДЕ
 		|	LegalEntiites.Ссылка ЕСТЬ NULL 
 		|;
@@ -1328,6 +1330,7 @@
 		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.LegalEntiites КАК LegalEntiites
 		|		ПО ВТ_HOBReceivablesSourceData.LegalEntity = LegalEntiites.Код
 		|			И (НЕ LegalEntiites.ПометкаУдаления)
+		|			И (LegalEntiites.Source = &ТипВнешнейСистемы)
 		|ГДЕ
 		|	LegalEntiites.Ссылка ЕСТЬ NULL 
 		|;
@@ -1808,8 +1811,10 @@
 		|		ПО ВТ_ДанныеФайла.InvoiceCurrency = ВТ_СоответствиеCurrency1.Идентификатор
 		|		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_СоответствиеCurrency КАК ВТ_СоответствиеCurrency2
 		|		ПО ВТ_ДанныеФайла.SalesOrderCurrency = ВТ_СоответствиеCurrency2.Идентификатор
-		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.LegalEntiites КАК LegalEntiites
+		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.LegalEntiites КАК LegalEntiites
 		|		ПО ВТ_ДанныеФайла.LegalEntity = LegalEntiites.Код
+		|			И (LegalEntiites.Source = &ТипВнешнейСистемы)
+		|			И ВТ_ДанныеФайла.CompanyCode = LegalEntiites.Владелец.Код
 		|ГДЕ
 		|	ВТ_ДанныеФайла.AUType = ""Lawson""
 		|
@@ -1901,8 +1906,10 @@
 		|					И ПодразделенияОрганизаций.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
 		|				ИЛИ ВТ_ДанныеФайла.AUType = ""Oracle SII""
 		|					И ПодразделенияОрганизаций.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith))
-		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.LegalEntiites КАК LegalEntiites
+		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.LegalEntiites КАК LegalEntiites
 		|		ПО ВТ_ДанныеФайла.LegalEntity = LegalEntiites.Код
+		|			И (LegalEntiites.Source = &ТипВнешнейСистемы)
+		|			И ВТ_ДанныеФайла.CompanyCode = LegalEntiites.Владелец.Код
 		|ГДЕ
 		|	ВТ_ДанныеФайла.AUType <> ""Lawson""
 		|
@@ -2134,8 +2141,10 @@
 		|			И (НЕ КостЦентры.ПометкаУдаления)
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_СоответствиеCurrency КАК ВТ_СоответствиеCurrency
 		|		ПО ВТ_ДанныеФайла.Currency = ВТ_СоответствиеCurrency.Идентификатор
-		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.LegalEntiites КАК LegalEntiites
+		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.LegalEntiites КАК LegalEntiites
 		|		ПО ВТ_ДанныеФайла.LegalEntity = LegalEntiites.Код
+		|			И (LegalEntiites.Source = &ТипВнешнейСистемы)
+		|			И ВТ_ДанныеФайла.CompanyCode = LegalEntiites.Владелец.Код
 		|ГДЕ
 		|	ВТ_ДанныеФайла.AUType = ""Lawson""
 		|
@@ -2192,8 +2201,10 @@
 		|					И ПодразделенияОрганизаций.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
 		|				ИЛИ ВТ_ДанныеФайла.AUType = ""Oracle SII""
 		|					И ПодразделенияОрганизаций.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith))
-		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.LegalEntiites КАК LegalEntiites
+		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.LegalEntiites КАК LegalEntiites
 		|		ПО ВТ_ДанныеФайла.LegalEntity = LegalEntiites.Код
+		|			И (LegalEntiites.Source = &ТипВнешнейСистемы)
+		|			И ВТ_ДанныеФайла.CompanyCode = LegalEntiites.Владелец.Код
 		|ГДЕ
 		|	ВТ_ДанныеФайла.AUType <> ""Lawson""
 		|
@@ -2544,8 +2555,10 @@
 		|		ПО ВТ_ДанныеФайла.INN = ВТ_СоответствиеКлиентовCustomerNumber.Идентификатор
 		|		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_СоответствиеCurrency КАК ВТ_СоответствиеCurrency1
 		|		ПО ВТ_ДанныеФайла.InvoiceCurrency = ВТ_СоответствиеCurrency1.Идентификатор
-		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.LegalEntiites КАК LegalEntiites
+		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.LegalEntiites КАК LegalEntiites
 		|		ПО ВТ_ДанныеФайла.LegalEntity = LegalEntiites.Код
+		|			И (LegalEntiites.Source = &ТипВнешнейСистемы)
+		|			И ВТ_ДанныеФайла.CompanyCode = LegalEntiites.Владелец.Код
 		|ГДЕ
 		|	ВТ_ДанныеФайла.AUType = ""Lawson""
 		|
@@ -2627,8 +2640,10 @@
 		|					И ПодразделенияОрганизаций.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
 		|				ИЛИ ВТ_ДанныеФайла.AUType = ""Oracle SII""
 		|					И ПодразделенияОрганизаций.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith))
-		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.LegalEntiites КАК LegalEntiites
+		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.LegalEntiites КАК LegalEntiites
 		|		ПО ВТ_ДанныеФайла.LegalEntity = LegalEntiites.Код
+		|			И (LegalEntiites.Source = &ТипВнешнейСистемы)
+		|			И ВТ_ДанныеФайла.CompanyCode = LegalEntiites.Владелец.Код
 		|ГДЕ
 		|	ВТ_ДанныеФайла.AUType <> ""Lawson""
 		|
