@@ -228,10 +228,10 @@
 	СтрокаТЗ.ИмяПоля = "InvoiceFlagDate";
 	СтрокаТЗ.ИмяКолонки = "InvoiceFlagDate";
 	
-	//// Last Updated Date
-	//СтрокаТЗ = СтруктураКолонок.Добавить();
-	//СтрокаТЗ.ИмяПоля = "LastUpdatedDate";
-	//СтрокаТЗ.ИмяКолонки = "Last Updated Date";
+	//ShipmentDate
+	СтрокаТЗ = СтруктураКолонок.Добавить();
+	СтрокаТЗ.ИмяПоля = "ShipmentDate";
+	СтрокаТЗ.ИмяКолонки = "ShipmentDate";
 	
 	// FieldTicket
 	СтрокаТЗ = СтруктураКолонок.Добавить();
@@ -348,7 +348,8 @@
 	|	OracleSalesOrdersDetailsSourceData.ApprovalDate КАК ApprovalDate,
 	|	OracleSalesOrdersDetailsSourceData.InvoiceFlagDate КАК InvoiceFlagDate,
 	|	OracleSalesOrdersDetailsSourceData.FieldTicket КАК FieldTicket,
-	|	OracleSalesOrdersDetailsSourceData.DOC_ID КАК DOC_ID
+	|	OracleSalesOrdersDetailsSourceData.DOC_ID КАК DOC_ID,
+	|	OracleSalesOrdersDetailsSourceData.ShipmentDate
 	|ПОМЕСТИТЬ Исходники
 	|ИЗ
 	|	РегистрСведений.OracleSalesOrdersDetailsSourceData КАК OracleSalesOrdersDetailsSourceData
@@ -379,7 +380,8 @@
 	|	Исходники.DOC_ID КАК DOC_ID,
 	|	ДокInvoice.Ссылка КАК СсылкаInvoice,
 	|	SalesOrder.Ссылка КАК СсылкаSalesOrder,
-	|	Организации.Ссылка КАК СсылкаОрганизация
+	|	Организации.Ссылка КАК СсылкаОрганизация,
+	|	Исходники.ShipmentDate
 	|ПОМЕСТИТЬ ИсходникиСсылки
 	|ИЗ
 	|	Исходники КАК Исходники
@@ -466,7 +468,8 @@
 	|	ИсходникиСсылки.СсылкаSalesOrder,
 	|	ИсходникиСсылки.СсылкаОрганизация,
 	|	ВалютыСсылка.ОбъектПриемника КАК СсылкаВалюта,
-	|	КлиентыСсылка.ОбъектПриемника КАК СсылкаКлиент
+	|	КлиентыСсылка.ОбъектПриемника КАК СсылкаКлиент,
+	|	ИсходникиСсылки.ShipmentDate
 	|ИЗ
 	|	ИсходникиСсылки КАК ИсходникиСсылки
 	|		ЛЕВОЕ СОЕДИНЕНИЕ КлиентыСсылка КАК КлиентыСсылка
@@ -525,7 +528,7 @@
 		//РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.AgreementType, Выборка.AgreementType);
 		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.Company, Выборка.СсылкаОрганизация);
 		//РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.ArInvoice, Выборка.LawsonInvoice);
-		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.Invoice, Выборка.СсылкаInvoice);
+		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.Invoice,?(ЗначениеЗаполнено(Выборка.СсылкаInvoice), Выборка.СсылкаInvoice, Документы.Invoice.ПустаяСсылка()));
 		//РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.SiebelOrderId, Выборка.OrderID);
 		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.FieldTicket, Выборка.FieldTicket);
 		//РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.JobStartDate, Выборка.OrderJobStartDate);
@@ -546,6 +549,7 @@
 		ApprovalDate = Неопределено;
 		FirstSubmissionDate = Неопределено;
 		InvoiceFlagDate = Выборка.InvoiceFlagDate;
+		
 		
 		Если Выборка.FirstSubmissionDate = ПустаяДата Тогда
 			FirstSubmissionDate = InvoiceFlagDate;
@@ -616,6 +620,16 @@
 			
 		КонецЕсли;
 		
+		// { RGS TAlmazova 23.01.2017 15:00:33 - обновление комментария для СО
+		ОбновитьСтатусСО(Выборка.СсылкаSalesOrder, Выборка.ERPStatus, Выборка.ShipmentDate, ТекстОшибки);
+		Если ТекстОшибки <> "" Тогда
+			ОтменитьТранзакцию();
+			ДанныеДляЗаполнения.Вставить("ОшибкаЗаполнения", ТекстОшибки);
+			ПоместитьВоВременноеХранилище(ДанныеДляЗаполнения, АдресХранилища);
+			Возврат;
+		КонецЕсли;
+		// } RGS TAlmazova 23.01.2017 15:00:44 - обновление комментария для СО
+		
 	КонецЦикла;
 	
 	ЗафиксироватьТранзакцию();
@@ -632,6 +646,101 @@
 		
 	ПоместитьВоВременноеХранилище(ДанныеДляЗаполнения, АдресХранилища);
 	
+КонецПроцедуры
+
+Процедура ОбновитьСтатусСО(SalesOrder, ERPStatus, ShipmentDate, ТекстОшибки)
+	
+	ТекущаяДата = ТекущаяДата();
+	ПустаяДата = '00010101';
+	
+	AutoUser = Справочники.Пользователи.НайтиПоНаименованию("AutoUser");
+	
+	НЗSOComments = РегистрыСведений.SalesOrdersComments.СоздатьНаборЗаписей();
+	НЗSOComments.Отбор.Период.Установить(ТекущаяДата);
+	
+	Если ERPStatus = ВРег("CANCELLED") Тогда
+		 BilledStatus = Перечисления.SalesOrderBilledStatus.Canceled;
+	 ИначеЕсли ERPStatus = ВРег("CLOSED") И ShipmentDate <> ПустаяДата Тогда
+		 BilledStatus = Перечисления.SalesOrderBilledStatus.Billed;
+	 Иначе
+		 BilledStatus = Перечисления.SalesOrderBilledStatus.Unbilled;
+	КонецЕсли;
+	
+	Запрос = Новый Запрос;
+		Запрос.Текст = 
+			"ВЫБРАТЬ
+			|	SalesOrdersCommentsСрезПоследних.Problem,
+			|	SalesOrdersCommentsСрезПоследних.Problem.Reason как Reason,
+			|	SalesOrdersCommentsСрезПоследних.Problem.Billed как Billed,
+			|	SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice как ExpectedDateForInvoice,
+			|	SalesOrdersCommentsСрезПоследних.Problem.EscalateTo как EscalateTo,
+			|	SalesOrdersCommentsСрезПоследних.Problem.Details как Details
+			|ИЗ
+			|	РегистрСведений.SalesOrdersComments.СрезПоследних(, SalesOrder = &SalesOrder) КАК SalesOrdersCommentsСрезПоследних";
+		
+		Запрос.УстановитьПараметр("SalesOrder", SalesOrder);
+		
+		НачатьТранзакцию();
+		ВыборкаДетальныеЗаписи = Запрос.Выполнить().Выбрать();
+		ЗафиксироватьТранзакцию();
+		
+		НЗSOComments.Очистить();
+		ДобавитьКоммент = Ложь;
+		СтруктураРеквизитовПроблемы = Новый Структура("Дата, SalesOrder, User, Reason, Billed, ExpectedDateForInvoice, EscalateTo, Details, Responsibles");
+		
+		Если ВыборкаДетальныеЗаписи.Количество() = 0 Тогда
+			ДобавитьКоммент = Истина;
+			СтруктураРеквизитовПроблемы.Дата = ТекущаяДата;
+			СтруктураРеквизитовПроблемы.SalesOrder = SalesOrder;
+			СтруктураРеквизитовПроблемы.User = AutoUser;
+			СтруктураРеквизитовПроблемы.Billed = BilledStatus;
+			
+		Иначе
+			
+			ВыборкаДетальныеЗаписи.Следующий();
+			
+			Если BilledStatus <> ВыборкаДетальныеЗаписи.Billed Тогда 
+				Если ВыборкаДетальныеЗаписи.Billed = Перечисления.SalesOrderBilledStatus.Unbilled Тогда
+					ДобавитьКоммент = Истина;
+					СтруктураРеквизитовПроблемы.Дата = ТекущаяДата;
+					СтруктураРеквизитовПроблемы.SalesOrder = SalesOrder;
+					СтруктураРеквизитовПроблемы.User = AutoUser;
+					СтруктураРеквизитовПроблемы.Billed = BilledStatus;
+					СтруктураРеквизитовПроблемы.Reason = ВыборкаДетальныеЗаписи.Reason;
+					СтруктураРеквизитовПроблемы.ExpectedDateForInvoice = ВыборкаДетальныеЗаписи.ExpectedDateForInvoice;
+					СтруктураРеквизитовПроблемы.Details = ВыборкаДетальныеЗаписи.Details;
+					Если ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.EscalateTo) Тогда
+						СтруктураРеквизитовПроблемы.Вставить("Responsibles", Новый ТаблицаЗначений);
+						СтруктураРеквизитовПроблемы.EscalateTo = ВыборкаДетальныеЗаписи.EscalateTo;
+						МассивОтветственных = Документы.SalesOrder.ПолучитьОтветственныхПоSO(SalesOrder, ВыборкаДетальныеЗаписи.EscalateTo);
+						Если МассивОтветственных.Количество() = 0 Тогда
+							ТекстОшибки = "For the selected Sales Order is not filled Responsible";
+						КонецЕсли;
+						СтруктураРеквизитовПроблемы.Responsibles.Очистить();
+						Для каждого ТекОтветственный Из МассивОтветственных Цикл
+							НоваяСтрока = СтруктураРеквизитовПроблемы.Responsibles.Добавить();
+							НоваяСтрока.Responsible = ТекОтветственный;
+						КонецЦикла;
+					КонецЕсли;
+				Иначе 
+				 ТекстОшибки = "Sales Order in the Billed or Canceled status of the ERM, and in the Unbilled status in the document loading";
+			 	КонецЕсли;
+			 КонецЕсли;
+		КонецЕсли;
+		
+		Если ТекстОшибки = "" И ДобавитьКоммент Тогда
+			Problem = РегистрыСведений.SalesOrdersComments.СоздатьSalesOrderProblem(СтруктураРеквизитовПроблемы);
+
+			НЗSOComments.Очистить();
+			НЗSOComments.Отбор.SalesOrder.Установить(SalesOrder);
+
+			Запись = НЗSOComments.Добавить();
+			Запись.Период = ТекущаяДата;
+			Запись.SalesOrder = SalesOrder;
+			Запись.Problem = Problem;
+			НЗSOComments.Записать(Ложь);
+		КонецЕсли;
+		
 КонецПроцедуры
 
 #КонецЕсли
