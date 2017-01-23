@@ -482,10 +482,10 @@
 	СтрокаТЗ.ИмяПоля = "InvoiceFlagDate";
 	СтрокаТЗ.ИмяКолонки = "InvoiceFlagDate";
 	
-	//// Last Updated Date
-	//СтрокаТЗ = СтруктураКолонок.Добавить();
-	//СтрокаТЗ.ИмяПоля = "LastUpdatedDate";
-	//СтрокаТЗ.ИмяКолонки = "Last Updated Date";
+	//ShipmentDate
+	СтрокаТЗ = СтруктураКолонок.Добавить();
+	СтрокаТЗ.ИмяПоля = "ShipmentDate";
+	СтрокаТЗ.ИмяКолонки = "ShipmentDate";
 	
 	// FieldTicket
 	СтрокаТЗ = СтруктураКолонок.Добавить();
