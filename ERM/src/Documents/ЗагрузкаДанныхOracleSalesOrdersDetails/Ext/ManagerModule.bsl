@@ -658,9 +658,9 @@
 	НЗSOComments = РегистрыСведений.SalesOrdersComments.СоздатьНаборЗаписей();
 	НЗSOComments.Отбор.Период.Установить(ТекущаяДата);
 	
-	Если ERPStatus = ВРег("CANCELLED") Тогда
+	Если ВРег(ERPStatus) = "CANCELLED" Тогда
 		 BilledStatus = Перечисления.SalesOrderBilledStatus.Canceled;
-	 ИначеЕсли ERPStatus = ВРег("CLOSED") И ShipmentDate <> ПустаяДата Тогда
+	 ИначеЕсли ВРег(ERPStatus) = "CLOSED" И ShipmentDate <> ПустаяДата Тогда
 		 BilledStatus = Перечисления.SalesOrderBilledStatus.Billed;
 	 Иначе
 		 BilledStatus = Перечисления.SalesOrderBilledStatus.Unbilled;
@@ -687,6 +687,8 @@
 		НЗSOComments.Очистить();
 		ДобавитьКоммент = Ложь;
 		СтруктураРеквизитовПроблемы = Новый Структура("Дата, SalesOrder, User, Reason, Billed, ExpectedDateForInvoice, EscalateTo, Details, Responsibles");
+		Responsibles = Новый ТаблицаЗначений;
+		Responsibles.Колонки.Добавить("Responsible");
 		
 		Если ВыборкаДетальныеЗаписи.Количество() = 0 Тогда
 			ДобавитьКоммент = Истина;
@@ -716,11 +718,12 @@
 						Если МассивОтветственных.Количество() = 0 Тогда
 							ТекстОшибки = "For the selected Sales Order is not filled Responsible";
 						КонецЕсли;
-						СтруктураРеквизитовПроблемы.Responsibles.Очистить();
+						Responsibles.Очистить();
 						Для каждого ТекОтветственный Из МассивОтветственных Цикл
-							НоваяСтрока = СтруктураРеквизитовПроблемы.Responsibles.Добавить();
+							НоваяСтрока = Responsibles.Добавить();
 							НоваяСтрока.Responsible = ТекОтветственный;
 						КонецЦикла;
+						СтруктураРеквизитовПроблемы.Responsibles = Responsibles;
 					КонецЕсли;
 				Иначе 
 				 ТекстОшибки = "Sales Order in the Billed or Canceled status of the ERM, and in the Unbilled status in the document loading";
