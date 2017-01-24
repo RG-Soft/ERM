@@ -93,6 +93,17 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>CashBatchДата</dataPath>
 			<field>CashBatchДата</field>
+			<appearance>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>Формат</dcscor:parameter>
+					<dcscor:value xsi:type="v8:LocalStringType">
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>ДФ=MM/dd/yyyy</v8:content>
+						</v8:item>
+					</dcscor:value>
+				</dcscor:item>
+			</appearance>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>InvoiceNum</dataPath>
@@ -118,6 +129,17 @@
 			<dataPath>AU</dataPath>
 			<field>AU</field>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Account</dataPath>
+			<field>Account</field>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>LegalEntity</dataPath>
+			<field>LegalEntity</field>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	PaymentsОбороты.Company,
@@ -134,17 +156,21 @@
 	КОНЕЦ КАК Invoice,
 	PaymentsОбороты.Currency,
 	PaymentsОбороты.AmountОборот,
-	PaymentsОбороты.CashBatch.Дата
+	PaymentsОбороты.CashBatch.Дата,
+	PaymentsОбороты.Account
 ПОМЕСТИТЬ Исходные
 ИЗ
 	РегистрНакопления.Payments.Обороты(
 			,
 			,
 			,
-			Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
+			(Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
 					И Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
 					И Invoice &lt;&gt; НЕОПРЕДЕЛЕНО
-				ИЛИ CashBatch &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)) КАК PaymentsОбороты
+				ИЛИ CashBatch &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка))
+				И Client &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)) КАК PaymentsОбороты
+ГДЕ
+	ПОДСТРОКА(PaymentsОбороты.Account.Код, 1, 6) &lt;&gt; "209000"
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -173,7 +199,8 @@
 		ИНАЧЕ Исходные.Invoice.PaymentNumber
 	КОНЕЦ КАК InvoiceNum,
 	ТИПЗНАЧЕНИЯ(Исходные.Invoice) КАК Type,
-	Исходные.Invoice
+	Исходные.Invoice,
+	Исходные.Account
 ИЗ
 	Исходные КАК Исходные
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;КонецПериода)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
@@ -195,7 +222,8 @@
 		ИНАЧЕ Исходные.Invoice.PaymentNumber
 	КОНЕЦ,
 	ТИПЗНАЧЕНИЯ(Исходные.Invoice),
-	Исходные.Invoice
+	Исходные.Invoice,
+	Исходные.Account
 
 ИМЕЮЩИЕ
 	СУММА(Исходные.AmountОборот) &gt; 0</query>
@@ -443,7 +471,10 @@
 				<dcsset:item>
 					<dcsset:selection>
 						<dcsset:item>
-							<dcsset:field>DateOfCollection</dcsset:field>
+							<dcsset:field>CashBatchДата</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>Invoice.FiscalInvoiceDate</dcsset:field>
 						</dcsset:item>
 					</dcsset:selection>
 					<dcsset:filter/>
