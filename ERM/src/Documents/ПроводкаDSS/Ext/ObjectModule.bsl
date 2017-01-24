@@ -800,7 +800,7 @@
 				НовоеДвижение.Location = Реквизиты.Location;
 				НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 				НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
-				НовоеДвижение.Account = Реквизиты.Account;
+				НовоеДвижение.Account = Реквизиты.AccountLawson;
 				НовоеДвижение.Invoice = Документы.Invoice.ПустаяСсылка();
 				НовоеДвижение.CashBatch = СвязанныеДокументы.CashBatch;
 				Если ИспользоватьВалютуТранзакции Тогда
@@ -820,7 +820,7 @@
 					НовоеДвижение.Location = Реквизиты.Location;
 					НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 					НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
-					НовоеДвижение.Account = Реквизиты.Account;
+					НовоеДвижение.Account = Реквизиты.AccountLawson;
 					НовоеДвижение.Invoice = Документы.Invoice.ПустаяСсылка();
 					НовоеДвижение.CashBatch = Движение.CashBatch;
 					НовоеДвижение.Currency = Движение.Currency;
@@ -837,7 +837,7 @@
 			НовоеДвижение.Location = Реквизиты.Location;
 			НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 			НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
-			НовоеДвижение.Account = Реквизиты.Account;
+			НовоеДвижение.Account = Реквизиты.AccountLawson;
 			НовоеДвижение.Invoice = ?(ЗначениеЗаполнено(СвязанныеДокументы.Invoice), СвязанныеДокументы.Invoice, СвязанныеДокументы.Memo);
 			НовоеДвижение.CashBatch = СвязанныеДокументы.CashBatch;
 			Если ИспользоватьВалютуТранзакции Тогда
