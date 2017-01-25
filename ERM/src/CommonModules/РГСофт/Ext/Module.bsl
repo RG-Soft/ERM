@@ -592,7 +592,7 @@
 		
 		ПолныеДанныеУведомления = ДанныеSalesOrders.Скопировать(СтруктураОтбора);
 		ПолныеДанныеУведомления.Колонки.Удалить("Получатель");
-		ДанныеДляТелаПисьма = ПолныеДанныеУведомления.Скопировать(, "GeoMarket, Segment, CustumerId, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, SalesOrderAmount, Reason");
+		ДанныеДляТелаПисьма = ПолныеДанныеУведомления.Скопировать(, "GeoMarket, Segment, CustumerId, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Amount, Reason");
 		ДанныеДляТелаПисьма.Свернуть("GeoMarket, Segment, CustumerId, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Reason", "SalesOrderAmount");
 		
 		Для Каждого СтрокаДанных из ДанныеДляТелаПисьма Цикл
