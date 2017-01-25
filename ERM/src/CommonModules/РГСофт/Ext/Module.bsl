@@ -606,7 +606,7 @@
 			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.JobEndDate), Формат(СтрокаДанных.JobEndDate, "ДФ=MM/dd/yyyy"), " ") + "</TD>
 			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.InvoiceDate), Формат(СтрокаДанных.InvoiceDate, "ДФ=MM/dd/yyyy"), " ") + "</TD>
 			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Currency), СтрокаДанных.Currency, " ") + "</TD>
-			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.SalesOrderAmount + "</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Amount + "</TD>
 			|<TD style=""padding: 5px; border: 2px solid #000;"">" "</TD>
 			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Reason), СтрокаДанных.Reason, " ") + "</TD>
 			|</TR>";
@@ -859,10 +859,9 @@
 	                |;
 	                |
 	                |////////////////////////////////////////////////////////////////////////////////
-	                |ВЫБРАТЬ
+	                |ВЫБРАТЬ РАЗЛИЧНЫЕ
 	                |	ВТ_SO.SalesOrder,
 	                |	ВТ_SO.Получатель,
-	                |	ВТ_SO.ДатаУведомления,
 	                |	ВТ_SO.Проблема
 	                |ПОМЕСТИТЬ ВТ
 	                |ИЗ
