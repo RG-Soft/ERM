@@ -291,7 +291,13 @@
 	BilledARОстатки.Invoice.Дата,
 	BilledARОстатки.AmountОстаток,
 	BilledARОстатки.Invoice.Amount,
-	BilledARОстатки.Invoice.Agreement
+	ВЫБОР
+		КОГДА BilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Radius)
+				ИЛИ BilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Geofit)
+				ИЛИ BilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.MFG)
+			ТОГДА BilledARОстатки.Invoice.Agreement
+		ИНАЧЕ BilledARОстатки.Invoice.Contract.crmContractName
+	КОНЕЦ
 ИЗ
 	РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, ) КАК BilledARОстатки
 
