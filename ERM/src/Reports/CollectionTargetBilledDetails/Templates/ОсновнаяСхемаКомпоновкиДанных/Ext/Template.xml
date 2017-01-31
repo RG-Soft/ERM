@@ -862,6 +862,8 @@
 	Collectors.Collector,
 	ВЫБОР
 		КОГДА ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Radius)
+				ИЛИ ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Geofit)
+				ИЛИ ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.MFG)
 			ТОГДА ВТ_Остатки.Invoice.Agreement
 		ИНАЧЕ ВТ_Остатки.Invoice.Contract.crmContractName
 	КОНЕЦ КАК Agreement,
@@ -997,11 +999,6 @@
 	ВТ_Остатки.Source,
 	ВТ_Остатки.Location,
 	Collectors.Collector,
-	ВЫБОР
-		КОГДА ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Radius)
-			ТОГДА ВТ_Остатки.Invoice.Agreement
-		ИНАЧЕ ВТ_Остатки.Invoice.Contract.crmContractName
-	КОНЕЦ,
 	ВТ_Остатки.Invoice.ClientID,
 	ВТ_Остатки.Invoice.ДатаВозвратаКС,
 	ВТ_Остатки.Invoice.ДатаОтправкиКС,
@@ -1061,6 +1058,13 @@
 		КОГДА ВТ_BUcAU.BU ЕСТЬ NULL 
 			ТОГДА ЕСТЬNULL(ВТ_BUБезAU.BU, ЗНАЧЕНИЕ(Справочник.BusinessUnits.ПустаяСсылка))
 		ИНАЧЕ ВТ_BUcAU.BU
+	КОНЕЦ,
+	ВЫБОР
+		КОГДА ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Radius)
+				ИЛИ ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Geofit)
+				ИЛИ ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.MFG)
+			ТОГДА ВТ_Остатки.Invoice.Agreement
+		ИНАЧЕ ВТ_Остатки.Invoice.Contract.crmContractName
 	КОНЕЦ
 
 ИМЕЮЩИЕ
