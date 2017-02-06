@@ -593,7 +593,7 @@
 		ПолныеДанныеУведомления = ДанныеSalesOrders.Скопировать(СтруктураОтбора);
 		ПолныеДанныеУведомления.Колонки.Удалить("Получатель");
 		ДанныеДляТелаПисьма = ПолныеДанныеУведомления.Скопировать(, "GeoMarket, Segment, CustumerId, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Amount, Reason");
-		ДанныеДляТелаПисьма.Свернуть("GeoMarket, Segment, CustumerId, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Reason", "SalesOrderAmount");
+		ДанныеДляТелаПисьма.Свернуть("GeoMarket, Segment, CustumerId, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Reason", "Amount");
 		
 		Для Каждого СтрокаДанных из ДанныеДляТелаПисьма Цикл
 				
@@ -878,8 +878,8 @@
 	                |	ВТ.SalesOrder.SubSubSegment.БазовыйЭлемент.Родитель.Родитель КАК Segment,
 	                |	ВТ.SalesOrder.Client КАК Client,
 	                |	ВТ.SalesOrder.Currency КАК Currency,
-	                |	UnbilledARОстатки.AmountОстаток КАК Amount,
-	                |	ВЫРАЗИТЬ(UnbilledARОстатки.AmountОстаток / ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 1) * ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Кратность, 1) КАК ЧИСЛО(15, 2)) КАК AmountUSD,
+	                |	ЕСТЬNULL(UnbilledARОстатки.AmountОстаток, 0) КАК Amount,
+	                |	ВЫРАЗИТЬ(ЕСТЬNULL(UnbilledARОстатки.AmountОстаток, 0) / ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 1) * ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Кратность, 1) КАК ЧИСЛО(15, 2)) КАК AmountUSD,
 	                |	ВТ.SalesOrder.Client.CRMID КАК CustumerId,
 	                |	ВТ.Получатель.Mail КАК Получатель,
 	                |	ВТ.SalesOrder.Номер КАК InvoiceNumber,
