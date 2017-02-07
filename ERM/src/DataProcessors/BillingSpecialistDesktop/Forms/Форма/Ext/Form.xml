@@ -472,7 +472,7 @@
 					<ExtendedTooltip name="SalesOrdersEscalateToРасширеннаяПодсказка" id="164"/>
 				</LabelField>
 				<LabelField name="SalesOrdersDetails" id="168">
-					<DataPath>SalesOrders.Details</DataPath>
+					<DataPath>~SalesOrders.Details</DataPath>
 					<ContextMenu name="SalesOrdersDetailsКонтекстноеМеню" id="169"/>
 					<ExtendedTooltip name="SalesOrdersDetailsРасширеннаяПодсказка" id="170"/>
 				</LabelField>
@@ -555,9 +555,9 @@
 	ВложенныйЗапрос.Segment,
 	ВложенныйЗапрос.Currency,
 	ВложенныйЗапрос.AU,
-	ВложенныйЗапрос.RemainingAmount,
+	СУММА(ВложенныйЗапрос.RemainingAmount) КАК RemainingAmount,
 	ВложенныйЗапрос.НетКомментария,
-	ВложенныйЗапрос.SalesAmount,
+	СУММА(ВложенныйЗапрос.SalesAmount) КАК SalesAmount,
 	ВложенныйЗапрос.SalesOrder,
 	ВложенныйЗапрос.SalesDate,
 	ВложенныйЗапрос.SalesNo,
@@ -565,7 +565,7 @@
 	ВложенныйЗапрос.Status,
 	ВложенныйЗапрос.ExpectedDateForInvoice,
 	ВложенныйЗапрос.EscalateTo,
-	ВложенныйЗапрос.Details,
+	ВЫРАЗИТЬ(ВложенныйЗапрос.Details КАК СТРОКА(1024)) КАК Поле1,
 	ВложенныйЗапрос.ResponsiblesList,
 	ВложенныйЗапрос.JobEndDate,
 	ВложенныйЗапрос.Aging,
@@ -576,7 +576,7 @@
 	ВложенныйЗапрос.Agreement,
 	ВложенныйЗапрос.CustomerID,
 	ВложенныйЗапрос.Rate,
-	ВложенныйЗапрос.RemainingAmountUSD
+	СУММА(ВложенныйЗапрос.RemainingAmountUSD) КАК RemainingAmountUSD
 ИЗ
 	(ВЫБРАТЬ
 		UnbilledARОстатки.Client КАК Customer,
@@ -651,8 +651,6 @@
 			ПО UnbilledARОстатки.SalesOrder = SalesOrdersCommentsСрезПоследних.SalesOrder
 			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
 			ПО UnbilledARОстатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
-			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПервых КАК SalesOrdersCommentsСрезПервых
-			ПО UnbilledARОстатки.SalesOrder = SalesOrdersCommentsСрезПервых.SalesOrder
 			{ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrderResponsibles КАК SalesOrderResponsibles
 			ПО UnbilledARОстатки.SalesOrder = SalesOrderResponsibles.SalesOrder}
 			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrderResponsiblesList КАК SalesOrderResponsiblesList
@@ -710,7 +708,36 @@
 			ПО ManualTransactionsОстатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
 	{ГДЕ
 		ManualTransactionsОстатки.Source.*,
-		ManualTransactionsОстатки.Company.*}) КАК ВложенныйЗапрос</QueryText>
+		ManualTransactionsОстатки.Company.*}) КАК ВложенныйЗапрос
+
+СГРУППИРОВАТЬ ПО
+	ВложенныйЗапрос.Customer,
+	ВложенныйЗапрос.Company,
+	ВложенныйЗапрос.Source,
+	ВложенныйЗапрос.Account,
+	ВложенныйЗапрос.Location,
+	ВложенныйЗапрос.Segment,
+	ВложенныйЗапрос.Currency,
+	ВложенныйЗапрос.AU,
+	ВложенныйЗапрос.НетКомментария,
+	ВложенныйЗапрос.SalesOrder,
+	ВложенныйЗапрос.SalesDate,
+	ВложенныйЗапрос.SalesNo,
+	ВложенныйЗапрос.Reason,
+	ВложенныйЗапрос.Status,
+	ВложенныйЗапрос.ExpectedDateForInvoice,
+	ВложенныйЗапрос.EscalateTo,
+	ВЫРАЗИТЬ(ВложенныйЗапрос.Details КАК СТРОКА(1024)),
+	ВложенныйЗапрос.ResponsiblesList,
+	ВложенныйЗапрос.JobEndDate,
+	ВложенныйЗапрос.ResponsibleAR,
+	ВложенныйЗапрос.GeoMarket,
+	ВложенныйЗапрос.SubGeoMarket,
+	ВложенныйЗапрос.Agreement,
+	ВложенныйЗапрос.CustomerID,
+	ВложенныйЗапрос.Aging,
+	ВложенныйЗапрос.AgedDeferral,
+	ВложенныйЗапрос.Rate</QueryText>
 				<ListSettings>
 					<dcsset:filter>
 						<dcsset:viewMode>Normal</dcsset:viewMode>
