@@ -648,7 +648,11 @@
 				ТОГДА UnbilledARОстатки.AmountОстаток
 			ИНАЧЕ ВЫРАЗИТЬ(UnbilledARОстатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2))
 		КОНЕЦ КАК RemainingAmountUSD,
-		UnbilledARОстатки.LegalEntity КАК LegalEntity
+		ВЫБОР
+			КОГДА UnbilledARОстатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+				ТОГДА UnbilledARОстатки.LegalEntity
+			ИНАЧЕ UnbilledARОстатки.Company.DefaultLegalEntity
+		КОНЕЦ КАК LegalEntity
 	ИЗ
 		РегистрНакопления.UnbilledAR.Остатки(
 				{(&amp;ПериодОстатков)},
@@ -709,7 +713,11 @@
 				ТОГДА ManualTransactionsОстатки.AmountОстаток
 			ИНАЧЕ ВЫРАЗИТЬ(ManualTransactionsОстатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2))
 		КОНЕЦ,
-		ManualTransactionsОстатки.LegalEntity
+		ВЫБОР
+			КОГДА ManualTransactionsОстатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+				ТОГДА ManualTransactionsОстатки.LegalEntity
+			ИНАЧЕ ManualTransactionsОстатки.Company.DefaultLegalEntity
+		КОНЕЦ
 	ИЗ
 		РегистрНакопления.ManualTransactions.Остатки({(&amp;ПериодОстатков)}, Account.БазовыйЭлемент = &amp;HFMUnbilledAccount {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК ManualTransactionsОстатки
 			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
