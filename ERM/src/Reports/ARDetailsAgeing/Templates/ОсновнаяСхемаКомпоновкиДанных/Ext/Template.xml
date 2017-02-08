@@ -240,9 +240,6 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>LegalEntity</dataPath>
 			<field>LegalEntity</field>
-			<role>
-				<dcscom:dimension>true</dcscom:dimension>
-			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>DocumentFiscalInvoiceNo</dataPath>
@@ -272,7 +269,11 @@
 	UnbilledARОстатки.AmountОстаток,
 	UnbilledARОстатки.SalesOrder.Amount КАК TransactionAmount,
 	UnbilledARОстатки.SalesOrder.Agreement КАК Agreement,
-	UnbilledARОстатки.LegalEntity
+	ВЫБОР
+		КОГДА UnbilledARОстатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+			ТОГДА UnbilledARОстатки.LegalEntity
+		ИНАЧЕ UnbilledARОстатки.Company.DefaultLegalEntity
+	КОНЕЦ КАК LegalEntity
 ПОМЕСТИТЬ ВТ_Остатки
 ИЗ
 	РегистрНакопления.UnbilledAR.Остатки({(&amp;ПериодОстатков)}, ) КАК UnbilledARОстатки
@@ -302,7 +303,11 @@
 			ТОГДА BilledARОстатки.Invoice.Agreement
 		ИНАЧЕ BilledARОстатки.Invoice.Contract.crmContractName
 	КОНЕЦ,
-	BilledARОстатки.LegalEntity
+	ВЫБОР
+		КОГДА BilledARОстатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+			ТОГДА BilledARОстатки.LegalEntity
+		ИНАЧЕ BilledARОстатки.Company.DefaultLegalEntity
+	КОНЕЦ
 ИЗ
 	РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, ) КАК BilledARОстатки
 
@@ -329,7 +334,11 @@
 	-UnallocatedCashОстатки.AmountОстаток,
 	0,
 	UnallocatedCashОстатки.CashBatch.Agreement,
-	UnallocatedCashОстатки.LegalEntity
+	ВЫБОР
+		КОГДА UnallocatedCashОстатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+			ТОГДА UnallocatedCashОстатки.LegalEntity
+		ИНАЧЕ UnallocatedCashОстатки.Company.DefaultLegalEntity
+	КОНЕЦ
 ИЗ
 	РегистрНакопления.UnallocatedCash.Остатки({(&amp;ПериодОстатков)}, ) КАК UnallocatedCashОстатки
 ГДЕ
@@ -365,7 +374,11 @@
 	ManualTransactionsОстатки.AmountОстаток,
 	ManualTransactionsОстатки.AmountОстаток,
 	ManualTransactionsОстатки.РучнаяКорректировка.Agreement,
-	ManualTransactionsОстатки.LegalEntity
+	ВЫБОР
+		КОГДА ManualTransactionsОстатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+			ТОГДА ManualTransactionsОстатки.LegalEntity
+		ИНАЧЕ ManualTransactionsОстатки.Company.DefaultLegalEntity
+	КОНЕЦ
 ИЗ
 	РегистрНакопления.ManualTransactions.Остатки({(&amp;ПериодОстатков)}, ) КАК ManualTransactionsОстатки
 
@@ -392,7 +405,11 @@
 	UnallocatedMemoОстатки.AmountОстаток,
 	UnallocatedMemoОстатки.Memo.Amount,
 	UnallocatedMemoОстатки.Memo.Agreement,
-	UnallocatedMemoОстатки.LegalEntity
+	ВЫБОР
+		КОГДА UnallocatedMemoОстатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+			ТОГДА UnallocatedMemoОстатки.LegalEntity
+		ИНАЧЕ UnallocatedMemoОстатки.Company.DefaultLegalEntity
+	КОНЕЦ
 ИЗ
 	РегистрНакопления.UnallocatedMemo.Остатки({(&amp;ПериодОстатков)}, ) КАК UnallocatedMemoОстатки
 
