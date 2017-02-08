@@ -436,15 +436,15 @@
 									<ContextMenu name="InvoicesCompanyКонтекстноеМеню" id="42"/>
 									<ExtendedTooltip name="InvoicesCompanyРасширеннаяПодсказка" id="43"/>
 								</LabelField>
-								<LabelField name="InvoicesLocation" id="35">
-									<DataPath>Invoices.Location</DataPath>
-									<ContextMenu name="InvoicesLocationКонтекстноеМеню" id="36"/>
-									<ExtendedTooltip name="InvoicesLocationРасширеннаяПодсказка" id="37"/>
-								</LabelField>
 								<LabelField name="InvoicesLegalEntity" id="431">
 									<DataPath>Invoices.LegalEntity</DataPath>
 									<ContextMenu name="InvoicesLegalEntityКонтекстноеМеню" id="432"/>
 									<ExtendedTooltip name="InvoicesLegalEntityРасширеннаяПодсказка" id="433"/>
+								</LabelField>
+								<LabelField name="InvoicesLocation" id="35">
+									<DataPath>Invoices.Location</DataPath>
+									<ContextMenu name="InvoicesLocationКонтекстноеМеню" id="36"/>
+									<ExtendedTooltip name="InvoicesLocationРасширеннаяПодсказка" id="37"/>
 								</LabelField>
 								<LabelField name="InvoicesSubSubSegment" id="38">
 									<DataPath>Invoices.SubSubSegment</DataPath>
@@ -1165,7 +1165,11 @@
 			ТОГДА ИСТИНА
 		ИНАЧЕ ЛОЖЬ
 	КОНЕЦ КАК RWDDeadline,
-	BilledARОстатки.LegalEntity
+	ВЫБОР
+		КОГДА BilledARОстатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+			ТОГДА BilledARОстатки.LegalEntity
+		ИНАЧЕ BilledARОстатки.Company.DefaultLegalEntity
+	КОНЕЦ КАК LegalEntity
 ИЗ
 	РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, Invoice ССЫЛКА Документ.Invoice {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket)}) КАК BilledARОстатки
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments.СрезПоследних(, ) КАК InvoiceCommentsСрезПоследних
