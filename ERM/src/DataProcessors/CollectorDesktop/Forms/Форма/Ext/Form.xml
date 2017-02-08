@@ -441,6 +441,11 @@
 									<ContextMenu name="InvoicesLocationКонтекстноеМеню" id="36"/>
 									<ExtendedTooltip name="InvoicesLocationРасширеннаяПодсказка" id="37"/>
 								</LabelField>
+								<LabelField name="InvoicesLegalEntity" id="431">
+									<DataPath>Invoices.LegalEntity</DataPath>
+									<ContextMenu name="InvoicesLegalEntityКонтекстноеМеню" id="432"/>
+									<ExtendedTooltip name="InvoicesLegalEntityРасширеннаяПодсказка" id="433"/>
+								</LabelField>
 								<LabelField name="InvoicesSubSubSegment" id="38">
 									<DataPath>Invoices.SubSubSegment</DataPath>
 									<ContextMenu name="InvoicesSubSubSegmentКонтекстноеМеню" id="39"/>
@@ -1159,7 +1164,8 @@
 				И InvoiceCommentsСрезПоследних.Problem.RWDTargetDate &lt;= &amp;RWDTargetDateГраница
 			ТОГДА ИСТИНА
 		ИНАЧЕ ЛОЖЬ
-	КОНЕЦ КАК RWDDeadline
+	КОНЕЦ КАК RWDDeadline,
+	BilledARОстатки.LegalEntity
 ИЗ
 	РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, Invoice ССЫЛКА Документ.Invoice {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket)}) КАК BilledARОстатки
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments.СрезПоследних(, ) КАК InvoiceCommentsСрезПоследних

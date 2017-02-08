@@ -240,6 +240,9 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>LegalEntity</dataPath>
 			<field>LegalEntity</field>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>DocumentFiscalInvoiceNo</dataPath>
@@ -268,7 +271,8 @@
 	UnbilledARОстатки.SalesOrder.Дата КАК ДатаДокумента,
 	UnbilledARОстатки.AmountОстаток,
 	UnbilledARОстатки.SalesOrder.Amount КАК TransactionAmount,
-	UnbilledARОстатки.SalesOrder.Agreement КАК Agreement
+	UnbilledARОстатки.SalesOrder.Agreement КАК Agreement,
+	UnbilledARОстатки.LegalEntity
 ПОМЕСТИТЬ ВТ_Остатки
 ИЗ
 	РегистрНакопления.UnbilledAR.Остатки({(&amp;ПериодОстатков)}, ) КАК UnbilledARОстатки
@@ -297,7 +301,8 @@
 				ИЛИ BilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.MFG)
 			ТОГДА BilledARОстатки.Invoice.Agreement
 		ИНАЧЕ BilledARОстатки.Invoice.Contract.crmContractName
-	КОНЕЦ
+	КОНЕЦ,
+	BilledARОстатки.LegalEntity
 ИЗ
 	РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, ) КАК BilledARОстатки
 
@@ -323,7 +328,8 @@
 	UnallocatedCashОстатки.CashBatch.Дата,
 	-UnallocatedCashОстатки.AmountОстаток,
 	0,
-	UnallocatedCashОстатки.CashBatch.Agreement
+	UnallocatedCashОстатки.CashBatch.Agreement,
+	UnallocatedCashОстатки.LegalEntity
 ИЗ
 	РегистрНакопления.UnallocatedCash.Остатки({(&amp;ПериодОстатков)}, ) КАК UnallocatedCashОстатки
 ГДЕ
@@ -358,7 +364,8 @@
 	ManualTransactionsОстатки.РучнаяКорректировка.Дата,
 	ManualTransactionsОстатки.AmountОстаток,
 	ManualTransactionsОстатки.AmountОстаток,
-	ManualTransactionsОстатки.РучнаяКорректировка.Agreement
+	ManualTransactionsОстатки.РучнаяКорректировка.Agreement,
+	ManualTransactionsОстатки.LegalEntity
 ИЗ
 	РегистрНакопления.ManualTransactions.Остатки({(&amp;ПериодОстатков)}, ) КАК ManualTransactionsОстатки
 
@@ -384,7 +391,8 @@
 	UnallocatedMemoОстатки.Memo.Дата,
 	UnallocatedMemoОстатки.AmountОстаток,
 	UnallocatedMemoОстатки.Memo.Amount,
-	UnallocatedMemoОстатки.Memo.Agreement
+	UnallocatedMemoОстатки.Memo.Agreement,
+	UnallocatedMemoОстатки.LegalEntity
 ИЗ
 	РегистрНакопления.UnallocatedMemo.Остатки({(&amp;ПериодОстатков)}, ) КАК UnallocatedMemoОстатки
 
@@ -449,7 +457,8 @@
 			ТОГДА -ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс
 		ИНАЧЕ ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс
 	КОНЕЦ КАК BaseAmountОстатокМодуль,
-	ВТ_Остатки.Document.FiscalInvoiceNo
+	ВТ_Остатки.Document.FiscalInvoiceNo,
+	ВТ_Остатки.LegalEntity
 ИЗ
 	ВТ_Остатки КАК ВТ_Остатки
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних КАК ВнутренниеКурсыВалютСрезПоследних
@@ -707,6 +716,9 @@
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>Company</dcsset:field>
+					</dcsset:item>
+					<dcsset:item xsi:type="dcsset:SelectedItemField">
+						<dcsset:field>LegalEntity</dcsset:field>
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>CustomerID</dcsset:field>

@@ -346,6 +346,11 @@
 					<ContextMenu name="SalesOrdersCompanyКонтекстноеМеню" id="255"/>
 					<ExtendedTooltip name="SalesOrdersCompanyРасширеннаяПодсказка" id="256"/>
 				</LabelField>
+				<LabelField name="LegalEntity" id="283">
+					<DataPath>SalesOrders.LegalEntity</DataPath>
+					<ContextMenu name="LegalEntityКонтекстноеМеню" id="284"/>
+					<ExtendedTooltip name="LegalEntityРасширеннаяПодсказка" id="285"/>
+				</LabelField>
 				<LabelField name="SalesOrdersCustomerID" id="223">
 					<DataPath>SalesOrders.CustomerID</DataPath>
 					<ContextMenu name="SalesOrdersCustomerIDКонтекстноеМеню" id="224"/>
@@ -576,7 +581,8 @@
 	ВложенныйЗапрос.Agreement,
 	ВложенныйЗапрос.CustomerID,
 	ВложенныйЗапрос.Rate,
-	СУММА(ВложенныйЗапрос.RemainingAmountUSD) КАК RemainingAmountUSD
+	СУММА(ВложенныйЗапрос.RemainingAmountUSD) КАК RemainingAmountUSD,
+	ВложенныйЗапрос.LegalEntity
 ИЗ
 	(ВЫБРАТЬ
 		UnbilledARОстатки.Client КАК Customer,
@@ -641,7 +647,8 @@
 			КОГДА UnbilledARОстатки.Currency.Код = "USD"
 				ТОГДА UnbilledARОстатки.AmountОстаток
 			ИНАЧЕ ВЫРАЗИТЬ(UnbilledARОстатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2))
-		КОНЕЦ КАК RemainingAmountUSD
+		КОНЕЦ КАК RemainingAmountUSD,
+		UnbilledARОстатки.LegalEntity КАК LegalEntity
 	ИЗ
 		РегистрНакопления.UnbilledAR.Остатки(
 				{(&amp;ПериодОстатков)},
@@ -701,7 +708,8 @@
 			КОГДА ManualTransactionsОстатки.Currency.Код = "USD"
 				ТОГДА ManualTransactionsОстатки.AmountОстаток
 			ИНАЧЕ ВЫРАЗИТЬ(ManualTransactionsОстатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2))
-		КОНЕЦ
+		КОНЕЦ,
+		ManualTransactionsОстатки.LegalEntity
 	ИЗ
 		РегистрНакопления.ManualTransactions.Остатки({(&amp;ПериодОстатков)}, Account.БазовыйЭлемент = &amp;HFMUnbilledAccount {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК ManualTransactionsОстатки
 			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
@@ -737,7 +745,8 @@
 	ВложенныйЗапрос.CustomerID,
 	ВложенныйЗапрос.Aging,
 	ВложенныйЗапрос.AgedDeferral,
-	ВложенныйЗапрос.Rate</QueryText>
+	ВложенныйЗапрос.Rate,
+	ВложенныйЗапрос.LegalEntity</QueryText>
 				<ListSettings>
 					<dcsset:filter>
 						<dcsset:viewMode>Normal</dcsset:viewMode>
