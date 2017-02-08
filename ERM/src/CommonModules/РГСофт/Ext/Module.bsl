@@ -1119,7 +1119,9 @@
 		|						ОчередьУведомлений.Проблема ССЫЛКА Документ.SalesOrderProblem)) КАК SalesOrdersCommentsСрезПоследних
 		|		ПО (ВЫРАЗИТЬ(ОчередьУведомлений.Проблема КАК Документ.SalesOrderProblem).SalesOrder = SalesOrdersCommentsСрезПоследних.SalesOrder)
 		|ГДЕ
-		|	ОчередьУведомлений.Проблема <> SalesOrdersCommentsСрезПоследних.Problem
+		|	(ОчередьУведомлений.Проблема <> SalesOrdersCommentsСрезПоследних.Problem
+		|			ИЛИ SalesOrdersCommentsСрезПоследних.Problem.Billed = ЗНАЧЕНИЕ(Перечисление.SalesOrderBilledStatus.Billed)
+		|			ИЛИ SalesOrdersCommentsСрезПоследних.Problem.Billed = ЗНАЧЕНИЕ(Перечисление.SalesOrderBilledStatus.Canceled))
 		|
 		|ОБЪЕДИНИТЬ ВСЕ
 		|
