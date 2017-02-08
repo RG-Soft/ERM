@@ -34,7 +34,7 @@
 		Возврат;
 	КонецЕсли;
 	
-	Если ЗначениеЗаполнено(EscalateTo) Тогда
+	Если ЗначениеЗаполнено(EscalateTo) И Billed <> Перечисления.SalesOrderBilledStatus.Billed И Billed <> Перечисления.SalesOrderBilledStatus.Canceled Тогда
 		
 		ДобавитьВОчередьУведомлений();
 		
