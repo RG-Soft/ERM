@@ -14,9 +14,30 @@
 КонецПроцедуры
 
 &НаКлиенте
+Процедура RWDDeadlineCollectorПриИзменении(Элемент)
+	
+	ОбработатьИзменениеRWDDeadlineCollector();
+	
+КонецПроцедуры
+
+&НаКлиенте
+Процедура ОбработатьИзменениеRWDDeadlineCollector() Экспорт
+	
+	ОбщегоНазначенияКлиентСервер.УстановитьЭлементОтбораДинамическогоСписка(InvoicesRWDDeadline, "Collector", RWDDeadlineCollector, , , ЗначениеЗаполнено(RWDDeadlineCollector));
+	
+КонецПроцедуры
+
+&НаКлиенте
 Процедура ОбработатьИзменениеBrokenPromisesClient() Экспорт
 	
 	ОбщегоНазначенияКлиентСервер.УстановитьЭлементОтбораДинамическогоСписка(InvoicesBrokenPromises, "Client", BrokenPromisesClient, , , ЗначениеЗаполнено(BrokenPromisesClient));
+	
+КонецПроцедуры
+
+&НаКлиенте
+Процедура ОбработатьИзменениеBrokenPromisesCollector() Экспорт
+	
+	ОбщегоНазначенияКлиентСервер.УстановитьЭлементОтбораДинамическогоСписка(InvoicesBrokenPromises, "Collector", BrokenPromisesCollector, , , ЗначениеЗаполнено(BrokenPromisesCollector));
 	
 КонецПроцедуры
 
@@ -112,14 +133,29 @@
 	
 	ОбщегоНазначенияКлиентСервер.УстановитьПараметрДинамическогоСписка(Invoices, "RWDTargetDateГраница", КонецДня(ТекущаяДата()));
 	ОбщегоНазначенияКлиентСервер.УстановитьПараметрДинамическогоСписка(InvoicesRWDDeadline, "RWDTargetDateГраница", КонецДня(ТекущаяДата()));
-	ОбщегоНазначенияКлиентСервер.УстановитьПараметрДинамическогоСписка(InvoicesRWDDeadline, "Collector", Пользователи.ТекущийПользователь());
+	//ОбщегоНазначенияКлиентСервер.УстановитьПараметрДинамическогоСписка(InvoicesRWDDeadline, "Collector", Пользователи.ТекущийПользователь());
 	
 	ОбщегоНазначенияКлиентСервер.УстановитьПараметрДинамическогоСписка(InvoicesBrokenPromises, "ForecastDateГраница", КонецДня(ТекущаяДата()));
-	ОбщегоНазначенияКлиентСервер.УстановитьПараметрДинамическогоСписка(InvoicesBrokenPromises, "Collector", Пользователи.ТекущийПользователь());
+	//ОбщегоНазначенияКлиентСервер.УстановитьПараметрДинамическогоСписка(InvoicesBrokenPromises, "Collector", Пользователи.ТекущийПользователь());
+	
+	Если Параметры.Свойство("BrokenPromisesClient") Тогда
+		BrokenPromisesClient = Параметры.BrokenPromisesClient;
+		ОбщегоНазначенияКлиентСервер.УстановитьЭлементОтбораДинамическогоСписка(InvoicesBrokenPromises, "Client", BrokenPromisesClient, , , ЗначениеЗаполнено(BrokenPromisesClient));
+	КонецЕсли;
 	
 	Если Параметры.Свойство("RWDDeadlineClient") Тогда
 		RWDDeadlineClient = Параметры.RWDDeadlineClient;
 		ОбщегоНазначенияКлиентСервер.УстановитьЭлементОтбораДинамическогоСписка(InvoicesRWDDeadline, "Client", RWDDeadlineClient, , , ЗначениеЗаполнено(RWDDeadlineClient));
+	КонецЕсли;
+	
+	Если Параметры.Свойство("BrokenPromisesCollector") Тогда
+		BrokenPromisesCollector = Параметры.BrokenPromisesCollector;
+		ОбщегоНазначенияКлиентСервер.УстановитьЭлементОтбораДинамическогоСписка(InvoicesBrokenPromises, "Collector", BrokenPromisesCollector, , , ЗначениеЗаполнено(BrokenPromisesCollector));
+	КонецЕсли;
+	
+	Если Параметры.Свойство("RWDDeadlineCollector") Тогда
+		RWDDeadlineCollector = Параметры.RWDDeadlineCollector;
+		ОбщегоНазначенияКлиентСервер.УстановитьЭлементОтбораДинамическогоСписка(InvoicesRWDDeadline, "Collector", RWDDeadlineCollector, , , ЗначениеЗаполнено(RWDDeadlineCollector));
 	КонецЕсли;
 	
 КонецПроцедуры
@@ -810,6 +846,14 @@
 	КонецЕсли;
 	
 КонецПроцедуры
+
+&НаКлиенте
+Процедура BrokenPromisesCollectorПриИзменении(Элемент)
+	
+	ОбработатьИзменениеBrokenPromisesCollector();
+	
+КонецПроцедуры
+
 
 
 

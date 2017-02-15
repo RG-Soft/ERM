@@ -593,6 +593,14 @@
 							<ShowTitle>false</ShowTitle>
 							<ExtendedTooltip name="ГруппаRWDDeadlineОтборыРасширеннаяПодсказка" id="356"/>
 							<ChildItems>
+								<InputField name="RWDDeadlineCollector" id="434">
+									<DataPath>RWDDeadlineCollector</DataPath>
+									<ContextMenu name="RWDDeadlineCollectorКонтекстноеМеню" id="435"/>
+									<ExtendedTooltip name="RWDDeadlineCollectorРасширеннаяПодсказка" id="436"/>
+									<Events>
+										<Event name="OnChange">RWDDeadlineCollectorПриИзменении</Event>
+									</Events>
+								</InputField>
 								<InputField name="RWDDeadlineClient" id="352">
 									<DataPath>RWDDeadlineClient</DataPath>
 									<ContextMenu name="RWDDeadlineClientКонтекстноеМеню" id="353"/>
@@ -858,6 +866,14 @@
 							<ShowTitle>false</ShowTitle>
 							<ExtendedTooltip name="ГруппаBrokenPromisesОтборыРасширеннаяПодсказка" id="360"/>
 							<ChildItems>
+								<InputField name="BrokenPromisesCollector" id="437">
+									<DataPath>BrokenPromisesCollector</DataPath>
+									<ContextMenu name="BrokenPromisesCollectorКонтекстноеМеню" id="438"/>
+									<ExtendedTooltip name="BrokenPromisesCollectorРасширеннаяПодсказка" id="439"/>
+									<Events>
+										<Event name="OnChange">BrokenPromisesCollectorПриИзменении</Event>
+									</Events>
+								</InputField>
 								<InputField name="BrokenPromisesClient" id="361">
 									<DataPath>BrokenPromisesClient</DataPath>
 									<ContextMenu name="BrokenPromisesClientКонтекстноеМеню" id="362"/>
@@ -1331,7 +1347,7 @@
 	BilledARОстатки.AU,
 	BilledARОстатки.AmountОстаток КАК RemainingAmount,
 	BilledARОстатки.Invoice.Amount КАК Amount,
-	Collectors.Collector КАК Collector,
+	ЕСТЬNULL(Collectors.Collector, ЗНАЧЕНИЕ(Справочник.Пользователи.ПустаяСсылка)) КАК Collector,
 	InvoiceCommentsСрезПоследних.Problem.User КАК User,
 	InvoiceCommentsСрезПоследних.Problem.Status КАК Status,
 	InvoiceCommentsСрезПоследних.Problem.ConfirmedBy КАК ConfirmedBy,
@@ -1359,7 +1375,6 @@
 ГДЕ
 	InvoiceCommentsСрезПоследних.Problem.RWDTargetDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
 	И InvoiceCommentsСрезПоследних.Problem.RWDTargetDate &lt;= &amp;RWDTargetDateГраница
-	И Collectors.Collector = &amp;Collector
 {ГДЕ
 	InvoiceДокумент.Source.*,
 	InvoiceДокумент.Company.*,
@@ -1422,7 +1437,7 @@
 	BilledARОстатки.AU,
 	BilledARОстатки.AmountОстаток КАК RemainingAmount,
 	BilledARОстатки.Invoice.Amount КАК Amount,
-	Collectors.Collector КАК Collector,
+	ЕСТЬNULL(Collectors.Collector, ЗНАЧЕНИЕ(Справочник.Пользователи.ПустаяСсылка)) КАК Collector,
 	InvoiceCommentsСрезПоследних.Problem.User КАК User,
 	InvoiceCommentsСрезПоследних.Problem.Status КАК Status,
 	InvoiceCommentsСрезПоследних.Problem.ConfirmedBy КАК ConfirmedBy,
@@ -1451,7 +1466,6 @@
 	InvoiceCommentsСрезПоследних.Problem.ForecastDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
 	И РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.ForecastDate, &amp;ForecastDateГраница, ДЕНЬ) &gt; 0
 	И InvoiceCommentsСрезПоследних.Problem.Status &lt;&gt; ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid)
-	И Collectors.Collector = &amp;Collector
 {ГДЕ
 	InvoiceДокумент.Source.*,
 	InvoiceДокумент.Company.*,
@@ -1648,6 +1662,28 @@
 			</Title>
 			<Type>
 				<v8:Type>cfg:CatalogRef.HFM_Technology</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="RWDDeadlineCollector" id="28">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Collector</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:CatalogRef.Пользователи</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="BrokenPromisesCollector" id="29">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Collector</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:CatalogRef.Пользователи</v8:Type>
 			</Type>
 		</Attribute>
 	</Attributes>

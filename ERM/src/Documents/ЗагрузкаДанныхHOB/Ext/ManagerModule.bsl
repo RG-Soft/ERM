@@ -3178,7 +3178,7 @@
 
 Процедура ДозаполнитьSalesOrderИзПроводки(SalesOrder, ТранзакцияHOBОбъект, ДанныеДляЗаполнения)
 	
-	РеквизитыSalesOrder = ОбщегоНазначения.ЗначенияРеквизитовОбъекта(SalesOrder, "Client,Company,AU,Account,Location,SubSubSegment,ClientID,CREW");
+	РеквизитыSalesOrder = ОбщегоНазначения.ЗначенияРеквизитовОбъекта(SalesOrder, "Client,Company,AU,Account,Location,SubSubSegment,ClientID,CREW,OriginalAnalytics");
 	
 	Если НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.Client) ИЛИ НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.Company) ИЛИ НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.AU) ИЛИ НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.Account) ИЛИ
 		НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.Location) ИЛИ НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.SubSubSegment) ИЛИ НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.ClientID) ИЛИ НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.CREW) Тогда
@@ -3195,6 +3195,9 @@
 		КонецЕсли;
 		Если НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.ClientID) Тогда
 			SalesOrderОбъект.ClientID = ДанныеДляЗаполнения.CustomerNumber;
+		КонецЕсли;
+		Если НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.OriginalAnalytics) Тогда
+			SalesOrderОбъект.OriginalAnalytics = Формат(ДанныеДляЗаполнения.CompanyCode, "ЧГ=0") + "." + ДанныеДляЗаполнения.AUCode + "." + ДанныеДляЗаполнения.LocationCode + "." + ДанныеДляЗаполнения.AccountCode;
 		КонецЕсли;
 		SalesOrderОбъект.ОбменДанными.Загрузка = Истина;
 		SalesOrderОбъект.Записать(РежимЗаписиДокумента.Запись);
