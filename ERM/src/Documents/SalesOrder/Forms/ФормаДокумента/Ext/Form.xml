@@ -4,6 +4,10 @@
 	<UsePostingMode>Auto</UsePostingMode>
 	<RepostOnWrite>true</RepostOnWrite>
 	<AutoCommandBar name="ФормаКоманднаяПанель" id="-1"/>
+	<Events>
+		<Event name="AfterWriteAtServer">ПослеЗаписиНаСервере</Event>
+		<Event name="OnCreateAtServer">ПриСозданииНаСервере</Event>
+	</Events>
 	<ChildItems>
 		<UsualGroup name="ГруппНомерДата" id="19">
 			<Title>
@@ -101,11 +105,13 @@
 						</InputField>
 						<InputField name="AmountUSD" id="153">
 							<DataPath>Объект.AmountUSD</DataPath>
+							<Visible>false</Visible>
 							<ContextMenu name="AmountUSDКонтекстноеМеню" id="154"/>
 							<ExtendedTooltip name="AmountUSDРасширеннаяПодсказка" id="155"/>
 						</InputField>
 						<InputField name="BaseAmount" id="121">
 							<DataPath>Объект.BaseAmount</DataPath>
+							<Visible>false</Visible>
 							<ContextMenu name="BaseAmountКонтекстноеМеню" id="122"/>
 							<ExtendedTooltip name="BaseAmountРасширеннаяПодсказка" id="123"/>
 						</InputField>
@@ -133,6 +139,9 @@
 							<DataPath>Объект.Source</DataPath>
 							<ContextMenu name="SourceКонтекстноеМеню" id="116"/>
 							<ExtendedTooltip name="SourceРасширеннаяПодсказка" id="117"/>
+							<Events>
+								<Event name="OnChange">SourceПриИзменении</Event>
+							</Events>
 						</InputField>
 						<InputField name="Client" id="16">
 							<DataPath>Объект.Client</DataPath>
@@ -499,6 +508,8 @@
 				</v8:item>
 			</ToolTip>
 			<Group>Horizontal</Group>
+			<Behavior>Collapsible</Behavior>
+			<Collapsed>true</Collapsed>
 			<Representation>NormalSeparation</Representation>
 			<ExtendedTooltip name="ГруппаДополнительныеСведенияРасширеннаяПодсказка" id="31"/>
 			<ChildItems>
@@ -565,11 +576,36 @@
 				</UsualGroup>
 			</ChildItems>
 		</UsualGroup>
-		<InputField name="OriginalAnalytics" id="162">
-			<DataPath>Объект.OriginalAnalytics</DataPath>
-			<ContextMenu name="OriginalAnalyticsКонтекстноеМеню" id="163"/>
-			<ExtendedTooltip name="OriginalAnalyticsРасширеннаяПодсказка" id="164"/>
-		</InputField>
+		<UsualGroup name="ГруппаOriginalAnalytics" id="168">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Группа original analytics</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Группа original analytics</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="ГруппаOriginalAnalyticsРасширеннаяПодсказка" id="169"/>
+			<ChildItems>
+				<InputField name="OriginalAnalytics" id="162">
+					<DataPath>Объект.OriginalAnalytics</DataPath>
+					<ContextMenu name="OriginalAnalyticsКонтекстноеМеню" id="163"/>
+					<ExtendedTooltip name="OriginalAnalyticsРасширеннаяПодсказка" id="164"/>
+				</InputField>
+				<InputField name="CREW" id="170">
+					<DataPath>Объект.CREW</DataPath>
+					<ContextMenu name="CREWКонтекстноеМеню" id="171"/>
+					<ExtendedTooltip name="CREWРасширеннаяПодсказка" id="172"/>
+				</InputField>
+			</ChildItems>
+		</UsualGroup>
 		<UsualGroup name="ГруппаInvoice" id="43">
 			<Title>
 				<v8:item>
