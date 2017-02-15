@@ -476,11 +476,6 @@
 					<ContextMenu name="SalesOrdersEscalateToКонтекстноеМеню" id="163"/>
 					<ExtendedTooltip name="SalesOrdersEscalateToРасширеннаяПодсказка" id="164"/>
 				</LabelField>
-				<LabelField name="SalesOrdersDetails" id="168">
-					<DataPath>~SalesOrders.Details</DataPath>
-					<ContextMenu name="SalesOrdersDetailsКонтекстноеМеню" id="169"/>
-					<ExtendedTooltip name="SalesOrdersDetailsРасширеннаяПодсказка" id="170"/>
-				</LabelField>
 				<LabelField name="SalesOrdersResponsibleAR" id="217">
 					<DataPath>SalesOrders.ResponsibleAR</DataPath>
 					<ContextMenu name="SalesOrdersResponsibleARКонтекстноеМеню" id="218"/>
@@ -570,7 +565,6 @@
 	ВложенныйЗапрос.Status,
 	ВложенныйЗапрос.ExpectedDateForInvoice,
 	ВложенныйЗапрос.EscalateTo,
-	ВЫРАЗИТЬ(ВложенныйЗапрос.Details КАК СТРОКА(1024)) КАК Поле1,
 	ВложенныйЗапрос.ResponsiblesList,
 	ВложенныйЗапрос.JobEndDate,
 	ВложенныйЗапрос.Aging,
@@ -582,7 +576,10 @@
 	ВложенныйЗапрос.CustomerID,
 	ВложенныйЗапрос.Rate,
 	СУММА(ВложенныйЗапрос.RemainingAmountUSD) КАК RemainingAmountUSD,
-	ВложенныйЗапрос.LegalEntity
+	ВложенныйЗапрос.LegalEntity,
+	ВложенныйЗапрос.DateComment,
+	ВЫРАЗИТЬ(ВложенныйЗапрос.ActionItem КАК СТРОКА(1024)) КАК ActionItem,
+	ВЫРАЗИТЬ(ВложенныйЗапрос.ProblemDetails КАК СТРОКА(1024)) КАК ProblemDetails
 ИЗ
 	(ВЫБРАТЬ
 		UnbilledARОстатки.Client КАК Customer,
@@ -615,7 +612,7 @@
 		КОНЕЦ КАК Status,
 		SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice КАК ExpectedDateForInvoice,
 		SalesOrdersCommentsСрезПоследних.Problem.EscalateTo КАК EscalateTo,
-		SalesOrdersCommentsСрезПоследних.Problem.Details КАК Details,
+		SalesOrdersCommentsСрезПоследних.Problem.Details КАК ProblemDetails,
 		SalesOrdersCommentsСрезПоследних.Problem.ResponsiblesList КАК ResponsiblesList,
 		UnbilledARОстатки.SalesOrder.JobEndDate КАК JobEndDate,
 		ВЫБОР
@@ -652,7 +649,9 @@
 			КОГДА UnbilledARОстатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
 				ТОГДА UnbilledARОстатки.LegalEntity
 			ИНАЧЕ UnbilledARОстатки.Company.DefaultLegalEntity
-		КОНЕЦ КАК LegalEntity
+		КОНЕЦ КАК LegalEntity,
+		SalesOrdersCommentsСрезПоследних.Период КАК DateComment,
+		SalesOrdersCommentsСрезПоследних.Problem.ActionItem КАК ActionItem
 	ИЗ
 		РегистрНакопления.UnbilledAR.Остатки(
 				{(&amp;ПериодОстатков)},
@@ -717,7 +716,9 @@
 			КОГДА ManualTransactionsОстатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
 				ТОГДА ManualTransactionsОстатки.LegalEntity
 			ИНАЧЕ ManualTransactionsОстатки.Company.DefaultLegalEntity
-		КОНЕЦ
+		КОНЕЦ,
+		ДАТАВРЕМЯ(1, 1, 1),
+		""
 	ИЗ
 		РегистрНакопления.ManualTransactions.Остатки({(&amp;ПериодОстатков)}, Account.БазовыйЭлемент = &amp;HFMUnbilledAccount {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК ManualTransactionsОстатки
 			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
@@ -743,7 +744,6 @@
 	ВложенныйЗапрос.Status,
 	ВложенныйЗапрос.ExpectedDateForInvoice,
 	ВложенныйЗапрос.EscalateTo,
-	ВЫРАЗИТЬ(ВложенныйЗапрос.Details КАК СТРОКА(1024)),
 	ВложенныйЗапрос.ResponsiblesList,
 	ВложенныйЗапрос.JobEndDate,
 	ВложенныйЗапрос.ResponsibleAR,
@@ -754,7 +754,10 @@
 	ВложенныйЗапрос.Aging,
 	ВложенныйЗапрос.AgedDeferral,
 	ВложенныйЗапрос.Rate,
-	ВложенныйЗапрос.LegalEntity</QueryText>
+	ВложенныйЗапрос.LegalEntity,
+	ВложенныйЗапрос.DateComment,
+	ВЫРАЗИТЬ(ВложенныйЗапрос.ActionItem КАК СТРОКА(1024)),
+	ВЫРАЗИТЬ(ВложенныйЗапрос.ProblemDetails КАК СТРОКА(1024))</QueryText>
 				<ListSettings>
 					<dcsset:filter>
 						<dcsset:viewMode>Normal</dcsset:viewMode>
