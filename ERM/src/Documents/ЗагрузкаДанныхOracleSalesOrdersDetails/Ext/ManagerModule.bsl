@@ -218,10 +218,6 @@
 	СтрокаТЗ.ИмяПоля = "ApprovalDate";
 	СтрокаТЗ.ИмяКолонки = "ApprovalDate";
 	
-	//// Accrue Flag Date
-	//СтрокаТЗ = СтруктураКолонок.Добавить();
-	//СтрокаТЗ.ИмяПоля = "AccrueFlagDate";
-	//СтрокаТЗ.ИмяКолонки = "Accrue Flag Date";
 	//
 	// InvoiceFlagDate
 	СтрокаТЗ = СтруктураКолонок.Добавить();
@@ -237,6 +233,11 @@
 	СтрокаТЗ = СтруктураКолонок.Добавить();
 	СтрокаТЗ.ИмяПоля = "FieldTicket";
 	СтрокаТЗ.ИмяКолонки = "FieldTicket";
+	
+	// Invoice Amount
+	СтрокаТЗ = СтруктураКолонок.Добавить();
+	СтрокаТЗ.ИмяПоля = "InvoiceAmount";
+	СтрокаТЗ.ИмяКолонки = "Invoice Amount";
 	
 КонецПроцедуры
 
@@ -349,7 +350,8 @@
 	|	OracleSalesOrdersDetailsSourceData.InvoiceFlagDate КАК InvoiceFlagDate,
 	|	OracleSalesOrdersDetailsSourceData.FieldTicket КАК FieldTicket,
 	|	OracleSalesOrdersDetailsSourceData.DOC_ID КАК DOC_ID,
-	|	OracleSalesOrdersDetailsSourceData.ShipmentDate
+	|	OracleSalesOrdersDetailsSourceData.ShipmentDate,
+	|	OracleSalesOrdersDetailsSourceData.InvoiceAmount
 	|ПОМЕСТИТЬ Исходники
 	|ИЗ
 	|	РегистрСведений.OracleSalesOrdersDetailsSourceData КАК OracleSalesOrdersDetailsSourceData
@@ -381,7 +383,8 @@
 	|	ДокInvoice.Ссылка КАК СсылкаInvoice,
 	|	SalesOrder.Ссылка КАК СсылкаSalesOrder,
 	|	Организации.Ссылка КАК СсылкаОрганизация,
-	|	Исходники.ShipmentDate
+	|	Исходники.ShipmentDate,
+	|	Исходники.InvoiceAmount
 	|ПОМЕСТИТЬ ИсходникиСсылки
 	|ИЗ
 	|	Исходники КАК Исходники
@@ -469,7 +472,8 @@
 	|	ИсходникиСсылки.СсылкаОрганизация,
 	|	ВалютыСсылка.ОбъектПриемника КАК СсылкаВалюта,
 	|	КлиентыСсылка.ОбъектПриемника КАК СсылкаКлиент,
-	|	ИсходникиСсылки.ShipmentDate
+	|	ИсходникиСсылки.ShipmentDate,
+	|	ИсходникиСсылки.InvoiceAmount
 	|ИЗ
 	|	ИсходникиСсылки КАК ИсходникиСсылки
 	|		ЛЕВОЕ СОЕДИНЕНИЕ КлиентыСсылка КАК КлиентыСсылка
@@ -492,8 +496,8 @@
 	НенайденныеInvoices = Новый ТаблицаЗначений;
 	НенайденныеInvoices.Колонки.Добавить("InvoiceDOC_ID", Новый ОписаниеТипов("Строка", , , , Новый КвалификаторыСтроки(12)));
 	
-	//ОшибкиПоискаSO = Новый ТаблицаЗначений;
-	//ОшибкиПоискаSO.Колонки.Добавить("SalesOrderNumber", Новый ОписаниеТипов("Строка", , , , Новый КвалификаторыСтроки(17)));
+	ОбновленныеInvoice = Новый ТаблицаЗначений;
+	ОбновленныеInvoice.Колонки.Добавить("Invoice", Новый ОписаниеТипов("ДокументСсылка.Invoice", , , , Новый КвалификаторыСтроки(17)));
 	
 	ПустаяДата = '00010101';
 	
@@ -514,9 +518,26 @@
 			Продолжить;
 		КонецЕсли;
 		
-		Если Не ПустаяСтрока(Выборка.DOC_ID) И НЕ ЗначениеЗаполнено(Выборка.СсылкаInvoice) Тогда
-			СтрокаТЗ = НенайденныеInvoices.Добавить();
-			СтрокаТЗ.InvoiceDOC_ID = Выборка.DOC_ID;
+		Если Не ПустаяСтрока(Выборка.DOC_ID) Тогда
+			Если НЕ ЗначениеЗаполнено(Выборка.СсылкаInvoice) Тогда
+				СтрокаТЗ = НенайденныеInvoices.Добавить();
+				СтрокаТЗ.InvoiceDOC_ID = Выборка.DOC_ID;
+			Иначе
+				ТекОбъектИнвойс = Выборка.СсылкаInvoice.ПолучитьОбъект();
+				РГСофтКлиентСервер.УстановитьЗначение(ТекОбъектИнвойс.Amount, Выборка.InvoiceAmount);
+				Если ТекОбъектИнвойс.Модифицированность() Тогда
+					Попытка
+					ТекОбъектИнвойс.Записать();
+					Исключение
+						ОтменитьТранзакцию();
+						ДанныеДляЗаполнения.Вставить("ОшибкаЗаполнения", Строка(ТекОбъектИнвойс) + ": " + ОписаниеОшибки());
+						ПоместитьВоВременноеХранилище(ДанныеДляЗаполнения, АдресХранилища);
+						Возврат;
+					КонецПопытки;
+					СтрокаТЗ = ОбновленныеInvoice.Добавить();
+					СтрокаТЗ.Invoice = ТекОбъектИнвойс.Ссылка;
+				КонецЕсли;
+			КонецЕсли;
 		КонецЕсли;
 		
 		ТекОбъект = Выборка.СсылкаSalesOrder.ПолучитьОбъект();
@@ -637,12 +658,12 @@
 	ОбновленныеSO.Свернуть("SalesOrder");
 	НенайденныеSO.Свернуть("SalesOrderNumber");
 	НенайденныеInvoices.Свернуть("InvoiceDOC_ID");
-	//ОшибкиПоискаSO.Свернуть("SalesOrderNumber");
+	ОбновленныеInvoice.Свернуть("Invoice");
 	
 	ДанныеДляЗаполнения.Вставить("ОбновленныеSO", ОбновленныеSO);
 	ДанныеДляЗаполнения.Вставить("НенайденныеSO", НенайденныеSO);
 	ДанныеДляЗаполнения.Вставить("НенайденныеInvoices", НенайденныеInvoices);
-	//ДанныеДляЗаполнения.Вставить("ОшибкиПоискаSO", ОшибкиПоискаSO);
+	ДанныеДляЗаполнения.Вставить("ОбновленныеInvoice", ОбновленныеInvoice);
 		
 	ПоместитьВоВременноеХранилище(ДанныеДляЗаполнения, АдресХранилища);
 	
@@ -670,11 +691,13 @@
 		Запрос.Текст = 
 			"ВЫБРАТЬ
 			|	SalesOrdersCommentsСрезПоследних.Problem,
-			|	SalesOrdersCommentsСрезПоследних.Problem.Reason как Reason,
-			|	SalesOrdersCommentsСрезПоследних.Problem.Billed как Billed,
-			|	SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice как ExpectedDateForInvoice,
-			|	SalesOrdersCommentsСрезПоследних.Problem.EscalateTo как EscalateTo,
-			|	SalesOrdersCommentsСрезПоследних.Problem.Details как Details
+			|	SalesOrdersCommentsСрезПоследних.Problem.Reason КАК Reason,
+			|	SalesOrdersCommentsСрезПоследних.Problem.Billed КАК Billed,
+			|	SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice КАК ExpectedDateForInvoice,
+			|	SalesOrdersCommentsСрезПоследних.Problem.EscalateTo КАК EscalateTo,
+			|	SalesOrdersCommentsСрезПоследних.Problem.Details КАК Details,
+			|	SalesOrdersCommentsСрезПоследних.Период,
+			|	SalesOrdersCommentsСрезПоследних.Problem.User КАК User
 			|ИЗ
 			|	РегистрСведений.SalesOrdersComments.СрезПоследних(, SalesOrder = &SalesOrder) КАК SalesOrdersCommentsСрезПоследних";
 		
@@ -701,8 +724,11 @@
 			
 			ВыборкаДетальныеЗаписи.Следующий();
 			
-			Если BilledStatus <> ВыборкаДетальныеЗаписи.Billed Тогда 
-				Если ВыборкаДетальныеЗаписи.Billed = Перечисления.SalesOrderBilledStatus.Unbilled Тогда
+			Если BilledStatus <> ВыборкаДетальныеЗаписи.Billed Тогда
+				// { RGS TAlmazova 09.02.2017 14:45:58 - костыль чтобы добавлять статус Unbilled даже если стоит Billed, который проставился обработкой заполнения статусов
+				//Если ВыборкаДетальныеЗаписи.Billed = Перечисления.SalesOrderBilledStatus.Unbilled Тогда
+				Если ВыборкаДетальныеЗаписи.Billed = Перечисления.SalesOrderBilledStatus.Unbilled ИЛИ ((ВыборкаДетальныеЗаписи.Период = '20161218231026' ИЛИ ВыборкаДетальныеЗаписи.Период = '20161218233402') И ВыборкаДетальныеЗаписи.User = AutoUser)Тогда
+				// } RGS TAlmazova 09.02.2017 14:46:48 - костыль чтобы добавлять статус Unbilled даже если стоит Billed, который проставился обработкой заполнения статусов
 					ДобавитьКоммент = Истина;
 					СтруктураРеквизитовПроблемы.Дата = ТекущаяДата;
 					СтруктураРеквизитовПроблемы.SalesOrder = SalesOrder;
@@ -726,7 +752,7 @@
 						СтруктураРеквизитовПроблемы.Responsibles = Responsibles;
 					КонецЕсли;
 				Иначе 
-				 ТекстОшибки = "Sales Order in the Billed or Canceled status of the ERM, and in the Unbilled status in the document loading";
+				 ТекстОшибки = " " + SalesOrder + "in the Billed or Canceled status of the ERM, and in the Unbilled status in the document loading";
 			 	КонецЕсли;
 			 КонецЕсли;
 		КонецЕсли;
