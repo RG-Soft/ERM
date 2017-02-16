@@ -677,6 +677,9 @@
 								<ContextMenu name="InvoicesRWDDeadlineУправлениеПоискомКонтекстноеМеню" id="146"/>
 								<ExtendedTooltip name="InvoicesRWDDeadlineУправлениеПоискомРасширеннаяПодсказка" id="147"/>
 							</SearchControlAddition>
+							<Events>
+								<Event name="Selection">InvoicesRWDDeadlineВыбор</Event>
+							</Events>
 							<ChildItems>
 								<LabelField name="InvoicesRWDDeadlineSource" id="226">
 									<DataPath>InvoicesRWDDeadline.Source</DataPath>
@@ -946,6 +949,9 @@
 								<ContextMenu name="InvoicesBrokenPromisesУправлениеПоискомКонтекстноеМеню" id="260"/>
 								<ExtendedTooltip name="InvoicesBrokenPromisesУправлениеПоискомРасширеннаяПодсказка" id="261"/>
 							</SearchControlAddition>
+							<Events>
+								<Event name="Selection">InvoicesBrokenPromisesВыбор</Event>
+							</Events>
 							<ChildItems>
 								<LabelField name="InvoicesBrokenPromisesSource" id="340">
 									<DataPath>InvoicesBrokenPromises.Source</DataPath>
@@ -1323,11 +1329,12 @@
 				<v8:Type>cfg:DynamicList</v8:Type>
 			</Type>
 			<UseAlways>
+				<Field>InvoicesRWDDeadline.Ref</Field>
 				<Field>~InvoicesRWDDeadline.Invoice</Field>
 			</UseAlways>
 			<Settings xsi:type="DynamicList">
 				<ManualQuery>true</ManualQuery>
-				<DynamicDataRead>true</DynamicDataRead>
+				<DynamicDataRead>false</DynamicDataRead>
 				<QueryText>ВЫБРАТЬ
 	InvoiceДокумент.Ссылка,
 	InvoiceДокумент.Номер КАК InvNo,
@@ -1379,7 +1386,6 @@
 	InvoiceДокумент.Source.*,
 	InvoiceДокумент.Company.*,
 	InvoiceДокумент.Client.*}</QueryText>
-				<MainTable>Document.Invoice</MainTable>
 				<ListSettings>
 					<dcsset:filter>
 						<dcsset:viewMode>Normal</dcsset:viewMode>
@@ -1413,11 +1419,12 @@
 				<v8:Type>cfg:DynamicList</v8:Type>
 			</Type>
 			<UseAlways>
+				<Field>InvoicesBrokenPromises.Ref</Field>
 				<Field>~InvoicesBrokenPromises.Invoice</Field>
 			</UseAlways>
 			<Settings xsi:type="DynamicList">
 				<ManualQuery>true</ManualQuery>
-				<DynamicDataRead>true</DynamicDataRead>
+				<DynamicDataRead>false</DynamicDataRead>
 				<QueryText>ВЫБРАТЬ
 	InvoiceДокумент.Ссылка,
 	InvoiceДокумент.Номер КАК InvNo,
@@ -1470,7 +1477,6 @@
 	InvoiceДокумент.Source.*,
 	InvoiceДокумент.Company.*,
 	InvoiceДокумент.Client.*}</QueryText>
-				<MainTable>Document.Invoice</MainTable>
 				<ListSettings>
 					<dcsset:filter>
 						<dcsset:viewMode>Normal</dcsset:viewMode>
