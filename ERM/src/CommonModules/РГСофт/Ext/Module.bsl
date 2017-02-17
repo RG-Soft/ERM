@@ -581,7 +581,7 @@
 		|<TR align=""center"" style=""width:6.38%;background:#000099;padding:1.5pt 1.5pt 1.5pt 1.5pt;font-size:10pt;font-family:Tahoma,sans-serif;color:white;"">
 		|<TD style=""padding: 5px; border: 2px solid #000;"">Geomarket</TD>
 		|<TD style=""padding: 5px; border: 2px solid #000;"">Segment</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000;"">Customer ID</TD>
+		//|<TD style=""padding: 5px; border: 2px solid #000;"">Customer ID</TD>
 		|<TD style=""padding: 5px; border: 2px solid #000;"">Customer name</TD>
 		|<TD style=""padding: 5px; border: 2px solid #000;"">Invoice Reference</TD>
 		|<TD style=""padding: 5px; border: 2px solid #000;"">Job End Date</TD>
@@ -596,15 +596,17 @@
 		ОбщегоНазначенияКлиентСервер.ДополнитьМассив(ОбработанныеПроблемы, ПолныеДанныеУведомления.ВыгрузитьКолонку("Проблема"));
 		ПолныеДанныеУведомления.Колонки.Удалить("Получатель");
 		ПолныеДанныеУведомления.Колонки.Удалить("Проблема");
-		ДанныеДляТелаПисьма = ПолныеДанныеУведомления.Скопировать(, "GeoMarket, Segment, CustumerId, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Amount, Reason");
-		ДанныеДляТелаПисьма.Свернуть("GeoMarket, Segment, CustumerId, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Reason", "Amount");
+		//ДанныеДляТелаПисьма = ПолныеДанныеУведомления.Скопировать(, "GeoMarket, Segment, CustumerId, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Amount, Reason");
+		//ДанныеДляТелаПисьма.Свернуть("GeoMarket, Segment, CustumerId, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Reason", "Amount");
+		ДанныеДляТелаПисьма = ПолныеДанныеУведомления.Скопировать(, "GeoMarket, Segment, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Amount, Reason");
+		ДанныеДляТелаПисьма.Свернуть("GeoMarket, Segment, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Reason", "Amount");
 		
 		Для Каждого СтрокаДанных из ДанныеДляТелаПисьма Цикл
 				
 			СтрокаВТелоСообщения = "<TR>
 			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.GeoMarket), СтрокаДанных.GeoMarket, " ") + "</TD>
 			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Segment), СтрокаДанных.Segment, " ") + "</TD>
-			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.CustumerId), СтрокаДанных.CustumerId, " ") + "</TD>
+			//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.CustumerId), СтрокаДанных.CustumerId, " ") + "</TD>
 			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Client), СтрокаДанных.Client, " ") + "</TD>
 			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.InvoiceNumber), СтрокаДанных.InvoiceNumber, " ") + "</TD>
 			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.JobEndDate), Формат(СтрокаДанных.JobEndDate, "ДФ=MM/dd/yyyy"), " ") + "</TD>
@@ -887,7 +889,7 @@
 	                |	ВТ.SalesOrder.Currency КАК Currency,
 	                |	ЕСТЬNULL(UnbilledARОстатки.AmountОстаток, 0) КАК Amount,
 	                |	ВЫРАЗИТЬ(ЕСТЬNULL(UnbilledARОстатки.AmountОстаток, 0) / ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 1) * ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Кратность, 1) КАК ЧИСЛО(15, 2)) КАК AmountUSD,
-	                |	ВТ.SalesOrder.Client.CRMID КАК CustumerId,
+	                |	UnbilledARОстатки.SalesOrder.ClientID КАК CustumerId,
 	                |	ВТ.Получатель.Mail КАК Получатель,
 	                |	ВТ.SalesOrder.Номер КАК InvoiceNumber,
 	                |	ВТ.SalesOrder.Дата КАК InvoiceDate,
