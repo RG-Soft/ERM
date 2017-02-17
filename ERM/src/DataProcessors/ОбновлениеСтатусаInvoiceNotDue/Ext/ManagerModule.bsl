@@ -10,6 +10,7 @@
 	//КонецЕсли;
 	
 	Дата = НачалоДня(ТекущаяДата());
+	Дата1980 = '19800101';
 	
 	Запрос = Новый Запрос;
 	Запрос.Текст = 
@@ -26,7 +27,8 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
-		|	BilledARОстатки.Invoice КАК Invoice
+		|	BilledARОстатки.Invoice КАК Invoice,
+		|	BilledARОстатки.Invoice.DueDateTo КАК DueDateTo
 		|ИЗ
 		|	РегистрНакопления.BilledAR.Остатки(&Дата, ) КАК BilledARОстатки
 		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments.СрезПоследних(, ) КАК InvoiceCommentsСрезПоследних
@@ -56,7 +58,7 @@
 		НаборЗаписей.Отбор.Invoice.Установить(ВыборкаУстановитьСтатус.Invoice);
 		
 		СтруктураРеквизитовПроблемы = Новый Структура("Дата, Invoice, User, Status, ConfirmedBy, CustomerRepresentative, CustomerInputDetails, Comment, CustInputDate, ForecastDate, RemedialWorkPlan, RWDTargetDate, SLBAssignedTo");
-		СтруктураРеквизитовПроблемы.Дата = Дата;
+		СтруктураРеквизитовПроблемы.Дата = Дата1980;
 		СтруктураРеквизитовПроблемы.Invoice = ВыборкаУстановитьСтатус.Invoice;
 		СтруктураРеквизитовПроблемы.Status = Перечисления.InvoiceStatus.InvoiceNotDue;
 		СтруктураРеквизитовПроблемы.User = User;
@@ -66,7 +68,7 @@
 		Problem = РегистрыСведений.InvoiceComments.СоздатьInvoiceProblem(СтруктураРеквизитовПроблемы);
 		
 		НоваяЗапись = НаборЗаписей.Добавить();
-		НоваяЗапись.Период = Дата;
+		НоваяЗапись.Период = Дата1980;
 		НоваяЗапись.Invoice = ВыборкаУстановитьСтатус.Invoice;
 		//НоваяЗапись.Status = Перечисления.InvoiceStatus.InvoiceNotDue;
 		//НоваяЗапись.User = User;
@@ -83,7 +85,7 @@
 		НаборЗаписей.Отбор.Invoice.Установить(ВыборкаУстановитьПустойСтатус.Invoice);
 		
 		СтруктураРеквизитовПроблемы = Новый Структура("Дата, Invoice, User, Status, ConfirmedBy, CustomerRepresentative, CustomerInputDetails, Comment, CustInputDate, ForecastDate, RemedialWorkPlan, RWDTargetDate, SLBAssignedTo");
-		СтруктураРеквизитовПроблемы.Дата = Дата;
+		СтруктураРеквизитовПроблемы.Дата = ВыборкаУстановитьПустойСтатус.DueDateTo;
 		СтруктураРеквизитовПроблемы.Invoice = ВыборкаУстановитьПустойСтатус.Invoice;
 		СтруктураРеквизитовПроблемы.Status = Перечисления.InvoiceStatus.ПустаяСсылка();
 		СтруктураРеквизитовПроблемы.User = User;
@@ -93,7 +95,7 @@
 		Problem = РегистрыСведений.InvoiceComments.СоздатьInvoiceProblem(СтруктураРеквизитовПроблемы);
 		
 		НоваяЗапись = НаборЗаписей.Добавить();
-		НоваяЗапись.Период = Дата;
+		НоваяЗапись.Период = ВыборкаУстановитьПустойСтатус.DueDateTo;
 		НоваяЗапись.Invoice = ВыборкаУстановитьПустойСтатус.Invoice;
 		//НоваяЗапись.Status = Перечисления.InvoiceStatus.InvoiceNotDue;
 		//НоваяЗапись.User = User;
