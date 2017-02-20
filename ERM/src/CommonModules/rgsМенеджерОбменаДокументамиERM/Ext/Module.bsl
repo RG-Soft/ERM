@@ -622,7 +622,8 @@
 			               |	SalesOrdersCommentsСрезПоследних.Problem.Reason КАК Reason,
 			               |	SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice КАК ExpectedDateForInvoice,
 			               |	SalesOrdersCommentsСрезПоследних.Problem.EscalateTo КАК EscalateTo,
-			               |	SalesOrdersCommentsСрезПоследних.Problem.Details КАК Details
+			               |	SalesOrdersCommentsСрезПоследних.Problem.Details КАК Details,
+			               |	SalesOrdersCommentsСрезПоследних.Problem.ActionItem КАК ActionItem
 			               |ИЗ
 			               |	РегистрСведений.SalesOrdersComments.СрезПоследних(, SalesOrder = &SalesOrder) КАК SalesOrdersCommentsСрезПоследних";
 			Запрос.УстановитьПараметр("SalesOrder", СсылкаНаSalesOrder);
@@ -638,6 +639,7 @@
 					ТекExpectedDateForInvoice = Выборка.ExpectedDateForInvoice;
 					ТекEscalateTo = Выборка.EscalateTo;
 					ТекDetails = Выборка.Details;
+					ТекActionItem = Выборка.ActionItem;
 				КонецЕсли;
 			КонецЕсли;
 			
@@ -645,7 +647,8 @@
 			
 			НЗ = РегистрыСведений.SalesOrdersComments.СоздатьНаборЗаписей();
 			
-			СтруктураРеквизитовПроблемы = Новый Структура("Дата, SalesOrder, User, Reason, Billed, ExpectedDateForInvoice, EscalateTo, Details, Responsibles");
+			//СтруктураРеквизитовПроблемы = Новый Структура("Дата, SalesOrder, User, Reason, Billed, ExpectedDateForInvoice, EscalateTo, Details, Responsibles");
+			СтруктураРеквизитовПроблемы = Новый Структура("Дата, SalesOrder, User, Reason, Billed, ExpectedDateForInvoice, EscalateTo, Details, ActionItem, Responsibles");
 			СтруктураРеквизитовПроблемы.Вставить("Дата", Период);
 			СтруктураРеквизитовПроблемы.Вставить("SalesOrder", СсылкаНаSalesOrder);
 			СтруктураРеквизитовПроблемы.Вставить("Billed", СтатусSalesOrder);
@@ -663,6 +666,7 @@
 				СтруктураРеквизитовПроблемы.ExpectedDateForInvoice = ТекExpectedDateForInvoice;
 				СтруктураРеквизитовПроблемы.EscalateTo = ТекEscalateTo;
 				СтруктураРеквизитовПроблемы.Details = ТекDetails;
+				СтруктураРеквизитовПроблемы.ActionItem = ТекActionItem;
 				Если ЗначениеЗаполнено(ТекEscalateTo) Тогда
 					СтруктураРеквизитовПроблемы.Responsibles.Очистить();
 					МассивОтветственных = Документы.SalesOrder.ПолучитьОтветственныхПоSO(СсылкаНаSalesOrder, ТекEscalateTo);
