@@ -598,8 +598,8 @@
 		ПолныеДанныеУведомления.Колонки.Удалить("Проблема");
 		//ДанныеДляТелаПисьма = ПолныеДанныеУведомления.Скопировать(, "GeoMarket, Segment, CustumerId, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Amount, Reason");
 		//ДанныеДляТелаПисьма.Свернуть("GeoMarket, Segment, CustumerId, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Reason", "Amount");
-		ДанныеДляТелаПисьма = ПолныеДанныеУведомления.Скопировать(, "GeoMarket, Segment, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Amount, Reason");
-		ДанныеДляТелаПисьма.Свернуть("GeoMarket, Segment, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Reason", "Amount");
+		ДанныеДляТелаПисьма = ПолныеДанныеУведомления.Скопировать(, "GeoMarket, Segment, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Amount, WellData, Reason");
+		ДанныеДляТелаПисьма.Свернуть("GeoMarket, Segment, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, WellData, Reason", "Amount");
 		
 		Для Каждого СтрокаДанных из ДанныеДляТелаПисьма Цикл
 				
@@ -613,7 +613,7 @@
 			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.InvoiceDate), Формат(СтрокаДанных.InvoiceDate, "ДФ=MM/dd/yyyy"), " ") + "</TD>
 			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Currency), СтрокаДанных.Currency, " ") + "</TD>
 			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Amount + "</TD>
-			|<TD style=""padding: 5px; border: 2px solid #000;"">" "</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.WellData), СтрокаДанных.WellData, " ") + "</TD>
 			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Reason), СтрокаДанных.Reason, " ") + "</TD>
 			|</TR>";
 			ТелоHTML = ТелоHTML + СтрокаВТелоСообщения;
@@ -912,6 +912,7 @@
 	                |	ВТ.SalesOrder.Номер КАК InvoiceNumber,
 	                |	ВТ.SalesOrder.Дата КАК InvoiceDate,
 	                |	ВТ.SalesOrder.Agreement КАК Agreement,
+	                |	ВТ.SalesOrder.WellData КАК WellData,
 	                |	ВТ.Проблема.Reason КАК Reason,
 	                |	ВТ.Проблема.ExpectedDateForInvoice КАК ExpectedDateForInvoice,
 	                |	ВТ.Проблема.EscalateTo КАК EscalateTo,
@@ -1006,6 +1007,7 @@
 	|	UnbilledARОстатки.SalesOrder.Invoice.Дата КАК InvoiceДата,
 	|	UnbilledARОстатки.SalesOrder.Amount КАК SalesAmount,
 	|	UnbilledARОстатки.SalesOrder.AmountUSD КАК SalesAmountUSD,
+	|	UnbilledARОстатки.SalesOrder.WellData КАК WellData,
 	|	SalesOrdersCommentsСрезПоследних.Problem.Reason КАК Reason,
 	|	SalesOrdersCommentsСрезПоследних.Problem.Billed КАК Billed,
 	|	SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice КАК ExpectedDateForInvoice,
