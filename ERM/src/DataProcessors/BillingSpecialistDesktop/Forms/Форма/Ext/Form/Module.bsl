@@ -79,9 +79,10 @@
 		|			ИЛИ SalesOrdersCommentsСрезПоследних.Problem.Billed = ЗНАЧЕНИЕ(Перечисление.SalesOrderBilledStatus.Canceled))
 		|	И НЕ SalesOrdersCommentsСрезПоследних.Problem.Reason = ЗНАЧЕНИЕ(Перечисление.SalesOrderStatus.ПустаяСсылка)
 		|	И НЕ SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice = ДАТАВРЕМЯ(1, 1, 1, 0, 0, 0)
-		|	И (ВЫРАЗИТЬ(SalesOrdersCommentsСрезПоследних.Problem.Details КАК СТРОКА(100))) <> """"
+		|	И (ВЫРАЗИТЬ(SalesOrdersCommentsСрезПоследних.Problem.Details КАК СТРОКА(1024))) <> """"
 		|	И НЕ SalesOrdersCommentsСрезПоследних.Problem.EscalateTo = ЗНАЧЕНИЕ(Справочник.EscalationLevels.ПустаяСсылка)
 		|	И SalesOrdersCommentsСрезПоследних.SalesOrder ССЫЛКА Документ.SalesOrder
+		|	И (ВЫРАЗИТЬ(SalesOrdersCommentsСрезПоследних.Problem.ActionItem КАК СТРОКА(1024))) <> """"
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////

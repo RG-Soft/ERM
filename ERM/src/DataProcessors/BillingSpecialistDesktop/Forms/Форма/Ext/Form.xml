@@ -514,6 +514,22 @@
 					<ContextMenu name="SalesOrdersAgedDeferralКонтекстноеМеню" id="198"/>
 					<ExtendedTooltip name="SalesOrdersAgedDeferralРасширеннаяПодсказка" id="199"/>
 				</LabelField>
+				<LabelField name="ProblemDetails" id="289">
+					<DataPath>SalesOrders.ProblemDetails</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Details</v8:content>
+						</v8:item>
+					</Title>
+					<ContextMenu name="ProblemDetailsКонтекстноеМеню" id="290"/>
+					<ExtendedTooltip name="ProblemDetailsРасширеннаяПодсказка" id="291"/>
+				</LabelField>
+				<LabelField name="ActionItem" id="286">
+					<DataPath>SalesOrders.ActionItem</DataPath>
+					<ContextMenu name="ActionItemКонтекстноеМеню" id="287"/>
+					<ExtendedTooltip name="ActionItemРасширеннаяПодсказка" id="288"/>
+				</LabelField>
 				<LabelField name="SalesOrdersSalesOrder" id="194">
 					<DataPath>SalesOrders.SalesOrder</DataPath>
 					<Visible>false</Visible>
@@ -687,7 +703,7 @@
 		ИНАЧЕ ManualTransactionsОстатки.Company.DefaultLegalEntity
 	КОНЕЦ,
 	ДАТАВРЕМЯ(1, 1, 1),
-	""
+	SalesOrdersCommentsСрезПоследних.Problem.ActionItem
 ИЗ
 	РегистрНакопления.ManualTransactions.Остатки({(&amp;ПериодОстатков)}, Account.БазовыйЭлемент = &amp;HFMUnbilledAccount {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК ManualTransactionsОстатки
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних({(&amp;ДатаКомментария)}, ) КАК SalesOrdersCommentsСрезПоследних

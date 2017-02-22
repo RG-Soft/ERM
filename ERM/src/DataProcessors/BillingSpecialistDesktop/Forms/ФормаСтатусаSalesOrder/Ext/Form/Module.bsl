@@ -87,7 +87,8 @@
 		
 	Для каждого ЭлементСписка Из СписокSalesOrders Цикл
 		
-		СтруктураРеквизитовПроблемы = Новый Структура("Дата, SalesOrder, User, Reason, Billed, ExpectedDateForInvoice, EscalateTo, Details, Responsibles");
+		//СтруктураРеквизитовПроблемы = Новый Структура("Дата, SalesOrder, User, Reason, Billed, ExpectedDateForInvoice, EscalateTo, Details, Responsibles");
+		СтруктураРеквизитовПроблемы = Новый Структура("Дата, SalesOrder, User, Reason, Billed, ExpectedDateForInvoice, EscalateTo, Details, ActionItem, Responsibles");
 		//СтруктураРеквизитовПроблемы.Вставить("Responsibles", Новый ТаблицаЗначений);
 		
 		ЗаполнитьЗначенияСвойств(СтруктураРеквизитовПроблемы, ЭтотОбъект);
