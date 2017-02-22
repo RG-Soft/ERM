@@ -208,11 +208,11 @@
 	СтрокаТЗ.ИмяПоля = "FirstSubmissionDate";
 	СтрокаТЗ.ИмяКолонки = "FirstSubmissionDate";
 	
-	//// Request to Approve Date
-	//СтрокаТЗ = СтруктураКолонок.Добавить();
-	//СтрокаТЗ.ИмяПоля = "RequestToApproveDate";
-	//СтрокаТЗ.ИмяКолонки = "Request to Approve Date";
-	//
+	// DestWell
+	СтрокаТЗ = СтруктураКолонок.Добавить();
+	СтрокаТЗ.ИмяПоля = "WellData";
+	СтрокаТЗ.ИмяКолонки = "DestWell";
+	
 	// ApprovalDate
 	СтрокаТЗ = СтруктураКолонок.Добавить();
 	СтрокаТЗ.ИмяПоля = "ApprovalDate";
@@ -351,7 +351,8 @@
 	|	OracleSalesOrdersDetailsSourceData.FieldTicket КАК FieldTicket,
 	|	OracleSalesOrdersDetailsSourceData.DOC_ID КАК DOC_ID,
 	|	OracleSalesOrdersDetailsSourceData.ShipmentDate,
-	|	OracleSalesOrdersDetailsSourceData.InvoiceAmount
+	|	OracleSalesOrdersDetailsSourceData.InvoiceAmount,
+	|	OracleSalesOrdersDetailsSourceData.WellData
 	|ПОМЕСТИТЬ Исходники
 	|ИЗ
 	|	РегистрСведений.OracleSalesOrdersDetailsSourceData КАК OracleSalesOrdersDetailsSourceData
@@ -384,7 +385,8 @@
 	|	SalesOrder.Ссылка КАК СсылкаSalesOrder,
 	|	Организации.Ссылка КАК СсылкаОрганизация,
 	|	Исходники.ShipmentDate,
-	|	Исходники.InvoiceAmount
+	|	Исходники.InvoiceAmount,
+	|	Исходники.WellData
 	|ПОМЕСТИТЬ ИсходникиСсылки
 	|ИЗ
 	|	Исходники КАК Исходники
@@ -473,7 +475,8 @@
 	|	ВалютыСсылка.ОбъектПриемника КАК СсылкаВалюта,
 	|	КлиентыСсылка.ОбъектПриемника КАК СсылкаКлиент,
 	|	ИсходникиСсылки.ShipmentDate,
-	|	ИсходникиСсылки.InvoiceAmount
+	|	ИсходникиСсылки.InvoiceAmount,
+	|	ИсходникиСсылки.WellData
 	|ИЗ
 	|	ИсходникиСсылки КАК ИсходникиСсылки
 	|		ЛЕВОЕ СОЕДИНЕНИЕ КлиентыСсылка КАК КлиентыСсылка
@@ -558,6 +561,7 @@
 		//РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.FTLApproverID, Выборка.FTLApproverID);
 		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.ApprovedBy, Выборка.ApprovedBy);
 		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.CreatedBy, Выборка.CreatedBy);
+		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.WellData, Выборка.WellData);
 		//РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.ExchangeRate, Выборка.ExchangeRate);
 		//РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.Amount, Выборка.OrderCurrencyAmount);
 		//РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.AmountUSD, Окр(Выборка.OrderCurrencyAmount / Выборка.ExchangeRate, 2));
@@ -697,7 +701,8 @@
 			|	SalesOrdersCommentsСрезПоследних.Problem.EscalateTo КАК EscalateTo,
 			|	SalesOrdersCommentsСрезПоследних.Problem.Details КАК Details,
 			|	SalesOrdersCommentsСрезПоследних.Период,
-			|	SalesOrdersCommentsСрезПоследних.Problem.User КАК User
+			|	SalesOrdersCommentsСрезПоследних.Problem.User КАК User,
+			|	SalesOrdersCommentsСрезПоследних.Problem.ActionItem КАК ActionItem
 			|ИЗ
 			|	РегистрСведений.SalesOrdersComments.СрезПоследних(, SalesOrder = &SalesOrder) КАК SalesOrdersCommentsСрезПоследних";
 		
@@ -709,7 +714,8 @@
 		
 		НЗSOComments.Очистить();
 		ДобавитьКоммент = Ложь;
-		СтруктураРеквизитовПроблемы = Новый Структура("Дата, SalesOrder, User, Reason, Billed, ExpectedDateForInvoice, EscalateTo, Details, Responsibles");
+		//СтруктураРеквизитовПроблемы = Новый Структура("Дата, SalesOrder, User, Reason, Billed, ExpectedDateForInvoice, EscalateTo, Details, Responsibles");
+		СтруктураРеквизитовПроблемы = Новый Структура("Дата, SalesOrder, User, Reason, Billed, ExpectedDateForInvoice, EscalateTo, Details, ActionItem, Responsibles");
 		Responsibles = Новый ТаблицаЗначений;
 		Responsibles.Колонки.Добавить("Responsible");
 		
@@ -737,6 +743,7 @@
 					СтруктураРеквизитовПроблемы.Reason = ВыборкаДетальныеЗаписи.Reason;
 					СтруктураРеквизитовПроблемы.ExpectedDateForInvoice = ВыборкаДетальныеЗаписи.ExpectedDateForInvoice;
 					СтруктураРеквизитовПроблемы.Details = ВыборкаДетальныеЗаписи.Details;
+					СтруктураРеквизитовПроблемы.ActionItem = ВыборкаДетальныеЗаписи.ActionItem;
 					Если ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.EscalateTo) Тогда
 						СтруктураРеквизитовПроблемы.Вставить("Responsibles", Новый ТаблицаЗначений);
 						СтруктураРеквизитовПроблемы.EscalateTo = ВыборкаДетальныеЗаписи.EscalateTo;
