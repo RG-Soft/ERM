@@ -661,11 +661,13 @@
 	Запрос.Текст = 
 	"ВЫБРАТЬ
 	|	КлючиИнвойсов.ArInvoice,
+	|	КлючиИнвойсов.Company,
 	|	КлючиИнвойсов.Invoice
 	|ИЗ
 	|	врТЗТаблицаДанных КАК врТЗТаблицаДанных
 	|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.КлючиИнвойсов КАК КлючиИнвойсов
 	|		ПО врТЗТаблицаДанных.InvoiceNo = КлючиИнвойсов.ArInvoice
+	|			И (врТЗТаблицаДанных.CompanyCode = КлючиИнвойсов.Company.Код)
 	|			И (врТЗТаблицаДанных.TransType = ""I"")
 	|			И (КлючиИнвойсов.Source = &Source)
 	|;
@@ -679,6 +681,7 @@
 	|	врТЗТаблицаДанных КАК врТЗТаблицаДанных
 	|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.КлючиSalesOrders КАК КлючиSalesOrders
 	|		ПО врТЗТаблицаДанных.InvoiceNo = КлючиSalesOrders.ArInvoice
+	|			И (врТЗТаблицаДанных.CompanyCode = КлючиSalesOrders.Company.Код)
 	|			И (врТЗТаблицаДанных.TransType = ""A"")
 	|			И (КлючиSalesOrders.Company.Source = &Source)
 	|;
@@ -686,6 +689,7 @@
 	|////////////////////////////////////////////////////////////////////////////////
 	|ВЫБРАТЬ
 	|	ВТ_ДанныеФайла.Invoice КАК ArBatchNbr,
+	|	CashBatch.Company КАК Company,
 	|	CashBatch.Prepayment,
 	|	CashBatch.Ссылка КАК CashBatch
 	|ИЗ
@@ -693,6 +697,7 @@
 	|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ врТЗТаблицаДанных КАК ВТ_ДанныеФайла
 	|		ПО (CashBatch.Source = &Source)
 	|			И CashBatch.DocID = ВТ_ДанныеФайла.InvoiceNo
+	|			И CashBatch.Company.Код = ВТ_ДанныеФайла.CompanyCode
 	|			И (ВТ_ДанныеФайла.TransType = ""P"")
 	|			И (НЕ CashBatch.ПометкаУдаления)
 	|;
@@ -801,17 +806,18 @@
 	ЗафиксироватьТранзакцию();
 	
 	КэшИнвойсов = РезультатЗапроса[0].Выгрузить();
-	КэшИнвойсов.Индексы.Добавить("ArInvoice");
+	КэшИнвойсов.Индексы.Добавить("ArInvoice, Company");
 	
 	КэшSalesOrders = РезультатЗапроса[1].Выгрузить();
 	КэшSalesOrders.Индексы.Добавить("ArInvoice, Company");
 	
 	КэшCashBatch = РезультатЗапроса[2].Выгрузить();
-	КэшCashBatch.Индексы.Добавить("ARBatchNbr, Prepayment");
+	КэшCashBatch.Индексы.Добавить("ARBatchNbr, Company, Prepayment");
 	
 	КэшРучныхКорректировок = РезультатЗапроса[3].Выгрузить();
 	КэшРучныхКорректировок.Индексы.Добавить("Company, Location, SubSubSegment, AU, Account, Currency");
 	
+	СтруктураПоискаInvoice = Новый Структура("ArInvoice, Company");
 	СтруктураПоискаBatch = Новый Структура("ARBatchNbr, Prepayment");
 	СтруктураПоискаSO = Новый Структура("ArInvoice, Company");
 	СтруктураПоискаJV = Новый Структура("Company, Location, SubSubSegment, AU, Account, Currency");
@@ -893,15 +899,18 @@
 		Если ВыборкаДанные.TransType = "I" Тогда
 			
 			//СтрокаКэша = КэшИнвойсов.Найти("RD-" + ВыборкаДанные.Invoice, "ArInvoice");
-			СтрокаКэша = КэшИнвойсов.Найти(ВыборкаДанные.InvoiceNo, "ArInvoice");
-			Если СтрокаКэша = Неопределено Тогда
+			СтруктураПоискаInvoice.ArInvoice = ВыборкаДанные.InvoiceNo;
+			СтруктураПоискаInvoice.Company = ВыборкаДанные.Company;
+			СтрокиКэша = КэшИнвойсов.НайтиСтроки(СтруктураПоискаInvoice);
+			Если СтрокиКэша.Количество() = 0 Тогда
 				ТекИнвойс = СоздатьИнвойс(ВыборкаДанные);
 				СтрокаКэша = КэшИнвойсов.Добавить();
 				//СтрокаКэша.ArInvoice = "RD-" + ВыборкаДанные.Invoice;
 				СтрокаКэша.ArInvoice = ВыборкаДанные.InvoiceNo;
+				СтрокаКэша.Company = ВыборкаДанные.Company;
 				СтрокаКэша.Invoice = ТекИнвойс;
 			Иначе
-				ТекИнвойс = СтрокаКэша.Invoice;
+				ТекИнвойс = СтрокиКэша[0].Invoice;
 			КонецЕсли;
 			
 			Движение = Док.Движения.BilledAR.Добавить();
@@ -917,6 +926,7 @@
 		ИначеЕсли ВыборкаДанные.TransType = "P" Тогда
 			
 			СтруктураПоискаBatch.ARBatchNbr = ВыборкаДанные.Invoice;
+			СтруктураПоискаBatch.Company = ВыборкаДанные.Company;
 			СтруктураПоискаBatch.Prepayment = ВыборкаДанные.Account = ПланыСчетов.Lawson.AdvancesFromCustomers;
 			
 			СтрокиCashBatch = КэшCashBatch.НайтиСтроки(СтруктураПоискаBatch);
@@ -925,6 +935,7 @@
 				СтрокаКэша = КэшCashBatch.Добавить();
 				//СтрокаКэша.ARBatchNbr = ВыборкаДанные.Invoice;
 				СтрокаКэша.ARBatchNbr = ВыборкаДанные.InvoiceNo;
+				СтрокаКэша.Company = ВыборкаДанные.Company;
 				СтрокаКэша.Prepayment = СтруктураПоискаBatch.Prepayment;
 				СтрокаКэша.CashBatch = ТекCashBatch;
 			Иначе
