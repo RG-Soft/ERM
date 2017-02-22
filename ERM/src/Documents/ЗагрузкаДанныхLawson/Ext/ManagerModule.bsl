@@ -2093,28 +2093,28 @@
 	ДокОбъект.Записать(РежимЗаписиДокумента.Запись);
 	
 	// { TODO RGS TAlmazova 17.02.2017 17:43:35 - добавление статуса Unbilled для новых СО
-	//НЗ = РегистрыСведений.SalesOrdersComments.СоздатьНаборЗаписей();
-	//НЗ.Очистить();
-	//
-	//НачатьТранзакцию();
-	//
-	//Проблема = Документы.SalesOrderProblem.СоздатьДокумент();
-	//Проблема.Дата = ДатаДокумента;
-	//Проблема.SalesOrder = ДокОбъект.Ссылка;
-	//Проблема.User = AutoUser;
-	//Проблема.Billed = Перечисления.SalesOrderBilledStatus.Unbilled;
-	//Проблема.Записать();
-	//
-	//НЗ.Очистить();
-	//НЗ.Отбор.SalesOrder.Установить(ДокОбъект.Ссылка);
-	//ЗаписьНабора = НЗ.Добавить();
-	//ЗаписьНабора.Период = ДатаДокумента;
-	//ЗаписьНабора.SalesOrder = ДокОбъект.Ссылка;
-	//ЗаписьНабора.Problem = Проблема.Ссылка;
-	//
-	//НЗ.Записать();
-	//
-	//ЗафиксироватьТранзакцию();
+	НЗ = РегистрыСведений.SalesOrdersComments.СоздатьНаборЗаписей();
+	НЗ.Очистить();
+	
+	НачатьТранзакцию();
+	
+	Проблема = Документы.SalesOrderProblem.СоздатьДокумент();
+	Проблема.Дата = ДатаДокумента;
+	Проблема.SalesOrder = ДокОбъект.Ссылка;
+	Проблема.User = AutoUser;
+	Проблема.Billed = Перечисления.SalesOrderBilledStatus.Unbilled;
+	Проблема.Записать();
+	
+	НЗ.Очистить();
+	НЗ.Отбор.SalesOrder.Установить(ДокОбъект.Ссылка);
+	ЗаписьНабора = НЗ.Добавить();
+	ЗаписьНабора.Период = ДатаДокумента;
+	ЗаписьНабора.SalesOrder = ДокОбъект.Ссылка;
+	ЗаписьНабора.Problem = Проблема.Ссылка;
+	
+	НЗ.Записать();
+	
+	ЗафиксироватьТранзакцию();
 	// } RGS TAlmazova 17.02.2017 17:43:51 - добавление статуса Unbilled для новых СО
 	
 	//НЗ = РегистрыСведений.DSSСвязанныеДокументы.СоздатьНаборЗаписей();
@@ -2430,10 +2430,11 @@
 	|ВЫБРАТЬ РАЗЛИЧНЫЕ
 	|	ВТ_SO.Ссылка КАК Ссылка,
 	|	SalesOrdersCommentsСрезПоследних.Problem,
-	|	SalesOrdersCommentsСрезПоследних.Problem.Reason как Reason,
-	|	SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice как ExpectedDateForInvoice,
-	|	SalesOrdersCommentsСрезПоследних.Problem.EscalateTo как EscalateTo,
-	|	ВЫРАЗИТЬ(SalesOrdersCommentsСрезПоследних.Problem.Details КАК СТРОКА(1024)) КАК Details
+	|	SalesOrdersCommentsСрезПоследних.Problem.Reason КАК Reason,
+	|	SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice КАК ExpectedDateForInvoice,
+	|	SalesOrdersCommentsСрезПоследних.Problem.EscalateTo КАК EscalateTo,
+	|	ВЫРАЗИТЬ(SalesOrdersCommentsСрезПоследних.Problem.Details КАК СТРОКА(1024)) КАК Details,
+	|	ВЫРАЗИТЬ(SalesOrdersCommentsСрезПоследних.Problem.ActionItem КАК СТРОКА(1024)) КАК ActionItem
 	|ИЗ
 	|	ВТ_SO КАК ВТ_SO
 	|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрНакопления.UnbilledAR.Остатки(
@@ -2478,6 +2479,7 @@
 			 Проблема.Reason = Выборка.Reason;
 			 Проблема.ExpectedDateForInvoice = Выборка.ExpectedDateForInvoice;
 			 Проблема.Details = Выборка.Details;
+			 Проблема.ActionItem = Выборка.ActionItem;
 			 Если ЗначениеЗаполнено(Выборка.EscalateTo) Тогда
 				Проблема.EscalateTo = Выборка.EscalateTo;
 				МассивОтветственных = Документы.SalesOrder.ПолучитьОтветственныхПоSO(Выборка.Ссылка, Выборка.EscalateTo);
