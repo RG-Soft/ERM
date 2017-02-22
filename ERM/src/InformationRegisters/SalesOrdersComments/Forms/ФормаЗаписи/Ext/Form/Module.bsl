@@ -88,11 +88,12 @@
 		Запрос.Текст = 
 			"ВЫБРАТЬ
 			|	SalesOrdersCommentsСрезПоследних.Problem,
-			|	SalesOrdersCommentsСрезПоследних.Problem.Reason как Reason,
-			|	SalesOrdersCommentsСрезПоследних.Problem.Billed как Billed,
-			|	SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice как ExpectedDateForInvoice,
-			|	SalesOrdersCommentsСрезПоследних.Problem.EscalateTo как EscalateTo,
-			|	SalesOrdersCommentsСрезПоследних.Problem.Details как Details
+			|	SalesOrdersCommentsСрезПоследних.Problem.Reason КАК Reason,
+			|	SalesOrdersCommentsСрезПоследних.Problem.Billed КАК Billed,
+			|	SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice КАК ExpectedDateForInvoice,
+			|	SalesOrdersCommentsСрезПоследних.Problem.EscalateTo КАК EscalateTo,
+			|	SalesOrdersCommentsСрезПоследних.Problem.Details КАК Details,
+			|	SalesOrdersCommentsСрезПоследних.Problem.ActionItem КАК ActionItem
 			|ИЗ
 			|	РегистрСведений.SalesOrdersComments.СрезПоследних(, SalesOrder = &SalesOrder) КАК SalesOrdersCommentsСрезПоследних";
 		
@@ -107,7 +108,7 @@
 			Если ТипЗнч(Запись.SalesOrder) = Тип("ДокументСсылка.SalesOrder")
 					И (ВыборкаДетальныеЗаписи.Billed = Перечисления.SalesOrderBilledStatus.Billed ИЛИ ВыборкаДетальныеЗаписи.Billed = Перечисления.SalesOrderBilledStatus.Canceled)
 					И ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.Reason) И ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.ExpectedDateForInvoice)
-					И ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.EscalateTo) И ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.Details) Тогда
+					И ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.EscalateTo) И ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.Details) И ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.ActionItem) Тогда
 					
 				ТекстСообщенияОбОшибках = "Adding a status is impossible! Selected Sales Order in status billed.";
 				ВызватьИсключение ТекстСообщенияОбОшибках;
@@ -118,6 +119,7 @@
 				ExpectedDateForInvoice = ВыборкаДетальныеЗаписи.ExpectedDateForInvoice;
 				EscalateTo = ВыборкаДетальныеЗаписи.EscalateTo;
 				Details = ВыборкаДетальныеЗаписи.Details;
+				ActionItem = ВыборкаДетальныеЗаписи.ActionItem;
 				LastProblem = ВыборкаДетальныеЗаписи.Problem;
 				
 				Если ТипЗнч(Запись.SalesOrder) = Тип("ДокументСсылка.SalesOrder")
