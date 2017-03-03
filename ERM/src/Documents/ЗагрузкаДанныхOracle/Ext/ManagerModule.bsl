@@ -2824,6 +2824,7 @@
 	ДокОбъект.Source = ТранзакцияOracleОбъект.Source;
 	ДокОбъект.Client = ТранзакцияOracleОбъект.Client;
 	ДокОбъект.Company = ТранзакцияOracleОбъект.Company;
+	ДокОбъект.Currency = ТранзакцияOracleОбъект.Currency;
 	ДокОбъект.Account = ТранзакцияOracleОбъект.Account;
 	ДокОбъект.Location = ТранзакцияOracleОбъект.Location;
 	ДокОбъект.SubSubSegment = ТранзакцияOracleОбъект.SubSubSegment;
