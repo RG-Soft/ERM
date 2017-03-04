@@ -665,7 +665,7 @@
 	|	врТЗТаблицаДанных КАК врТЗТаблицаДанных
 	|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.КлючиИнвойсов КАК КлючиИнвойсов
 	|		ПО врТЗТаблицаДанных.InvoiceNo = КлючиИнвойсов.ArInvoice
-	|			И (врТЗТаблицаДанных.CompanyCode = КлючиИнвойсов.Company.Код)
+	|			И врТЗТаблицаДанных.CompanyCode = КлючиИнвойсов.Company.Код
 	|			И (врТЗТаблицаДанных.TransType = ""I"")
 	|			И (КлючиИнвойсов.Source = &Source)
 	|;
@@ -679,7 +679,7 @@
 	|	врТЗТаблицаДанных КАК врТЗТаблицаДанных
 	|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.КлючиSalesOrders КАК КлючиSalesOrders
 	|		ПО врТЗТаблицаДанных.InvoiceNo = КлючиSalesOrders.ArInvoice
-	|			И (врТЗТаблицаДанных.CompanyCode = КлючиSalesOrders.Company.Код)
+	|			И врТЗТаблицаДанных.CompanyCode = КлючиSalesOrders.Company.Код
 	|			И (врТЗТаблицаДанных.TransType = ""A"")
 	|			И (КлючиSalesOrders.Company.Source = &Source)
 	|;
@@ -687,6 +687,7 @@
 	|////////////////////////////////////////////////////////////////////////////////
 	|ВЫБРАТЬ
 	|	ВТ_ДанныеФайла.Invoice КАК ArBatchNbr,
+	|	CashBatch.Company,
 	|	CashBatch.Prepayment,
 	|	CashBatch.Ссылка КАК CashBatch
 	|ИЗ
