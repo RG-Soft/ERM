@@ -393,6 +393,7 @@
 	|		ЛЕВОЕ СОЕДИНЕНИЕ Документ.Invoice КАК ДокInvoice
 	|		ПО Исходники.DOC_ID = ДокInvoice.DocID
 	|			И (НЕ ДокInvoice.ПометкаУдаления)
+	|			И (Исходники.DOC_ID <> 0)
 	|		ЛЕВОЕ СОЕДИНЕНИЕ Документ.SalesOrder КАК SalesOrder
 	|		ПО Исходники.НомерSO = SalesOrder.Номер
 	|			И Исходники.CompanyCode = SalesOrder.Company.Код
