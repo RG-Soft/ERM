@@ -606,7 +606,7 @@
 		UnbilledARОстатки.AU КАК AU,
 		UnbilledARОстатки.AmountОстаток КАК RemainingAmount,
 		ВЫБОР
-			КОГДА SalesOrdersCommentsСрезПоследних.SalesOrder ЕСТЬ NULL 
+			КОГДА SalesOrdersCommentsСрезПоследних.SalesOrder ЕСТЬ NULL
 				ТОГДА ИСТИНА
 			ИНАЧЕ ЛОЖЬ
 		КОНЕЦ КАК НетКомментария,
@@ -620,7 +620,7 @@
 		КОНЕЦ КАК SalesNo,
 		SalesOrdersCommentsСрезПоследних.Problem.Reason КАК Reason,
 		ВЫБОР
-			КОГДА SalesOrdersCommentsСрезПоследних.Problem.Billed ЕСТЬ NULL 
+			КОГДА SalesOrdersCommentsСрезПоследних.Problem.Billed ЕСТЬ NULL
 				ТОГДА ЗНАЧЕНИЕ(Перечисление.SalesOrderBilledStatus.Unbilled)
 			ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.Billed
 		КОНЕЦ КАК Status,
@@ -637,7 +637,7 @@
 			КОГДА UnbilledARОстатки.SalesOrder.JobEndDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1, 0, 0, 0)
 					И РАЗНОСТЬДАТ(UnbilledARОстатки.SalesOrder.JobEndDate, &amp;ДатаДляСравнения, ДЕНЬ) &gt;= 120
 				ТОГДА ВЫБОР
-						КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
+						КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
 								ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
 							ТОГДА 0
 						КОГДА UnbilledARОстатки.Currency.Код = "USD"
@@ -652,7 +652,7 @@
 		UnbilledARОстатки.SalesOrder.ClientID КАК CustomerID,
 		ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0) КАК Rate,
 		ВЫБОР
-			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
+			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
 					ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
 				ТОГДА 0
 			КОГДА UnbilledARОстатки.Currency.Код = "USD"
@@ -705,7 +705,7 @@
 		ManualTransactionsОстатки.РучнаяКорректировка.Номер,
 		SalesOrdersCommentsСрезПоследних.Problem.Reason,
 		ВЫБОР
-			КОГДА SalesOrdersCommentsСрезПоследних.Problem.Billed ЕСТЬ NULL 
+			КОГДА SalesOrdersCommentsСрезПоследних.Problem.Billed ЕСТЬ NULL
 				ТОГДА ЗНАЧЕНИЕ(Перечисление.SalesOrderBilledStatus.Unbilled)
 			ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.Billed
 		КОНЕЦ,
@@ -723,7 +723,7 @@
 		"",
 		ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0),
 		ВЫБОР
-			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
+			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
 					ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
 				ТОГДА 0
 			КОГДА ManualTransactionsОстатки.Currency.Код = "USD"
@@ -777,7 +777,10 @@
 	ВложенныйЗапрос.LegalEntity,
 	ВложенныйЗапрос.DateComment,
 	ВЫРАЗИТЬ(ВложенныйЗапрос.ActionItem КАК СТРОКА(1024)),
-	ВЫРАЗИТЬ(ВложенныйЗапрос.ProblemDetails КАК СТРОКА(1024))</QueryText>
+	ВЫРАЗИТЬ(ВложенныйЗапрос.ProblemDetails КАК СТРОКА(1024))
+
+ИМЕЮЩИЕ
+	СУММА(ВложенныйЗапрос.RemainingAmount) &lt;&gt; 0</QueryText>
 				<ListSettings>
 					<dcsset:filter>
 						<dcsset:viewMode>Normal</dcsset:viewMode>
