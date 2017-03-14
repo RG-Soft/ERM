@@ -8,7 +8,8 @@
 	//http://reports.lawson.slb.com/londonmis2/Lawson/MasterData/MasterDataTables/AU_MASTER.zip
 	
 	//получим файл 
-	СерверИсточник = "reports.lawson.slb.com";
+	//СерверИсточник = "reports.lawson.slb.com";
+	СерверИсточник = "financereports.lawson.slb.com";
 	СтрокаПараметраПолучения = "londonmis2/Lawson/MasterData/MasterDataTables/AU_MASTER.zip";
 	ОбработкаПолученияФайлов = Обработки.ПолучениеФайловИзИнтернета.Создать();
                    	
@@ -91,7 +92,8 @@
 	ИмяВходящегоФайла        = ИмяВходящегоФайлаПараметр;
 	
 	Если ТипЗнч(HTTP) <> Тип("HTTPСоединение") Тогда
-		HTTP = Новый HTTPСоединение(СерверИсточник)
+		//HTTP = Новый HTTPСоединение(СерверИсточник)
+		HTTP = Новый HTTPСоединение(СерверИсточник, , , , , , , Истина)
 	КонецЕсли; 
 	
 	Попытка
