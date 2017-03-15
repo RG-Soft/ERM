@@ -1136,74 +1136,155 @@
 				<ManualQuery>true</ManualQuery>
 				<DynamicDataRead>false</DynamicDataRead>
 				<QueryText>ВЫБРАТЬ
-	BilledARОстатки.Invoice,
-	BilledARОстатки.Invoice.Номер КАК InvNo,
-	BilledARОстатки.Invoice.Дата КАК InvDate,
-	BilledARОстатки.Invoice.DocNumber КАК DocNumber,
-	BilledARОстатки.Invoice.FiscalInvoiceNo КАК FiscalInvNo,
-	BilledARОстатки.Invoice.FiscalInvoiceDate КАК FiscalInvDate,
-	BilledARОстатки.Invoice.Contract КАК Contract,
-	BilledARОстатки.Client КАК Client,
-	BilledARОстатки.Company,
-	BilledARОстатки.Source,
-	BilledARОстатки.Account.БазовыйЭлемент КАК Account,
-	BilledARОстатки.Location.БазовыйЭлемент КАК Location,
-	BilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
-	BilledARОстатки.SubSubSegment.БазовыйЭлемент КАК SubSubSegment,
-	BilledARОстатки.Currency,
-	BilledARОстатки.AU,
-	BilledARОстатки.AmountОстаток КАК RemainingAmount,
-	BilledARОстатки.Invoice.Amount,
-	ВЫБОР
-		КОГДА InvoiceCommentsСрезПоследних.Invoice ЕСТЬ NULL 
-				ИЛИ InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка)
-			ТОГДА ИСТИНА
-		ИНАЧЕ ЛОЖЬ
-	КОНЕЦ КАК НетКомментария,
-	Collectors.Collector КАК Collector,
-	InvoiceCommentsСрезПоследних.Problem.User КАК User,
-	InvoiceCommentsСрезПоследних.Problem.Status КАК Status,
-	InvoiceCommentsСрезПоследних.Problem.ConfirmedBy КАК ConfirmedBy,
-	InvoiceCommentsСрезПоследних.Problem.ForecastDate КАК ForecastDate,
-	InvoiceCommentsСрезПоследних.Problem.CustInputDate КАК CustInputDate,
-	InvoiceCommentsСрезПоследних.Problem.CustomerRepresentative КАК CustomerRepresentative,
-	InvoiceCommentsСрезПоследних.Problem.CustomerInputDetails КАК CustomerInputDetails,
-	InvoiceCommentsСрезПоследних.Problem.RemedialWorkPlan КАК RemedialWorkPlan,
-	InvoiceCommentsСрезПоследних.Problem.RWDTargetDate КАК RWDTargetDate,
-	InvoiceCommentsСрезПоследних.Problem.SLBAssignedToList КАК SLBAssignedToList,
-	InvoiceCommentsСрезПоследних.Problem.Comment КАК Comment,
-	ВЫБОР
-		КОГДА ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.CustomerInputDetails, "") = ""
-			ТОГДА ИСТИНА
-		ИНАЧЕ ЛОЖЬ
-	КОНЕЦ КАК НетДеталей,
-	BilledARОстатки.Invoice.Client.CRMID КАК CRMID,
-	BilledARОстатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель КАК Segment,
-	НАЧАЛОПЕРИОДА(BilledARОстатки.Invoice.Дата, ДЕНЬ) КАК InvDateНачалоДня,
-	НАЧАЛОПЕРИОДА(BilledARОстатки.Invoice.FiscalInvoiceDate, ДЕНЬ) КАК FiscalInvDateНачалоДня,
-	ВЫБОР
-		КОГДА InvoiceCommentsСрезПоследних.Problem.RWDTargetDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
-				И InvoiceCommentsСрезПоследних.Problem.RWDTargetDate &lt;= &amp;RWDTargetDateГраница
-			ТОГДА ИСТИНА
-		ИНАЧЕ ЛОЖЬ
-	КОНЕЦ КАК RWDDeadline,
-	ВЫБОР
-		КОГДА BilledARОстатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
-			ТОГДА BilledARОстатки.LegalEntity
-		ИНАЧЕ BilledARОстатки.Company.DefaultLegalEntity
-	КОНЕЦ КАК LegalEntity
+	ВложенныйЗапрос.Invoice,
+	ВложенныйЗапрос.InvNo,
+	ВложенныйЗапрос.InvDate,
+	ВложенныйЗапрос.DocNumber,
+	ВложенныйЗапрос.FiscalInvNo,
+	ВложенныйЗапрос.FiscalInvDate,
+	ВложенныйЗапрос.Contract,
+	ВложенныйЗапрос.Client,
+	ВложенныйЗапрос.Company,
+	ВложенныйЗапрос.Source,
+	ВложенныйЗапрос.Account,
+	ВложенныйЗапрос.Location,
+	ВложенныйЗапрос.GeoMarket,
+	ВложенныйЗапрос.SubSubSegment,
+	ВложенныйЗапрос.Currency,
+	ВложенныйЗапрос.AU,
+	СУММА(ВложенныйЗапрос.RemainingAmount) КАК RemainingAmount,
+	СУММА(ВложенныйЗапрос.InvoiceAmount) КАК InvoiceAmount,
+	ВложенныйЗапрос.НетКомментария,
+	ВложенныйЗапрос.Collector,
+	ВложенныйЗапрос.User,
+	ВложенныйЗапрос.Status,
+	ВложенныйЗапрос.ConfirmedBy,
+	ВложенныйЗапрос.ForecastDate,
+	ВложенныйЗапрос.CustInputDate,
+	ВложенныйЗапрос.CustomerRepresentative,
+	ВложенныйЗапрос.CustomerInputDetails,
+	ВложенныйЗапрос.RemedialWorkPlan,
+	ВложенныйЗапрос.RWDTargetDate,
+	ВложенныйЗапрос.SLBAssignedToList,
+	ВложенныйЗапрос.Comment,
+	ВложенныйЗапрос.НетДеталей,
+	ВложенныйЗапрос.CRMID,
+	ВложенныйЗапрос.Segment,
+	ВложенныйЗапрос.InvDateНачалоДня,
+	ВложенныйЗапрос.FiscalInvDateНачалоДня,
+	ВложенныйЗапрос.RWDDeadline,
+	ВложенныйЗапрос.LegalEntity
 ИЗ
-	РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, Invoice ССЫЛКА Документ.Invoice {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket)}) КАК BilledARОстатки
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments.СрезПоследних(, ) КАК InvoiceCommentsСрезПоследних
-		ПО BilledARОстатки.Invoice = InvoiceCommentsСрезПоследних.Invoice
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.Collectors КАК Collectors
-		ПО BilledARОстатки.Client = Collectors.Client
-			И (Collectors.GeoMarket = BilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель
-				ИЛИ Collectors.GeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка))
-{ГДЕ
-	BilledARОстатки.Source.*,
-	BilledARОстатки.Company.*,
-	BilledARОстатки.Client.*}</QueryText>
+	(ВЫБРАТЬ
+		BilledARОстатки.Invoice КАК Invoice,
+		BilledARОстатки.Invoice.Номер КАК InvNo,
+		BilledARОстатки.Invoice.Дата КАК InvDate,
+		BilledARОстатки.Invoice.DocNumber КАК DocNumber,
+		BilledARОстатки.Invoice.FiscalInvoiceNo КАК FiscalInvNo,
+		BilledARОстатки.Invoice.FiscalInvoiceDate КАК FiscalInvDate,
+		BilledARОстатки.Invoice.Contract КАК Contract,
+		BilledARОстатки.Client КАК Client,
+		BilledARОстатки.Company КАК Company,
+		BilledARОстатки.Source КАК Source,
+		BilledARОстатки.Account.БазовыйЭлемент КАК Account,
+		BilledARОстатки.Location.БазовыйЭлемент КАК Location,
+		BilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
+		BilledARОстатки.SubSubSegment.БазовыйЭлемент КАК SubSubSegment,
+		BilledARОстатки.Currency КАК Currency,
+		BilledARОстатки.AU КАК AU,
+		BilledARОстатки.AmountОстаток КАК RemainingAmount,
+		BilledARОстатки.Invoice.Amount КАК InvoiceAmount,
+		ВЫБОР
+			КОГДА InvoiceCommentsСрезПоследних.Invoice ЕСТЬ NULL
+					ИЛИ InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка)
+				ТОГДА ИСТИНА
+			ИНАЧЕ ЛОЖЬ
+		КОНЕЦ КАК НетКомментария,
+		Collectors.Collector КАК Collector,
+		InvoiceCommentsСрезПоследних.Problem.User КАК User,
+		InvoiceCommentsСрезПоследних.Problem.Status КАК Status,
+		InvoiceCommentsСрезПоследних.Problem.ConfirmedBy КАК ConfirmedBy,
+		InvoiceCommentsСрезПоследних.Problem.ForecastDate КАК ForecastDate,
+		InvoiceCommentsСрезПоследних.Problem.CustInputDate КАК CustInputDate,
+		InvoiceCommentsСрезПоследних.Problem.CustomerRepresentative КАК CustomerRepresentative,
+		InvoiceCommentsСрезПоследних.Problem.CustomerInputDetails КАК CustomerInputDetails,
+		InvoiceCommentsСрезПоследних.Problem.RemedialWorkPlan КАК RemedialWorkPlan,
+		InvoiceCommentsСрезПоследних.Problem.RWDTargetDate КАК RWDTargetDate,
+		InvoiceCommentsСрезПоследних.Problem.SLBAssignedToList КАК SLBAssignedToList,
+		InvoiceCommentsСрезПоследних.Problem.Comment КАК Comment,
+		ВЫБОР
+			КОГДА ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.CustomerInputDetails, "") = ""
+				ТОГДА ИСТИНА
+			ИНАЧЕ ЛОЖЬ
+		КОНЕЦ КАК НетДеталей,
+		BilledARОстатки.Invoice.Client.CRMID КАК CRMID,
+		BilledARОстатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель КАК Segment,
+		НАЧАЛОПЕРИОДА(BilledARОстатки.Invoice.Дата, ДЕНЬ) КАК InvDateНачалоДня,
+		НАЧАЛОПЕРИОДА(BilledARОстатки.Invoice.FiscalInvoiceDate, ДЕНЬ) КАК FiscalInvDateНачалоДня,
+		ВЫБОР
+			КОГДА InvoiceCommentsСрезПоследних.Problem.RWDTargetDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
+					И InvoiceCommentsСрезПоследних.Problem.RWDTargetDate &lt;= &amp;RWDTargetDateГраница
+				ТОГДА ИСТИНА
+			ИНАЧЕ ЛОЖЬ
+		КОНЕЦ КАК RWDDeadline,
+		ВЫБОР
+			КОГДА BilledARОстатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+				ТОГДА BilledARОстатки.LegalEntity
+			ИНАЧЕ BilledARОстатки.Company.DefaultLegalEntity
+		КОНЕЦ КАК LegalEntity
+	ИЗ
+		РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, Invoice ССЫЛКА Документ.Invoice {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket)}) КАК BilledARОстатки
+			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments.СрезПоследних(, ) КАК InvoiceCommentsСрезПоследних
+			ПО BilledARОстатки.Invoice = InvoiceCommentsСрезПоследних.Invoice
+			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.Collectors КАК Collectors
+			ПО BilledARОстатки.Client = Collectors.Client
+				И (Collectors.GeoMarket = BilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель
+					ИЛИ Collectors.GeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка))
+	{ГДЕ
+		BilledARОстатки.Source.*,
+		BilledARОстатки.Company.*,
+		BilledARОстатки.Client.*}) КАК ВложенныйЗапрос
+
+СГРУППИРОВАТЬ ПО
+	ВложенныйЗапрос.Invoice,
+	ВложенныйЗапрос.InvNo,
+	ВложенныйЗапрос.InvDate,
+	ВложенныйЗапрос.DocNumber,
+	ВложенныйЗапрос.FiscalInvNo,
+	ВложенныйЗапрос.FiscalInvDate,
+	ВложенныйЗапрос.Contract,
+	ВложенныйЗапрос.Client,
+	ВложенныйЗапрос.Company,
+	ВложенныйЗапрос.Source,
+	ВложенныйЗапрос.Account,
+	ВложенныйЗапрос.Location,
+	ВложенныйЗапрос.GeoMarket,
+	ВложенныйЗапрос.SubSubSegment,
+	ВложенныйЗапрос.Currency,
+	ВложенныйЗапрос.AU,
+	ВложенныйЗапрос.НетКомментария,
+	ВложенныйЗапрос.Collector,
+	ВложенныйЗапрос.User,
+	ВложенныйЗапрос.Status,
+	ВложенныйЗапрос.ConfirmedBy,
+	ВложенныйЗапрос.ForecastDate,
+	ВложенныйЗапрос.CustInputDate,
+	ВложенныйЗапрос.CustomerRepresentative,
+	ВложенныйЗапрос.CustomerInputDetails,
+	ВложенныйЗапрос.RemedialWorkPlan,
+	ВложенныйЗапрос.RWDTargetDate,
+	ВложенныйЗапрос.SLBAssignedToList,
+	ВложенныйЗапрос.Comment,
+	ВложенныйЗапрос.НетДеталей,
+	ВложенныйЗапрос.CRMID,
+	ВложенныйЗапрос.Segment,
+	ВложенныйЗапрос.InvDateНачалоДня,
+	ВложенныйЗапрос.FiscalInvDateНачалоДня,
+	ВложенныйЗапрос.RWDDeadline,
+	ВложенныйЗапрос.LegalEntity
+
+ИМЕЮЩИЕ
+	СУММА(ВложенныйЗапрос.RemainingAmount) &lt;&gt; 0</QueryText>
 				<ListSettings>
 					<dcsset:filter>
 						<dcsset:viewMode>Normal</dcsset:viewMode>
