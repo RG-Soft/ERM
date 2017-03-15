@@ -1576,7 +1576,7 @@
 		|				И OracleSmithSourceData.source <> ""SO Accrual""
 		|				И OracleSmithSourceData.source <> ""SAM Accrual""
 		|			ИЛИ OracleSmithSourceData.cust_no <> """")
-		|	И OracleSmithSourceData.je_line_num <> """"
+		|	И OracleSmithSourceData.je_line_num <> 0
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
