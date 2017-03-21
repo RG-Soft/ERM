@@ -1107,7 +1107,7 @@
 			ОбластьМакетаСтрока.Параметры.ExpectedDateForInvoice = Формат(Элемент.ExpectedDateForInvoice, "ДФ=dd.MM.yyyy");
 			ОбластьМакетаСтрока.Параметры.EscalateTo = Элемент.EscalateTo;
 			ОбластьМакетаСтрока.Параметры.Responsible = Элемент.Responsible;
-			ОбластьМакетаСтрока.Параметры.ResponsibleList = Элемент.ResponsibleList;
+			//ОбластьМакетаСтрока.Параметры.ResponsibleList = Элемент.ResponsibleList;
 			ОбластьМакетаСтрока.Параметры.JobEndDate = Формат(Элемент.JobEndDate, "ДФ=dd.MM.yyyy");
 			ОбластьМакетаСтрока.Параметры.Ageing = Элемент.Ageing;
 			ОбластьМакетаСтрока.Параметры.ProblemDetails = Элемент.ProblemDetails;
