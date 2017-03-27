@@ -607,6 +607,7 @@
 		UnbilledARОстатки.AmountОстаток КАК RemainingAmount,
 		ВЫБОР
 			КОГДА SalesOrdersCommentsСрезПоследних.SalesOrder ЕСТЬ NULL
+					ИЛИ SalesOrdersCommentsСрезПоследних.Период &lt;= &amp;ДатаДляСравнения
 				ТОГДА ИСТИНА
 			ИНАЧЕ ЛОЖЬ
 		КОНЕЦ КАК НетКомментария,
@@ -618,16 +619,36 @@
 				ТОГДА UnbilledARОстатки.SalesOrder.ArInvoice
 			ИНАЧЕ UnbilledARОстатки.SalesOrder.Номер
 		КОНЕЦ КАК SalesNo,
-		SalesOrdersCommentsСрезПоследних.Problem.Reason КАК Reason,
+		ВЫБОР
+			КОГДА ЕСТЬNULL(SalesOrdersCommentsСрезПоследних.Период, ДАТАВРЕМЯ(1, 1, 1)) &lt;= &amp;ДатаДляСравнения
+				ТОГДА NULL
+			ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.Reason
+		КОНЕЦ КАК Reason,
 		ВЫБОР
 			КОГДА SalesOrdersCommentsСрезПоследних.Problem.Billed ЕСТЬ NULL
 				ТОГДА ЗНАЧЕНИЕ(Перечисление.SalesOrderBilledStatus.Unbilled)
 			ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.Billed
 		КОНЕЦ КАК Status,
-		SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice КАК ExpectedDateForInvoice,
-		SalesOrdersCommentsСрезПоследних.Problem.EscalateTo КАК EscalateTo,
-		SalesOrdersCommentsСрезПоследних.Problem.Details КАК ProblemDetails,
-		SalesOrdersCommentsСрезПоследних.Problem.ResponsiblesList КАК ResponsiblesList,
+		ВЫБОР
+			КОГДА ЕСТЬNULL(SalesOrdersCommentsСрезПоследних.Период, ДАТАВРЕМЯ(1, 1, 1)) &lt;= &amp;ДатаДляСравнения
+				ТОГДА NULL
+			ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice
+		КОНЕЦ КАК ExpectedDateForInvoice,
+		ВЫБОР
+			КОГДА ЕСТЬNULL(SalesOrdersCommentsСрезПоследних.Период, ДАТАВРЕМЯ(1, 1, 1)) &lt;= &amp;ДатаДляСравнения
+				ТОГДА NULL
+			ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.EscalateTo
+		КОНЕЦ КАК EscalateTo,
+		ВЫБОР
+			КОГДА ЕСТЬNULL(SalesOrdersCommentsСрезПоследних.Период, ДАТАВРЕМЯ(1, 1, 1)) &lt;= &amp;ДатаДляСравнения
+				ТОГДА NULL
+			ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.Details
+		КОНЕЦ КАК ProblemDetails,
+		ВЫБОР
+			КОГДА ЕСТЬNULL(SalesOrdersCommentsСрезПоследних.Период, ДАТАВРЕМЯ(1, 1, 1)) &lt;= &amp;ДатаДляСравнения
+				ТОГДА NULL
+			ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.ResponsiblesList
+		КОНЕЦ КАК ResponsiblesList,
 		UnbilledARОстатки.SalesOrder.JobEndDate КАК JobEndDate,
 		ВЫБОР
 			КОГДА UnbilledARОстатки.SalesOrder.JobEndDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1, 0, 0, 0)
@@ -664,8 +685,16 @@
 				ТОГДА UnbilledARОстатки.LegalEntity
 			ИНАЧЕ UnbilledARОстатки.Company.DefaultLegalEntity
 		КОНЕЦ КАК LegalEntity,
-		SalesOrdersCommentsСрезПоследних.Период КАК DateComment,
-		SalesOrdersCommentsСрезПоследних.Problem.ActionItem КАК ActionItem
+		ВЫБОР
+			КОГДА ЕСТЬNULL(SalesOrdersCommentsСрезПоследних.Период, ДАТАВРЕМЯ(1, 1, 1)) &lt;= &amp;ДатаДляСравнения
+				ТОГДА NULL
+			ИНАЧЕ SalesOrdersCommentsСрезПоследних.Период
+		КОНЕЦ КАК DateComment,
+		ВЫБОР
+			КОГДА ЕСТЬNULL(SalesOrdersCommentsСрезПоследних.Период, ДАТАВРЕМЯ(1, 1, 1)) &lt;= &amp;ДатаДляСравнения
+				ТОГДА NULL
+			ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.ActionItem
+		КОНЕЦ КАК ActionItem
 	ИЗ
 		РегистрНакопления.UnbilledAR.Остатки(
 				{(&amp;ПериодОстатков)},
@@ -698,21 +727,46 @@
 		ManualTransactionsОстатки.Currency,
 		ManualTransactionsОстатки.AU,
 		ManualTransactionsОстатки.AmountОстаток,
-		ИСТИНА,
+		ВЫБОР
+			КОГДА SalesOrdersCommentsСрезПоследних.SalesOrder ЕСТЬ NULL
+					ИЛИ SalesOrdersCommentsСрезПоследних.Период &lt;= &amp;ДатаДляСравнения
+				ТОГДА ИСТИНА
+			ИНАЧЕ ЛОЖЬ
+		КОНЕЦ,
 		ManualTransactionsОстатки.AmountОстаток,
 		ManualTransactionsОстатки.РучнаяКорректировка.Ссылка,
 		ManualTransactionsОстатки.РучнаяКорректировка.Дата,
 		ManualTransactionsОстатки.РучнаяКорректировка.Номер,
-		SalesOrdersCommentsСрезПоследних.Problem.Reason,
+		ВЫБОР
+			КОГДА ЕСТЬNULL(SalesOrdersCommentsСрезПоследних.Период, ДАТАВРЕМЯ(1, 1, 1)) &lt;= &amp;ДатаДляСравнения
+				ТОГДА NULL
+			ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.Reason
+		КОНЕЦ,
 		ВЫБОР
 			КОГДА SalesOrdersCommentsСрезПоследних.Problem.Billed ЕСТЬ NULL
 				ТОГДА ЗНАЧЕНИЕ(Перечисление.SalesOrderBilledStatus.Unbilled)
 			ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.Billed
 		КОНЕЦ,
-		SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice,
-		SalesOrdersCommentsСрезПоследних.Problem.EscalateTo,
-		SalesOrdersCommentsСрезПоследних.Problem.Details,
-		SalesOrdersCommentsСрезПоследних.Problem.ResponsiblesList,
+		ВЫБОР
+			КОГДА ЕСТЬNULL(SalesOrdersCommentsСрезПоследних.Период, ДАТАВРЕМЯ(1, 1, 1)) &lt;= &amp;ДатаДляСравнения
+				ТОГДА NULL
+			ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice
+		КОНЕЦ,
+		ВЫБОР
+			КОГДА ЕСТЬNULL(SalesOrdersCommentsСрезПоследних.Период, ДАТАВРЕМЯ(1, 1, 1)) &lt;= &amp;ДатаДляСравнения
+				ТОГДА NULL
+			ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.EscalateTo
+		КОНЕЦ,
+		ВЫБОР
+			КОГДА ЕСТЬNULL(SalesOrdersCommentsСрезПоследних.Период, ДАТАВРЕМЯ(1, 1, 1)) &lt;= &amp;ДатаДляСравнения
+				ТОГДА NULL
+			ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.Details
+		КОНЕЦ,
+		ВЫБОР
+			КОГДА ЕСТЬNULL(SalesOrdersCommentsСрезПоследних.Период, ДАТАВРЕМЯ(1, 1, 1)) &lt;= &amp;ДатаДляСравнения
+				ТОГДА NULL
+			ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.ResponsiblesList
+		КОНЕЦ,
 		ДАТАВРЕМЯ(1, 1, 1),
 		0,
 		0,
@@ -735,8 +789,16 @@
 				ТОГДА ManualTransactionsОстатки.LegalEntity
 			ИНАЧЕ ManualTransactionsОстатки.Company.DefaultLegalEntity
 		КОНЕЦ,
-		ДАТАВРЕМЯ(1, 1, 1),
-		SalesOrdersCommentsСрезПоследних.Problem.ActionItem
+		ВЫБОР
+			КОГДА ЕСТЬNULL(SalesOrdersCommentsСрезПоследних.Период, ДАТАВРЕМЯ(1, 1, 1)) &lt;= &amp;ДатаДляСравнения
+				ТОГДА NULL
+			ИНАЧЕ SalesOrdersCommentsСрезПоследних.Период
+		КОНЕЦ,
+		ВЫБОР
+			КОГДА ЕСТЬNULL(SalesOrdersCommentsСрезПоследних.Период, ДАТАВРЕМЯ(1, 1, 1)) &lt;= &amp;ДатаДляСравнения
+				ТОГДА NULL
+			ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.ActionItem
+		КОНЕЦ
 	ИЗ
 		РегистрНакопления.ManualTransactions.Остатки({(&amp;ПериодОстатков)}, Account.БазовыйЭлемент = &amp;HFMUnbilledAccount {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК ManualTransactionsОстатки
 			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних({(&amp;ДатаКомментария)}, ) КАК SalesOrdersCommentsСрезПоследних
