@@ -209,9 +209,11 @@
 	|		ЛЕВОЕ СОЕДИНЕНИЕ Документ.SalesOrder КАК SalesOrder
 	|		ПО SalesOrdersDetailsSourceData.НомерSO = SalesOrder.Номер
 	|			И (НЕ SalesOrder.ПометкаУдаления)
+	|			И SalesOrdersDetailsSourceData.CompanyCode = SalesOrder.Company.Код
 	|		ЛЕВОЕ СОЕДИНЕНИЕ Документ.Invoice КАК ДокументInvoice
 	|		ПО SalesOrdersDetailsSourceData.LawsonInvoice = ДокументInvoice.Номер
 	|			И (НЕ ДокументInvoice.ПометкаУдаления)
+	|			И SalesOrdersDetailsSourceData.CompanyCode = ДокументInvoice.Company.Код
 	|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
 	|		ПО SalesOrdersDetailsSourceData.CompanyCode = Организации.Код
 	|			И (НЕ Организации.ПометкаУдаления)
