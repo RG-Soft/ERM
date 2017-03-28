@@ -673,7 +673,8 @@
 				               |	SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice КАК ExpectedDateForInvoice,
 				               |	SalesOrdersCommentsСрезПоследних.Problem.EscalateTo КАК EscalateTo,
 				               |	SalesOrdersCommentsСрезПоследних.Problem.Details КАК Details,
-				               |	SalesOrdersCommentsСрезПоследних.Problem.ActionItem КАК ActionItem
+				               |	SalesOrdersCommentsСрезПоследних.Problem.ActionItem КАК ActionItem,
+				               |	SalesOrdersCommentsСрезПоследних.Период
 				               |ИЗ
 				               |	РегистрСведений.SalesOrdersComments.СрезПоследних(, SalesOrder = &SalesOrder) КАК SalesOrdersCommentsСрезПоследних";
 				Запрос.УстановитьПараметр("SalesOrder", СсылкаНаSalesOrder);
@@ -690,10 +691,12 @@
 						ТекEscalateTo = Выборка.EscalateTo;
 						ТекDetails = Выборка.Details;
 						ТекActionItem = Выборка.ActionItem;
+						ТекПериод = Выборка.Период;
 					КонецЕсли;
 				КонецЕсли;
 				
 				Период = ТекущаяДата();
+				НачалоМесТекДата = НачалоМесяца(Период);
 				
 				НЗ = РегистрыСведений.SalesOrdersComments.СоздатьНаборЗаписей();
 				
@@ -711,7 +714,7 @@
 				
 				//СтруктураРеквизитовПроблемы.Дата = Период;
 				//СтруктураРеквизитовПроблемы.SalesOrder = СсылкаНаSalesOrder;
-				Если НаличиеКомментария Тогда
+				Если НаличиеКомментария  И ТекПериод >= НачалоМесТекДата Тогда
 					СтруктураРеквизитовПроблемы.Reason = ТекReason;
 					СтруктураРеквизитовПроблемы.ExpectedDateForInvoice = ТекExpectedDateForInvoice;
 					СтруктураРеквизитовПроблемы.EscalateTo = ТекEscalateTo;
