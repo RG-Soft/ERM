@@ -100,32 +100,19 @@
 	"ВЫБРАТЬ РАЗЛИЧНЫЕ
 	|	OracleSalesOrdersDetailsSourceData.ДокументЗагрузки КАК ДокументЗагрузки,
 	|	OracleSalesOrdersDetailsSourceData.НомерSO КАК НомерSO,
-	|	OracleSalesOrdersDetailsSourceData.CompanyCode КАК CompanyCode,
 	|	OracleSalesOrdersDetailsSourceData.WellData,
 	|	OracleSalesOrdersDetailsSourceData.Agreement,
-	|	OracleSalesOrdersDetailsSourceData.JobEndDate
-	|ПОМЕСТИТЬ Исходники
+	|	OracleSalesOrdersDetailsSourceData.JobEndDate,
+	|	OracleSalesOrdersDetailsSourceData.CustomerNumber,
+	|	SalesOrder.Ссылка как СсылкаSalesOrder
 	|ИЗ
 	|	РегистрСведений.OracleSalesOrdersDetailsSourceData КАК OracleSalesOrdersDetailsSourceData
-	|ГДЕ
-	|	OracleSalesOrdersDetailsSourceData.ДокументЗагрузки = &Ссылка
-	|;
-	|
-	|////////////////////////////////////////////////////////////////////////////////
-	|ВЫБРАТЬ
-	|	Исходники.ДокументЗагрузки КАК ДокументЗагрузки,
-	|	Исходники.НомерSO КАК НомерSO,
-	|	Исходники.CompanyCode КАК CompanyCode,
-	|	SalesOrder.Ссылка КАК СсылкаSalesOrder,
-	|	Исходники.WellData,
-	|	Исходники.Agreement,
-	|	Исходники.JobEndDate
-	|ИЗ
-	|	Исходники КАК Исходники
 	|		ЛЕВОЕ СОЕДИНЕНИЕ Документ.SalesOrder КАК SalesOrder
-	|		ПО Исходники.НомерSO = SalesOrder.Номер
-	|			И Исходники.CompanyCode = SalesOrder.Company.Код
-	|			И (НЕ SalesOrder.ПометкаУдаления)";
+	|		ПО OracleSalesOrdersDetailsSourceData.НомерSO = SalesOrder.Номер
+	|			И OracleSalesOrdersDetailsSourceData.CustomerNumber = SalesOrder.ClientID
+	|			И (НЕ SalesOrder.ПометкаУдаления)
+	|ГДЕ
+	|	OracleSalesOrdersDetailsSourceData.ДокументЗагрузки = &Ссылка";
 	
 	Запрос.УстановитьПараметр("Ссылка", СтруктураПараметров.Ссылка);
 	
