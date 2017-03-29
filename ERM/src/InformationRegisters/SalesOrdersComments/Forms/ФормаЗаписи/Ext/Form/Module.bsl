@@ -67,7 +67,29 @@
 	Если ТипЗнч(Запись.SalesOrder) = Тип("ДокументСсылка.SalesOrder")
 			И (Запись.SalesOrder.Source = Перечисления.ТипыСоответствий.Lawson ИЛИ Запись.SalesOrder.Source = Перечисления.ТипыСоответствий.OracleMI
 			ИЛИ Запись.SalesOrder.Source = Перечисления.ТипыСоответствий.OracleSmith ИЛИ Запись.SalesOrder.Source = Перечисления.ТипыСоответствий.HOBs И Запись.SalesOrder.Company <> Справочники.Организации.НайтиПоКоду("385")) Тогда
-		Элементы.Billed.Доступность = Ложь;
+	
+		Запрос = Новый Запрос;
+		Запрос.Текст = 
+			"ВЫБРАТЬ
+			|	ExceptionsIntercoClientsForUnbilledStatus.Source,
+			|	ExceptionsIntercoClientsForUnbilledStatus.Client
+			|ИЗ
+			|	РегистрСведений.ExceptionsIntercoClientsForUnbilledStatus КАК ExceptionsIntercoClientsForUnbilledStatus
+			|ГДЕ
+			|	ExceptionsIntercoClientsForUnbilledStatus.Client = &Client
+			|	И ExceptionsIntercoClientsForUnbilledStatus.Source = &Source";
+		
+		Запрос.УстановитьПараметр("Client", Запись.SalesOrder.Client);
+		Запрос.УстановитьПараметр("Source", Запись.SalesOrder.Source);
+		
+		РезультатЗапроса = Запрос.Выполнить();
+		
+		ВыборкаДетальныеЗаписи = РезультатЗапроса.Выбрать();
+		
+		Если ВыборкаДетальныеЗаписи.Количество() = 0 Тогда
+				Элементы.Billed.Доступность = Ложь;
+			КонецЕсли;
+			
 	КонецЕсли;
 	
 	Если Параметры.Ключ.Пустой() Тогда
@@ -119,31 +141,28 @@
 				ВызватьИсключение ТекстСообщенияОбОшибках;
 				Отказ = Истина;
 				
-			ИначеЕсли ВыборкаДетальныеЗаписи.Период >= НачалоТекМесяца Тогда
-				
-				Billed = ВыборкаДетальныеЗаписи.Billed;
-				Reason = ВыборкаДетальныеЗаписи.Reason;
-				ExpectedDateForInvoice = ВыборкаДетальныеЗаписи.ExpectedDateForInvoice;
-				EscalateTo = ВыборкаДетальныеЗаписи.EscalateTo;
-				Details = ВыборкаДетальныеЗаписи.Details;
-				ActionItem = ВыборкаДетальныеЗаписи.ActionItem;
-				LastProblem = ВыборкаДетальныеЗаписи.Problem;
-				
-				Если ТипЗнч(Запись.SalesOrder) = Тип("ДокументСсылка.SalesOrder")
-						И (ВыборкаДетальныеЗаписи.Billed = Перечисления.SalesOrderBilledStatus.Billed ИЛИ ВыборкаДетальныеЗаписи.Billed = Перечисления.SalesOrderBilledStatus.Canceled) Тогда
-					Элементы.Billed.Доступность = Ложь;
-				КонецЕсли;
-				
 			Иначе
 				
-				Billed = ВыборкаДетальныеЗаписи.Billed;
-				LastProblem = ВыборкаДетальныеЗаписи.Problem;
-				
-				Если ТипЗнч(Запись.SalesOrder) = Тип("ДокументСсылка.SalesOrder")
-						И (ВыборкаДетальныеЗаписи.Billed = Перечисления.SalesOrderBilledStatus.Billed ИЛИ ВыборкаДетальныеЗаписи.Billed = Перечисления.SalesOrderBilledStatus.Canceled) Тогда
+				Если ТипЗнч(Запись.SalesOrder) = Тип("ДокументСсылка.SalesOrder") И (ВыборкаДетальныеЗаписи.Billed = Перечисления.SalesOrderBilledStatus.Billed ИЛИ ВыборкаДетальныеЗаписи.Billed = Перечисления.SalesOrderBilledStatus.Canceled) Тогда
 					Элементы.Billed.Доступность = Ложь;
 				КонецЕсли;
 				
+				Если ВыборкаДетальныеЗаписи.Период >= НачалоТекМесяца Тогда
+					
+					Billed = ВыборкаДетальныеЗаписи.Billed;
+					Reason = ВыборкаДетальныеЗаписи.Reason;
+					ExpectedDateForInvoice = ВыборкаДетальныеЗаписи.ExpectedDateForInvoice;
+					EscalateTo = ВыборкаДетальныеЗаписи.EscalateTo;
+					Details = ВыборкаДетальныеЗаписи.Details;
+					ActionItem = ВыборкаДетальныеЗаписи.ActionItem;
+					LastProblem = ВыборкаДетальныеЗаписи.Problem;
+					
+				Иначе
+				
+					Billed = ВыборкаДетальныеЗаписи.Billed;
+					LastProblem = ВыборкаДетальныеЗаписи.Problem;
+					
+				КонецЕсли;
 			КонецЕсли;
 		КонецЕсли;
 		
