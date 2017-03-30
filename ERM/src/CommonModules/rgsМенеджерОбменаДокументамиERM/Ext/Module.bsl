@@ -1,4 +1,4 @@
-﻿// Конвертация ERM (documents) от 03.03.2017 12:09:47
+﻿// Конвертация ERM (documents) от 30.03.2017 18:21:41
 #Область ПроцедурыКонвертации
 Процедура ПередКонвертацией(КомпонентыОбмена) Экспорт
 	
@@ -241,7 +241,8 @@
 	КонецЕсли;
 	
 	Если ПолученныеДанные.Source = Перечисления.ТипыСоответствий.OracleSmith И ДанныеXDTO.Свойство("ERMClientMappingID") И ДанныеXDTO.Свойство("LawsonCompanyCode") Тогда
-		ПолученныеДанные.DocID = СокрЛП(ПолученныеДанные.DocNumber) + "." + ДанныеXDTO.ERMClientMappingID + "." + СтрЗаменить(Строка(ДанныеXDTO.LawsonCompanyCode), ",", "");
+		ПолученныеДанные.DocID = СокрЛП(ПолученныеДанные.DocNumber) + "." + ДанныеXDTO.ERMClientMappingID + "." + СтрЗаменить(Строка(ДанныеXDTO.LawsonCompanyCode), ",", ""); 
+		ПолученныеДанные.Номер = СокрЛП(ПолученныеДанные.DocNumber) + "." + ДанныеXDTO.ERMClientMappingID + "." + СтрЗаменить(Строка(ДанныеXDTO.LawsonCompanyCode), ",", ""); 
 	КонецЕсли;
 	
 	Если ДанныеXDTO.Свойство("Оплачен") И ЗначениеЗаполнено(ДанныеXDTO.Оплачен) Тогда
@@ -481,7 +482,10 @@
 		Если ДанныеИБ <> Неопределено Тогда
 			
 			СтруктураРеквизитов = ОбщегоНазначения.ЗначенияРеквизитовОбъекта(ДанныеИБ.Ссылка, "Номер, DocID, DocNumber, Amount, Agreement, AgreementCode, PassedForApproval, PassedForApprovalDate, PassedForPayment, PassedForPaymentDate, ExpectedDateOfPayment, Дата");
-			ПолученныеДанные.Номер = СтруктураРеквизитов.Номер;
+			Если Source <> Перечисления.ТипыСоответствий.OracleSmith Тогда
+				ПолученныеДанные.Номер = СтруктураРеквизитов.Номер;
+			КонецЕсли;
+			
 			ПолученныеДанные.DocID = СтруктураРеквизитов.DocID;
 			ПолученныеДанные.DocNumber = СтруктураРеквизитов.DocNumber;
 			ПолученныеДанные.Дата = СтруктураРеквизитов.Дата;
@@ -648,99 +652,99 @@
 
 Процедура ПКО_Документ_SalesOrder_Получение_ПередЗаписьюПолученныхДанных(ПолученныеДанные, ДанныеИБ, КонвертацияСвойств, КомпонентыОбмена)
 	Если ДанныеИБ = Неопределено Тогда		
-					СсылкаНаSalesOrder = Документы.SalesOrder.ПолучитьСсылку();
-					ПолученныеДанные.УстановитьСсылкуНового(СсылкаНаSalesOrder);		
-				Иначе		
-					СсылкаНаSalesOrder = ДанныеИБ.Ссылка;		
-				КонецЕсли;
-				
-				Статус = ПолученныеДанные.ДополнительныеСвойства.BilledStatus;
-				Если Статус = "Unbilled" Тогда
-					СтатусSalesOrder = Перечисления.SalesOrderBilledStatus.Unbilled;
-				ИначеЕсли Статус = "Billed" Тогда
-					СтатусSalesOrder = Перечисления.SalesOrderBilledStatus.Billed	
-				ИначеЕсли Статус = "Canceled" Тогда
-					СтатусSalesOrder = Перечисления.SalesOrderBilledStatus.Canceled	
-				КонецЕсли;
-				
-				НаличиеКомментария = Ложь;
-				
-				Запрос = Новый Запрос;
-				Запрос.Текст = "ВЫБРАТЬ
-				               |	SalesOrdersCommentsСрезПоследних.SalesOrder,
-				               |	SalesOrdersCommentsСрезПоследних.Problem.Billed КАК Billed,
-				               |	SalesOrdersCommentsСрезПоследних.Problem.Reason КАК Reason,
-				               |	SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice КАК ExpectedDateForInvoice,
-				               |	SalesOrdersCommentsСрезПоследних.Problem.EscalateTo КАК EscalateTo,
-				               |	SalesOrdersCommentsСрезПоследних.Problem.Details КАК Details,
-				               |	SalesOrdersCommentsСрезПоследних.Problem.ActionItem КАК ActionItem,
-				               |	SalesOrdersCommentsСрезПоследних.Период
-				               |ИЗ
-				               |	РегистрСведений.SalesOrdersComments.СрезПоследних(, SalesOrder = &SalesOrder) КАК SalesOrdersCommentsСрезПоследних";
-				Запрос.УстановитьПараметр("SalesOrder", СсылкаНаSalesOrder);
-				Результат = Запрос.Выполнить();
-				Выборка = Результат.Выбрать();
-				Если Выборка.Количество() > 0 Тогда
-					Выборка.Следующий();
-					НаличиеКомментария = Истина;
-					Если Выборка.Billed = СтатусSalesOrder Тогда
-						Возврат;
-					Иначе
-						ТекReason = Выборка.Reason;
-						ТекExpectedDateForInvoice = Выборка.ExpectedDateForInvoice;
-						ТекEscalateTo = Выборка.EscalateTo;
-						ТекDetails = Выборка.Details;
-						ТекActionItem = Выборка.ActionItem;
-						ТекПериод = Выборка.Период;
+						СсылкаНаSalesOrder = Документы.SalesOrder.ПолучитьСсылку();
+						ПолученныеДанные.УстановитьСсылкуНового(СсылкаНаSalesOrder);		
+					Иначе		
+						СсылкаНаSalesOrder = ДанныеИБ.Ссылка;		
 					КонецЕсли;
-				КонецЕсли;
-				
-				Период = ТекущаяДата();
-				НачалоМесТекДата = НачалоМесяца(Период);
-				
-				НЗ = РегистрыСведений.SalesOrdersComments.СоздатьНаборЗаписей();
-				
-				//СтруктураРеквизитовПроблемы = Новый Структура("Дата, SalesOrder, User, Reason, Billed, ExpectedDateForInvoice, EscalateTo, Details, Responsibles");
-				СтруктураРеквизитовПроблемы = Новый Структура("Дата, SalesOrder, User, Reason, Billed, ExpectedDateForInvoice, EscalateTo, Details, ActionItem, Responsibles");
-				СтруктураРеквизитовПроблемы.Вставить("Дата", Период);
-				СтруктураРеквизитовПроблемы.Вставить("SalesOrder", СсылкаНаSalesOrder);
-				СтруктураРеквизитовПроблемы.Вставить("Billed", СтатусSalesOrder);
-				СтруктураРеквизитовПроблемы.Вставить("Responsibles", Новый ТаблицаЗначений);	
-				
-				AutoUser = Справочники.Пользователи.НайтиПоНаименованию("AutoUser");
-				Если ЗначениеЗаполнено(AutoUser)Тогда
-					СтруктураРеквизитовПроблемы.Вставить("User", AutoUser);	;
-				КонецЕсли;
-				
-				//СтруктураРеквизитовПроблемы.Дата = Период;
-				//СтруктураРеквизитовПроблемы.SalesOrder = СсылкаНаSalesOrder;
-				Если НаличиеКомментария  И ТекПериод >= НачалоМесТекДата Тогда
-					СтруктураРеквизитовПроблемы.Reason = ТекReason;
-					СтруктураРеквизитовПроблемы.ExpectedDateForInvoice = ТекExpectedDateForInvoice;
-					СтруктураРеквизитовПроблемы.EscalateTo = ТекEscalateTo;
-					СтруктураРеквизитовПроблемы.Details = ТекDetails;
-					СтруктураРеквизитовПроблемы.ActionItem = ТекActionItem;
-					Если ЗначениеЗаполнено(ТекEscalateTo) Тогда
-						СтруктураРеквизитовПроблемы.Responsibles.Очистить();
-						МассивОтветственных = Документы.SalesOrder.ПолучитьОтветственныхПоSO(СсылкаНаSalesOrder, ТекEscalateTo);
-						СтруктураРеквизитовПроблемы.Responsibles.Колонки.Добавить("Responsible", Новый ОписаниеТипов("СправочникСсылка.LDAPUsers"));
-						Для каждого ТекОтветственный Из МассивОтветственных Цикл
-							НоваяСтрока = СтруктураРеквизитовПроблемы.Responsibles.Добавить();
-							НоваяСтрока.Responsible = ТекОтветственный;
-						КонецЦикла;
+					
+					Статус = ПолученныеДанные.ДополнительныеСвойства.BilledStatus;
+					Если Статус = "Unbilled" Тогда
+						СтатусSalesOrder = Перечисления.SalesOrderBilledStatus.Unbilled;
+					ИначеЕсли Статус = "Billed" Тогда
+						СтатусSalesOrder = Перечисления.SalesOrderBilledStatus.Billed	
+					ИначеЕсли Статус = "Canceled" Тогда
+						СтатусSalesOrder = Перечисления.SalesOrderBilledStatus.Canceled	
 					КонецЕсли;
-				КонецЕсли;
-				
-				Problem = РегистрыСведений.SalesOrdersComments.СоздатьSalesOrderProblem(СтруктураРеквизитовПроблемы);
-				
-				НЗ.Очистить();
-				НЗ.Отбор.SalesOrder.Установить(СсылкаНаSalesOrder);
-				
-				Запись = НЗ.Добавить();
-				Запись.Период = Период;
-				Запись.SalesOrder = СсылкаНаSalesOrder;
-				Запись.Problem = Problem;
-				НЗ.Записать(Ложь);
+					
+					НаличиеКомментария = Ложь;
+					
+					Запрос = Новый Запрос;
+					Запрос.Текст = "ВЫБРАТЬ
+					               |	SalesOrdersCommentsСрезПоследних.SalesOrder,
+					               |	SalesOrdersCommentsСрезПоследних.Problem.Billed КАК Billed,
+					               |	SalesOrdersCommentsСрезПоследних.Problem.Reason КАК Reason,
+					               |	SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice КАК ExpectedDateForInvoice,
+					               |	SalesOrdersCommentsСрезПоследних.Problem.EscalateTo КАК EscalateTo,
+					               |	SalesOrdersCommentsСрезПоследних.Problem.Details КАК Details,
+					               |	SalesOrdersCommentsСрезПоследних.Problem.ActionItem КАК ActionItem,
+					               |	SalesOrdersCommentsСрезПоследних.Период
+					               |ИЗ
+					               |	РегистрСведений.SalesOrdersComments.СрезПоследних(, SalesOrder = &SalesOrder) КАК SalesOrdersCommentsСрезПоследних";
+					Запрос.УстановитьПараметр("SalesOrder", СсылкаНаSalesOrder);
+					Результат = Запрос.Выполнить();
+					Выборка = Результат.Выбрать();
+					Если Выборка.Количество() > 0 Тогда
+						Выборка.Следующий();
+						НаличиеКомментария = Истина;
+						Если Выборка.Billed = СтатусSalesOrder Тогда
+							Возврат;
+						Иначе
+							ТекReason = Выборка.Reason;
+							ТекExpectedDateForInvoice = Выборка.ExpectedDateForInvoice;
+							ТекEscalateTo = Выборка.EscalateTo;
+							ТекDetails = Выборка.Details;
+							ТекActionItem = Выборка.ActionItem;
+							ТекПериод = Выборка.Период;
+						КонецЕсли;
+					КонецЕсли;
+					
+					Период = ТекущаяДата();
+					НачалоМесТекДата = НачалоМесяца(Период);
+					
+					НЗ = РегистрыСведений.SalesOrdersComments.СоздатьНаборЗаписей();
+					
+					//СтруктураРеквизитовПроблемы = Новый Структура("Дата, SalesOrder, User, Reason, Billed, ExpectedDateForInvoice, EscalateTo, Details, Responsibles");
+					СтруктураРеквизитовПроблемы = Новый Структура("Дата, SalesOrder, User, Reason, Billed, ExpectedDateForInvoice, EscalateTo, Details, ActionItem, Responsibles");
+					СтруктураРеквизитовПроблемы.Вставить("Дата", Период);
+					СтруктураРеквизитовПроблемы.Вставить("SalesOrder", СсылкаНаSalesOrder);
+					СтруктураРеквизитовПроблемы.Вставить("Billed", СтатусSalesOrder);
+					СтруктураРеквизитовПроблемы.Вставить("Responsibles", Новый ТаблицаЗначений);	
+					
+					AutoUser = Справочники.Пользователи.НайтиПоНаименованию("AutoUser");
+					Если ЗначениеЗаполнено(AutoUser)Тогда
+						СтруктураРеквизитовПроблемы.Вставить("User", AutoUser);	;
+					КонецЕсли;
+					
+					//СтруктураРеквизитовПроблемы.Дата = Период;
+					//СтруктураРеквизитовПроблемы.SalesOrder = СсылкаНаSalesOrder;
+					Если НаличиеКомментария  И ТекПериод >= НачалоМесТекДата Тогда
+						СтруктураРеквизитовПроблемы.Reason = ТекReason;
+						СтруктураРеквизитовПроблемы.ExpectedDateForInvoice = ТекExpectedDateForInvoice;
+						СтруктураРеквизитовПроблемы.EscalateTo = ТекEscalateTo;
+						СтруктураРеквизитовПроблемы.Details = ТекDetails;
+						СтруктураРеквизитовПроблемы.ActionItem = ТекActionItem;
+						Если ЗначениеЗаполнено(ТекEscalateTo) Тогда
+							СтруктураРеквизитовПроблемы.Responsibles.Очистить();
+							МассивОтветственных = Документы.SalesOrder.ПолучитьОтветственныхПоSO(СсылкаНаSalesOrder, ТекEscalateTo);
+							СтруктураРеквизитовПроблемы.Responsibles.Колонки.Добавить("Responsible", Новый ОписаниеТипов("СправочникСсылка.LDAPUsers"));
+							Для каждого ТекОтветственный Из МассивОтветственных Цикл
+								НоваяСтрока = СтруктураРеквизитовПроблемы.Responsibles.Добавить();
+								НоваяСтрока.Responsible = ТекОтветственный;
+							КонецЦикла;
+						КонецЕсли;
+					КонецЕсли;
+					
+					Problem = РегистрыСведений.SalesOrdersComments.СоздатьSalesOrderProblem(СтруктураРеквизитовПроблемы);
+					
+					НЗ.Очистить();
+					НЗ.Отбор.SalesOrder.Установить(СсылкаНаSalesOrder);
+					
+					Запись = НЗ.Добавить();
+					Запись.Период = Период;
+					Запись.SalesOrder = СсылкаНаSalesOrder;
+					Запись.Problem = Problem;
+					НЗ.Записать(Ложь);
 КонецПроцедуры
 #КонецОбласти
 #Область Справочник_crmContracts_Получение
