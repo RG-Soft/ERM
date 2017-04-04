@@ -5,6 +5,7 @@
 	<RepostOnWrite>true</RepostOnWrite>
 	<AutoCommandBar name="ФормаКоманднаяПанель" id="-1"/>
 	<Events>
+		<Event name="OnReadAtServer">ПриЧтенииНаСервере</Event>
 		<Event name="BeforeWriteAtServer">ПередЗаписьюНаСервере</Event>
 		<Event name="OnCreateAtServer">ПриСозданииНаСервере</Event>
 	</Events>
@@ -39,83 +40,150 @@
 			<ContextMenu name="ЛистФайлаКонтекстноеМеню" id="11"/>
 			<ExtendedTooltip name="ЛистФайлаРасширеннаяПодсказка" id="12"/>
 		</InputField>
-		<Button name="ЗагрузитьДанные" id="50">
-			<Type>UsualButton</Type>
-			<CommandName>Form.Command.ПрочитатьФайл</CommandName>
-			<ExtendedTooltip name="ЗагрузитьДанныеРасширеннаяПодсказка" id="51"/>
-		</Button>
-		<Table name="ТаблицаРасхождений" id="19">
+		<UsualGroup name="Кнопки" id="87">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Кнопки</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Кнопки</v8:content>
+				</v8:item>
+			</ToolTip>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="КнопкиРасширеннаяПодсказка" id="88"/>
+			<ChildItems>
+				<Button name="ЗагрузитьДанные" id="50">
+					<Type>UsualButton</Type>
+					<CommandName>Form.Command.ПрочитатьФайл</CommandName>
+					<ExtendedTooltip name="ЗагрузитьДанныеРасширеннаяПодсказка" id="51"/>
+				</Button>
+				<Button name="ЗаписатьДанныеВТаблицу" id="85">
+					<Type>UsualButton</Type>
+					<CommandName>Form.Command.ЗаписатьДанныеВТаблицу</CommandName>
+					<ExtendedTooltip name="ЗаписатьДанныеВТаблицуРасширеннаяПодсказка" id="86"/>
+				</Button>
+			</ChildItems>
+		</UsualGroup>
+		<Table name="ТаблицаКоллизий" id="54">
 			<Representation>List</Representation>
 			<AutoInsertNewRow>true</AutoInsertNewRow>
 			<EnableStartDrag>true</EnableStartDrag>
 			<EnableDrag>true</EnableDrag>
-			<DataPath>Объект.ТаблицаРасхождений</DataPath>
+			<DataPath>ТаблицаКоллизий</DataPath>
 			<RowFilter xsi:nil="true"/>
-			<ContextMenu name="ТаблицаРасхожденийКонтекстноеМеню" id="20"/>
-			<AutoCommandBar name="ТаблицаРасхожденийКоманднаяПанель" id="21">
+			<ContextMenu name="ТаблицаКоллизийКонтекстноеМеню" id="55"/>
+			<AutoCommandBar name="ТаблицаКоллизийКоманднаяПанель" id="56">
 				<Autofill>false</Autofill>
 			</AutoCommandBar>
-			<ExtendedTooltip name="ТаблицаРасхожденийРасширеннаяПодсказка" id="22"/>
-			<SearchStringAddition name="ТаблицаРасхожденийСтрокаПоиска" id="23">
+			<ExtendedTooltip name="ТаблицаКоллизийРасширеннаяПодсказка" id="57"/>
+			<SearchStringAddition name="ТаблицаКоллизийСтрокаПоиска" id="58">
 				<AdditionSource>
-					<Item>ТаблицаРасхождений</Item>
+					<Item>ТаблицаКоллизий</Item>
 					<Type>SearchStringRepresentation</Type>
 				</AdditionSource>
-				<ContextMenu name="ТаблицаРасхожденийСтрокаПоискаКонтекстноеМеню" id="24"/>
-				<ExtendedTooltip name="ТаблицаРасхожденийСтрокаПоискаРасширеннаяПодсказка" id="25"/>
+				<ContextMenu name="ТаблицаКоллизийСтрокаПоискаКонтекстноеМеню" id="59"/>
+				<ExtendedTooltip name="ТаблицаКоллизийСтрокаПоискаРасширеннаяПодсказка" id="60"/>
 			</SearchStringAddition>
-			<ViewStatusAddition name="ТаблицаРасхожденийСостояниеПросмотра" id="26">
+			<ViewStatusAddition name="ТаблицаКоллизийСостояниеПросмотра" id="61">
 				<AdditionSource>
-					<Item>ТаблицаРасхождений</Item>
+					<Item>ТаблицаКоллизий</Item>
 					<Type>ViewStatusRepresentation</Type>
 				</AdditionSource>
-				<ContextMenu name="ТаблицаРасхожденийСостояниеПросмотраКонтекстноеМеню" id="27"/>
-				<ExtendedTooltip name="ТаблицаРасхожденийСостояниеПросмотраРасширеннаяПодсказка" id="28"/>
+				<ContextMenu name="ТаблицаКоллизийСостояниеПросмотраКонтекстноеМеню" id="62"/>
+				<ExtendedTooltip name="ТаблицаКоллизийСостояниеПросмотраРасширеннаяПодсказка" id="63"/>
 			</ViewStatusAddition>
-			<SearchControlAddition name="ТаблицаРасхожденийУправлениеПоиском" id="29">
+			<SearchControlAddition name="ТаблицаКоллизийУправлениеПоиском" id="64">
 				<AdditionSource>
-					<Item>ТаблицаРасхождений</Item>
+					<Item>ТаблицаКоллизий</Item>
 					<Type>SearchControl</Type>
 				</AdditionSource>
-				<ContextMenu name="ТаблицаРасхожденийУправлениеПоискомКонтекстноеМеню" id="30"/>
-				<ExtendedTooltip name="ТаблицаРасхожденийУправлениеПоискомРасширеннаяПодсказка" id="31"/>
+				<ContextMenu name="ТаблицаКоллизийУправлениеПоискомКонтекстноеМеню" id="65"/>
+				<ExtendedTooltip name="ТаблицаКоллизийУправлениеПоискомРасширеннаяПодсказка" id="66"/>
 			</SearchControlAddition>
 			<ChildItems>
-				<LabelField name="ТаблицаРасхожденийНомерСтроки" id="32">
-					<DataPath>Объект.ТаблицаРасхождений.LineNumber</DataPath>
+				<InputField name="ТаблицаКоллизийОписание" id="67">
+					<DataPath>ТаблицаКоллизий.Описание</DataPath>
 					<EditMode>EnterOnInput</EditMode>
-					<ContextMenu name="ТаблицаРасхожденийНомерСтрокиКонтекстноеМеню" id="33"/>
-					<ExtendedTooltip name="ТаблицаРасхожденийНомерСтрокиРасширеннаяПодсказка" id="34"/>
-				</LabelField>
-				<InputField name="ТаблицаРасхожденийSegment" id="35">
-					<DataPath>Объект.ТаблицаРасхождений.Segment</DataPath>
-					<EditMode>EnterOnInput</EditMode>
-					<ContextMenu name="ТаблицаРасхожденийSegmentКонтекстноеМеню" id="36"/>
-					<ExtendedTooltip name="ТаблицаРасхожденийSegmentРасширеннаяПодсказка" id="37"/>
+					<ContextMenu name="ТаблицаКоллизийОписаниеКонтекстноеМеню" id="68"/>
+					<ExtendedTooltip name="ТаблицаКоллизийОписаниеРасширеннаяПодсказка" id="69"/>
 				</InputField>
-				<InputField name="ТаблицаРасхожденийLocation" id="38">
-					<DataPath>Объект.ТаблицаРасхождений.Location</DataPath>
+				<InputField name="ТаблицаКоллизийИдентификатор" id="82">
+					<DataPath>ТаблицаКоллизий.Идентификатор</DataPath>
 					<EditMode>EnterOnInput</EditMode>
-					<ContextMenu name="ТаблицаРасхожденийLocationКонтекстноеМеню" id="39"/>
-					<ExtendedTooltip name="ТаблицаРасхожденийLocationРасширеннаяПодсказка" id="40"/>
+					<ContextMenu name="ТаблицаКоллизийИдентификаторКонтекстноеМеню" id="83"/>
+					<ExtendedTooltip name="ТаблицаКоллизийИдентификаторРасширеннаяПодсказка" id="84"/>
 				</InputField>
-				<InputField name="ТаблицаРасхожденийHFM_Amount" id="41">
-					<DataPath>Объект.ТаблицаРасхождений.HFM_Amount</DataPath>
+			</ChildItems>
+		</Table>
+		<Table name="ТаблицаДерево" id="89">
+			<Representation>Tree</Representation>
+			<AutoInsertNewRow>true</AutoInsertNewRow>
+			<EnableStartDrag>true</EnableStartDrag>
+			<EnableDrag>true</EnableDrag>
+			<DataPath>ТаблицаДерево</DataPath>
+			<ContextMenu name="ТаблицаДеревоКонтекстноеМеню" id="90"/>
+			<AutoCommandBar name="ТаблицаДеревоКоманднаяПанель" id="91">
+				<Autofill>false</Autofill>
+			</AutoCommandBar>
+			<ExtendedTooltip name="ТаблицаДеревоРасширеннаяПодсказка" id="92"/>
+			<SearchStringAddition name="ТаблицаДеревоСтрокаПоиска" id="93">
+				<AdditionSource>
+					<Item>ТаблицаДерево</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ТаблицаДеревоСтрокаПоискаКонтекстноеМеню" id="94"/>
+				<ExtendedTooltip name="ТаблицаДеревоСтрокаПоискаРасширеннаяПодсказка" id="95"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="ТаблицаДеревоСостояниеПросмотра" id="96">
+				<AdditionSource>
+					<Item>ТаблицаДерево</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ТаблицаДеревоСостояниеПросмотраКонтекстноеМеню" id="97"/>
+				<ExtendedTooltip name="ТаблицаДеревоСостояниеПросмотраРасширеннаяПодсказка" id="98"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="ТаблицаДеревоУправлениеПоиском" id="99">
+				<AdditionSource>
+					<Item>ТаблицаДерево</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="ТаблицаДеревоУправлениеПоискомКонтекстноеМеню" id="100"/>
+				<ExtendedTooltip name="ТаблицаДеревоУправлениеПоискомРасширеннаяПодсказка" id="101"/>
+			</SearchControlAddition>
+			<ChildItems>
+				<InputField name="ТаблицаДеревоSegment" id="102">
+					<DataPath>ТаблицаДерево.Segment</DataPath>
 					<EditMode>EnterOnInput</EditMode>
-					<ContextMenu name="ТаблицаРасхожденийHFM_AmountКонтекстноеМеню" id="42"/>
-					<ExtendedTooltip name="ТаблицаРасхожденийHFM_AmountРасширеннаяПодсказка" id="43"/>
+					<ContextMenu name="ТаблицаДеревоSegmentКонтекстноеМеню" id="103"/>
+					<ExtendedTooltip name="ТаблицаДеревоSegmentРасширеннаяПодсказка" id="104"/>
 				</InputField>
-				<InputField name="ТаблицаРасхожденийERM_Amount" id="44">
-					<DataPath>Объект.ТаблицаРасхождений.ERM_Amount</DataPath>
+				<InputField name="ТаблицаДеревоLocation" id="105">
+					<DataPath>ТаблицаДерево.Location</DataPath>
 					<EditMode>EnterOnInput</EditMode>
-					<ContextMenu name="ТаблицаРасхожденийERM_AmountКонтекстноеМеню" id="45"/>
-					<ExtendedTooltip name="ТаблицаРасхожденийERM_AmountРасширеннаяПодсказка" id="46"/>
+					<ContextMenu name="ТаблицаДеревоLocationКонтекстноеМеню" id="106"/>
+					<ExtendedTooltip name="ТаблицаДеревоLocationРасширеннаяПодсказка" id="107"/>
 				</InputField>
-				<InputField name="ТаблицаРасхожденийDifference" id="47">
-					<DataPath>Объект.ТаблицаРасхождений.Difference</DataPath>
+				<InputField name="ТаблицаДеревоHFM_Amount" id="108">
+					<DataPath>ТаблицаДерево.HFM_Amount</DataPath>
 					<EditMode>EnterOnInput</EditMode>
-					<ContextMenu name="ТаблицаРасхожденийDifferenceКонтекстноеМеню" id="48"/>
-					<ExtendedTooltip name="ТаблицаРасхожденийDifferenceРасширеннаяПодсказка" id="49"/>
+					<ContextMenu name="ТаблицаДеревоHFM_AmountКонтекстноеМеню" id="109"/>
+					<ExtendedTooltip name="ТаблицаДеревоHFM_AmountРасширеннаяПодсказка" id="110"/>
+				</InputField>
+				<InputField name="ТаблицаДеревоERM_Amount" id="111">
+					<DataPath>ТаблицаДерево.ERM_Amount</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="ТаблицаДеревоERM_AmountКонтекстноеМеню" id="112"/>
+					<ExtendedTooltip name="ТаблицаДеревоERM_AmountРасширеннаяПодсказка" id="113"/>
+				</InputField>
+				<InputField name="ТаблицаДеревоDifference" id="114">
+					<DataPath>ТаблицаДерево.Difference</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="ТаблицаДеревоDifferenceКонтекстноеМеню" id="115"/>
+					<ExtendedTooltip name="ТаблицаДеревоDifferenceРасширеннаяПодсказка" id="116"/>
 				</InputField>
 			</ChildItems>
 		</Table>
@@ -303,6 +371,132 @@
 				</Column>
 			</Columns>
 		</Attribute>
+		<Attribute name="ТаблицаКоллизий" id="10">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Synchronization conflicts</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTable</v8:Type>
+			</Type>
+			<Columns>
+				<Column name="Описание" id="1">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Description</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="Идентификатор" id="6">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Id</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>100</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
+		<Attribute name="ТаблицаДерево" id="11">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Таблица дерево</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTree</v8:Type>
+			</Type>
+			<Columns>
+				<Column name="Segment" id="1">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Segment</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>cfg:CatalogRef.HFM_Technology</v8:Type>
+					</Type>
+				</Column>
+				<Column name="Location" id="2">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Location</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>cfg:CatalogRef.HFM_Locations</v8:Type>
+					</Type>
+				</Column>
+				<Column name="HFM_Amount" id="3">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>HFM amount</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>15</v8:Digits>
+							<v8:FractionDigits>2</v8:FractionDigits>
+							<v8:AllowedSign>Any</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="ERM_Amount" id="4">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>ERM amount</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>15</v8:Digits>
+							<v8:FractionDigits>2</v8:FractionDigits>
+							<v8:AllowedSign>Any</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="Difference" id="5">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Difference</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>15</v8:Digits>
+							<v8:FractionDigits>2</v8:FractionDigits>
+							<v8:AllowedSign>Any</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
 	</Attributes>
 	<Commands>
 		<Command name="ПрочитатьФайл" id="1">
@@ -315,10 +509,30 @@
 			<ToolTip>
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>Прочитать файл</v8:content>
+					<v8:content>Load file</v8:content>
 				</v8:item>
 			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.DataProcessor</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
 			<Action>ПрочитатьФайл</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="ЗаписатьДанныеВТаблицу" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Check data</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Записать данные в таблицу</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ЗаписатьДанныеВТаблицу</Action>
 		</Command>
 	</Commands>
 </Form>
