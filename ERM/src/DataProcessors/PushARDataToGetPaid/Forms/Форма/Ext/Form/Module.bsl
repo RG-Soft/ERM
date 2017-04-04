@@ -526,7 +526,8 @@
 	|ВЫБРАТЬ
 	|	UnallocatedCash.Source КАК Source,
 	|	UnallocatedCash.Client КАК Client,
-	|	МАКСИМУМ(UnallocatedCash.CashBatch) КАК CashBatch
+	|	МАКСИМУМ(UnallocatedCash.CashBatch) КАК CashBatch,
+	|	UnallocatedCash.Период
 	|ПОМЕСТИТЬ ВТ_МаксимальныеРегистраторыОплаты
 	|ИЗ
 	|	РегистрНакопления.UnallocatedCash КАК UnallocatedCash
@@ -539,7 +540,8 @@
 	|
 	|СГРУППИРОВАТЬ ПО
 	|	UnallocatedCash.Source,
-	|	UnallocatedCash.Client
+	|	UnallocatedCash.Client,
+	|	UnallocatedCash.Период
 	|;
 	|
 	|////////////////////////////////////////////////////////////////////////////////
@@ -558,6 +560,7 @@
 	|			И UnallocatedCash.CashBatch = ВТ_МаксимальныеРегистраторыОплаты.CashBatch
 	|			И (UnallocatedCash.ВидДвижения = ЗНАЧЕНИЕ(ВидДвиженияНакопления.Приход))
 	|			И (UnallocatedCash.Активность)
+	|			И (UnallocatedCash.Период = ВТ_МаксимальныеРегистраторыОплаты.Период)
 	|
 	|СГРУППИРОВАТЬ ПО
 	|	UnallocatedCash.Source,
@@ -662,7 +665,7 @@
 	|////////////////////////////////////////////////////////////////////////////////
 	|ВЫБРАТЬ
 	|	ВЫБОР
-	|		КОГДА ВТ_Остатки.ClientID ЕСТЬ NULL 
+	|		КОГДА ВТ_Остатки.ClientID ЕСТЬ NULL
 	|			ТОГДА """"
 	|		КОГДА ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
 	|			ТОГДА ВТ_Остатки.ClientID + ""-101""
@@ -761,7 +764,7 @@
 	|	ВТ_Остатки.CompanyКод,
 	|	ВТ_Остатки.CountryCode,
 	|	ВЫБОР
-	|		КОГДА ВТ_Остатки.ClientID ЕСТЬ NULL 
+	|		КОГДА ВТ_Остатки.ClientID ЕСТЬ NULL
 	|			ТОГДА """"
 	|		КОГДА ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
 	|			ТОГДА ВТ_Остатки.ClientID + ""-101""
