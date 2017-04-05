@@ -91,21 +91,6 @@
 			<field>CashBatch</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>CashBatchДата</dataPath>
-			<field>CashBatchДата</field>
-			<appearance>
-				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:parameter>Формат</dcscor:parameter>
-					<dcscor:value xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>ДФ=MM/dd/yyyy</v8:content>
-						</v8:item>
-					</dcscor:value>
-				</dcscor:item>
-			</appearance>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>InvoiceNum</dataPath>
 			<field>InvoiceNum</field>
 			<title xsi:type="v8:LocalStringType">
@@ -128,6 +113,9 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>AU</dataPath>
 			<field>AU</field>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Account</dataPath>
@@ -139,6 +127,16 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>LegalEntity</dataPath>
 			<field>LegalEntity</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>DateCollection</dataPath>
+			<field>DateCollection</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Date collection</v8:content>
+				</v8:item>
+			</title>
 		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
@@ -156,14 +154,22 @@
 	КОНЕЦ КАК Invoice,
 	PaymentsОбороты.Currency,
 	PaymentsОбороты.AmountОборот,
-	PaymentsОбороты.CashBatch.Дата,
-	PaymentsОбороты.Account
+	ВЫБОР
+		КОГДА PaymentsОбороты.CashBatch = ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
+				И PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
+			ТОГДА PaymentsОбороты.Регистратор.DateLawson
+		КОГДА PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
+			ТОГДА PaymentsОбороты.Регистратор.Дата
+		ИНАЧЕ PaymentsОбороты.CashBatch.Дата
+	КОНЕЦ КАК DateCollection,
+	PaymentsОбороты.Account,
+	PaymentsОбороты.AU
 ПОМЕСТИТЬ Исходные
 ИЗ
 	РегистрНакопления.Payments.Обороты(
 			,
 			,
-			,
+			Регистратор,
 			(Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
 					И Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
 					И Invoice &lt;&gt; НЕОПРЕДЕЛЕНО
@@ -192,7 +198,6 @@
 				ТОГДА 0
 			ИНАЧЕ Исходные.AmountОборот / ВнутренниеКурсыВалютСрезПоследних.Курс
 		КОНЕЦ) КАК BaseAmount,
-	Исходные.CashBatchДата,
 	ВЫБОР
 		КОГДА Исходные.Invoice ССЫЛКА Документ.Invoice
 			ТОГДА Исходные.Invoice.DocNumber
@@ -200,7 +205,9 @@
 	КОНЕЦ КАК InvoiceNum,
 	ТИПЗНАЧЕНИЯ(Исходные.Invoice) КАК Type,
 	Исходные.Invoice,
-	Исходные.Account
+	Исходные.Account,
+	Исходные.DateCollection,
+	Исходные.AU
 ИЗ
 	Исходные КАК Исходные
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;КонецПериода)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
@@ -215,7 +222,6 @@
 	Исходные.Currency,
 	ВнутренниеКурсыВалютСрезПоследних.Курс,
 	ВнутренниеКурсыВалютСрезПоследних.Кратность,
-	Исходные.CashBatchДата,
 	ВЫБОР
 		КОГДА Исходные.Invoice ССЫЛКА Документ.Invoice
 			ТОГДА Исходные.Invoice.DocNumber
@@ -223,7 +229,9 @@
 	КОНЕЦ,
 	ТИПЗНАЧЕНИЯ(Исходные.Invoice),
 	Исходные.Invoice,
-	Исходные.Account
+	Исходные.Account,
+	Исходные.DateCollection,
+	Исходные.AU
 
 ИМЕЮЩИЕ
 	СУММА(Исходные.AmountОборот) &gt; 0</query>
@@ -354,11 +362,20 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>SubSubSegment.БазовыйЭлемент.Родитель.Родитель</dcsset:field>
+					<dcsset:field>SubSubSegment.БазовыйЭлемент.Родитель</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>Segment</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>AU</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Account Unit</v8:content>
 						</v8:item>
 					</dcsset:lwsTitle>
 				</dcsset:item>
@@ -405,7 +422,7 @@
 					<dcsset:field>Currency</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>CashBatchДата</dcsset:field>
+					<dcsset:field>DateCollection</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -471,7 +488,7 @@
 				<dcsset:item>
 					<dcsset:selection>
 						<dcsset:item>
-							<dcsset:field>CashBatchДата</dcsset:field>
+							<dcsset:field>DateCollection</dcsset:field>
 						</dcsset:item>
 						<dcsset:item>
 							<dcsset:field>Invoice.FiscalInvoiceDate</dcsset:field>
