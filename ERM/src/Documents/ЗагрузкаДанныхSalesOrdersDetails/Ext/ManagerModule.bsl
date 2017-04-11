@@ -202,7 +202,8 @@
 	|		КОГДА SalesOrdersDetailsSourceData.FieldName = ""N/A""
 	|			ТОГДА """"
 	|		ИНАЧЕ SalesOrdersDetailsSourceData.FieldName
-	|	КОНЕЦ КАК FieldName
+	|	КОНЕЦ КАК FieldName,
+	|	SalesOrdersDetailsSourceData.ClientContract
 	|ПОМЕСТИТЬ ВТ
 	|ИЗ
 	|	РегистрСведений.SalesOrdersDetailsSourceData КАК SalesOrdersDetailsSourceData
@@ -214,6 +215,7 @@
 	|		ПО SalesOrdersDetailsSourceData.LawsonInvoice = ДокументInvoice.Номер
 	|			И (НЕ ДокументInvoice.ПометкаУдаления)
 	|			И SalesOrdersDetailsSourceData.CompanyCode = ДокументInvoice.Company.Код
+	|			И (ДокументInvoice.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
 	|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
 	|		ПО SalesOrdersDetailsSourceData.CompanyCode = Организации.Код
 	|			И (НЕ Организации.ПометкаУдаления)
@@ -358,7 +360,8 @@
 	|		КОГДА ВТ.WellName <> """"
 	|			ТОГДА ВТ.WellName + "" ""
 	|		ИНАЧЕ """"
-	|	КОНЕЦ + ВТ.FieldName КАК WellData
+	|	КОНЕЦ + ВТ.FieldName КАК WellData,
+	|	ВТ.ClientContract
 	|ИЗ
 	|	ВТ КАК ВТ
 	|		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ВалютыСПриемником КАК ВТ_ВалютыСПриемником
@@ -379,6 +382,9 @@
 	
 	НенайденныеSO = Новый ТаблицаЗначений;
 	НенайденныеSO.Колонки.Добавить("SalesOrderNumber", Новый ОписаниеТипов("Строка", , , , Новый КвалификаторыСтроки(17)));
+	
+	ОбновленныеInvoice = Новый ТаблицаЗначений;
+	ОбновленныеInvoice.Колонки.Добавить("Invoice", Новый ОписаниеТипов("ДокументСсылка.Invoice"));
 	
 	НенайденныеInvoices = Новый ТаблицаЗначений;
 	НенайденныеInvoices.Колонки.Добавить("InvoiceNumber", Новый ОписаниеТипов("Строка", , , , Новый КвалификаторыСтроки(12)));
@@ -406,8 +412,22 @@
 		КонецЕсли;
 		
 		Если Не ПустаяСтрока(Выборка.LawsonInvoice) И НЕ ЗначениеЗаполнено(Выборка.InvoiceСсылка) Тогда
+			
 			СтрокаТЗ = НенайденныеInvoices.Добавить();
 			СтрокаТЗ.InvoiceNumber = Выборка.LawsonInvoice;
+			
+		ИначеЕсли ЗначениеЗаполнено(Выборка.InvoiceСсылка) И Не ПустаяСтрока(Выборка.ClientContract) Тогда
+			
+			ОбъектInvoice = Выборка.InvoiceСсылка.ПолучитьОбъект();
+			РГСофтКлиентСервер.УстановитьЗначение(ОбъектInvoice.Agreement, Выборка.ClientContract);
+			
+			Если ОбъектInvoice.Модифицированность() Тогда
+				ОбъектInvoice.ОбменДанными.Загрузка = Истина;
+				ОбъектInvoice.Записать();
+				СтрокаТЗ = ОбновленныеInvoice.Добавить();
+				СтрокаТЗ.Invoice = Выборка.InvoiceСсылка;
+			КонецЕсли;
+			
 		КонецЕсли;
 		
 		ТекОбъект = Выборка.SalesOrderСсылка.ПолучитьОбъект();
@@ -523,11 +543,13 @@
 	
 	ОбновленныеSO.Свернуть("SalesOrder");
 	НенайденныеSO.Свернуть("SalesOrderNumber");
+	ОбновленныеInvoice.Свернуть("Invoice");
 	НенайденныеInvoices.Свернуть("InvoiceNumber");
 	ОшибкиПоискаSO.Свернуть("SalesOrderNumber");
 	
 	ДанныеДляЗаполнения.Вставить("ОбновленныеSO", ОбновленныеSO);
 	ДанныеДляЗаполнения.Вставить("НенайденныеSO", НенайденныеSO);
+	ДанныеДляЗаполнения.Вставить("ОбновленныеInvoice", ОбновленныеInvoice);
 	ДанныеДляЗаполнения.Вставить("НенайденныеInvoices", НенайденныеInvoices);
 	ДанныеДляЗаполнения.Вставить("ОшибкиПоискаSO", ОшибкиПоискаSO);
 		
