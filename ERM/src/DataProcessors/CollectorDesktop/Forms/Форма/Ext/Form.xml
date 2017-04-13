@@ -557,6 +557,11 @@
 									<ContextMenu name="InvoicesCommentКонтекстноеМеню" id="127"/>
 									<ExtendedTooltip name="InvoicesCommentРасширеннаяПодсказка" id="128"/>
 								</LabelField>
+								<LabelField name="InvoicesAgreement" id="440">
+									<DataPath>Invoices.Agreement</DataPath>
+									<ContextMenu name="InvoicesAgreementКонтекстноеМеню" id="441"/>
+									<ExtendedTooltip name="InvoicesAgreementРасширеннаяПодсказка" id="442"/>
+								</LabelField>
 							</ChildItems>
 						</Table>
 					</ChildItems>
@@ -1173,7 +1178,8 @@
 	ВложенныйЗапрос.InvDateНачалоДня,
 	ВложенныйЗапрос.FiscalInvDateНачалоДня,
 	ВложенныйЗапрос.RWDDeadline,
-	ВложенныйЗапрос.LegalEntity
+	ВложенныйЗапрос.LegalEntity,
+	ВложенныйЗапрос.Agreement
 ИЗ
 	(ВЫБРАТЬ
 		BilledARОстатки.Invoice КАК Invoice,
@@ -1231,7 +1237,16 @@
 			КОГДА BilledARОстатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
 				ТОГДА BilledARОстатки.LegalEntity
 			ИНАЧЕ BilledARОстатки.Company.DefaultLegalEntity
-		КОНЕЦ КАК LegalEntity
+		КОНЕЦ КАК LegalEntity,
+		ВЫБОР
+			КОГДА BilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Radius)
+					ИЛИ BilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Geofit)
+					ИЛИ BilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.MFG)
+					ИЛИ BilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
+					ИЛИ BilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith)
+				ТОГДА BilledARОстатки.Invoice.Agreement
+			ИНАЧЕ BilledARОстатки.Invoice.Contract.crmContractName
+		КОНЕЦ КАК Agreement
 	ИЗ
 		РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, Invoice ССЫЛКА Документ.Invoice {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket)}) КАК BilledARОстатки
 			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments.СрезПоследних(, ) КАК InvoiceCommentsСрезПоследних
@@ -1281,7 +1296,8 @@
 	ВложенныйЗапрос.InvDateНачалоДня,
 	ВложенныйЗапрос.FiscalInvDateНачалоДня,
 	ВложенныйЗапрос.RWDDeadline,
-	ВложенныйЗапрос.LegalEntity
+	ВложенныйЗапрос.LegalEntity,
+	ВложенныйЗапрос.Agreement
 
 ИМЕЮЩИЕ
 	СУММА(ВложенныйЗапрос.RemainingAmount) &lt;&gt; 0</QueryText>
