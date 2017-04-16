@@ -1239,11 +1239,7 @@
 			ИНАЧЕ BilledARОстатки.Company.DefaultLegalEntity
 		КОНЕЦ КАК LegalEntity,
 		ВЫБОР
-			КОГДА BilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Radius)
-					ИЛИ BilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Geofit)
-					ИЛИ BilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.MFG)
-					ИЛИ BilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
-					ИЛИ BilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith)
+			КОГДА BilledARОстатки.Invoice.Contract = ЗНАЧЕНИЕ(Справочник.ДоговорыКонтрагентов.ПустаяСсылка)
 				ТОГДА BilledARОстатки.Invoice.Agreement
 			ИНАЧЕ BilledARОстатки.Invoice.Contract.crmContractName
 		КОНЕЦ КАК Agreement
