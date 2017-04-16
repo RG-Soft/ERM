@@ -1974,6 +1974,7 @@
 	ДокОбъект.Account = ТранзакцияOracleОбъект.Account;
 	ДокОбъект.Currency = ТранзакцияOracleОбъект.Currency;
 	ДокОбъект.DocID = ТранзакцияOracleОбъект.DocID;
+	ДокОбъект.ClientID = ДанныеДляЗаполнения.CustomerNumber;
 	ДокОбъект.OriginalAnalytics = ТранзакцияOracleОбъект.GL_Account;
 	ДокОбъект.Записать(РежимЗаписиДокумента.Запись);
 	

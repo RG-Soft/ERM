@@ -800,6 +800,7 @@
 	|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
 	|		ПО врТЗТаблицаДанных.Company = Организации.Код
 	|			И (НЕ Организации.ПометкаУдаления)
+	|			И (Организации.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
 	|		ЛЕВОЕ СОЕДИНЕНИЕ ПланСчетов.Lawson КАК Lawson
 	|		ПО врТЗТаблицаДанных.AccountCode = Lawson.КодЧислом
 	|			И (НЕ Lawson.ПометкаУдаления)
@@ -964,6 +965,7 @@
 	ДокОбъект.PaymentNumber = ПроводкаDSSОбъект.ArInvoice;
 	ДокОбъект.SubSubSegment = ПроводкаDSSОбъект.SubSubSegment;
 	ДокОбъект.AU = ПроводкаDSSОбъект.AU;
+	ДокОбъект.ClientID = ПроводкаDSSОбъект.CustomerNumber;
 	ДокОбъект.Account = ПроводкаDSSОбъект.AccountLawson;
 	ДокОбъект.Currency = ПроводкаDSSОбъект.Currency;
 	ДокОбъект.Prepayment = Prepayment;
@@ -992,6 +994,7 @@
 	ДокОбъект.SubSubSegment = ПроводкаDSSОбъект.SubSubSegment;
 	ДокОбъект.AU = ПроводкаDSSОбъект.AU;
 	ДокОбъект.Account = ПроводкаDSSОбъект.AccountLawson;
+	ДокОбъект.ClientID = ПроводкаDSSОбъект.CustomerNumber;
 	Если ПолноеЗаполнение Тогда
 		ДокОбъект.Currency = ПроводкаDSSОбъект.Currency;
 		ДокОбъект.Amount = ПроводкаDSSОбъект.TranAmount;

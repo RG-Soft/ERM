@@ -301,14 +301,12 @@
 	BilledARОстатки.AmountОстаток,
 	BilledARОстатки.Invoice.Amount,
 	ВЫБОР
-		КОГДА BilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Radius)
-				ИЛИ BilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Geofit)
-				ИЛИ BilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.MFG)
-				ИЛИ BilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith)
-				ИЛИ BilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
-			ТОГДА BilledARОстатки.Invoice.Agreement
 		КОГДА BilledARОстатки.Invoice ССЫЛКА Документ.Invoice
-			ТОГДА BilledARОстатки.Invoice.Contract.crmContractName
+			ТОГДА ВЫБОР
+					КОГДА BilledARОстатки.Invoice.Contract = ЗНАЧЕНИЕ(Справочник.ДоговорыКонтрагентов.ПустаяСсылка)
+						ТОГДА BilledARОстатки.Invoice.Agreement
+					ИНАЧЕ BilledARОстатки.Invoice.Contract.crmContractName
+				КОНЕЦ
 		ИНАЧЕ ""
 	КОНЕЦ,
 	ВЫБОР
