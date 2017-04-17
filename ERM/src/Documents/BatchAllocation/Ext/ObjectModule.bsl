@@ -3,7 +3,7 @@
 	
 	Если Не ЭтоНовый() И Source <> Перечисления.ТипыСоответствий.Lawson Тогда
 		ДополнительныеСвойства.Вставить("СтарыеЗначенияКлючей", ОбщегоНазначения.ЗначенияРеквизитовОбъекта(Ссылка,
-			"Source, Company, Client, Location SubSubSegment, AU, Account, Currency"));
+			"Source, Company, Client, Location, SubSubSegment, AU, Account, Currency"));
 	КонецЕсли;
 	
 КонецПроцедуры
