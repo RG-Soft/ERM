@@ -3244,7 +3244,14 @@
 	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|ВЫБРАТЬ РАЗЛИЧНЫЕ
-	|	ВТ_SO.Ссылка КАК Ссылка
+	|	ВТ_SO.Ссылка КАК Ссылка,
+	|	SalesOrdersCommentsСрезПоследних.Problem,
+	|	SalesOrdersCommentsСрезПоследних.Problem.Reason КАК Reason,
+	|	SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice КАК ExpectedDateForInvoice,
+	|	SalesOrdersCommentsСрезПоследних.Problem.EscalateTo КАК EscalateTo,
+	|	ВЫРАЗИТЬ(SalesOrdersCommentsСрезПоследних.Problem.Details КАК СТРОКА(1024)) КАК Details,
+	|	ВЫРАЗИТЬ(SalesOrdersCommentsСрезПоследних.Problem.ActionItem КАК СТРОКА(1024)) КАК ActionItem,
+	|	SalesOrdersCommentsСрезПоследних.Период
 	|ИЗ
 	|	ВТ_SO КАК ВТ_SO
 	|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрНакопления.UnbilledAR.Остатки(
@@ -3268,6 +3275,7 @@
 	Выборка = Запрос.Выполнить().Выбрать();
 	
 	ТекущаяДата = ТекущаяДата();
+	НачалоМесТекДата = НачалоМесяца(ТекущаяДата);
 	
 	AutoUser = Справочники.Пользователи.НайтиПоНаименованию("AutoUser");
 	
@@ -3279,12 +3287,30 @@
 		НЗ.Очистить();
 		
 		НачатьТранзакцию();
-		
 		Проблема = Документы.SalesOrderProblem.СоздатьДокумент();
 		Проблема.Дата = ТекущаяДата;
 		Проблема.SalesOrder = Выборка.Ссылка;
 		Проблема.User = AutoUser;
 		Проблема.Billed = Перечисления.SalesOrderBilledStatus.Billed;
+		Если ЗначениеЗаполнено(Выборка.Problem) И Выборка.Период >= НачалоМесТекДата Тогда
+			 Проблема.Reason = Выборка.Reason;
+			 Проблема.ExpectedDateForInvoice = Выборка.ExpectedDateForInvoice;
+			 Проблема.Details = Выборка.Details;
+			 Проблема.ActionItem = Выборка.ActionItem;
+			 Если ЗначениеЗаполнено(Выборка.EscalateTo) Тогда
+				Проблема.EscalateTo = Выборка.EscalateTo;
+				МассивОтветственных = Документы.SalesOrder.ПолучитьОтветственныхПоSO(Выборка.Ссылка, Выборка.EscalateTo);
+				Если МассивОтветственных.Количество() = 0 Тогда
+					СообщениеОбОшибке = "For the selected Sales Order is not filled Responsible";
+					Прервать;
+				КонецЕсли;
+				Проблема.Responsibles.Очистить();
+				Для каждого ТекОтветственный Из МассивОтветственных Цикл
+					НоваяСтрока = Проблема.Responsibles.Добавить();
+					НоваяСтрока.Responsible = ТекОтветственный;
+				КонецЦикла;
+			КонецЕсли;
+		КонецЕсли;
 		Проблема.Записать();
 		
 		НЗ.Очистить();
