@@ -3841,10 +3841,11 @@
 
 Процедура ДозаполнитьSalesOrderИзПроводки(SalesOrder, ТранзакцияHOBОбъект, ДанныеДляЗаполнения)
 	
-	РеквизитыSalesOrder = ОбщегоНазначения.ЗначенияРеквизитовОбъекта(SalesOrder, "Client,Company,AU,Account,Location,SubSubSegment,ClientID,CREW,OriginalAnalytics");
+	РеквизитыSalesOrder = ОбщегоНазначения.ЗначенияРеквизитовОбъекта(SalesOrder, "Client,Company,Currency,AU,Account,Location,SubSubSegment,ClientID,CREW,OriginalAnalytics");
 	
 	Если НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.Client) ИЛИ НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.Company) ИЛИ НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.AU) ИЛИ НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.Account) ИЛИ
-		НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.Location) ИЛИ НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.SubSubSegment) ИЛИ НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.ClientID) ИЛИ НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.CREW) Тогда
+		НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.Location) ИЛИ НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.SubSubSegment) ИЛИ НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.ClientID) ИЛИ НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.CREW) ИЛИ 
+		НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.Currency) Тогда
 		SalesOrderОбъект = SalesOrder.ПолучитьОбъект();
 		Для каждого Реквизит из РеквизитыSalesOrder Цикл
 			Если Реквизит.Ключ <> "CREW" И Реквизит.Ключ <> "ClientID" И Реквизит.Ключ <> "OriginalAnalytics" Тогда
