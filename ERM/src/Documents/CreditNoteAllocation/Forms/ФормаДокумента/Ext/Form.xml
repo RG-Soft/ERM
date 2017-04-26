@@ -4,6 +4,9 @@
 	<UsePostingMode>Auto</UsePostingMode>
 	<RepostOnWrite>true</RepostOnWrite>
 	<AutoCommandBar name="ФормаКоманднаяПанель" id="-1"/>
+	<Events>
+		<Event name="OnOpen">ПриОткрытии</Event>
+	</Events>
 	<ChildItems>
 		<UsualGroup name="ГруппаНомерДата" id="32">
 			<Title>
@@ -42,16 +45,39 @@
 				</InputField>
 			</ChildItems>
 		</UsualGroup>
-		<InputField name="Invoice" id="7">
-			<DataPath>Объект.Invoice</DataPath>
-			<EditMode>EnterOnInput</EditMode>
-			<AutoMarkIncomplete>true</AutoMarkIncomplete>
-			<ContextMenu name="InvoiceКонтекстноеМеню" id="8"/>
-			<ExtendedTooltip name="InvoiceРасширеннаяПодсказка" id="9"/>
-			<Events>
-				<Event name="OnChange">InvoiceПриИзменении</Event>
-			</Events>
-		</InputField>
+		<UsualGroup name="ГруппаInvoice" id="96">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Группа invoice</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Группа invoice</v8:content>
+				</v8:item>
+			</ToolTip>
+			<ExtendedTooltip name="ГруппаInvoiceРасширеннаяПодсказка" id="97"/>
+			<ChildItems>
+				<InputField name="Invoice" id="7">
+					<DataPath>Объект.Invoice</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<AutoMarkIncomplete>true</AutoMarkIncomplete>
+					<ContextMenu name="InvoiceКонтекстноеМеню" id="8"/>
+					<ExtendedTooltip name="InvoiceРасширеннаяПодсказка" id="9"/>
+					<Events>
+						<Event name="OnChange">InvoiceПриИзменении</Event>
+					</Events>
+				</InputField>
+				<InputField name="InvoiceAmount" id="93">
+					<DataPath>Объект.Invoice.Amount</DataPath>
+					<ReadOnly>true</ReadOnly>
+					<ContextMenu name="InvoiceAmountКонтекстноеМеню" id="94"/>
+					<ExtendedTooltip name="InvoiceAmountРасширеннаяПодсказка" id="95"/>
+				</InputField>
+			</ChildItems>
+		</UsualGroup>
 		<UsualGroup name="Группа1" id="69">
 			<Representation>None</Representation>
 			<ShowTitle>false</ShowTitle>
@@ -194,6 +220,7 @@
 				</InputField>
 				<InputField name="CreditNotesAmount" id="29">
 					<DataPath>Объект.CreditNotes.Amount</DataPath>
+					<ReadOnly>true</ReadOnly>
 					<EditMode>EnterOnInput</EditMode>
 					<ContextMenu name="CreditNotesAmountКонтекстноеМеню" id="30"/>
 					<ExtendedTooltip name="CreditNotesAmountРасширеннаяПодсказка" id="31"/>
@@ -229,6 +256,12 @@
 					<ContextMenu name="ОтветственныйКонтекстноеМеню" id="46"/>
 					<ExtendedTooltip name="ОтветственныйРасширеннаяПодсказка" id="47"/>
 				</InputField>
+				<InputField name="RemainingInvoiceAmount" id="98">
+					<DataPath>RemainingInvoiceAmount</DataPath>
+					<ReadOnly>true</ReadOnly>
+					<ContextMenu name="RemainingInvoiceAmountКонтекстноеМеню" id="99"/>
+					<ExtendedTooltip name="RemainingInvoiceAmountРасширеннаяПодсказка" id="100"/>
+				</InputField>
 			</ChildItems>
 		</UsualGroup>
 	</ChildItems>
@@ -242,6 +275,22 @@
 			<UseAlways>
 				<Field>Объект.RegisterRecords</Field>
 			</UseAlways>
+		</Attribute>
+		<Attribute name="RemainingInvoiceAmount" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Remaining invoice amount</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>15</v8:Digits>
+					<v8:FractionDigits>3</v8:FractionDigits>
+					<v8:AllowedSign>Any</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
 		</Attribute>
 	</Attributes>
 	<CommandInterface>
