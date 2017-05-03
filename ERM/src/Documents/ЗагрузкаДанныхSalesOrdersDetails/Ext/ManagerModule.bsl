@@ -22,11 +22,11 @@
 	Connection = Новый COMОбъект("ADODB.Connection");
 	
 	Попытка
-		СтрокаПодключения = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + ИмяКаталога + ";Extended Properties=""text;HDR=NO;IMEX=1;FMT=Delimited""";
+		СтрокаПодключения = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + ИмяКаталога + ";Extended Properties=""text;HDR=NO;IMEX=1;FMT=Delimited;MAXSCANROWS=0;""";
 		Connection.Open(СтрокаПодключения);
 	Исключение
 		Попытка
-			СтрокаПодключения = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + ИмяКаталога + ";Extended Properties=""text;HDR=NO;IMEX=1;FMT=Delimited""";
+			СтрокаПодключения = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + ИмяКаталога + ";Extended Properties=""text;HDR=NO;IMEX=1;FMT=Delimited;MAXSCANROWS=0;""";
 			Connection.Open(СтрокаПодключения);
 		Исключение
 			ВызватьИсключение "Can't open connection! " + ОписаниеОшибки();
@@ -446,7 +446,7 @@
 		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.ERPStatus, Выборка.LawsonStatus);
 		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.ExchangeRate, Выборка.ExchangeRate);
 		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.Amount, Выборка.OrderCurrencyAmount);
-		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.AmountUSD, Окр(Выборка.OrderCurrencyAmount / Выборка.ExchangeRate, 2));
+		//РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.AmountUSD, Окр(Выборка.OrderCurrencyAmount / Выборка.ExchangeRate, 2));
 		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.BaseAmount, Выборка.OrderUSDAmount);
 		//Если НЕ СтруктураПараметров.ТипЗагрузкиUnbilled Тогда
 		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.Дата, Выборка.OrderCreationDate);
