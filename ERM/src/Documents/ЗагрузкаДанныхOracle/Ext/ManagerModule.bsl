@@ -41,7 +41,7 @@
 			Connection.Open(СтрокаПодключения);
 		Исключение
 			Попытка
-				СтрокаПодключения = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + ИмяКаталога + ";Extended Properties=""text;HDR=NO;IMEX=1MAXSCANROWS=0;""";
+				СтрокаПодключения = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + ИмяКаталога + ";Extended Properties=""text;HDR=NO;IMEX=1;MAXSCANROWS=0;""";
 				Connection.Open(СтрокаПодключения);
 			Исключение
 				ВызватьИсключение "Can't open connection! " + ОписаниеОшибки();
