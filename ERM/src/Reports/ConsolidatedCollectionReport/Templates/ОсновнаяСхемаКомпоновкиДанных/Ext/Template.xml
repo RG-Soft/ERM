@@ -155,6 +155,9 @@
 	PaymentsОбороты.Currency,
 	PaymentsОбороты.AmountОборот,
 	ВЫБОР
+		КОГДА PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
+				ИЛИ PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith)
+			ТОГДА PaymentsОбороты.Регистратор.Дата
 		КОГДА PaymentsОбороты.CashBatch = ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
 				И PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
 			ТОГДА PaymentsОбороты.Регистратор.DateLawson
@@ -362,11 +365,11 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>SubSubSegment.БазовыйЭлемент.Родитель</dcsset:field>
+					<dcsset:field>SubSubSegment.Родитель</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
-							<v8:content>Segment</v8:content>
+							<v8:content>SubSegment</v8:content>
 						</v8:item>
 					</dcsset:lwsTitle>
 				</dcsset:item>
