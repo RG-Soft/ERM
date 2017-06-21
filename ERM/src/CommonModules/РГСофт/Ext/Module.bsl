@@ -639,6 +639,9 @@
 	ЭлементБлокировки.Режим = РежимБлокировкиДанных.Исключительный;
 	Блокировка.Заблокировать();
 	
+	//создание нового коммента с заполненным EscalateTo по СО в статусе Unbilled без EscalateTo.
+	ЗаполнениеEscalateToДляUnbilledСО();
+	
 	АктуализироватьРегистрОчередьУведомлений();
 	
 	Период = ТекущаяДата();
@@ -1210,6 +1213,174 @@
 	Возврат ТаблицаПолучателейОрдеров;
 	
 КонецФункции
+
+Процедура ЗаполнениеEscalateToДляUnbilledСО()
+	
+	ТекущаяДата = ТекущаяДата();
+
+	Запрос = Новый Запрос;
+	Запрос.Текст = 
+		"ВЫБРАТЬ
+		|	UnbilledARОстатки.SalesOrder КАК SalesOrder,
+		|	UnbilledARОстатки.SalesOrder.Дата КАК SalesDate,
+		|	ВЫБОР
+		|		КОГДА UnbilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
+		|			ТОГДА UnbilledARОстатки.SalesOrder.ArInvoice
+		|		ИНАЧЕ UnbilledARОстатки.SalesOrder.Номер
+		|	КОНЕЦ КАК SalesNo,
+		|	ВЫБОР
+		|		КОГДА ЕСТЬNULL(SalesOrdersCommentsСрезПоследних.Период, ДАТАВРЕМЯ(1, 1, 1)) <= &ДатаДляСравнения
+		|			ТОГДА NULL
+		|		ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.Reason
+		|	КОНЕЦ КАК Reason,
+		|	ВЫБОР
+		|		КОГДА SalesOrdersCommentsСрезПоследних.Problem.Billed ЕСТЬ NULL
+		|			ТОГДА ЗНАЧЕНИЕ(Перечисление.SalesOrderBilledStatus.Unbilled)
+		|		ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.Billed
+		|	КОНЕЦ КАК Status,
+		|	ВЫБОР
+		|		КОГДА ЕСТЬNULL(SalesOrdersCommentsСрезПоследних.Период, ДАТАВРЕМЯ(1, 1, 1)) <= &ДатаДляСравнения
+		|			ТОГДА NULL
+		|		ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.ExpectedDateForInvoice
+		|	КОНЕЦ КАК ExpectedDateForInvoice,
+		|	ВЫБОР
+		|		КОГДА ЕСТЬNULL(SalesOrdersCommentsСрезПоследних.Период, ДАТАВРЕМЯ(1, 1, 1)) <= &ДатаДляСравнения
+		|			ТОГДА NULL
+		|		ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.EscalateTo
+		|	КОНЕЦ КАК EscalateTo,
+		|	ВЫБОР
+		|		КОГДА ЕСТЬNULL(SalesOrdersCommentsСрезПоследних.Период, ДАТАВРЕМЯ(1, 1, 1)) <= &ДатаДляСравнения
+		|			ТОГДА NULL
+		|		ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.Details
+		|	КОНЕЦ КАК ProblemDetails,
+		|	ВЫБОР
+		|		КОГДА ЕСТЬNULL(SalesOrdersCommentsСрезПоследних.Период, ДАТАВРЕМЯ(1, 1, 1)) <= &ДатаДляСравнения
+		|			ТОГДА NULL
+		|		ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.ResponsiblesList
+		|	КОНЕЦ КАК ResponsiblesList,
+		|	SalesOrderResponsiblesList.ResponsiblesList КАК ResponsibleAR,
+		|	UnbilledARОстатки.AmountОстаток КАК AmountОстаток,
+		|	ВЫБОР
+		|		КОГДА UnbilledARОстатки.LegalEntity <> ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+		|			ТОГДА UnbilledARОстатки.LegalEntity
+		|		ИНАЧЕ UnbilledARОстатки.Company.DefaultLegalEntity
+		|	КОНЕЦ КАК LegalEntity,
+		|	ВЫБОР
+		|		КОГДА ЕСТЬNULL(SalesOrdersCommentsСрезПоследних.Период, ДАТАВРЕМЯ(1, 1, 1)) <= &ДатаДляСравнения
+		|			ТОГДА NULL
+		|		ИНАЧЕ SalesOrdersCommentsСрезПоследних.Период
+		|	КОНЕЦ КАК DateComment,
+		|	ВЫБОР
+		|		КОГДА ЕСТЬNULL(SalesOrdersCommentsСрезПоследних.Период, ДАТАВРЕМЯ(1, 1, 1)) <= &ДатаДляСравнения
+		|			ТОГДА NULL
+		|		ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.ActionItem
+		|	КОНЕЦ КАК ActionItem,
+		|	SalesOrdersCommentsСрезПоследних.Период КАК Период
+		|ИЗ
+		|	РегистрНакопления.UnbilledAR.Остатки(
+		|			&ПериодОстатков,
+		|			SalesOrder ССЫЛКА Документ.SalesOrder
+		|				И ПОДСТРОКА(Account.Код, 1, 6) <> ""209000""
+		|				И Account.БазовыйЭлемент = &HFMUnbilledAccount) КАК UnbilledARОстатки
+		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних(&ДатаКомментария, ) КАК SalesOrdersCommentsСрезПоследних
+		|		ПО UnbilledARОстатки.SalesOrder = SalesOrdersCommentsСрезПоследних.SalesOrder
+		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних(&ДатаКурса, ) КАК ВнутренниеКурсыВалютСрезПоследних
+		|		ПО UnbilledARОстатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
+		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrderResponsiblesList КАК SalesOrderResponsiblesList
+		|		ПО UnbilledARОстатки.SalesOrder = SalesOrderResponsiblesList.SalesOrder
+		|ГДЕ
+		|	SalesOrdersCommentsСрезПоследних.Problem.EscalateTo = ЗНАЧЕНИЕ(Справочник.EscalationLevels.ПустаяСсылка)";
+	
+	Запрос.УстановитьПараметр("HFMUnbilledAccount", ПланыСчетов.HFM_GL_Accounts.НайтиПоКоду("12002"));
+	Запрос.УстановитьПараметр("ДатаДляСравнения", НачалоМесяца(ТекущаяДата) - 1);
+	Запрос.УстановитьПараметр("ДатаКомментария", КонецДня(ТекущаяДата));
+	Запрос.УстановитьПараметр("ДатаКурса", ?(КонецДня(ТекущаяДата) = КонецМесяца(ТекущаяДата), КонецМесяца(КонецМесяца(ТекущаяДата) + 1),КонецМесяца(ТекущаяДата)));
+	Запрос.УстановитьПараметр("ПериодОстатков", ?(КонецМесяца(ТекущаяДата) = КонецДня(ТекущаяДата), КонецДня(ТекущаяДата) + 1, НачалоМесяца(ТекущаяДата)));
+	
+	РезультатЗапроса = Запрос.Выполнить();
+	
+	Выборка = РезультатЗапроса.Выбрать();
+	
+	НачалоМесТекДата = НачалоМесяца(ТекущаяДата);
+	
+	AutoUser = Справочники.Пользователи.НайтиПоНаименованию("AutoUser");
+	
+	НЗ = РегистрыСведений.SalesOrdersComments.СоздатьНаборЗаписей();
+	НЗ.Отбор.Период.Установить(ТекущаяДата);
+	
+	Пока Выборка.Следующий() Цикл
+		
+		НЗ.Очистить();
+		МассивСОБезОтветственных = Новый Массив;
+		Проблема = Документы.SalesOrderProblem.СоздатьДокумент();
+		Проблема.Дата = ТекущаяДата;
+		Проблема.SalesOrder = Выборка.SalesOrder;
+		Проблема.User = AutoUser;
+		Проблема.Billed = Выборка.Status;
+		Если Выборка.Период >= НачалоМесТекДата Тогда
+			 Проблема.Reason = Выборка.Reason;
+			 Проблема.ExpectedDateForInvoice = Выборка.ExpectedDateForInvoice;
+			 Проблема.Details = Выборка.ProblemDetails;
+			 Проблема.ActionItem = Выборка.ActionItem;
+		КонецЕсли;
+		Проблема.EscalateTo = Справочники.EscalationLevels.Level1;
+		МассивОтветственных = Документы.SalesOrder.ПолучитьОтветственныхПоSO(Выборка.SalesOrder, Справочники.EscalationLevels.Level1);
+		Если МассивОтветственных.Количество() = 0 Тогда
+			//СообщениеОбОшибке = "For the selected Sales Order is not filled Responsible";
+			//ОтменитьТранзакцию();
+			//сохранить такие СО в табличку. Иван сказал не надо
+			//МассивСОБезОтветственных.Добавить(Выборка.SalesOrder);
+			Продолжить;
+		КонецЕсли;
+		Проблема.Responsibles.Очистить();
+		Для каждого ТекОтветственный Из МассивОтветственных Цикл
+			НоваяСтрока = Проблема.Responsibles.Добавить();
+			НоваяСтрока.Responsible = ТекОтветственный;
+		КонецЦикла;
+		Проблема.Записать();
+		
+		НЗ.Очистить();
+		НЗ.Отбор.SalesOrder.Установить(Выборка.SalesOrder);
+		ЗаписьНабора = НЗ.Добавить();
+		ЗаписьНабора.Период = ТекущаяДата;
+		ЗаписьНабора.SalesOrder = Выборка.SalesOrder;
+		ЗаписьНабора.Problem = Проблема.Ссылка;
+		
+		НЗ.Записать();
+		
+	КонецЦикла;
+	//
+	//Тема = "МассивСОБезОтветственных";
+	////ТекДата = Формат(ТекущаяДата(),"ДЛФ=DD");
+	//ТелоHTML = "<HTML><HEAD>
+	//|<META content=""text/html; charset=utf-8"" http-equiv=Content-Type><LINK rel=stylesheet type=text/css href=""v8help://service_book/service_style""><BASE href=""v8config://d349bc7e-06e3-4fc1-b24f-9709087cc83c/mdobject/id44c3769f-050d-4f0a-ae52-7c2a9e753714/038b5c85-fb1c-4082-9c4c-e69f8928bf3a"">
+	//|<META name=GENERATOR content=""MSHTML 11.00.9600.18525""></HEAD>
+	//|<BODY>
+	////|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Date: " + ТекДата +"</P>
+	////|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Subject:  List of unbilled invoices.</P>
+	//|<br>
+	//|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Тестовая отправка письма.</P>";
+
+	//Для каждого Элемент из МассивСОБезОтветственных Цикл
+	//	ТелоHTML = ТелоHTML + "|<BR>
+	//	|<P FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: WORD-SPACING: TEXT-TRANSFORM: none; FONT-WEIGHT: COLOR: rgb(0,0,0); FONT-STYLE: ORPHANS: WIDOWS: 2; TEXT-INDENT: 0px; font-variant-ligatures: font-variant-caps: normal; -webkit-text-stroke-width: 0px??>" + Элемент +"</P>"
+	//	
+	//КонецЦикла;
+	//ТелоHTML = ТелоHTML + "|<BR>
+	//|<P FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: WORD-SPACING: TEXT-TRANSFORM: none; FONT-WEIGHT: COLOR: rgb(0,0,0); FONT-STYLE: ORPHANS: WIDOWS: 2; TEXT-INDENT: 0px; font-variant-ligatures: font-variant-caps: normal; -webkit-text-stroke-width: 0px??>Please review and respond within the next days. If after 10 business days the issue remains unresolved, it will be escalated to GM Controller.</P>
+	//|<BR>
+	//|<P FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: WORD-SPACING: TEXT-TRANSFORM: none; FONT-WEIGHT: COLOR: rgb(0,0,0); FONT-STYLE: ORPHANS: WIDOWS: 2; TEXT-INDENT: 0px; font-variant-ligatures: font-variant-caps: normal; -webkit-text-stroke-width: 0px??><STRONG>Thank you for your assistance for resolving this issue in a timely manner.</STRONG></P>
+	//|<P FONT-SIZE: FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: WORD-SPACING: TEXT-TRANSFORM: none; FONT-WEIGHT: COLOR: rgb(0,0,0); FONT-STYLE: ORPHANS: WIDOWS: 2; TEXT-INDENT: 0px; font-variant-ligatures: font-variant-caps: normal; -webkit-text-stroke-width: 0px?? 17px;><FONT size=4>ERM Team</FONT></P>
+	//|<BR>
+	//|<P FONT-SIZE: FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: WORD-SPACING: TEXT-TRANSFORM: none; FONT-WEIGHT: COLOR: rgb(0,0,0); FONT-STYLE: ORPHANS: WIDOWS: 2; TEXT-INDENT: 0px; font-variant-ligatures: font-variant-caps: normal; -webkit-text-stroke-width: 0px?? 25px;><FONT size=4,5><STRONG>Do not reply to this email address</STRONG></FONT></P>
+	//|<P FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: WORD-SPACING: TEXT-TRANSFORM: none; FONT-WEIGHT: COLOR: rgb(0,0,0); FONT-STYLE: ORPHANS: WIDOWS: 2; TEXT-INDENT: 0px; font-variant-ligatures: font-variant-caps: normal; -webkit-text-stroke-width: 0px??>Please contact your Area/GM/Country Accounts Receivable Lead if you encounter any issue.</P>
+	//|</BODY>
+	//|</HTML>";
+	//ТелоHTML = СтрЗаменить(ТелоHTML, Символы.ПС, "");
+	//РГСофт.ЗарегистрироватьПочтовоеСообщение("talmazova@rg-spc.ru", Тема, ТелоHTML, , ТипТекстаПочтовогоСообщения.HTML);
+	//
+	
+КонецПроцедуры
 
 Процедура АктуализироватьРегистрОчередьУведомлений()
 	
