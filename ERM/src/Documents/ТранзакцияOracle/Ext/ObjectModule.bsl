@@ -21,6 +21,7 @@
 			|			РучнаяКорректировка = &РучнаяКорректировка
 			|				И Account = &Account
 			|				И Company = &Company
+			|				И Client = &Client
 			|				И Currency = &Currency
 			|				И Location = &Location
 			|				И Source = &Source
@@ -29,6 +30,7 @@
 		Запрос.УстановитьПараметр("РучнаяКорректировка", РучнаяКорректировка);
 		Запрос.УстановитьПараметр("Account", Account);
 		Запрос.УстановитьПараметр("Company", Company);
+		Запрос.УстановитьПараметр("Client", Client);
 		Запрос.УстановитьПараметр("Currency", Currency);
 		Запрос.УстановитьПараметр("Location", Location);
 		Запрос.УстановитьПараметр("Source", Source);
@@ -251,7 +253,7 @@
 	НовоеДвижение.Company = Реквизиты.Company;
 	НовоеДвижение.Location = Реквизиты.Location;
 	НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
-	//НовоеДвижение.Client = Реквизиты.Client;
+	НовоеДвижение.Client = Реквизиты.Client;
 	НовоеДвижение.РучнаяКорректировка = СвязанныеДокументы.РучнаяКорректировка;
 	НовоеДвижение.Account = Реквизиты.Account;
 	НовоеДвижение.Currency = Реквизиты.Currency;

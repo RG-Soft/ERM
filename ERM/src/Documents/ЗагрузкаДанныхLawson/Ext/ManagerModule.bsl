@@ -1059,6 +1059,7 @@
 		|ВЫБРАТЬ
 		|	КлючиРучныхКорректировок.Source,
 		|	КлючиРучныхКорректировок.Company,
+		|	КлючиРучныхКорректировок.Client,
 		|	КлючиРучныхКорректировок.Location,
 		|	КлючиРучныхКорректировок.SubSubSegment,
 		|	КлючиРучныхКорректировок.AU,
@@ -1210,8 +1211,8 @@
 	КэшОрганизаций.Индексы.Добавить("Код");
 	
 	КэшРучныхКоррерктировок = РезультатЗапроса[12].Выгрузить();
-	//КэшРучныхКоррерктировок.Индексы.Добавить("Source, Company, Client, Location, SubSubSegment, AU, Account, Currency");
-	КэшРучныхКоррерктировок.Индексы.Добавить("Source, Company, Location, SubSubSegment, AU, Account, Currency");
+	КэшРучныхКоррерктировок.Индексы.Добавить("Source, Company, Client, Location, SubSubSegment, AU, Account, Currency");
+	//КэшРучныхКоррерктировок.Индексы.Добавить("Source, Company, Location, SubSubSegment, AU, Account, Currency");
 	
 	КэшМемо = РезультатЗапроса[13].Выгрузить();
 	КэшМемо.Индексы.Добавить("ArInvoice, Client, Company");
@@ -1539,8 +1540,8 @@
 	СтруктураПоискаBatch = Новый Структура("ARBatchNbr, Company, Prepayment");
 	//СтруктураПоискаBatchAllocation = Новый Структура("Source, Company, Client, Location, SubSubSegment, AU, Account, Currency");
 	СтруктураПоискаBatchAllocation = Новый Структура("ARBatchNbr, Company");
-	//СтруктураПоискаРучнойКорректировки = Новый Структура("Source, Company, Client, Location, SubSubSegment, AU, Account, Currency");
-	СтруктураПоискаРучнойКорректировки = Новый Структура("Source, Company, Location, SubSubSegment, AU, Account, Currency");
+	СтруктураПоискаРучнойКорректировки = Новый Структура("Source, Company, Client, Location, SubSubSegment, AU, Account, Currency");
+	//СтруктураПоискаРучнойКорректировки = Новый Структура("Source, Company, Location, SubSubSegment, AU, Account, Currency");
 	
 	Если ПроводкаDSSОбъект.System = "BL" Тогда
 		
@@ -1918,7 +1919,7 @@
 			
 			СтруктураПоискаРучнойКорректировки.Source = Перечисления.ТипыСоответствий.Lawson;
 			СтруктураПоискаРучнойКорректировки.Company = ПроводкаDSSОбъект.Company;
-			//СтруктураПоискаРучнойКорректировки.Client = ПроводкаDSSОбъект.КонтрагентLawson;
+			СтруктураПоискаРучнойКорректировки.Client = ПроводкаDSSОбъект.КонтрагентLawson;
 			СтруктураПоискаРучнойКорректировки.Location = ПроводкаDSSОбъект.Location;
 			//СтруктураПоискаРучнойКорректировки.GeoMarket = ПроводкаDSSОбъект.GeoMarket;
 			//СтруктураПоискаРучнойКорректировки.SubGeoMarket = ПроводкаDSSОбъект.SubGeoMarket;
@@ -1935,7 +1936,7 @@
 				НоваяСтрокаКэша = КэшРучныхКоррерктировок.Добавить();
 				НоваяСтрокаКэша.Source = Перечисления.ТипыСоответствий.Lawson;
 				НоваяСтрокаКэша.Company = ПроводкаDSSОбъект.Company;
-				//НоваяСтрокаКэша.Client = ПроводкаDSSОбъект.КонтрагентLawson;
+				НоваяСтрокаКэша.Client = ПроводкаDSSОбъект.КонтрагентLawson;
 				НоваяСтрокаКэша.Location = ПроводкаDSSОбъект.Location;
 				//НоваяСтрокаКэша.GeoMarket = ПроводкаDSSОбъект.GeoMarket;
 				//НоваяСтрокаКэша.SubGeoMarket = ПроводкаDSSОбъект.SubGeoMarket;
@@ -2347,7 +2348,7 @@
 	РучнаяКорректировкаОбъект.Дата = ТекущаяДата();
 	РучнаяКорректировкаОбъект.Source = Перечисления.ТипыСоответствий.Lawson;
 	РучнаяКорректировкаОбъект.Company = ПроводкаDSSОбъект.Company;
-	//РучнаяКорректировкаОбъект.Client = ПроводкаDSSОбъект.КонтрагентLawson;
+	РучнаяКорректировкаОбъект.Client = ПроводкаDSSОбъект.КонтрагентLawson;
 	РучнаяКорректировкаОбъект.Location = ПроводкаDSSОбъект.Location;
 	//РучнаяКорректировкаОбъект.SubGeoMarket = ПроводкаDSSОбъект.SubGeoMarket;
 	//РучнаяКорректировкаОбъект.Segment = ПроводкаDSSОбъект.Segment;
