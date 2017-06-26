@@ -384,6 +384,27 @@
 			<dataPath>LegalEntity</dataPath>
 			<field>LegalEntity</field>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>USDAmount</dataPath>
+			<field>USDAmount</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>USD Amount</v8:content>
+				</v8:item>
+			</title>
+			<appearance>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>Формат</dcscor:parameter>
+					<dcscor:value xsi:type="v8:LocalStringType">
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>ЧДЦ=2</v8:content>
+						</v8:item>
+					</dcscor:value>
+				</dcscor:item>
+			</appearance>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	BilledARОстатки.Client КАК Client,
@@ -773,6 +794,9 @@
 	ВЫБОР
 		КОГДА InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
 			ТОГДА ВТ_Остатки.Invoice.DueDateTo
+		КОГДА InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid)
+				ИЛИ InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.PartiallyPaid)
+			ТОГДА ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ВТ_ОплатыПоПроводкам.PaymentDate)
 		ИНАЧЕ ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.ForecastDate, ДАТАВРЕМЯ(1, 1, 1))
 	КОНЕЦ КАК ForecastDate,
 	InvoiceCommentsСрезПоследних.Problem.CustInputDate КАК CustInputDate,
@@ -848,7 +872,15 @@
 		КОГДА ВТ_Остатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
 			ТОГДА ВТ_Остатки.LegalEntity
 		ИНАЧЕ ВТ_Остатки.Company.DefaultLegalEntity
-	КОНЕЦ КАК LegalEntity
+	КОНЕЦ КАК LegalEntity,
+	ВЫБОР
+		КОГДА ВТ_Остатки.Currency = &amp;Рубль
+				И ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0) = 0
+			ТОГДА 0
+		КОГДА ВТ_Остатки.Currency = &amp;Рубль
+			ТОГДА ВТ_Остатки.AmountОстаток / ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0)
+		ИНАЧЕ ВТ_Остатки.AmountОстаток
+	КОНЕЦ КАК USDAmount
 ИЗ
 	ВТ_ОстаткиБезОплатТекущегоПериода КАК ВТ_Остатки
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ИерархияКлиентов КАК ВТ_ИерархияКлиентов
@@ -942,11 +974,6 @@
 		ИНАЧЕ ""
 	КОНЕЦ,
 	ВЫБОР
-		КОГДА InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
-			ТОГДА ВТ_Остатки.Invoice.DueDateTo
-		ИНАЧЕ ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.ForecastDate, ДАТАВРЕМЯ(1, 1, 1))
-	КОНЕЦ,
-	ВЫБОР
 		КОГДА ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.ForecastDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА ЛОЖЬ
 		КОГДА ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.Status, ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка)) = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid)
@@ -964,6 +991,22 @@
 		КОГДА ВТ_Остатки.Invoice.Contract = ЗНАЧЕНИЕ(Справочник.ДоговорыКонтрагентов.ПустаяСсылка)
 			ТОГДА ВТ_Остатки.Invoice.Agreement
 		ИНАЧЕ ВТ_Остатки.Invoice.Contract.crmContractName
+	КОНЕЦ,
+	ВЫБОР
+		КОГДА ВТ_Остатки.Currency = &amp;Рубль
+				И ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0) = 0
+			ТОГДА 0
+		КОГДА ВТ_Остатки.Currency = &amp;Рубль
+			ТОГДА ВТ_Остатки.AmountОстаток / ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0)
+		ИНАЧЕ ВТ_Остатки.AmountОстаток
+	КОНЕЦ,
+	ВЫБОР
+		КОГДА InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
+			ТОГДА ВТ_Остатки.Invoice.DueDateTo
+		КОГДА InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid)
+				ИЛИ InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.PartiallyPaid)
+			ТОГДА ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ВТ_ОплатыПоПроводкам.PaymentDate)
+		ИНАЧЕ ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.ForecastDate, ДАТАВРЕМЯ(1, 1, 1))
 	КОНЕЦ
 
 ИМЕЮЩИЕ
@@ -971,7 +1014,7 @@
 	</dataSet>
 	<calculatedField>
 		<dataPath>DueFrom</dataPath>
-		<expression>ВЫБОР КОГДА InvoiceDueDateFrom &lt;= &amp;Период ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ ИНАЧЕ 0 КОНЕЦ</expression>
+		<expression>ВЫБОР КОГДА InvoiceDueDateFrom &lt;= &amp;Период ТОГДА USDAmount ИНАЧЕ 0 КОНЕЦ</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -986,24 +1029,8 @@
 		</appearance>
 	</calculatedField>
 	<calculatedField>
-		<dataPath>USDAmount</dataPath>
-		<expression>ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ</expression>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>USD Amount</v8:content>
-			</v8:item>
-		</title>
-		<appearance>
-			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-				<dcscor:parameter>Формат</dcscor:parameter>
-				<dcscor:value xsi:type="xs:string">ЧДЦ=2</dcscor:value>
-			</dcscor:item>
-		</appearance>
-	</calculatedField>
-	<calculatedField>
 		<dataPath>DueTo</dataPath>
-		<expression>ВЫБОР КОГДА InvoiceDueDateTo &lt;= &amp;Период ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ ИНАЧЕ 0 КОНЕЦ</expression>
+		<expression>ВЫБОР КОГДА InvoiceDueDateTo &lt;= &amp;Период ТОГДА USDAmount ИНАЧЕ 0 КОНЕЦ</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -1019,7 +1046,10 @@
 	</calculatedField>
 	<calculatedField>
 		<dataPath>FcstCollect</dataPath>
-		<expression>ВЫБОР КОГДА ForecastDate &lt;= &amp;Период И ForecastDate &lt;&gt; ДАТАВРЕМЯ(1,1,1) ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ - ВЫБОР КОГДА Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid) ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ  ИНАЧЕ 0 КОНЕЦ  ИНАЧЕ 0 КОНЕЦ</expression>
+		<expression>ВЫБОР КОГДА ForecastDate &lt;= &amp;Период И ForecastDate &lt;&gt; ДАТАВРЕМЯ(1,1,1)
+	ТОГДА USDAmount - Paid
+	ИНАЧЕ 0
+КОНЕЦ</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -1035,7 +1065,7 @@
 	</calculatedField>
 	<calculatedField>
 		<dataPath>NoFrcst</dataPath>
-		<expression>ВЫБОР КОГДА ForecastDate = ДАТАВРЕМЯ(1,1,1) ТОГДА ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ ИНАЧЕ 0 КОНЕЦ</expression>
+		<expression>ВЫБОР КОГДА ForecastDate = ДАТАВРЕМЯ(1,1,1) ТОГДА USDAmount ИНАЧЕ 0 КОНЕЦ</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -1051,11 +1081,11 @@
 	</calculatedField>
 	<calculatedField>
 		<dataPath>Insolvent</dataPath>
-		<expression>Выбор
-	Когда Status = Значение(Перечисление.InvoiceStatus.CustomerIsInsolventOrBankrupt)
-		Тогда ВЫБОР КОГДА Currency = &amp;Рубль И Rate =0 Тогда 0 КОГДА Currency = &amp;Рубль ТОГДА AmountОстаток / Rate ИНАЧЕ AmountОстаток КОНЕЦ
-	Иначе 0
-Конец</expression>
+		<expression>ВЫБОР
+    КОГДА Status = Значение(Перечисление.InvoiceStatus.CustomerIsInsolventOrBankrupt)
+        ТОГДА USDAmount
+    ИНАЧЕ 0
+КОНЕЦ</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -1215,12 +1245,20 @@
 					</dcsset:lwsTitle>
 					<dcsset:detailExpression>Выбор
 	Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
-		Тогда USDAmount - FcstCollect - Paid - Insolvent
+		Тогда USDAmount - FcstCollect - Paid - Insolvent - Выбор
+				Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И InvoiceDueDateFrom &lt;= &amp;Период
+					Тогда USDAmount - Paid - FcstCollect
+				Иначе 0
+			Конец
 	Иначе 0
 Конец</dcsset:detailExpression>
 					<dcsset:detailExpressionPresentation>Выбор
 	Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
-		Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation]
+		Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation] - Выбор
+				Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И [Invoice.Due date from] &lt;= &amp;Period
+					Тогда [USD Amount] - Paid - [Fcst Collect]
+				Иначе 0
+			Конец
 	Иначе 0
 Конец</dcsset:detailExpressionPresentation>
 					<dcsset:totalExpression/>
@@ -1235,25 +1273,37 @@
 						</v8:item>
 					</dcsset:lwsTitle>
 					<dcsset:detailExpression>Выбор
-	Когда DueFrom &lt;&gt; 0 И DueTo = 0
-		Тогда USDAmount
 	Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueFrom &gt; FcstCollect
 		Тогда USDAmount - FcstCollect - Выбор
 				Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
-					Тогда USDAmount - FcstCollect - Paid - Insolvent
+					Тогда USDAmount - FcstCollect - Paid - Insolvent - Выбор
+							Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И InvoiceDueDateFrom &lt;= &amp;Период
+								Тогда USDAmount - Paid - FcstCollect
+							Иначе 0
+						Конец
 				Иначе 0
-			Конец - Paid - Insolvent
+			Конец - Paid - Insolvent - Выбор
+				Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И InvoiceDueDateFrom &lt;= &amp;Период
+					Тогда USDAmount - Paid - FcstCollect
+				Иначе 0
+			Конец
 	Иначе 0
 Конец</dcsset:detailExpression>
 					<dcsset:detailExpressionPresentation>Выбор
-	Когда [Due From] &lt;&gt; 0 И [Due To] = 0
-		Тогда [USD Amount]
 	Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due From] &gt; [Fcst Collect]
 		Тогда [USD Amount] - [Fcst Collect] - Выбор
 				Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
-					Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation]
+					Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation] - Выбор
+							Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И [Invoice.Due date from] &lt;= &amp;Period
+								Тогда [USD Amount] - Paid - [Fcst Collect]
+							Иначе 0
+						Конец
 				Иначе 0
-			Конец - Paid - [Under Litigation]
+			Конец - Paid - [Under Litigation] - Выбор
+				Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И [Invoice.Due date from] &lt;= &amp;Period
+					Тогда [USD Amount] - Paid - [Fcst Collect]
+				Иначе 0
+			Конец
 	Иначе 0
 Конец</dcsset:detailExpressionPresentation>
 					<dcsset:totalExpression/>
@@ -1268,40 +1318,68 @@
 						</v8:item>
 					</dcsset:lwsTitle>
 					<dcsset:detailExpression>Выбор
-	Когда DueFrom = 0 И DueTo = 0
-		Тогда USDAmount
 	Когда ForecastDate = ДатаВремя(1, 1, 1)
 		Тогда 0
-	Иначе USDAmount - Insolvent - Paid - FcstCollect - Выбор
+	Иначе USDAmount - Paid - FcstCollect - Insolvent - Выбор
 			Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueFrom &gt; FcstCollect
 				Тогда USDAmount - FcstCollect - Выбор
 						Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
-							Тогда USDAmount - FcstCollect - Paid - Insolvent
+							Тогда USDAmount - FcstCollect - Paid - Insolvent - Выбор
+									Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И InvoiceDueDateFrom &lt;= &amp;Период
+										Тогда USDAmount - Paid - FcstCollect
+									Иначе 0
+								Конец
 						Иначе 0
-					Конец - Paid - Insolvent
+					Конец - Paid - Insolvent - Выбор
+						Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И InvoiceDueDateFrom &lt;= &amp;Период
+							Тогда USDAmount - Paid - FcstCollect
+						Иначе 0
+					Конец
+			Иначе 0
+		Конец - Выбор
+			Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И InvoiceDueDateFrom &lt;= &amp;Период
+				Тогда USDAmount - Paid - FcstCollect
 			Иначе 0
 		Конец - Выбор
 			Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
-				Тогда USDAmount - FcstCollect - Paid - Insolvent
+				Тогда USDAmount - FcstCollect - Paid - Insolvent - Выбор
+						Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И InvoiceDueDateFrom &lt;= &amp;Период
+							Тогда USDAmount - Paid - FcstCollect
+						Иначе 0
+					Конец
 			Иначе 0
 		Конец
 Конец</dcsset:detailExpression>
 					<dcsset:detailExpressionPresentation>Выбор
-	Когда [Due From] = 0 И [Due To] = 0
-		Тогда [USD Amount]
 	Когда [Forecast date] = ДатаВремя(1, 1, 1)
 		Тогда 0
-	Иначе [USD Amount] - [Under Litigation] - Paid - [Fcst Collect] - Выбор
+	Иначе [USD Amount] - Paid - [Fcst Collect] - [Under Litigation] - Выбор
 			Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due From] &gt; [Fcst Collect]
 				Тогда [USD Amount] - [Fcst Collect] - Выбор
 						Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
-							Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation]
+							Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation] - Выбор
+									Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И [Invoice.Due date from] &lt;= &amp;Period
+										Тогда [USD Amount] - Paid - [Fcst Collect]
+									Иначе 0
+								Конец
 						Иначе 0
-					Конец - Paid - [Under Litigation]
+					Конец - Paid - [Under Litigation] - Выбор
+						Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И [Invoice.Due date from] &lt;= &amp;Period
+							Тогда [USD Amount] - Paid - [Fcst Collect]
+						Иначе 0
+					Конец
+			Иначе 0
+		Конец - Выбор
+			Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И [Invoice.Due date from] &lt;= &amp;Period
+				Тогда [USD Amount] - Paid - [Fcst Collect]
 			Иначе 0
 		Конец - Выбор
 			Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
-				Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation]
+				Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation] - Выбор
+						Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И [Invoice.Due date from] &lt;= &amp;Period
+							Тогда [USD Amount] - Paid - [Fcst Collect]
+						Иначе 0
+					Конец
 			Иначе 0
 		Конец
 Конец</dcsset:detailExpressionPresentation>
