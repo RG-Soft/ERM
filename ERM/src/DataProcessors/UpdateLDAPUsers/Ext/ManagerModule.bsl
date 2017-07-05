@@ -87,7 +87,7 @@
 			
 			// получаем пользователей текущей группы
 			
-			КомандаАДО.CommandText = "<LDAP://DIR.slb.com/ou=Users,OU=" + ТекГруппаДомена + ",OU=RU,OU=rca,DC=DIR," + ТекущийДомен + ">" + ";(&(objectCategory=person)(objectClass=user));sAMAccountName,userAccountControl,displayName,department,mail,telephoneNumber,title;onelevel";
+			КомандаАДО.CommandText = СтрШаблон("<LDAP://DIR.slb.com/ou=Users,OU=" + ТекГруппаДомена + ",OU=%1,OU=rca,DC=DIR," + ТекущийДомен + ">" + ";(&(objectCategory=person)(objectClass=user));sAMAccountName,userAccountControl,displayName,department,mail,telephoneNumber,title;onelevel", ВыборкаДетальныеЗаписи.OU);
 			
 			Попытка
 				ВыборкаПользователейГруппы = КомандаАДО.Execute();  
