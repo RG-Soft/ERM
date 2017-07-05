@@ -126,7 +126,12 @@
 			<appearance>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>Формат</dcscor:parameter>
-					<dcscor:value xsi:type="xs:string">ДФ=MM/dd/yyyy</dcscor:value>
+					<dcscor:value xsi:type="v8:LocalStringType">
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>ДЛФ=D</v8:content>
+						</v8:item>
+					</dcscor:value>
 				</dcscor:item>
 			</appearance>
 		</field>
@@ -360,7 +365,7 @@
 ОБЪЕДИНИТЬ ВСЕ
 
 ВЫБРАТЬ
-	ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка),
+	ManualTransactionsОстатки.Client,
 	ManualTransactionsОстатки.Company,
 	ManualTransactionsОстатки.Source,
 	ManualTransactionsОстатки.Location,
@@ -677,6 +682,17 @@
 		<useRestriction>true</useRestriction>
 		<expression>ДОБАВИТЬКДАТЕ(КонецПериода(&amp;Период,"ДЕНЬ") , "СЕКУНДА", 1)</expression>
 		<availableAsField>false</availableAsField>
+	</parameter>
+	<parameter>
+		<name>КурсДляОтчета</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Курс для отчета</v8:content>
+			</v8:item>
+		</title>
+		<value xsi:nil="true"/>
+		<useRestriction>false</useRestriction>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
@@ -1008,7 +1024,7 @@
 							<dcscor:value xsi:type="v8:LocalStringType">
 								<v8:item>
 									<v8:lang>ru</v8:lang>
-									<v8:content>ДФ=MM/dd/yyyy</v8:content>
+									<v8:content>ДЛФ=D</v8:content>
 								</v8:item>
 							</dcscor:value>
 						</dcscor:item>
@@ -1030,11 +1046,11 @@
 				</dcscor:item>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>ВыводитьПараметрыДанных</dcscor:parameter>
-					<dcscor:value xsi:type="dcsset:DataCompositionTextOutputType">Output</dcscor:value>
+					<dcscor:value xsi:type="dcsset:DataCompositionTextOutputType">DontOutput</dcscor:value>
 				</dcscor:item>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>ВыводитьОтбор</dcscor:parameter>
-					<dcscor:value xsi:type="dcsset:DataCompositionTextOutputType">Output</dcscor:value>
+					<dcscor:value xsi:type="dcsset:DataCompositionTextOutputType">DontOutput</dcscor:value>
 				</dcscor:item>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>АвтоПозицияРесурсов</dcscor:parameter>
