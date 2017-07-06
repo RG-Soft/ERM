@@ -459,11 +459,7 @@
 		КОНЕЦ) КАК BaseAmountОстатокТыс,
 	ВТ_Остатки.TransactionAmount,
 	ВТ_Остатки.Agreement,
-	ВЫБОР
-		КОГДА ВТ_Остатки.Document ССЫЛКА Документ.РучнаяКорректировка
-			ТОГДА ""
-		ИНАЧЕ ВТ_Остатки.Document.ClientID
-	КОНЕЦ КАК CustomerID,
+	ВТ_Остатки.Document.ClientID КАК CustomerID,
 	ВЫБОР
 		КОГДА ВТ_Остатки.Document ССЫЛКА Документ.Invoice
 			ТОГДА ВТ_Остатки.Document.DocNumber
@@ -513,11 +509,6 @@
 	ВТ_Остатки.TransactionAmount,
 	ВТ_Остатки.Document.FiscalInvoiceNo,
 	ВЫБОР
-		КОГДА ВТ_Остатки.Document ССЫЛКА Документ.РучнаяКорректировка
-			ТОГДА ""
-		ИНАЧЕ ВТ_Остатки.Document.ClientID
-	КОНЕЦ,
-	ВЫБОР
 		КОГДА ВТ_Остатки.Document ССЫЛКА Документ.Invoice
 			ТОГДА ВТ_Остатки.Document.DocNumber
 		КОГДА ВТ_Остатки.Document ССЫЛКА Документ.РучнаяКорректировка
@@ -529,7 +520,8 @@
 				ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
 			ТОГДА 0
 		ИНАЧЕ ВТ_Остатки.TransactionAmount / ВнутренниеКурсыВалютСрезПоследних.Курс
-	КОНЕЦ
+	КОНЕЦ,
+	ВТ_Остатки.Document.ClientID
 
 ИМЕЮЩИЕ
 	СУММА(ВТ_Остатки.AmountОстаток) &lt;&gt; 0</query>
