@@ -111,7 +111,8 @@
 	|	ПроводкаDSS.FiscalDate,
 	|	ПроводкаDSS.Urn,
 	|	ПроводкаDSS.SubSubSegment,
-	|	ПроводкаDSS.AccountingPeriod
+	|	ПроводкаDSS.AccountingPeriod,
+	|	ПроводкаDSS.AccountLawson.БазовыйЭлемент КАК HFMAccount
 	|ИЗ
 	|	Документ.ПроводкаDSS КАК ПроводкаDSS
 	|ГДЕ
