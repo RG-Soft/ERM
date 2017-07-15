@@ -1299,7 +1299,7 @@
 		|	ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 17, 4) + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 22, 3) КАК Account,
 		|	ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 6, 3) КАК SubSubSegment,
 		|	ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 10, 6) КАК Location,
-		|	ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 6, 3) + ""."" + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 10, 6) КАК AU
+		|	ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 10, 6) + ""."" + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 6, 3) КАК AU
 		|ПОМЕСТИТЬ ВТ_ДанныеФайла
 		|ИЗ
 		|	РегистрСведений.OracleSourceData КАК OracleSourceData
@@ -1610,7 +1610,7 @@
 			//Если (ВыборкаДетальныеЗаписи.Транзакция.Client  = Справочники.Контрагенты.Unreconciled и ВыборкаДетальныеЗаписи.Client <> Справочники.Контрагенты.Unreconciled) ИЛИ
 			//	НЕ (ВыборкаДетальныеЗаписи.GlSourceType = "Receivables")
 			//Тогда
-			//	ТранзакцияOracleОбъект = ВыборкаДетальныеЗаписи.Транзакция.ПолучитьОбъект();
+				//ТранзакцияOracleОбъект = ВыборкаДетальныеЗаписи.Транзакция.ПолучитьОбъект();
 			//Иначе
 			//	Продолжить;
 			//КонецЕсли;
@@ -2402,11 +2402,9 @@
 			
 			КэшAU.Вставить(ДанныеДляЗаполнения.КодAU, НовыйКостЦентр.Ссылка);
 			
-		Иначе
-			
-			AU = КэшAU[ДанныеДляЗаполнения.КодAU];
-			
 		КонецЕсли;
+		
+		AU = КэшAU[ДанныеДляЗаполнения.КодAU];
 		
 	Иначе
 		
