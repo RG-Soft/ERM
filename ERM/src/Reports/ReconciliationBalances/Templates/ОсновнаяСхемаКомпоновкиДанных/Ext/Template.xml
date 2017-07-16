@@ -16,9 +16,6 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>SubSubSegment</dataPath>
 			<field>SubSubSegment</field>
-			<role>
-				<dcscom:dimension>true</dcscom:dimension>
-			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Memo</dataPath>
@@ -52,9 +49,6 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Location</dataPath>
 			<field>Location</field>
-			<role>
-				<dcscom:dimension>true</dcscom:dimension>
-			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Invoice</dataPath>
@@ -125,13 +119,15 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>LegalEntity</dataPath>
+			<field>LegalEntity</field>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	BilledARОстатки.Client КАК Client,
 	BilledARОстатки.Company,
 	BilledARОстатки.Source КАК Source,
-	BilledARОстатки.Location,
-	BilledARОстатки.SubSubSegment,
 	"I" КАК TransType,
 	BilledARОстатки.Invoice,
 	BilledARОстатки.Account,
@@ -149,8 +145,6 @@
 	UnallocatedCashОстатки.Client,
 	UnallocatedCashОстатки.Company,
 	UnallocatedCashОстатки.Source,
-	UnallocatedCashОстатки.Location,
-	UnallocatedCashОстатки.SubSubSegment,
 	"P",
 	UnallocatedCashОстатки.CashBatch,
 	UnallocatedCashОстатки.Account,
@@ -167,8 +161,6 @@
 	UnallocatedMemoОстатки.Client,
 	UnallocatedMemoОстатки.Company,
 	UnallocatedMemoОстатки.Source,
-	UnallocatedMemoОстатки.Location,
-	UnallocatedMemoОстатки.SubSubSegment,
 	"M",
 	UnallocatedMemoОстатки.Memo,
 	UnallocatedMemoОстатки.Account,
@@ -185,8 +177,6 @@
 	ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка),
 	ManualTransactionsОстатки.Company,
 	ManualTransactionsОстатки.Source,
-	ManualTransactionsОстатки.Location,
-	ManualTransactionsОстатки.SubSubSegment,
 	"JV",
 	ManualTransactionsОстатки.РучнаяКорректировка,
 	ManualTransactionsОстатки.Account,
@@ -203,8 +193,6 @@
 	UnbilledARОстатки.Client,
 	UnbilledARОстатки.Company,
 	UnbilledARОстатки.Source,
-	UnbilledARОстатки.Location,
-	UnbilledARОстатки.SubSubSegment,
 	"A",
 	UnbilledARОстатки.SalesOrder,
 	UnbilledARОстатки.Account,
@@ -226,8 +214,6 @@
 	ARBalance.Client,
 	ARBalance.Company,
 	ARBalance.Source,
-	ARBalance.Location,
-	ARBalance.SubSubSegment,
 	ARBalance.TransType,
 	ARBalance.Invoice,
 	ARBalance.Account,
@@ -253,8 +239,6 @@
 	ЕСТЬNULL(AR.Client, ВТ_Остатки.Client) КАК Client,
 	ЕСТЬNULL(AR.Company, ВТ_Остатки.Company) КАК Company,
 	ЕСТЬNULL(AR.Source, ВТ_Остатки.Source) КАК Source,
-	ЕСТЬNULL(AR.Location, ВТ_Остатки.Location) КАК Location,
-	ЕСТЬNULL(AR.SubSubSegment, ВТ_Остатки.SubSubSegment) КАК SubSubSegment,
 	ЕСТЬNULL(AR.TransType, ВТ_Остатки.TransType) КАК TransType,
 	ЕСТЬNULL(AR.НомерДокумента, ВТ_Остатки.НомерДокумента) КАК Invoice,
 	ЕСТЬNULL(AR.Account, ВТ_Остатки.Account) КАК Account,
@@ -269,8 +253,6 @@
 		ПО ВТ_Остатки.Client = AR.Client
 			И ВТ_Остатки.Company = AR.Company
 			И ВТ_Остатки.Source = AR.Source
-			И ВТ_Остатки.Location = AR.Location
-			И ВТ_Остатки.SubSubSegment = AR.SubSubSegment
 			И ВТ_Остатки.Invoice = AR.Invoice
 			И ВТ_Остатки.Account = AR.Account
 			И ВТ_Остатки.Currency = AR.Currency
@@ -396,12 +378,6 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Source</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Location</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>SubSubSegment</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>TransType</dcsset:field>

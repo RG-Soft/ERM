@@ -16,9 +16,6 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>SubSubSegment</dataPath>
 			<field>SubSubSegment</field>
-			<role>
-				<dcscom:dimension>true</dcscom:dimension>
-			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>AU</dataPath>
@@ -71,9 +68,6 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Location</dataPath>
 			<field>Location</field>
-			<role>
-				<dcscom:dimension>true</dcscom:dimension>
-			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>ИдентификаторКлиента</dataPath>
@@ -410,8 +404,8 @@
 	BilledARОстатки.Client КАК Client,
 	BilledARОстатки.Company КАК Company,
 	BilledARОстатки.Source КАК Source,
-	BilledARОстатки.Location КАК Location,
-	BilledARОстатки.SubSubSegment КАК SubSubSegment,
+	BilledARОстатки.AU.ПодразделениеОрганизации КАК Location,
+	BilledARОстатки.AU.Сегмент КАК SubSubSegment,
 	BilledARОстатки.Invoice КАК Invoice,
 	BilledARОстатки.Account,
 	BilledARОстатки.Currency КАК Currency,
@@ -433,8 +427,8 @@
 	UnallocatedMemoОстатки.Client,
 	UnallocatedMemoОстатки.Company,
 	UnallocatedMemoОстатки.Source,
-	UnallocatedMemoОстатки.Location,
-	UnallocatedMemoОстатки.SubSubSegment,
+	UnallocatedMemoОстатки.AU.ПодразделениеОрганизации,
+	UnallocatedMemoОстатки.AU.Сегмент,
 	UnallocatedMemoОстатки.Memo,
 	UnallocatedMemoОстатки.Account,
 	UnallocatedMemoОстатки.Currency,
@@ -461,8 +455,8 @@
 	BilledARОбороты.Client КАК Client,
 	BilledARОбороты.Company КАК Company,
 	BilledARОбороты.Source КАК Source,
-	BilledARОбороты.Location КАК Location,
-	BilledARОбороты.SubSubSegment КАК SubSubSegment,
+	BilledARОбороты.AU.ПодразделениеОрганизации КАК Location,
+	BilledARОбороты.AU.Сегмент КАК SubSubSegment,
 	BilledARОбороты.Invoice КАК Invoice,
 	BilledARОбороты.Account,
 	BilledARОбороты.Currency КАК Currency,
@@ -484,8 +478,8 @@
 	UnallocatedMemoОбороты.Client,
 	UnallocatedMemoОбороты.Company,
 	UnallocatedMemoОбороты.Source,
-	UnallocatedMemoОбороты.Location,
-	UnallocatedMemoОбороты.SubSubSegment,
+	UnallocatedMemoОбороты.AU.ПодразделениеОрганизации,
+	UnallocatedMemoОбороты.AU.Сегмент,
 	UnallocatedMemoОбороты.Memo,
 	UnallocatedMemoОбороты.Account,
 	UnallocatedMemoОбороты.Currency,
@@ -512,8 +506,8 @@
 	PaymentsОбороты.Client КАК Client,
 	PaymentsОбороты.Company КАК Company,
 	PaymentsОбороты.Source КАК Source,
-	PaymentsОбороты.Location КАК Location,
-	PaymentsОбороты.SubSubSegment КАК SubSubSegment,
+	PaymentsОбороты.AU.ПодразделениеОрганизации КАК Location,
+	PaymentsОбороты.AU.Сегмент КАК SubSubSegment,
 	PaymentsОбороты.Invoice КАК Invoice,
 	PaymentsОбороты.Currency КАК Currency,
 	PaymentsОбороты.AU КАК AU,
@@ -525,13 +519,11 @@
 			{(&amp;ПериодОстатков)},
 			{(&amp;КонецДняФормированияОтчета)},
 			,
-			(Client, Company, Source, Location, SubSubSegment, Invoice, Currency, AU, LegalEntity) В
+			(Client, Company, Source, Invoice, Currency, AU, LegalEntity) В
 				(ВЫБРАТЬ РАЗЛИЧНЫЕ
 					ВТ_Обороты.Client,
 					ВТ_Обороты.Company,
 					ВТ_Обороты.Source,
-					ВТ_Обороты.Location,
-					ВТ_Обороты.SubSubSegment,
 					ВТ_Обороты.Invoice,
 					ВТ_Обороты.Currency,
 					ВТ_Обороты.AU,
@@ -656,8 +648,8 @@
 	PaymentsОбороты.Client КАК Client,
 	PaymentsОбороты.Company КАК Company,
 	PaymentsОбороты.Source КАК Source,
-	PaymentsОбороты.Location КАК Location,
-	PaymentsОбороты.SubSubSegment КАК SubSubSegment,
+	PaymentsОбороты.AU.ПодразделениеОрганизации КАК Location,
+	PaymentsОбороты.AU.Сегмент КАК SubSubSegment,
 	PaymentsОбороты.Invoice КАК Invoice,
 	PaymentsОбороты.Currency КАК Currency,
 	PaymentsОбороты.AU КАК AU,
@@ -674,13 +666,11 @@
 			{(&amp;ПериодНачалаАнализаОплат)},
 			{(&amp;КонецДняФормированияОтчета)},
 			Регистратор,
-			(Client, Company, Source, Location, SubSubSegment, Invoice, Currency, AU, LegalEntity) В
+			(Client, Company, Source, Invoice, Currency, AU, LegalEntity) В
 				(ВЫБРАТЬ РАЗЛИЧНЫЕ
 					ВТ_ОстаткиБезОплатТекущегоПериода.Client,
 					ВТ_ОстаткиБезОплатТекущегоПериода.Company,
 					ВТ_ОстаткиБезОплатТекущегоПериода.Source,
-					ВТ_ОстаткиБезОплатТекущегоПериода.Location,
-					ВТ_ОстаткиБезОплатТекущегоПериода.SubSubSegment,
 					ВТ_ОстаткиБезОплатТекущегоПериода.Invoice,
 					ВТ_ОстаткиБезОплатТекущегоПериода.Currency,
 					ВТ_ОстаткиБезОплатТекущегоПериода.AU,
@@ -700,8 +690,8 @@
 	PaymentsОбороты.Client,
 	PaymentsОбороты.Company,
 	PaymentsОбороты.Source,
-	PaymentsОбороты.Location,
-	PaymentsОбороты.SubSubSegment,
+	PaymentsОбороты.AU.ПодразделениеОрганизации,
+	PaymentsОбороты.AU.Сегмент,
 	PaymentsОбороты.Invoice,
 	PaymentsОбороты.Currency,
 	PaymentsОбороты.AU,

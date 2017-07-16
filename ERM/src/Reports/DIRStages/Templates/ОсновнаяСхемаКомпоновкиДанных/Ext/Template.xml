@@ -277,10 +277,14 @@
 				</dcscor:item>
 			</appearance>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>LegalEntity</dataPath>
+			<field>LegalEntity</field>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	SalesOrder.Source КАК Source,
-	SalesOrder.Location,
+	SalesOrder.AU.ПодразделениеОрганизации КАК Location,
 	SalesOrder.Company.Код,
 	SalesOrder.Company.Наименование,
 	SalesOrder.Client КАК Client,
@@ -308,7 +312,7 @@
 	SalesOrder.OrderType,
 	SalesOrder.Ссылка,
 	SalesOrder.Company,
-	SalesOrder.SubSubSegment,
+	SalesOrder.AU.Сегмент КАК SubSubSegment,
 	ВЫБОР
 		КОГДА SalesOrder.Currency = &amp;USD
 			ТОГДА SalesOrder.Amount
@@ -338,8 +342,7 @@
 	UnbilledARОстатки.Client КАК Client,
 	UnbilledARОстатки.Company КАК Company,
 	UnbilledARОстатки.Source КАК Source,
-	UnbilledARОстатки.Location КАК Location,
-	UnbilledARОстатки.SubSubSegment КАК SubSubSegment,
+	UnbilledARОстатки.AU КАК AU,
 	UnbilledARОстатки.SalesOrder КАК SalesOrder,
 	UnbilledARОстатки.AmountОстаток,
 	UnbilledARОстатки.BaseAmountОстаток
@@ -347,14 +350,13 @@
 ИЗ
 	РегистрНакопления.UnbilledAR.Остатки(
 			{(&amp;КонецПериода)},
-			(Client, Company, Source, Location, SubSubSegment, SalesOrder) В
+			(Client, Company, Source, AU, SalesOrder) В
 				(ВЫБРАТЬ
 					ВТ_SO.Client,
 					ВТ_SO.Company,
 					ВТ_SO.Source,
-					ВТ_SO.Location,
-					ВТ_SO.SubSubSegment КАК Segment2,
-					ВТ_SO.Ссылка КАК Source1
+					ВТ_SO.AU,
+					ВТ_SO.Ссылка
 				ИЗ
 					ВТ_SO КАК ВТ_SO)) КАК UnbilledARОстатки
 
@@ -362,8 +364,7 @@
 	Client,
 	Company,
 	Source,
-	Location,
-	SubSubSegment,
+	AU,
 	SalesOrder
 ;
 
@@ -417,8 +418,7 @@
 		ПО ВТ_SO.Client = ВТ_Остатки.Client
 			И ВТ_SO.Company = ВТ_Остатки.Company
 			И ВТ_SO.Source = ВТ_Остатки.Source
-			И ВТ_SO.Location = ВТ_Остатки.Location
-			И ВТ_SO.SubSubSegment = ВТ_Остатки.SubSubSegment
+			И ВТ_SO.AU = ВТ_Остатки.AU
 			И ВТ_SO.Ссылка = ВТ_Остатки.SalesOrder</query>
 	</dataSet>
 	<parameter>

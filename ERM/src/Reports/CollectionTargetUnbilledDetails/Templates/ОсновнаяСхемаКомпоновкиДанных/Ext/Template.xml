@@ -16,9 +16,6 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>SubSubSegment</dataPath>
 			<field>SubSubSegment</field>
-			<role>
-				<dcscom:dimension>true</dcscom:dimension>
-			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>AU</dataPath>
@@ -78,9 +75,6 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Location</dataPath>
 			<field>Location</field>
-			<role>
-				<dcscom:dimension>true</dcscom:dimension>
-			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>ИдентификаторКлиента</dataPath>
@@ -155,13 +149,17 @@
 				</dcscor:item>
 			</appearance>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>LegalEntity</dataPath>
+			<field>LegalEntity</field>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	UnbilledARОстатки.Client КАК Client,
 	UnbilledARОстатки.Company,
 	UnbilledARОстатки.Source КАК Source,
-	UnbilledARОстатки.Location,
-	UnbilledARОстатки.SubSubSegment,
+	UnbilledARОстатки.AU.ПодразделениеОрганизации КАК Location,
+	UnbilledARОстатки.AU.Сегмент КАК SubSubSegment,
 	UnbilledARОстатки.SalesOrder КАК SalesOrder,
 	UnbilledARОстатки.Account,
 	UnbilledARОстатки.Currency,
