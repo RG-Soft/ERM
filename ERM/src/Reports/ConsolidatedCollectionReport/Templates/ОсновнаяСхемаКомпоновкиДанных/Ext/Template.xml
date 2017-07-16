@@ -53,16 +53,6 @@
 			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>AmountОборот</dataPath>
-			<field>AmountОборот</field>
-			<appearance>
-				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:parameter>Формат</dcscor:parameter>
-					<dcscor:value xsi:type="xs:string">ЧЦ=15; ЧДЦ=2</dcscor:value>
-				</dcscor:item>
-			</appearance>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>Курс</dataPath>
 			<field>Курс</field>
 		</field>
@@ -138,13 +128,23 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Amount</dataPath>
+			<field>Amount</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Amount</v8:content>
+				</v8:item>
+			</title>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
-	PaymentsОбороты.Company,
-	PaymentsОбороты.Client,
-	PaymentsОбороты.Source,
-	PaymentsОбороты.Location,
-	PaymentsОбороты.SubSubSegment,
+	PaymentsОбороты.Company КАК Company,
+	PaymentsОбороты.Client КАК Client,
+	PaymentsОбороты.Source КАК Source,
+	PaymentsОбороты.Location КАК Location,
+	PaymentsОбороты.SubSubSegment КАК SubSubSegment,
 	ВЫБОР
 		КОГДА PaymentsОбороты.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
 				И PaymentsОбороты.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
@@ -152,8 +152,14 @@
 			ТОГДА PaymentsОбороты.Invoice
 		ИНАЧЕ PaymentsОбороты.CashBatch
 	КОНЕЦ КАК Invoice,
-	PaymentsОбороты.Currency,
-	PaymentsОбороты.AmountОборот,
+	PaymentsОбороты.Currency КАК Currency,
+	ВЫБОР
+		КОГДА PaymentsОбороты.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
+				И PaymentsОбороты.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
+				И PaymentsОбороты.Invoice &lt;&gt; НЕОПРЕДЕЛЕНО
+			ТОГДА PaymentsОбороты.AmountОборот
+		ИНАЧЕ UnallocatedCashОстатки.AmountОстаток
+	КОНЕЦ КАК Amount,
 	ВЫБОР
 		КОГДА PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
 				ИЛИ PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith)
@@ -165,41 +171,43 @@
 			ТОГДА PaymentsОбороты.Регистратор.Дата
 		ИНАЧЕ PaymentsОбороты.CashBatch.Дата
 	КОНЕЦ КАК DateCollection,
-	PaymentsОбороты.Account,
-	PaymentsОбороты.AU
+	PaymentsОбороты.Account КАК Account,
+	PaymentsОбороты.AU КАК AU
 ПОМЕСТИТЬ Исходные
 ИЗ
 	РегистрНакопления.Payments.Обороты(
-			,
-			,
+			{(&amp;НачалоПериода)},
+			{(&amp;КонецПериода)},
 			Регистратор,
 			(Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
 					И Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
 					И Invoice &lt;&gt; НЕОПРЕДЕЛЕНО
 				ИЛИ CashBatch &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка))
 				И Client &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)) КАК PaymentsОбороты
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрНакопления.UnallocatedCash.Остатки({(&amp;КонецПериода)}, ) КАК UnallocatedCashОстатки
+		ПО PaymentsОбороты.CashBatch = UnallocatedCashОстатки.CashBatch
 ГДЕ
 	ПОДСТРОКА(PaymentsОбороты.Account.Код, 1, 6) &lt;&gt; "209000"
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
 ВЫБРАТЬ
-	Исходные.Client,
-	Исходные.Company,
-	Исходные.Source,
-	Исходные.Location,
-	Исходные.SubSubSegment,
-	Исходные.Currency,
-	СУММА(Исходные.AmountОборот) КАК AmountОборот,
-	ВнутренниеКурсыВалютСрезПоследних.Курс,
-	ВнутренниеКурсыВалютСрезПоследних.Кратность,
+	Исходные.Client КАК Client,
+	Исходные.Company КАК Company,
+	Исходные.Source КАК Source,
+	Исходные.Location КАК Location,
+	Исходные.SubSubSegment КАК SubSubSegment,
+	Исходные.Currency КАК Currency,
+	СУММА(Исходные.Amount) КАК Amount,
+	ВнутренниеКурсыВалютСрезПоследних.Курс КАК Курс,
+	ВнутренниеКурсыВалютСрезПоследних.Кратность КАК Кратность,
 	СУММА(ВЫБОР
 			КОГДА Исходные.Currency = &amp;USD
-				ТОГДА Исходные.AmountОборот
-			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL 
+				ТОГДА Исходные.Amount
+			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
 					ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
 				ТОГДА 0
-			ИНАЧЕ Исходные.AmountОборот / ВнутренниеКурсыВалютСрезПоследних.Курс
+			ИНАЧЕ Исходные.Amount / ВнутренниеКурсыВалютСрезПоследних.Курс
 		КОНЕЦ) КАК BaseAmount,
 	ВЫБОР
 		КОГДА Исходные.Invoice ССЫЛКА Документ.Invoice
@@ -207,10 +215,10 @@
 		ИНАЧЕ Исходные.Invoice.PaymentNumber
 	КОНЕЦ КАК InvoiceNum,
 	ТИПЗНАЧЕНИЯ(Исходные.Invoice) КАК Type,
-	Исходные.Invoice,
-	Исходные.Account,
-	Исходные.DateCollection,
-	Исходные.AU
+	Исходные.Invoice КАК Invoice,
+	Исходные.Account КАК Account,
+	МАКСИМУМ(Исходные.DateCollection) КАК DateCollection,
+	Исходные.AU КАК AU
 ИЗ
 	Исходные КАК Исходные
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;КонецПериода)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
@@ -233,11 +241,10 @@
 	ТИПЗНАЧЕНИЯ(Исходные.Invoice),
 	Исходные.Invoice,
 	Исходные.Account,
-	Исходные.DateCollection,
 	Исходные.AU
 
 ИМЕЮЩИЕ
-	СУММА(Исходные.AmountОборот) &gt; 0</query>
+	СУММА(Исходные.Amount) &lt;&gt; 0</query>
 	</dataSet>
 	<parameter>
 		<name>НачалоПериода</name>
@@ -434,7 +441,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>AmountОборот</dcsset:field>
+					<dcsset:field>Amount</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
