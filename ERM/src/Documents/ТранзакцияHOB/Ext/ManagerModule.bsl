@@ -75,7 +75,8 @@
 	|	ТранзакцияHOB.AU,
 	|	ТранзакцияHOB.HOBDocumentType,
 	|	ТранзакцияHOB.HOBInvoiceType,
-	|	ТранзакцияHOB.LegalEntity
+	|	ТранзакцияHOB.LegalEntity,
+	|	ТранзакцияHOB.Account.БазовыйЭлемент КАК HFMAccount
 	|ИЗ
 	|	Документ.ТранзакцияHOB КАК ТранзакцияHOB
 	|ГДЕ
