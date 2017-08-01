@@ -193,6 +193,7 @@
 							</ChildItems>
 						</UsualGroup>
 						<UsualGroup name="ГруппаLocation" id="38">
+							<Visible>false</Visible>
 							<Title>
 								<v8:item>
 									<v8:lang>ru</v8:lang>
@@ -320,6 +321,7 @@
 					<ExtendedTooltip name="ГруппаПраваяКолонкаРасширеннаяПодсказка" id="77"/>
 					<ChildItems>
 						<UsualGroup name="ГруппаSSS" id="40">
+							<Visible>false</Visible>
 							<Title>
 								<v8:item>
 									<v8:lang>ru</v8:lang>
@@ -369,6 +371,53 @@
 									<ExtendedTooltip name="SubSubSegmentРасширеннаяПодсказка" id="21"/>
 									<Events>
 										<Event name="OnChange">SubSubSegmentПриИзменении</Event>
+									</Events>
+								</InputField>
+							</ChildItems>
+						</UsualGroup>
+						<UsualGroup name="ГруппаAU" id="46">
+							<Title>
+								<v8:item>
+									<v8:lang>ru</v8:lang>
+									<v8:content>AU</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>ru</v8:lang>
+									<v8:content>AU</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Vertical</Group>
+							<Representation>StrongSeparation</Representation>
+							<ThroughAlign>Use</ThroughAlign>
+							<ExtendedTooltip name="ГруппаAUРасширеннаяПодсказка" id="47"/>
+							<ChildItems>
+								<InputField name="ТранзакцияAU" id="68">
+									<DataPath>ТранзакцияAU</DataPath>
+									<ReadOnly>true</ReadOnly>
+									<Title>
+										<v8:item>
+											<v8:lang>ru</v8:lang>
+											<v8:content>Old</v8:content>
+										</v8:item>
+									</Title>
+									<ContextMenu name="ТранзакцияAUКонтекстноеМеню" id="69"/>
+									<ExtendedTooltip name="ТранзакцияAUРасширеннаяПодсказка" id="70"/>
+								</InputField>
+								<InputField name="AU" id="28">
+									<DataPath>Объект.AU</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>ru</v8:lang>
+											<v8:content>New</v8:content>
+										</v8:item>
+									</Title>
+									<EditMode>EnterOnInput</EditMode>
+									<ContextMenu name="AUКонтекстноеМеню" id="29"/>
+									<ExtendedTooltip name="AUРасширеннаяПодсказка" id="30"/>
+									<Events>
+										<Event name="OnChange">AUПриИзменении</Event>
 									</Events>
 								</InputField>
 							</ChildItems>
@@ -467,53 +516,6 @@
 								</InputField>
 							</ChildItems>
 						</UsualGroup>
-						<UsualGroup name="ГруппаAU" id="46">
-							<Title>
-								<v8:item>
-									<v8:lang>ru</v8:lang>
-									<v8:content>AU</v8:content>
-								</v8:item>
-							</Title>
-							<ToolTip>
-								<v8:item>
-									<v8:lang>ru</v8:lang>
-									<v8:content>AU</v8:content>
-								</v8:item>
-							</ToolTip>
-							<Group>Vertical</Group>
-							<Representation>StrongSeparation</Representation>
-							<ThroughAlign>Use</ThroughAlign>
-							<ExtendedTooltip name="ГруппаAUРасширеннаяПодсказка" id="47"/>
-							<ChildItems>
-								<InputField name="ТранзакцияAU" id="68">
-									<DataPath>ТранзакцияAU</DataPath>
-									<ReadOnly>true</ReadOnly>
-									<Title>
-										<v8:item>
-											<v8:lang>ru</v8:lang>
-											<v8:content>Old</v8:content>
-										</v8:item>
-									</Title>
-									<ContextMenu name="ТранзакцияAUКонтекстноеМеню" id="69"/>
-									<ExtendedTooltip name="ТранзакцияAUРасширеннаяПодсказка" id="70"/>
-								</InputField>
-								<InputField name="AU" id="28">
-									<DataPath>Объект.AU</DataPath>
-									<Title>
-										<v8:item>
-											<v8:lang>ru</v8:lang>
-											<v8:content>New</v8:content>
-										</v8:item>
-									</Title>
-									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="AUКонтекстноеМеню" id="29"/>
-									<ExtendedTooltip name="AUРасширеннаяПодсказка" id="30"/>
-									<Events>
-										<Event name="OnChange">AUПриИзменении</Event>
-									</Events>
-								</InputField>
-							</ChildItems>
-						</UsualGroup>
 					</ChildItems>
 				</UsualGroup>
 			</ChildItems>
@@ -588,8 +590,14 @@
 				</InputField>
 			</ChildItems>
 		</Table>
+		<InputField name="Комментарий" id="110">
+			<DataPath>Объект.Комментарий</DataPath>
+			<ContextMenu name="КомментарийКонтекстноеМеню" id="111"/>
+			<ExtendedTooltip name="КомментарийРасширеннаяПодсказка" id="112"/>
+		</InputField>
 		<InputField name="Ответственный" id="80">
 			<DataPath>Объект.Ответственный</DataPath>
+			<ReadOnly>true</ReadOnly>
 			<ContextMenu name="ОтветственныйКонтекстноеМеню" id="81"/>
 			<ExtendedTooltip name="ОтветственныйРасширеннаяПодсказка" id="82"/>
 		</InputField>
@@ -706,4 +714,46 @@
 			</Type>
 		</Attribute>
 	</Attributes>
+	<CommandInterface>
+		<NavigationPanel>
+			<Item>
+				<Command>AccumulationRegister.BilledAR.StandardCommand.OpenByRecorder</Command>
+				<Type>Auto</Type>
+				<DefaultVisible>false</DefaultVisible>
+			</Item>
+			<Item>
+				<Command>AccumulationRegister.ManualTransactions.StandardCommand.OpenByRecorder</Command>
+				<Type>Auto</Type>
+				<DefaultVisible>false</DefaultVisible>
+			</Item>
+			<Item>
+				<Command>AccumulationRegister.Payments.StandardCommand.OpenByRecorder</Command>
+				<Type>Auto</Type>
+				<DefaultVisible>false</DefaultVisible>
+				<Visible>
+					<xr:Common>false</xr:Common>
+				</Visible>
+			</Item>
+			<Item>
+				<Command>AccumulationRegister.Revenue.StandardCommand.OpenByRecorder</Command>
+				<Type>Auto</Type>
+				<DefaultVisible>false</DefaultVisible>
+			</Item>
+			<Item>
+				<Command>AccumulationRegister.UnallocatedCash.StandardCommand.OpenByRecorder</Command>
+				<Type>Auto</Type>
+				<DefaultVisible>false</DefaultVisible>
+			</Item>
+			<Item>
+				<Command>AccumulationRegister.UnbilledAR.StandardCommand.OpenByRecorder</Command>
+				<Type>Auto</Type>
+				<DefaultVisible>false</DefaultVisible>
+			</Item>
+			<Item>
+				<Command>AccumulationRegister.UnallocatedMemo.StandardCommand.OpenByRecorder</Command>
+				<Type>Auto</Type>
+				<DefaultVisible>false</DefaultVisible>
+			</Item>
+		</NavigationPanel>
+	</CommandInterface>
 </Form>
