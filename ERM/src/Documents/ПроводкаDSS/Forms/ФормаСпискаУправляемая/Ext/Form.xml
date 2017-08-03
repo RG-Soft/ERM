@@ -47,7 +47,11 @@
 			<UseAlternationRowColor>true</UseAlternationRowColor>
 			<EnableStartDrag>true</EnableStartDrag>
 			<DataPath>Список</DataPath>
-			<RowPictureDataPath>Список.DefaultPicture</RowPictureDataPath>
+			<RowPictureDataPath>Список.СостояниеДокумента</RowPictureDataPath>
+			<RowsPicture>
+				<xr:Ref>CommonPicture.СостоянияДокумента</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</RowsPicture>
 			<CommandSet>
 				<ExcludedCommand>Change</ExcludedCommand>
 				<ExcludedCommand>Copy</ExcludedCommand>
@@ -457,8 +461,105 @@
 			</Type>
 			<MainAttribute>true</MainAttribute>
 			<Settings xsi:type="DynamicList">
-				<ManualQuery>false</ManualQuery>
+				<ManualQuery>true</ManualQuery>
 				<DynamicDataRead>true</DynamicDataRead>
+				<QueryText>ВЫБРАТЬ
+	ДокументПроводкаDSS.Ссылка,
+	ДокументПроводкаDSS.ПометкаУдаления,
+	ДокументПроводкаDSS.Номер,
+	ДокументПроводкаDSS.Дата,
+	ДокументПроводкаDSS.Проведен,
+	ДокументПроводкаDSS.System,
+	ДокументПроводкаDSS.Документ,
+	ДокументПроводкаDSS.УдалитьGeoMarket,
+	ДокументПроводкаDSS.Модуль,
+	ДокументПроводкаDSS.SourceCode,
+	ДокументПроводкаDSS.AccountLawson,
+	ДокументПроводкаDSS.AU,
+	ДокументПроводкаDSS.Location,
+	ДокументПроводкаDSS.BaseAmount,
+	ДокументПроводкаDSS.DateLawson,
+	ДокументПроводкаDSS.Reference,
+	ДокументПроводкаDSS.Description,
+	ДокументПроводкаDSS.TranAmount,
+	ДокументПроводкаDSS.Currency,
+	ДокументПроводкаDSS.GUID,
+	ДокументПроводкаDSS.PeriodLawson,
+	ДокументПроводкаDSS.Company,
+	ДокументПроводкаDSS.UpdateDateLawson,
+	ДокументПроводкаDSS.SeqTrnsNbrLawson,
+	ДокументПроводкаDSS.OrigCompanyLawson,
+	ДокументПроводкаDSS.Activity,
+	ДокументПроводкаDSS.JeTypeLawson,
+	ДокументПроводкаDSS.JournalLawson,
+	ДокументПроводкаDSS.LineNbrLawson,
+	ДокументПроводкаDSS.AutoRevLawson,
+	ДокументПроводкаDSS.Operator,
+	ДокументПроводкаDSS.LegalFiscalFlagLawson,
+	ДокументПроводкаDSS.Vendor,
+	ДокументПроводкаDSS.VendorVname,
+	ДокументПроводкаDSS.ApInvoice,
+	ДокументПроводкаDSS.TransNbr,
+	ДокументПроводкаDSS.OrigOperatorId,
+	ДокументПроводкаDSS.ProcessLevel,
+	ДокументПроводкаDSS.CashCode,
+	ДокументПроводкаDSS.PoNumber,
+	ДокументПроводкаDSS.LineNbrIc,
+	ДокументПроводкаDSS.PoCode,
+	ДокументПроводкаDSS.ItemDescription,
+	ДокументПроводкаDSS.CustomerNumber,
+	ДокументПроводкаDSS.CustomerName,
+	ДокументПроводкаDSS.ArInvoice,
+	ДокументПроводкаDSS.TaxCode,
+	ДокументПроводкаDSS.Item,
+	ДокументПроводкаDSS.DocumentNbr,
+	ДокументПроводкаDSS.ContractNumber,
+	ДокументПроводкаDSS.AktOfAcceptance,
+	ДокументПроводкаDSS.AktDateLawson,
+	ДокументПроводкаDSS.ApTransFormId,
+	ДокументПроводкаDSS.КонтрагентLawson,
+	ДокументПроводкаDSS.Deferred,
+	ДокументПроводкаDSS.Ответственный,
+	ДокументПроводкаDSS.Комментарий,
+	ДокументПроводкаDSS.RubAmount,
+	ДокументПроводкаDSS.FiscAmount,
+	ДокументПроводкаDSS.TempDiff,
+	ДокументПроводкаDSS.PermDiff,
+	ДокументПроводкаDSS.ExchDiff,
+	ДокументПроводкаDSS.ТипПроводки,
+	ДокументПроводкаDSS.Ваучер,
+	ДокументПроводкаDSS.FiscalDate,
+	ДокументПроводкаDSS.Urn,
+	ДокументПроводкаDSS.УдалитьSubGeoMarket,
+	ДокументПроводкаDSS.УдалитьSegment,
+	ДокументПроводкаDSS.УдалитьSubSegment,
+	ДокументПроводкаDSS.SubSubSegment,
+	ДокументПроводкаDSS.ArBatchNbr,
+	ДокументПроводкаDSS.AccountingPeriod,
+	ДокументПроводкаDSS.LegalEntity,
+	ДокументПроводкаDSS.МоментВремени,
+	ВЫБОР
+		КОГДА НЕ КорректировкаТранзакции.Ссылка ЕСТЬ NULL
+			ТОГДА ВЫБОР
+					КОГДА ДокументПроводкаDSS.ПометкаУдаления = ИСТИНА
+						ТОГДА 10
+					КОГДА ДокументПроводкаDSS.Проведен = ЛОЖЬ
+						ТОГДА 9
+					ИНАЧЕ 8
+				КОНЕЦ
+		ИНАЧЕ ВЫБОР
+				КОГДА ДокументПроводкаDSS.ПометкаУдаления = ИСТИНА
+					ТОГДА 2
+				КОГДА ДокументПроводкаDSS.Проведен = ИСТИНА
+					ТОГДА 1
+				ИНАЧЕ 0
+			КОНЕЦ
+	КОНЕЦ КАК СостояниеДокумента
+ИЗ
+	Документ.ПроводкаDSS КАК ДокументПроводкаDSS
+		ЛЕВОЕ СОЕДИНЕНИЕ Документ.КорректировкаТранзакции КАК КорректировкаТранзакции
+		ПО (КорректировкаТранзакции.ДокументОснование = ДокументПроводкаDSS.Ссылка)
+			И (НЕ КорректировкаТранзакции.ПометкаУдаления)</QueryText>
 				<MainTable>Document.ПроводкаDSS</MainTable>
 				<ListSettings>
 					<dcsset:filter>

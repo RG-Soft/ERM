@@ -5,6 +5,7 @@
 	<RepostOnWrite>true</RepostOnWrite>
 	<AutoCommandBar name="ФормаКоманднаяПанель" id="-1"/>
 	<Events>
+		<Event name="NotificationProcessing">ОбработкаОповещения</Event>
 		<Event name="OnOpen">ПриОткрытии</Event>
 	</Events>
 	<ChildItems>
@@ -297,6 +298,55 @@
 				</InputField>
 			</ChildItems>
 		</UsualGroup>
+		<UsualGroup name="ГруппаКорректировка" id="133">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Группа корректировка</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Группа корректировка</v8:content>
+				</v8:item>
+			</ToolTip>
+			<ShowTitle>false</ShowTitle>
+			<BackColor>web:PeachPuff</BackColor>
+			<ExtendedTooltip name="ГруппаКорректировкаРасширеннаяПодсказка" id="134"/>
+			<ChildItems>
+				<LabelDecoration name="Adjustment" id="135">
+					<Title formatted="false">
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Adjustment:</v8:content>
+						</v8:item>
+					</Title>
+					<ContextMenu name="AdjustmentКонтекстноеМеню" id="136"/>
+					<ExtendedTooltip name="AdjustmentРасширеннаяПодсказка" id="137"/>
+				</LabelDecoration>
+				<LabelField name="Корректировка" id="138">
+					<DataPath>Корректировка</DataPath>
+					<TitleLocation>None</TitleLocation>
+					<Hiperlink>true</Hiperlink>
+					<ContextMenu name="КорректировкаКонтекстноеМеню" id="139"/>
+					<ExtendedTooltip name="КорректировкаРасширеннаяПодсказка" id="140"/>
+				</LabelField>
+				<Button name="СоздатьКорректировку" id="141">
+					<Type>UsualButton</Type>
+					<CommandName>Form.Command.СоздатьКорректировку</CommandName>
+					<ExtendedTooltip name="СоздатьКорректировкуРасширеннаяПодсказка" id="142"/>
+				</Button>
+			</ChildItems>
+		</UsualGroup>
+		<InputField name="Ответственный" id="130">
+			<DataPath>Объект.Ответственный</DataPath>
+			<ReadOnly>true</ReadOnly>
+			<ChoiceButton>false</ChoiceButton>
+			<OpenButton>false</OpenButton>
+			<ContextMenu name="ОтветственныйКонтекстноеМеню" id="131"/>
+			<ExtendedTooltip name="ОтветственныйРасширеннаяПодсказка" id="132"/>
+		</InputField>
 	</ChildItems>
 	<Attributes>
 		<Attribute name="Объект" id="1">
@@ -309,7 +359,35 @@
 				<Field>Объект.RegisterRecords</Field>
 			</UseAlways>
 		</Attribute>
+		<Attribute name="Корректировка" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Корректировка</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:DocumentRef.КорректировкаТранзакции</v8:Type>
+			</Type>
+		</Attribute>
 	</Attributes>
+	<Commands>
+		<Command name="СоздатьКорректировку" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Create transaction adjustment</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Создать корректировку</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>СоздатьКорректировку</Action>
+		</Command>
+	</Commands>
 	<CommandInterface>
 		<NavigationPanel>
 			<Item>
