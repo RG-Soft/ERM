@@ -140,6 +140,18 @@
 					<ContextMenu name="НомерКонтекстноеМеню" id="17"/>
 					<ExtendedTooltip name="НомерРасширеннаяПодсказка" id="161"/>
 				</LabelField>
+				<CheckBoxField name="НаличиеКорректировки" id="228">
+					<DataPath>Список.НаличиеКорректировки</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Adjustment</v8:content>
+						</v8:item>
+					</Title>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="НаличиеКорректировкиКонтекстноеМеню" id="229"/>
+					<ExtendedTooltip name="НаличиеКорректировкиРасширеннаяПодсказка" id="230"/>
+				</CheckBoxField>
 				<LabelField name="AccountLawson" id="18">
 					<DataPath>Список.AccountLawson</DataPath>
 					<ContextMenu name="AccountLawsonКонтекстноеМеню" id="19"/>
@@ -165,6 +177,11 @@
 					<ContextMenu name="BaseAmountКонтекстноеМеню" id="27"/>
 					<ExtendedTooltip name="BaseAmountРасширеннаяПодсказка" id="166"/>
 				</LabelField>
+				<LabelField name="TranAmount" id="36">
+					<DataPath>Список.TranAmount</DataPath>
+					<ContextMenu name="TranAmountКонтекстноеМеню" id="37"/>
+					<ExtendedTooltip name="TranAmountРасширеннаяПодсказка" id="171"/>
+				</LabelField>
 				<LabelField name="System" id="28">
 					<DataPath>Список.System</DataPath>
 					<ContextMenu name="SystemКонтекстноеМеню" id="29"/>
@@ -184,11 +201,6 @@
 					<DataPath>Список.Description</DataPath>
 					<ContextMenu name="DescriptionКонтекстноеМеню" id="35"/>
 					<ExtendedTooltip name="DescriptionРасширеннаяПодсказка" id="170"/>
-				</LabelField>
-				<LabelField name="TranAmount" id="36">
-					<DataPath>Список.TranAmount</DataPath>
-					<ContextMenu name="TranAmountКонтекстноеМеню" id="37"/>
-					<ExtendedTooltip name="TranAmountРасширеннаяПодсказка" id="171"/>
 				</LabelField>
 				<LabelField name="Currency" id="38">
 					<DataPath>Список.Currency</DataPath>
@@ -538,6 +550,11 @@
 	ДокументПроводкаDSS.AccountingPeriod,
 	ДокументПроводкаDSS.LegalEntity,
 	ДокументПроводкаDSS.МоментВремени,
+	ВЫБОР
+		КОГДА НЕ КорректировкаТранзакции.Ссылка ЕСТЬ NULL
+			ТОГДА 1
+		ИНАЧЕ 0
+	КОНЕЦ КАК НаличиеКорректировки,
 	ВЫБОР
 		КОГДА НЕ КорректировкаТранзакции.Ссылка ЕСТЬ NULL
 			ТОГДА ВЫБОР
