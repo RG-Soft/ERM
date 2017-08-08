@@ -283,8 +283,8 @@
 	BilledARОстатки.Client,
 	BilledARОстатки.Company,
 	BilledARОстатки.Source,
-	BilledARОстатки.AU.ПодразделениеОрганизации КАК Location,
-	BilledARОстатки.AU.Сегмент КАК SubSubSegment,
+	BilledARОстатки.AU.ПодразделениеОрганизации,
+	BilledARОстатки.AU.Сегмент,
 	BilledARОстатки.Invoice,
 	BilledARОстатки.Account,
 	BilledARОстатки.AU,
@@ -322,8 +322,8 @@
 	UnallocatedCashОстатки.Client,
 	UnallocatedCashОстатки.Company,
 	UnallocatedCashОстатки.Source,
-	UnallocatedCashОстатки.AU.ПодразделениеОрганизации КАК Location,
-	UnallocatedCashОстатки.AU.Сегмент КАК SubSubSegment,
+	UnallocatedCashОстатки.AU.ПодразделениеОрганизации,
+	UnallocatedCashОстатки.AU.Сегмент,
 	UnallocatedCashОстатки.CashBatch,
 	UnallocatedCashОстатки.Account,
 	UnallocatedCashОстатки.AU,
@@ -362,8 +362,8 @@
 	ManualTransactionsОстатки.Client,
 	ManualTransactionsОстатки.Company,
 	ManualTransactionsОстатки.Source,
-	ManualTransactionsОстатки.AU.ПодразделениеОрганизации КАК Location,
-	ManualTransactionsОстатки.AU.Сегмент КАК SubSubSegment,
+	ManualTransactionsОстатки.AU.ПодразделениеОрганизации,
+	ManualTransactionsОстатки.AU.Сегмент,
 	ManualTransactionsОстатки.РучнаяКорректировка,
 	ManualTransactionsОстатки.Account,
 	ManualTransactionsОстатки.AU,
@@ -393,8 +393,8 @@
 	UnallocatedMemoОстатки.Client,
 	UnallocatedMemoОстатки.Company,
 	UnallocatedMemoОстатки.Source,
-	UnallocatedMemoОстатки.AU.ПодразделениеОрганизации КАК Location,
-	UnallocatedMemoОстатки.AU.Сегмент КАК SubSubSegment,
+	UnallocatedMemoОстатки.AU.ПодразделениеОрганизации,
+	UnallocatedMemoОстатки.AU.Сегмент,
 	UnallocatedMemoОстатки.Memo,
 	UnallocatedMemoОстатки.Account,
 	UnallocatedMemoОстатки.AU,
@@ -479,7 +479,7 @@
 	ВТ_Остатки.LegalEntity
 ИЗ
 	ВТ_Остатки КАК ВТ_Остатки
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних КАК ВнутренниеКурсыВалютСрезПоследних
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ПериодОстатков)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
 		ПО ВТ_Остатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
 ГДЕ
 	ПОДСТРОКА(ВТ_Остатки.Account.Код, 1, 6) &lt;&gt; "209000"
@@ -627,30 +627,6 @@
 		<expression>Сумма(BaseAmountОстатокТыс)</expression>
 	</totalField>
 	<parameter>
-		<name>Период</name>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Period</v8:content>
-			</v8:item>
-		</title>
-		<valueType>
-			<v8:Type>xs:dateTime</v8:Type>
-			<v8:DateQualifiers>
-				<v8:DateFractions>Date</v8:DateFractions>
-			</v8:DateQualifiers>
-		</valueType>
-		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
-		<useRestriction>false</useRestriction>
-		<expression>КонецПериода(&amp;Период,"ДЕНЬ")</expression>
-		<inputParameters>
-			<dcscor:item>
-				<dcscor:parameter>ФорматРедактирования</dcscor:parameter>
-				<dcscor:value xsi:type="xs:string">ДФ=MM/dd/yyyy</dcscor:value>
-			</dcscor:item>
-		</inputParameters>
-	</parameter>
-	<parameter>
 		<name>ПериодОстатков</name>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
@@ -679,6 +655,35 @@
 		</title>
 		<value xsi:nil="true"/>
 		<useRestriction>false</useRestriction>
+	</parameter>
+	<parameter>
+		<name>Период</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Period</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>xs:dateTime</v8:Type>
+			<v8:DateQualifiers>
+				<v8:DateFractions>DateTime</v8:DateFractions>
+			</v8:DateQualifiers>
+		</valueType>
+		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
+		<useRestriction>false</useRestriction>
+		<expression>КонецПериода(&amp;Период,"ДЕНЬ")</expression>
+		<inputParameters>
+			<dcscor:item>
+				<dcscor:parameter>ФорматРедактирования</dcscor:parameter>
+				<dcscor:value xsi:type="v8:LocalStringType">
+					<v8:item>
+						<v8:lang>ru</v8:lang>
+						<v8:content>ДФ=MM/dd/yyyy</v8:content>
+					</v8:item>
+				</dcscor:value>
+			</dcscor:item>
+		</inputParameters>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
@@ -989,11 +994,10 @@
 			</dcsset:filter>
 			<dcsset:dataParameters>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:use>false</dcscor:use>
 					<dcscor:parameter>Период</dcscor:parameter>
-					<dcscor:value xsi:type="v8:StandardBeginningDate">
-						<v8:variant xsi:type="v8:StandardBeginningDateVariant">BeginningOfNextDay</v8:variant>
-					</dcscor:value>
-					<dcsset:userSettingID>ec716ccb-0f0b-4839-ae33-15a287e9c0bf</dcsset:userSettingID>
+					<dcscor:value xsi:type="xs:dateTime">0001-01-01T00:00:00</dcscor:value>
+					<dcsset:userSettingID>6b98d76e-dde1-4c50-ba90-876df6b03fb5</dcsset:userSettingID>
 				</dcscor:item>
 			</dcsset:dataParameters>
 			<dcsset:conditionalAppearance>
