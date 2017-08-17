@@ -979,7 +979,7 @@
 	ДокОбъект.Client = ПроводкаDSSОбъект.КонтрагентLawson;
 	ДокОбъект.Location = ПроводкаDSSОбъект.Location;
 	ДокОбъект.DocID = ПроводкаDSSОбъект.ARBatchNbr;
-	ДокОбъект.PaymentNumber = ПроводкаDSSОбъект.ArInvoice;
+	ДокОбъект.PaymentNumber = Формат(ПроводкаDSSОбъект.ARBatchNbr,"ЧГ=0");
 	ДокОбъект.SubSubSegment = ПроводкаDSSОбъект.SubSubSegment;
 	ДокОбъект.AU = ПроводкаDSSОбъект.AU;
 	ДокОбъект.ClientID = ПроводкаDSSОбъект.CustomerNumber;
