@@ -61,6 +61,9 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Source</dataPath>
 			<field>Source</field>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Currency</dataPath>
@@ -280,7 +283,8 @@
 	RevenueОбороты.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket КАК SubGeoMarket,
 	RevenueОбороты.AU.Сегмент.БазовыйЭлемент КАК SubSubSegment,
 	RevenueОбороты.AU.Сегмент.БазовыйЭлемент.Родитель КАК SubSegment,
-	RevenueОбороты.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель КАК Segment
+	RevenueОбороты.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель КАК Segment,
+	RevenueОбороты.Source
 ИЗ
 	РегистрНакопления.Revenue.Обороты(, , Месяц, ) КАК RevenueОбороты
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИерархияКонтрагентов.СрезПоследних КАК ИерархияКонтрагентовСрезПоследних
@@ -310,7 +314,8 @@
 	RevenueОбороты.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket,
 	RevenueОбороты.AU.Сегмент.БазовыйЭлемент,
 	RevenueОбороты.AU.Сегмент.БазовыйЭлемент.Родитель,
-	RevenueОбороты.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель</query>
+	RevenueОбороты.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель,
+	RevenueОбороты.Source</query>
 	</dataSet>
 	<totalField>
 		<dataPath>USDAmount</dataPath>
@@ -410,6 +415,9 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>ПериодМесяц</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Source</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>LegalEntity</dcsset:field>

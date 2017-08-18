@@ -551,6 +551,7 @@
 	НовоеДвижение.Account = Реквизиты.Account;
 	НовоеДвижение.AU = Реквизиты.AU;
 	НовоеДвижение.Currency = Реквизиты.Currency;
+	НовоеДвижение.LegalEntity = Реквизиты.LegalEntity;
 	
 	НовоеДвижение.Amount = Сумма;
 	НовоеДвижение.BaseAmount = СуммаФВ;
