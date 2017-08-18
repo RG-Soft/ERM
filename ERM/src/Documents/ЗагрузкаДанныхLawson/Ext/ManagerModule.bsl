@@ -2462,7 +2462,7 @@
 	ДокОбъект.Client = ПроводкаDSSОбъект.КонтрагентLawson;
 	ДокОбъект.Location = ПроводкаDSSОбъект.Location;
 	ДокОбъект.DocID = ПроводкаDSSОбъект.ARBatchNbr;
-	ДокОбъект.PaymentNumber = ПроводкаDSSОбъект.ARBatchNbr;
+	ДокОбъект.PaymentNumber = Формат(ПроводкаDSSОбъект.ARBatchNbr,"ЧГ=0");
 	//ДокОбъект.SubGeoMarket = ПроводкаDSSОбъект.SubGeoMarket;
 	//ДокОбъект.Segment = ПроводкаDSSОбъект.Segment;
 	//ДокОбъект.SubSegment = ПроводкаDSSОбъект.SubSegment;
