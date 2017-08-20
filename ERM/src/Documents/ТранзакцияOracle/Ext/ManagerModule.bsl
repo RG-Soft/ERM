@@ -72,7 +72,8 @@
 	|	ТранзакцияOracle.BaseAmount,
 	|	ТранзакцияOracle.Source,
 	|	ТранзакцияOracle.AU,
-	|	ТранзакцияOracle.Account.БазовыйЭлемент КАК HFMAccount
+	|	ТранзакцияOracle.Account.БазовыйЭлемент КАК HFMAccount,
+	|	ТранзакцияOracle.LegalEntity
 	|ИЗ
 	|	Документ.ТранзакцияOracle КАК ТранзакцияOracle
 	|ГДЕ

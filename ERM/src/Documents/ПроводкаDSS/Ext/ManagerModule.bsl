@@ -112,7 +112,8 @@
 	|	ПроводкаDSS.Urn,
 	|	ПроводкаDSS.SubSubSegment,
 	|	ПроводкаDSS.AccountingPeriod,
-	|	ПроводкаDSS.AccountLawson.БазовыйЭлемент КАК HFMAccount
+	|	ПроводкаDSS.AccountLawson.БазовыйЭлемент КАК HFMAccount,
+	|	ПроводкаDSS.LegalEntity
 	|ИЗ
 	|	Документ.ПроводкаDSS КАК ПроводкаDSS
 	|ГДЕ
