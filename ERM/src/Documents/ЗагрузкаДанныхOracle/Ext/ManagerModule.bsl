@@ -460,6 +460,12 @@
 	СтрокаТЗ.ИмяКолонки = "ID_ORIG";
 	СтрокаТЗ.Обязательная = Истина;
 	
+	// HFM_ACCOUNT
+	СтрокаТЗ = СтруктураКолонок.Добавить();
+	СтрокаТЗ.ИмяПоля = "HFM_ACCOUNT";
+	СтрокаТЗ.ИмяКолонки = "HFM Account";
+	СтрокаТЗ.Обязательная = Истина;
+	
 КонецФункции
 
 Функция ПолучитьСтруктуруКолонокТаблицыДанныхSmith(СтруктураКолонок)
@@ -719,8 +725,10 @@
 	Запрос = Новый Запрос;
 	
 	Если СтруктураПараметров.ТипВнешнейСистемы = Перечисления.ТипыСоответствий.OracleMI Тогда
+		СоздатьНедостающиеСчетаMI(СтруктураПараметров.Ссылка);
 		Запрос.Текст = ПолучитьТекстЗапросаДляПроверкиНастроекСинхронизацииMI();
 	Иначе
+		СоздатьНедостающиеСчетаSmith(СтруктураПараметров.Ссылка);
 		Запрос.Текст = ПолучитьТекстЗапросаДляПроверкиНастроекСинхронизацииSmith();
 	КонецЕсли;
 	
@@ -822,6 +830,124 @@
 	
 КонецПроцедуры
 
+Процедура СоздатьНедостающиеСчетаMI(ДокументЗагрузки)
+	
+	Запрос = Новый Запрос;
+	Запрос.Текст = 
+		"ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 17, 4) + ""."" + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 22, 3) + ""."" + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 26, 4) + ""."" + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 6, 3) КАК Account,
+		|	OracleSourceData.HFM_ACCOUNT
+		|ПОМЕСТИТЬ ВТ_СчетаИзФайла
+		|ИЗ
+		|	РегистрСведений.OracleSourceData КАК OracleSourceData
+		|ГДЕ
+		|	OracleSourceData.ДокументЗагрузки = &ДокументЗагрузки
+		|
+		|ИНДЕКСИРОВАТЬ ПО
+		|	Account
+		|;
+		|
+		|////////////////////////////////////////////////////////////////////////////////
+		|ВЫБРАТЬ
+		|	ВТ_СчетаИзФайла.Account КАК КодСчета,
+		|	ЕСТЬNULL(Oracle.Ссылка, ЗНАЧЕНИЕ(ПланСчетов.Oracle.ПустаяСсылка)) КАК Счет,
+		|	ЕСТЬNULL(HFM_GL_Accounts.Ссылка, ЗНАЧЕНИЕ(ПланСчетов.HFM_GL_Accounts.ПустаяСсылка)) КАК СчетHFM
+		|ИЗ
+		|	ВТ_СчетаИзФайла КАК ВТ_СчетаИзФайла
+		|		ЛЕВОЕ СОЕДИНЕНИЕ ПланСчетов.Oracle КАК Oracle
+		|		ПО ВТ_СчетаИзФайла.Account = Oracle.Код
+		|			И (НЕ Oracle.ПометкаУдаления)
+		|		ЛЕВОЕ СОЕДИНЕНИЕ ПланСчетов.HFM_GL_Accounts КАК HFM_GL_Accounts
+		|		ПО ВТ_СчетаИзФайла.HFM_ACCOUNT = HFM_GL_Accounts.Код
+		|			И (НЕ HFM_GL_Accounts.ПометкаУдаления)
+		|ГДЕ
+		|	(Oracle.Ссылка ЕСТЬ NULL
+		|			ИЛИ Oracle.БазовыйЭлемент = ЗНАЧЕНИЕ(ПланСчетов.HFM_GL_Accounts.ПустаяСсылка))";
+		
+	Запрос.УстановитьПараметр("ДокументЗагрузки", ДокументЗагрузки);
+	Выборка = Запрос.Выполнить().Выбрать();
+	
+	Пока Выборка.Следующий() Цикл
+		
+		Если Не ЗначениеЗаполнено(Выборка.Счет) Тогда
+			
+			НовыйСчет = ПланыСчетов.Oracle.СоздатьСчет();
+			НовыйСчет.Код = Выборка.КодСчета;
+			НовыйСчет.Наименование = Выборка.КодСчета;
+			НовыйСчет.БазовыйЭлемент = Выборка.СчетHFM;
+			НовыйСчет.Записать();
+			
+		ИначеЕсли ЗначениеЗаполнено(Выборка.СчетHFM) Тогда
+			
+			СчетОбъект = Выборка.Счет.ПолучитьОбъект();
+			СчетОбъект.БазовыйЭлемент = Выборка.СчетHFM;
+			СчетОбъект.Записать();
+			
+		КонецЕсли;
+		
+	КонецЦикла;
+	
+КонецПроцедуры
+
+Процедура СоздатьНедостающиеСчетаSmith(ДокументЗагрузки)
+	
+	Запрос = Новый Запрос;
+	Запрос.Текст = 
+		"ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	OracleSmithSourceData.major + ""."" + OracleSmithSourceData.minor + ""."" + OracleSmithSourceData.intercompany + ""."" + OracleSmithSourceData.business_line КАК Account,
+		|	OracleSmithSourceData.hfm_account
+		|ПОМЕСТИТЬ ВТ_СчетаИзФайла
+		|ИЗ
+		|	РегистрСведений.OracleSmithSourceData КАК OracleSmithSourceData
+		|ГДЕ
+		|	OracleSmithSourceData.ДокументЗагрузки = &ДокументЗагрузки
+		|
+		|ИНДЕКСИРОВАТЬ ПО
+		|	Account
+		|;
+		|
+		|////////////////////////////////////////////////////////////////////////////////
+		|ВЫБРАТЬ
+		|	ВТ_СчетаИзФайла.Account КАК КодСчета,
+		|	ЕСТЬNULL(Oracle.Ссылка, ЗНАЧЕНИЕ(ПланСчетов.Oracle.ПустаяСсылка)) КАК Счет,
+		|	ЕСТЬNULL(HFM_GL_Accounts.Ссылка, ЗНАЧЕНИЕ(ПланСчетов.HFM_GL_Accounts.ПустаяСсылка)) КАК СчетHFM
+		|ИЗ
+		|	ВТ_СчетаИзФайла КАК ВТ_СчетаИзФайла
+		|		ЛЕВОЕ СОЕДИНЕНИЕ ПланСчетов.Oracle КАК Oracle
+		|		ПО ВТ_СчетаИзФайла.Account = Oracle.Код
+		|			И (НЕ Oracle.ПометкаУдаления)
+		|		ЛЕВОЕ СОЕДИНЕНИЕ ПланСчетов.HFM_GL_Accounts КАК HFM_GL_Accounts
+		|		ПО ВТ_СчетаИзФайла.hfm_account = HFM_GL_Accounts.Код
+		|			И (НЕ HFM_GL_Accounts.ПометкаУдаления)
+		|ГДЕ
+		|	(Oracle.Ссылка ЕСТЬ NULL
+		|			ИЛИ Oracle.БазовыйЭлемент = ЗНАЧЕНИЕ(ПланСчетов.HFM_GL_Accounts.ПустаяСсылка))";
+		
+	Запрос.УстановитьПараметр("ДокументЗагрузки", ДокументЗагрузки);
+	Выборка = Запрос.Выполнить().Выбрать();
+	
+	Пока Выборка.Следующий() Цикл
+		
+		Если Не ЗначениеЗаполнено(Выборка.Счет) Тогда
+			
+			НовыйСчет = ПланыСчетов.Oracle.СоздатьСчет();
+			НовыйСчет.Код = Выборка.КодСчета;
+			НовыйСчет.Наименование = Выборка.КодСчета;
+			НовыйСчет.БазовыйЭлемент = Выборка.СчетHFM;
+			НовыйСчет.Записать();
+			
+		ИначеЕсли ЗначениеЗаполнено(Выборка.СчетHFM) Тогда
+			
+			СчетОбъект = Выборка.Счет.ПолучитьОбъект();
+			СчетОбъект.БазовыйЭлемент = Выборка.СчетHFM;
+			СчетОбъект.Записать();
+			
+		КонецЕсли;
+		
+	КонецЦикла;
+	
+КонецПроцедуры
+
 Функция ПолучитьТекстЗапросаДляПроверкиНастроекСинхронизацииMI()
 	
 	ТекстЗапроса = 
@@ -869,7 +995,7 @@
 		|	OracleSourceData.LINE_ID,
 		|	OracleSourceData.DOC_TRANS_ID,
 		|	OracleSourceData.ID_ORIG,
-		|	ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 17, 4) + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 22, 3) КАК Account,
+		|	ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 17, 4) + ""."" + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 22, 3) + ""."" + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 26, 4) + ""."" + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 6, 3) КАК Account,
 		|	ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 6, 3) КАК SubSubSegment,
 		|	ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 10, 6) КАК Location
 		|ПОМЕСТИТЬ ВТ_OracleSourceData
@@ -1053,7 +1179,7 @@
 		|	OracleSmithSourceData.cost_center КАК Location,
 		|	OracleSmithSourceData.entered_currency КАК currency,
 		|	OracleSmithSourceData.cust_no,
-		|	OracleSmithSourceData.major + OracleSmithSourceData.minor КАК account
+		|	OracleSmithSourceData.major + ""."" + OracleSmithSourceData.minor + ""."" + OracleSmithSourceData.intercompany + ""."" + OracleSmithSourceData.business_line КАК account
 		|ПОМЕСТИТЬ ВТ_OracleSourceData
 		|ИЗ
 		|	РегистрСведений.OracleSmithSourceData КАК OracleSmithSourceData
@@ -1297,7 +1423,7 @@
 		|	OracleSourceData.LINE_ID,
 		|	OracleSourceData.DOC_TRANS_ID,
 		|	OracleSourceData.ID_ORIG,
-		|	ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 17, 4) + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 22, 3) КАК Account,
+		|	ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 17, 4) + ""."" + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 22, 3) + ""."" + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 26, 4) + ""."" + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 6, 3) КАК Account,
 		|	ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 6, 3) КАК SubSubSegment,
 		|	ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 10, 6) КАК Location,
 		|	ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 10, 6) + ""."" + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 6, 3) КАК AU
@@ -1835,7 +1961,7 @@
 		|	OracleSmithSourceData.company_code КАК OU,
 		|	OracleSmithSourceData.business_line КАК SubSubSegment,
 		|	OracleSmithSourceData.cost_center КАК Location,
-		|	OracleSmithSourceData.major + OracleSmithSourceData.minor КАК Account,
+		|	OracleSmithSourceData.major + ""."" + OracleSmithSourceData.minor + ""."" + OracleSmithSourceData.intercompany + ""."" + OracleSmithSourceData.business_line КАК Account,
 		|	OracleSmithSourceData.intercompany,
 		|	OracleSmithSourceData.local,
 		|	OracleSmithSourceData.gl_date КАК GL_DATE,
