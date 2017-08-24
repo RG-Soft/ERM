@@ -418,12 +418,12 @@
 	ЕСТЬNULL(ВТ_ОстаткиСПериодами.LegalEntity, ОборотыПолные.LegalEntity) КАК LegalEntity,
 	ЕСТЬNULL(ВТ_ОстаткиСПериодами.AU, ОборотыПолные.AU) КАК AU,
 	ЕСТЬNULL(ВТ_ОстаткиСПериодами.Source, ОборотыПолные.Source) КАК Source,
-	ЕСТЬNULL(ВТ_ОстаткиСПериодами.USDAmount, 0) КАК USDAmount,
-	ДЕНЬ(КОНЕЦПЕРИОДА(ОборотыПолные.Период, МЕСЯЦ)) КАК Дней,
+	ЕСТЬNULL(ОборотыПолные.USDAmount, 0) КАК USDAmount,
+	ДЕНЬ(КОНЕЦПЕРИОДА(ЕСТЬNULL(ОборотыПолные.Период, ВТ_ОстаткиСПериодами.Период), МЕСЯЦ)) КАК Дней,
 	ВЫБОР
-		КОГДА ВТ_ОстаткиСПериодами.USDAmount - ЕСТЬNULL(ОборотыПосле.USDAmount, 0) &lt; 0
+		КОГДА ЕСТЬNULL(ВТ_ОстаткиСПериодами.USDAmount, 0) - ЕСТЬNULL(ОборотыПосле.USDAmount, 0) &lt; 0
 			ТОГДА 0
-		ИНАЧЕ ВТ_ОстаткиСПериодами.USDAmount - ЕСТЬNULL(ОборотыПосле.USDAmount, 0)
+		ИНАЧЕ ЕСТЬNULL(ВТ_ОстаткиСПериодами.USDAmount, 0) - ЕСТЬNULL(ОборотыПосле.USDAmount, 0)
 	КОНЕЦ КАК Остаток
 ПОМЕСТИТЬ ВТ_ДанныеРасчета
 ИЗ
@@ -481,29 +481,57 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ВЫБРАТЬ
-	ВТ_РассчитанныйDSO.Client,
-	ВТ_РассчитанныйDSO.Company,
-	ВТ_РассчитанныйDSO.LegalEntity,
-	ВТ_РассчитанныйDSO.AU,
-	ВТ_РассчитанныйDSO.Source,
+	ВТ_РассчитанныйDSO.Client КАК Client,
+	ВТ_РассчитанныйDSO.Company КАК Company,
+	ВТ_РассчитанныйDSO.LegalEntity КАК LegalEntity,
+	ВТ_РассчитанныйDSO.AU КАК AU,
+	ВТ_РассчитанныйDSO.Source КАК Source,
 	ВТ_РассчитанныйDSO.DSO,
-	ВТ_Остатки.USDAmount КАК AR,
-	ОборотыПолные.Период,
-	ОборотыПолные.USDAmount КАК Billing
+	Месяцы.Период КАК Период
+ПОМЕСТИТЬ ВТ_РассчитанныйDSOсПериодами
 ИЗ
-	ВТ_РассчитанныйDSO КАК ВТ_РассчитанныйDSO
+	ВТ_РассчитанныйDSO КАК ВТ_РассчитанныйDSO,
+	Месяцы КАК Месяцы
+
+ИНДЕКСИРОВАТЬ ПО
+	Client,
+	Company,
+	LegalEntity,
+	AU,
+	Source,
+	Период
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	ВТ_РассчитанныйDSOсПериодами.Client,
+	ВТ_РассчитанныйDSOсПериодами.Company,
+	ВТ_РассчитанныйDSOсПериодами.LegalEntity,
+	ВТ_РассчитанныйDSOсПериодами.AU,
+	ВТ_РассчитанныйDSOсПериодами.Source,
+	ВЫБОР
+		КОГДА ЕСТЬNULL(ВТ_Остатки.USDAmount, 0) = 0
+			ТОГДА 0
+		ИНАЧЕ ВТ_РассчитанныйDSOсПериодами.DSO
+	КОНЕЦ КАК DSO,
+	ЕСТЬNULL(ВТ_Остатки.USDAmount, 0) КАК AR,
+	ВТ_РассчитанныйDSOсПериодами.Период,
+	ЕСТЬNULL(ОборотыПолные.USDAmount, 0) КАК Billing
+ИЗ
+	ВТ_РассчитанныйDSOсПериодами КАК ВТ_РассчитанныйDSOсПериодами
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_Остатки КАК ВТ_Остатки
-		ПО ВТ_РассчитанныйDSO.Company = ВТ_Остатки.Company
-			И ВТ_РассчитанныйDSO.LegalEntity = ВТ_Остатки.LegalEntity
-			И ВТ_РассчитанныйDSO.AU = ВТ_Остатки.AU
-			И ВТ_РассчитанныйDSO.Source = ВТ_Остатки.Source
-			И ВТ_РассчитанныйDSO.Client = ВТ_Остатки.Client
+		ПО ВТ_РассчитанныйDSOсПериодами.Company = ВТ_Остатки.Company
+			И ВТ_РассчитанныйDSOсПериодами.LegalEntity = ВТ_Остатки.LegalEntity
+			И ВТ_РассчитанныйDSOсПериодами.AU = ВТ_Остатки.AU
+			И ВТ_РассчитанныйDSOсПериодами.Source = ВТ_Остатки.Source
+			И ВТ_РассчитанныйDSOсПериодами.Client = ВТ_Остатки.Client
 		ЛЕВОЕ СОЕДИНЕНИЕ ОборотыПолные КАК ОборотыПолные
-		ПО ВТ_РассчитанныйDSO.Company = ОборотыПолные.Company
-			И ВТ_РассчитанныйDSO.LegalEntity = ОборотыПолные.LegalEntity
-			И ВТ_РассчитанныйDSO.AU = ОборотыПолные.AU
-			И ВТ_РассчитанныйDSO.Source = ОборотыПолные.Source
-			И ВТ_РассчитанныйDSO.Client = ОборотыПолные.Client</query>
+		ПО ВТ_РассчитанныйDSOсПериодами.Company = ОборотыПолные.Company
+			И ВТ_РассчитанныйDSOсПериодами.LegalEntity = ОборотыПолные.LegalEntity
+			И ВТ_РассчитанныйDSOсПериодами.AU = ОборотыПолные.AU
+			И ВТ_РассчитанныйDSOсПериодами.Source = ОборотыПолные.Source
+			И ВТ_РассчитанныйDSOсПериодами.Client = ОборотыПолные.Client
+			И ВТ_РассчитанныйDSOсПериодами.Период = ОборотыПолные.Период</query>
 	</dataSet>
 	<totalField>
 		<dataPath>Billing</dataPath>
@@ -564,6 +592,37 @@
 		<dcsset:name>Основной</dcsset:name>
 		<dcsset:presentation xsi:type="xs:string">Основной</dcsset:presentation>
 		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+			<dcsset:userFields>
+				<dcsset:item xsi:type="dcsset:UserFieldCase">
+					<dcsset:dataPath>ПользовательскиеПоля.Поле2</dcsset:dataPath>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>КлиентЗаполнен</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+					<dcsset:cases>
+						<dcsset:item>
+							<dcsset:filter>
+								<dcsset:item xsi:type="dcsset:FilterItemComparison">
+									<dcsset:left xsi:type="dcscor:Field">Client</dcsset:left>
+									<dcsset:comparisonType>Filled</dcsset:comparisonType>
+								</dcsset:item>
+							</dcsset:filter>
+							<dcsset:value xsi:type="xs:decimal">0</dcsset:value>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:filter>
+								<dcsset:item xsi:type="dcsset:FilterItemComparison">
+									<dcsset:left xsi:type="dcscor:Field">Client</dcsset:left>
+									<dcsset:comparisonType>NotFilled</dcsset:comparisonType>
+								</dcsset:item>
+							</dcsset:filter>
+							<dcsset:value xsi:type="xs:decimal">1</dcsset:value>
+						</dcsset:item>
+					</dcsset:cases>
+				</dcsset:item>
+			</dcsset:userFields>
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Billing</dcsset:field>
@@ -656,6 +715,10 @@
 						</dcsset:item>
 					</dcsset:groupItems>
 					<dcsset:order>
+						<dcsset:item xsi:type="dcsset:OrderItemField">
+							<dcsset:field>ПользовательскиеПоля.Поле2</dcsset:field>
+							<dcsset:orderType>Asc</dcsset:orderType>
+						</dcsset:item>
 						<dcsset:item xsi:type="dcsset:OrderItemField">
 							<dcsset:field>Client</dcsset:field>
 							<dcsset:orderType>Asc</dcsset:orderType>
