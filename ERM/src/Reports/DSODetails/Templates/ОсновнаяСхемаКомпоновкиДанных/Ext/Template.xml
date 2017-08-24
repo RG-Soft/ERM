@@ -62,6 +62,12 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>LegalEntity</dataPath>
 			<field>LegalEntity</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Legal Entity</v8:content>
+				</v8:item>
+			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Currency</dataPath>
@@ -116,6 +122,10 @@
 					<v8:content>AR</v8:content>
 				</v8:item>
 			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Document</dataPath>
+			<field>Document</field>
 		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
@@ -286,6 +296,28 @@
 	КОНЕЦ,
 	Billing.AU,
 	Billing.Source
+
+ОБЪЕДИНИТЬ ВСЕ
+
+ВЫБРАТЬ
+	RevenueОбороты.Период,
+	RevenueОбороты.Client,
+	RevenueОбороты.Company,
+	ВЫБОР
+		КОГДА RevenueОбороты.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+			ТОГДА RevenueОбороты.LegalEntity
+		ИНАЧЕ RevenueОбороты.Company.DefaultLegalEntity
+	КОНЕЦ,
+	RevenueОбороты.AU,
+	RevenueОбороты.Source,
+	RevenueОбороты.BaseAmountОборот
+ИЗ
+	РегистрНакопления.Revenue.Обороты(
+			ДОБАВИТЬКДАТЕ(&amp;Период, МЕСЯЦ, -25),
+			&amp;Период,
+			Месяц,
+			Source В (&amp;Sources)
+				И НЕ Account.БазовыйЭлемент.Intercompany) КАК RevenueОбороты
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -585,8 +617,44 @@
 			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:EnumRef.ТипыСоответствий</v8:Type>
 		</valueType>
 		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.Lawson</value>
+		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.OracleMI</value>
+		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.OracleSmith</value>
 		<useRestriction>true</useRestriction>
 		<valueListAllowed>true</valueListAllowed>
+	</parameter>
+	<parameter>
+		<name>НачалоПериода</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Начало периода</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>xs:dateTime</v8:Type>
+			<v8:DateQualifiers>
+				<v8:DateFractions>DateTime</v8:DateFractions>
+			</v8:DateQualifiers>
+		</valueType>
+		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
+		<useRestriction>false</useRestriction>
+	</parameter>
+	<parameter>
+		<name>КонецПериода</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Конец периода</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>xs:dateTime</v8:Type>
+			<v8:DateQualifiers>
+				<v8:DateFractions>DateTime</v8:DateFractions>
+			</v8:DateQualifiers>
+		</valueType>
+		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
+		<useRestriction>false</useRestriction>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
@@ -628,13 +696,6 @@
 					<dcsset:field>Billing</dcsset:field>
 				</dcsset:item>
 			</dcsset:selection>
-			<dcsset:dataParameters>
-				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:use>false</dcscor:use>
-					<dcscor:parameter>Период</dcscor:parameter>
-					<dcscor:value xsi:type="xs:dateTime">0001-01-01T00:00:00</dcscor:value>
-				</dcscor:item>
-			</dcsset:dataParameters>
 			<dcsset:outputParameters>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>МакетОформления</dcscor:parameter>
