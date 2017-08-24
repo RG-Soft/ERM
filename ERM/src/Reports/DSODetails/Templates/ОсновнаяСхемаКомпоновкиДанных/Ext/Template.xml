@@ -1,0 +1,671 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<DataCompositionSchema xmlns="http://v8.1c.ru/8.1/data-composition-system/schema" xmlns:dcscom="http://v8.1c.ru/8.1/data-composition-system/common" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<dataSource>
+		<name>ИсточникДанных1</name>
+		<dataSourceType>Local</dataSourceType>
+	</dataSource>
+	<dataSet xsi:type="DataSetQuery">
+		<name>НаборДанных1</name>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>РучнаяКорректировка</dataPath>
+			<field>РучнаяКорректировка</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Memo</dataPath>
+			<field>Memo</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Company</dataPath>
+			<field>Company</field>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>AU</dataPath>
+			<field>AU</field>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Location</dataPath>
+			<field>Location</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>CashBatch</dataPath>
+			<field>CashBatch</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Client</dataPath>
+			<field>Client</field>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>SubSubSegment</dataPath>
+			<field>SubSubSegment</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Invoice</dataPath>
+			<field>Invoice</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>SalesOrder</dataPath>
+			<field>SalesOrder</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Account</dataPath>
+			<field>Account</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>LegalEntity</dataPath>
+			<field>LegalEntity</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Currency</dataPath>
+			<field>Currency</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Source</dataPath>
+			<field>Source</field>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>DSO</dataPath>
+			<field>DSO</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>DSO</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Billing</dataPath>
+			<field>Billing</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Billing</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Период</dataPath>
+			<field>Период</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Период</v8:content>
+				</v8:item>
+			</title>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>AR</dataPath>
+			<field>AR</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>AR</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<dataSource>ИсточникДанных1</dataSource>
+		<query>ВЫБРАТЬ
+	ВложенныйЗапросОстатки.Client КАК Client,
+	ВложенныйЗапросОстатки.Company КАК Company,
+	ВложенныйЗапросОстатки.Source КАК Source,
+	ВложенныйЗапросОстатки.Location,
+	ВложенныйЗапросОстатки.SubSubSegment,
+	ВложенныйЗапросОстатки.AU КАК AU,
+	СУММА(ВЫРАЗИТЬ(ВложенныйЗапросОстатки.AmountОстаток / ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 1) * ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Кратность, 1) КАК ЧИСЛО(15, 2))) КАК USDAmount,
+	ВложенныйЗапросОстатки.LegalEntity КАК LegalEntity
+ПОМЕСТИТЬ ВТ_Остатки
+ИЗ
+	(ВЫБРАТЬ
+		UnbilledARОстатки.Client КАК Client,
+		UnbilledARОстатки.Company КАК Company,
+		UnbilledARОстатки.Source КАК Source,
+		UnbilledARОстатки.AU.ПодразделениеОрганизации КАК Location,
+		UnbilledARОстатки.AU.Сегмент КАК SubSubSegment,
+		UnbilledARОстатки.AU КАК AU,
+		UnbilledARОстатки.Currency КАК Currency,
+		UnbilledARОстатки.AmountОстаток КАК AmountОстаток,
+		ВЫБОР
+			КОГДА UnbilledARОстатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+				ТОГДА UnbilledARОстатки.LegalEntity
+			ИНАЧЕ UnbilledARОстатки.Company.DefaultLegalEntity
+		КОНЕЦ КАК LegalEntity
+	ИЗ
+		РегистрНакопления.UnbilledAR.Остатки(&amp;ПериодОстатков, Source В (&amp;Sources)) КАК UnbilledARОстатки
+	
+	ОБЪЕДИНИТЬ ВСЕ
+	
+	ВЫБРАТЬ
+		BilledARОстатки.Client,
+		BilledARОстатки.Company,
+		BilledARОстатки.Source,
+		BilledARОстатки.AU.ПодразделениеОрганизации,
+		BilledARОстатки.AU.Сегмент,
+		BilledARОстатки.AU,
+		BilledARОстатки.Currency,
+		BilledARОстатки.AmountОстаток,
+		ВЫБОР
+			КОГДА BilledARОстатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+				ТОГДА BilledARОстатки.LegalEntity
+			ИНАЧЕ BilledARОстатки.Company.DefaultLegalEntity
+		КОНЕЦ
+	ИЗ
+		РегистрНакопления.BilledAR.Остатки(&amp;ПериодОстатков, Source В (&amp;Sources)) КАК BilledARОстатки
+	
+	ОБЪЕДИНИТЬ ВСЕ
+	
+	ВЫБРАТЬ
+		UnallocatedCashОстатки.Client,
+		UnallocatedCashОстатки.Company,
+		UnallocatedCashОстатки.Source,
+		UnallocatedCashОстатки.AU.ПодразделениеОрганизации,
+		UnallocatedCashОстатки.AU.Сегмент,
+		UnallocatedCashОстатки.AU,
+		UnallocatedCashОстатки.Currency,
+		-UnallocatedCashОстатки.AmountОстаток,
+		ВЫБОР
+			КОГДА UnallocatedCashОстатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+				ТОГДА UnallocatedCashОстатки.LegalEntity
+			ИНАЧЕ UnallocatedCashОстатки.Company.DefaultLegalEntity
+		КОНЕЦ
+	ИЗ
+		РегистрНакопления.UnallocatedCash.Остатки(&amp;ПериодОстатков, Source В (&amp;Sources)) КАК UnallocatedCashОстатки
+	ГДЕ
+		ВЫБОР
+				КОГДА НЕ UnallocatedCashОстатки.CashBatch.Ссылка ЕСТЬ NULL
+					ТОГДА НЕ UnallocatedCashОстатки.Account.КодЧислом = 209000
+								И НЕ UnallocatedCashОстатки.Account.КодЧислом = 2090001
+							ИЛИ UnallocatedCashОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
+							ИЛИ UnallocatedCashОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith)
+				ИНАЧЕ ИСТИНА
+			КОНЕЦ
+	
+	ОБЪЕДИНИТЬ ВСЕ
+	
+	ВЫБРАТЬ
+		ManualTransactionsОстатки.Client,
+		ManualTransactionsОстатки.Company,
+		ManualTransactionsОстатки.Source,
+		ManualTransactionsОстатки.AU.ПодразделениеОрганизации,
+		ManualTransactionsОстатки.AU.Сегмент,
+		ManualTransactionsОстатки.AU,
+		ManualTransactionsОстатки.Currency,
+		ManualTransactionsОстатки.AmountОстаток,
+		ВЫБОР
+			КОГДА ManualTransactionsОстатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+				ТОГДА ManualTransactionsОстатки.LegalEntity
+			ИНАЧЕ ManualTransactionsОстатки.Company.DefaultLegalEntity
+		КОНЕЦ
+	ИЗ
+		РегистрНакопления.ManualTransactions.Остатки(&amp;ПериодОстатков, Source В (&amp;Sources)) КАК ManualTransactionsОстатки
+	
+	ОБЪЕДИНИТЬ ВСЕ
+	
+	ВЫБРАТЬ
+		UnallocatedMemoОстатки.Client,
+		UnallocatedMemoОстатки.Company,
+		UnallocatedMemoОстатки.Source,
+		UnallocatedMemoОстатки.AU.ПодразделениеОрганизации,
+		UnallocatedMemoОстатки.AU.Сегмент,
+		UnallocatedMemoОстатки.AU,
+		UnallocatedMemoОстатки.Currency,
+		UnallocatedMemoОстатки.AmountОстаток,
+		ВЫБОР
+			КОГДА UnallocatedMemoОстатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+				ТОГДА UnallocatedMemoОстатки.LegalEntity
+			ИНАЧЕ UnallocatedMemoОстатки.Company.DefaultLegalEntity
+		КОНЕЦ
+	ИЗ
+		РегистрНакопления.UnallocatedMemo.Остатки(&amp;ПериодОстатков, Source В (&amp;Sources)) КАК UnallocatedMemoОстатки) КАК ВложенныйЗапросОстатки
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних(&amp;ПериодОстатков, ) КАК ВнутренниеКурсыВалютСрезПоследних
+		ПО ВложенныйЗапросОстатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
+
+СГРУППИРОВАТЬ ПО
+	ВложенныйЗапросОстатки.Client,
+	ВложенныйЗапросОстатки.Company,
+	ВложенныйЗапросОстатки.Source,
+	ВложенныйЗапросОстатки.Location,
+	ВложенныйЗапросОстатки.SubSubSegment,
+	ВложенныйЗапросОстатки.AU,
+	ВложенныйЗапросОстатки.LegalEntity
+
+ИМЕЮЩИЕ
+	СУММА(ВложенныйЗапросОстатки.AmountОстаток) &lt;&gt; 0
+
+ИНДЕКСИРОВАТЬ ПО
+	Client,
+	Company,
+	LegalEntity,
+	AU,
+	Source
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	Billing.Период,
+	Billing.Client,
+	Billing.Company,
+	ВЫБОР
+		КОГДА Billing.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+			ТОГДА Billing.LegalEntity
+		ИНАЧЕ Billing.Company.DefaultLegalEntity
+	КОНЕЦ КАК LegalEntity,
+	Billing.AU,
+	Billing.Source,
+	СУММА(Billing.USDAmount) КАК USDAmount
+ПОМЕСТИТЬ ВТ_Биллинг
+ИЗ
+	РегистрСведений.Billing КАК Billing
+ГДЕ
+	Billing.Период &lt;= &amp;Период
+	И Billing.Активность
+	И Billing.Период &gt;= ДОБАВИТЬКДАТЕ(&amp;Период, МЕСЯЦ, -25)
+	И Billing.Source В(&amp;Sources)
+
+СГРУППИРОВАТЬ ПО
+	Billing.Период,
+	Billing.Client,
+	Billing.Company,
+	ВЫБОР
+		КОГДА Billing.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+			ТОГДА Billing.LegalEntity
+		ИНАЧЕ Billing.Company.DefaultLegalEntity
+	КОНЕЦ,
+	Billing.AU,
+	Billing.Source
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ РАЗЛИЧНЫЕ
+	НАЧАЛОПЕРИОДА(ДанныеПроизводственногоКалендаря.Дата, МЕСЯЦ) КАК Период
+ПОМЕСТИТЬ Месяцы
+ИЗ
+	РегистрСведений.ДанныеПроизводственногоКалендаря КАК ДанныеПроизводственногоКалендаря
+ГДЕ
+	ДанныеПроизводственногоКалендаря.Дата &lt;= &amp;Период
+	И ДанныеПроизводственногоКалендаря.Дата &gt;= ДОБАВИТЬКДАТЕ(&amp;Период, МЕСЯЦ, -25)
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	ВТ_Остатки.Client КАК Client,
+	ВТ_Остатки.Company КАК Company,
+	ВТ_Остатки.Source КАК Source,
+	ВТ_Остатки.Location,
+	ВТ_Остатки.SubSubSegment,
+	ВТ_Остатки.AU КАК AU,
+	ВТ_Остатки.USDAmount,
+	ВТ_Остатки.LegalEntity КАК LegalEntity,
+	Месяцы.Период КАК Период
+ПОМЕСТИТЬ ВТ_ОстаткиСПериодами
+ИЗ
+	ВТ_Остатки КАК ВТ_Остатки,
+	Месяцы КАК Месяцы
+
+ИНДЕКСИРОВАТЬ ПО
+	Client,
+	Company,
+	LegalEntity,
+	AU,
+	Source,
+	Период
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	Месяцы.Период,
+	КомбинацииАналитики.Client,
+	КомбинацииАналитики.Company,
+	КомбинацииАналитики.LegalEntity,
+	КомбинацииАналитики.AU,
+	КомбинацииАналитики.Source
+ПОМЕСТИТЬ ВсеПериодыПоКомбинацииАналитики
+ИЗ
+	Месяцы КАК Месяцы,
+	(ВЫБРАТЬ РАЗЛИЧНЫЕ
+		ВТ_Биллинг.Client КАК Client,
+		ВТ_Биллинг.Company КАК Company,
+		ВТ_Биллинг.LegalEntity КАК LegalEntity,
+		ВТ_Биллинг.AU КАК AU,
+		ВТ_Биллинг.Source КАК Source
+	ИЗ
+		ВТ_Биллинг КАК ВТ_Биллинг) КАК КомбинацииАналитики
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	ВсеПериодыПоКомбинацииАналитики.Период КАК Период,
+	ВсеПериодыПоКомбинацииАналитики.Client КАК Client,
+	ВсеПериодыПоКомбинацииАналитики.Company КАК Company,
+	ВсеПериодыПоКомбинацииАналитики.LegalEntity КАК LegalEntity,
+	ВсеПериодыПоКомбинацииАналитики.AU КАК AU,
+	ВсеПериодыПоКомбинацииАналитики.Source КАК Source,
+	ЕСТЬNULL(ВТ_Биллинг.USDAmount, 0) КАК USDAmount
+ПОМЕСТИТЬ ОборотыПолные
+ИЗ
+	ВсеПериодыПоКомбинацииАналитики КАК ВсеПериодыПоКомбинацииАналитики
+		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_Биллинг КАК ВТ_Биллинг
+		ПО ВсеПериодыПоКомбинацииАналитики.Период = ВТ_Биллинг.Период
+			И ВсеПериодыПоКомбинацииАналитики.Client = ВТ_Биллинг.Client
+			И ВсеПериодыПоКомбинацииАналитики.Company = ВТ_Биллинг.Company
+			И ВсеПериодыПоКомбинацииАналитики.LegalEntity = ВТ_Биллинг.LegalEntity
+			И ВсеПериодыПоКомбинацииАналитики.AU = ВТ_Биллинг.AU
+			И ВсеПериодыПоКомбинацииАналитики.Source = ВТ_Биллинг.Source
+
+ИНДЕКСИРОВАТЬ ПО
+	Client,
+	Company,
+	LegalEntity,
+	AU,
+	Source,
+	Период
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	ОборотыПолные.Период КАК Период,
+	ОборотыПолные.Client КАК Client,
+	ОборотыПолные.Company КАК Company,
+	ОборотыПолные.LegalEntity КАК LegalEntity,
+	ОборотыПолные.AU КАК AU,
+	ОборотыПолные.Source КАК Source,
+	СУММА(ОборотыПолные1.USDAmount) КАК USDAmount
+ПОМЕСТИТЬ ОборотыПосле
+ИЗ
+	ОборотыПолные КАК ОборотыПолные
+		ЛЕВОЕ СОЕДИНЕНИЕ ОборотыПолные КАК ОборотыПолные1
+		ПО ОборотыПолные.Период &lt; ОборотыПолные1.Период
+			И ОборотыПолные.Client = ОборотыПолные1.Client
+			И ОборотыПолные.Company = ОборотыПолные1.Company
+			И ОборотыПолные.LegalEntity = ОборотыПолные1.LegalEntity
+			И ОборотыПолные.AU = ОборотыПолные1.AU
+			И ОборотыПолные.Source = ОборотыПолные1.Source
+
+СГРУППИРОВАТЬ ПО
+	ОборотыПолные.Период,
+	ОборотыПолные.Client,
+	ОборотыПолные.Company,
+	ОборотыПолные.LegalEntity,
+	ОборотыПолные.AU,
+	ОборотыПолные.Source
+
+ИНДЕКСИРОВАТЬ ПО
+	Client,
+	Company,
+	LegalEntity,
+	AU,
+	Source,
+	Период
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	ЕСТЬNULL(ВТ_ОстаткиСПериодами.Client, ОборотыПолные.Client) КАК Client,
+	ЕСТЬNULL(ВТ_ОстаткиСПериодами.Company, ОборотыПолные.Company) КАК Company,
+	ЕСТЬNULL(ВТ_ОстаткиСПериодами.LegalEntity, ОборотыПолные.LegalEntity) КАК LegalEntity,
+	ЕСТЬNULL(ВТ_ОстаткиСПериодами.AU, ОборотыПолные.AU) КАК AU,
+	ЕСТЬNULL(ВТ_ОстаткиСПериодами.Source, ОборотыПолные.Source) КАК Source,
+	ЕСТЬNULL(ВТ_ОстаткиСПериодами.USDAmount, 0) КАК USDAmount,
+	ДЕНЬ(КОНЕЦПЕРИОДА(ОборотыПолные.Период, МЕСЯЦ)) КАК Дней,
+	ВЫБОР
+		КОГДА ВТ_ОстаткиСПериодами.USDAmount - ЕСТЬNULL(ОборотыПосле.USDAmount, 0) &lt; 0
+			ТОГДА 0
+		ИНАЧЕ ВТ_ОстаткиСПериодами.USDAmount - ЕСТЬNULL(ОборотыПосле.USDAmount, 0)
+	КОНЕЦ КАК Остаток
+ПОМЕСТИТЬ ВТ_ДанныеРасчета
+ИЗ
+	ВТ_ОстаткиСПериодами КАК ВТ_ОстаткиСПериодами
+		ПОЛНОЕ СОЕДИНЕНИЕ ОборотыПолные КАК ОборотыПолные
+			ЛЕВОЕ СОЕДИНЕНИЕ ОборотыПосле КАК ОборотыПосле
+			ПО ОборотыПолные.Период = ОборотыПосле.Период
+				И ОборотыПолные.Client = ОборотыПосле.Client
+				И ОборотыПолные.Company = ОборотыПосле.Company
+				И ОборотыПолные.LegalEntity = ОборотыПосле.LegalEntity
+				И ОборотыПолные.AU = ОборотыПосле.AU
+				И ОборотыПолные.Source = ОборотыПосле.Source
+		ПО ВТ_ОстаткиСПериодами.Client = ОборотыПолные.Client
+			И ВТ_ОстаткиСПериодами.Company = ОборотыПолные.Company
+			И ВТ_ОстаткиСПериодами.Source = ОборотыПолные.Source
+			И ВТ_ОстаткиСПериодами.AU = ОборотыПолные.AU
+			И ВТ_ОстаткиСПериодами.LegalEntity = ОборотыПолные.LegalEntity
+			И ВТ_ОстаткиСПериодами.Период = ОборотыПолные.Период
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	ВТ_ДанныеРасчета.Client КАК Client,
+	ВТ_ДанныеРасчета.Company КАК Company,
+	ВТ_ДанныеРасчета.LegalEntity КАК LegalEntity,
+	ВТ_ДанныеРасчета.AU КАК AU,
+	ВТ_ДанныеРасчета.Source КАК Source,
+	СУММА(ВЫРАЗИТЬ(ВЫБОР
+				КОГДА ВТ_ДанныеРасчета.Остаток = 0
+					ТОГДА 0
+				ИНАЧЕ ВЫБОР
+						КОГДА ВТ_ДанныеРасчета.Остаток &gt; ВТ_ДанныеРасчета.USDAmount
+							ТОГДА ВТ_ДанныеРасчета.Дней
+						ИНАЧЕ ВТ_ДанныеРасчета.Дней * ВТ_ДанныеРасчета.Остаток / ВТ_ДанныеРасчета.USDAmount
+					КОНЕЦ
+			КОНЕЦ КАК ЧИСЛО(15, 2))) КАК DSO
+ПОМЕСТИТЬ ВТ_РассчитанныйDSO
+ИЗ
+	ВТ_ДанныеРасчета КАК ВТ_ДанныеРасчета
+
+СГРУППИРОВАТЬ ПО
+	ВТ_ДанныеРасчета.Client,
+	ВТ_ДанныеРасчета.Company,
+	ВТ_ДанныеРасчета.LegalEntity,
+	ВТ_ДанныеРасчета.AU,
+	ВТ_ДанныеРасчета.Source
+
+ИНДЕКСИРОВАТЬ ПО
+	Client,
+	Company,
+	LegalEntity,
+	AU,
+	Source
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	ВТ_РассчитанныйDSO.Client,
+	ВТ_РассчитанныйDSO.Company,
+	ВТ_РассчитанныйDSO.LegalEntity,
+	ВТ_РассчитанныйDSO.AU,
+	ВТ_РассчитанныйDSO.Source,
+	ВТ_РассчитанныйDSO.DSO,
+	ВТ_Остатки.USDAmount КАК AR,
+	ОборотыПолные.Период,
+	ОборотыПолные.USDAmount КАК Billing
+ИЗ
+	ВТ_РассчитанныйDSO КАК ВТ_РассчитанныйDSO
+		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_Остатки КАК ВТ_Остатки
+		ПО ВТ_РассчитанныйDSO.Company = ВТ_Остатки.Company
+			И ВТ_РассчитанныйDSO.LegalEntity = ВТ_Остатки.LegalEntity
+			И ВТ_РассчитанныйDSO.AU = ВТ_Остатки.AU
+			И ВТ_РассчитанныйDSO.Source = ВТ_Остатки.Source
+			И ВТ_РассчитанныйDSO.Client = ВТ_Остатки.Client
+		ЛЕВОЕ СОЕДИНЕНИЕ ОборотыПолные КАК ОборотыПолные
+		ПО ВТ_РассчитанныйDSO.Company = ОборотыПолные.Company
+			И ВТ_РассчитанныйDSO.LegalEntity = ОборотыПолные.LegalEntity
+			И ВТ_РассчитанныйDSO.AU = ОборотыПолные.AU
+			И ВТ_РассчитанныйDSO.Source = ОборотыПолные.Source
+			И ВТ_РассчитанныйDSO.Client = ОборотыПолные.Client</query>
+	</dataSet>
+	<totalField>
+		<dataPath>Billing</dataPath>
+		<expression>Сумма(Billing)</expression>
+	</totalField>
+	<parameter>
+		<name>ПериодОстатков</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Период остатков</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>xs:dateTime</v8:Type>
+			<v8:DateQualifiers>
+				<v8:DateFractions>DateTime</v8:DateFractions>
+			</v8:DateQualifiers>
+		</valueType>
+		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
+		<useRestriction>true</useRestriction>
+		<expression>ДОБАВИТЬКДАТЕ(КонецПериода(&amp;Период,"ДЕНЬ") , "СЕКУНДА", 1)</expression>
+	</parameter>
+	<parameter>
+		<name>Период</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Период</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>xs:dateTime</v8:Type>
+			<v8:DateQualifiers>
+				<v8:DateFractions>DateTime</v8:DateFractions>
+			</v8:DateQualifiers>
+		</valueType>
+		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
+		<useRestriction>false</useRestriction>
+		<expression>КонецПериода(&amp;Период,"МЕСЯЦ")</expression>
+	</parameter>
+	<parameter>
+		<name>Sources</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Sources</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:EnumRef.ТипыСоответствий</v8:Type>
+		</valueType>
+		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.Lawson</value>
+		<useRestriction>true</useRestriction>
+		<valueListAllowed>true</valueListAllowed>
+	</parameter>
+	<settingsVariant>
+		<dcsset:name>Основной</dcsset:name>
+		<dcsset:presentation xsi:type="xs:string">Основной</dcsset:presentation>
+		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+			<dcsset:selection>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Billing</dcsset:field>
+				</dcsset:item>
+			</dcsset:selection>
+			<dcsset:dataParameters>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:use>false</dcscor:use>
+					<dcscor:parameter>Период</dcscor:parameter>
+					<dcscor:value xsi:type="xs:dateTime">0001-01-01T00:00:00</dcscor:value>
+				</dcscor:item>
+			</dcsset:dataParameters>
+			<dcsset:outputParameters>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>МакетОформления</dcscor:parameter>
+					<dcscor:value xsi:type="xs:string">Море</dcscor:value>
+				</dcscor:item>
+			</dcsset:outputParameters>
+			<dcsset:item xsi:type="dcsset:StructureItemTable">
+				<dcsset:column>
+					<dcsset:groupItems>
+						<dcsset:item xsi:type="dcsset:GroupItemField">
+							<dcsset:field>Период</dcsset:field>
+							<dcsset:groupType>Items</dcsset:groupType>
+							<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
+							<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
+							<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
+						</dcsset:item>
+					</dcsset:groupItems>
+					<dcsset:order>
+						<dcsset:item xsi:type="dcsset:OrderItemField">
+							<dcsset:field>Период</dcsset:field>
+							<dcsset:orderType>Desc</dcsset:orderType>
+						</dcsset:item>
+					</dcsset:order>
+					<dcsset:selection>
+						<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
+					</dcsset:selection>
+				</dcsset:column>
+				<dcsset:row>
+					<dcsset:groupItems>
+						<dcsset:item xsi:type="dcsset:GroupItemField">
+							<dcsset:field>Source</dcsset:field>
+							<dcsset:groupType>Items</dcsset:groupType>
+							<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
+							<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
+							<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
+						</dcsset:item>
+						<dcsset:item xsi:type="dcsset:GroupItemField">
+							<dcsset:field>Company</dcsset:field>
+							<dcsset:groupType>Items</dcsset:groupType>
+							<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
+							<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
+							<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
+						</dcsset:item>
+						<dcsset:item xsi:type="dcsset:GroupItemField">
+							<dcsset:field>LegalEntity</dcsset:field>
+							<dcsset:groupType>Items</dcsset:groupType>
+							<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
+							<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
+							<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
+						</dcsset:item>
+						<dcsset:item xsi:type="dcsset:GroupItemField">
+							<dcsset:field>AU</dcsset:field>
+							<dcsset:groupType>Items</dcsset:groupType>
+							<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
+							<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
+							<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
+						</dcsset:item>
+						<dcsset:item xsi:type="dcsset:GroupItemField">
+							<dcsset:field>Client</dcsset:field>
+							<dcsset:groupType>Items</dcsset:groupType>
+							<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
+							<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
+							<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
+						</dcsset:item>
+						<dcsset:item xsi:type="dcsset:GroupItemField">
+							<dcsset:field>DSO</dcsset:field>
+							<dcsset:groupType>Items</dcsset:groupType>
+							<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
+							<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
+							<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
+						</dcsset:item>
+						<dcsset:item xsi:type="dcsset:GroupItemField">
+							<dcsset:field>AR</dcsset:field>
+							<dcsset:groupType>Items</dcsset:groupType>
+							<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
+							<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
+							<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
+						</dcsset:item>
+					</dcsset:groupItems>
+					<dcsset:order>
+						<dcsset:item xsi:type="dcsset:OrderItemField">
+							<dcsset:field>Client</dcsset:field>
+							<dcsset:orderType>Asc</dcsset:orderType>
+						</dcsset:item>
+					</dcsset:order>
+					<dcsset:selection>
+						<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
+					</dcsset:selection>
+				</dcsset:row>
+			</dcsset:item>
+		</dcsset:settings>
+	</settingsVariant>
+</DataCompositionSchema>
