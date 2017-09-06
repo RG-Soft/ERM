@@ -2,13 +2,17 @@
 &НаКлиенте
 Процедура InvoiceПриИзменении(Элемент)
 	
-	InvoiceПриИзмененииНаСервере();
-	
-	Если ЕстьAllocationПоДокументу(Объект.Invoice) Тогда
-		Сообщить(" " + Объект.Invoice + ") was previously credited.");
+	Если ЗначениеЗаполнено(Объект.Invoice) Тогда
+			
+		InvoiceПриИзмененииНаСервере();
+		
+		Если ЕстьAllocationПоДокументу(Объект.Invoice) Тогда
+			Сообщить(" " + Объект.Invoice + " was previously credited.");
+		КонецЕсли;
+		
+		RemainingInvoiceAmount = РассчитатьRemainingInvoiceAmount();
+		
 	КонецЕсли;
-	
-	RemainingInvoiceAmount = РассчитатьRemainingInvoiceAmount();
 	
 КонецПроцедуры
 
@@ -19,6 +23,7 @@
 	
 	ЗаполнитьЗначенияСвойств(Объект, ЗначенияРеквизитов);
 	
+	РасчитатьДатуДокумента();
 	InvoiceClient = ЗначенияРеквизитов.Client;
 	InvoiceAmount = ЗначенияРеквизитов.Amount;
 	
@@ -30,32 +35,65 @@
 	ПустаяДата = Дата(1,1,1);
 	ТекущиеДанные = Элементы.CreditNotes.ТекущиеДанные;
 	
-	Если ТекущиеДанные = Неопределено Тогда
-		Возврат;
+	Если ЗначениеЗаполнено(ТекущиеДанные.CreditNote) Тогда
+		
+		//Если ТекущиеДанные = Неопределено Тогда
+		//	Возврат;
+		//КонецЕсли;
+		
+		Если ЕстьAllocationПоДокументу(ТекущиеДанные.CreditNote) Тогда
+			Сообщить(" " + ТекущиеДанные.CreditNote + " was previously allocated.");
+		КонецЕсли;
+		
+		ЗначенияРеквизитов = CreditNotesCreditNoteПриИзмененииНаСервере(ТекущиеДанные.CreditNote);
+		
+		ЗначенияРеквизитов.Amount = -ЗначенияРеквизитов.Amount;
+		
+		ЗаполнитьЗначенияСвойств(ТекущиеДанные, ЗначенияРеквизитов);
+		
+		RemainingInvoiceAmount = РассчитатьRemainingInvoiceAmount();
+		
 	КонецЕсли;
-	
-	Если ЕстьAllocationПоДокументу(ТекущиеДанные.CreditNote) Тогда
-		Сообщить(" " + ТекущиеДанные.CreditNote + " was previously allocated.");
-	КонецЕсли;
-	
-	ЗначенияРеквизитов = CreditNotesCreditNoteПриИзмененииНаСервере(ТекущиеДанные.CreditNote);
-	
-	ЗначенияРеквизитов.Amount = -ЗначенияРеквизитов.Amount;
-	
-	ЗаполнитьЗначенияСвойств(ТекущиеДанные, ЗначенияРеквизитов);
-	
-	RemainingInvoiceAmount = РассчитатьRemainingInvoiceAmount();
 	
 КонецПроцедуры
 
 &НаСервере
 Функция CreditNotesCreditNoteПриИзмененииНаСервере(CreditNote)
 	
-	Объект.Дата = CreditNote.Дата;
+	//Если Объект.ВидОперацииNoteAllocation = Перечисления.ВидыОперацийNoteAllocation.CreditNote Тогда
+	//	Объект.Дата = CreditNote.Дата;
+	//КонецЕсли;
+	ЗначенияРеквизитов = ОбщегоНазначения.ЗначенияРеквизитовОбъекта(CreditNote, "Company, Location, SubSubSegment, Account, Currency, AU, Amount, Дата");
 	
-	Возврат ОбщегоНазначения.ЗначенияРеквизитовОбъекта(CreditNote, "Company, Location, SubSubSegment, Account, Currency, AU, Amount, Дата");
+	РасчитатьДатуДокумента(ЗначенияРеквизитов.Дата);
+	
+	Возврат ЗначенияРеквизитов;
 	
 КонецФункции
+
+&НаСервере
+Процедура РасчитатьДатуДокумента(ДатаCreditNote = Неопределено)
+	
+	Если ДатаCreditNote = Неопределено Тогда
+		
+		ДатаCreditNote = Дата(1,1,1);
+		
+	КонецЕсли;
+	
+	Если НЕ ЗначениеЗаполнено(Объект.Invoice) Тогда
+		
+		InvoiceДата = Дата(1,1,1);
+		
+	Иначе
+		
+		InvoiceДата = ОбщегоНазначения.ЗначениеРеквизитаОбъекта(Объект.Invoice, "Дата");
+		
+	КонецЕсли;
+	
+	Объект.Дата = Макс(ДатаCreditNote, InvoiceДата);
+	
+	
+КонецПроцедуры
 
 &НаСервере
 Функция РассчитатьRemainingInvoiceAmount()
