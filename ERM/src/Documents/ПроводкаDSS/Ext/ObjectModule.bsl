@@ -979,7 +979,7 @@
 	ИначеЕсли Реквизиты.System = "BL" И Реквизиты.SourceCode = "JE" Тогда
 		НовоеДвижение.Document = СвязанныеДокументы.SalesOrder;
 	ИначеЕсли (Реквизиты.System = "BL" И (Реквизиты.SourceCode = "DM" ИЛИ Реквизиты.SourceCode = "CM"))
-		ИЛИ (Реквизиты.System = "AR" И Реквизиты.SourceCode = "RM") Тогда
+		ИЛИ (Реквизиты.System = "AR" И (Реквизиты.SourceCode = "RM" ИЛИ Реквизиты.SourceCode = "RQ")) Тогда
 		НовоеДвижение.Document = ?(ЗначениеЗаполнено(СвязанныеДокументы.Invoice), СвязанныеДокументы.Invoice, СвязанныеДокументы.Memo);
 	Иначе
 		ОбщегоНазначенияКлиентСервер.СообщитьПользователю("Filed to determine revenue document!", , , , Отказ);
