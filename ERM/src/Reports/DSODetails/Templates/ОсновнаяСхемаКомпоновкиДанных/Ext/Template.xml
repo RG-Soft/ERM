@@ -283,7 +283,7 @@
 	Billing.Период &lt;= &amp;Период
 	И Billing.Активность
 	И Billing.Период &gt;= ДОБАВИТЬКДАТЕ(&amp;Период, МЕСЯЦ, -25)
-	И Billing.Source В(&amp;Sources)
+	И Billing.Source В(&amp;SourcesBilling)
 
 СГРУППИРОВАТЬ ПО
 	Billing.Период,
@@ -316,7 +316,7 @@
 			ДОБАВИТЬКДАТЕ(&amp;Период, МЕСЯЦ, -25),
 			&amp;Период,
 			Месяц,
-			Source В (&amp;Sources)
+			Source В (&amp;SourcesRevenue)
 				И НЕ Account.БазовыйЭлемент.Intercompany) КАК RevenueОбороты
 ;
 
@@ -656,6 +656,38 @@
 		</valueType>
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>false</useRestriction>
+	</parameter>
+	<parameter>
+		<name>SourcesBilling</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Sources Billing</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:EnumRef.ТипыСоответствий</v8:Type>
+		</valueType>
+		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.Lawson</value>
+		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.HOBs</value>
+		<useRestriction>true</useRestriction>
+		<valueListAllowed>true</valueListAllowed>
+	</parameter>
+	<parameter>
+		<name>SourcesRevenue</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Sources Revenue</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:EnumRef.ТипыСоответствий</v8:Type>
+		</valueType>
+		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.OracleMI</value>
+		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.OracleSmith</value>
+		<useRestriction>true</useRestriction>
+		<valueListAllowed>true</valueListAllowed>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
