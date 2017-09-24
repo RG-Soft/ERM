@@ -150,7 +150,11 @@
 		|			ИНАЧЕ UnbilledARОстатки.Company.DefaultLegalEntity
 		|		КОНЕЦ КАК LegalEntity
 		|	ИЗ
-		|		РегистрНакопления.UnbilledAR.Остатки(&ПериодОстатков, Source В (&Sources)) КАК UnbilledARОстатки
+		|		РегистрНакопления.UnbilledAR.Остатки(
+		|				&ПериодОстатков,
+		|				Source В (&Sources)
+		|					И ВЫРАЗИТЬ(Account КАК ПланСчетов.Lawson).КодЧислом <> 209000
+		|					И ВЫРАЗИТЬ(Account КАК ПланСчетов.Lawson).КодЧислом <> 2090001) КАК UnbilledARОстатки
 		|	
 		|	ОБЪЕДИНИТЬ ВСЕ
 		|	
@@ -169,7 +173,11 @@
 		|			ИНАЧЕ BilledARОстатки.Company.DefaultLegalEntity
 		|		КОНЕЦ
 		|	ИЗ
-		|		РегистрНакопления.BilledAR.Остатки(&ПериодОстатков, Source В (&Sources)) КАК BilledARОстатки
+		|		РегистрНакопления.BilledAR.Остатки(
+		|				&ПериодОстатков,
+		|				Source В (&Sources)
+		|					И ВЫРАЗИТЬ(Account КАК ПланСчетов.Lawson).КодЧислом <> 209000
+		|					И ВЫРАЗИТЬ(Account КАК ПланСчетов.Lawson).КодЧислом <> 2090001) КАК BilledARОстатки
 		|	
 		|	ОБЪЕДИНИТЬ ВСЕ
 		|	
@@ -188,7 +196,11 @@
 		|			ИНАЧЕ UnallocatedCashОстатки.Company.DefaultLegalEntity
 		|		КОНЕЦ
 		|	ИЗ
-		|		РегистрНакопления.UnallocatedCash.Остатки(&ПериодОстатков, Source В (&Sources)) КАК UnallocatedCashОстатки
+		|		РегистрНакопления.UnallocatedCash.Остатки(
+		|				&ПериодОстатков,
+		|				Source В (&Sources)
+		|					И ВЫРАЗИТЬ(Account КАК ПланСчетов.Lawson).КодЧислом <> 209000
+		|					И ВЫРАЗИТЬ(Account КАК ПланСчетов.Lawson).КодЧислом <> 2090001) КАК UnallocatedCashОстатки
 		|	ГДЕ
 		|		ВЫБОР
 		|				КОГДА НЕ UnallocatedCashОстатки.CashBatch.Ссылка ЕСТЬ NULL
@@ -216,7 +228,11 @@
 		|			ИНАЧЕ ManualTransactionsОстатки.Company.DefaultLegalEntity
 		|		КОНЕЦ
 		|	ИЗ
-		|		РегистрНакопления.ManualTransactions.Остатки(&ПериодОстатков, Source В (&Sources)) КАК ManualTransactionsОстатки
+		|		РегистрНакопления.ManualTransactions.Остатки(
+		|				&ПериодОстатков,
+		|				Source В (&Sources)
+		|					И ВЫРАЗИТЬ(Account КАК ПланСчетов.Lawson).КодЧислом <> 209000
+		|					И ВЫРАЗИТЬ(Account КАК ПланСчетов.Lawson).КодЧислом <> 2090001) КАК ManualTransactionsОстатки
 		|	
 		|	ОБЪЕДИНИТЬ ВСЕ
 		|	
@@ -235,7 +251,11 @@
 		|			ИНАЧЕ UnallocatedMemoОстатки.Company.DefaultLegalEntity
 		|		КОНЕЦ
 		|	ИЗ
-		|		РегистрНакопления.UnallocatedMemo.Остатки(&ПериодОстатков, Source В (&Sources)) КАК UnallocatedMemoОстатки) КАК ВложенныйЗапросОстатки
+		|		РегистрНакопления.UnallocatedMemo.Остатки(
+		|				&ПериодОстатков,
+		|				Source В (&Sources)
+		|					И ВЫРАЗИТЬ(Account КАК ПланСчетов.Lawson).КодЧислом <> 209000
+		|					И ВЫРАЗИТЬ(Account КАК ПланСчетов.Lawson).КодЧислом <> 2090001) КАК UnallocatedMemoОстатки) КАК ВложенныйЗапросОстатки
 		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних(&ПериодОстатков, ) КАК ВнутренниеКурсыВалютСрезПоследних
 		|		ПО ВложенныйЗапросОстатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
 		|

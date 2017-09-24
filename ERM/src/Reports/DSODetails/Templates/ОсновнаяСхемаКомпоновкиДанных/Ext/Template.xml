@@ -99,6 +99,14 @@
 					<v8:content>Billing</v8:content>
 				</v8:item>
 			</title>
+			<valueType>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>15</v8:Digits>
+					<v8:FractionDigits>2</v8:FractionDigits>
+					<v8:AllowedSign>Any</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</valueType>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Период</dataPath>
@@ -122,6 +130,14 @@
 					<v8:content>AR</v8:content>
 				</v8:item>
 			</title>
+			<valueType>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>15</v8:Digits>
+					<v8:FractionDigits>2</v8:FractionDigits>
+					<v8:AllowedSign>Any</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</valueType>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Document</dataPath>
@@ -154,7 +170,7 @@
 			ИНАЧЕ UnbilledARОстатки.Company.DefaultLegalEntity
 		КОНЕЦ КАК LegalEntity
 	ИЗ
-		РегистрНакопления.UnbilledAR.Остатки(&amp;ПериодОстатков, Source В (&amp;Sources)) КАК UnbilledARОстатки
+		РегистрНакопления.UnbilledAR.Остатки({&amp;ПериодОстатков}, Source В (&amp;Sources)) КАК UnbilledARОстатки
 	
 	ОБЪЕДИНИТЬ ВСЕ
 	
@@ -173,7 +189,7 @@
 			ИНАЧЕ BilledARОстатки.Company.DefaultLegalEntity
 		КОНЕЦ
 	ИЗ
-		РегистрНакопления.BilledAR.Остатки(&amp;ПериодОстатков, Source В (&amp;Sources)) КАК BilledARОстатки
+		РегистрНакопления.BilledAR.Остатки({&amp;ПериодОстатков}, Source В (&amp;Sources)) КАК BilledARОстатки
 	
 	ОБЪЕДИНИТЬ ВСЕ
 	
@@ -192,7 +208,7 @@
 			ИНАЧЕ UnallocatedCashОстатки.Company.DefaultLegalEntity
 		КОНЕЦ
 	ИЗ
-		РегистрНакопления.UnallocatedCash.Остатки(&amp;ПериодОстатков, Source В (&amp;Sources)) КАК UnallocatedCashОстатки
+		РегистрНакопления.UnallocatedCash.Остатки({&amp;ПериодОстатков}, Source В (&amp;Sources)) КАК UnallocatedCashОстатки
 	ГДЕ
 		ВЫБОР
 				КОГДА НЕ UnallocatedCashОстатки.CashBatch.Ссылка ЕСТЬ NULL
@@ -220,7 +236,7 @@
 			ИНАЧЕ ManualTransactionsОстатки.Company.DefaultLegalEntity
 		КОНЕЦ
 	ИЗ
-		РегистрНакопления.ManualTransactions.Остатки(&amp;ПериодОстатков, Source В (&amp;Sources)) КАК ManualTransactionsОстатки
+		РегистрНакопления.ManualTransactions.Остатки({&amp;ПериодОстатков}, Source В (&amp;Sources)) КАК ManualTransactionsОстатки
 	
 	ОБЪЕДИНИТЬ ВСЕ
 	
@@ -239,8 +255,8 @@
 			ИНАЧЕ UnallocatedMemoОстатки.Company.DefaultLegalEntity
 		КОНЕЦ
 	ИЗ
-		РегистрНакопления.UnallocatedMemo.Остатки(&amp;ПериодОстатков, Source В (&amp;Sources)) КАК UnallocatedMemoОстатки) КАК ВложенныйЗапросОстатки
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних(&amp;ПериодОстатков, ) КАК ВнутренниеКурсыВалютСрезПоследних
+		РегистрНакопления.UnallocatedMemo.Остатки({&amp;ПериодОстатков}, Source В (&amp;Sources)) КАК UnallocatedMemoОстатки) КАК ВложенныйЗапросОстатки
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({&amp;ПериодОстатков}, ) КАК ВнутренниеКурсыВалютСрезПоследних
 		ПО ВложенныйЗапросОстатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
 
 СГРУППИРОВАТЬ ПО
@@ -565,9 +581,57 @@
 			И ВТ_РассчитанныйDSOсПериодами.Client = ОборотыПолные.Client
 			И ВТ_РассчитанныйDSOсПериодами.Период = ОборотыПолные.Период</query>
 	</dataSet>
+	<calculatedField>
+		<dataPath>AR_Total</dataPath>
+		<expression>AR</expression>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>AR Total</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>xs:decimal</v8:Type>
+			<v8:NumberQualifiers>
+				<v8:Digits>15</v8:Digits>
+				<v8:FractionDigits>2</v8:FractionDigits>
+				<v8:AllowedSign>Any</v8:AllowedSign>
+			</v8:NumberQualifiers>
+		</valueType>
+	</calculatedField>
+	<calculatedField>
+		<dataPath>DSO_Total</dataPath>
+		<expression>1</expression>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>DSO total</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>xs:decimal</v8:Type>
+			<v8:NumberQualifiers>
+				<v8:Digits>15</v8:Digits>
+				<v8:FractionDigits>2</v8:FractionDigits>
+				<v8:AllowedSign>Any</v8:AllowedSign>
+			</v8:NumberQualifiers>
+		</valueType>
+	</calculatedField>
 	<totalField>
 		<dataPath>Billing</dataPath>
 		<expression>Сумма(Billing)</expression>
+	</totalField>
+	<totalField>
+		<dataPath>AR_Total</dataPath>
+		<expression>Сумма(AR_Total)</expression>
+	</totalField>
+	<totalField>
+		<dataPath>DSO_Total</dataPath>
+		<expression>ВЫБОР
+	КОГДА НАЧАЛОПЕРИОДА(Период, "МЕСЯЦ") = НАЧАЛОПЕРИОДА(&amp;Период, "МЕСЯЦ")  ТОГДА СУММА(Billing)
+	ИНАЧЕ 1
+КОНЕЦ</expression>
+		<group>ОбщийИтог</group>
 	</totalField>
 	<parameter>
 		<name>ПериодОстатков</name>
@@ -585,7 +649,7 @@
 		</valueType>
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>true</useRestriction>
-		<expression>ДОБАВИТЬКДАТЕ(КонецПериода(&amp;Период,"ДЕНЬ") , "СЕКУНДА", 1)</expression>
+		<expression>ДОБАВИТЬКДАТЕ(КонецПериода(&amp;Период, "МЕСЯЦ") , "СЕКУНДА",  1)</expression>
 	</parameter>
 	<parameter>
 		<name>Период</name>
@@ -689,6 +753,58 @@
 		<useRestriction>true</useRestriction>
 		<valueListAllowed>true</valueListAllowed>
 	</parameter>
+	<template>
+		<name>Макет1</name>
+		<template xmlns:dcsat="http://v8.1c.ru/8.1/data-composition-system/area-template" xsi:type="dcsat:AreaTemplate">
+			<dcsat:item xsi:type="dcsat:TableRow">
+				<dcsat:tableCell>
+					<dcsat:item xsi:type="dcsat:Field">
+						<dcsat:value xsi:type="v8:LocalStringType">
+							<v8:item>
+								<v8:lang>ru</v8:lang>
+								<v8:content>Total</v8:content>
+							</v8:item>
+						</dcsat:value>
+					</dcsat:item>
+				</dcsat:tableCell>
+				<dcsat:tableCell/>
+				<dcsat:tableCell/>
+				<dcsat:tableCell/>
+				<dcsat:tableCell/>
+				<dcsat:tableCell>
+					<dcsat:item xsi:type="dcsat:Field">
+						<dcsat:value xsi:type="dcscor:Parameter">ИтогDSO</dcsat:value>
+					</dcsat:item>
+				</dcsat:tableCell>
+				<dcsat:tableCell>
+					<dcsat:item xsi:type="dcsat:Field">
+						<dcsat:value xsi:type="dcscor:Parameter">ИтогAR</dcsat:value>
+					</dcsat:item>
+				</dcsat:tableCell>
+			</dcsat:item>
+		</template>
+		<parameter xmlns:dcsat="http://v8.1c.ru/8.1/data-composition-system/area-template" xsi:type="dcsat:ExpressionAreaTemplateParameter">
+			<dcsat:name>ИтогDSO</dcsat:name>
+			<dcsat:expression>DSO_Total</dcsat:expression>
+		</parameter>
+		<parameter xmlns:dcsat="http://v8.1c.ru/8.1/data-composition-system/area-template" xsi:type="dcsat:ExpressionAreaTemplateParameter">
+			<dcsat:name>ИтогAR</dcsat:name>
+			<dcsat:expression>AR_Total / 25</dcsat:expression>
+		</parameter>
+	</template>
+	<template>
+		<name>Макет1</name>
+		<template xsi:nil="true"/>
+	</template>
+	<template>
+		<name>Макет1</name>
+		<template xsi:nil="true"/>
+	</template>
+	<groupTemplate>
+		<groupName>ОбщаяГруппировкаСтрокТаблицы</groupName>
+		<templateType>OverallFooter</templateType>
+		<template>Макет1</template>
+	</groupTemplate>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
 		<dcsset:presentation xsi:type="xs:string">Основной</dcsset:presentation>
@@ -757,6 +873,7 @@
 					</dcsset:selection>
 				</dcsset:column>
 				<dcsset:row>
+					<dcsset:name>ОбщаяГруппировкаСтрокТаблицы</dcsset:name>
 					<dcsset:groupItems>
 						<dcsset:item xsi:type="dcsset:GroupItemField">
 							<dcsset:field>Source</dcsset:field>
@@ -809,18 +926,7 @@
 						</dcsset:item>
 					</dcsset:groupItems>
 					<dcsset:order>
-						<dcsset:item xsi:type="dcsset:OrderItemField">
-							<dcsset:field>Source</dcsset:field>
-							<dcsset:orderType>Asc</dcsset:orderType>
-						</dcsset:item>
-						<dcsset:item xsi:type="dcsset:OrderItemField">
-							<dcsset:field>ПользовательскиеПоля.Поле2</dcsset:field>
-							<dcsset:orderType>Asc</dcsset:orderType>
-						</dcsset:item>
-						<dcsset:item xsi:type="dcsset:OrderItemField">
-							<dcsset:field>Client</dcsset:field>
-							<dcsset:orderType>Asc</dcsset:orderType>
-						</dcsset:item>
+						<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
 					</dcsset:order>
 					<dcsset:selection>
 						<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
