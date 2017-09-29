@@ -298,7 +298,7 @@
 ГДЕ
 	Billing.Период &lt;= &amp;Период
 	И Billing.Активность
-	И Billing.Период &gt;= ДОБАВИТЬКДАТЕ(&amp;Период, МЕСЯЦ, -25)
+	И Billing.Период &gt;= ДОБАВИТЬКДАТЕ(&amp;Период, МЕСЯЦ, -24)
 	И Billing.Source В(&amp;SourcesBilling)
 
 СГРУППИРОВАТЬ ПО
@@ -329,7 +329,7 @@
 	RevenueОбороты.BaseAmountОборот
 ИЗ
 	РегистрНакопления.Revenue.Обороты(
-			ДОБАВИТЬКДАТЕ(&amp;Период, МЕСЯЦ, -25),
+			ДОБАВИТЬКДАТЕ(&amp;Период, МЕСЯЦ, -24),
 			&amp;Период,
 			Месяц,
 			Source В (&amp;SourcesRevenue)
@@ -344,7 +344,7 @@
 	РегистрСведений.ДанныеПроизводственногоКалендаря КАК ДанныеПроизводственногоКалендаря
 ГДЕ
 	ДанныеПроизводственногоКалендаря.Дата &lt;= &amp;Период
-	И ДанныеПроизводственногоКалендаря.Дата &gt;= ДОБАВИТЬКДАТЕ(&amp;Период, МЕСЯЦ, -25)
+	И ДанныеПроизводственногоКалендаря.Дата &gt;= НАЧАЛОПЕРИОДА(ДОБАВИТЬКДАТЕ(&amp;Период, МЕСЯЦ, -24), МЕСЯЦ)
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -558,7 +558,7 @@
 	ВТ_РассчитанныйDSOсПериодами.AU,
 	ВТ_РассчитанныйDSOсПериодами.Source,
 	ВЫБОР
-		КОГДА ЕСТЬNULL(ВТ_Остатки.USDAmount, 0) = 0
+		КОГДА ЕСТЬNULL(ВТ_Остатки.USDAmount, 0) &lt;= 0
 			ТОГДА 0
 		ИНАЧЕ ВТ_РассчитанныйDSOсПериодами.DSO
 	КОНЕЦ КАК DSO,
@@ -599,24 +599,6 @@
 			</v8:NumberQualifiers>
 		</valueType>
 	</calculatedField>
-	<calculatedField>
-		<dataPath>DSO_Total</dataPath>
-		<expression>1</expression>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>DSO total</v8:content>
-			</v8:item>
-		</title>
-		<valueType>
-			<v8:Type>xs:decimal</v8:Type>
-			<v8:NumberQualifiers>
-				<v8:Digits>15</v8:Digits>
-				<v8:FractionDigits>2</v8:FractionDigits>
-				<v8:AllowedSign>Any</v8:AllowedSign>
-			</v8:NumberQualifiers>
-		</valueType>
-	</calculatedField>
 	<totalField>
 		<dataPath>Billing</dataPath>
 		<expression>Сумма(Billing)</expression>
@@ -624,14 +606,6 @@
 	<totalField>
 		<dataPath>AR_Total</dataPath>
 		<expression>Сумма(AR_Total)</expression>
-	</totalField>
-	<totalField>
-		<dataPath>DSO_Total</dataPath>
-		<expression>ВЫБОР
-	КОГДА НАЧАЛОПЕРИОДА(Период, "МЕСЯЦ") = НАЧАЛОПЕРИОДА(&amp;Период, "МЕСЯЦ")  ТОГДА СУММА(Billing)
-	ИНАЧЕ 1
-КОНЕЦ</expression>
-		<group>ОбщийИтог</group>
 	</totalField>
 	<parameter>
 		<name>ПериодОстатков</name>
@@ -767,26 +741,59 @@
 						</dcsat:value>
 					</dcsat:item>
 				</dcsat:tableCell>
-				<dcsat:tableCell/>
-				<dcsat:tableCell/>
-				<dcsat:tableCell/>
-				<dcsat:tableCell/>
 				<dcsat:tableCell>
-					<dcsat:item xsi:type="dcsat:Field">
-						<dcsat:value xsi:type="dcscor:Parameter">ИтогDSO</dcsat:value>
-					</dcsat:item>
+					<dcsat:appearance>
+						<dcscor:item>
+							<dcscor:parameter>ОбъединятьПоГоризонтали</dcscor:parameter>
+							<dcscor:value xsi:type="xs:boolean">true</dcscor:value>
+						</dcscor:item>
+					</dcsat:appearance>
+				</dcsat:tableCell>
+				<dcsat:tableCell>
+					<dcsat:appearance>
+						<dcscor:item>
+							<dcscor:parameter>ОбъединятьПоГоризонтали</dcscor:parameter>
+							<dcscor:value xsi:type="xs:boolean">true</dcscor:value>
+						</dcscor:item>
+					</dcsat:appearance>
+				</dcsat:tableCell>
+				<dcsat:tableCell>
+					<dcsat:appearance>
+						<dcscor:item>
+							<dcscor:parameter>ОбъединятьПоГоризонтали</dcscor:parameter>
+							<dcscor:value xsi:type="xs:boolean">true</dcscor:value>
+						</dcscor:item>
+					</dcsat:appearance>
+				</dcsat:tableCell>
+				<dcsat:tableCell>
+					<dcsat:appearance>
+						<dcscor:item>
+							<dcscor:parameter>ОбъединятьПоГоризонтали</dcscor:parameter>
+							<dcscor:value xsi:type="xs:boolean">true</dcscor:value>
+						</dcscor:item>
+					</dcsat:appearance>
+				</dcsat:tableCell>
+				<dcsat:tableCell>
+					<dcsat:appearance>
+						<dcscor:item>
+							<dcscor:parameter>ГоризонтальноеПоложение</dcscor:parameter>
+							<dcscor:value xsi:type="v8ui:HorizontalAlign">Right</dcscor:value>
+						</dcscor:item>
+					</dcsat:appearance>
 				</dcsat:tableCell>
 				<dcsat:tableCell>
 					<dcsat:item xsi:type="dcsat:Field">
 						<dcsat:value xsi:type="dcscor:Parameter">ИтогAR</dcsat:value>
 					</dcsat:item>
+					<dcsat:appearance>
+						<dcscor:item>
+							<dcscor:parameter>ГоризонтальноеПоложение</dcscor:parameter>
+							<dcscor:value xsi:type="v8ui:HorizontalAlign">Right</dcscor:value>
+						</dcscor:item>
+					</dcsat:appearance>
 				</dcsat:tableCell>
 			</dcsat:item>
 		</template>
-		<parameter xmlns:dcsat="http://v8.1c.ru/8.1/data-composition-system/area-template" xsi:type="dcsat:ExpressionAreaTemplateParameter">
-			<dcsat:name>ИтогDSO</dcsat:name>
-			<dcsat:expression>DSO_Total</dcsat:expression>
-		</parameter>
 		<parameter xmlns:dcsat="http://v8.1c.ru/8.1/data-composition-system/area-template" xsi:type="dcsat:ExpressionAreaTemplateParameter">
 			<dcsat:name>ИтогAR</dcsat:name>
 			<dcsat:expression>AR_Total / 25</dcsat:expression>
@@ -794,11 +801,11 @@
 	</template>
 	<template>
 		<name>Макет1</name>
-		<template xsi:nil="true"/>
+		<template xmlns:dcsat="http://v8.1c.ru/8.1/data-composition-system/area-template" xsi:type="dcsat:AreaTemplate"/>
 	</template>
 	<template>
 		<name>Макет1</name>
-		<template xsi:nil="true"/>
+		<template xmlns:dcsat="http://v8.1c.ru/8.1/data-composition-system/area-template" xsi:type="dcsat:AreaTemplate"/>
 	</template>
 	<groupTemplate>
 		<groupName>ОбщаяГруппировкаСтрокТаблицы</groupName>
@@ -844,7 +851,20 @@
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Billing</dcsset:field>
 				</dcsset:item>
+				<dcsset:viewMode>Inaccessible</dcsset:viewMode>
 			</dcsset:selection>
+			<dcsset:filter>
+				<dcsset:viewMode>Normal</dcsset:viewMode>
+				<dcsset:userSettingID>e453ee6a-6ef2-4e91-b4a1-363371c48e78</dcsset:userSettingID>
+			</dcsset:filter>
+			<dcsset:order>
+				<dcsset:viewMode>Normal</dcsset:viewMode>
+				<dcsset:userSettingID>2b0b501e-ef63-4311-93d7-9a7155bc0760</dcsset:userSettingID>
+			</dcsset:order>
+			<dcsset:conditionalAppearance>
+				<dcsset:viewMode>Normal</dcsset:viewMode>
+				<dcsset:userSettingID>9f9d828f-9574-4803-8163-a7c178a92e2b</dcsset:userSettingID>
+			</dcsset:conditionalAppearance>
 			<dcsset:outputParameters>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>МакетОформления</dcscor:parameter>
@@ -932,7 +952,17 @@
 						<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
 					</dcsset:selection>
 				</dcsset:row>
+				<dcsset:selection>
+					<dcsset:viewMode>Inaccessible</dcsset:viewMode>
+				</dcsset:selection>
+				<dcsset:conditionalAppearance>
+					<dcsset:viewMode>Inaccessible</dcsset:viewMode>
+				</dcsset:conditionalAppearance>
+				<dcsset:viewMode>Inaccessible</dcsset:viewMode>
+				<dcsset:columnsViewMode>Inaccessible</dcsset:columnsViewMode>
+				<dcsset:rowsViewMode>Inaccessible</dcsset:rowsViewMode>
 			</dcsset:item>
+			<dcsset:itemsViewMode>Inaccessible</dcsset:itemsViewMode>
 		</dcsset:settings>
 	</settingsVariant>
 </DataCompositionSchema>
