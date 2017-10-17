@@ -128,7 +128,11 @@
 	BilledARОстатки.Client КАК Client,
 	BilledARОстатки.Company,
 	BilledARОстатки.Source КАК Source,
-	"I" КАК TransType,
+	ВЫБОР
+		КОГДА BilledARОстатки.Invoice ССЫЛКА Документ.Invoice
+			ТОГДА "I"
+		ИНАЧЕ "M"
+	КОНЕЦ КАК TransType,
 	BilledARОстатки.Invoice,
 	BilledARОстатки.Account,
 	BilledARОстатки.Currency,
@@ -236,29 +240,58 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ВЫБРАТЬ
-	ЕСТЬNULL(AR.Client, ВТ_Остатки.Client) КАК Client,
-	ЕСТЬNULL(AR.Company, ВТ_Остатки.Company) КАК Company,
-	ЕСТЬNULL(AR.Source, ВТ_Остатки.Source) КАК Source,
-	ЕСТЬNULL(AR.TransType, ВТ_Остатки.TransType) КАК TransType,
-	ЕСТЬNULL(AR.НомерДокумента, ВТ_Остатки.НомерДокумента) КАК Invoice,
-	ЕСТЬNULL(AR.Account, ВТ_Остатки.Account) КАК Account,
-	ЕСТЬNULL(AR.Currency, ВТ_Остатки.Currency) КАК Currency,
-	ЕСТЬNULL(AR.AU, ВТ_Остатки.AU) КАК AU,
-	ЕСТЬNULL(AR.Amount, 0) КАК AR_Amount,
-	ЕСТЬNULL(ВТ_Остатки.AmountОстаток, 0) КАК ERM_Amount,
-	ЕСТЬNULL(AR.Amount, 0) - ЕСТЬNULL(ВТ_Остатки.AmountОстаток, 0) КАК Difference
+	ВТ_Остатки.Client,
+	ВТ_Остатки.Company,
+	ВТ_Остатки.Source,
+	ВТ_Остатки.TransType,
+	ВТ_Остатки.Invoice,
+	ВТ_Остатки.Account,
+	ВТ_Остатки.Currency,
+	ВТ_Остатки.AU,
+	СУММА(ВТ_Остатки.AmountОстаток) КАК AmountОстаток,
+	ВТ_Остатки.НомерДокумента
+ПОМЕСТИТЬ ВТ_Остатки_Группировка
 ИЗ
 	ВТ_Остатки КАК ВТ_Остатки
+
+СГРУППИРОВАТЬ ПО
+	ВТ_Остатки.Client,
+	ВТ_Остатки.AU,
+	ВТ_Остатки.Company,
+	ВТ_Остатки.Invoice,
+	ВТ_Остатки.TransType,
+	ВТ_Остатки.Source,
+	ВТ_Остатки.НомерДокумента,
+	ВТ_Остатки.Account,
+	ВТ_Остатки.Currency
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	ЕСТЬNULL(AR.Client, ВТ_Остатки_Группировка.Client) КАК Client,
+	ЕСТЬNULL(AR.Company, ВТ_Остатки_Группировка.Company) КАК Company,
+	ЕСТЬNULL(AR.Source, ВТ_Остатки_Группировка.Source) КАК Source,
+	ЕСТЬNULL(AR.TransType, ВТ_Остатки_Группировка.TransType) КАК TransType,
+	ЕСТЬNULL(AR.НомерДокумента, ВТ_Остатки_Группировка.НомерДокумента) КАК Invoice,
+	ЕСТЬNULL(AR.Account, ВТ_Остатки_Группировка.Account) КАК Account,
+	ЕСТЬNULL(AR.Currency, ВТ_Остатки_Группировка.Currency) КАК Currency,
+	ЕСТЬNULL(AR.AU, ВТ_Остатки_Группировка.AU) КАК AU,
+	ЕСТЬNULL(AR.Amount, 0) КАК AR_Amount,
+	ЕСТЬNULL(ВТ_Остатки_Группировка.AmountОстаток, 0) КАК ERM_Amount,
+	ЕСТЬNULL(AR.Amount, 0) - ЕСТЬNULL(ВТ_Остатки_Группировка.AmountОстаток, 0) КАК Difference
+ИЗ
+	ВТ_Остатки_Группировка КАК ВТ_Остатки_Группировка
 		ПОЛНОЕ СОЕДИНЕНИЕ AR КАК AR
-		ПО ВТ_Остатки.Client = AR.Client
-			И ВТ_Остатки.Company = AR.Company
-			И ВТ_Остатки.Source = AR.Source
-			И ВТ_Остатки.Invoice = AR.Invoice
-			И ВТ_Остатки.Account = AR.Account
-			И ВТ_Остатки.Currency = AR.Currency
-			И ВТ_Остатки.AU = AR.AU
+		ПО ВТ_Остатки_Группировка.Client = AR.Client
+			И ВТ_Остатки_Группировка.Company = AR.Company
+			И ВТ_Остатки_Группировка.Source = AR.Source
+			И ВТ_Остатки_Группировка.Invoice = AR.Invoice
+			И ВТ_Остатки_Группировка.Account = AR.Account
+			И ВТ_Остатки_Группировка.Currency = AR.Currency
+			И ВТ_Остатки_Группировка.AU = AR.AU
+			И ВТ_Остатки_Группировка.TransType = AR.TransType
 ГДЕ
-	ЕСТЬNULL(AR.Amount, 0) &lt;&gt; ЕСТЬNULL(ВТ_Остатки.AmountОстаток, 0)</query>
+	ЕСТЬNULL(AR.Amount, 0) &lt;&gt; ЕСТЬNULL(ВТ_Остатки_Группировка.AmountОстаток, 0)</query>
 	</dataSet>
 	<parameter>
 		<name>Период</name>
