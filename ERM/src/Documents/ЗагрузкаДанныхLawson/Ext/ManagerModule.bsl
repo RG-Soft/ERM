@@ -2055,8 +2055,13 @@
 		ИначеЕсли ПроводкаDSSОбъект.SourceCode = "RQ" ИЛИ ПроводкаDSSОбъект.SourceCode = "RX" Тогда // рассматриваем отдельно, т.к. это должно относиться к существующему бэтчу
 			
 			Если ПроводкаDSSОбъект.AccountLawson = ПланыСчетов.Lawson.ReceivedNotApplied ИЛИ ПроводкаDSSОбъект.AccountLawson = ПланыСчетов.Lawson.AdvancesFromCustomers Тогда // 120102 или 209000
-				СтрокаCashBatch = КэшCashBatch.Найти(ПроводкаDSSОбъект.ArBatchNbr, "ArBatchNbr");
-				Если СтрокаCashBatch = Неопределено Тогда
+				//СтрокаCashBatch = КэшCashBatch.Найти(ПроводкаDSSОбъект.ArBatchNbr, "ArBatchNbr");
+				//Если СтрокаCashBatch = Неопределено Тогда
+				СтруктураПоискаBatch.ARBatchNbr = ПроводкаDSSОбъект.ArBatchNbr;
+				СтруктураПоискаBatch.Company    = ПроводкаDSSОбъект.Company;
+				СтруктураПоискаBatch.Prepayment = ПроводкаDSSОбъект.AccountLawson = ПланыСчетов.Lawson.AdvancesFromCustomers;
+				СтрокиCashBatch = КэшCashBatch.НайтиСтроки(СтруктураПоискаBatch);
+				Если СтрокиCashBatch.Количество() = 0 Тогда
 					// { RGS TAlmazova 09.11.2016 10:53:28 - костыль для октября 2016
 					Если ПроводкаDSSОбъект.AccountingPeriod >= ДатаВыверенныхОстатков Тогда
 					//Если ПроводкаDSSОбъект.AccountingPeriod >= ДатаВыверенныхОстатков И НЕ(ПроводкаDSSОбъект.Номер = 5581333965) Тогда
@@ -2075,7 +2080,8 @@
 						ДобавитьСвязанныйОбъект(ПроводкаDSSОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.CashBatch, Документы.CashBatch.ПустаяСсылка());
 					КонецЕсли;
 				Иначе
-					ДобавитьСвязанныйОбъект(ПроводкаDSSОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.CashBatch, СтрокаCashBatch.CashBatch);
+					//ДобавитьСвязанныйОбъект(ПроводкаDSSОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.CashBatch, СтрокаCashBatch.CashBatch);
+					ДобавитьСвязанныйОбъект(ПроводкаDSSОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.CashBatch, СтрокиCashBatch[0].CashBatch);
 				КонецЕсли;
 				
 			Иначе
