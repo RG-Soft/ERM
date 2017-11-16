@@ -399,6 +399,96 @@
 				</dcscor:item>
 			</appearance>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>NotDue</dataPath>
+			<field>NotDue</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Not due</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>InRangeNoColl</dataPath>
+			<field>InRangeNoColl</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>In range no coll</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>UnderLitigation</dataPath>
+			<field>UnderLitigation</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Under litigation</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>FcstCollect</dataPath>
+			<field>FcstCollect</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Fcst collect</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>NoFrcst</dataPath>
+			<field>NoFrcst</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>No frcst</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>DueTo</dataPath>
+			<field>DueTo</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Due to</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>OverdueDispute</dataPath>
+			<field>OverdueDispute</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Overdue dispute</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>DueFrom</dataPath>
+			<field>DueFrom</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Due from</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>OverdueNoFcst</dataPath>
+			<field>OverdueNoFcst</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Overdue no fcst</v8:content>
+				</v8:item>
+			</title>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	BilledARОстатки.Client КАК Client,
@@ -865,13 +955,14 @@
 		ИНАЧЕ ВТ_Остатки.Company.DefaultLegalEntity
 	КОНЕЦ КАК LegalEntity,
 	СУММА(ВЫБОР
-			КОГДА ВТ_Остатки.Currency = &amp;Рубль
+			КОГДА ВТ_Остатки.Currency &lt;&gt; &amp;USD
 					И ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0) = 0
 				ТОГДА 0
-			КОГДА ВТ_Остатки.Currency = &amp;Рубль
+			КОГДА ВТ_Остатки.Currency &lt;&gt; &amp;USD
 				ТОГДА ВТ_Остатки.AmountОстаток / ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0)
 			ИНАЧЕ ВТ_Остатки.AmountОстаток
 		КОНЕЦ) КАК USDAmount
+ПОМЕСТИТЬ ВТ_ДетальныеЗаписи
 ИЗ
 	ВТ_ОстаткиБезОплатТекущегоПериода КАК ВТ_Остатки
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ИерархияКлиентов КАК ВТ_ИерархияКлиентов
@@ -994,95 +1085,446 @@
 	КОНЕЦ
 
 ИМЕЮЩИЕ
-	СУММА(ВТ_Остатки.AmountОстаток) &lt;&gt; 0</query>
+	СУММА(ВТ_Остатки.AmountОстаток) &lt;&gt; 0
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	ВТ_ДетальныеЗаписи.Client,
+	ВТ_ДетальныеЗаписи.Company,
+	ВТ_ДетальныеЗаписи.Source,
+	ВТ_ДетальныеЗаписи.Location,
+	ВТ_ДетальныеЗаписи.SubSubSegment,
+	ВТ_ДетальныеЗаписи.Account,
+	ВТ_ДетальныеЗаписи.Currency,
+	ВТ_ДетальныеЗаписи.AU,
+	ВТ_ДетальныеЗаписи.ИдентификаторКлиента,
+	ВТ_ДетальныеЗаписи.AmountОстаток,
+	ВТ_ДетальныеЗаписи.BaseAmountОстаток,
+	ВТ_ДетальныеЗаписи.ГоловнойКонтрагент,
+	ВТ_ДетальныеЗаписи.Rate,
+	ВТ_ДетальныеЗаписи.Status,
+	ВТ_ДетальныеЗаписи.ConfirmedBy,
+	ВТ_ДетальныеЗаписи.Comment,
+	ВТ_ДетальныеЗаписи.ПредставлениеДокумента,
+	ВТ_ДетальныеЗаписи.ForecastDate,
+	ВТ_ДетальныеЗаписи.CustInputDate,
+	ВТ_ДетальныеЗаписи.CustomerRepresentative,
+	ВТ_ДетальныеЗаписи.CustomerInputDetails,
+	ВТ_ДетальныеЗаписи.SLBAssignedTo,
+	ВТ_ДетальныеЗаписи.RemedialWorkPlan,
+	ВТ_ДетальныеЗаписи.RWDTargetDate,
+	ВТ_ДетальныеЗаписи.InvoiceДатаВозвратаКС,
+	ВТ_ДетальныеЗаписи.InvoiceДатаОтправкиКС,
+	ВТ_ДетальныеЗаписи.InvoiceСтатусВозвратаКС,
+	ВТ_ДетальныеЗаписи.InvoiceКомментарийСтатусаВозвратаКС,
+	ВТ_ДетальныеЗаписи.Collector,
+	ВТ_ДетальныеЗаписи.Agreement,
+	ВТ_ДетальныеЗаписи.InvoiceНомер,
+	ВТ_ДетальныеЗаписи.InvoiceНомерДокумента,
+	ВТ_ДетальныеЗаписи.InvoiceДата,
+	ВТ_ДетальныеЗаписи.InvoiceFiscalInvoiceNo,
+	ВТ_ДетальныеЗаписи.InvoiceFiscalInvoiceDate,
+	ВТ_ДетальныеЗаписи.InvoiceAmount,
+	ВТ_ДетальныеЗаписи.InvoiceContractTrigger,
+	ВТ_ДетальныеЗаписи.InvoiceTriggerDate,
+	ВТ_ДетальныеЗаписи.InvoiceContractPTDaysFrom,
+	ВТ_ДетальныеЗаписи.InvoiceContractСрокОплаты,
+	ВТ_ДетальныеЗаписи.InvoiceDueDateFrom,
+	ВТ_ДетальныеЗаписи.InvoiceDueDateTo,
+	ВТ_ДетальныеЗаписи.InvoiceStatusOfDispute,
+	ВТ_ДетальныеЗаписи.InvoiceDisputeDistributedDate,
+	ВТ_ДетальныеЗаписи.InvoiceDisputeCollectableDate,
+	ВТ_ДетальныеЗаписи.InvoiceContractAmendmentName,
+	ВТ_ДетальныеЗаписи.TransType,
+	ВТ_ДетальныеЗаписи.Paid,
+	ВТ_ДетальныеЗаписи.PaymentDate,
+	ВТ_ДетальныеЗаписи.BrokenPromises,
+	ВТ_ДетальныеЗаписи.EscalationSent,
+	ВТ_ДетальныеЗаписи.LegalEntity,
+	ВТ_ДетальныеЗаписи.USDAmount,
+	ВЫБОР
+		КОГДА ВТ_ДетальныеЗаписи.InvoiceDueDateFrom &lt;= &amp;Период
+			ТОГДА ВТ_ДетальныеЗаписи.USDAmount
+		ИНАЧЕ 0
+	КОНЕЦ КАК DueFrom,
+	ВЫБОР
+		КОГДА ВТ_ДетальныеЗаписи.InvoiceDueDateTo &lt;= &amp;Период
+			ТОГДА ВТ_ДетальныеЗаписи.USDAmount
+		ИНАЧЕ 0
+	КОНЕЦ КАК DueTo,
+	ВЫБОР
+		КОГДА ВТ_ДетальныеЗаписи.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.CustomerIsInsolventOrBankrupt)
+			ТОГДА ВТ_ДетальныеЗаписи.USDAmount
+		ИНАЧЕ 0
+	КОНЕЦ КАК UnderLitigation,
+	ВЫБОР
+		КОГДА ВТ_ДетальныеЗаписи.ForecastDate = ДАТАВРЕМЯ(1, 1, 1)
+			ТОГДА ВТ_ДетальныеЗаписи.USDAmount
+		ИНАЧЕ 0
+	КОНЕЦ КАК NoFrcst
+ПОМЕСТИТЬ ВТ_РассчитанныеРесурсыУровень1
+ИЗ
+	ВТ_ДетальныеЗаписи КАК ВТ_ДетальныеЗаписи
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	ВТ_РассчитанныеРесурсыУровень1.Client,
+	ВТ_РассчитанныеРесурсыУровень1.Company,
+	ВТ_РассчитанныеРесурсыУровень1.Source,
+	ВТ_РассчитанныеРесурсыУровень1.Location,
+	ВТ_РассчитанныеРесурсыУровень1.SubSubSegment,
+	ВТ_РассчитанныеРесурсыУровень1.Account,
+	ВТ_РассчитанныеРесурсыУровень1.Currency,
+	ВТ_РассчитанныеРесурсыУровень1.AU,
+	ВТ_РассчитанныеРесурсыУровень1.ИдентификаторКлиента,
+	ВТ_РассчитанныеРесурсыУровень1.AmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень1.BaseAmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень1.ГоловнойКонтрагент,
+	ВТ_РассчитанныеРесурсыУровень1.Rate,
+	ВТ_РассчитанныеРесурсыУровень1.Status,
+	ВТ_РассчитанныеРесурсыУровень1.ConfirmedBy,
+	ВТ_РассчитанныеРесурсыУровень1.Comment,
+	ВТ_РассчитанныеРесурсыУровень1.ПредставлениеДокумента,
+	ВТ_РассчитанныеРесурсыУровень1.ForecastDate,
+	ВТ_РассчитанныеРесурсыУровень1.CustInputDate,
+	ВТ_РассчитанныеРесурсыУровень1.CustomerRepresentative,
+	ВТ_РассчитанныеРесурсыУровень1.CustomerInputDetails,
+	ВТ_РассчитанныеРесурсыУровень1.SLBAssignedTo,
+	ВТ_РассчитанныеРесурсыУровень1.RemedialWorkPlan,
+	ВТ_РассчитанныеРесурсыУровень1.RWDTargetDate,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceДатаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceДатаОтправкиКС,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceСтатусВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceКомментарийСтатусаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень1.Collector,
+	ВТ_РассчитанныеРесурсыУровень1.Agreement,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceНомер,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceНомерДокумента,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceДата,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceFiscalInvoiceNo,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceFiscalInvoiceDate,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceAmount,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceContractTrigger,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceTriggerDate,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceContractPTDaysFrom,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceContractСрокОплаты,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceDueDateFrom,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceDueDateTo,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceStatusOfDispute,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceDisputeDistributedDate,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceDisputeCollectableDate,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceContractAmendmentName,
+	ВТ_РассчитанныеРесурсыУровень1.TransType,
+	ВТ_РассчитанныеРесурсыУровень1.Paid,
+	ВТ_РассчитанныеРесурсыУровень1.PaymentDate,
+	ВТ_РассчитанныеРесурсыУровень1.BrokenPromises,
+	ВТ_РассчитанныеРесурсыУровень1.EscalationSent,
+	ВТ_РассчитанныеРесурсыУровень1.LegalEntity,
+	ВТ_РассчитанныеРесурсыУровень1.USDAmount,
+	ВТ_РассчитанныеРесурсыУровень1.DueFrom,
+	ВТ_РассчитанныеРесурсыУровень1.DueTo,
+	ВТ_РассчитанныеРесурсыУровень1.UnderLitigation,
+	ВТ_РассчитанныеРесурсыУровень1.NoFrcst,
+	ВЫБОР
+		КОГДА ВТ_РассчитанныеРесурсыУровень1.ForecastDate &lt;= &amp;Период
+				И ВТ_РассчитанныеРесурсыУровень1.ForecastDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
+			ТОГДА ВТ_РассчитанныеРесурсыУровень1.USDAmount - ВТ_РассчитанныеРесурсыУровень1.Paid
+		ИНАЧЕ 0
+	КОНЕЦ КАК FcstCollect
+ПОМЕСТИТЬ ВТ_РассчитанныеРесурсыУровень2
+ИЗ
+	ВТ_РассчитанныеРесурсыУровень1 КАК ВТ_РассчитанныеРесурсыУровень1
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	ВТ_РассчитанныеРесурсыУровень2.Client,
+	ВТ_РассчитанныеРесурсыУровень2.Company,
+	ВТ_РассчитанныеРесурсыУровень2.Source,
+	ВТ_РассчитанныеРесурсыУровень2.Location,
+	ВТ_РассчитанныеРесурсыУровень2.SubSubSegment,
+	ВТ_РассчитанныеРесурсыУровень2.Account,
+	ВТ_РассчитанныеРесурсыУровень2.Currency,
+	ВТ_РассчитанныеРесурсыУровень2.AU,
+	ВТ_РассчитанныеРесурсыУровень2.ИдентификаторКлиента,
+	ВТ_РассчитанныеРесурсыУровень2.AmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень2.BaseAmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень2.ГоловнойКонтрагент,
+	ВТ_РассчитанныеРесурсыУровень2.Rate,
+	ВТ_РассчитанныеРесурсыУровень2.Status,
+	ВТ_РассчитанныеРесурсыУровень2.ConfirmedBy,
+	ВТ_РассчитанныеРесурсыУровень2.Comment,
+	ВТ_РассчитанныеРесурсыУровень2.ПредставлениеДокумента,
+	ВТ_РассчитанныеРесурсыУровень2.ForecastDate,
+	ВТ_РассчитанныеРесурсыУровень2.CustInputDate,
+	ВТ_РассчитанныеРесурсыУровень2.CustomerRepresentative,
+	ВТ_РассчитанныеРесурсыУровень2.CustomerInputDetails,
+	ВТ_РассчитанныеРесурсыУровень2.SLBAssignedTo,
+	ВТ_РассчитанныеРесурсыУровень2.RemedialWorkPlan,
+	ВТ_РассчитанныеРесурсыУровень2.RWDTargetDate,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceДатаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceДатаОтправкиКС,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceСтатусВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceКомментарийСтатусаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень2.Collector,
+	ВТ_РассчитанныеРесурсыУровень2.Agreement,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceНомер,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceНомерДокумента,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceДата,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceFiscalInvoiceNo,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceFiscalInvoiceDate,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceAmount,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceContractTrigger,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceTriggerDate,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceContractPTDaysFrom,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceContractСрокОплаты,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceDueDateFrom,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceDueDateTo,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceStatusOfDispute,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceDisputeDistributedDate,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceDisputeCollectableDate,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceContractAmendmentName,
+	ВТ_РассчитанныеРесурсыУровень2.TransType,
+	ВТ_РассчитанныеРесурсыУровень2.Paid,
+	ВТ_РассчитанныеРесурсыУровень2.PaymentDate,
+	ВТ_РассчитанныеРесурсыУровень2.BrokenPromises,
+	ВТ_РассчитанныеРесурсыУровень2.EscalationSent,
+	ВТ_РассчитанныеРесурсыУровень2.LegalEntity,
+	ВТ_РассчитанныеРесурсыУровень2.USDAmount,
+	ВТ_РассчитанныеРесурсыУровень2.DueFrom,
+	ВТ_РассчитанныеРесурсыУровень2.DueTo,
+	ВТ_РассчитанныеРесурсыУровень2.UnderLitigation,
+	ВТ_РассчитанныеРесурсыУровень2.NoFrcst,
+	ВТ_РассчитанныеРесурсыУровень2.FcstCollect,
+	ВЫБОР
+		КОГДА ВТ_РассчитанныеРесурсыУровень2.Status В (ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.PendingSLBDocumentation), ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.Pricing), ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.TechnicalSQ), ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.LostInHole))
+				И ВТ_РассчитанныеРесурсыУровень2.InvoiceDueDateFrom &lt;= &amp;Период
+			ТОГДА ВТ_РассчитанныеРесурсыУровень2.USDAmount - ВТ_РассчитанныеРесурсыУровень2.Paid - ВТ_РассчитанныеРесурсыУровень2.FcstCollect
+		ИНАЧЕ 0
+	КОНЕЦ КАК OverdueDispute
+ПОМЕСТИТЬ ВТ_РассчитанныеРесурсыУровень3
+ИЗ
+	ВТ_РассчитанныеРесурсыУровень2 КАК ВТ_РассчитанныеРесурсыУровень2
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	ВТ_РассчитанныеРесурсыУровень3.Client,
+	ВТ_РассчитанныеРесурсыУровень3.Company,
+	ВТ_РассчитанныеРесурсыУровень3.Source,
+	ВТ_РассчитанныеРесурсыУровень3.Location,
+	ВТ_РассчитанныеРесурсыУровень3.SubSubSegment,
+	ВТ_РассчитанныеРесурсыУровень3.Account,
+	ВТ_РассчитанныеРесурсыУровень3.Currency,
+	ВТ_РассчитанныеРесурсыУровень3.AU,
+	ВТ_РассчитанныеРесурсыУровень3.ИдентификаторКлиента,
+	ВТ_РассчитанныеРесурсыУровень3.AmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень3.BaseAmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень3.ГоловнойКонтрагент,
+	ВТ_РассчитанныеРесурсыУровень3.Rate,
+	ВТ_РассчитанныеРесурсыУровень3.Status,
+	ВТ_РассчитанныеРесурсыУровень3.ConfirmedBy,
+	ВТ_РассчитанныеРесурсыУровень3.Comment,
+	ВТ_РассчитанныеРесурсыУровень3.ПредставлениеДокумента,
+	ВТ_РассчитанныеРесурсыУровень3.ForecastDate,
+	ВТ_РассчитанныеРесурсыУровень3.CustInputDate,
+	ВТ_РассчитанныеРесурсыУровень3.CustomerRepresentative,
+	ВТ_РассчитанныеРесурсыУровень3.CustomerInputDetails,
+	ВТ_РассчитанныеРесурсыУровень3.SLBAssignedTo,
+	ВТ_РассчитанныеРесурсыУровень3.RemedialWorkPlan,
+	ВТ_РассчитанныеРесурсыУровень3.RWDTargetDate,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceДатаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceДатаОтправкиКС,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceСтатусВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceКомментарийСтатусаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень3.Collector,
+	ВТ_РассчитанныеРесурсыУровень3.Agreement,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceНомер,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceНомерДокумента,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceДата,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceFiscalInvoiceNo,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceFiscalInvoiceDate,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceAmount,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceContractTrigger,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceTriggerDate,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceContractPTDaysFrom,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceContractСрокОплаты,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceDueDateFrom,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceDueDateTo,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceStatusOfDispute,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceDisputeDistributedDate,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceDisputeCollectableDate,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceContractAmendmentName,
+	ВТ_РассчитанныеРесурсыУровень3.TransType,
+	ВТ_РассчитанныеРесурсыУровень3.Paid,
+	ВТ_РассчитанныеРесурсыУровень3.PaymentDate,
+	ВТ_РассчитанныеРесурсыУровень3.BrokenPromises,
+	ВТ_РассчитанныеРесурсыУровень3.EscalationSent,
+	ВТ_РассчитанныеРесурсыУровень3.LegalEntity,
+	ВТ_РассчитанныеРесурсыУровень3.USDAmount,
+	ВТ_РассчитанныеРесурсыУровень3.DueFrom,
+	ВТ_РассчитанныеРесурсыУровень3.DueTo,
+	ВТ_РассчитанныеРесурсыУровень3.UnderLitigation,
+	ВТ_РассчитанныеРесурсыУровень3.NoFrcst,
+	ВТ_РассчитанныеРесурсыУровень3.FcstCollect,
+	ВТ_РассчитанныеРесурсыУровень3.OverdueDispute,
+	ВЫБОР
+		КОГДА ВТ_РассчитанныеРесурсыУровень3.ForecastDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
+				И ВТ_РассчитанныеРесурсыУровень3.DueTo &gt; ВТ_РассчитанныеРесурсыУровень3.FcstCollect
+			ТОГДА ВТ_РассчитанныеРесурсыУровень3.USDAmount - ВТ_РассчитанныеРесурсыУровень3.FcstCollect - ВТ_РассчитанныеРесурсыУровень3.Paid - ВТ_РассчитанныеРесурсыУровень3.UnderLitigation - ВТ_РассчитанныеРесурсыУровень3.OverdueDispute
+		ИНАЧЕ 0
+	КОНЕЦ КАК OverdueNoFcst
+ПОМЕСТИТЬ ВТ_РассчитанныеРесурсыУровень4
+ИЗ
+	ВТ_РассчитанныеРесурсыУровень3 КАК ВТ_РассчитанныеРесурсыУровень3
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	ВТ_РассчитанныеРесурсыУровень4.Client,
+	ВТ_РассчитанныеРесурсыУровень4.Company,
+	ВТ_РассчитанныеРесурсыУровень4.Source,
+	ВТ_РассчитанныеРесурсыУровень4.Location,
+	ВТ_РассчитанныеРесурсыУровень4.SubSubSegment,
+	ВТ_РассчитанныеРесурсыУровень4.Account,
+	ВТ_РассчитанныеРесурсыУровень4.Currency,
+	ВТ_РассчитанныеРесурсыУровень4.AU,
+	ВТ_РассчитанныеРесурсыУровень4.ИдентификаторКлиента,
+	ВТ_РассчитанныеРесурсыУровень4.AmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень4.BaseAmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень4.ГоловнойКонтрагент,
+	ВТ_РассчитанныеРесурсыУровень4.Rate,
+	ВТ_РассчитанныеРесурсыУровень4.Status,
+	ВТ_РассчитанныеРесурсыУровень4.ConfirmedBy,
+	ВТ_РассчитанныеРесурсыУровень4.Comment,
+	ВТ_РассчитанныеРесурсыУровень4.ПредставлениеДокумента,
+	ВТ_РассчитанныеРесурсыУровень4.ForecastDate,
+	ВТ_РассчитанныеРесурсыУровень4.CustInputDate,
+	ВТ_РассчитанныеРесурсыУровень4.CustomerRepresentative,
+	ВТ_РассчитанныеРесурсыУровень4.CustomerInputDetails,
+	ВТ_РассчитанныеРесурсыУровень4.SLBAssignedTo,
+	ВТ_РассчитанныеРесурсыУровень4.RemedialWorkPlan,
+	ВТ_РассчитанныеРесурсыУровень4.RWDTargetDate,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceДатаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceДатаОтправкиКС,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceСтатусВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceКомментарийСтатусаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень4.Collector,
+	ВТ_РассчитанныеРесурсыУровень4.Agreement,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceНомер,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceНомерДокумента,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceДата,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceFiscalInvoiceNo,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceFiscalInvoiceDate,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceAmount,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceContractTrigger,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceTriggerDate,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceContractPTDaysFrom,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceContractСрокОплаты,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceDueDateFrom,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceDueDateTo,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceStatusOfDispute,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceDisputeDistributedDate,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceDisputeCollectableDate,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceContractAmendmentName,
+	ВТ_РассчитанныеРесурсыУровень4.TransType,
+	ВТ_РассчитанныеРесурсыУровень4.Paid,
+	ВТ_РассчитанныеРесурсыУровень4.PaymentDate,
+	ВТ_РассчитанныеРесурсыУровень4.BrokenPromises,
+	ВТ_РассчитанныеРесурсыУровень4.EscalationSent,
+	ВТ_РассчитанныеРесурсыУровень4.LegalEntity,
+	ВТ_РассчитанныеРесурсыУровень4.USDAmount,
+	ВТ_РассчитанныеРесурсыУровень4.DueFrom,
+	ВТ_РассчитанныеРесурсыУровень4.DueTo,
+	ВТ_РассчитанныеРесурсыУровень4.UnderLitigation,
+	ВТ_РассчитанныеРесурсыУровень4.NoFrcst,
+	ВТ_РассчитанныеРесурсыУровень4.FcstCollect,
+	ВТ_РассчитанныеРесурсыУровень4.OverdueDispute,
+	ВТ_РассчитанныеРесурсыУровень4.OverdueNoFcst,
+	ВЫБОР
+		КОГДА ВТ_РассчитанныеРесурсыУровень4.ForecastDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
+				И ВТ_РассчитанныеРесурсыУровень4.DueFrom &gt; ВТ_РассчитанныеРесурсыУровень4.FcstCollect
+			ТОГДА ВТ_РассчитанныеРесурсыУровень4.USDAmount - ВТ_РассчитанныеРесурсыУровень4.FcstCollect - ВТ_РассчитанныеРесурсыУровень4.OverdueNoFcst - ВТ_РассчитанныеРесурсыУровень4.Paid - ВТ_РассчитанныеРесурсыУровень4.UnderLitigation - ВТ_РассчитанныеРесурсыУровень4.OverdueDispute
+		ИНАЧЕ 0
+	КОНЕЦ КАК InRangeNoColl
+ПОМЕСТИТЬ ВТ_РассчитанныеРесурсыУровень5
+ИЗ
+	ВТ_РассчитанныеРесурсыУровень4 КАК ВТ_РассчитанныеРесурсыУровень4
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	ВТ_РассчитанныеРесурсыУровень5.Client,
+	ВТ_РассчитанныеРесурсыУровень5.Company,
+	ВТ_РассчитанныеРесурсыУровень5.Source,
+	ВТ_РассчитанныеРесурсыУровень5.Location,
+	ВТ_РассчитанныеРесурсыУровень5.SubSubSegment,
+	ВТ_РассчитанныеРесурсыУровень5.Account,
+	ВТ_РассчитанныеРесурсыУровень5.Currency,
+	ВТ_РассчитанныеРесурсыУровень5.AU,
+	ВТ_РассчитанныеРесурсыУровень5.ИдентификаторКлиента,
+	ВТ_РассчитанныеРесурсыУровень5.AmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень5.BaseAmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень5.ГоловнойКонтрагент,
+	ВТ_РассчитанныеРесурсыУровень5.Rate,
+	ВТ_РассчитанныеРесурсыУровень5.Status,
+	ВТ_РассчитанныеРесурсыУровень5.ConfirmedBy,
+	ВТ_РассчитанныеРесурсыУровень5.Comment,
+	ВТ_РассчитанныеРесурсыУровень5.ПредставлениеДокумента,
+	ВТ_РассчитанныеРесурсыУровень5.ForecastDate,
+	ВТ_РассчитанныеРесурсыУровень5.CustInputDate,
+	ВТ_РассчитанныеРесурсыУровень5.CustomerRepresentative,
+	ВТ_РассчитанныеРесурсыУровень5.CustomerInputDetails,
+	ВТ_РассчитанныеРесурсыУровень5.SLBAssignedTo,
+	ВТ_РассчитанныеРесурсыУровень5.RemedialWorkPlan,
+	ВТ_РассчитанныеРесурсыУровень5.RWDTargetDate,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceДатаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceДатаОтправкиКС,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceСтатусВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceКомментарийСтатусаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень5.Collector,
+	ВТ_РассчитанныеРесурсыУровень5.Agreement,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceНомер,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceНомерДокумента,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceДата,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceFiscalInvoiceNo,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceFiscalInvoiceDate,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceAmount,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceContractTrigger,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceTriggerDate,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceContractPTDaysFrom,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceContractСрокОплаты,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceDueDateFrom,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceDueDateTo,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceStatusOfDispute,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceDisputeDistributedDate,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceDisputeCollectableDate,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceContractAmendmentName,
+	ВТ_РассчитанныеРесурсыУровень5.TransType,
+	ВТ_РассчитанныеРесурсыУровень5.Paid,
+	ВТ_РассчитанныеРесурсыУровень5.PaymentDate,
+	ВТ_РассчитанныеРесурсыУровень5.BrokenPromises,
+	ВТ_РассчитанныеРесурсыУровень5.EscalationSent,
+	ВТ_РассчитанныеРесурсыУровень5.LegalEntity,
+	ВТ_РассчитанныеРесурсыУровень5.USDAmount,
+	ВТ_РассчитанныеРесурсыУровень5.DueFrom,
+	ВТ_РассчитанныеРесурсыУровень5.DueTo,
+	ВТ_РассчитанныеРесурсыУровень5.UnderLitigation,
+	ВТ_РассчитанныеРесурсыУровень5.NoFrcst,
+	ВТ_РассчитанныеРесурсыУровень5.FcstCollect,
+	ВТ_РассчитанныеРесурсыУровень5.OverdueDispute,
+	ВТ_РассчитанныеРесурсыУровень5.OverdueNoFcst,
+	ВТ_РассчитанныеРесурсыУровень5.InRangeNoColl,
+	ВЫБОР
+		КОГДА ВТ_РассчитанныеРесурсыУровень5.ForecastDate = ДАТАВРЕМЯ(1, 1, 1)
+			ТОГДА 0
+		ИНАЧЕ ВТ_РассчитанныеРесурсыУровень5.USDAmount - ВТ_РассчитанныеРесурсыУровень5.Paid - ВТ_РассчитанныеРесурсыУровень5.FcstCollect - ВТ_РассчитанныеРесурсыУровень5.InRangeNoColl - ВТ_РассчитанныеРесурсыУровень5.OverdueDispute - ВТ_РассчитанныеРесурсыУровень5.OverdueNoFcst - ВТ_РассчитанныеРесурсыУровень5.UnderLitigation
+	КОНЕЦ КАК NotDue
+ИЗ
+	ВТ_РассчитанныеРесурсыУровень5 КАК ВТ_РассчитанныеРесурсыУровень5</query>
 	</dataSet>
-	<calculatedField>
-		<dataPath>DueFrom</dataPath>
-		<expression>ВЫБОР КОГДА InvoiceDueDateFrom &lt;= &amp;Период ТОГДА USDAmount ИНАЧЕ 0 КОНЕЦ</expression>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Due From</v8:content>
-			</v8:item>
-		</title>
-		<appearance>
-			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-				<dcscor:parameter>Формат</dcscor:parameter>
-				<dcscor:value xsi:type="xs:string">ЧДЦ=2</dcscor:value>
-			</dcscor:item>
-		</appearance>
-	</calculatedField>
-	<calculatedField>
-		<dataPath>DueTo</dataPath>
-		<expression>ВЫБОР КОГДА InvoiceDueDateTo &lt;= &amp;Период ТОГДА USDAmount ИНАЧЕ 0 КОНЕЦ</expression>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Due To</v8:content>
-			</v8:item>
-		</title>
-		<appearance>
-			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-				<dcscor:parameter>Формат</dcscor:parameter>
-				<dcscor:value xsi:type="xs:string">ЧДЦ=2</dcscor:value>
-			</dcscor:item>
-		</appearance>
-	</calculatedField>
-	<calculatedField>
-		<dataPath>FcstCollect</dataPath>
-		<expression>ВЫБОР КОГДА ForecastDate &lt;= &amp;Период И ForecastDate &lt;&gt; ДАТАВРЕМЯ(1,1,1)
-	ТОГДА USDAmount - Paid
-	ИНАЧЕ 0
-КОНЕЦ</expression>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Fcst Collect</v8:content>
-			</v8:item>
-		</title>
-		<appearance>
-			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-				<dcscor:parameter>Формат</dcscor:parameter>
-				<dcscor:value xsi:type="xs:string">ЧДЦ=2</dcscor:value>
-			</dcscor:item>
-		</appearance>
-	</calculatedField>
-	<calculatedField>
-		<dataPath>NoFrcst</dataPath>
-		<expression>ВЫБОР КОГДА ForecastDate = ДАТАВРЕМЯ(1,1,1) ТОГДА USDAmount ИНАЧЕ 0 КОНЕЦ</expression>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>No Frcst</v8:content>
-			</v8:item>
-		</title>
-		<appearance>
-			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-				<dcscor:parameter>Формат</dcscor:parameter>
-				<dcscor:value xsi:type="xs:string">ЧДЦ=2</dcscor:value>
-			</dcscor:item>
-		</appearance>
-	</calculatedField>
-	<calculatedField>
-		<dataPath>Insolvent</dataPath>
-		<expression>ВЫБОР
-    КОГДА Status = Значение(Перечисление.InvoiceStatus.CustomerIsInsolventOrBankrupt)
-        ТОГДА USDAmount
-    ИНАЧЕ 0
-КОНЕЦ</expression>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Under Litigation</v8:content>
-			</v8:item>
-		</title>
-		<appearance>
-			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-				<dcscor:parameter>Формат</dcscor:parameter>
-				<dcscor:value xsi:type="xs:string">ЧДЦ=2</dcscor:value>
-			</dcscor:item>
-		</appearance>
-	</calculatedField>
 	<calculatedField>
 		<dataPath>BaseAmountОстатокМодуль</dataPath>
 		<expression>Выбор Когда BaseAmountОстаток &gt; 0 Тогда BaseAmountОстаток Иначе -BaseAmountОстаток Конец</expression>
@@ -1115,18 +1557,6 @@
 				<dcscor:value xsi:type="xs:string">ДФ=MM/dd/yyyy</dcscor:value>
 			</dcscor:item>
 		</inputParameters>
-	</parameter>
-	<parameter>
-		<name>Рубль</name>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Рубль</v8:content>
-			</v8:item>
-		</title>
-		<value xsi:nil="true"/>
-		<useRestriction>true</useRestriction>
-		<expression>Справочники.Валюты.НайтиПоКоду("643")</expression>
 	</parameter>
 	<parameter>
 		<name>ПериодОстатков</name>
@@ -1209,6 +1639,21 @@
 		<expression>КонецПериода(&amp;Период,"МЕСЯЦ")</expression>
 		<availableAsField>false</availableAsField>
 	</parameter>
+	<parameter>
+		<name>USD</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>USD</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:CatalogRef.Валюты</v8:Type>
+		</valueType>
+		<value xsi:nil="true"/>
+		<useRestriction>true</useRestriction>
+		<expression>Константы.rgsВалютаUSD.Получить()</expression>
+	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
 		<dcsset:presentation xsi:type="v8:LocalStringType">
@@ -1218,180 +1663,6 @@
 			</v8:item>
 		</dcsset:presentation>
 		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
-			<dcsset:userFields>
-				<dcsset:item xsi:type="dcsset:UserFieldExpression">
-					<dcsset:dataPath>ПользовательскиеПоля.Поле1</dcsset:dataPath>
-					<dcsset:lwsTitle>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Overdue No Fcst</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-					<dcsset:detailExpression>Выбор
-	Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
-		Тогда USDAmount - FcstCollect - Paid - Insolvent - Выбор
-				Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И InvoiceDueDateFrom &lt;= &amp;Период
-					Тогда USDAmount - Paid - FcstCollect
-				Иначе 0
-			Конец
-	Иначе 0
-Конец</dcsset:detailExpression>
-					<dcsset:detailExpressionPresentation>Выбор
-	Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
-		Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation] - Выбор
-				Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И [Invoice.Due date from] &lt;= &amp;Period
-					Тогда [USD Amount] - Paid - [Fcst Collect]
-				Иначе 0
-			Конец
-	Иначе 0
-Конец</dcsset:detailExpressionPresentation>
-					<dcsset:totalExpression/>
-					<dcsset:totalExpressionPresentation/>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:UserFieldExpression">
-					<dcsset:dataPath>ПользовательскиеПоля.Поле2</dcsset:dataPath>
-					<dcsset:lwsTitle>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>In Range no Coll</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-					<dcsset:detailExpression>Выбор
-	Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueFrom &gt; FcstCollect
-		Тогда USDAmount - FcstCollect - Выбор
-				Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
-					Тогда USDAmount - FcstCollect - Paid - Insolvent - Выбор
-							Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И InvoiceDueDateFrom &lt;= &amp;Период
-								Тогда USDAmount - Paid - FcstCollect
-							Иначе 0
-						Конец
-				Иначе 0
-			Конец - Paid - Insolvent - Выбор
-				Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И InvoiceDueDateFrom &lt;= &amp;Период
-					Тогда USDAmount - Paid - FcstCollect
-				Иначе 0
-			Конец
-	Иначе 0
-Конец</dcsset:detailExpression>
-					<dcsset:detailExpressionPresentation>Выбор
-	Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due From] &gt; [Fcst Collect]
-		Тогда [USD Amount] - [Fcst Collect] - Выбор
-				Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
-					Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation] - Выбор
-							Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И [Invoice.Due date from] &lt;= &amp;Period
-								Тогда [USD Amount] - Paid - [Fcst Collect]
-							Иначе 0
-						Конец
-				Иначе 0
-			Конец - Paid - [Under Litigation] - Выбор
-				Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И [Invoice.Due date from] &lt;= &amp;Period
-					Тогда [USD Amount] - Paid - [Fcst Collect]
-				Иначе 0
-			Конец
-	Иначе 0
-Конец</dcsset:detailExpressionPresentation>
-					<dcsset:totalExpression/>
-					<dcsset:totalExpressionPresentation/>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:UserFieldExpression">
-					<dcsset:dataPath>ПользовательскиеПоля.Поле3</dcsset:dataPath>
-					<dcsset:lwsTitle>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Not Due</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-					<dcsset:detailExpression>Выбор
-	Когда ForecastDate = ДатаВремя(1, 1, 1)
-		Тогда 0
-	Иначе USDAmount - Paid - FcstCollect - Insolvent - Выбор
-			Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueFrom &gt; FcstCollect
-				Тогда USDAmount - FcstCollect - Выбор
-						Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
-							Тогда USDAmount - FcstCollect - Paid - Insolvent - Выбор
-									Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И InvoiceDueDateFrom &lt;= &amp;Период
-										Тогда USDAmount - Paid - FcstCollect
-									Иначе 0
-								Конец
-						Иначе 0
-					Конец - Paid - Insolvent - Выбор
-						Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И InvoiceDueDateFrom &lt;= &amp;Период
-							Тогда USDAmount - Paid - FcstCollect
-						Иначе 0
-					Конец
-			Иначе 0
-		Конец - Выбор
-			Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И InvoiceDueDateFrom &lt;= &amp;Период
-				Тогда USDAmount - Paid - FcstCollect
-			Иначе 0
-		Конец - Выбор
-			Когда ForecastDate &lt;&gt; ДатаВремя(1, 1, 1) И DueTo &gt; FcstCollect
-				Тогда USDAmount - FcstCollect - Paid - Insolvent - Выбор
-						Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И InvoiceDueDateFrom &lt;= &amp;Период
-							Тогда USDAmount - Paid - FcstCollect
-						Иначе 0
-					Конец
-			Иначе 0
-		Конец
-Конец</dcsset:detailExpression>
-					<dcsset:detailExpressionPresentation>Выбор
-	Когда [Forecast date] = ДатаВремя(1, 1, 1)
-		Тогда 0
-	Иначе [USD Amount] - Paid - [Fcst Collect] - [Under Litigation] - Выбор
-			Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due From] &gt; [Fcst Collect]
-				Тогда [USD Amount] - [Fcst Collect] - Выбор
-						Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
-							Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation] - Выбор
-									Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И [Invoice.Due date from] &lt;= &amp;Period
-										Тогда [USD Amount] - Paid - [Fcst Collect]
-									Иначе 0
-								Конец
-						Иначе 0
-					Конец - Paid - [Under Litigation] - Выбор
-						Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И [Invoice.Due date from] &lt;= &amp;Period
-							Тогда [USD Amount] - Paid - [Fcst Collect]
-						Иначе 0
-					Конец
-			Иначе 0
-		Конец - Выбор
-			Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И [Invoice.Due date from] &lt;= &amp;Period
-				Тогда [USD Amount] - Paid - [Fcst Collect]
-			Иначе 0
-		Конец - Выбор
-			Когда [Forecast date] &lt;&gt; ДатаВремя(1, 1, 1) И [Due To] &gt; [Fcst Collect]
-				Тогда [USD Amount] - [Fcst Collect] - Paid - [Under Litigation] - Выбор
-						Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И [Invoice.Due date from] &lt;= &amp;Period
-							Тогда [USD Amount] - Paid - [Fcst Collect]
-						Иначе 0
-					Конец
-			Иначе 0
-		Конец
-Конец</dcsset:detailExpressionPresentation>
-					<dcsset:totalExpression/>
-					<dcsset:totalExpressionPresentation/>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:UserFieldExpression">
-					<dcsset:dataPath>ПользовательскиеПоля.Поле4</dcsset:dataPath>
-					<dcsset:lwsTitle>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Overdue – Dispute</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-					<dcsset:detailExpression>Выбор
-	Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И InvoiceDueDateFrom &lt;= &amp;Период
-		Тогда USDAmount - Paid - FcstCollect
-	Иначе 0
-Конец</dcsset:detailExpression>
-					<dcsset:detailExpressionPresentation>Выбор
-	Когда (Status = Значение(Перечисление.InvoiceStatus.PendingSLBDocumentation) Или Status = Значение(Перечисление.InvoiceStatus.Pricing) Или Status = Значение(Перечисление.InvoiceStatus.TechnicalSQ) Или Status = Значение(Перечисление.InvoiceStatus.LostInHole)) И [Invoice.Due date from] &lt;= &amp;Period
-		Тогда [USD Amount] - Paid - [Fcst Collect]
-	Иначе 0
-Конец</dcsset:detailExpressionPresentation>
-					<dcsset:totalExpression/>
-					<dcsset:totalExpressionPresentation/>
-				</dcsset:item>
-			</dcsset:userFields>
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Company.Наименование</dcsset:field>
@@ -1703,22 +1974,22 @@
 					<dcsset:field>FcstCollect</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>ПользовательскиеПоля.Поле2</dcsset:field>
+					<dcsset:field>InRangeNoColl</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>ПользовательскиеПоля.Поле4</dcsset:field>
+					<dcsset:field>OverdueDispute</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>ПользовательскиеПоля.Поле1</dcsset:field>
+					<dcsset:field>OverdueNoFcst</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>ПользовательскиеПоля.Поле3</dcsset:field>
+					<dcsset:field>NotDue</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>NoFrcst</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Insolvent</dcsset:field>
+					<dcsset:field>UnderLitigation</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -1839,6 +2110,11 @@
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:use>false</dcscor:use>
 					<dcscor:parameter>КонецМесяцаФормированияОтчета</dcscor:parameter>
+					<dcscor:value xsi:nil="true"/>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:use>false</dcscor:use>
+					<dcscor:parameter>USD</dcscor:parameter>
 					<dcscor:value xsi:nil="true"/>
 				</dcscor:item>
 			</dcsset:dataParameters>
