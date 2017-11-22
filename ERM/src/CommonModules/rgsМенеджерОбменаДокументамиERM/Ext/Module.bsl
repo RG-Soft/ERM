@@ -241,8 +241,11 @@
 	КонецЕсли;
 	
 	Если ПолученныеДанные.Source = Перечисления.ТипыСоответствий.OracleSmith И ДанныеXDTO.Свойство("ERMClientMappingID") И ДанныеXDTO.Свойство("LawsonCompanyCode") Тогда
-		ПолученныеДанные.DocID = СокрЛП(ПолученныеДанные.DocNumber) + "." + ДанныеXDTO.ERMClientMappingID + "." + СтрЗаменить(Строка(ДанныеXDTO.LawsonCompanyCode), ",", ""); 
-		ПолученныеДанные.Номер = СокрЛП(ПолученныеДанные.DocNumber) + "." + ДанныеXDTO.ERMClientMappingID + "." + СтрЗаменить(Строка(ДанныеXDTO.LawsonCompanyCode), ",", ""); 
+		//LawsonCompanyCode = СтрЗаменить(Строка(ДанныеXDTO.LawsonCompanyCode), ",", "");
+		//LawsonCompanyCode = СтрЗаменить(LawsonCompanyCode, Символы.НПП, "");
+		LawsonCompanyCode = Формат(ДанныеXDTO.LawsonCompanyCode, "ЧРГ=' '; ЧГ=0");
+		ПолученныеДанные.DocID = СокрЛП(ПолученныеДанные.DocNumber) + "." + ДанныеXDTO.ERMClientMappingID + "." + LawsonCompanyCode; 
+		ПолученныеДанные.Номер = СокрЛП(ПолученныеДанные.DocNumber) + "." + ДанныеXDTO.ERMClientMappingID + "." + LawsonCompanyCode;
 	КонецЕсли;
 	
 	Если ДанныеXDTO.Свойство("Оплачен") И ЗначениеЗаполнено(ДанныеXDTO.Оплачен) Тогда
