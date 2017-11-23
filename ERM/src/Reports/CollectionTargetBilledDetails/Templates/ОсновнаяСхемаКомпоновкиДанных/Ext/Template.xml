@@ -149,10 +149,6 @@
 			<field>InvoiceКомментарийСтатусаВозвратаКС</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>Collector</dataPath>
-			<field>Collector</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>Agreement</dataPath>
 			<field>Agreement</field>
 			<title xsi:type="v8:LocalStringType">
@@ -588,6 +584,16 @@
 				</dcscor:item>
 			</appearance>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Collector</dataPath>
+			<field>Collector</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Collector</v8:content>
+				</v8:item>
+			</title>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	BilledARОстатки.Client КАК Client,
@@ -982,28 +988,35 @@
 			ТОГДА ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка)
 		ИНАЧЕ ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.Status, ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка))
 	КОНЕЦ КАК Status,
-	InvoiceCommentsСрезПоследних.Problem.ConfirmedBy КАК ConfirmedBy,
-	InvoiceCommentsСрезПоследних.Problem.Comment КАК Comment,
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.ConfirmedBy, "") КАК ConfirmedBy,
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.Comment, "") КАК Comment,
 	ВТ_Остатки.ПредставлениеДокумента,
 	ВЫБОР
 		КОГДА InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
 			ТОГДА ВТ_Остатки.Invoice.DueDateTo
-		КОГДА InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid)
-				ИЛИ InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.PartiallyPaid)
-			ТОГДА ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ВТ_ОплатыПоПроводкам.PaymentDate)
+		КОГДА (InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid)
+				ИЛИ InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.PartiallyPaid))
+				И ВТ_Остатки.ЗаполнятьОплатыПоДаннымОбмена
+				И ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) &gt;= &amp;ПериодОстатков
+			ТОГДА ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1))
+		КОГДА (InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid)
+				ИЛИ InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.PartiallyPaid))
+				И НЕ ВТ_Остатки.ЗаполнятьОплатыПоДаннымОбмена
+				И ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) &gt;= &amp;ПериодОстатков
+			ТОГДА ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1))
 		ИНАЧЕ ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.ForecastDate, ДАТАВРЕМЯ(1, 1, 1))
 	КОНЕЦ КАК ForecastDate,
-	InvoiceCommentsСрезПоследних.Problem.CustInputDate КАК CustInputDate,
-	InvoiceCommentsСрезПоследних.Problem.CustomerRepresentative КАК CustomerRepresentative,
-	InvoiceCommentsСрезПоследних.Problem.CustomerInputDetails КАК CustomerInputDetails,
-	InvoiceCommentsСрезПоследних.Problem.SLBAssignedToList КАК SLBAssignedTo,
-	InvoiceCommentsСрезПоследних.Problem.RemedialWorkPlan КАК RemedialWorkPlan,
-	InvoiceCommentsСрезПоследних.Problem.RWDTargetDate КАК RWDTargetDate,
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.CustInputDate, ДАТАВРЕМЯ(1, 1, 1)) КАК CustInputDate,
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.CustomerRepresentative, "") КАК CustomerRepresentative,
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.CustomerInputDetails, "") КАК CustomerInputDetails,
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.SLBAssignedToList, "") КАК SLBAssignedTo,
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.RemedialWorkPlan, "") КАК RemedialWorkPlan,
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.RWDTargetDate, ДАТАВРЕМЯ(1, 1, 1)) КАК RWDTargetDate,
 	ВТ_Остатки.Invoice.ДатаВозвратаКС,
 	ВТ_Остатки.Invoice.ДатаОтправкиКС,
 	ВТ_Остатки.Invoice.СтатусВозвратаКС,
 	ВТ_Остатки.Invoice.КомментарийСтатусаВозвратаКС,
-	Collectors.Collector,
+	ЕСТЬNULL(Collectors.Collector, ЗНАЧЕНИЕ(Справочник.Пользователи.ПустаяСсылка)) КАК Collector,
 	ВЫБОР
 		КОГДА ВТ_Остатки.Invoice.Contract = ЗНАЧЕНИЕ(Справочник.ДоговорыКонтрагентов.ПустаяСсылка)
 				ИЛИ ВТ_Остатки.Invoice.Contract.Ссылка ЕСТЬ NULL
@@ -1117,23 +1130,14 @@
 СГРУППИРОВАТЬ ПО
 	ВТ_ИерархияКлиентов.ГоловнойКонтрагент,
 	ВТ_Остатки.SubSubSegment,
-	InvoiceCommentsСрезПоследних.Problem.ConfirmedBy,
-	InvoiceCommentsСрезПоследних.Problem.RemedialWorkPlan,
-	InvoiceCommentsСрезПоследних.Problem.Comment,
-	InvoiceCommentsСрезПоследних.Problem.CustomerInputDetails,
 	ВТ_Остатки.Account,
-	InvoiceCommentsСрезПоследних.Problem.SLBAssignedToList,
-	InvoiceCommentsСрезПоследних.Problem.RWDTargetDate,
 	ВТ_Остатки.ПредставлениеДокумента,
-	InvoiceCommentsСрезПоследних.Problem.CustomerRepresentative,
-	InvoiceCommentsСрезПоследних.Problem.CustInputDate,
 	ВТ_Остатки.Client,
 	ВТ_Остатки.Company,
 	ВТ_Остатки.Currency,
 	ВТ_Остатки.AU,
 	ВТ_Остатки.Source,
 	ВТ_Остатки.Location,
-	Collectors.Collector,
 	ВТ_Остатки.Invoice.ClientID,
 	ВТ_Остатки.Invoice.ДатаВозвратаКС,
 	ВТ_Остатки.Invoice.ДатаОтправкиКС,
@@ -1189,18 +1193,39 @@
 		ИНАЧЕ ВТ_Остатки.Invoice.Contract.crmContractName
 	КОНЕЦ,
 	ВЫБОР
-		КОГДА InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
-			ТОГДА ВТ_Остатки.Invoice.DueDateTo
-		КОГДА InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid)
-				ИЛИ InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.PartiallyPaid)
-			ТОГДА ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ВТ_ОплатыПоПроводкам.PaymentDate)
-		ИНАЧЕ ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.ForecastDate, ДАТАВРЕМЯ(1, 1, 1))
-	КОНЕЦ,
-	ВЫБОР
 		КОГДА ВТ_Остатки.Invoice.DueDateTo &lt;= &amp;Период
 				И InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
 			ТОГДА ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка)
 		ИНАЧЕ ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.Status, ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка))
+	КОНЕЦ,
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.ConfirmedBy, ""),
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.Comment, ""),
+	ВЫБОР
+		КОГДА InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
+			ТОГДА ВТ_Остатки.Invoice.DueDateTo
+		КОГДА (InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid)
+				ИЛИ InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.PartiallyPaid))
+				И ВТ_Остатки.ЗаполнятьОплатыПоДаннымОбмена
+				И ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) &gt;= &amp;ПериодОстатков
+			ТОГДА ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1))
+		КОГДА (InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid)
+				ИЛИ InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.PartiallyPaid))
+				И НЕ ВТ_Остатки.ЗаполнятьОплатыПоДаннымОбмена
+				И ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) &gt;= &amp;ПериодОстатков
+			ТОГДА ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1))
+		ИНАЧЕ ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.ForecastDate, ДАТАВРЕМЯ(1, 1, 1))
+	КОНЕЦ,
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.CustInputDate, ДАТАВРЕМЯ(1, 1, 1)),
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.CustomerRepresentative, ""),
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.CustomerInputDetails, ""),
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.SLBAssignedToList, ""),
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.RemedialWorkPlan, ""),
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.RWDTargetDate, ДАТАВРЕМЯ(1, 1, 1)),
+	ЕСТЬNULL(Collectors.Collector, ЗНАЧЕНИЕ(Справочник.Пользователи.ПустаяСсылка)),
+	ВЫБОР
+		КОГДА ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.SLBAssignedToList, "") = ""
+			ТОГДА ЛОЖЬ
+		ИНАЧЕ ИСТИНА
 	КОНЕЦ
 
 ИМЕЮЩИЕ
@@ -1237,7 +1262,6 @@
 	ВТ_ДетальныеЗаписи.InvoiceДатаОтправкиКС,
 	ВТ_ДетальныеЗаписи.InvoiceСтатусВозвратаКС,
 	ВТ_ДетальныеЗаписи.InvoiceКомментарийСтатусаВозвратаКС,
-	ВТ_ДетальныеЗаписи.Collector,
 	ВТ_ДетальныеЗаписи.Agreement,
 	ВТ_ДетальныеЗаписи.InvoiceНомер,
 	ВТ_ДетальныеЗаписи.InvoiceНомерДокумента,
@@ -1281,7 +1305,8 @@
 		КОГДА ВТ_ДетальныеЗаписи.ForecastDate = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА ВТ_ДетальныеЗаписи.USDAmount
 		ИНАЧЕ 0
-	КОНЕЦ КАК NoFrcst
+	КОНЕЦ КАК NoFrcst,
+	ВТ_ДетальныеЗаписи.Collector
 ПОМЕСТИТЬ ВТ_РассчитанныеРесурсыУровень1
 ИЗ
 	ВТ_ДетальныеЗаписи КАК ВТ_ДетальныеЗаписи
@@ -1317,7 +1342,6 @@
 	ВТ_РассчитанныеРесурсыУровень1.InvoiceДатаОтправкиКС,
 	ВТ_РассчитанныеРесурсыУровень1.InvoiceСтатусВозвратаКС,
 	ВТ_РассчитанныеРесурсыУровень1.InvoiceКомментарийСтатусаВозвратаКС,
-	ВТ_РассчитанныеРесурсыУровень1.Collector,
 	ВТ_РассчитанныеРесурсыУровень1.Agreement,
 	ВТ_РассчитанныеРесурсыУровень1.InvoiceНомер,
 	ВТ_РассчитанныеРесурсыУровень1.InvoiceНомерДокумента,
@@ -1351,7 +1375,8 @@
 				И ВТ_РассчитанныеРесурсыУровень1.ForecastDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА ВТ_РассчитанныеРесурсыУровень1.USDAmount - ВТ_РассчитанныеРесурсыУровень1.Paid
 		ИНАЧЕ 0
-	КОНЕЦ КАК FcstCollect
+	КОНЕЦ КАК FcstCollect,
+	ВТ_РассчитанныеРесурсыУровень1.Collector
 ПОМЕСТИТЬ ВТ_РассчитанныеРесурсыУровень2
 ИЗ
 	ВТ_РассчитанныеРесурсыУровень1 КАК ВТ_РассчитанныеРесурсыУровень1
@@ -1387,7 +1412,6 @@
 	ВТ_РассчитанныеРесурсыУровень2.InvoiceДатаОтправкиКС,
 	ВТ_РассчитанныеРесурсыУровень2.InvoiceСтатусВозвратаКС,
 	ВТ_РассчитанныеРесурсыУровень2.InvoiceКомментарийСтатусаВозвратаКС,
-	ВТ_РассчитанныеРесурсыУровень2.Collector,
 	ВТ_РассчитанныеРесурсыУровень2.Agreement,
 	ВТ_РассчитанныеРесурсыУровень2.InvoiceНомер,
 	ВТ_РассчитанныеРесурсыУровень2.InvoiceНомерДокумента,
@@ -1422,7 +1446,8 @@
 				И ВТ_РассчитанныеРесурсыУровень2.InvoiceDueDateFrom &lt;= &amp;Период
 			ТОГДА ВТ_РассчитанныеРесурсыУровень2.USDAmount - ВТ_РассчитанныеРесурсыУровень2.Paid - ВТ_РассчитанныеРесурсыУровень2.FcstCollect
 		ИНАЧЕ 0
-	КОНЕЦ КАК OverdueDispute
+	КОНЕЦ КАК OverdueDispute,
+	ВТ_РассчитанныеРесурсыУровень2.Collector
 ПОМЕСТИТЬ ВТ_РассчитанныеРесурсыУровень3
 ИЗ
 	ВТ_РассчитанныеРесурсыУровень2 КАК ВТ_РассчитанныеРесурсыУровень2
@@ -1458,7 +1483,6 @@
 	ВТ_РассчитанныеРесурсыУровень3.InvoiceДатаОтправкиКС,
 	ВТ_РассчитанныеРесурсыУровень3.InvoiceСтатусВозвратаКС,
 	ВТ_РассчитанныеРесурсыУровень3.InvoiceКомментарийСтатусаВозвратаКС,
-	ВТ_РассчитанныеРесурсыУровень3.Collector,
 	ВТ_РассчитанныеРесурсыУровень3.Agreement,
 	ВТ_РассчитанныеРесурсыУровень3.InvoiceНомер,
 	ВТ_РассчитанныеРесурсыУровень3.InvoiceНомерДокумента,
@@ -1494,7 +1518,8 @@
 				И ВТ_РассчитанныеРесурсыУровень3.DueTo &gt; ВТ_РассчитанныеРесурсыУровень3.FcstCollect
 			ТОГДА ВТ_РассчитанныеРесурсыУровень3.USDAmount - ВТ_РассчитанныеРесурсыУровень3.FcstCollect - ВТ_РассчитанныеРесурсыУровень3.Paid - ВТ_РассчитанныеРесурсыУровень3.UnderLitigation - ВТ_РассчитанныеРесурсыУровень3.OverdueDispute
 		ИНАЧЕ 0
-	КОНЕЦ КАК OverdueNoFcst
+	КОНЕЦ КАК OverdueNoFcst,
+	ВТ_РассчитанныеРесурсыУровень3.Collector
 ПОМЕСТИТЬ ВТ_РассчитанныеРесурсыУровень4
 ИЗ
 	ВТ_РассчитанныеРесурсыУровень3 КАК ВТ_РассчитанныеРесурсыУровень3
@@ -1530,7 +1555,6 @@
 	ВТ_РассчитанныеРесурсыУровень4.InvoiceДатаОтправкиКС,
 	ВТ_РассчитанныеРесурсыУровень4.InvoiceСтатусВозвратаКС,
 	ВТ_РассчитанныеРесурсыУровень4.InvoiceКомментарийСтатусаВозвратаКС,
-	ВТ_РассчитанныеРесурсыУровень4.Collector,
 	ВТ_РассчитанныеРесурсыУровень4.Agreement,
 	ВТ_РассчитанныеРесурсыУровень4.InvoiceНомер,
 	ВТ_РассчитанныеРесурсыУровень4.InvoiceНомерДокумента,
@@ -1567,7 +1591,8 @@
 				И ВТ_РассчитанныеРесурсыУровень4.DueFrom &gt; ВТ_РассчитанныеРесурсыУровень4.FcstCollect
 			ТОГДА ВТ_РассчитанныеРесурсыУровень4.USDAmount - ВТ_РассчитанныеРесурсыУровень4.FcstCollect - ВТ_РассчитанныеРесурсыУровень4.OverdueNoFcst - ВТ_РассчитанныеРесурсыУровень4.Paid - ВТ_РассчитанныеРесурсыУровень4.UnderLitigation - ВТ_РассчитанныеРесурсыУровень4.OverdueDispute
 		ИНАЧЕ 0
-	КОНЕЦ КАК InRangeNoColl
+	КОНЕЦ КАК InRangeNoColl,
+	ВТ_РассчитанныеРесурсыУровень4.Collector
 ПОМЕСТИТЬ ВТ_РассчитанныеРесурсыУровень5
 ИЗ
 	ВТ_РассчитанныеРесурсыУровень4 КАК ВТ_РассчитанныеРесурсыУровень4
@@ -1603,7 +1628,6 @@
 	ВТ_РассчитанныеРесурсыУровень5.InvoiceДатаОтправкиКС,
 	ВТ_РассчитанныеРесурсыУровень5.InvoiceСтатусВозвратаКС,
 	ВТ_РассчитанныеРесурсыУровень5.InvoiceКомментарийСтатусаВозвратаКС,
-	ВТ_РассчитанныеРесурсыУровень5.Collector,
 	ВТ_РассчитанныеРесурсыУровень5.Agreement,
 	ВТ_РассчитанныеРесурсыУровень5.InvoiceНомер,
 	ВТ_РассчитанныеРесурсыУровень5.InvoiceНомерДокумента,
@@ -1640,7 +1664,8 @@
 		КОГДА ВТ_РассчитанныеРесурсыУровень5.ForecastDate = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА 0
 		ИНАЧЕ ВТ_РассчитанныеРесурсыУровень5.USDAmount - ВТ_РассчитанныеРесурсыУровень5.Paid - ВТ_РассчитанныеРесурсыУровень5.FcstCollect - ВТ_РассчитанныеРесурсыУровень5.InRangeNoColl - ВТ_РассчитанныеРесурсыУровень5.OverdueDispute - ВТ_РассчитанныеРесурсыУровень5.OverdueNoFcst - ВТ_РассчитанныеРесурсыУровень5.UnderLitigation
-	КОНЕЦ КАК NotDue
+	КОНЕЦ КАК NotDue,
+	ВТ_РассчитанныеРесурсыУровень5.Collector
 ИЗ
 	ВТ_РассчитанныеРесурсыУровень5 КАК ВТ_РассчитанныеРесурсыУровень5</query>
 	</dataSet>
