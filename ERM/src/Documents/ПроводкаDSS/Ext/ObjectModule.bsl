@@ -361,7 +361,7 @@
 	//НовоеДвижение.SubSegment = Реквизиты.SubSegment;
 	НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 	НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
-	НовоеДвижение.Invoice = СвязанныеДокументы.Invoice;
+	НовоеДвижение.Invoice = ?(ЗначениеЗаполнено(СвязанныеДокументы.Invoice), СвязанныеДокументы.Invoice, СвязанныеДокументы.Memo);
 	НовоеДвижение.Account = Реквизиты.AccountLawson;
 	НовоеДвижение.AU = Реквизиты.AU;
 	НовоеДвижение.Currency = Реквизиты.Currency;
