@@ -980,7 +980,7 @@
 		КОГДА ВТ_Остатки.Invoice.DueDateTo &lt;= &amp;Период
 				И InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
 			ТОГДА ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка)
-		ИНАЧЕ InvoiceCommentsСрезПоследних.Problem.Status
+		ИНАЧЕ ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.Status, ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка))
 	КОНЕЦ КАК Status,
 	InvoiceCommentsСрезПоследних.Problem.ConfirmedBy КАК ConfirmedBy,
 	InvoiceCommentsСрезПоследних.Problem.Comment КАК Comment,
@@ -1117,12 +1117,6 @@
 СГРУППИРОВАТЬ ПО
 	ВТ_ИерархияКлиентов.ГоловнойКонтрагент,
 	ВТ_Остатки.SubSubSegment,
-	ВЫБОР
-		КОГДА ВТ_Остатки.Invoice.DueDateTo &lt;= &amp;Период
-				И InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
-			ТОГДА ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка)
-		ИНАЧЕ InvoiceCommentsСрезПоследних.Problem.Status
-	КОНЕЦ,
 	InvoiceCommentsСрезПоследних.Problem.ConfirmedBy,
 	InvoiceCommentsСрезПоследних.Problem.RemedialWorkPlan,
 	InvoiceCommentsСрезПоследних.Problem.Comment,
@@ -1201,6 +1195,12 @@
 				ИЛИ InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.PartiallyPaid)
 			ТОГДА ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ВТ_ОплатыПоПроводкам.PaymentDate)
 		ИНАЧЕ ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.ForecastDate, ДАТАВРЕМЯ(1, 1, 1))
+	КОНЕЦ,
+	ВЫБОР
+		КОГДА ВТ_Остатки.Invoice.DueDateTo &lt;= &amp;Период
+				И InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
+			ТОГДА ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка)
+		ИНАЧЕ ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.Status, ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка))
 	КОНЕЦ
 
 ИМЕЮЩИЕ
