@@ -866,7 +866,7 @@
 ПОМЕСТИТЬ ВТ_ОплатыПоПроводкам
 ИЗ
 	РегистрНакопления.Payments.Обороты(
-			{(&amp;ПериодНачалаАнализаОплат)},
+			{(&amp;ПериодОстатков)},
 			{(&amp;КонецДняФормированияОтчета)},
 			Регистратор,
 			(Client, Company, Source, Invoice, Currency, AU, LegalEntity) В
@@ -928,7 +928,8 @@
 			И (FiscalPayments.Company = ИсточникиСЗаполнениемОплатИзОбмена.Company
 				ИЛИ ИсточникиСЗаполнениемОплатИзОбмена.Company = ЗНАЧЕНИЕ(Справочник.Организации.ПустаяСсылка))
 ГДЕ
-	FiscalPayments.PaymentDate &lt;= &amp;КонецДняФормированияОтчета
+	FiscalPayments.PaymentDate &gt;= &amp;ПериодОстатков
+	И FiscalPayments.PaymentDate &lt;= &amp;КонецДняФормированияОтчета
 
 СГРУППИРОВАТЬ ПО
 	FiscalPayments.Invoice,
@@ -1045,8 +1046,13 @@
 		КОНЕЦ) КАК Paid,
 	МАКСИМУМ(ВЫБОР
 			КОГДА НЕ ВТ_Остатки.ЗаполнятьОплатыПоДаннымОбмена
+					И ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) &gt;= &amp;ПериодОстатков
 				ТОГДА ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1))
-			ИНАЧЕ ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1))
+			КОГДА НЕ ВТ_Остатки.ЗаполнятьОплатыПоДаннымОбмена
+				ТОГДА ДАТАВРЕМЯ(1, 1, 1)
+			КОГДА ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) &gt;= &amp;ПериодОстатков
+				ТОГДА ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1))
+			ИНАЧЕ ДАТАВРЕМЯ(1, 1, 1)
 		КОНЕЦ) КАК PaymentDate,
 	ВЫБОР
 		КОГДА ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.ForecastDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
@@ -1702,23 +1708,6 @@
 		<useRestriction>true</useRestriction>
 		<expression>КонецПериода(&amp;Период,"ДЕНЬ")</expression>
 		<availableAsField>false</availableAsField>
-	</parameter>
-	<parameter>
-		<name>ПериодНачалаАнализаОплат</name>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Период начала анализа оплат</v8:content>
-			</v8:item>
-		</title>
-		<valueType>
-			<v8:Type>xs:dateTime</v8:Type>
-			<v8:DateQualifiers>
-				<v8:DateFractions>DateTime</v8:DateFractions>
-			</v8:DateQualifiers>
-		</valueType>
-		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
-		<useRestriction>false</useRestriction>
 	</parameter>
 	<parameter>
 		<name>ТекущаяДата</name>
