@@ -138,6 +138,16 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>FiscalInvoiceDate</dataPath>
+			<field>FiscalInvoiceDate</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Fiscal invoice date</v8:content>
+				</v8:item>
+			</title>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	PaymentsОбороты.Company КАК Company,
@@ -164,9 +174,13 @@
 		КОГДА PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
 				ИЛИ PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith)
 			ТОГДА PaymentsОбороты.Регистратор.Дата
-		КОГДА PaymentsОбороты.CashBatch = ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
+		КОГДА PaymentsОбороты.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
 				И PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
-			ТОГДА PaymentsОбороты.Регистратор.DateLawson
+			ТОГДА ВЫБОР
+					КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
+						ТОГДА PaymentsОбороты.Регистратор.ДокументОснование.DateLawson
+					ИНАЧЕ PaymentsОбороты.Регистратор.DateLawson
+				КОНЕЦ
 		КОГДА PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
 			ТОГДА PaymentsОбороты.Регистратор.Дата
 		ИНАЧЕ PaymentsОбороты.CashBatch.Дата
@@ -220,7 +234,12 @@
 	Исходные.Invoice КАК Invoice,
 	Исходные.Account КАК Account,
 	МАКСИМУМ(Исходные.DateCollection) КАК DateCollection,
-	Исходные.AU КАК AU
+	Исходные.AU КАК AU,
+	ВЫБОР
+		КОГДА Исходные.Invoice.FiscalInvoiceDate = ДАТАВРЕМЯ(1, 1, 1, 0, 0, 0)
+			ТОГДА Исходные.Invoice.Дата
+		ИНАЧЕ Исходные.Invoice.FiscalInvoiceDate
+	КОНЕЦ КАК FiscalInvoiceDate
 ИЗ
 	Исходные КАК Исходные
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;КонецПериода)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
@@ -245,7 +264,12 @@
 	ТИПЗНАЧЕНИЯ(Исходные.Invoice),
 	Исходные.Invoice,
 	Исходные.Account,
-	Исходные.AU
+	Исходные.AU,
+	ВЫБОР
+		КОГДА Исходные.Invoice.FiscalInvoiceDate = ДАТАВРЕМЯ(1, 1, 1, 0, 0, 0)
+			ТОГДА Исходные.Invoice.Дата
+		ИНАЧЕ Исходные.Invoice.FiscalInvoiceDate
+	КОНЕЦ
 
 ИМЕЮЩИЕ
 	СУММА(Исходные.Amount) &lt;&gt; 0</query>
@@ -376,7 +400,16 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>AU.Сегмент.Родитель</dcsset:field>
+					<dcsset:field>AU.Сегмент.БазовыйЭлемент.Родитель.Родитель</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Segment</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>AU.Сегмент.БазовыйЭлемент.Родитель</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -424,7 +457,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.FiscalInvoiceDate</dcsset:field>
+					<dcsset:field>FiscalInvoiceDate</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
