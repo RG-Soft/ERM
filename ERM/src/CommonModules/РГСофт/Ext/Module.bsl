@@ -1895,6 +1895,7 @@
 		|ГДЕ
 		|	НЕ ТранзакцияOracle.ПометкаУдаления
 		|	И ТранзакцияOracle.Client = &Client
+		|	И ТранзакцияOracle.GlSourceType <> ЗНАЧЕНИЕ(Перечисление.OracleGlSourceType.JV)
 		|	И ТранзакцияOracle.CustomerNumber <> """"
 		|;
 		|
