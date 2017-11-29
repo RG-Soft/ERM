@@ -412,6 +412,12 @@
 	СтрокаТЗ.ИмяКолонки = "CREATED_BY";
 	СтрокаТЗ.Обязательная = Истина;
 	
+	// CREATED_BY_NAME
+	СтрокаТЗ = СтруктураКолонок.Добавить();
+	СтрокаТЗ.ИмяПоля = "CREATED_BY_NAME";
+	СтрокаТЗ.ИмяКолонки = "CREATED_BY_NAME";
+	СтрокаТЗ.Обязательная = Истина;
+	
 	// BILL_SITE_NAME
 	СтрокаТЗ = СтруктураКолонок.Добавить();
 	СтрокаТЗ.ИмяПоля = "BILL_SITE_NAME";
@@ -987,6 +993,7 @@
 		|	OracleSourceData.RECEIPT_AMOUNT,
 		|	OracleSourceData.CREATION_DATE,
 		|	OracleSourceData.CREATED_BY,
+		|	OracleSourceData.CREATED_BY_NAME,
 		|	OracleSourceData.BILL_SITE_NAME,
 		|	OracleSourceData.BILL_SITE_ID,
 		|	OracleSourceData.SHIP_SITE_NAME,
@@ -1426,7 +1433,8 @@
 		|	ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 17, 4) + ""."" + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 22, 3) + ""."" + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 26, 4) + ""."" + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 6, 3) КАК Account,
 		|	ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 6, 3) КАК SubSubSegment,
 		|	ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 10, 6) КАК Location,
-		|	ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 10, 6) + ""."" + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 6, 3) КАК AU
+		|	ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 10, 6) + ""."" + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 6, 3) КАК AU,
+		|	OracleSourceData.CREATED_BY_NAME
 		|ПОМЕСТИТЬ ВТ_ДанныеФайла
 		|ИЗ
 		|	РегистрСведений.OracleSourceData КАК OracleSourceData
@@ -1615,7 +1623,8 @@
 		|		ИНАЧЕ 2
 		|	КОНЕЦ КАК Priority,
 		|	ЕСТЬNULL(КостЦентры.Ссылка, ЗНАЧЕНИЕ(Справочник.КостЦентры.ПустаяСсылка)) КАК AU,
-		|	ВТ_ДанныеФайла.AU КАК КодAU
+		|	ВТ_ДанныеФайла.AU КАК КодAU,
+		|	ВТ_ДанныеФайла.CREATED_BY_NAME КАК CreatedByName
 		|ИЗ
 		|	ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
@@ -2872,6 +2881,7 @@
 	ТранзакцияOracleОбъект.TransType = СокрЛП(ТранзакцияOracleОбъект.TransType);
 	ТранзакцияOracleОбъект.SONum = СокрЛП(ТранзакцияOracleОбъект.SONum);
 	ТранзакцияOracleОбъект.CreatedBy = СокрЛП(ТранзакцияOracleОбъект.CreatedBy);
+	ТранзакцияOracleОбъект.CreatedByName = СокрЛП(ТранзакцияOracleОбъект.CreatedByName);
 	
 КонецПроцедуры
 
