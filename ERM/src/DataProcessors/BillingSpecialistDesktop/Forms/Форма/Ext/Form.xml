@@ -600,8 +600,8 @@
 		UnbilledARОстатки.Company КАК Company,
 		UnbilledARОстатки.Source КАК Source,
 		UnbilledARОстатки.Account КАК Account,
-		UnbilledARОстатки.Location КАК Location,
-		UnbilledARОстатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель КАК Segment,
+		UnbilledARОстатки.AU.ПодразделениеОрганизации КАК Location,
+		UnbilledARОстатки.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель КАК Segment,
 		UnbilledARОстатки.Currency КАК Currency,
 		UnbilledARОстатки.AU КАК AU,
 		UnbilledARОстатки.AmountОстаток КАК RemainingAmount,
@@ -667,8 +667,8 @@
 					КОНЕЦ
 		КОНЕЦ КАК AgedDeferral,
 		SalesOrderResponsiblesList.ResponsiblesList КАК ResponsibleAR,
-		UnbilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
-		UnbilledARОстатки.Location.БазовыйЭлемент.GeoMarket КАК SubGeoMarket,
+		UnbilledARОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
+		UnbilledARОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket КАК SubGeoMarket,
 		UnbilledARОстатки.SalesOrder.Agreement КАК Agreement,
 		UnbilledARОстатки.SalesOrder.ClientID КАК CustomerID,
 		ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0) КАК Rate,
@@ -700,7 +700,7 @@
 				{(&amp;ПериодОстатков)},
 				SalesOrder ССЫЛКА Документ.SalesOrder
 					И ПОДСТРОКА(Account.Код, 1, 6) &lt;&gt; "209000"
-					И Account.БазовыйЭлемент = &amp;HFMUnbilledAccount {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК UnbilledARОстатки
+					И Account.БазовыйЭлемент = &amp;HFMUnbilledAccount {(AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК UnbilledARОстатки
 			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних({(&amp;ДатаКомментария)}, ) КАК SalesOrdersCommentsСрезПоследних
 			ПО UnbilledARОстатки.SalesOrder = SalesOrdersCommentsСрезПоследних.SalesOrder
 			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
@@ -714,7 +714,7 @@
 		UnbilledARОстатки.Company.*,
 		UnbilledARОстатки.Client.*,
 		SalesOrderResponsibles.ResponsibleAR.*,
-		UnbilledARОстатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель.* КАК Segment}
+		UnbilledARОстатки.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель.* КАК Segment}
 	
 	ОБЪЕДИНИТЬ ВСЕ
 	
@@ -723,8 +723,8 @@
 		ManualTransactionsОстатки.Company,
 		ManualTransactionsОстатки.Source,
 		ManualTransactionsОстатки.Account,
-		ManualTransactionsОстатки.Location,
-		ManualTransactionsОстатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель,
+		ManualTransactionsОстатки.AU.ПодразделениеОрганизации,
+		ManualTransactionsОстатки.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель,
 		ManualTransactionsОстатки.Currency,
 		ManualTransactionsОстатки.AU,
 		ManualTransactionsОстатки.AmountОстаток,
@@ -772,8 +772,8 @@
 		0,
 		0,
 		ЗНАЧЕНИЕ(Справочник.LDAPUsers.ПустаяСсылка),
-		ManualTransactionsОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель,
-		ManualTransactionsОстатки.Location.БазовыйЭлемент.GeoMarket,
+		ManualTransactionsОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель,
+		ManualTransactionsОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket,
 		"",
 		ManualTransactionsОстатки.РучнаяКорректировка.ClientID,
 		ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0),
@@ -801,7 +801,7 @@
 			ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.ActionItem
 		КОНЕЦ
 	ИЗ
-		РегистрНакопления.ManualTransactions.Остатки({(&amp;ПериодОстатков)}, Account.БазовыйЭлемент = &amp;HFMUnbilledAccount {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК ManualTransactionsОстатки
+		РегистрНакопления.ManualTransactions.Остатки({(&amp;ПериодОстатков)}, Account.БазовыйЭлемент = &amp;HFMUnbilledAccount {(AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК ManualTransactionsОстатки
 			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних({(&amp;ДатаКомментария)}, ) КАК SalesOrdersCommentsСрезПоследних
 			ПО ManualTransactionsОстатки.РучнаяКорректировка = SalesOrdersCommentsСрезПоследних.SalesOrder
 			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
