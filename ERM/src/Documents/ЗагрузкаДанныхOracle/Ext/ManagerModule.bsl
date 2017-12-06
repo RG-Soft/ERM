@@ -2855,9 +2855,9 @@
 
 Функция ПолучитьGlSourceType(ДанныеДляЗаполнения)
 	
-	Если ДанныеДляЗаполнения.GlSourceType = "SO Accrual" Тогда
+	Если ДанныеДляЗаполнения.GlSourceType = "SO Accrual" ИЛИ ДанныеДляЗаполнения.GlSourceType = "Sales Accrual" Тогда
 		Возврат Перечисления.OracleGlSourceType.SOAccrual;
-	ИначеЕсли ДанныеДляЗаполнения.GlSourceType = "SAM Accrual" Тогда
+	ИначеЕсли ДанныеДляЗаполнения.GlSourceType = "SAM Accrual" ИЛИ ДанныеДляЗаполнения.GlSourceType = "SAM Sales Accrual" Тогда
 		Возврат Перечисления.OracleGlSourceType.SAMAccrual;
 	ИначеЕсли ДанныеДляЗаполнения.GlSourceType = "Receivables" Тогда
 		Возврат Перечисления.OracleGlSourceType.Receivables;
