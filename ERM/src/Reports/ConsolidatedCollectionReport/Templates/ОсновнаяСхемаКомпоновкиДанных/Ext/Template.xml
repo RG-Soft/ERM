@@ -150,44 +150,34 @@
 		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
-	PaymentsОбороты.Company КАК Company,
-	PaymentsОбороты.Client КАК Client,
-	PaymentsОбороты.Source КАК Source,
-	PaymentsОбороты.Location КАК Location,
-	PaymentsОбороты.SubSubSegment КАК SubSubSegment,
-	ВЫБОР
-		КОГДА PaymentsОбороты.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
-				И PaymentsОбороты.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
-				И PaymentsОбороты.Invoice &lt;&gt; НЕОПРЕДЕЛЕНО
-			ТОГДА PaymentsОбороты.Invoice
-		ИНАЧЕ PaymentsОбороты.CashBatch
-	КОНЕЦ КАК Invoice,
-	PaymentsОбороты.Currency КАК Currency,
-	ВЫБОР
-		КОГДА PaymentsОбороты.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
-				И PaymentsОбороты.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
-				И PaymentsОбороты.Invoice &lt;&gt; НЕОПРЕДЕЛЕНО
-			ТОГДА PaymentsОбороты.AmountОборот
-		ИНАЧЕ UnallocatedCashОстатки.AmountОстаток
-	КОНЕЦ КАК Amount,
-	ВЫБОР
-		КОГДА PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
-				ИЛИ PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith)
-			ТОГДА PaymentsОбороты.Регистратор.Дата
-		КОГДА PaymentsОбороты.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
-				И PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
-			ТОГДА ВЫБОР
-					КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
-						ТОГДА PaymentsОбороты.Регистратор.ДокументОснование.DateLawson
-					ИНАЧЕ PaymentsОбороты.Регистратор.DateLawson
-				КОНЕЦ
-		КОГДА PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
-			ТОГДА PaymentsОбороты.Регистратор.Дата
-		ИНАЧЕ PaymentsОбороты.CashBatch.Дата
-	КОНЕЦ КАК DateCollection,
-	PaymentsОбороты.Account КАК Account,
-	PaymentsОбороты.AU КАК AU
-ПОМЕСТИТЬ Исходные
+	PaymentsОбороты.Company,
+	PaymentsОбороты.Client,
+	PaymentsОбороты.Source,
+	PaymentsОбороты.Location,
+	PaymentsОбороты.SubSubSegment,
+	PaymentsОбороты.Invoice,
+	PaymentsОбороты.CashBatch,
+	PaymentsОбороты.Currency,
+	PaymentsОбороты.AU,
+	PaymentsОбороты.LegalEntity,
+	PaymentsОбороты.Account,
+	МАКСИМУМ(ВЫБОР
+			КОГДА PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
+					ИЛИ PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith)
+				ТОГДА PaymentsОбороты.Регистратор.Дата
+			КОГДА PaymentsОбороты.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
+					И PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
+				ТОГДА ВЫБОР
+						КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
+							ТОГДА PaymentsОбороты.Регистратор.ДокументОснование.DateLawson
+						ИНАЧЕ PaymentsОбороты.Регистратор.DateLawson
+					КОНЕЦ
+			КОГДА PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
+				ТОГДА PaymentsОбороты.Регистратор.Дата
+			ИНАЧЕ PaymentsОбороты.CashBatch.Дата
+		КОНЕЦ) КАК DateCollection,
+	СУММА(PaymentsОбороты.AmountОборот) КАК AmountОборот
+ПОМЕСТИТЬ PaymentsГруппировка
 ИЗ
 	РегистрНакопления.Payments.Обороты(
 			{(&amp;НачалоПериода)},
@@ -198,10 +188,53 @@
 					И Invoice &lt;&gt; НЕОПРЕДЕЛЕНО
 				ИЛИ CashBatch &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка))
 				И Client &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)) КАК PaymentsОбороты
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрНакопления.UnallocatedCash.Остатки({(&amp;КонецПериода)}, ) КАК UnallocatedCashОстатки
-		ПО PaymentsОбороты.CashBatch = UnallocatedCashОстатки.CashBatch
 ГДЕ
 	ПОДСТРОКА(PaymentsОбороты.Account.Код, 1, 6) &lt;&gt; "209000"
+
+СГРУППИРОВАТЬ ПО
+	PaymentsОбороты.CashBatch,
+	PaymentsОбороты.AU,
+	PaymentsОбороты.Currency,
+	PaymentsОбороты.LegalEntity,
+	PaymentsОбороты.Source,
+	PaymentsОбороты.SubSubSegment,
+	PaymentsОбороты.Invoice,
+	PaymentsОбороты.Account,
+	PaymentsОбороты.Location,
+	PaymentsОбороты.Client,
+	PaymentsОбороты.Company
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	PaymentsГруппировка.Company КАК Company,
+	PaymentsГруппировка.Client КАК Client,
+	PaymentsГруппировка.Source КАК Source,
+	PaymentsГруппировка.Location КАК Location,
+	PaymentsГруппировка.SubSubSegment КАК SubSubSegment,
+	PaymentsГруппировка.DateCollection КАК DateCollection,
+	ВЫБОР
+		КОГДА PaymentsГруппировка.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
+				И PaymentsГруппировка.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
+				И PaymentsГруппировка.Invoice &lt;&gt; НЕОПРЕДЕЛЕНО
+			ТОГДА PaymentsГруппировка.Invoice
+		ИНАЧЕ PaymentsГруппировка.CashBatch
+	КОНЕЦ КАК Invoice,
+	PaymentsГруппировка.Currency КАК Currency,
+	ВЫБОР
+		КОГДА PaymentsГруппировка.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
+				И PaymentsГруппировка.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
+				И PaymentsГруппировка.Invoice &lt;&gt; НЕОПРЕДЕЛЕНО
+			ТОГДА PaymentsГруппировка.AmountОборот
+		ИНАЧЕ UnallocatedCashОстатки.AmountОстаток
+	КОНЕЦ КАК Amount,
+	PaymentsГруппировка.Account КАК Account,
+	PaymentsГруппировка.AU КАК AU
+ПОМЕСТИТЬ Исходные
+ИЗ
+	PaymentsГруппировка КАК PaymentsГруппировка
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрНакопления.UnallocatedCash.Остатки({(&amp;КонецПериода)}, ) КАК UnallocatedCashОстатки
+		ПО PaymentsГруппировка.CashBatch = UnallocatedCashОстатки.CashBatch
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -396,6 +429,15 @@
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>ERP</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>AU.Сегмент.БазовыйЭлемент.Родитель.Родитель.Родитель</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Product Group</v8:content>
 						</v8:item>
 					</dcsset:lwsTitle>
 				</dcsset:item>
