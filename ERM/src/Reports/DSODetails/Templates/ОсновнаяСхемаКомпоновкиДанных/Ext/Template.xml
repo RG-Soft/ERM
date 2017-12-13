@@ -170,7 +170,7 @@
 			ИНАЧЕ UnbilledARОстатки.Company.DefaultLegalEntity
 		КОНЕЦ КАК LegalEntity
 	ИЗ
-		РегистрНакопления.UnbilledAR.Остатки({&amp;ПериодОстатков}, Source В (&amp;Sources)) КАК UnbilledARОстатки
+		РегистрНакопления.UnbilledAR.Остатки({(&amp;ПериодОстатков)}, Source В (&amp;Sources)) КАК UnbilledARОстатки
 	
 	ОБЪЕДИНИТЬ ВСЕ
 	
@@ -189,7 +189,7 @@
 			ИНАЧЕ BilledARОстатки.Company.DefaultLegalEntity
 		КОНЕЦ
 	ИЗ
-		РегистрНакопления.BilledAR.Остатки({&amp;ПериодОстатков}, Source В (&amp;Sources)) КАК BilledARОстатки
+		РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, Source В (&amp;Sources)) КАК BilledARОстатки
 	
 	ОБЪЕДИНИТЬ ВСЕ
 	
@@ -208,7 +208,7 @@
 			ИНАЧЕ UnallocatedCashОстатки.Company.DefaultLegalEntity
 		КОНЕЦ
 	ИЗ
-		РегистрНакопления.UnallocatedCash.Остатки({&amp;ПериодОстатков}, Source В (&amp;Sources)) КАК UnallocatedCashОстатки
+		РегистрНакопления.UnallocatedCash.Остатки({(&amp;ПериодОстатков)}, Source В (&amp;Sources)) КАК UnallocatedCashОстатки
 	ГДЕ
 		ВЫБОР
 				КОГДА НЕ UnallocatedCashОстатки.CashBatch.Ссылка ЕСТЬ NULL
@@ -236,7 +236,7 @@
 			ИНАЧЕ ManualTransactionsОстатки.Company.DefaultLegalEntity
 		КОНЕЦ
 	ИЗ
-		РегистрНакопления.ManualTransactions.Остатки({&amp;ПериодОстатков}, Source В (&amp;Sources)) КАК ManualTransactionsОстатки
+		РегистрНакопления.ManualTransactions.Остатки({(&amp;ПериодОстатков)}, Source В (&amp;Sources)) КАК ManualTransactionsОстатки
 	
 	ОБЪЕДИНИТЬ ВСЕ
 	
@@ -255,8 +255,8 @@
 			ИНАЧЕ UnallocatedMemoОстатки.Company.DefaultLegalEntity
 		КОНЕЦ
 	ИЗ
-		РегистрНакопления.UnallocatedMemo.Остатки({&amp;ПериодОстатков}, Source В (&amp;Sources)) КАК UnallocatedMemoОстатки) КАК ВложенныйЗапросОстатки
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({&amp;ПериодОстатков}, ) КАК ВнутренниеКурсыВалютСрезПоследних
+		РегистрНакопления.UnallocatedMemo.Остатки({(&amp;ПериодОстатков)}, Source В (&amp;Sources)) КАК UnallocatedMemoОстатки) КАК ВложенныйЗапросОстатки
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ПериодОстатков)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
 		ПО ВложенныйЗапросОстатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
 
 СГРУППИРОВАТЬ ПО
@@ -300,6 +300,44 @@
 	И Billing.Активность
 	И Billing.Период &gt;= ДОБАВИТЬКДАТЕ(&amp;Период, МЕСЯЦ, -24)
 	И Billing.Source В(&amp;SourcesBilling)
+	И Billing.Source &lt;&gt; ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
+
+СГРУППИРОВАТЬ ПО
+	Billing.Период,
+	Billing.Client,
+	Billing.Company,
+	ВЫБОР
+		КОГДА Billing.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+			ТОГДА Billing.LegalEntity
+		ИНАЧЕ Billing.Company.DefaultLegalEntity
+	КОНЕЦ,
+	Billing.AU,
+	Billing.Source
+
+ОБЪЕДИНИТЬ ВСЕ
+
+ВЫБРАТЬ
+	Billing.Период,
+	Billing.Client,
+	Billing.Company,
+	ВЫБОР
+		КОГДА Billing.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+			ТОГДА Billing.LegalEntity
+		ИНАЧЕ Billing.Company.DefaultLegalEntity
+	КОНЕЦ,
+	Billing.AU,
+	Billing.Source,
+	СУММА(Billing.Amount / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность)
+ИЗ
+	РегистрСведений.Billing КАК Billing
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ПериодОстатков)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
+		ПО Billing.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
+ГДЕ
+	Billing.Период &lt;= &amp;Период
+	И Billing.Активность
+	И Billing.Период &gt;= ДОБАВИТЬКДАТЕ(&amp;Период, МЕСЯЦ, -24)
+	И Billing.Source В(&amp;SourcesBilling)
+	И Billing.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
 
 СГРУППИРОВАТЬ ПО
 	Billing.Период,

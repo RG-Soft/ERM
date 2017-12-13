@@ -21,8 +21,8 @@
 	ДвиженияБиллинг = Движения.Billing;
 	ДвиженияБиллинг.Записывать = Истина;
 	
-	ТЗ_LawsonBilling = LawsonBilling.Выгрузить(, "Company, LegalEntity, AU, Client, USDAmount");
-	ТЗ_LawsonBilling.Свернуть("Company, LegalEntity, AU, Client", "USDAmount");
+	ТЗ_LawsonBilling = LawsonBilling.Выгрузить(, "Company, LegalEntity, AU, Client, Currency, Amount, USDAmount");
+	ТЗ_LawsonBilling.Свернуть("Company, LegalEntity, AU, Client, Currency", "Amount, USDAmount");
 	
 	Для каждого СтрокаТЧ Из ТЗ_LawsonBilling Цикл
 		
@@ -33,8 +33,8 @@
 		
 	КонецЦикла;
 	
-	ТЗ_HOBBilling = HOBBilling.Выгрузить(, "Company, LegalEntity, AU, Client, USDAmount");
-	ТЗ_HOBBilling.Свернуть("Company, LegalEntity, AU, Client", "USDAmount");
+	ТЗ_HOBBilling = HOBBilling.Выгрузить(, "Company, LegalEntity, AU, Client, Currency, Amount, USDAmount");
+	ТЗ_HOBBilling.Свернуть("Company, LegalEntity, AU, Client, Currency", "Amount, USDAmount");
 	
 	Для каждого СтрокаТЧ Из ТЗ_HOBBilling Цикл
 		
