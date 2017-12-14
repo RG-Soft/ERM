@@ -1194,9 +1194,12 @@
 		|	OracleSmithSourceData.ДокументЗагрузки = &ДокументЗагрузки
 		|	И (OracleSmithSourceData.hfm_account ПОДОБНО ""120%""
 		|			ИЛИ OracleSmithSourceData.major ПОДОБНО ""4%"")
-		|	И (OracleSmithSourceData.psob_id = 966
-		|			ИЛИ OracleSmithSourceData.psob_id = 2026
-		|			ИЛИ OracleSmithSourceData.psob_id = 2046)
+		// { RGS TAlmazova 14.12.2017 12:40:27 - удаляем условие по Psob_id
+		//|	И (OracleSmithSourceData.psob_id = 966
+		//|			ИЛИ OracleSmithSourceData.psob_id = 2026
+		//|			ИЛИ OracleSmithSourceData.psob_id = 2046)
+		|	И OracleSmithSourceData.psob_id <> """"
+		// } RGS TAlmazova 14.12.2017 12:40:45 - удаляем условие по Psob_id
 		|	И OracleSmithSourceData.source <> """"
 		|	И OracleSmithSourceData.category <> """"
 		|	И OracleSmithSourceData.batch_name <> """"
@@ -1998,9 +2001,12 @@
 		|ГДЕ
 		|	OracleSmithSourceData.ДокументЗагрузки = &ДокументЗагрузки
 		|	И (OracleSmithSourceData.hfm_account ПОДОБНО ""120%"" ИЛИ OracleSmithSourceData.major ПОДОБНО ""4%"")
-		|	И (OracleSmithSourceData.psob_id = 966
-		|			ИЛИ OracleSmithSourceData.psob_id = 2026
-		|			ИЛИ OracleSmithSourceData.psob_id = 2046)
+		// { RGS TAlmazova 14.12.2017 12:40:27 - удаляем условие по Psob_id
+		//|	И (OracleSmithSourceData.psob_id = 966
+		//|			ИЛИ OracleSmithSourceData.psob_id = 2026
+		//|			ИЛИ OracleSmithSourceData.psob_id = 2046)
+		|	И OracleSmithSourceData.psob_id <> """"
+		// } RGS TAlmazova 14.12.2017 12:40:45 - удаляем условие по Psob_id
 		|	И OracleSmithSourceData.source <> """"
 		|	И OracleSmithSourceData.category <> """"
 		|	И OracleSmithSourceData.batch_name <> """"
@@ -3195,20 +3201,25 @@
 				Если ТипЗнч(ДокументРасчетов) = Тип("ДокументСсылка.Invoice") Тогда
 					ДобавитьСвязанныйОбъект(ТранзакцияOracleОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.Invoice, ДокументРасчетов);
 				Иначе
-					//НайденаОшибка = Истина;
-					Если ТранзакцияOracleОбъект.Дата >= ДатаВыверенныхОстатков Тогда
-						ТекОшибка = "Failed to find Invoice for transaction " + ТранзакцияOracleОбъект.Номер;
-						Если СтрНайти(ТекстСообщенияОбОшибках, ТекОшибка) = 0 Тогда
-							ТекстСообщенияОбОшибках = ТекстСообщенияОбОшибках + ТекОшибка + Символы.ПС;
-						КонецЕсли;
-						Отказ = Истина;
+					ДокументРасчетов = ПолучитьMemo(ТранзакцияOracleОбъект.LineID, ТранзакцияOracleОбъект.DocNumber, ТранзакцияOracleОбъект.Source);
+					Если ТипЗнч(ДокументРасчетов) = Тип("ДокументСсылка.Memo") Тогда
+						ДобавитьСвязанныйОбъект(ТранзакцияOracleОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.Memo, ДокументРасчетов);
 					Иначе
-						Если НЕ ЭтоПроводкаПоСчетуВыручки Тогда
-							ОбнулитьСуммыПроводки(ТранзакцияOracleОбъект);
-							ТранзакцияОбнулена = Истина;
-							ДобавитьСвязанныйОбъект(ТранзакцияOracleОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.Invoice, Документы.Invoice.ПустаяСсылка());
+						//НайденаОшибка = Истина;
+						Если ТранзакцияOracleОбъект.Дата >= ДатаВыверенныхОстатков Тогда
+							ТекОшибка = "Failed to find Invoice for transaction " + ТранзакцияOracleОбъект.Номер;
+							Если СтрНайти(ТекстСообщенияОбОшибках, ТекОшибка) = 0 Тогда
+								ТекстСообщенияОбОшибках = ТекстСообщенияОбОшибках + ТекОшибка + Символы.ПС;
+							КонецЕсли;
+							Отказ = Истина;
 						Иначе
-							ТекИнвойс = СоздатьИнвойс(ТранзакцияOracleОбъект, ДанныеДляЗаполнения);
+							Если НЕ ЭтоПроводкаПоСчетуВыручки Тогда
+								ОбнулитьСуммыПроводки(ТранзакцияOracleОбъект);
+								ТранзакцияОбнулена = Истина;
+								ДобавитьСвязанныйОбъект(ТранзакцияOracleОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.Invoice, Документы.Invoice.ПустаяСсылка());
+							Иначе
+								ТекИнвойс = СоздатьИнвойс(ТранзакцияOracleОбъект, ДанныеДляЗаполнения);
+							КонецЕсли;
 						КонецЕсли;
 					КонецЕсли;
 				КонецЕсли;
