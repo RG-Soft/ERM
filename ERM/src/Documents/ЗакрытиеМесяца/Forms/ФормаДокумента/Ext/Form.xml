@@ -16,36 +16,74 @@
 		<Event name="OnCreateAtServer">ПриСозданииНаСервере</Event>
 	</Events>
 	<ChildItems>
-		<InputField name="Номер" id="1">
-			<DataPath>Объект.Number</DataPath>
-			<EditMode>EnterOnInput</EditMode>
-			<ContextMenu name="НомерКонтекстноеМеню" id="2"/>
-			<ExtendedTooltip name="НомерРасширеннаяПодсказка" id="3"/>
-		</InputField>
-		<InputField name="Дата" id="4">
-			<DataPath>Объект.Date</DataPath>
-			<EditMode>EnterOnInput</EditMode>
-			<ContextMenu name="ДатаКонтекстноеМеню" id="5"/>
-			<ExtendedTooltip name="ДатаРасширеннаяПодсказка" id="6"/>
-		</InputField>
-		<InputField name="ИмяФайла" id="7">
-			<DataPath>Объект.ИмяФайла</DataPath>
-			<EditMode>EnterOnInput</EditMode>
-			<ChoiceButton>true</ChoiceButton>
-			<OpenButton>true</OpenButton>
-			<ContextMenu name="ИмяФайлаКонтекстноеМеню" id="8"/>
-			<ExtendedTooltip name="ИмяФайлаРасширеннаяПодсказка" id="9"/>
-			<Events>
-				<Event name="StartChoice">ИмяФайлаНачалоВыбора</Event>
-				<Event name="Opening">ИмяФайлаОткрытие</Event>
-			</Events>
-		</InputField>
-		<InputField name="ЛистФайла" id="10">
-			<DataPath>Объект.ЛистФайла</DataPath>
-			<EditMode>EnterOnInput</EditMode>
-			<ContextMenu name="ЛистФайлаКонтекстноеМеню" id="11"/>
-			<ExtendedTooltip name="ЛистФайлаРасширеннаяПодсказка" id="12"/>
-		</InputField>
+		<UsualGroup name="ГруппаНомерДата" id="124">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Группа номер дата</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Группа номер дата</v8:content>
+				</v8:item>
+			</ToolTip>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="ГруппаНомерДатаРасширеннаяПодсказка" id="125"/>
+			<ChildItems>
+				<InputField name="Номер" id="1">
+					<DataPath>Объект.Number</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="НомерКонтекстноеМеню" id="2"/>
+					<ExtendedTooltip name="НомерРасширеннаяПодсказка" id="3"/>
+				</InputField>
+				<InputField name="Дата" id="4">
+					<DataPath>Объект.Date</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="ДатаКонтекстноеМеню" id="5"/>
+					<ExtendedTooltip name="ДатаРасширеннаяПодсказка" id="6"/>
+				</InputField>
+			</ChildItems>
+		</UsualGroup>
+		<UsualGroup name="ГруппаФайл" id="126">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Группа файл</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Группа файл</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Behavior>Collapsible</Behavior>
+			<Collapsed>true</Collapsed>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="ГруппаФайлРасширеннаяПодсказка" id="127"/>
+			<ChildItems>
+				<InputField name="ИмяФайла" id="7">
+					<DataPath>Объект.ИмяФайла</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<ChoiceButton>true</ChoiceButton>
+					<OpenButton>true</OpenButton>
+					<ContextMenu name="ИмяФайлаКонтекстноеМеню" id="8"/>
+					<ExtendedTooltip name="ИмяФайлаРасширеннаяПодсказка" id="9"/>
+					<Events>
+						<Event name="StartChoice">ИмяФайлаНачалоВыбора</Event>
+						<Event name="Opening">ИмяФайлаОткрытие</Event>
+					</Events>
+				</InputField>
+				<InputField name="ЛистФайла" id="10">
+					<DataPath>Объект.ЛистФайла</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="ЛистФайлаКонтекстноеМеню" id="11"/>
+					<ExtendedTooltip name="ЛистФайлаРасширеннаяПодсказка" id="12"/>
+				</InputField>
+			</ChildItems>
+		</UsualGroup>
 		<UsualGroup name="Кнопки" id="87">
 			<Title>
 				<v8:item>
@@ -59,7 +97,7 @@
 					<v8:content>Кнопки</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Group>Vertical</Group>
+			<Group>Horizontal</Group>
 			<ShowTitle>false</ShowTitle>
 			<ExtendedTooltip name="КнопкиРасширеннаяПодсказка" id="88"/>
 			<ChildItems>
@@ -75,6 +113,7 @@
 				</Button>
 				<Button name="ЗакрытьМесяц" id="119">
 					<Type>UsualButton</Type>
+					<Visible>false</Visible>
 					<Representation>PictureAndText</Representation>
 					<CommandName>Form.Command.ЗакрытьМесяц</CommandName>
 					<Picture>
@@ -85,137 +124,86 @@
 				</Button>
 			</ChildItems>
 		</UsualGroup>
-		<Table name="ТаблицаКоллизий" id="54">
-			<Representation>List</Representation>
-			<AutoInsertNewRow>true</AutoInsertNewRow>
-			<EnableStartDrag>true</EnableStartDrag>
-			<EnableDrag>true</EnableDrag>
-			<DataPath>ТаблицаКоллизий</DataPath>
-			<RowFilter xsi:nil="true"/>
-			<ContextMenu name="ТаблицаКоллизийКонтекстноеМеню" id="55"/>
-			<AutoCommandBar name="ТаблицаКоллизийКоманднаяПанель" id="56">
-				<Autofill>false</Autofill>
-			</AutoCommandBar>
-			<ExtendedTooltip name="ТаблицаКоллизийРасширеннаяПодсказка" id="57"/>
-			<SearchStringAddition name="ТаблицаКоллизийСтрокаПоиска" id="58">
-				<AdditionSource>
-					<Item>ТаблицаКоллизий</Item>
-					<Type>SearchStringRepresentation</Type>
-				</AdditionSource>
-				<ContextMenu name="ТаблицаКоллизийСтрокаПоискаКонтекстноеМеню" id="59"/>
-				<ExtendedTooltip name="ТаблицаКоллизийСтрокаПоискаРасширеннаяПодсказка" id="60"/>
-			</SearchStringAddition>
-			<ViewStatusAddition name="ТаблицаКоллизийСостояниеПросмотра" id="61">
-				<AdditionSource>
-					<Item>ТаблицаКоллизий</Item>
-					<Type>ViewStatusRepresentation</Type>
-				</AdditionSource>
-				<ContextMenu name="ТаблицаКоллизийСостояниеПросмотраКонтекстноеМеню" id="62"/>
-				<ExtendedTooltip name="ТаблицаКоллизийСостояниеПросмотраРасширеннаяПодсказка" id="63"/>
-			</ViewStatusAddition>
-			<SearchControlAddition name="ТаблицаКоллизийУправлениеПоиском" id="64">
-				<AdditionSource>
-					<Item>ТаблицаКоллизий</Item>
-					<Type>SearchControl</Type>
-				</AdditionSource>
-				<ContextMenu name="ТаблицаКоллизийУправлениеПоискомКонтекстноеМеню" id="65"/>
-				<ExtendedTooltip name="ТаблицаКоллизийУправлениеПоискомРасширеннаяПодсказка" id="66"/>
-			</SearchControlAddition>
+		<UsualGroup name="ГруппаКоллизии" id="128">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Группа коллизии</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Check data</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Behavior>Collapsible</Behavior>
+			<CollapsedRepresentationTitle>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>CheckData</v8:content>
+				</v8:item>
+			</CollapsedRepresentationTitle>
+			<Collapsed>true</Collapsed>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="ГруппаКоллизииРасширеннаяПодсказка" id="129"/>
 			<ChildItems>
-				<InputField name="ТаблицаКоллизийОписание" id="67">
-					<DataPath>ТаблицаКоллизий.Описание</DataPath>
-					<EditMode>EnterOnInput</EditMode>
-					<ContextMenu name="ТаблицаКоллизийОписаниеКонтекстноеМеню" id="68"/>
-					<ExtendedTooltip name="ТаблицаКоллизийОписаниеРасширеннаяПодсказка" id="69"/>
-				</InputField>
-				<InputField name="ТаблицаКоллизийИдентификатор" id="82">
-					<DataPath>ТаблицаКоллизий.Идентификатор</DataPath>
-					<EditMode>EnterOnInput</EditMode>
-					<ContextMenu name="ТаблицаКоллизийИдентификаторКонтекстноеМеню" id="83"/>
-					<ExtendedTooltip name="ТаблицаКоллизийИдентификаторРасширеннаяПодсказка" id="84"/>
-				</InputField>
+				<Table name="ТаблицаКоллизий" id="54">
+					<Representation>List</Representation>
+					<AutoInsertNewRow>true</AutoInsertNewRow>
+					<EnableStartDrag>true</EnableStartDrag>
+					<EnableDrag>true</EnableDrag>
+					<DataPath>ТаблицаКоллизий</DataPath>
+					<RowFilter xsi:nil="true"/>
+					<ContextMenu name="ТаблицаКоллизийКонтекстноеМеню" id="55"/>
+					<AutoCommandBar name="ТаблицаКоллизийКоманднаяПанель" id="56">
+						<Autofill>false</Autofill>
+					</AutoCommandBar>
+					<ExtendedTooltip name="ТаблицаКоллизийРасширеннаяПодсказка" id="57"/>
+					<SearchStringAddition name="ТаблицаКоллизийСтрокаПоиска" id="58">
+						<AdditionSource>
+							<Item>ТаблицаКоллизий</Item>
+							<Type>SearchStringRepresentation</Type>
+						</AdditionSource>
+						<ContextMenu name="ТаблицаКоллизийСтрокаПоискаКонтекстноеМеню" id="59"/>
+						<ExtendedTooltip name="ТаблицаКоллизийСтрокаПоискаРасширеннаяПодсказка" id="60"/>
+					</SearchStringAddition>
+					<ViewStatusAddition name="ТаблицаКоллизийСостояниеПросмотра" id="61">
+						<AdditionSource>
+							<Item>ТаблицаКоллизий</Item>
+							<Type>ViewStatusRepresentation</Type>
+						</AdditionSource>
+						<ContextMenu name="ТаблицаКоллизийСостояниеПросмотраКонтекстноеМеню" id="62"/>
+						<ExtendedTooltip name="ТаблицаКоллизийСостояниеПросмотраРасширеннаяПодсказка" id="63"/>
+					</ViewStatusAddition>
+					<SearchControlAddition name="ТаблицаКоллизийУправлениеПоиском" id="64">
+						<AdditionSource>
+							<Item>ТаблицаКоллизий</Item>
+							<Type>SearchControl</Type>
+						</AdditionSource>
+						<ContextMenu name="ТаблицаКоллизийУправлениеПоискомКонтекстноеМеню" id="65"/>
+						<ExtendedTooltip name="ТаблицаКоллизийУправлениеПоискомРасширеннаяПодсказка" id="66"/>
+					</SearchControlAddition>
+					<ChildItems>
+						<InputField name="ТаблицаКоллизийОписание" id="67">
+							<DataPath>ТаблицаКоллизий.Описание</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="ТаблицаКоллизийОписаниеКонтекстноеМеню" id="68"/>
+							<ExtendedTooltip name="ТаблицаКоллизийОписаниеРасширеннаяПодсказка" id="69"/>
+						</InputField>
+						<InputField name="ТаблицаКоллизийИдентификатор" id="82">
+							<DataPath>ТаблицаКоллизий.Идентификатор</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="ТаблицаКоллизийИдентификаторКонтекстноеМеню" id="83"/>
+							<ExtendedTooltip name="ТаблицаКоллизийИдентификаторРасширеннаяПодсказка" id="84"/>
+						</InputField>
+					</ChildItems>
+				</Table>
 			</ChildItems>
-		</Table>
-		<Table name="ТаблицаРасхождений" id="124">
-			<AutoInsertNewRow>true</AutoInsertNewRow>
-			<EnableStartDrag>true</EnableStartDrag>
-			<EnableDrag>true</EnableDrag>
-			<DataPath>Объект.ТаблицаРасхождений</DataPath>
-			<RowFilter xsi:nil="true"/>
-			<ContextMenu name="ТаблицаРасхожденийКонтекстноеМеню" id="125"/>
-			<AutoCommandBar name="ТаблицаРасхожденийКоманднаяПанель" id="126"/>
-			<ExtendedTooltip name="ТаблицаРасхожденийРасширеннаяПодсказка" id="127"/>
-			<SearchStringAddition name="ТаблицаРасхожденийСтрокаПоиска" id="128">
-				<AdditionSource>
-					<Item>ТаблицаРасхождений</Item>
-					<Type>SearchStringRepresentation</Type>
-				</AdditionSource>
-				<ContextMenu name="ТаблицаРасхожденийСтрокаПоискаКонтекстноеМеню" id="129"/>
-				<ExtendedTooltip name="ТаблицаРасхожденийСтрокаПоискаРасширеннаяПодсказка" id="130"/>
-			</SearchStringAddition>
-			<ViewStatusAddition name="ТаблицаРасхожденийСостояниеПросмотра" id="131">
-				<AdditionSource>
-					<Item>ТаблицаРасхождений</Item>
-					<Type>ViewStatusRepresentation</Type>
-				</AdditionSource>
-				<ContextMenu name="ТаблицаРасхожденийСостояниеПросмотраКонтекстноеМеню" id="132"/>
-				<ExtendedTooltip name="ТаблицаРасхожденийСостояниеПросмотраРасширеннаяПодсказка" id="133"/>
-			</ViewStatusAddition>
-			<SearchControlAddition name="ТаблицаРасхожденийУправлениеПоиском" id="134">
-				<AdditionSource>
-					<Item>ТаблицаРасхождений</Item>
-					<Type>SearchControl</Type>
-				</AdditionSource>
-				<ContextMenu name="ТаблицаРасхожденийУправлениеПоискомКонтекстноеМеню" id="135"/>
-				<ExtendedTooltip name="ТаблицаРасхожденийУправлениеПоискомРасширеннаяПодсказка" id="136"/>
-			</SearchControlAddition>
-			<ChildItems>
-				<LabelField name="ТаблицаРасхожденийНомерСтроки" id="137">
-					<DataPath>Объект.ТаблицаРасхождений.LineNumber</DataPath>
-					<EditMode>EnterOnInput</EditMode>
-					<ContextMenu name="ТаблицаРасхожденийНомерСтрокиКонтекстноеМеню" id="138"/>
-					<ExtendedTooltip name="ТаблицаРасхожденийНомерСтрокиРасширеннаяПодсказка" id="139"/>
-				</LabelField>
-				<InputField name="ТаблицаРасхожденийSegment" id="140">
-					<DataPath>Объект.ТаблицаРасхождений.Segment</DataPath>
-					<EditMode>EnterOnInput</EditMode>
-					<ContextMenu name="ТаблицаРасхожденийSegmentКонтекстноеМеню" id="141"/>
-					<ExtendedTooltip name="ТаблицаРасхожденийSegmentРасширеннаяПодсказка" id="142"/>
-				</InputField>
-				<InputField name="ТаблицаРасхожденийLocation" id="143">
-					<DataPath>Объект.ТаблицаРасхождений.Location</DataPath>
-					<EditMode>EnterOnInput</EditMode>
-					<ContextMenu name="ТаблицаРасхожденийLocationКонтекстноеМеню" id="144"/>
-					<ExtendedTooltip name="ТаблицаРасхожденийLocationРасширеннаяПодсказка" id="145"/>
-				</InputField>
-				<InputField name="ТаблицаРасхожденийAccount" id="146">
-					<DataPath>Объект.ТаблицаРасхождений.Account</DataPath>
-					<EditMode>EnterOnInput</EditMode>
-					<ContextMenu name="ТаблицаРасхожденийAccountКонтекстноеМеню" id="147"/>
-					<ExtendedTooltip name="ТаблицаРасхожденийAccountРасширеннаяПодсказка" id="148"/>
-				</InputField>
-				<InputField name="ТаблицаРасхожденийHFM_Amount" id="149">
-					<DataPath>Объект.ТаблицаРасхождений.HFM_Amount</DataPath>
-					<EditMode>EnterOnInput</EditMode>
-					<ContextMenu name="ТаблицаРасхожденийHFM_AmountКонтекстноеМеню" id="150"/>
-					<ExtendedTooltip name="ТаблицаРасхожденийHFM_AmountРасширеннаяПодсказка" id="151"/>
-				</InputField>
-				<InputField name="ТаблицаРасхожденийERM_Amount" id="152">
-					<DataPath>Объект.ТаблицаРасхождений.ERM_Amount</DataPath>
-					<EditMode>EnterOnInput</EditMode>
-					<ContextMenu name="ТаблицаРасхожденийERM_AmountКонтекстноеМеню" id="153"/>
-					<ExtendedTooltip name="ТаблицаРасхожденийERM_AmountРасширеннаяПодсказка" id="154"/>
-				</InputField>
-				<InputField name="ТаблицаРасхожденийDifference" id="155">
-					<DataPath>Объект.ТаблицаРасхождений.Difference</DataPath>
-					<EditMode>EnterOnInput</EditMode>
-					<ContextMenu name="ТаблицаРасхожденийDifferenceКонтекстноеМеню" id="156"/>
-					<ExtendedTooltip name="ТаблицаРасхожденийDifferenceРасширеннаяПодсказка" id="157"/>
-				</InputField>
-			</ChildItems>
-		</Table>
+		</UsualGroup>
 		<Table name="ТаблицаДерево" id="89">
 			<Representation>Tree</Representation>
+			<UseAlternationRowColor>true</UseAlternationRowColor>
 			<AutoInsertNewRow>true</AutoInsertNewRow>
 			<EnableStartDrag>true</EnableStartDrag>
 			<EnableDrag>true</EnableDrag>
@@ -256,17 +244,17 @@
 					<ContextMenu name="ТаблицаДеревоAccountКонтекстноеМеню" id="122"/>
 					<ExtendedTooltip name="ТаблицаДеревоAccountРасширеннаяПодсказка" id="123"/>
 				</InputField>
-				<InputField name="ТаблицаДеревоSegment" id="102">
-					<DataPath>ТаблицаДерево.Segment</DataPath>
-					<EditMode>EnterOnInput</EditMode>
-					<ContextMenu name="ТаблицаДеревоSegmentКонтекстноеМеню" id="103"/>
-					<ExtendedTooltip name="ТаблицаДеревоSegmentРасширеннаяПодсказка" id="104"/>
-				</InputField>
 				<InputField name="ТаблицаДеревоLocation" id="105">
 					<DataPath>ТаблицаДерево.Location</DataPath>
 					<EditMode>EnterOnInput</EditMode>
 					<ContextMenu name="ТаблицаДеревоLocationКонтекстноеМеню" id="106"/>
 					<ExtendedTooltip name="ТаблицаДеревоLocationРасширеннаяПодсказка" id="107"/>
+				</InputField>
+				<InputField name="ТаблицаДеревоSegment" id="102">
+					<DataPath>ТаблицаДерево.Segment</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="ТаблицаДеревоSegmentКонтекстноеМеню" id="103"/>
+					<ExtendedTooltip name="ТаблицаДеревоSegmentРасширеннаяПодсказка" id="104"/>
 				</InputField>
 				<InputField name="ТаблицаДеревоHFM_Amount" id="108">
 					<DataPath>ТаблицаДерево.HFM_Amount</DataPath>
