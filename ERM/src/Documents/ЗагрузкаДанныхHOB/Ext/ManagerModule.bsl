@@ -4493,7 +4493,9 @@
 	КонецЕсли;
 	ДокОбъект.Location = ТранзакцияHOBОбъект.Location;
 	ДокОбъект.SubSubSegment = ТранзакцияHOBОбъект.SubSubSegment;
-	ДокОбъект.ClientID = ДанныеДляЗаполнения.CustomerNumber;
+	Если НЕ ТранзакцияHOBОбъект.Client.Предопределенный Тогда
+		ДокОбъект.ClientID = ДанныеДляЗаполнения.CustomerNumber;
+	КонецЕсли;
 	//ДокОбъект.SubGeoMarket = ТранзакцияHOBОбъект.SubGeoMarket;
 	ДокОбъект.CREW = ДанныеДляЗаполнения.LocationCode;
 	ДокОбъект.OriginalAnalytics = Формат(ДанныеДляЗаполнения.CompanyCode, "ЧГ=0") + "." + ДанныеДляЗаполнения.AUCode + "." + ДанныеДляЗаполнения.LocationCode + "." + ДанныеДляЗаполнения.AccountCode;
@@ -4556,7 +4558,7 @@
 			Если НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.CREW) Тогда
 				SalesOrderОбъект.CREW = ДанныеДляЗаполнения.LocationCode;
 			КонецЕсли;
-			Если НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.ClientID) Тогда
+			Если НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.ClientID) И НЕ РеквизитыSalesOrder.Client.Предопределенный Тогда
 				SalesOrderОбъект.ClientID = ДанныеДляЗаполнения.CustomerNumber;
 			КонецЕсли;
 			Если РеквизитыSalesOrder.Amount <> ДанныеДляЗаполнения.SalesOrderAmount Тогда
@@ -4601,7 +4603,9 @@
 	ДокОбъект.PassedForPayment = ДанныеДляЗаполнения.InvoicePassedForPayment;
 	ДокОбъект.PassedForPaymentDate = ДанныеДляЗаполнения.InvoicePassedForPaymentDate;
 	ДокОбъект.ExpectedDateOfPayment = ДанныеДляЗаполнения.ExpectedDateOfPayment;
-	ДокОбъект.ClientID = ДанныеДляЗаполнения.CustomerNumber;
+	Если НЕ ТранзакцияHOBОбъект.Client.Предопределенный Тогда
+		ДокОбъект.ClientID = ДанныеДляЗаполнения.CustomerNumber;
+	КонецЕсли;
 	ДокОбъект.OriginalAnalytics = Формат(ДанныеДляЗаполнения.CompanyCode, "ЧГ=0") + "." + ДанныеДляЗаполнения.AUCode + "." + ДанныеДляЗаполнения.LocationCode + "." + ДанныеДляЗаполнения.AccountCode;
 	ДокОбъект.Записать(РежимЗаписиДокумента.Запись);
 	
@@ -4654,7 +4658,7 @@
 			Если НЕ ЗначениеЗаполнено(РеквизитыИнвойса.DocID) Тогда
 				ИнвойсОбъект.DocID = ТранзакцияHOBОбъект.InvoiceID;
 			КонецЕсли;
-			Если НЕ ЗначениеЗаполнено(РеквизитыИнвойса.ClientID) Тогда
+			Если НЕ ЗначениеЗаполнено(РеквизитыИнвойса.ClientID) И НЕ РеквизитыИнвойса.Client.Предопределенный Тогда
 				ИнвойсОбъект.ClientID = ДанныеДляЗаполнения.CustomerNumber;
 			КонецЕсли;
 			ИнвойсОбъект.ОбменДанными.Загрузка = Истина;
@@ -4704,7 +4708,9 @@
 	ДокОбъект.Prepayment = Prepayment;
 	ДокОбъект.PaymentDate = ДанныеДляЗаполнения.PaymentDate;
 	ДокОбъект.PaymentNumber = ДанныеДляЗаполнения.PaymentNumber;
-	ДокОбъект.ClientID = ДанныеДляЗаполнения.CustomerNumber;
+	Если НЕ ТранзакцияHOBОбъект.Client.Предопределенный Тогда
+		ДокОбъект.ClientID = ДанныеДляЗаполнения.CustomerNumber;
+	КонецЕсли;
 	// { RGS TAlmazova 30.12.2016 0:16:23 - заполнение Amount
 	ДокОбъект.Amount = ДанныеДляЗаполнения.InvoiceAmount;
 	// } RGS TAlmazova 30.12.2016 0:16:36 - заполнение Amount
@@ -4730,7 +4736,9 @@
 	ДокОбъект.Account = ТранзакцияHOBОбъект.Account;
 	ДокОбъект.Currency = ТранзакцияHOBОбъект.Currency;
 	ДокОбъект.DocID = DocID;
-	ДокОбъект.ClientID = ДанныеДляЗаполнения.CustomerNumber;
+	Если НЕ ТранзакцияHOBОбъект.Client.Предопределенный Тогда
+		ДокОбъект.ClientID = ДанныеДляЗаполнения.CustomerNumber;
+	КонецЕсли;
 	ДокОбъект.OriginalAnalytics = Формат(ДанныеДляЗаполнения.CompanyCode, "ЧГ=0") + "." + ДанныеДляЗаполнения.AUCode + "." + ДанныеДляЗаполнения.LocationCode + "." + ДанныеДляЗаполнения.AccountCode;
 	ДокОбъект.Записать(РежимЗаписиДокумента.Запись);
 	
@@ -4757,7 +4765,9 @@
 	КонецЕсли;
 	ДокОбъект.Currency = ТранзакцияHOBОбъект.Currency;
 	ДокОбъект.DocID = DocID;
-	ДокОбъект.ClientID = ДанныеДляЗаполнения.CustomerNumber;
+	Если НЕ ТранзакцияHOBОбъект.Client.Предопределенный Тогда
+		ДокОбъект.ClientID = ДанныеДляЗаполнения.CustomerNumber;
+	КонецЕсли;
 	ДокОбъект.OriginalAnalytics = Формат(ДанныеДляЗаполнения.CompanyCode, "ЧГ=0") + "." + ДанныеДляЗаполнения.AUCode + "." + ДанныеДляЗаполнения.LocationCode + "." + ДанныеДляЗаполнения.AccountCode;
 	ДокОбъект.Записать(РежимЗаписиДокумента.Запись);
 	
