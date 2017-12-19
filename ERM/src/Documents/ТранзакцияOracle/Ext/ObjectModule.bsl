@@ -151,7 +151,7 @@
 			ИначеЕсли Реквизиты.GlSourceType = Перечисления.OracleGlSourceType.Receivables Тогда
 				
 				Если Реквизиты.DocType = "INV" ИЛИ Реквизиты.DocType = "DEP" ИЛИ Реквизиты.DocType = "GUAR"
-					ИЛИ Реквизиты.DocType = "PMT" ИЛИ Реквизиты.DocType = "CB" ИЛИ (Реквизиты.Source = Перечисления.ТипыСоответствий.OracleSmith И Реквизиты.DocType = "Sales Invoices") Тогда
+					ИЛИ Реквизиты.DocType = "PMT" ИЛИ Реквизиты.DocType = "CB" ИЛИ (Реквизиты.Source = Перечисления.ТипыСоответствий.OracleSmith И (Реквизиты.DocType = "Sales Invoices" ИЛИ Реквизиты.DocType = "Adjustment")) Тогда
 					
 					ВыполнитьНачислениеBilledAR(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, Движения, Реквизиты.Amount, Реквизиты.BaseAmount, Отказ);
 					
