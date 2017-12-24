@@ -2309,11 +2309,14 @@
 	Если НЕ ЭтоПроводкаПоСчетуВыручки Тогда
 		ДокОбъект.Account = ПроводкаDSSОбъект.AccountLawson;
 	КонецЕсли;
-	// { RGS TAlmazova 28.02.2017 19:07:47 - заполнение DocID если split currency
-	Если (Найти(ПроводкаDSSОбъект.Description, "SPLIT INVC") > 0) Тогда
-		ДокОбъект.DocID = ПроводкаDSSОбъект.ArInvoice;
-	КонецЕсли;
-	// } RGS TAlmazova 28.02.2017 19:08:28 - заполнение DocID если split currency
+	// { RGS AGorlenko 22.12.2017 18:29:37 - для целей обмена с биллингом заполняем B всегда
+	//// { RGS TAlmazova 28.02.2017 19:07:47 - заполнение DocID если split currency
+	//Если (Найти(ПроводкаDSSОбъект.Description, "SPLIT INVC") > 0) Тогда
+	//	ДокОбъект.DocID = ПроводкаDSSОбъект.ArInvoice;
+	//КонецЕсли;
+	//// } RGS TAlmazova 28.02.2017 19:08:28 - заполнение DocID если split currency
+	ДокОбъект.DocID = ?(СтрДлина(ПроводкаDSSОбъект.ArInvoice) = 11 И СтрЗаканчиваетсяНа(ПроводкаDSSОбъект.ArInvoice, "B"), ПроводкаDSSОбъект.ArInvoice, ПроводкаDSSОбъект.ArInvoice + "B");
+	// } RGS AGorlenko 22.12.2017 18:29:58 - для целей обмена с биллингом заполняем B всегда
 	Если ПолноеЗаполнение Тогда
 		ДокОбъект.Currency = ПроводкаDSSОбъект.Currency;
 		Если НЕ ЭтоПроводкаПоСчетуВыручки Тогда
