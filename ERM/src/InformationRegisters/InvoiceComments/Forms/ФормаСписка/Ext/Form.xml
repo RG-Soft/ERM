@@ -148,6 +148,9 @@
 				<v8:Type>cfg:DynamicList</v8:Type>
 			</Type>
 			<MainAttribute>true</MainAttribute>
+			<UseAlways>
+				<Field>Список.Inactive</Field>
+			</UseAlways>
 			<Settings xsi:type="DynamicList">
 				<ManualQuery>true</ManualQuery>
 				<DynamicDataRead>true</DynamicDataRead>
@@ -164,7 +167,8 @@
 	InvoiceComments.Problem.RemedialWorkPlan КАК RemedialWorkPlan,
 	InvoiceComments.Problem.RWDTargetDate КАК RWDTargetDate,
 	InvoiceComments.Problem.Comment КАК Comment,
-	InvoiceComments.Problem.SLBAssignedToList КАК SLBAssignedToList
+	InvoiceComments.Problem.SLBAssignedToList КАК SLBAssignedToList,
+	InvoiceComments.Inactive
 ИЗ
 	РегистрСведений.InvoiceComments КАК InvoiceComments</QueryText>
 				<MainTable>InformationRegister.InvoiceComments</MainTable>
@@ -186,5 +190,27 @@
 				</ListSettings>
 			</Settings>
 		</Attribute>
+		<ConditionalAppearance>
+			<dcsset:item>
+				<dcsset:selection>
+					<dcsset:item>
+						<dcsset:field>Список</dcsset:field>
+					</dcsset:item>
+				</dcsset:selection>
+				<dcsset:filter>
+					<dcsset:item xsi:type="dcsset:FilterItemComparison">
+						<dcsset:left xsi:type="dcscor:Field">Список.Inactive</dcsset:left>
+						<dcsset:comparisonType>Equal</dcsset:comparisonType>
+						<dcsset:right xsi:type="xs:boolean">true</dcsset:right>
+					</dcsset:item>
+				</dcsset:filter>
+				<dcsset:appearance>
+					<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+						<dcscor:parameter>ЦветФона</dcscor:parameter>
+						<dcscor:value xsi:type="v8ui:Color">web:Gainsboro</dcscor:value>
+					</dcscor:item>
+				</dcsset:appearance>
+			</dcsset:item>
+		</ConditionalAppearance>
 	</Attributes>
 </Form>
