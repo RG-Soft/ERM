@@ -774,6 +774,18 @@
 	СтрокаТЗ.ИмяКолонки = "InvoiceID";
 	СтрокаТЗ.Обязательная = Истина;
 	
+	// ReverseDocument
+	СтрокаТЗ = СтруктураКолонок.Добавить();
+	СтрокаТЗ.ИмяПоля = "ReverseDocument";
+	СтрокаТЗ.ИмяКолонки = "ReverseDocument";
+	СтрокаТЗ.Обязательная = Истина;
+	
+	// ReverseDocumentType
+	СтрокаТЗ = СтруктураКолонок.Добавить();
+	СтрокаТЗ.ИмяПоля = "ReverseDocumentType";
+	СтрокаТЗ.ИмяКолонки = "ReverseDocumentType";
+	СтрокаТЗ.Обязательная = Истина;
+	
 КонецПроцедуры
 
 
@@ -3488,7 +3500,9 @@
 		|	HOBReceivablesSourceData.PaymentNumber,
 		|	HOBReceivablesSourceData.PaymentDate,
 		|	HOBReceivablesSourceData.СтрокаФайла,
-		|	HOBReceivablesSourceData.LegalEntity
+		|	HOBReceivablesSourceData.LegalEntity,
+		|	HOBReceivablesSourceData.ReverseDocument,
+		|	HOBReceivablesSourceData.ReverseDocumentType
 		|ПОМЕСТИТЬ ВТ_ДанныеФайла
 		|ИЗ
 		|	РегистрСведений.HOBReceivablesSourceData КАК HOBReceivablesSourceData
@@ -3664,7 +3678,9 @@
 		|	ВТ_ДанныеФайла.PaymentNumber,
 		|	ВТ_ДанныеФайла.PaymentDate,
 		|	ВТ_ДанныеФайла.СтрокаФайла КАК СтрокаФайла,
-		|	LegalEntiites.Ссылка КАК LegalEntity
+		|	LegalEntiites.Ссылка КАК LegalEntity,
+		|	ВТ_ДанныеФайла.ReverseDocument,
+		|	ВТ_ДанныеФайла.ReverseDocumentType
 		|ИЗ
 		|	ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
@@ -3738,7 +3754,9 @@
 		|	ВТ_ДанныеФайла.PaymentNumber,
 		|	ВТ_ДанныеФайла.PaymentDate,
 		|	ВТ_ДанныеФайла.СтрокаФайла,
-		|	LegalEntiites.Ссылка
+		|	LegalEntiites.Ссылка,
+		|	ВТ_ДанныеФайла.ReverseDocument,
+		|	ВТ_ДанныеФайла.ReverseDocumentType
 		|ИЗ
 		|	ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
@@ -4044,6 +4062,7 @@
 		
 		ТранзакцияHOBОбъект.HOBDocumentType = ПолучитьТипДокумента(ДанныеДляЗаполнения.DocumentType, КэшПредставленийТипов);
 		ТранзакцияHOBОбъект.HOBInvoiceType = ПолучитьТипДокумента(ДанныеДляЗаполнения.InvoiceType, КэшПредставленийТипов);
+		ТранзакцияHOBОбъект.HOBReverseType = ПолучитьТипДокумента(ДанныеДляЗаполнения.ReverseDocumentType, КэшПредставленийТипов);
 		
 		Если НЕ ЗначениеЗаполнено(ТранзакцияHOBОбъект.HOBDocumentType) Тогда
 			ТекОшибка = "Unrecognized document type " + ДанныеДляЗаполнения.DocumentType;
