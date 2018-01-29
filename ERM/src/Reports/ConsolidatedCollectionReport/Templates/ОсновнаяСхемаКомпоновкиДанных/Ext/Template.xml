@@ -207,7 +207,8 @@
 					И Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
 					И Invoice &lt;&gt; НЕОПРЕДЕЛЕНО
 				ИЛИ CashBatch &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка))
-				И Client &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)) КАК PaymentsОбороты
+				И Client &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)
+				И НЕ Client.Intercompany) КАК PaymentsОбороты
 ГДЕ
 	ПОДСТРОКА(PaymentsОбороты.Account.Код, 1, 6) &lt;&gt; "209000"
 
