@@ -1995,6 +1995,7 @@
 		|	OracleSmithSourceData.customer_name,
 		|	OracleSmithSourceData.entered_amt КАК ENTERED,
 		|	OracleSmithSourceData.sub_ledger_source КАК DOC_NUMBER,
+		|	OracleSmithSourceData.master_source_document_number КАК master_source_document_number,
 		|	OracleSmithSourceData.master_source_document_number + ""."" + OracleSmithSourceData.cust_no + ""."" + OracleSmithSourceData.company_code_str КАК LINE_ID,
 		|	OracleSmithSourceData.GL_ACCOUNT,
 		|	OracleSmithSourceData.СтрокаФайла,
@@ -2198,6 +2199,7 @@
 		|	ВТ_ДанныеФайла.CUSTOMER_NUMBER КАК CustomerNumber,
 		|	ВТ_ДанныеФайла.CUSTOMER_NUMBER_JV КАК CUSTOMER_NUMBER_JV,
 		|	ВТ_ДанныеФайла.DOC_NUMBER КАК DocNumber,
+		|	ВТ_ДанныеФайла.DOC_NUMBER КАК master_source_document_number,
 		|	ВЫБОР
 		|		КОГДА ВТ_ДанныеФайла.TRANS_TYPE = ""A""
 		|			ТОГДА 0
