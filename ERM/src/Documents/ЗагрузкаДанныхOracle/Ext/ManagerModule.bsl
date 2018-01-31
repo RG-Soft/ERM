@@ -2199,7 +2199,7 @@
 		|	ВТ_ДанныеФайла.CUSTOMER_NUMBER КАК CustomerNumber,
 		|	ВТ_ДанныеФайла.CUSTOMER_NUMBER_JV КАК CUSTOMER_NUMBER_JV,
 		|	ВТ_ДанныеФайла.DOC_NUMBER КАК DocNumber,
-		|	ВТ_ДанныеФайла.DOC_NUMBER КАК master_source_document_number,
+		|	ВТ_ДанныеФайла.master_source_document_number КАК master_source_document_number,
 		|	ВЫБОР
 		|		КОГДА ВТ_ДанныеФайла.TRANS_TYPE = ""A""
 		|			ТОГДА 0
