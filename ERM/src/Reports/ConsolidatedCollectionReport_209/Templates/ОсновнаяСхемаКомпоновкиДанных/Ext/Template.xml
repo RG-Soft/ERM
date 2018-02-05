@@ -55,44 +55,8 @@
 			<field>Кратность</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>BaseAmount</dataPath>
-			<field>BaseAmount</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Base amount</v8:content>
-				</v8:item>
-			</title>
-			<appearance>
-				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:parameter>Формат</dcscor:parameter>
-					<dcscor:value xsi:type="xs:string">ЧЦ=15; ЧДЦ=2</dcscor:value>
-				</dcscor:item>
-			</appearance>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>CashBatch</dataPath>
 			<field>CashBatch</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>InvoiceNum</dataPath>
-			<field>InvoiceNum</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Invoice num</v8:content>
-				</v8:item>
-			</title>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>Type</dataPath>
-			<field>Type</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Type</v8:content>
-				</v8:item>
-			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>AU</dataPath>
@@ -113,14 +77,25 @@
 			<field>LegalEntity</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>DateCollection</dataPath>
-			<field>DateCollection</field>
+			<dataPath>BaseAmount</dataPath>
+			<field>BaseAmount</field>
 			<title xsi:type="v8:LocalStringType">
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>Date collection</v8:content>
+					<v8:content>Base amount</v8:content>
 				</v8:item>
 			</title>
+			<appearance>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>Формат</dcscor:parameter>
+					<dcscor:value xsi:type="v8:LocalStringType">
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>ЧЦ=15; ЧДЦ=2</v8:content>
+						</v8:item>
+					</dcscor:value>
+				</dcscor:item>
+			</appearance>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Amount</dataPath>
@@ -131,67 +106,41 @@
 					<v8:content>Amount</v8:content>
 				</v8:item>
 			</title>
+			<appearance>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>Формат</dcscor:parameter>
+					<dcscor:value xsi:type="v8:LocalStringType">
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>ЧЦ=15; ЧДЦ=2</v8:content>
+						</v8:item>
+					</dcscor:value>
+				</dcscor:item>
+			</appearance>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>FiscalInvoiceDate</dataPath>
-			<field>FiscalInvoiceDate</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Fiscal invoice date</v8:content>
-				</v8:item>
-			</title>
+			<dataPath>РегистраторDocumentPresentation</dataPath>
+			<field>РегистраторDocumentPresentation</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>CashBatchПредыдущегоМесяца</dataPath>
-			<field>CashBatchПредыдущегоМесяца</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Cash batch предыдущего месяца</v8:content>
-				</v8:item>
-			</title>
+			<dataPath>РегистраторDocumentID</dataPath>
+			<field>РегистраторDocumentID</field>
 			<role>
-				<dcscom:dimension>true</dcscom:dimension>
+				<dcscom:required>true</dcscom:required>
 			</role>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>AmountCashBatchПредыдущегоМесяца</dataPath>
-			<field>AmountCashBatchПредыдущегоМесяца</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Amount cash batch предыдущего месяца</v8:content>
-				</v8:item>
-			</title>
 		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	PaymentsОбороты.Company КАК Company,
 	PaymentsОбороты.Client КАК Client,
 	PaymentsОбороты.Source КАК Source,
-	PaymentsОбороты.Invoice КАК Invoice,
-	PaymentsОбороты.CashBatch КАК CashBatch,
 	PaymentsОбороты.Currency КАК Currency,
 	PaymentsОбороты.AU КАК AU,
 	PaymentsОбороты.LegalEntity КАК LegalEntity,
 	PaymentsОбороты.Account КАК Account,
-	МАКСИМУМ(ВЫБОР
-			КОГДА PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
-					ИЛИ PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith)
-				ТОГДА PaymentsОбороты.Регистратор.Дата
-			КОГДА PaymentsОбороты.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
-					И PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
-				ТОГДА ВЫБОР
-						КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
-							ТОГДА PaymentsОбороты.Регистратор.ДокументОснование.DateLawson
-						ИНАЧЕ PaymentsОбороты.Регистратор.DateLawson
-					КОНЕЦ
-			КОГДА PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
-				ТОГДА PaymentsОбороты.Регистратор.Дата
-			ИНАЧЕ PaymentsОбороты.CashBatch.Дата
-		КОНЕЦ) КАК DateCollection,
-	СУММА(PaymentsОбороты.AmountОборот) КАК AmountОборот
+	СУММА(PaymentsОбороты.AmountОборот) КАК AmountОборот,
+	МАКСИМУМ(PaymentsОбороты.Регистратор.DocumentPresentation) КАК РегистраторDocumentPresentation,
+	PaymentsОбороты.Регистратор.DocumentID
 ПОМЕСТИТЬ PaymentsГруппировка
 ИЗ
 	РегистрНакопления.Payments.Обороты(
@@ -208,15 +157,14 @@
 	ПОДСТРОКА(PaymentsОбороты.Account.Код, 1, 6) = "209000"
 
 СГРУППИРОВАТЬ ПО
-	PaymentsОбороты.CashBatch,
 	PaymentsОбороты.AU,
 	PaymentsОбороты.Currency,
 	PaymentsОбороты.LegalEntity,
 	PaymentsОбороты.Source,
-	PaymentsОбороты.Invoice,
 	PaymentsОбороты.Account,
 	PaymentsОбороты.Client,
-	PaymentsОбороты.Company
+	PaymentsОбороты.Company,
+	PaymentsОбороты.Регистратор.DocumentID
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -224,42 +172,20 @@
 	PaymentsГруппировка.Company КАК Company,
 	PaymentsГруппировка.Client КАК Client,
 	PaymentsГруппировка.Source КАК Source,
-	PaymentsГруппировка.DateCollection КАК DateCollection,
-	ВЫБОР
-		КОГДА PaymentsГруппировка.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
-				И PaymentsГруппировка.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
-				И PaymentsГруппировка.Invoice &lt;&gt; НЕОПРЕДЕЛЕНО
-			ТОГДА PaymentsГруппировка.Invoice
-		ИНАЧЕ PaymentsГруппировка.CashBatch
-	КОНЕЦ КАК Invoice,
 	PaymentsГруппировка.Currency КАК Currency,
-	ВЫБОР
-		КОГДА PaymentsГруппировка.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
-				И PaymentsГруппировка.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
-				И PaymentsГруппировка.Invoice &lt;&gt; НЕОПРЕДЕЛЕНО
-			ТОГДА PaymentsГруппировка.AmountОборот
-		ИНАЧЕ ЕСТЬNULL(UnallocatedCashОстатки.AmountОстаток, 0)
-	КОНЕЦ КАК Amount,
 	PaymentsГруппировка.Account КАК Account,
 	PaymentsГруппировка.AU КАК AU,
-	UnallocatedCashОстатки1.CashBatch КАК CashBatchПредыдущегоМесяца,
 	ВЫБОР
 		КОГДА AnalyticsExceptions.SubSubSegment ЕСТЬ NULL
 			ТОГДА PaymentsГруппировка.AU.Сегмент
 		ИНАЧЕ AnalyticsExceptions.SubSubSegment
 	КОНЕЦ КАК SubSubSegment,
-	ВЫБОР
-		КОГДА UnallocatedCashОстатки1.CashBatch = ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
-			ТОГДА 0
-		ИНАЧЕ ЕСТЬNULL(UnallocatedCashОстатки1.AmountОстаток, 0)
-	КОНЕЦ КАК AmountCashBatchПредыдущегоМесяца
+	PaymentsГруппировка.AmountОборот,
+	PaymentsГруппировка.РегистраторDocumentPresentation,
+	PaymentsГруппировка.РегистраторDocumentID
 ПОМЕСТИТЬ Исходные
 ИЗ
 	PaymentsГруппировка КАК PaymentsГруппировка
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрНакопления.UnallocatedCash.Остатки({(&amp;КонецПериода)}, ) КАК UnallocatedCashОстатки
-		ПО PaymentsГруппировка.CashBatch = UnallocatedCashОстатки.CashBatch
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрНакопления.UnallocatedCash.Остатки({(&amp;КонецПредыдущегоМесяца)}, ) КАК UnallocatedCashОстатки1
-		ПО PaymentsГруппировка.CashBatch = UnallocatedCashОстатки1.CashBatch
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.AnalyticsExceptions КАК AnalyticsExceptions
 		ПО PaymentsГруппировка.Source = AnalyticsExceptions.Source
 			И PaymentsГруппировка.Company = AnalyticsExceptions.Company
@@ -272,37 +198,22 @@
 	Исходные.Company КАК Company,
 	Исходные.Source КАК Source,
 	Исходные.Currency КАК Currency,
-	СУММА(Исходные.Amount - Исходные.AmountCashBatchПредыдущегоМесяца) КАК Amount,
 	ВнутренниеКурсыВалютСрезПоследних.Курс КАК Курс,
 	ВнутренниеКурсыВалютСрезПоследних.Кратность КАК Кратность,
+	Исходные.Account КАК Account,
+	Исходные.AU КАК AU,
+	Исходные.SubSubSegment,
+	СУММА(Исходные.AmountОборот) КАК Amount,
 	СУММА(ВЫБОР
 			КОГДА Исходные.Currency = &amp;USD
-				ТОГДА Исходные.Amount - Исходные.AmountCashBatchПредыдущегоМесяца
+				ТОГДА Исходные.AmountОборот
 			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
 					ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
 				ТОГДА 0
-			ИНАЧЕ (Исходные.Amount - Исходные.AmountCashBatchПредыдущегоМесяца) / ВнутренниеКурсыВалютСрезПоследних.Курс
+			ИНАЧЕ Исходные.AmountОборот / ВнутренниеКурсыВалютСрезПоследних.Курс
 		КОНЕЦ) КАК BaseAmount,
-	ВЫБОР
-		КОГДА Исходные.Invoice ССЫЛКА Документ.Invoice
-			ТОГДА Исходные.Invoice.DocNumber
-		КОГДА Исходные.Invoice ССЫЛКА Документ.Memo
-			ТОГДА Исходные.Invoice.Номер
-		ИНАЧЕ Исходные.Invoice.PaymentNumber
-	КОНЕЦ КАК InvoiceNum,
-	ТИПЗНАЧЕНИЯ(Исходные.Invoice) КАК Type,
-	Исходные.Invoice КАК Invoice,
-	Исходные.Account КАК Account,
-	МАКСИМУМ(Исходные.DateCollection) КАК DateCollection,
-	Исходные.AU КАК AU,
-	ВЫБОР
-		КОГДА Исходные.Invoice.FiscalInvoiceDate = ДАТАВРЕМЯ(1, 1, 1, 0, 0, 0)
-			ТОГДА Исходные.Invoice.Дата
-		ИНАЧЕ Исходные.Invoice.FiscalInvoiceDate
-	КОНЕЦ КАК FiscalInvoiceDate,
-	Исходные.CashBatchПредыдущегоМесяца,
-	Исходные.SubSubSegment,
-	Исходные.AmountCashBatchПредыдущегоМесяца
+	Исходные.РегистраторDocumentPresentation,
+	Исходные.РегистраторDocumentID
 ИЗ
 	Исходные КАК Исходные
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;КонецПериода)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
@@ -315,28 +226,11 @@
 	Исходные.Currency,
 	ВнутренниеКурсыВалютСрезПоследних.Курс,
 	ВнутренниеКурсыВалютСрезПоследних.Кратность,
-	ВЫБОР
-		КОГДА Исходные.Invoice ССЫЛКА Документ.Invoice
-			ТОГДА Исходные.Invoice.DocNumber
-		КОГДА Исходные.Invoice ССЫЛКА Документ.Memo
-			ТОГДА Исходные.Invoice.Номер
-		ИНАЧЕ Исходные.Invoice.PaymentNumber
-	КОНЕЦ,
-	ТИПЗНАЧЕНИЯ(Исходные.Invoice),
-	Исходные.Invoice,
 	Исходные.Account,
 	Исходные.AU,
-	ВЫБОР
-		КОГДА Исходные.Invoice.FiscalInvoiceDate = ДАТАВРЕМЯ(1, 1, 1, 0, 0, 0)
-			ТОГДА Исходные.Invoice.Дата
-		ИНАЧЕ Исходные.Invoice.FiscalInvoiceDate
-	КОНЕЦ,
-	Исходные.CashBatchПредыдущегоМесяца,
 	Исходные.SubSubSegment,
-	Исходные.AmountCashBatchПредыдущегоМесяца
-
-ИМЕЮЩИЕ
-	СУММА(Исходные.Amount - Исходные.AmountCashBatchПредыдущегоМесяца) &lt;&gt; 0</query>
+	Исходные.РегистраторDocumentPresentation,
+	Исходные.РегистраторDocumentID</query>
 	</dataSet>
 	<parameter>
 		<name>НачалоПериода</name>
@@ -375,21 +269,6 @@
 		<expression>&amp;Период.ДатаОкончания</expression>
 	</parameter>
 	<parameter>
-		<name>USD</name>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>USD</v8:content>
-			</v8:item>
-		</title>
-		<valueType>
-			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:CatalogRef.Валюты</v8:Type>
-		</valueType>
-		<value xsi:nil="true"/>
-		<useRestriction>true</useRestriction>
-		<expression>Справочники.Валюты.НайтиПоКоду("840")</expression>
-	</parameter>
-	<parameter>
 		<name>Период</name>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
@@ -408,22 +287,18 @@
 		<useRestriction>false</useRestriction>
 	</parameter>
 	<parameter>
-		<name>КонецПредыдущегоМесяца</name>
+		<name>USD</name>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
-				<v8:content>Конец предыдущего месяца</v8:content>
+				<v8:content>USD</v8:content>
 			</v8:item>
 		</title>
 		<valueType>
-			<v8:Type>xs:dateTime</v8:Type>
-			<v8:DateQualifiers>
-				<v8:DateFractions>DateTime</v8:DateFractions>
-			</v8:DateQualifiers>
+			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:CatalogRef.Валюты</v8:Type>
 		</valueType>
-		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
+		<value xsi:nil="true"/>
 		<useRestriction>true</useRestriction>
-		<expression>ДобавитьКДате(&amp;Период.ДатаНачала, "Секунда", -1)</expression>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
@@ -453,15 +328,6 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Client</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.ClientID</dcsset:field>
-					<dcsset:lwsTitle>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Client ID</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Client.CRMID</dcsset:field>
@@ -518,55 +384,10 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Type</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>InvoiceNum</dcsset:field>
-					<dcsset:lwsTitle>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Invoice</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.Contract.crmContractID</dcsset:field>
-					<dcsset:lwsTitle>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Agreement Code</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.FiscalInvoiceNo</dcsset:field>
-					<dcsset:lwsTitle>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Fiscal Invoice №</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>FiscalInvoiceDate</dcsset:field>
-					<dcsset:lwsTitle>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Fiscal Invoice date</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Currency</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>DateCollection</dcsset:field>
-					<dcsset:lwsTitle>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Date of collection</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
+					<dcsset:field>РегистраторDocumentPresentation</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Amount</dcsset:field>
@@ -596,16 +417,8 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>CashBatchПредыдущегоМесяца.PaymentNumber</dcsset:field>
-					<dcsset:lwsTitle>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>PaymentNumberCashBatch</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>AmountCashBatchПредыдущегоМесяца</dcsset:field>
+					<dcsset:use>false</dcsset:use>
+					<dcsset:field>РегистраторDocumentID</dcsset:field>
 				</dcsset:item>
 			</dcsset:selection>
 			<dcsset:filter>
@@ -617,16 +430,6 @@
 				</dcsset:item>
 			</dcsset:filter>
 			<dcsset:dataParameters>
-				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:use>false</dcscor:use>
-					<dcscor:parameter>USD</dcscor:parameter>
-					<dcscor:value xsi:type="v8:StandardPeriod">
-						<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
-						<v8:startDate>0001-01-01T00:00:00</v8:startDate>
-						<v8:endDate>0001-01-01T00:00:00</v8:endDate>
-					</dcscor:value>
-					<dcsset:userSettingID>c347401d-8715-4263-aae5-e9923be5ccb0</dcsset:userSettingID>
-				</dcscor:item>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:use>false</dcscor:use>
 					<dcscor:parameter>Период</dcscor:parameter>
