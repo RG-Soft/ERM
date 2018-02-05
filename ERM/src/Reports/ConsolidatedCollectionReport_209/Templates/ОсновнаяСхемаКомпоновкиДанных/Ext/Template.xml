@@ -248,7 +248,11 @@
 			ТОГДА PaymentsГруппировка.AU.Сегмент
 		ИНАЧЕ AnalyticsExceptions.SubSubSegment
 	КОНЕЦ КАК SubSubSegment,
-	ЕСТЬNULL(UnallocatedCashОстатки1.AmountОстаток, 0) КАК AmountCashBatchПредыдущегоМесяца
+	ВЫБОР
+		КОГДА UnallocatedCashОстатки1.CashBatch = ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
+			ТОГДА 0
+		ИНАЧЕ ЕСТЬNULL(UnallocatedCashОстатки1.AmountОстаток, 0)
+	КОНЕЦ КАК AmountCashBatchПредыдущегоМесяца
 ПОМЕСТИТЬ Исходные
 ИЗ
 	PaymentsГруппировка КАК PaymentsГруппировка
