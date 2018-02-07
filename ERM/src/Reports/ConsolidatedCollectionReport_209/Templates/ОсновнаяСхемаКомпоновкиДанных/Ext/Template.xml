@@ -154,6 +154,10 @@
 			<dataPath>РегистраторCustomerNumber</dataPath>
 			<field>РегистраторCustomerNumber</field>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>CashBatchДата</dataPath>
+			<field>CashBatchДата</field>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	PaymentsОбороты.Company КАК Company,
@@ -167,7 +171,8 @@
 	МАКСИМУМ(PaymentsОбороты.Регистратор.DocumentPresentation) КАК РегистраторDocumentPresentation,
 	PaymentsОбороты.Регистратор.DocumentID,
 	МАКСИМУМ(PaymentsОбороты.Период) КАК ДатаТранзакции,
-	PaymentsОбороты.Регистратор.CustomerNumber
+	PaymentsОбороты.Регистратор.CustomerNumber,
+	МАКСИМУМ(PaymentsОбороты.CashBatch.Дата) КАК CashBatchДата
 ПОМЕСТИТЬ PaymentsГруппировка
 ИЗ
 	РегистрНакопления.Payments.Обороты(
@@ -212,7 +217,8 @@
 	PaymentsГруппировка.РегистраторDocumentPresentation,
 	PaymentsГруппировка.РегистраторDocumentID,
 	PaymentsГруппировка.ДатаТранзакции,
-	PaymentsГруппировка.РегистраторCustomerNumber
+	PaymentsГруппировка.РегистраторCustomerNumber,
+	PaymentsГруппировка.CashBatchДата
 ПОМЕСТИТЬ Исходные
 ИЗ
 	PaymentsГруппировка КАК PaymentsГруппировка
@@ -245,7 +251,8 @@
 	Исходные.РегистраторDocumentPresentation,
 	Исходные.РегистраторDocumentID,
 	Исходные.ДатаТранзакции,
-	Исходные.РегистраторCustomerNumber
+	Исходные.РегистраторCustomerNumber,
+	Исходные.CashBatchДата
 ИЗ
 	Исходные КАК Исходные
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;КонецПериода)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
@@ -264,7 +271,8 @@
 	Исходные.РегистраторDocumentPresentation,
 	Исходные.РегистраторDocumentID,
 	Исходные.ДатаТранзакции,
-	Исходные.РегистраторCustomerNumber
+	Исходные.РегистраторCustomerNumber,
+	Исходные.CashBatchДата
 
 ИМЕЮЩИЕ
 	СУММА(Исходные.AmountОборот) &lt;&gt; 0</query>
@@ -438,6 +446,15 @@
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>Date of collection</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>CashBatchДата</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Date CashBatch</v8:content>
 						</v8:item>
 					</dcsset:lwsTitle>
 				</dcsset:item>
