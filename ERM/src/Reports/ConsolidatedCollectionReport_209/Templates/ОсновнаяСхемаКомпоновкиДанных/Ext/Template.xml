@@ -130,22 +130,29 @@
 			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>ClientID</dataPath>
-			<field>ClientID</field>
+			<dataPath>ДатаТранзакции</dataPath>
+			<field>ДатаТранзакции</field>
 			<title xsi:type="v8:LocalStringType">
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>Client ID</v8:content>
+					<v8:content>Дата транзакции</v8:content>
 				</v8:item>
 			</title>
+			<appearance>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>Формат</dcscor:parameter>
+					<dcscor:value xsi:type="v8:LocalStringType">
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>ДФ=MM/dd/yyyy</v8:content>
+						</v8:item>
+					</dcscor:value>
+				</dcscor:item>
+			</appearance>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>Период</dataPath>
-			<field>Период</field>
-			<role>
-				<dcscom:periodNumber>1</dcscom:periodNumber>
-				<dcscom:periodType>Main</dcscom:periodType>
-			</role>
+			<dataPath>РегистраторCustomerNumber</dataPath>
+			<field>РегистраторCustomerNumber</field>
 		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
@@ -159,8 +166,8 @@
 	СУММА(PaymentsОбороты.AmountОборот) КАК AmountОборот,
 	МАКСИМУМ(PaymentsОбороты.Регистратор.DocumentPresentation) КАК РегистраторDocumentPresentation,
 	PaymentsОбороты.Регистратор.DocumentID,
-	PaymentsОбороты.CashBatch.ClientID КАК CashBatchClientID,
-	МАКСИМУМ(PaymentsОбороты.Период) КАК Период
+	МАКСИМУМ(PaymentsОбороты.Период) КАК ДатаТранзакции,
+	PaymentsОбороты.Регистратор.CustomerNumber
 ПОМЕСТИТЬ PaymentsГруппировка
 ИЗ
 	РегистрНакопления.Payments.Обороты(
@@ -185,7 +192,7 @@
 	PaymentsОбороты.Client,
 	PaymentsОбороты.Company,
 	PaymentsОбороты.Регистратор.DocumentID,
-	PaymentsОбороты.CashBatch.ClientID
+	PaymentsОбороты.Регистратор.CustomerNumber
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -204,8 +211,8 @@
 	PaymentsГруппировка.AmountОборот,
 	PaymentsГруппировка.РегистраторDocumentPresentation,
 	PaymentsГруппировка.РегистраторDocumentID,
-	PaymentsГруппировка.CashBatchClientID,
-	PaymentsГруппировка.Период
+	PaymentsГруппировка.ДатаТранзакции,
+	PaymentsГруппировка.РегистраторCustomerNumber
 ПОМЕСТИТЬ Исходные
 ИЗ
 	PaymentsГруппировка КАК PaymentsГруппировка
@@ -237,8 +244,8 @@
 		КОНЕЦ) КАК BaseAmount,
 	Исходные.РегистраторDocumentPresentation,
 	Исходные.РегистраторDocumentID,
-	МИНИМУМ(Исходные.CashBatchClientID) КАК ClientID,
-	Исходные.Период
+	Исходные.ДатаТранзакции,
+	Исходные.РегистраторCustomerNumber
 ИЗ
 	Исходные КАК Исходные
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;КонецПериода)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
@@ -256,7 +263,8 @@
 	Исходные.SubSubSegment,
 	Исходные.РегистраторDocumentPresentation,
 	Исходные.РегистраторDocumentID,
-	Исходные.Период
+	Исходные.ДатаТранзакции,
+	Исходные.РегистраторCustomerNumber
 
 ИМЕЮЩИЕ
 	СУММА(Исходные.AmountОборот) &lt;&gt; 0</query>
@@ -359,7 +367,13 @@
 					<dcsset:field>Client</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>ClientID</dcsset:field>
+					<dcsset:field>РегистраторCustomerNumber</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>ClientID</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Client.CRMID</dcsset:field>
@@ -419,7 +433,7 @@
 					<dcsset:field>Currency</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Период</dcsset:field>
+					<dcsset:field>ДатаТранзакции</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
