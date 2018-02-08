@@ -1106,7 +1106,7 @@
 		ПО ВТ_Остатки.Client = ВТ_ИерархияКлиентов.Контрагент
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних КАК ВнутренниеКурсыВалютСрезПоследних
 		ПО ВТ_Остатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments.СрезПоследних({(&amp;КонецМесяцаФормированияОтчета)}, НЕ Inactive) КАК InvoiceCommentsСрезПоследних
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments.СрезПоследних({(&amp;КонецДняФормированияОтчета)}, НЕ Inactive) КАК InvoiceCommentsСрезПоследних
 		ПО ВТ_Остатки.Invoice = InvoiceCommentsСрезПоследних.Invoice
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.Collectors КАК Collectors
 		ПО ВТ_Остатки.Client = Collectors.Client
@@ -1293,12 +1293,12 @@
 	ВТ_ДетальныеЗаписи.LegalEntity,
 	ВТ_ДетальныеЗаписи.USDAmount,
 	ВЫБОР
-		КОГДА ВТ_ДетальныеЗаписи.InvoiceDueDateFrom &lt;= &amp;Период
+		КОГДА ВТ_ДетальныеЗаписи.InvoiceDueDateFrom &lt;= &amp;КонецМесяцаФормированияОтчета
 			ТОГДА ВТ_ДетальныеЗаписи.USDAmount
 		ИНАЧЕ 0
 	КОНЕЦ КАК DueFrom,
 	ВЫБОР
-		КОГДА ВТ_ДетальныеЗаписи.InvoiceDueDateTo &lt;= &amp;Период
+		КОГДА ВТ_ДетальныеЗаписи.InvoiceDueDateTo &lt;= &amp;КонецМесяцаФормированияОтчета
 			ТОГДА ВТ_ДетальныеЗаписи.USDAmount
 		ИНАЧЕ 0
 	КОНЕЦ КАК DueTo,
@@ -1377,7 +1377,7 @@
 	ВТ_РассчитанныеРесурсыУровень1.UnderLitigation,
 	ВТ_РассчитанныеРесурсыУровень1.NoFrcst,
 	ВЫБОР
-		КОГДА ВТ_РассчитанныеРесурсыУровень1.ForecastDate &lt;= &amp;Период
+		КОГДА ВТ_РассчитанныеРесурсыУровень1.ForecastDate &lt;= &amp;КонецМесяцаФормированияОтчета
 				И ВТ_РассчитанныеРесурсыУровень1.ForecastDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА ВТ_РассчитанныеРесурсыУровень1.USDAmount - ВТ_РассчитанныеРесурсыУровень1.Paid
 		ИНАЧЕ 0
@@ -1449,7 +1449,7 @@
 	ВТ_РассчитанныеРесурсыУровень2.FcstCollect,
 	ВЫБОР
 		КОГДА ВТ_РассчитанныеРесурсыУровень2.Status В (ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.PendingSLBDocumentation), ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.Pricing), ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.TechnicalSQ), ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.LostInHole))
-				И ВТ_РассчитанныеРесурсыУровень2.InvoiceDueDateFrom &lt;= &amp;Период
+				И ВТ_РассчитанныеРесурсыУровень2.InvoiceDueDateFrom &lt;= &amp;КонецМесяцаФормированияОтчета
 			ТОГДА ВТ_РассчитанныеРесурсыУровень2.USDAmount - ВТ_РассчитанныеРесурсыУровень2.Paid - ВТ_РассчитанныеРесурсыУровень2.FcstCollect
 		ИНАЧЕ 0
 	КОНЕЦ КАК OverdueDispute,
@@ -1760,19 +1760,6 @@
 		<availableAsField>false</availableAsField>
 	</parameter>
 	<parameter>
-		<name>КонецМесяцаФормированияОтчета</name>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Конец месяца формирования отчета</v8:content>
-			</v8:item>
-		</title>
-		<value xsi:nil="true"/>
-		<useRestriction>true</useRestriction>
-		<expression>КонецПериода(&amp;Период,"МЕСЯЦ")</expression>
-		<availableAsField>false</availableAsField>
-	</parameter>
-	<parameter>
 		<name>USD</name>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
@@ -1786,6 +1773,19 @@
 		<value xsi:nil="true"/>
 		<useRestriction>true</useRestriction>
 		<expression>Константы.rgsВалютаUSD.Получить()</expression>
+	</parameter>
+	<parameter>
+		<name>КонецМесяцаФормированияОтчета</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Конец месяца формирования отчета</v8:content>
+			</v8:item>
+		</title>
+		<value xsi:nil="true"/>
+		<useRestriction>true</useRestriction>
+		<expression>КонецПериода(&amp;Период,"МЕСЯЦ")</expression>
+		<availableAsField>false</availableAsField>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
@@ -2239,11 +2239,6 @@
 						<v8:variant xsi:type="v8:StandardBeginningDateVariant">BeginningOfNextDay</v8:variant>
 					</dcscor:value>
 					<dcsset:userSettingID>6a13f980-6f34-4eea-91c0-a7e9314c4df5</dcsset:userSettingID>
-				</dcscor:item>
-				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:use>false</dcscor:use>
-					<dcscor:parameter>КонецМесяцаФормированияОтчета</dcscor:parameter>
-					<dcscor:value xsi:nil="true"/>
 				</dcscor:item>
 			</dcsset:dataParameters>
 			<dcsset:conditionalAppearance>
