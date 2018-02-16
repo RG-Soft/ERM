@@ -226,7 +226,7 @@
 		|	UnbilledARОстатки.Account.БазовыйЭлемент,
 		|	UnbilledARОстатки.AU.Сегмент.БазовыйЭлемент,
 		|	UnbilledARОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент,
-		|	UnbilledARОстатки.AmountОстаток,
+		|	-UnbilledARОстатки.AmountОстаток,
 		|	UnbilledARОстатки.Currency
 		|ИЗ
 		|	РегистрНакопления.UnbilledAR.Остатки(&ДатаКонец, ) КАК UnbilledARОстатки
