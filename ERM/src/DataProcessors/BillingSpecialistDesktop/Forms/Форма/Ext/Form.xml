@@ -669,7 +669,11 @@
 		SalesOrderResponsiblesList.ResponsiblesList КАК ResponsibleAR,
 		UnbilledARОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
 		UnbilledARОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket КАК SubGeoMarket,
-		UnbilledARОстатки.SalesOrder.Agreement КАК Agreement,
+		ВЫБОР
+			КОГДА ЕСТЬNULL(UnbilledARОстатки.SalesOrder.Основание, ЗНАЧЕНИЕ(Документ.SalesOrder.ПустаяСсылка)) &lt;&gt; ЗНАЧЕНИЕ(Документ.SalesOrder.ПустаяСсылка)
+				ТОГДА UnbilledARОстатки.SalesOrder.Основание.Agreement
+			ИНАЧЕ UnbilledARОстатки.SalesOrder.Agreement
+		КОНЕЦ КАК Agreement,
 		UnbilledARОстатки.SalesOrder.ClientID КАК CustomerID,
 		ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0) КАК Rate,
 		ВЫБОР

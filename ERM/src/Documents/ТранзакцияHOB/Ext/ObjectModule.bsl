@@ -39,16 +39,14 @@
 			|				И Account = &Account
 			|				И Company = &Company
 			|				И Currency = &Currency
-			|				И Location = &Location
-			|				И Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
-			|				И SubSubSegment = &SubSubSegment) КАК ManualTransactionsОстатки";
+			|				И AU = &AU
+			|				И Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)) КАК ManualTransactionsОстатки";
 		
 		Запрос.УстановитьПараметр("РучнаяКорректировка", РучнаяКорректировка);
 		Запрос.УстановитьПараметр("Account", Account);
 		Запрос.УстановитьПараметр("Company", Company);
 		Запрос.УстановитьПараметр("Currency", Currency);
-		Запрос.УстановитьПараметр("Location", Location);
-		Запрос.УстановитьПараметр("SubSubSegment", SubSubSegment);
+		Запрос.УстановитьПараметр("AU", AU);
 		Запрос.УстановитьПараметр("ДатаТранзакции", Новый Граница(МоментВремени(), ВидГраницы.Исключая));
 		
 		РезультатЗапроса = Запрос.Выполнить();
