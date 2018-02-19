@@ -768,7 +768,7 @@
 						СтруктураРеквизитовПроблемы.Billed = BilledStatus;
 					КонецЕсли;
 				Иначе 
-				 ТекстОшибки = " " + SalesOrder + "in the Billed or Canceled status of the ERM, and in the Unbilled status in the document loading";
+				 ТекстОшибки = " " + SalesOrder + " in the " + ВыборкаДетальныеЗаписи.Billed + " status of the ERM and Unbilled status in the file. Check document status!";
 			 	КонецЕсли;
 			 КонецЕсли;
 		КонецЕсли;
