@@ -1526,7 +1526,7 @@
 		|ИЗ
 		|	РегистрСведений.КлючиSalesOrders КАК КлючиSalesOrders
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
-		|		ПО КлючиSalesOrders.ArInvoice = ВТ_ДанныеФайла.INVOICE_NUMBER_SAM
+		|		ПО (КлючиSalesOrders.ArInvoice = ""SAM-"" + ВТ_ДанныеФайла.INVOICE_NUMBER_SAM)
 		|			И (КлючиSalesOrders.Source = &ТипВнешнейСистемы)
 		|			И КлючиSalesOrders.Company.Код = ВТ_ДанныеФайла.OU
 		|;
@@ -2996,7 +2996,7 @@
 				
 			КонецЕсли;
 			
-			СтруктураПоискаSO.Номер = ДанныеДляЗаполнения.InvoiceNumberSAM;
+			СтруктураПоискаSO.Номер = "SAM-" + ДанныеДляЗаполнения.InvoiceNumberSAM;
 			
 		КонецЕсли;
 		СтруктураПоискаSO.Company = ДанныеДляЗаполнения.Company;
@@ -3085,7 +3085,7 @@
 			// если указан номер SO, надо прописать связку
 			Если НЕ ПустаяСтрока(ДанныеДляЗаполнения.InvoiceNumberSAM) ИЛИ НЕ ПустаяСтрока(ТранзакцияOracleОбъект.SONum) Тогда
 				
-				СтруктураПоискаSO.Номер = ?(НЕ ПустаяСтрока(ДанныеДляЗаполнения.InvoiceNumberSAM), ДанныеДляЗаполнения.InvoiceNumberSAM, ТранзакцияOracleОбъект.SONum);
+				СтруктураПоискаSO.Номер = ?(НЕ ПустаяСтрока(ДанныеДляЗаполнения.InvoiceNumberSAM), "SAM-" + ДанныеДляЗаполнения.InvoiceNumberSAM, ТранзакцияOracleОбъект.SONum);
 				СтруктураПоискаSO.Company = ТранзакцияOracleОбъект.Company;
 				СтрокиSalesOrder = КэшSalesOrders.НайтиСтроки(СтруктураПоискаSO);
 				
@@ -3872,7 +3872,7 @@
 	ДокОбъект = Документы.SalesOrder.СоздатьДокумент();
 	Если ТранзакцияOracleОбъект.Source = Перечисления.ТипыСоответствий.OracleMI Тогда
 		ДокОбъект.Номер = ?(ПустаяСтрока(ДанныеДляЗаполнения.InvoiceNumberSAM), ТранзакцияOracleОбъект.SONum, ДанныеДляЗаполнения.InvoiceNumberSAM);
-		ДокОбъект.ArInvoice = ?(ПустаяСтрока(ДанныеДляЗаполнения.InvoiceNumberSAM), ТранзакцияOracleОбъект.SONum, ДанныеДляЗаполнения.InvoiceNumberSAM);
+		ДокОбъект.ArInvoice = ?(ПустаяСтрока(ДанныеДляЗаполнения.InvoiceNumberSAM), ТранзакцияOracleОбъект.SONum, "SAM-" + ДанныеДляЗаполнения.InvoiceNumberSAM);
 		ДокОбъект.Дата = ТранзакцияOracleОбъект.SODate;
 	Иначе
 		ДокОбъект.Номер = ТранзакцияOracleОбъект.DocNumber;
