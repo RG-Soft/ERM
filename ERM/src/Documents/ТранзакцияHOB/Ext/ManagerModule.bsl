@@ -77,7 +77,9 @@
 	|	ТранзакцияHOB.HOBInvoiceType,
 	|	ТранзакцияHOB.LegalEntity,
 	|	ТранзакцияHOB.Account.БазовыйЭлемент КАК HFMAccount,
-	|	ТранзакцияHOB.HOBReverseType
+	|	ТранзакцияHOB.HOBReverseType,
+	|	ТранзакцияHOB.MNGC,
+	|	ТранзакцияHOB.EndClient
 	|ИЗ
 	|	Документ.ТранзакцияHOB КАК ТранзакцияHOB
 	|ГДЕ
