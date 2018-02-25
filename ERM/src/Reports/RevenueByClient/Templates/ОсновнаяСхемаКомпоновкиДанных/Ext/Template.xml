@@ -30,9 +30,6 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Document</dataPath>
 			<field>Document</field>
-			<role>
-				<dcscom:dimension>true</dcscom:dimension>
-			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Client</dataPath>
@@ -174,10 +171,6 @@
 			</appearance>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>Курс</dataPath>
-			<field>Курс</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>Segment</dataPath>
 			<field>Segment</field>
 			<title xsi:type="v8:LocalStringType">
@@ -227,6 +220,14 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Location</dataPath>
+			<field>Location</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>EndClient</dataPath>
+			<field>EndClient</field>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	ВнутренниеКурсыВалют.Период КАК Период,
@@ -270,6 +271,7 @@
 	RevenueОбороты.AU.Сегмент.БазовыйЭлемент.Родитель КАК SubSegment,
 	RevenueОбороты.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель КАК Segment,
 	RevenueОбороты.Source
+ПОМЕСТИТЬ ВТ_Результат
 ИЗ
 	РегистрНакопления.Revenue.Обороты(, , Месяц, ) КАК RevenueОбороты
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИерархияКонтрагентов.СрезПоследних КАК ИерархияКонтрагентовСрезПоследних
@@ -300,8 +302,63 @@
 	RevenueОбороты.AU.Сегмент.БазовыйЭлемент.Родитель,
 	RevenueОбороты.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель,
 	RevenueОбороты.Source,
-	RevenueОбороты.Company.БазовыйЭлемент</query>
+	RevenueОбороты.Company.БазовыйЭлемент
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	ВТ_Результат.ParentClient,
+	ВТ_Результат.ClientID,
+	ВТ_Результат.Client,
+	ВТ_Результат.Company,
+	ВТ_Результат.AU,
+	ВТ_Результат.Currency,
+	ВТ_Результат.LegalEntity,
+	СУММА(ВТ_Результат.Amount) КАК Amount,
+	СУММА(ВТ_Результат.USDAmount) КАК USDAmount,
+	ВТ_Результат.ПериодМесяц,
+	ВТ_Результат.ПериодКвартал,
+	ВТ_Результат.ПериодГод,
+	ВТ_Результат.GeoMarket,
+	ВТ_Результат.SubGeoMarket,
+	ВТ_Результат.SubSubSegment,
+	ВТ_Результат.SubSegment,
+	ВТ_Результат.Segment,
+	ВТ_Результат.Source
+ИЗ
+	ВТ_Результат КАК ВТ_Результат
+
+СГРУППИРОВАТЬ ПО
+	ВТ_Результат.Source,
+	ВТ_Результат.Segment,
+	ВТ_Результат.SubSegment,
+	ВТ_Результат.ParentClient,
+	ВТ_Результат.ClientID,
+	ВТ_Результат.Client,
+	ВТ_Результат.Company,
+	ВТ_Результат.AU,
+	ВТ_Результат.Currency,
+	ВТ_Результат.LegalEntity,
+	ВТ_Результат.ПериодМесяц,
+	ВТ_Результат.ПериодКвартал,
+	ВТ_Результат.ПериодГод,
+	ВТ_Результат.GeoMarket,
+	ВТ_Результат.SubGeoMarket,
+	ВТ_Результат.SubSubSegment</query>
 	</dataSet>
+	<calculatedField>
+		<dataPath>BU</dataPath>
+		<expression>rgsКонсолидацияДанныхСервер.ОпределитьBU(GeoMarket, SubGeoMarket, Segment, SubSegment, Company, AU)</expression>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>BU</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:CatalogRef.BusinessUnits</v8:Type>
+		</valueType>
+	</calculatedField>
 	<totalField>
 		<dataPath>USDAmount</dataPath>
 		<expression>Сумма(USDAmount)</expression>
@@ -592,6 +649,13 @@
 						</dcsset:item>
 						<dcsset:item xsi:type="dcsset:GroupItemField">
 							<dcsset:field>Currency</dcsset:field>
+							<dcsset:groupType>Items</dcsset:groupType>
+							<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
+							<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
+							<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
+						</dcsset:item>
+						<dcsset:item xsi:type="dcsset:GroupItemField">
+							<dcsset:field>BU</dcsset:field>
 							<dcsset:groupType>Items</dcsset:groupType>
 							<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
 							<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
