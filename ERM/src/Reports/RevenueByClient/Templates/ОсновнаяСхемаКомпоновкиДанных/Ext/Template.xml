@@ -228,6 +228,16 @@
 			<dataPath>EndClient</dataPath>
 			<field>EndClient</field>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>MgmtGeomarket</dataPath>
+			<field>MgmtGeomarket</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Mgmt geomarket</v8:content>
+				</v8:item>
+			</title>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	ВнутренниеКурсыВалют.Период КАК Период,
@@ -265,8 +275,16 @@
 	НАЧАЛОПЕРИОДА(RevenueОбороты.Период, КВАРТАЛ) КАК ПериодКвартал,
 	НАЧАЛОПЕРИОДА(RevenueОбороты.Период, ГОД) КАК ПериодГод,
 	ВТ_КурсыВалют.Курс,
-	RevenueОбороты.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
-	RevenueОбороты.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket КАК SubGeoMarket,
+	ВЫБОР
+		КОГДА RevenueОбороты.Location = ЗНАЧЕНИЕ(Справочник.ПодразделенияОрганизаций.ПустаяСсылка)
+			ТОГДА RevenueОбороты.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель
+		ИНАЧЕ RevenueОбороты.Location.БазовыйЭлемент.GeoMarket.Родитель
+	КОНЕЦ КАК GeoMarket,
+	ВЫБОР
+		КОГДА RevenueОбороты.Location = ЗНАЧЕНИЕ(Справочник.ПодразделенияОрганизаций.ПустаяСсылка)
+			ТОГДА RevenueОбороты.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket
+		ИНАЧЕ RevenueОбороты.Location.БазовыйЭлемент.GeoMarket
+	КОНЕЦ КАК SubGeoMarket,
 	RevenueОбороты.AU.Сегмент.БазовыйЭлемент КАК SubSubSegment,
 	RevenueОбороты.AU.Сегмент.БазовыйЭлемент.Родитель КАК SubSegment,
 	RevenueОбороты.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель КАК Segment,
@@ -301,8 +319,6 @@
 	НАЧАЛОПЕРИОДА(RevenueОбороты.Период, КВАРТАЛ),
 	НАЧАЛОПЕРИОДА(RevenueОбороты.Период, ГОД),
 	ВТ_КурсыВалют.Курс,
-	RevenueОбороты.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель,
-	RevenueОбороты.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket,
 	RevenueОбороты.AU.Сегмент.БазовыйЭлемент,
 	RevenueОбороты.AU.Сегмент.БазовыйЭлемент.Родитель,
 	RevenueОбороты.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель,
@@ -312,6 +328,16 @@
 		КОГДА RevenueОбороты.Location = ЗНАЧЕНИЕ(Справочник.ПодразделенияОрганизаций.ПустаяСсылка)
 			ТОГДА RevenueОбороты.AU.ПодразделениеОрганизации.БазовыйЭлемент
 		ИНАЧЕ RevenueОбороты.Location.БазовыйЭлемент
+	КОНЕЦ,
+	ВЫБОР
+		КОГДА RevenueОбороты.Location = ЗНАЧЕНИЕ(Справочник.ПодразделенияОрганизаций.ПустаяСсылка)
+			ТОГДА RevenueОбороты.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель
+		ИНАЧЕ RevenueОбороты.Location.БазовыйЭлемент.GeoMarket.Родитель
+	КОНЕЦ,
+	ВЫБОР
+		КОГДА RevenueОбороты.Location = ЗНАЧЕНИЕ(Справочник.ПодразделенияОрганизаций.ПустаяСсылка)
+			ТОГДА RevenueОбороты.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket
+		ИНАЧЕ RevenueОбороты.Location.БазовыйЭлемент.GeoMarket
 	КОНЕЦ
 ;
 
@@ -335,7 +361,8 @@
 	ВТ_Результат.SubSegment,
 	ВТ_Результат.Segment,
 	ВТ_Результат.Source,
-	ВТ_Результат.Location
+	ВТ_Результат.Location,
+	ВТ_Результат.SubGeoMarket.ManagementGeomarket КАК MgmtGeomarket
 ИЗ
 	ВТ_Результат КАК ВТ_Результат
 
@@ -360,7 +387,7 @@
 	</dataSet>
 	<calculatedField>
 		<dataPath>BU</dataPath>
-		<expression>rgsКонсолидацияДанныхСервер.ОпределитьBU(GeoMarket, SubGeoMarket, Segment, SubSegment, Company, AU)</expression>
+		<expression>rgsКонсолидацияДанныхСервер.ОпределитьBU(GeoMarket, SubGeoMarket, MgmtGeomarket, Segment, SubSegment, Company, AU)</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -481,6 +508,9 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>SubGeoMarket</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>MgmtGeomarket</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Segment</dcsset:field>
@@ -605,6 +635,13 @@
 						</dcsset:item>
 						<dcsset:item xsi:type="dcsset:GroupItemField">
 							<dcsset:field>SubGeoMarket</dcsset:field>
+							<dcsset:groupType>Items</dcsset:groupType>
+							<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
+							<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
+							<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
+						</dcsset:item>
+						<dcsset:item xsi:type="dcsset:GroupItemField">
+							<dcsset:field>MgmtGeomarket</dcsset:field>
 							<dcsset:groupType>Items</dcsset:groupType>
 							<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
 							<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
