@@ -724,6 +724,7 @@
 		|<TD style=""padding: 5px; border: 2px solid #000;"">Amount</TD>
 		|<TD style=""padding: 5px; border: 2px solid #000;"">Well number</TD>
 		|<TD style=""padding: 5px; border: 2px solid #000;"">Reason</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000;"">Ageing</TD>
 		|</TR>";
 		
 		ПолныеДанныеУведомления = ДанныеSalesOrders.Скопировать(СтруктураОтбора);
@@ -732,8 +733,8 @@
 		ПолныеДанныеУведомления.Колонки.Удалить("Проблема");
 		//ДанныеДляТелаПисьма = ПолныеДанныеУведомления.Скопировать(, "GeoMarket, Segment, CustumerId, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Amount, Reason");
 		//ДанныеДляТелаПисьма.Свернуть("GeoMarket, Segment, CustumerId, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Reason", "Amount");
-		ДанныеДляТелаПисьма = ПолныеДанныеУведомления.Скопировать(, "GeoMarket, Segment, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Amount, WellData, Reason");
-		ДанныеДляТелаПисьма.Свернуть("GeoMarket, Segment, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, WellData, Reason", "Amount");
+		ДанныеДляТелаПисьма = ПолныеДанныеУведомления.Скопировать(, "GeoMarket, Segment, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Amount, WellData, Reason, Ageing");
+		ДанныеДляТелаПисьма.Свернуть("GeoMarket, Segment, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, WellData, Reason, Ageing", "Amount");
 		
 		Для Каждого СтрокаДанных из ДанныеДляТелаПисьма Цикл
 				
@@ -749,6 +750,7 @@
 			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Amount + "</TD>
 			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.WellData), СтрокаДанных.WellData, " ") + "</TD>
 			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Reason), СтрокаДанных.Reason, " ") + "</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Ageing), СтрокаДанных.Ageing, " ") + "</TD>
 			|</TR>";
 			ТелоHTML = ТелоHTML + СтрокаВТелоСообщения;
 			//СуммаUSD = СуммаUSD + СтрокаДанных.AmountUSD;
@@ -1183,7 +1185,7 @@
 	|	ВЫБОР
 	|		КОГДА UnbilledARОстатки.SalesOrder.JobEndDate <> ДАТАВРЕМЯ(1, 1, 1, 0, 0, 0)
 	|			ТОГДА РАЗНОСТЬДАТ(UnbilledARОстатки.SalesOrder.JobEndDate, &Дата, ДЕНЬ)
-	|	КОНЕЦ КАК Aging
+	|	КОНЕЦ КАК Ageing
 	|ИЗ
 	|	РегистрНакопления.UnbilledAR.Остатки(&Дата, SalesOrder В (&МассивОрдеров) {(Location.БазовыйЭлемент.GeoMarket.Родитель = &GeoMarket) КАК Поле2}) КАК UnbilledARОстатки
 	|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних(, ) КАК SalesOrdersCommentsСрезПоследних
