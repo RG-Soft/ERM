@@ -22,18 +22,20 @@
 	|ИЗ
 	|	РегистрСведений.BUMapping КАК BUMapping
 	|ГДЕ ИСТИНА
-	|//GeoMarket_Истина    И BUMapping.GeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка)
-	|//GeoMarket_Ложь      И BUMapping.GeoMarket = &GeoMarket
-	|//SubGeoMarket_Истина И BUMapping.SubGeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка)
-	|//SubGeoMarket_Ложь   И BUMapping.SubGeoMarket = &SubGeoMarket
-	|//Segment_Истина      И BUMapping.Segment = ЗНАЧЕНИЕ(Справочник.HFM_Technology.ПустаяСсылка)
-	|//Segment_Ложь        И BUMapping.Segment = &Segment
-	|//SubSegment_Истина   И BUMapping.SubSegment = ЗНАЧЕНИЕ(Справочник.HFM_Technology.ПустаяСсылка)
-	|//SubSegment_Ложь     И BUMapping.SubSegment = &SubSegment
-	|//Company_Истина      И BUMapping.Company = ЗНАЧЕНИЕ(Справочник.HFM_Companies.ПустаяСсылка)
-	|//Company_Ложь        И BUMapping.Company = &Company
-	|//AU_Истина           И BUMapping.AU = ЗНАЧЕНИЕ(Справочник.КостЦентры.ПустаяСсылка)
-	|//AU_Ложь             И BUMapping.AU = &AU
+	|//GeoMarket_Истина     И BUMapping.GeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка)
+	|//GeoMarket_Ложь       И BUMapping.GeoMarket = &GeoMarket
+	|//SubGeoMarket_Истина  И BUMapping.SubGeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка)
+	|//SubGeoMarket_Ложь    И BUMapping.SubGeoMarket = &SubGeoMarket
+	|//MgmtGeomarket_Истина И BUMapping.MgmtGeomarket = ЗНАЧЕНИЕ(Справочник.ManagementGeography.ПустаяСсылка)
+	|//MgmtGeomarket_Ложь   И BUMapping.MgmtGeomarket = &MgmtGeomarket
+	|//Segment_Истина       И BUMapping.Segment = ЗНАЧЕНИЕ(Справочник.HFM_Technology.ПустаяСсылка)
+	|//Segment_Ложь         И BUMapping.Segment = &Segment
+	|//SubSegment_Истина    И BUMapping.SubSegment = ЗНАЧЕНИЕ(Справочник.HFM_Technology.ПустаяСсылка)
+	|//SubSegment_Ложь      И BUMapping.SubSegment = &SubSegment
+	|//Company_Истина       И BUMapping.Company = ЗНАЧЕНИЕ(Справочник.HFM_Companies.ПустаяСсылка)
+	|//Company_Ложь         И BUMapping.Company = &Company
+	|//AU_Истина            И BUMapping.AU = ЗНАЧЕНИЕ(Справочник.КостЦентры.ПустаяСсылка)
+	|//AU_Ложь              И BUMapping.AU = &AU
 	|
 	|//Объединить 
 	|";
@@ -41,6 +43,7 @@
 	ПоляУсловий = Новый Массив;
 	ПоляУсловий.Добавить("GeoMarket");
 	ПоляУсловий.Добавить("SubGeoMarket");
+	ПоляУсловий.Добавить("MgmtGeomarket");
 	ПоляУсловий.Добавить("Segment");
 	ПоляУсловий.Добавить("SubSegment");
 	ПоляУсловий.Добавить("Company");
@@ -99,13 +102,14 @@
 	
 КонецФункции
 
-Функция ОпределитьBU(GeoMarket = Неопределено, SubGeoMarket = Неопределено, Segment = Неопределено, SubSegment = Неопределено, Company = Неопределено, AU = Неопределено) Экспорт
+Функция ОпределитьBU(GeoMarket = Неопределено, SubGeoMarket = Неопределено, MgmtGeomarket = Неопределено, Segment = Неопределено, SubSegment = Неопределено, Company = Неопределено, AU = Неопределено) Экспорт
 	
 	ТекстЗапроса = rgsКонсолидацияДанныхСерверПовтИсп.ПолучитьТекстЗапросаОпределениеBU();
 	
 	Запрос = Новый Запрос(ТекстЗапроса);
 	Запрос.УстановитьПараметр("GeoMarket", GeoMarket);
 	Запрос.УстановитьПараметр("SubGeoMarket", SubGeoMarket);
+	Запрос.УстановитьПараметр("MgmtGeomarket", MgmtGeomarket);
 	Запрос.УстановитьПараметр("Segment", Segment);
 	Запрос.УстановитьПараметр("SubSegment", SubSegment);
 	Запрос.УстановитьПараметр("Company", Company);
