@@ -139,7 +139,7 @@
 	BilledARОстатки.AU
 ПОМЕСТИТЬ ВТ_ОстаткиЕРМ
 ИЗ
-	РегистрНакопления.BilledAR.Остатки(&amp;Период, ) КАК BilledARОстатки
+	РегистрНакопления.BilledAR.Остатки(&amp;КонецПериода, ) КАК BilledARОстатки
 
 ОБЪЕДИНИТЬ ВСЕ
 
@@ -152,7 +152,7 @@
 	UnallocatedCashОстатки.Currency,
 	UnallocatedCashОстатки.AU
 ИЗ
-	РегистрНакопления.UnallocatedCash.Остатки(&amp;Период, ) КАК UnallocatedCashОстатки
+	РегистрНакопления.UnallocatedCash.Остатки(&amp;КонецПериода, ) КАК UnallocatedCashОстатки
 
 ОБЪЕДИНИТЬ ВСЕ
 
@@ -165,7 +165,7 @@
 	UnbilledARОстатки.Currency,
 	UnbilledARОстатки.AU
 ИЗ
-	РегистрНакопления.UnbilledAR.Остатки(&amp;Период, ) КАК UnbilledARОстатки
+	РегистрНакопления.UnbilledAR.Остатки(&amp;КонецПериода, ) КАК UnbilledARОстатки
 
 ОБЪЕДИНИТЬ ВСЕ
 
@@ -178,7 +178,7 @@
 	ManualTransactionsОстатки.Currency,
 	ManualTransactionsОстатки.AU
 ИЗ
-	РегистрНакопления.ManualTransactions.Остатки(&amp;Период, ) КАК ManualTransactionsОстатки
+	РегистрНакопления.ManualTransactions.Остатки(&amp;КонецПериода, ) КАК ManualTransactionsОстатки
 
 ОБЪЕДИНИТЬ ВСЕ
 
@@ -191,7 +191,7 @@
 	UnallocatedMemoОстатки.Currency,
 	UnallocatedMemoОстатки.AU
 ИЗ
-	РегистрНакопления.UnallocatedMemo.Остатки(&amp;Период, ) КАК UnallocatedMemoОстатки
+	РегистрНакопления.UnallocatedMemo.Остатки(&amp;КонецПериода, ) КАК UnallocatedMemoОстатки
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -204,7 +204,6 @@
 	ВТ_ОстаткиЕРМ.AU КАК AU,
 	ВТ_ОстаткиЕРМ.AU.Сегмент КАК Сегмент,
 	ВТ_ОстаткиЕРМ.AU.ПодразделениеОрганизации КАК Локация
-ПОМЕСТИТЬ ВТ_ОстаткиЕРМ_Группировка
 ИЗ
 	ВТ_ОстаткиЕРМ КАК ВТ_ОстаткиЕРМ
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних(&amp;ДатаКурса, ) КАК ВнутренниеКурсыВалютСрезПоследних
@@ -239,6 +238,7 @@
 		</valueType>
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>false</useRestriction>
+		<expression>&amp;КонецПериода</expression>
 	</parameter>
 	<parameter>
 		<name>AccountHFM</name>
@@ -299,6 +299,23 @@
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>true</useRestriction>
 		<expression>КонецМесяца(&amp;Период)+1</expression>
+	</parameter>
+	<parameter>
+		<name>КонецПериода</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Конец периода</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>xs:dateTime</v8:Type>
+			<v8:DateQualifiers>
+				<v8:DateFractions>DateTime</v8:DateFractions>
+			</v8:DateQualifiers>
+		</valueType>
+		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
+		<useRestriction>true</useRestriction>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
