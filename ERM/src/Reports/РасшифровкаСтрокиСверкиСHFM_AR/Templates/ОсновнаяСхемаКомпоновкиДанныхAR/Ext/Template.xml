@@ -57,26 +57,6 @@
 			<field>CashBatch</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>AmountОстаток</dataPath>
-			<field>AmountОстаток</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Amount остаток</v8:content>
-				</v8:item>
-			</title>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>AccountБазовыйЭлементРодитель</dataPath>
-			<field>AccountБазовыйЭлементРодитель</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Account базовый элемент родитель</v8:content>
-				</v8:item>
-			</title>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>SubSubSegment</dataPath>
 			<field>SubSubSegment</field>
 		</field>
@@ -89,16 +69,6 @@
 			<field>Invoice</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>Сегмент</dataPath>
-			<field>Сегмент</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Сегмент</v8:content>
-				</v8:item>
-			</title>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>SegmentHFM</dataPath>
 			<field>SegmentHFM</field>
 			<title xsi:type="v8:LocalStringType">
@@ -109,22 +79,42 @@
 			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>Локация</dataPath>
-			<field>Локация</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Локация</v8:content>
-				</v8:item>
-			</title>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>LocationHFM</dataPath>
 			<field>LocationHFM</field>
 			<title xsi:type="v8:LocalStringType">
 				<v8:item>
 					<v8:lang>ru</v8:lang>
 					<v8:content>Location HFM</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Segment</dataPath>
+			<field>Segment</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Segment</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Amount</dataPath>
+			<field>Amount</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Amount</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>AccountHFM</dataPath>
+			<field>AccountHFM</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Account HFM</v8:content>
 				</v8:item>
 			</title>
 		</field>
@@ -197,13 +187,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 ВЫБРАТЬ
 	ВТ_ОстаткиЕРМ.Account КАК Account,
-	ВТ_ОстаткиЕРМ.AccountБазовыйЭлементРодитель КАК AccountБазовыйЭлементРодитель,
+	ВТ_ОстаткиЕРМ.AccountБазовыйЭлементРодитель КАК AccountHFM,
 	ВТ_ОстаткиЕРМ.SubSubSegmentБазовыйЭлементРодительРодитель КАК SegmentHFM,
 	ВТ_ОстаткиЕРМ.LocationБазовыйЭлемент КАК LocationHFM,
-	СУММА(ВЫРАЗИТЬ(ЕСТЬNULL(ВТ_ОстаткиЕРМ.AmountОстаток, 0) / ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 1) * ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Кратность, 1) КАК ЧИСЛО(15, 2))) КАК AmountОстаток,
+	СУММА(ВЫРАЗИТЬ(ЕСТЬNULL(ВТ_ОстаткиЕРМ.AmountОстаток, 0) / ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 1) * ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Кратность, 1) КАК ЧИСЛО(15, 2))) КАК Amount,
 	ВТ_ОстаткиЕРМ.AU КАК AU,
-	ВТ_ОстаткиЕРМ.AU.Сегмент КАК Сегмент,
-	ВТ_ОстаткиЕРМ.AU.ПодразделениеОрганизации КАК Локация
+	ВТ_ОстаткиЕРМ.AU.Сегмент КАК Segment,
+	ВТ_ОстаткиЕРМ.AU.ПодразделениеОрганизации КАК Location
 ИЗ
 	ВТ_ОстаткиЕРМ КАК ВТ_ОстаткиЕРМ
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних(&amp;ДатаКурса, ) КАК ВнутренниеКурсыВалютСрезПоследних
@@ -323,16 +313,10 @@
 		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>AccountHFM</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Account</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>AccountБазовыйЭлементРодитель</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>AmountОстаток</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>AU</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>LocationHFM</dcsset:field>
@@ -341,29 +325,24 @@
 					<dcsset:field>SegmentHFM</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Локация</dcsset:field>
+					<dcsset:field>AU</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Сегмент</dcsset:field>
+					<dcsset:field>Segment</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Location</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Amount</dcsset:field>
 				</dcsset:item>
 			</dcsset:selection>
-			<dcsset:dataParameters>
+			<dcsset:outputParameters>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:use>false</dcscor:use>
-					<dcscor:parameter>AccountHFM</dcscor:parameter>
-					<dcscor:value xsi:nil="true"/>
+					<dcscor:parameter>МакетОформления</dcscor:parameter>
+					<dcscor:value xsi:type="xs:string">Море</dcscor:value>
 				</dcscor:item>
-				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:use>false</dcscor:use>
-					<dcscor:parameter>ЛокацияHFM</dcscor:parameter>
-					<dcscor:value xsi:nil="true"/>
-				</dcscor:item>
-				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:use>false</dcscor:use>
-					<dcscor:parameter>СегментHFM</dcscor:parameter>
-					<dcscor:value xsi:nil="true"/>
-				</dcscor:item>
-			</dcsset:dataParameters>
+			</dcsset:outputParameters>
 			<dcsset:item xsi:type="dcsset:StructureItemGroup">
 				<dcsset:order>
 					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
