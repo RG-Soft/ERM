@@ -9,6 +9,9 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Company</dataPath>
 			<field>Company</field>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Location</dataPath>
@@ -24,6 +27,9 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Client</dataPath>
 			<field>Client</field>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>LegalEntity</dataPath>
@@ -43,6 +49,9 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Source</dataPath>
 			<field>Source</field>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>РучнаяКорректировка</dataPath>
@@ -118,6 +127,49 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Document</dataPath>
+			<field>Document</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Document</v8:content>
+				</v8:item>
+			</title>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Doc_No</dataPath>
+			<field>Doc_No</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Doc no</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>ClientID</dataPath>
+			<field>ClientID</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Client ID</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>TransactionType</dataPath>
+			<field>TransactionType</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Transaction type</v8:content>
+				</v8:item>
+			</title>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	BilledARОстатки.Account КАК Account,
@@ -125,8 +177,13 @@
 	BilledARОстатки.AU.Сегмент.БазовыйЭлемент КАК SubSubSegmentБазовыйЭлементРодительРодитель,
 	BilledARОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент КАК LocationБазовыйЭлемент,
 	BilledARОстатки.AmountОстаток КАК AmountОстаток,
+	"I" КАК TransactionType,
 	BilledARОстатки.Currency,
-	BilledARОстатки.AU
+	BilledARОстатки.AU,
+	BilledARОстатки.Invoice КАК Document,
+	BilledARОстатки.Client,
+	BilledARОстатки.Source,
+	BilledARОстатки.Company
 ПОМЕСТИТЬ ВТ_ОстаткиЕРМ
 ИЗ
 	РегистрНакопления.BilledAR.Остатки(&amp;КонецПериода, ) КАК BilledARОстатки
@@ -139,8 +196,13 @@
 	UnallocatedCashОстатки.AU.Сегмент.БазовыйЭлемент,
 	UnallocatedCashОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент,
 	-UnallocatedCashОстатки.AmountОстаток,
+	"Payment",
 	UnallocatedCashОстатки.Currency,
-	UnallocatedCashОстатки.AU
+	UnallocatedCashОстатки.AU,
+	UnallocatedCashОстатки.CashBatch,
+	UnallocatedCashОстатки.Client,
+	UnallocatedCashОстатки.Source,
+	UnallocatedCashОстатки.Company
 ИЗ
 	РегистрНакопления.UnallocatedCash.Остатки(&amp;КонецПериода, ) КАК UnallocatedCashОстатки
 
@@ -152,8 +214,13 @@
 	UnbilledARОстатки.AU.Сегмент.БазовыйЭлемент,
 	UnbilledARОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент,
 	UnbilledARОстатки.AmountОстаток,
+	"A",
 	UnbilledARОстатки.Currency,
-	UnbilledARОстатки.AU
+	UnbilledARОстатки.AU,
+	UnbilledARОстатки.SalesOrder,
+	UnbilledARОстатки.Client,
+	UnbilledARОстатки.Source,
+	UnbilledARОстатки.Company
 ИЗ
 	РегистрНакопления.UnbilledAR.Остатки(&amp;КонецПериода, ) КАК UnbilledARОстатки
 
@@ -165,8 +232,13 @@
 	ManualTransactionsОстатки.AU.Сегмент.БазовыйЭлемент,
 	ManualTransactionsОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент,
 	ManualTransactionsОстатки.AmountОстаток,
+	"JV",
 	ManualTransactionsОстатки.Currency,
-	ManualTransactionsОстатки.AU
+	ManualTransactionsОстатки.AU,
+	ManualTransactionsОстатки.РучнаяКорректировка,
+	ManualTransactionsОстатки.Client,
+	ManualTransactionsОстатки.Source,
+	ManualTransactionsОстатки.Company
 ИЗ
 	РегистрНакопления.ManualTransactions.Остатки(&amp;КонецПериода, ) КАК ManualTransactionsОстатки
 
@@ -178,8 +250,13 @@
 	UnallocatedMemoОстатки.AU.Сегмент.БазовыйЭлемент,
 	UnallocatedMemoОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент,
 	UnallocatedMemoОстатки.AmountОстаток,
+	"Memo",
 	UnallocatedMemoОстатки.Currency,
-	UnallocatedMemoОстатки.AU
+	UnallocatedMemoОстатки.AU,
+	UnallocatedMemoОстатки.Memo,
+	UnallocatedMemoОстатки.Client,
+	UnallocatedMemoОстатки.Source,
+	UnallocatedMemoОстатки.Company
 ИЗ
 	РегистрНакопления.UnallocatedMemo.Остатки(&amp;КонецПериода, ) КАК UnallocatedMemoОстатки
 ;
@@ -193,7 +270,18 @@
 	СУММА(ВЫРАЗИТЬ(ЕСТЬNULL(ВТ_ОстаткиЕРМ.AmountОстаток, 0) / ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 1) * ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Кратность, 1) КАК ЧИСЛО(15, 2))) КАК Amount,
 	ВТ_ОстаткиЕРМ.AU КАК AU,
 	ВТ_ОстаткиЕРМ.AU.Сегмент КАК Segment,
-	ВТ_ОстаткиЕРМ.AU.ПодразделениеОрганизации КАК Location
+	ВТ_ОстаткиЕРМ.AU.ПодразделениеОрганизации КАК Location,
+	ВТ_ОстаткиЕРМ.Document,
+	ВЫБОР
+		КОГДА ВТ_ОстаткиЕРМ.Document ССЫЛКА Документ.Invoice
+			ТОГДА ВТ_ОстаткиЕРМ.Document.DocNumber
+		ИНАЧЕ ВТ_ОстаткиЕРМ.Document.Номер
+	КОНЕЦ КАК Doc_No,
+	ВТ_ОстаткиЕРМ.Source,
+	ВТ_ОстаткиЕРМ.Client,
+	ВТ_ОстаткиЕРМ.Company,
+	ВТ_ОстаткиЕРМ.Document.ClientID КАК ClientID,
+	ВТ_ОстаткиЕРМ.TransactionType
 ИЗ
 	ВТ_ОстаткиЕРМ КАК ВТ_ОстаткиЕРМ
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних(&amp;ДатаКурса, ) КАК ВнутренниеКурсыВалютСрезПоследних
@@ -210,7 +298,18 @@
 	ВТ_ОстаткиЕРМ.LocationБазовыйЭлемент,
 	ВТ_ОстаткиЕРМ.AU,
 	ВТ_ОстаткиЕРМ.AU.Сегмент,
-	ВТ_ОстаткиЕРМ.AU.ПодразделениеОрганизации</query>
+	ВТ_ОстаткиЕРМ.AU.ПодразделениеОрганизации,
+	ВТ_ОстаткиЕРМ.Document,
+	ВЫБОР
+		КОГДА ВТ_ОстаткиЕРМ.Document ССЫЛКА Документ.Invoice
+			ТОГДА ВТ_ОстаткиЕРМ.Document.DocNumber
+		ИНАЧЕ ВТ_ОстаткиЕРМ.Document.Номер
+	КОНЕЦ,
+	ВТ_ОстаткиЕРМ.Source,
+	ВТ_ОстаткиЕРМ.Client,
+	ВТ_ОстаткиЕРМ.Company,
+	ВТ_ОстаткиЕРМ.Document.ClientID,
+	ВТ_ОстаткиЕРМ.TransactionType</query>
 	</dataSet>
 	<parameter>
 		<name>Период</name>
@@ -313,16 +412,40 @@
 		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Source</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Company</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>AccountHFM</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Account HFM</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Account</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>LocationHFM</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Location HFM</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>SegmentHFM</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Segment HFM</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>AU</dcsset:field>
@@ -332,6 +455,36 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Location</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>ClientID</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Client ID</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Client</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>TransactionType</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Doc. type</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Doc_No</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>№ Doc. </v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Amount</dcsset:field>

@@ -9,6 +9,9 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Company</dataPath>
 			<field>Company</field>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Location</dataPath>
@@ -55,6 +58,9 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Source</dataPath>
 			<field>Source</field>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>EndClient</dataPath>
@@ -110,7 +116,9 @@
 	RevenueОбороты.AU.ПодразделениеОрганизации.БазовыйЭлемент КАК LocationHFM,
 	RevenueОбороты.Account.БазовыйЭлемент КАК AccountHFM,
 	RevenueОбороты.AU.Сегмент КАК Segment,
-	RevenueОбороты.AU.ПодразделениеОрганизации КАК Location
+	RevenueОбороты.AU.ПодразделениеОрганизации КАК Location,
+	RevenueОбороты.Company,
+	RevenueОбороты.Source
 ИЗ
 	РегистрНакопления.Revenue.Обороты(&amp;НачалоПериода, &amp;КонецПериода, , ) КАК RevenueОбороты
 ГДЕ
@@ -199,6 +207,12 @@
 		<dcsset:presentation xsi:type="xs:string">Основной</dcsset:presentation>
 		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Source</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Company</dcsset:field>
+				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>AccountHFM</dcsset:field>
 					<dcsset:lwsTitle>
