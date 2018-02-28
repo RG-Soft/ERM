@@ -161,6 +161,18 @@
 		
 	КонецЕсли;
 	
+	МесяцВФайле = ТаблицаРасхождений[0].Month;
+	ГодВФайле = ТаблицаРасхождений[0].Year;
+	МесяцДокумента = Месяц(СтруктураПараметров.Дата);
+	ГодДокумента = Год(СтруктураПараметров.Дата);
+	
+	Если МесяцВФайле <> МесяцДокумента ИЛИ ГодВФайле <> ГодДокумента Тогда
+		
+		Сообщение = "The data period in the file does not match the selected period.";
+		ВызватьИсключение Сообщение;
+		
+	КонецЕсли;
+	
 	НачатьТранзакцию();
 	
 	ДанныеДляЗаполнения.Вставить("ТаблицаКоллизий", ТаблицаКоллизий);
@@ -186,7 +198,9 @@
 		|	HFMSourceData.Segment КАК Segment,
 		|	HFMSourceData.Location КАК Location,
 		|	HFMSourceData.Amount КАК Amount,
-		|	HFMSourceData.Account
+		|	HFMSourceData.Account,
+		|	HFMSourceData.Year,
+		|	HFMSourceData.Month
 		|ПОМЕСТИТЬ ВТ_HFMSourceData
 		|ИЗ
 		|	РегистрСведений.HFMSourceData КАК HFMSourceData
@@ -241,7 +255,9 @@
 		|	HFM_Technology.Ссылка КАК СсылкаSegment,
 		|	СУММА(ВТ_HFMSourceData.Amount) КАК Amount,
 		|	ВТ_HFMSourceData.Account,
-		|	HFM_GL_Accounts.Ссылка КАК СсылкаAccount
+		|	HFM_GL_Accounts.Ссылка КАК СсылкаAccount,
+		|	ВТ_HFMSourceData.Year,
+		|	ВТ_HFMSourceData.Month
 		|ПОМЕСТИТЬ ВТ_ОстаткиHFM
 		|ИЗ
 		|	ВТ_HFMSourceData КАК ВТ_HFMSourceData
@@ -263,7 +279,9 @@
 		|	ВТ_HFMSourceData.Segment,
 		|	HFM_Technology.Ссылка,
 		|	ВТ_HFMSourceData.Account,
-		|	HFM_GL_Accounts.Ссылка
+		|	HFM_GL_Accounts.Ссылка,
+		|	ВТ_HFMSourceData.Year,
+		|	ВТ_HFMSourceData.Month
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
@@ -333,6 +351,8 @@
 		|	ВТ_ОстаткиЕРМ КАК ВТ_ОстаткиЕРМ
 		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних(&ДатаКурса, ) КАК ВнутренниеКурсыВалютСрезПоследних
 		|		ПО ВТ_ОстаткиЕРМ.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
+		|ГДЕ
+		|	ВТ_ОстаткиЕРМ.AccountБазовыйЭлементРодитель.Код ПОДОБНО ""1%""
 		|
 		|СГРУППИРОВАТЬ ПО
 		|	ВТ_ОстаткиЕРМ.AccountБазовыйЭлементРодитель,
@@ -347,14 +367,15 @@
 		|	ЕСТЬNULL(ВТ_ОстаткиHFM.Amount, 0) КАК HFM_Amount,
 		|	ЕСТЬNULL(ВТ_ОстаткиЕРМ_Группировка.AmountОстаток, 0) КАК ERM_Amount,
 		|	ЕСТЬNULL(ВТ_ОстаткиHFM.Amount, 0) - ЕСТЬNULL(ВТ_ОстаткиЕРМ_Группировка.AmountОстаток, 0) КАК Difference,
-		|	ЕСТЬNULL(ВТ_ОстаткиHFM.СсылкаAccount, ВТ_ОстаткиЕРМ_Группировка.AccountБазовыйЭлементРодитель) КАК Account
+		|	ЕСТЬNULL(ВТ_ОстаткиHFM.СсылкаAccount, ВТ_ОстаткиЕРМ_Группировка.AccountБазовыйЭлементРодитель) КАК Account,
+		|	ВТ_ОстаткиHFM.Year,
+		|	ВТ_ОстаткиHFM.Month
 		|ИЗ
 		|	ВТ_ОстаткиЕРМ_Группировка КАК ВТ_ОстаткиЕРМ_Группировка
 		|		ПОЛНОЕ СОЕДИНЕНИЕ ВТ_ОстаткиHFM КАК ВТ_ОстаткиHFM
 		|		ПО (ВТ_ОстаткиHFM.СсылкаLocations = ВТ_ОстаткиЕРМ_Группировка.Location)
 		|			И (ВТ_ОстаткиHFM.СсылкаSegment = ВТ_ОстаткиЕРМ_Группировка.Segment)
-		|			И (ВТ_ОстаткиHFM.СсылкаAccount = ВТ_ОстаткиЕРМ_Группировка.AccountБазовыйЭлементРодитель)
-		|;";
+		|			И (ВТ_ОстаткиHFM.СсылкаAccount = ВТ_ОстаткиЕРМ_Группировка.AccountБазовыйЭлементРодитель)";
 	
 	Запрос.УстановитьПараметр("ДокументЗагрузки", СтруктураПараметров.Ссылка);
 	Запрос.УстановитьПараметр("ДатаКонец", Новый Граница(КонецМесяца(СтруктураПараметров.Дата), ВидГраницы.Включая));
@@ -389,7 +410,9 @@
 		|	HFMSourceData.Segment КАК Segment,
 		|	HFMSourceData.Location КАК Location,
 		|	HFMSourceData.Amount КАК Amount,
-		|	HFMSourceData.Account
+		|	HFMSourceData.Account,
+		|	HFMSourceData.Year,
+		|	HFMSourceData.Month
 		|ПОМЕСТИТЬ ВТ_HFMSourceData
 		|ИЗ
 		|	РегистрСведений.HFMSourceData КАК HFMSourceData
@@ -444,7 +467,9 @@
 		|	HFM_Technology.Ссылка КАК СсылкаSegment,
 		|	СУММА(ВТ_HFMSourceData.Amount) КАК Amount,
 		|	ВТ_HFMSourceData.Account,
-		|	HFM_GL_Accounts.Ссылка КАК СсылкаAccount
+		|	HFM_GL_Accounts.Ссылка КАК СсылкаAccount,
+		|	ВТ_HFMSourceData.Year,
+		|	ВТ_HFMSourceData.Month
 		|ПОМЕСТИТЬ ВТ_ОстаткиHFM
 		|ИЗ
 		|	ВТ_HFMSourceData КАК ВТ_HFMSourceData
@@ -466,7 +491,9 @@
 		|	ВТ_HFMSourceData.Segment,
 		|	HFM_Technology.Ссылка,
 		|	ВТ_HFMSourceData.Account,
-		|	HFM_GL_Accounts.Ссылка
+		|	HFM_GL_Accounts.Ссылка,
+		|	ВТ_HFMSourceData.Year,
+		|	ВТ_HFMSourceData.Month
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
@@ -507,7 +534,9 @@
 		|	ЕСТЬNULL(ВТ_ОстаткиHFM.Amount, 0) КАК HFM_Amount,
 		|	ЕСТЬNULL(ВТ_ОборотыЕРМ_Группировка.BaseAmountОборот, 0) КАК ERM_Amount,
 		|	ЕСТЬNULL(ВТ_ОстаткиHFM.Amount, 0) - ЕСТЬNULL(ВТ_ОборотыЕРМ_Группировка.BaseAmountОборот, 0) КАК Difference,
-		|	ЕСТЬNULL(ВТ_ОстаткиHFM.СсылкаAccount, ВТ_ОборотыЕРМ_Группировка.AccountБазовыйЭлемент) КАК Account
+		|	ЕСТЬNULL(ВТ_ОстаткиHFM.СсылкаAccount, ВТ_ОборотыЕРМ_Группировка.AccountБазовыйЭлемент) КАК Account,
+		|	ВТ_ОстаткиHFM.Year,
+		|	ВТ_ОстаткиHFM.Month
 		|ИЗ
 		|	ВТ_ОборотыЕРМ_Группировка КАК ВТ_ОборотыЕРМ_Группировка
 		|		ПОЛНОЕ СОЕДИНЕНИЕ ВТ_ОстаткиHFM КАК ВТ_ОстаткиHFM
