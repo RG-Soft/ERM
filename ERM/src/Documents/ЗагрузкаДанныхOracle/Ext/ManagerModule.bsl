@@ -2077,7 +2077,11 @@
 		|				И OracleSmithSourceData.source <> ""SO Accrual""
 		|				И OracleSmithSourceData.source <> ""SAM Accrual""
 		|			ИЛИ OracleSmithSourceData.cust_no <> """")
-		|	И OracleSmithSourceData.je_line_num <> 0
+		//|	И OracleSmithSourceData.je_line_num <> 0
+		|	И (OracleSmithSourceData.je_line_num <> 0 ИЛИ 
+		|		(OracleSmithSourceData.source = ""FMS""
+		|			И OracleSmithSourceData.major ПОДОБНО ""4%""
+		|			И OracleSmithSourceData.category <> ""Accrual""))
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
