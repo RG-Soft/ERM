@@ -2081,7 +2081,7 @@
 		|	И (OracleSmithSourceData.je_line_num <> 0 ИЛИ 
 		|		(OracleSmithSourceData.source = ""FMS""
 		|			И OracleSmithSourceData.major ПОДОБНО ""4%""
-		|			И OracleSmithSourceData.category <> ""Accrual""))
+		|			И OracleSmithSourceData.category = ""Accrual""))
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
