@@ -186,7 +186,7 @@
 	BilledARОстатки.Company
 ПОМЕСТИТЬ ВТ_ОстаткиЕРМ
 ИЗ
-	РегистрНакопления.BilledAR.Остатки(&amp;КонецПериода, ) КАК BilledARОстатки
+	РегистрНакопления.BilledAR.Остатки({&amp;ПериодОстатков}, ) КАК BilledARОстатки
 
 ОБЪЕДИНИТЬ ВСЕ
 
@@ -204,7 +204,7 @@
 	UnallocatedCashОстатки.Source,
 	UnallocatedCashОстатки.Company
 ИЗ
-	РегистрНакопления.UnallocatedCash.Остатки(&amp;КонецПериода, ) КАК UnallocatedCashОстатки
+	РегистрНакопления.UnallocatedCash.Остатки({&amp;ПериодОстатков}, ) КАК UnallocatedCashОстатки
 
 ОБЪЕДИНИТЬ ВСЕ
 
@@ -222,7 +222,7 @@
 	UnbilledARОстатки.Source,
 	UnbilledARОстатки.Company
 ИЗ
-	РегистрНакопления.UnbilledAR.Остатки(&amp;КонецПериода, ) КАК UnbilledARОстатки
+	РегистрНакопления.UnbilledAR.Остатки({&amp;ПериодОстатков}, ) КАК UnbilledARОстатки
 
 ОБЪЕДИНИТЬ ВСЕ
 
@@ -240,7 +240,7 @@
 	ManualTransactionsОстатки.Source,
 	ManualTransactionsОстатки.Company
 ИЗ
-	РегистрНакопления.ManualTransactions.Остатки(&amp;КонецПериода, ) КАК ManualTransactionsОстатки
+	РегистрНакопления.ManualTransactions.Остатки({&amp;ПериодОстатков}, ) КАК ManualTransactionsОстатки
 
 ОБЪЕДИНИТЬ ВСЕ
 
@@ -258,7 +258,7 @@
 	UnallocatedMemoОстатки.Source,
 	UnallocatedMemoОстатки.Company
 ИЗ
-	РегистрНакопления.UnallocatedMemo.Остатки(&amp;КонецПериода, ) КАК UnallocatedMemoОстатки
+	РегистрНакопления.UnallocatedMemo.Остатки({&amp;ПериодОстатков}, ) КАК UnallocatedMemoОстатки
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -284,7 +284,7 @@
 	ВТ_ОстаткиЕРМ.TransactionType
 ИЗ
 	ВТ_ОстаткиЕРМ КАК ВТ_ОстаткиЕРМ
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних(&amp;ДатаКурса, ) КАК ВнутренниеКурсыВалютСрезПоследних
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({&amp;ДатаКурса}, ) КАК ВнутренниеКурсыВалютСрезПоследних
 		ПО ВТ_ОстаткиЕРМ.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
 ГДЕ
 	ВТ_ОстаткиЕРМ.AU.Сегмент.БазовыйЭлемент = &amp;СегментHFM
@@ -311,24 +311,6 @@
 	ВТ_ОстаткиЕРМ.Document.ClientID,
 	ВТ_ОстаткиЕРМ.TransactionType</query>
 	</dataSet>
-	<parameter>
-		<name>Период</name>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Период</v8:content>
-			</v8:item>
-		</title>
-		<valueType>
-			<v8:Type>xs:dateTime</v8:Type>
-			<v8:DateQualifiers>
-				<v8:DateFractions>DateTime</v8:DateFractions>
-			</v8:DateQualifiers>
-		</valueType>
-		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
-		<useRestriction>false</useRestriction>
-		<expression>&amp;КонецПериода</expression>
-	</parameter>
 	<parameter>
 		<name>AccountHFM</name>
 		<title xsi:type="v8:LocalStringType">
@@ -390,11 +372,11 @@
 		<expression>ДобавитьКДате(КонецПериода(&amp;Период,"Месяц"), "Секунда",1)</expression>
 	</parameter>
 	<parameter>
-		<name>КонецПериода</name>
+		<name>Период</name>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
-				<v8:content>Конец периода</v8:content>
+				<v8:content>Период</v8:content>
 			</v8:item>
 		</title>
 		<valueType>
@@ -405,6 +387,24 @@
 		</valueType>
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>true</useRestriction>
+	</parameter>
+	<parameter>
+		<name>ПериодОстатков</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Период остатков</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>xs:dateTime</v8:Type>
+			<v8:DateQualifiers>
+				<v8:DateFractions>DateTime</v8:DateFractions>
+			</v8:DateQualifiers>
+		</valueType>
+		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
+		<useRestriction>true</useRestriction>
+		<expression>ДобавитьКДате(КонецПериода(&amp;Период,"МЕСЯЦ"), "СЕКУНДА",1)</expression>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
