@@ -341,7 +341,13 @@
 	|	OracleSalesOrdersDetailsSourceData.CreatedBy КАК CreatedBy,
 	|	OracleSalesOrdersDetailsSourceData.Currency КАК Currency,
 	|	OracleSalesOrdersDetailsSourceData.FTLCreatedBy КАК FTLCreatedBy,
-	|	OracleSalesOrdersDetailsSourceData.ERPStatus КАК ERPStatus,
+	|	ВЫБОР
+	|		КОГДА OracleSalesOrdersDetailsSourceData.ERPStatus ПОДОБНО ""%CANCELLED%""
+	|			ТОГДА 3
+	|		КОГДА OracleSalesOrdersDetailsSourceData.ERPStatus ПОДОБНО ""%CLOSED%""
+	|			ТОГДА 2
+	|		ИНАЧЕ 1
+	|	КОНЕЦ КАК ERPStatus,
 	|	OracleSalesOrdersDetailsSourceData.JobEndDate КАК JobEndDate,
 	|	OracleSalesOrdersDetailsSourceData.CreationDate КАК CreationDate,
 	|	OracleSalesOrdersDetailsSourceData.FTLSubmissionDate КАК FTLSubmissionDate,
@@ -460,7 +466,7 @@
 	|	ИсходникиСсылки.CreatedBy,
 	|	ИсходникиСсылки.Currency,
 	|	ИсходникиСсылки.FTLCreatedBy,
-	|	ИсходникиСсылки.ERPStatus,
+	|	МИНИМУМ(ИсходникиСсылки.ERPStatus) КАК ERPStatus,
 	|	ИсходникиСсылки.JobEndDate,
 	|	ИсходникиСсылки.CreationDate,
 	|	ИсходникиСсылки.FTLSubmissionDate,
@@ -482,7 +488,35 @@
 	|		ЛЕВОЕ СОЕДИНЕНИЕ КлиентыСсылка КАК КлиентыСсылка
 	|		ПО ИсходникиСсылки.CustomerNumber = КлиентыСсылка.CustomerNumber
 	|		ЛЕВОЕ СОЕДИНЕНИЕ ВалютыСсылка КАК ВалютыСсылка
-	|		ПО ИсходникиСсылки.Currency = ВалютыСсылка.Currency";
+	|		ПО ИсходникиСсылки.Currency = ВалютыСсылка.Currency
+	|
+	|СГРУППИРОВАТЬ ПО
+	|	ИсходникиСсылки.CustomerNumber,
+	|	ИсходникиСсылки.ДокументЗагрузки,
+	|	ИсходникиСсылки.CustomerRepresentative,
+	|	ИсходникиСсылки.НомерSO,
+	|	ИсходникиСсылки.ApprovedBy,
+	|	ИсходникиСсылки.CreatedBy,
+	|	ИсходникиСсылки.Agreement,
+	|	ИсходникиСсылки.Currency,
+	|	ИсходникиСсылки.JobEndDate,
+	|	ИсходникиСсылки.FTLCreatedBy,
+	|	ИсходникиСсылки.CreationDate,
+	|	ИсходникиСсылки.FirstSubmissionDate,
+	|	ИсходникиСсылки.ApprovalDate,
+	|	ИсходникиСсылки.СсылкаInvoice,
+	|	ИсходникиСсылки.FTLSubmissionDate,
+	|	ВалютыСсылка.ОбъектПриемника,
+	|	ИсходникиСсылки.FieldTicket,
+	|	ИсходникиСсылки.InvoiceFlagDate,
+	|	ИсходникиСсылки.СсылкаSalesOrder,
+	|	ИсходникиСсылки.СсылкаОрганизация,
+	|	КлиентыСсылка.ОбъектПриемника,
+	|	ИсходникиСсылки.WellData,
+	|	ИсходникиСсылки.ShipmentDate,
+	|	ИсходникиСсылки.DOC_ID,
+	|	ИсходникиСсылки.InvoiceAmount,
+	|	ИсходникиСсылки.CompanyCode";
 	
 	Запрос.УстановитьПараметр("Ссылка", СтруктураПараметров.Ссылка);
 	
@@ -684,9 +718,16 @@
 	НЗSOComments = РегистрыСведений.SalesOrdersComments.СоздатьНаборЗаписей();
 	НЗSOComments.Отбор.Период.Установить(ТекущаяДата);
 	
-	Если ВРег(ERPStatus) = "CANCELLED" Тогда
+	//Если ВРег(ERPStatus) = "CANCELLED" Тогда
+	//	 BilledStatus = Перечисления.SalesOrderBilledStatus.Canceled;
+	// ИначеЕсли ВРег(ERPStatus) = "CLOSED" И ShipmentDate <> ПустаяДата Тогда
+	//	 BilledStatus = Перечисления.SalesOrderBilledStatus.Billed;
+	// Иначе
+	//	 BilledStatus = Перечисления.SalesOrderBilledStatus.Unbilled;
+	//КонецЕсли;
+	Если ERPStatus = 3 Тогда
 		 BilledStatus = Перечисления.SalesOrderBilledStatus.Canceled;
-	 ИначеЕсли ВРег(ERPStatus) = "CLOSED" И ShipmentDate <> ПустаяДата Тогда
+	 ИначеЕсли ERPStatus = 2 И ShipmentDate <> ПустаяДата Тогда
 		 BilledStatus = Перечисления.SalesOrderBilledStatus.Billed;
 	 Иначе
 		 BilledStatus = Перечисления.SalesOrderBilledStatus.Unbilled;
