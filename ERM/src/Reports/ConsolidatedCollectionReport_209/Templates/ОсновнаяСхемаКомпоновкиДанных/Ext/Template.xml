@@ -218,7 +218,7 @@
 		ИНАЧЕ PaymentsОбороты.Регистратор.CustomerNumber
 	КОНЕЦ КАК ClientID,
 	МАКСИМУМ(PaymentsОбороты.CashBatch.Дата) КАК CashBatchДата,
-	МАКСИМУМ(PaymentsОбороты.CashBatch.PaymentDate) КАК CashBatchPaymentDate
+	PaymentsОбороты.CashBatch.PaymentDate КАК CashBatchPaymentDate
 ПОМЕСТИТЬ PaymentsГруппировка
 ИЗ
 	РегистрНакопления.Payments.Обороты(
@@ -242,6 +242,7 @@
 	PaymentsОбороты.Account,
 	PaymentsОбороты.Client,
 	PaymentsОбороты.Company,
+	PaymentsОбороты.CashBatch.PaymentDate,
 	ВЫБОР
 		КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
 			ТОГДА PaymentsОбороты.Регистратор.ДокументОснование.DocumentID
