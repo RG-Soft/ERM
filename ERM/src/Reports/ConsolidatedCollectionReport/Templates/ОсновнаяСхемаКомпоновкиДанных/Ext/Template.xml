@@ -211,7 +211,11 @@
 				И НЕ Client.Intercompany) КАК PaymentsОбороты
 ГДЕ
 	ПОДСТРОКА(PaymentsОбороты.Account.Код, 1, 6) &lt;&gt; "209000"
-	И ПОДСТРОКА(PaymentsОбороты.Регистратор.CorAccount, 1, 6) &lt;&gt; "209000"
+	И ВЫБОР
+			КОГДА PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
+				ТОГДА ПОДСТРОКА(PaymentsОбороты.Регистратор.CorAccount, 1, 6) &lt;&gt; "209000"
+			ИНАЧЕ ИСТИНА
+		КОНЕЦ
 
 СГРУППИРОВАТЬ ПО
 	PaymentsОбороты.CashBatch,
@@ -443,7 +447,7 @@
 		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель</dcsset:field>
+					<dcsset:field>AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -494,7 +498,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>AU.Сегмент.БазовыйЭлемент.Родитель.Родитель.Родитель</dcsset:field>
+					<dcsset:field>SubSubSegment.БазовыйЭлемент.Родитель.Родитель.Родитель</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
