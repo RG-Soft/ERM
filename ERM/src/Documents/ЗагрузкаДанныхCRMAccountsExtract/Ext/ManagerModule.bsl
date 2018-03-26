@@ -77,7 +77,6 @@
 		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
 		|	И CRMAccountsExtractSourceData.CorporateAccount <> """"
 		|	И CRMAccountsExtractSourceData.BillingFlag = ""Y""
-		//|	И CRMAccountsExtractSourceData.AccountStatus = ""Active""
 		|
 		|ИНДЕКСИРОВАТЬ ПО
 		|	CRMAccountsExtractSourceData.CorporateAccount
@@ -91,9 +90,9 @@
 		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Контрагенты КАК Контрагенты
 		|		ПО ВТ_SalesAccounts.CorporateAccount = Контрагенты.Наименование
 		|			И (НЕ Контрагенты.ПометкаУдаления)
-		|			И (Контрагенты.ParentClient)
+		|			И (Контрагенты.AccountType = ЗНАЧЕНИЕ(Перечисление.ТипыКлиентов.ParentAccount))
 		|ГДЕ
-		|	Контрагенты.Ссылка ЕСТЬ NULL ";
+		|	Контрагенты.Ссылка ЕСТЬ NULL";
 	
 	Запрос.УстановитьПараметр("Ссылка", Ссылка);
 	
@@ -113,51 +112,79 @@
 Функция ПолучитьТаблицуНовыеSalesКлиенты(Ссылка)
 	
 	Запрос = Новый Запрос;
+	// { RGS AGorlenko 20.03.2018 12:43:51 - sales аккаунты определяются по аналогии с parent
+	//Запрос.Текст = 
+	//	"ВЫБРАТЬ
+	//	|	CRMAccountsExtractSourceData.AccountId КАК CRMID,
+	//	|	CRMAccountsExtractSourceData.Account КАК Description,
+	//	|	CRMAccountsExtractSourceData.CorporateAccount КАК ParentClientDescription,
+	//	|	ВЫБОР
+	//	|		КОГДА CRMAccountsExtractSourceData.CreditRating = ""Banned""
+	//	|			ТОГДА ЗНАЧЕНИЕ(Перечисление.CreditRating.Banned)
+	//	|		КОГДА CRMAccountsExtractSourceData.CreditRating = ""Conditional""
+	//	|			ТОГДА ЗНАЧЕНИЕ(Перечисление.CreditRating.Conditional)
+	//	|		КОГДА CRMAccountsExtractSourceData.CreditRating = ""Limited""
+	//	|			ТОГДА ЗНАЧЕНИЕ(Перечисление.CreditRating.Limited)
+	//	|		КОГДА CRMAccountsExtractSourceData.CreditRating = ""Unlimited""
+	//	|			ТОГДА ЗНАЧЕНИЕ(Перечисление.CreditRating.Unlimited)
+	//	|		ИНАЧЕ ЗНАЧЕНИЕ(Перечисление.CreditRating.ПустаяСсылка)
+	//	|	КОНЕЦ КАК CreditRating
+	//	|ПОМЕСТИТЬ ВТ_SalesAccounts
+	//	|ИЗ
+	//	|	РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
+	//	|ГДЕ
+	//	|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
+	//	|	И CRMAccountsExtractSourceData.MIIntegrationId = """"
+	//	|	И CRMAccountsExtractSourceData.SMITHIntegrationId = """"
+	//	|	И CRMAccountsExtractSourceData.LawsonIntegrationId = """"
+	//	|	И CRMAccountsExtractSourceData.AccountStatus = ""Active""
+	//	|	И CRMAccountsExtractSourceData.BillingFlag = ""Y""
+	//	|
+	//	|ИНДЕКСИРОВАТЬ ПО
+	//	|	CRMID
+	//	|;
+	//	|
+	//	|////////////////////////////////////////////////////////////////////////////////
+	//	|ВЫБРАТЬ
+	//	|	ВТ_SalesAccounts.CRMID,
+	//	|	ВТ_SalesAccounts.Description,
+	//	|	ВТ_SalesAccounts.ParentClientDescription,
+	//	|	ВТ_SalesAccounts.CreditRating
+	//	|ИЗ
+	//	|	ВТ_SalesAccounts КАК ВТ_SalesAccounts
+	//	|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Контрагенты КАК Контрагенты
+	//	|		ПО ВТ_SalesAccounts.CRMID = Контрагенты.CRMID
+	//	|			И (НЕ Контрагенты.ПометкаУдаления)
+	//	|			И (НЕ Контрагенты.ParentClient)
+	//	|ГДЕ
+	//	|	Контрагенты.Ссылка ЕСТЬ NULL ";
 	Запрос.Текст = 
-		"ВЫБРАТЬ
-		|	CRMAccountsExtractSourceData.AccountId КАК CRMID,
-		|	CRMAccountsExtractSourceData.Account КАК Description,
-		|	CRMAccountsExtractSourceData.CorporateAccount КАК ParentClientDescription,
-		|	ВЫБОР
-		|		КОГДА CRMAccountsExtractSourceData.CreditRating = ""Banned""
-		|			ТОГДА ЗНАЧЕНИЕ(Перечисление.CreditRating.Banned)
-		|		КОГДА CRMAccountsExtractSourceData.CreditRating = ""Conditional""
-		|			ТОГДА ЗНАЧЕНИЕ(Перечисление.CreditRating.Conditional)
-		|		КОГДА CRMAccountsExtractSourceData.CreditRating = ""Limited""
-		|			ТОГДА ЗНАЧЕНИЕ(Перечисление.CreditRating.Limited)
-		|		КОГДА CRMAccountsExtractSourceData.CreditRating = ""Unlimited""
-		|			ТОГДА ЗНАЧЕНИЕ(Перечисление.CreditRating.Unlimited)
-		|		ИНАЧЕ ЗНАЧЕНИЕ(Перечисление.CreditRating.ПустаяСсылка)
-		|	КОНЕЦ КАК CreditRating
+		"ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	CRMAccountsExtractSourceData.ParentAccount
 		|ПОМЕСТИТЬ ВТ_SalesAccounts
 		|ИЗ
 		|	РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
 		|ГДЕ
 		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
-		|	И CRMAccountsExtractSourceData.MIIntegrationId = """"
-		|	И CRMAccountsExtractSourceData.SMITHIntegrationId = """"
-		|	И CRMAccountsExtractSourceData.LawsonIntegrationId = """"
-		|	И CRMAccountsExtractSourceData.AccountStatus = ""Active""
+		|	И CRMAccountsExtractSourceData.CorporateAccount <> """"
 		|	И CRMAccountsExtractSourceData.BillingFlag = ""Y""
 		|
 		|ИНДЕКСИРОВАТЬ ПО
-		|	CRMID
+		|	CRMAccountsExtractSourceData.ParentAccount
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
-		|ВЫБРАТЬ
-		|	ВТ_SalesAccounts.CRMID,
-		|	ВТ_SalesAccounts.Description,
-		|	ВТ_SalesAccounts.ParentClientDescription,
-		|	ВТ_SalesAccounts.CreditRating
+		|ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	ВТ_SalesAccounts.ParentAccount КАК Description
 		|ИЗ
 		|	ВТ_SalesAccounts КАК ВТ_SalesAccounts
 		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Контрагенты КАК Контрагенты
-		|		ПО ВТ_SalesAccounts.CRMID = Контрагенты.CRMID
+		|		ПО ВТ_SalesAccounts.ParentAccount = Контрагенты.Наименование
 		|			И (НЕ Контрагенты.ПометкаУдаления)
-		|			И (НЕ Контрагенты.ParentClient)
+		|			И (Контрагенты.AccountType = ЗНАЧЕНИЕ(Перечисление.ТипыКлиентов.SalesAccount))
 		|ГДЕ
-		|	Контрагенты.Ссылка ЕСТЬ NULL ";
+		|	Контрагенты.Ссылка ЕСТЬ NULL";
+	// } RGS AGorlenko 20.03.2018 12:44:35 - sales аккаунты определяются по аналогии с parent
 	
 	Запрос.УстановитьПараметр("Ссылка", Ссылка);
 	
@@ -181,6 +208,7 @@
 		|	CRMAccountsExtractSourceData.AccountId КАК CRMID,
 		|	CRMAccountsExtractSourceData.Account КАК Description,
 		|	CRMAccountsExtractSourceData.CorporateAccount КАК ParentClientDescription,
+		|	CRMAccountsExtractSourceData.ParentAccount КАК SalesAccountDescription,
 		|	CRMAccountsExtractSourceData.MIIntegrationId КАК MIID,
 		|	CRMAccountsExtractSourceData.SMITHIntegrationId КАК SMITHID,
 		|	CRMAccountsExtractSourceData.LawsonIntegrationId КАК LawsonID,
@@ -200,9 +228,11 @@
 		|	РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
 		|ГДЕ
 		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
-		|	И (CRMAccountsExtractSourceData.MIIntegrationId <> """"
-		|			ИЛИ CRMAccountsExtractSourceData.SMITHIntegrationId <> """"
-		|			ИЛИ CRMAccountsExtractSourceData.LawsonIntegrationId <> """")
+		// { RGS AGorlenko 20.03.2018 13:22:04 - из-за изменений сэйлз аккаунтов здесь учитываем всех
+		//|	И (CRMAccountsExtractSourceData.MIIntegrationId <> """"
+		//|			ИЛИ CRMAccountsExtractSourceData.SMITHIntegrationId <> """"
+		//|			ИЛИ CRMAccountsExtractSourceData.LawsonIntegrationId <> """")
+		// } RGS AGorlenko 20.03.2018 13:22:43 - из-за изменений сэйлз аккаунтов здесь учитываем всех
 		|	И CRMAccountsExtractSourceData.BillingFlag = ""Y""
 		|	И CRMAccountsExtractSourceData.AccountStatus = ""Active""
 		|
@@ -215,6 +245,7 @@
 		|	ВТ_BillingAccounts.CRMID,
 		|	ВТ_BillingAccounts.Description,
 		|	ВТ_BillingAccounts.ParentClientDescription,
+		|	ВТ_BillingAccounts.SalesAccountDescription,
 		|	ВТ_BillingAccounts.MIID,
 		|	ВТ_BillingAccounts.SMITHID,
 		|	ВТ_BillingAccounts.LawsonID,
@@ -224,7 +255,7 @@
 		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Контрагенты КАК Контрагенты
 		|		ПО ВТ_BillingAccounts.CRMID = Контрагенты.CRMID
 		|			И (НЕ Контрагенты.ПометкаУдаления)
-		|			И (НЕ Контрагенты.ParentClient)
+		|			И (Контрагенты.AccountType = ЗНАЧЕНИЕ(Перечисление.ТипыКлиентов.BillingAccount))
 		|ГДЕ
 		|	Контрагенты.Ссылка ЕСТЬ NULL ";
 	
@@ -285,7 +316,7 @@
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.Контрагенты КАК Контрагенты
 		|		ПО ВТ_BillingAccounts.CRMID = Контрагенты.CRMID
 		|			И (НЕ Контрагенты.ПометкаУдаления)
-		|			И (НЕ Контрагенты.ParentClient)
+		|			И (Контрагенты.AccountType = ЗНАЧЕНИЕ(Перечисление.ТипыКлиентов.BillingAccount))
 		|
 		|ИНДЕКСИРОВАТЬ ПО
 		|	ОбъектПриемника
@@ -439,8 +470,10 @@
 		|	CRMAccountsExtractSourceData.AccountId КАК CRMID,
 		|	CRMAccountsExtractSourceData.Account КАК Description,
 		|	CRMAccountsExtractSourceData.CorporateAccount КАК ParentClientDescription,
+		|	CRMAccountsExtractSourceData.ParentAccount КАК SalesAccountDescription,
 		|	Контрагенты.Ссылка КАК Client,
-		|	ЕСТЬNULL(Контрагенты1.Ссылка, ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка)) КАК NewParentClient
+		|	ЕСТЬNULL(Контрагенты1.Ссылка, ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка)) КАК NewParentClient,
+		|	ЕСТЬNULL(Контрагенты2.Ссылка, ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка)) КАК NewSalesAccount
 		|ПОМЕСТИТЬ ВТ_SalesAccounts
 		|ИЗ
 		|	РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
@@ -450,7 +483,11 @@
 		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Контрагенты КАК Контрагенты1
 		|		ПО CRMAccountsExtractSourceData.CorporateAccount = Контрагенты1.Наименование
 		|			И (НЕ Контрагенты1.ПометкаУдаления)
-		|			И (Контрагенты1.ParentClient)
+		|			И (Контрагенты1.AccountType = ЗНАЧЕНИЕ(Перечисление.ТипыКлиентов.ParentAccount))
+		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Контрагенты КАК Контрагенты2
+		|		ПО (CRMAccountsExtractSourceData.ParentAccount = Контрагенты2.Наименование)
+		|			И (НЕ Контрагенты2.ПометкаУдаления)
+		|			И (Контрагенты2.AccountType = ЗНАЧЕНИЕ(Перечисление.ТипыКлиентов.SalesAccount))
 		|ГДЕ
 		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
 		|	И CRMAccountsExtractSourceData.BillingFlag = ""Y""
@@ -465,8 +502,11 @@
 		|	ВТ_SalesAccounts.Description,
 		|	ВТ_SalesAccounts.Client,
 		|	ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент КАК OldParentClient,
+		|	ИерархияКонтрагентовСрезПоследних.SalesAccount КАК OldSalesAccount,
 		|	ВТ_SalesAccounts.NewParentClient,
-		|	ВТ_SalesAccounts.ParentClientDescription КАК NewParentClientDescription
+		|	ВТ_SalesAccounts.NewSalesAccount,
+		|	ВТ_SalesAccounts.ParentClientDescription КАК NewParentClientDescription,
+		|	ВТ_SalesAccounts.SalesAccountDescription КАК NewSalesAccountDescription
 		|ИЗ
 		|	ВТ_SalesAccounts КАК ВТ_SalesAccounts
 		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИерархияКонтрагентов.СрезПоследних(
@@ -478,7 +518,12 @@
 		|						ВТ_SalesAccounts КАК ВТ_SalesAccounts)) КАК ИерархияКонтрагентовСрезПоследних
 		|		ПО ВТ_SalesAccounts.Client = ИерархияКонтрагентовСрезПоследних.Контрагент
 		|ГДЕ
-		|	ЕСТЬNULL(ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент, ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка)) <> ВТ_SalesAccounts.NewParentClient";
+		|	(ЕСТЬNULL(ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент, ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка)) <> ВТ_SalesAccounts.NewParentClient
+		|			ИЛИ ВТ_SalesAccounts.NewParentClient = ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка)
+		|				И ВТ_SalesAccounts.ParentClientDescription <> """"
+		|			ИЛИ ЕСТЬNULL(ИерархияКонтрагентовСрезПоследних.SalesAccount, ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка)) <> ВТ_SalesAccounts.NewSalesAccount
+		|			ИЛИ ВТ_SalesAccounts.NewSalesAccount = ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка)
+		|				И ВТ_SalesAccounts.SalesAccountDescription <> """")";
 
 	
 	Запрос.УстановитьПараметр("Ссылка", Ссылка);
@@ -530,7 +575,7 @@
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.Контрагенты КАК Контрагенты
 		|		ПО CRMAccountsExtractSourceData.AccountId = Контрагенты.CRMID
 		|			И (НЕ Контрагенты.ПометкаУдаления)
-		|			И (НЕ Контрагенты.ParentClient)
+		|			И (Контрагенты.AccountType = ЗНАЧЕНИЕ(Перечисление.ТипыКлиентов.BillingAccount))
 		|ГДЕ
 		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
 		|	И (CRMAccountsExtractSourceData.Account <> Контрагенты.Наименование

@@ -83,6 +83,7 @@
 			<field>Client</field>
 			<role>
 				<dcscom:dimension>true</dcscom:dimension>
+				<dcscom:required>true</dcscom:required>
 			</role>
 			<valueType>
 				<v8:Type xmlns:d5p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d5p1:CatalogRef.Контрагенты</v8:Type>
@@ -92,8 +93,8 @@
 					<dcscor:parameter>ПараметрыВыбора</dcscor:parameter>
 					<dcscor:value xsi:type="dcscor:ChoiceParameters">
 						<dcscor:item>
-							<dcscor:choiceParameter>Отбор.ParentClient</dcscor:choiceParameter>
-							<dcscor:value xsi:type="xs:boolean">false</dcscor:value>
+							<dcscor:choiceParameter>Отбор.AccountType</dcscor:choiceParameter>
+							<dcscor:value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыКлиентов.BillingAccount</dcscor:value>
 						</dcscor:item>
 					</dcscor:value>
 				</dcscor:item>
@@ -646,8 +647,26 @@
 					<dcscor:parameter>ПараметрыВыбора</dcscor:parameter>
 					<dcscor:value xsi:type="dcscor:ChoiceParameters">
 						<dcscor:item>
-							<dcscor:choiceParameter>Отбор.ParentClient</dcscor:choiceParameter>
-							<dcscor:value xsi:type="xs:boolean">true</dcscor:value>
+							<dcscor:choiceParameter>Отбор.AccountType</dcscor:choiceParameter>
+							<dcscor:value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыКлиентов.ParentAccount</dcscor:value>
+						</dcscor:item>
+					</dcscor:value>
+				</dcscor:item>
+			</inputParameters>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>SalesAccount</dataPath>
+			<field>SalesAccount</field>
+			<valueType>
+				<v8:Type xmlns:d5p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d5p1:CatalogRef.Контрагенты</v8:Type>
+			</valueType>
+			<inputParameters>
+				<dcscor:item>
+					<dcscor:parameter>ПараметрыВыбора</dcscor:parameter>
+					<dcscor:value xsi:type="dcscor:ChoiceParameters">
+						<dcscor:item>
+							<dcscor:choiceParameter>Отбор.AccountType</dcscor:choiceParameter>
+							<dcscor:value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыКлиентов.SalesAccount</dcscor:value>
 						</dcscor:item>
 					</dcscor:value>
 				</dcscor:item>
@@ -680,7 +699,10 @@
 			ИНАЧЕ UnbilledARОстатки.Company.DefaultLegalEntity
 		КОНЕЦ КАК LegalEntity
 	ИЗ
-		РегистрНакопления.UnbilledAR.Остатки({(&amp;ПериодОстатков)}, Source В (&amp;Sources)) КАК UnbilledARОстатки
+		РегистрНакопления.UnbilledAR.Остатки(
+				{(&amp;ПериодОстатков)},
+				Source В (&amp;Sources)
+					И ПОДСТРОКА(Account.Код, 1, 6) &lt;&gt; "209000") КАК UnbilledARОстатки
 	
 	ОБЪЕДИНИТЬ ВСЕ
 	
@@ -699,7 +721,10 @@
 			ИНАЧЕ BilledARОстатки.Company.DefaultLegalEntity
 		КОНЕЦ
 	ИЗ
-		РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, Source В (&amp;Sources)) КАК BilledARОстатки
+		РегистрНакопления.BilledAR.Остатки(
+				{(&amp;ПериодОстатков)},
+				Source В (&amp;Sources)
+					И ПОДСТРОКА(Account.Код, 1, 6) &lt;&gt; "209000") КАК BilledARОстатки
 	
 	ОБЪЕДИНИТЬ ВСЕ
 	
@@ -718,7 +743,10 @@
 			ИНАЧЕ UnallocatedCashОстатки.Company.DefaultLegalEntity
 		КОНЕЦ
 	ИЗ
-		РегистрНакопления.UnallocatedCash.Остатки({(&amp;ПериодОстатков)}, Source В (&amp;Sources)) КАК UnallocatedCashОстатки
+		РегистрНакопления.UnallocatedCash.Остатки(
+				{(&amp;ПериодОстатков)},
+				Source В (&amp;Sources)
+					И ПОДСТРОКА(Account.Код, 1, 6) &lt;&gt; "209000") КАК UnallocatedCashОстатки
 	ГДЕ
 		ВЫБОР
 				КОГДА НЕ UnallocatedCashОстатки.CashBatch.Ссылка ЕСТЬ NULL
@@ -746,7 +774,10 @@
 			ИНАЧЕ ManualTransactionsОстатки.Company.DefaultLegalEntity
 		КОНЕЦ
 	ИЗ
-		РегистрНакопления.ManualTransactions.Остатки({(&amp;ПериодОстатков)}, Source В (&amp;Sources)) КАК ManualTransactionsОстатки
+		РегистрНакопления.ManualTransactions.Остатки(
+				{(&amp;ПериодОстатков)},
+				Source В (&amp;Sources)
+					И ПОДСТРОКА(Account.Код, 1, 6) &lt;&gt; "209000") КАК ManualTransactionsОстатки
 	
 	ОБЪЕДИНИТЬ ВСЕ
 	
@@ -765,7 +796,10 @@
 			ИНАЧЕ UnallocatedMemoОстатки.Company.DefaultLegalEntity
 		КОНЕЦ
 	ИЗ
-		РегистрНакопления.UnallocatedMemo.Остатки({(&amp;ПериодОстатков)}, Source В (&amp;Sources)) КАК UnallocatedMemoОстатки) КАК ВложенныйЗапросОстатки
+		РегистрНакопления.UnallocatedMemo.Остатки(
+				{(&amp;ПериодОстатков)},
+				Source В (&amp;Sources)
+					И ПОДСТРОКА(Account.Код, 1, 6) &lt;&gt; "209000") КАК UnallocatedMemoОстатки) КАК ВложенныйЗапросОстатки
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ПериодОстатков)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
 		ПО ВложенныйЗапросОстатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
 
@@ -996,7 +1030,8 @@
 	СУММА(ВложенныйЗапрос.Billing22) КАК Billing22,
 	СУММА(ВложенныйЗапрос.Billing23) КАК Billing23,
 	СУММА(ВложенныйЗапрос.Billing24) КАК Billing24,
-	МАКСИМУМ(ВложенныйЗапрос.AR) КАК AR
+	МАКСИМУМ(ВложенныйЗапрос.AR) КАК AR,
+	ИерархияКонтрагентовСрезПоследних.SalesAccount
 ИЗ
 	(ВЫБРАТЬ
 		ЕСТЬNULL(ВТ_Остатки.Client, ОборотыПолные.Client) КАК Client,
@@ -2361,7 +2396,8 @@
 	ВложенныйЗапрос.SubSubSegment,
 	ВложенныйЗапрос.AU,
 	ВложенныйЗапрос.LegalEntity,
-	ЕСТЬNULL(ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент, ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка))</query>
+	ЕСТЬNULL(ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент, ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка)),
+	ИерархияКонтрагентовСрезПоследних.SalesAccount</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>BU</dataPath>

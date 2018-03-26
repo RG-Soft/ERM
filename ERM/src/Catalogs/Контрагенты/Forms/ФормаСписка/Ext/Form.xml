@@ -164,6 +164,11 @@
 				<Event name="BeforeRowChange">СписокПередНачаломИзменения</Event>
 			</Events>
 			<ChildItems>
+				<LabelField name="AccountType" id="77">
+					<DataPath>Список.AccountType</DataPath>
+					<ContextMenu name="AccountTypeКонтекстноеМеню" id="78"/>
+					<ExtendedTooltip name="AccountTypeРасширеннаяПодсказка" id="79"/>
+				</LabelField>
 				<LabelField name="Наименование" id="10">
 					<DataPath>Список.Description</DataPath>
 					<DefaultItem>true</DefaultItem>
@@ -275,10 +280,10 @@
 			</Type>
 			<MainAttribute>true</MainAttribute>
 			<UseAlways>
+				<Field>~Список.ParentClient</Field>
 				<Field>~Список.КонтрагентНеСуществует</Field>
 				<Field>~Список.Состояние</Field>
 				<Field>Список.IsFolder</Field>
-				<Field>Список.ParentClient</Field>
 				<Field>Список.Ref</Field>
 				<Field>Список.ЕстьДубли</Field>
 				<Field>Список.ИННВведенКорректно</Field>
@@ -306,7 +311,7 @@
 	СправочникКонтрагенты.ИНН КАК ИНН,
 	СправочникКонтрагенты.КПП КАК КПП,
 	ВЫБОР
-		КОГДА НаличиеДублейУКонтрагентов.Контрагент ЕСТЬ NULL 
+		КОГДА НаличиеДублейУКонтрагентов.Контрагент ЕСТЬ NULL
 			ТОГДА ЛОЖЬ
 		ИНАЧЕ ИСТИНА
 	КОНЕЦ КАК ЕстьДубли,
@@ -323,7 +328,7 @@
 	КОНЕЦ КАК ПроверкаКонтрагентовКонтрагентНеСуществует,
 	СостоянияКонтрагентов.Состояние КАК ПроверкаКонтрагентовСостояние,
 	СправочникКонтрагенты.CRMID,
-	СправочникКонтрагенты.ParentClient
+	СправочникКонтрагенты.AccountType
 ИЗ
 	Справочник.Контрагенты КАК СправочникКонтрагенты
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.НаличиеДублейУКонтрагентов КАК НаличиеДублейУКонтрагентов
