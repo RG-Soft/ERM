@@ -2079,9 +2079,10 @@
 		|			ИЛИ OracleSmithSourceData.cust_no <> """")
 		//|	И OracleSmithSourceData.je_line_num <> 0
 		|	И (OracleSmithSourceData.je_line_num <> 0 ИЛИ 
-		|		((OracleSmithSourceData.source = ""FMS"" ИЛИ OracleSmithSourceData.source = ""Spreadsheet"")
-		|			И OracleSmithSourceData.major ПОДОБНО ""4%""
-		|			И OracleSmithSourceData.category = ""Accrual""))
+		//|		((OracleSmithSourceData.source = ""FMS"" ИЛИ OracleSmithSourceData.source = ""Spreadsheet"")
+		//|			И OracleSmithSourceData.major ПОДОБНО ""4%""
+		//|			И OracleSmithSourceData.category = ""Accrual""))
+		|			OracleSmithSourceData.major ПОДОБНО ""4%"")
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
