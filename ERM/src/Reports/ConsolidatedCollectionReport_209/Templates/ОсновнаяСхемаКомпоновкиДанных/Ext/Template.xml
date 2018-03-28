@@ -218,7 +218,16 @@
 		ИНАЧЕ PaymentsОбороты.Регистратор.CustomerNumber
 	КОНЕЦ КАК ClientID,
 	МАКСИМУМ(PaymentsОбороты.CashBatch.Дата) КАК CashBatchДата,
-	PaymentsОбороты.CashBatch.PaymentDate КАК CashBatchPaymentDate
+	PaymentsОбороты.CashBatch.PaymentDate КАК CashBatchPaymentDate,
+	ВЫБОР
+		КОГДА PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
+			ТОГДА ВЫБОР
+					КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
+						ТОГДА PaymentsОбороты.Регистратор.ДокументОснование.HOBDocumentType
+					ИНАЧЕ PaymentsОбороты.Регистратор.HOBDocumentType
+				КОНЕЦ
+		ИНАЧЕ NULL
+	КОНЕЦ КАК HOBDocumentType
 ПОМЕСТИТЬ PaymentsГруппировка
 ИЗ
 	РегистрНакопления.Payments.Обороты(
@@ -252,15 +261,26 @@
 		КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
 			ТОГДА PaymentsОбороты.Регистратор.ДокументОснование.CustomerNumber
 		ИНАЧЕ PaymentsОбороты.Регистратор.CustomerNumber
+	КОНЕЦ,
+	ВЫБОР
+		КОГДА PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
+			ТОГДА ВЫБОР
+					КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
+						ТОГДА PaymentsОбороты.Регистратор.ДокументОснование.HOBDocumentType
+					ИНАЧЕ PaymentsОбороты.Регистратор.HOBDocumentType
+				КОНЕЦ
+		ИНАЧЕ NULL
 	КОНЕЦ
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
 ВЫБРАТЬ
-	PaymentsГруппировка.Company КАК Company,
 	PaymentsГруппировка.Client КАК Client,
+	PaymentsГруппировка.Company КАК Company,
 	PaymentsГруппировка.Source КАК Source,
 	PaymentsГруппировка.Currency КАК Currency,
+	ВнутренниеКурсыВалютСрезПоследних.Курс КАК Курс,
+	ВнутренниеКурсыВалютСрезПоследних.Кратность КАК Кратность,
 	PaymentsГруппировка.Account КАК Account,
 	PaymentsГруппировка.AU КАК AU,
 	ВЫБОР
@@ -268,72 +288,120 @@
 			ТОГДА PaymentsГруппировка.AU.Сегмент
 		ИНАЧЕ AnalyticsExceptions.SubSubSegment
 	КОНЕЦ КАК SubSubSegment,
-	PaymentsГруппировка.AmountОборот,
+	СУММА(PaymentsГруппировка.AmountОборот) КАК Amount,
+	СУММА(ВЫБОР
+			КОГДА PaymentsГруппировка.Currency = &amp;USD
+				ТОГДА PaymentsГруппировка.AmountОборот
+			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
+					ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+				ТОГДА 0
+			ИНАЧЕ PaymentsГруппировка.AmountОборот / ВнутренниеКурсыВалютСрезПоследних.Курс
+		КОНЕЦ) КАК BaseAmount,
 	PaymentsГруппировка.ДатаТранзакции,
 	PaymentsГруппировка.CashBatchДата,
 	PaymentsГруппировка.DocumentPresentation,
 	PaymentsГруппировка.DocumentID,
 	PaymentsГруппировка.ClientID,
 	PaymentsГруппировка.CashBatchPaymentDate
-ПОМЕСТИТЬ Исходные
 ИЗ
 	PaymentsГруппировка КАК PaymentsГруппировка
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;КонецПериода)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
+		ПО PaymentsГруппировка.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.AnalyticsExceptions КАК AnalyticsExceptions
 		ПО PaymentsГруппировка.Source = AnalyticsExceptions.Source
 			И PaymentsГруппировка.Company = AnalyticsExceptions.Company
 			И PaymentsГруппировка.AU = AnalyticsExceptions.AU
-;
+ГДЕ
+	PaymentsГруппировка.HOBDocumentType &lt;&gt; ЗНАЧЕНИЕ(Перечисление.HOBDocumentTypes.КорректировкаДолга)
 
-////////////////////////////////////////////////////////////////////////////////
+СГРУППИРОВАТЬ ПО
+	PaymentsГруппировка.Client,
+	PaymentsГруппировка.Company,
+	PaymentsГруппировка.Source,
+	PaymentsГруппировка.Currency,
+	ВнутренниеКурсыВалютСрезПоследних.Курс,
+	ВнутренниеКурсыВалютСрезПоследних.Кратность,
+	PaymentsГруппировка.Account,
+	PaymentsГруппировка.AU,
+	ВЫБОР
+		КОГДА AnalyticsExceptions.SubSubSegment ЕСТЬ NULL
+			ТОГДА PaymentsГруппировка.AU.Сегмент
+		ИНАЧЕ AnalyticsExceptions.SubSubSegment
+	КОНЕЦ,
+	PaymentsГруппировка.ДатаТранзакции,
+	PaymentsГруппировка.CashBatchДата,
+	PaymentsГруппировка.DocumentPresentation,
+	PaymentsГруппировка.DocumentID,
+	PaymentsГруппировка.ClientID,
+	PaymentsГруппировка.CashBatchPaymentDate
+
+ИМЕЮЩИЕ
+	СУММА(PaymentsГруппировка.AmountОборот) &lt;&gt; 0
+
+ОБЪЕДИНИТЬ ВСЕ
+
 ВЫБРАТЬ
-	Исходные.Client КАК Client,
-	Исходные.Company КАК Company,
-	Исходные.Source КАК Source,
-	Исходные.Currency КАК Currency,
-	ВнутренниеКурсыВалютСрезПоследних.Курс КАК Курс,
-	ВнутренниеКурсыВалютСрезПоследних.Кратность КАК Кратность,
-	Исходные.Account КАК Account,
-	Исходные.AU КАК AU,
-	Исходные.SubSubSegment,
-	СУММА(Исходные.AmountОборот) КАК Amount,
+	PaymentsГруппировка.Client,
+	PaymentsГруппировка.Company,
+	PaymentsГруппировка.Source,
+	PaymentsГруппировка.Currency,
+	ВнутренниеКурсыВалютСрезПоследних.Курс,
+	ВнутренниеКурсыВалютСрезПоследних.Кратность,
+	PaymentsГруппировка.Account,
+	PaymentsГруппировка.AU,
+	ВЫБОР
+		КОГДА AnalyticsExceptions.SubSubSegment ЕСТЬ NULL
+			ТОГДА PaymentsГруппировка.AU.Сегмент
+		ИНАЧЕ AnalyticsExceptions.SubSubSegment
+	КОНЕЦ,
+	СУММА(PaymentsГруппировка.AmountОборот),
 	СУММА(ВЫБОР
-			КОГДА Исходные.Currency = &amp;USD
-				ТОГДА Исходные.AmountОборот
+			КОГДА PaymentsГруппировка.Currency = &amp;USD
+				ТОГДА PaymentsГруппировка.AmountОборот
 			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
 					ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
 				ТОГДА 0
-			ИНАЧЕ Исходные.AmountОборот / ВнутренниеКурсыВалютСрезПоследних.Курс
-		КОНЕЦ) КАК BaseAmount,
-	Исходные.ДатаТранзакции,
-	Исходные.CashBatchДата,
-	Исходные.DocumentPresentation,
-	Исходные.DocumentID,
-	Исходные.ClientID,
-	Исходные.CashBatchPaymentDate
+			ИНАЧЕ PaymentsГруппировка.AmountОборот / ВнутренниеКурсыВалютСрезПоследних.Курс
+		КОНЕЦ),
+	PaymentsГруппировка.ДатаТранзакции,
+	PaymentsГруппировка.CashBatchДата,
+	PaymentsГруппировка.DocumentPresentation,
+	PaymentsГруппировка.DocumentID,
+	PaymentsГруппировка.ClientID,
+	МАКСИМУМ(PaymentsГруппировка.CashBatchPaymentDate)
 ИЗ
-	Исходные КАК Исходные
+	PaymentsГруппировка КАК PaymentsГруппировка
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;КонецПериода)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
-		ПО Исходные.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
+		ПО PaymentsГруппировка.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.AnalyticsExceptions КАК AnalyticsExceptions
+		ПО PaymentsГруппировка.Source = AnalyticsExceptions.Source
+			И PaymentsГруппировка.Company = AnalyticsExceptions.Company
+			И PaymentsГруппировка.AU = AnalyticsExceptions.AU
+ГДЕ
+	PaymentsГруппировка.HOBDocumentType = ЗНАЧЕНИЕ(Перечисление.HOBDocumentTypes.КорректировкаДолга)
 
 СГРУППИРОВАТЬ ПО
-	Исходные.Client,
-	Исходные.Company,
-	Исходные.Source,
-	Исходные.Currency,
+	PaymentsГруппировка.Client,
+	PaymentsГруппировка.Company,
+	PaymentsГруппировка.Source,
+	PaymentsГруппировка.Currency,
 	ВнутренниеКурсыВалютСрезПоследних.Курс,
 	ВнутренниеКурсыВалютСрезПоследних.Кратность,
-	Исходные.Account,
-	Исходные.AU,
-	Исходные.SubSubSegment,
-	Исходные.ДатаТранзакции,
-	Исходные.CashBatchДата,
-	Исходные.DocumentPresentation,
-	Исходные.DocumentID,
-	Исходные.ClientID,
-	Исходные.CashBatchPaymentDate
+	PaymentsГруппировка.Account,
+	PaymentsГруппировка.AU,
+	ВЫБОР
+		КОГДА AnalyticsExceptions.SubSubSegment ЕСТЬ NULL
+			ТОГДА PaymentsГруппировка.AU.Сегмент
+		ИНАЧЕ AnalyticsExceptions.SubSubSegment
+	КОНЕЦ,
+	PaymentsГруппировка.ДатаТранзакции,
+	PaymentsГруппировка.CashBatchДата,
+	PaymentsГруппировка.DocumentPresentation,
+	PaymentsГруппировка.DocumentID,
+	PaymentsГруппировка.ClientID
 
 ИМЕЮЩИЕ
-	СУММА(Исходные.AmountОборот) &lt;&gt; 0</query>
+	СУММА(PaymentsГруппировка.AmountОборот) &lt;&gt; 0</query>
 	</dataSet>
 	<parameter>
 		<name>НачалоПериода</name>
