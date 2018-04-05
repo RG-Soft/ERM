@@ -14,6 +14,7 @@
 		<Event name="OnReadAtServer">ПриЧтенииНаСервере</Event>
 		<Event name="BeforeWriteAtServer">ПередЗаписьюНаСервере</Event>
 		<Event name="OnCreateAtServer">ПриСозданииНаСервере</Event>
+		<Event name="OnWriteAtServer">ПриЗаписиНаСервере</Event>
 	</Events>
 	<ChildItems>
 		<UsualGroup name="ГруппаНомерДата" id="124">
@@ -260,7 +261,6 @@
 		</UsualGroup>
 		<Table name="ТаблицаДерево" id="89">
 			<Representation>Tree</Representation>
-			<ReadOnly>true</ReadOnly>
 			<UseAlternationRowColor>true</UseAlternationRowColor>
 			<AutoInsertNewRow>true</AutoInsertNewRow>
 			<EnableStartDrag>true</EnableStartDrag>
@@ -268,7 +268,15 @@
 			<DataPath>ТаблицаДерево</DataPath>
 			<ContextMenu name="ТаблицаДеревоКонтекстноеМеню" id="90"/>
 			<AutoCommandBar name="ТаблицаДеревоКоманднаяПанель" id="91">
-				<HorizontalAlign>Right</HorizontalAlign>
+				<Autofill>false</Autofill>
+				<ChildItems>
+					<Button name="ТаблицаДеревоСоздатьКорректировки" id="136">
+						<Type>CommandBarButton</Type>
+						<GroupHorizontalAlign>Left</GroupHorizontalAlign>
+						<CommandName>Form.Command.СоздатьКорректировки</CommandName>
+						<ExtendedTooltip name="ТаблицаДеревоСоздатьКорректировкиРасширеннаяПодсказка" id="137"/>
+					</Button>
+				</ChildItems>
 			</AutoCommandBar>
 			<ExtendedTooltip name="ТаблицаДеревоРасширеннаяПодсказка" id="92"/>
 			<SearchStringAddition name="ТаблицаДеревоСтрокаПоиска" id="93">
@@ -297,40 +305,57 @@
 			</SearchControlAddition>
 			<Events>
 				<Event name="Selection">ТаблицаДеревоВыбор</Event>
+				<Event name="OnChange">ТаблицаДеревоПриИзменении</Event>
 			</Events>
 			<ChildItems>
+				<CheckBoxField name="ТаблицаДеревоAdjustment" id="133">
+					<DataPath>ТаблицаДерево.Adjustment</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<ThreeState>true</ThreeState>
+					<ContextMenu name="ТаблицаДеревоAdjustmentКонтекстноеМеню" id="134"/>
+					<ExtendedTooltip name="ТаблицаДеревоAdjustmentРасширеннаяПодсказка" id="135"/>
+					<Events>
+						<Event name="OnChange">ТаблицаДеревоAdjustmentПриИзменении</Event>
+					</Events>
+				</CheckBoxField>
 				<InputField name="ТаблицаДеревоAccount" id="121">
 					<DataPath>ТаблицаДерево.Account</DataPath>
+					<ReadOnly>true</ReadOnly>
 					<EditMode>EnterOnInput</EditMode>
 					<ContextMenu name="ТаблицаДеревоAccountКонтекстноеМеню" id="122"/>
 					<ExtendedTooltip name="ТаблицаДеревоAccountРасширеннаяПодсказка" id="123"/>
 				</InputField>
 				<InputField name="ТаблицаДеревоLocation" id="105">
 					<DataPath>ТаблицаДерево.Location</DataPath>
+					<ReadOnly>true</ReadOnly>
 					<EditMode>EnterOnInput</EditMode>
 					<ContextMenu name="ТаблицаДеревоLocationКонтекстноеМеню" id="106"/>
 					<ExtendedTooltip name="ТаблицаДеревоLocationРасширеннаяПодсказка" id="107"/>
 				</InputField>
 				<InputField name="ТаблицаДеревоSegment" id="102">
 					<DataPath>ТаблицаДерево.Segment</DataPath>
+					<ReadOnly>true</ReadOnly>
 					<EditMode>EnterOnInput</EditMode>
 					<ContextMenu name="ТаблицаДеревоSegmentКонтекстноеМеню" id="103"/>
 					<ExtendedTooltip name="ТаблицаДеревоSegmentРасширеннаяПодсказка" id="104"/>
 				</InputField>
 				<InputField name="ТаблицаДеревоHFM_Amount" id="108">
 					<DataPath>ТаблицаДерево.HFM_Amount</DataPath>
+					<ReadOnly>true</ReadOnly>
 					<EditMode>EnterOnInput</EditMode>
 					<ContextMenu name="ТаблицаДеревоHFM_AmountКонтекстноеМеню" id="109"/>
 					<ExtendedTooltip name="ТаблицаДеревоHFM_AmountРасширеннаяПодсказка" id="110"/>
 				</InputField>
 				<InputField name="ТаблицаДеревоERM_Amount" id="111">
 					<DataPath>ТаблицаДерево.ERM_Amount</DataPath>
+					<ReadOnly>true</ReadOnly>
 					<EditMode>EnterOnInput</EditMode>
 					<ContextMenu name="ТаблицаДеревоERM_AmountКонтекстноеМеню" id="112"/>
 					<ExtendedTooltip name="ТаблицаДеревоERM_AmountРасширеннаяПодсказка" id="113"/>
 				</InputField>
 				<InputField name="ТаблицаДеревоDifference" id="114">
 					<DataPath>ТаблицаДерево.Difference</DataPath>
+					<ReadOnly>true</ReadOnly>
 					<EditMode>EnterOnInput</EditMode>
 					<ContextMenu name="ТаблицаДеревоDifferenceКонтекстноеМеню" id="115"/>
 					<ExtendedTooltip name="ТаблицаДеревоDifferenceРасширеннаяПодсказка" id="116"/>
@@ -585,6 +610,7 @@
 			<Type>
 				<v8:Type>v8:ValueTree</v8:Type>
 			</Type>
+			<SavedData>true</SavedData>
 			<Columns>
 				<Column name="Segment" id="1">
 					<Title>
@@ -667,6 +693,22 @@
 						<v8:Type>cfg:ChartOfAccountsRef.HFM_GL_Accounts</v8:Type>
 					</Type>
 				</Column>
+				<Column name="Adjustment" id="7">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Adjustment</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>10</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Any</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
 			</Columns>
 		</Attribute>
 	</Attributes>
@@ -725,6 +767,21 @@
 				</v8:item>
 			</ToolTip>
 			<Action>ЗакрытьМесяц</Action>
+		</Command>
+		<Command name="СоздатьКорректировки" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Create Adjustment</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Создать корректировки</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>СоздатьКорректировки</Action>
 		</Command>
 	</Commands>
 </Form>
