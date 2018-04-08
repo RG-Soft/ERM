@@ -182,6 +182,9 @@
 					<v8:content>Segment</v8:content>
 				</v8:item>
 			</title>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>SubSegment</dataPath>
@@ -202,6 +205,9 @@
 					<v8:content>Sub Geo</v8:content>
 				</v8:item>
 			</title>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>SubSubSegment</dataPath>
@@ -342,6 +348,33 @@
 			ТОГДА RevenueОбороты.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket
 		ИНАЧЕ RevenueОбороты.Location.БазовыйЭлемент.GeoMarket
 	КОНЕЦ
+
+ОБЪЕДИНИТЬ ВСЕ
+
+ВЫБРАТЬ
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	HFMAdjRevenueОбороты.AmountОборот,
+	HFMAdjRevenueОбороты.Период,
+	НАЧАЛОПЕРИОДА(HFMAdjRevenueОбороты.Период, КВАРТАЛ),
+	НАЧАЛОПЕРИОДА(HFMAdjRevenueОбороты.Период, ГОД),
+	NULL,
+	HFMAdjRevenueОбороты.Location.GeoMarket.Родитель,
+	HFMAdjRevenueОбороты.Location,
+	NULL,
+	NULL,
+	HFMAdjRevenueОбороты.Segment,
+	NULL,
+	NULL
+ИЗ
+	РегистрНакопления.HFMAdjRevenue.Обороты(&amp;НачалоПериода, &amp;КонецПериода, Месяц, ) КАК HFMAdjRevenueОбороты
 ;
 
 ////////////////////////////////////////////////////////////////////////////////

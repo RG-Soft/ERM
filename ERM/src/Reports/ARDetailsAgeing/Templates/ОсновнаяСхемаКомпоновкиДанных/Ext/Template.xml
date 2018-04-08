@@ -250,6 +250,36 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Segment</dataPath>
+			<field>Segment</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>SegmentHFM</dataPath>
+			<field>SegmentHFM</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Segment HFM</v8:content>
+				</v8:item>
+			</title>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>LocationHFM</dataPath>
+			<field>LocationHFM</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Location HFM</v8:content>
+				</v8:item>
+			</title>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	UnbilledARОстатки.Client КАК Client,
@@ -476,7 +506,9 @@
 			ИНАЧЕ ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс
 		КОНЕЦ) КАК BaseAmountОстатокМодуль,
 	ВТ_Остатки.Document.FiscalInvoiceNo,
-	ВТ_Остатки.LegalEntity
+	ВТ_Остатки.LegalEntity,
+	ВТ_Остатки.Location.БазовыйЭлемент.GeoMarket КАК LocationHFM,
+	ВТ_Остатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель КАК SegmentHFM
 ИЗ
 	ВТ_Остатки КАК ВТ_Остатки
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ПериодОстатков)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
@@ -515,10 +547,44 @@
 			ТОГДА 0
 		ИНАЧЕ ВТ_Остатки.TransactionAmount / ВнутренниеКурсыВалютСрезПоследних.Курс
 	КОНЕЦ,
-	ВТ_Остатки.Document.ClientID
+	ВТ_Остатки.Document.ClientID,
+	ВТ_Остатки.Location.БазовыйЭлемент.GeoMarket,
+	ВТ_Остатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель
 
 ИМЕЮЩИЕ
-	СУММА(ВТ_Остатки.AmountОстаток) &lt;&gt; 0</query>
+	СУММА(ВТ_Остатки.AmountОстаток) &lt;&gt; 0
+
+ОБЪЕДИНИТЬ ВСЕ
+
+ВЫБРАТЬ
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	HFMAdjARОстатки.Account,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	HFMAdjARОстатки.AmountОстаток,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	HFMAdjARОстатки.Location,
+	HFMAdjARОстатки.Segment
+ИЗ
+	РегистрНакопления.HFMAdjAR.Остатки({(&amp;ПериодОстатков)}, ) КАК HFMAdjARОстатки</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>Ageing_1_30</dataPath>
@@ -767,7 +833,7 @@
 						</dcsset:lwsTitle>
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>Location.БазовыйЭлемент.GeoMarket</dcsset:field>
+						<dcsset:field>LocationHFM</dcsset:field>
 						<dcsset:lwsTitle>
 							<v8:item>
 								<v8:lang>ru</v8:lang>
@@ -776,7 +842,7 @@
 						</dcsset:lwsTitle>
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>SubSubSegment.БазовыйЭлемент.Родитель.Родитель</dcsset:field>
+						<dcsset:field>SegmentHFM</dcsset:field>
 						<dcsset:lwsTitle>
 							<v8:item>
 								<v8:lang>ru</v8:lang>
@@ -997,7 +1063,7 @@
 					<dcscor:use>false</dcscor:use>
 					<dcscor:parameter>Период</dcscor:parameter>
 					<dcscor:value xsi:type="xs:dateTime">0001-01-01T00:00:00</dcscor:value>
-					<dcsset:userSettingID>6b98d76e-dde1-4c50-ba90-876df6b03fb5</dcsset:userSettingID>
+					<dcsset:userSettingID>d1d0f0de-6163-487a-846d-f885b635b227</dcsset:userSettingID>
 				</dcscor:item>
 			</dcsset:dataParameters>
 			<dcsset:conditionalAppearance>
