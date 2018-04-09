@@ -628,48 +628,18 @@
 	Запрос = Новый Запрос;
 	Запрос.Текст = 
 		"ВЫБРАТЬ
-		|	BilledARОбороты.AmountОборот,
 		|	BilledARОбороты.Invoice КАК ДокументРасчетов
 		|ИЗ
-		|	РегистрНакопления.BilledAR.Обороты(
-		|			,
-		|			,
-		|			,
-		|			Source = &Source
-		|				И AU = &AU
-		|				И Account = &Account
-		|				И Client = &Client
-		|				И Company = &Company
-		|				И Currency = &Currency
-		|				И (Invoice = &Invoice
-		|					ИЛИ Invoice = &Memo)) КАК BilledARОбороты
+		|	РегистрНакопления.BilledAR.Обороты(, , , Invoice = &Memo) КАК BilledARОбороты
 		|
 		|ОБЪЕДИНИТЬ ВСЕ
 		|
 		|ВЫБРАТЬ
-		|	UnallocatedMemoОбороты.AmountОборот,
 		|	UnallocatedMemoОбороты.Memo
 		|ИЗ
-		|	РегистрНакопления.UnallocatedMemo.Обороты(
-		|			,
-		|			,
-		|			,
-		|			Source = &Source
-		|				И AU = &AU
-		|				И Account = &Account
-		|				И Client = &Client
-		|				И Company = &Company
-		|				И Currency = &Currency
-		|				И Memo = &Memo) КАК UnallocatedMemoОбороты";
+		|	РегистрНакопления.UnallocatedMemo.Обороты(, , , Memo = &Memo) КАК UnallocatedMemoОбороты";
 	
-	Запрос.УстановитьПараметр("Account", Реквизиты.Account);
-	Запрос.УстановитьПараметр("AU", Реквизиты.AU);
-	Запрос.УстановитьПараметр("Client", Реквизиты.Client);
-	Запрос.УстановитьПараметр("Company", Реквизиты.Company);
-	Запрос.УстановитьПараметр("Currency", Реквизиты.Currency);
-	Запрос.УстановитьПараметр("Invoice", СвязанныеДокументы.Invoice);
 	Запрос.УстановитьПараметр("Memo", СвязанныеДокументы.Memo);
-	Запрос.УстановитьПараметр("Source", Реквизиты.Source);
 	
 	РезультатЗапроса = Запрос.Выполнить();
 	
@@ -679,7 +649,7 @@
 		 ВыборкаДетальныеЗаписи.Следующий();
 		 ДокументРасчетов = ВыборкаДетальныеЗаписи.ДокументРасчетов;
 	Иначе
-		 ДокументРасчетов = Неопределено;
+		 ДокументРасчетов = СвязанныеДокументы.Invoice;
 	КонецЕсли;
 	
 	Возврат ДокументРасчетов;
