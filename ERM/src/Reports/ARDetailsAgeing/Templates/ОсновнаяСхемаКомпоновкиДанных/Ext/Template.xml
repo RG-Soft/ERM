@@ -280,6 +280,10 @@
 				<dcscom:dimension>true</dcscom:dimension>
 			</role>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>LocationБазовыйЭлементGeoMarketManagementGeomarket</dataPath>
+			<field>LocationБазовыйЭлементGeoMarketManagementGeomarket</field>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	UnbilledARОстатки.Client КАК Client,
@@ -508,7 +512,8 @@
 	ВТ_Остатки.Document.FiscalInvoiceNo,
 	ВТ_Остатки.LegalEntity,
 	ВТ_Остатки.Location.БазовыйЭлемент.GeoMarket КАК LocationHFM,
-	ВТ_Остатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель КАК SegmentHFM
+	ВТ_Остатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель КАК SegmentHFM,
+	ВТ_Остатки.Location.БазовыйЭлемент.GeoMarket.ManagementGeomarket
 ИЗ
 	ВТ_Остатки КАК ВТ_Остатки
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ПериодОстатков)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
@@ -549,7 +554,8 @@
 	КОНЕЦ,
 	ВТ_Остатки.Document.ClientID,
 	ВТ_Остатки.Location.БазовыйЭлемент.GeoMarket,
-	ВТ_Остатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель
+	ВТ_Остатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель,
+	ВТ_Остатки.Location.БазовыйЭлемент.GeoMarket.ManagementGeomarket
 
 ИМЕЮЩИЕ
 	СУММА(ВТ_Остатки.AmountОстаток) &lt;&gt; 0
@@ -557,7 +563,7 @@
 ОБЪЕДИНИТЬ ВСЕ
 
 ВЫБРАТЬ
-	NULL,
+	ЗНАЧЕНИЕ(Справочник.Контрагенты.Unreconciled),
 	NULL,
 	NULL,
 	NULL,
@@ -565,12 +571,16 @@
 	NULL,
 	HFMAdjARОстатки.Account,
 	NULL,
+	&amp;USD,
+	ВЫБОР
+		КОГДА HFMAdjARОстатки.Account.Код = "12001"
+			ТОГДА "Billed"
+		ИНАЧЕ "Unbilled"
+	КОНЕЦ,
+	"JV",
 	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
+	КОНЕЦПЕРИОДА(&amp;Период, МЕСЯЦ),
+	HFMAdjARОстатки.AmountОстаток,
 	HFMAdjARОстатки.AmountОстаток,
 	NULL,
 	NULL,
@@ -581,8 +591,9 @@
 	NULL,
 	NULL,
 	NULL,
-	HFMAdjARОстатки.Location,
-	HFMAdjARОстатки.Segment
+	HFMAdjARОстатки.Location.GeoMarket,
+	HFMAdjARОстатки.Segment.Родитель,
+	HFMAdjARОстатки.Location.GeoMarket.ManagementGeomarket
 ИЗ
 	РегистрНакопления.HFMAdjAR.Остатки({(&amp;ПериодОстатков)}, ) КАК HFMAdjARОстатки</query>
 	</dataSet>
@@ -751,6 +762,21 @@
 			</dcscor:item>
 		</inputParameters>
 	</parameter>
+	<parameter>
+		<name>USD</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>USD</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:CatalogRef.Валюты</v8:Type>
+		</valueType>
+		<value xsi:nil="true"/>
+		<useRestriction>false</useRestriction>
+		<expression>Константы.rgsВалютаUSD.Получить()</expression>
+	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
 		<dcsset:presentation xsi:type="xs:string">Основной</dcsset:presentation>
@@ -824,7 +850,7 @@
 						<dcsset:field>Source</dcsset:field>
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>Location.БазовыйЭлемент.GeoMarket.Родитель</dcsset:field>
+						<dcsset:field>LocationБазовыйЭлементGeoMarketManagementGeomarket</dcsset:field>
 						<dcsset:lwsTitle>
 							<v8:item>
 								<v8:lang>ru</v8:lang>
