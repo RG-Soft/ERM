@@ -1193,9 +1193,9 @@
 		BilledARОстатки.Company КАК Company,
 		BilledARОстатки.Source КАК Source,
 		BilledARОстатки.Account.БазовыйЭлемент КАК Account,
-		BilledARОстатки.Location.БазовыйЭлемент КАК Location,
-		BilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
-		BilledARОстатки.SubSubSegment.БазовыйЭлемент КАК SubSubSegment,
+		BilledARОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент КАК Location,
+		BilledARОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
+		BilledARОстатки.AU.Сегмент.БазовыйЭлемент КАК SubSubSegment,
 		BilledARОстатки.Currency КАК Currency,
 		BilledARОстатки.AU КАК AU,
 		BilledARОстатки.AmountОстаток КАК RemainingAmount,
@@ -1224,7 +1224,7 @@
 			ИНАЧЕ ЛОЖЬ
 		КОНЕЦ КАК НетДеталей,
 		BilledARОстатки.Invoice.Client.CRMID КАК CRMID,
-		BilledARОстатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель КАК Segment,
+		BilledARОстатки.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель КАК Segment,
 		НАЧАЛОПЕРИОДА(BilledARОстатки.Invoice.Дата, ДЕНЬ) КАК InvDateНачалоДня,
 		НАЧАЛОПЕРИОДА(BilledARОстатки.Invoice.FiscalInvoiceDate, ДЕНЬ) КАК FiscalInvDateНачалоДня,
 		ВЫБОР
@@ -1244,12 +1244,12 @@
 			ИНАЧЕ BilledARОстатки.Invoice.Contract.crmContractName
 		КОНЕЦ КАК Agreement
 	ИЗ
-		РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, Invoice ССЫЛКА Документ.Invoice {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket)}) КАК BilledARОстатки
+		РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, Invoice ССЫЛКА Документ.Invoice {(AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket)}) КАК BilledARОстатки
 			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments.СрезПоследних(, ) КАК InvoiceCommentsСрезПоследних
 			ПО BilledARОстатки.Invoice = InvoiceCommentsСрезПоследних.Invoice
 			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.Collectors КАК Collectors
 			ПО BilledARОстатки.Client = Collectors.Client
-				И (Collectors.GeoMarket = BilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель
+				И (Collectors.GeoMarket = BilledARОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель
 					ИЛИ Collectors.GeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка))
 	{ГДЕ
 		BilledARОстатки.Source.*,
