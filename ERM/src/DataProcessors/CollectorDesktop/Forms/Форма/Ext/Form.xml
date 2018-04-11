@@ -478,11 +478,6 @@
 									<ContextMenu name="InvoicesRemainingAmountКонтекстноеМеню" id="51"/>
 									<ExtendedTooltip name="InvoicesRemainingAmountРасширеннаяПодсказка" id="52"/>
 								</LabelField>
-								<LabelField name="InvoicesUser" id="96">
-									<DataPath>Invoices.User</DataPath>
-									<ContextMenu name="InvoicesUserКонтекстноеМеню" id="97"/>
-									<ExtendedTooltip name="InvoicesUserРасширеннаяПодсказка" id="98"/>
-								</LabelField>
 								<LabelField name="InvoicesStatus" id="99">
 									<DataPath>Invoices.Status</DataPath>
 									<ContextMenu name="InvoicesStatusКонтекстноеМеню" id="100"/>
@@ -1249,8 +1244,8 @@
 			ПО BilledARОстатки.Invoice = InvoiceCommentsСрезПоследних.Invoice
 			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.Collectors КАК Collectors
 			ПО BilledARОстатки.Client = Collectors.Client
-				И (Collectors.GeoMarket = BilledARОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель
-					ИЛИ Collectors.GeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка))
+				И (Collectors.ManagementGeomarket = BilledARОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket
+					ИЛИ Collectors.ManagementGeomarket = ЗНАЧЕНИЕ(Справочник.ManagementGeography.ПустаяСсылка))
 	{ГДЕ
 		BilledARОстатки.Source.*,
 		BilledARОстатки.Company.*,
