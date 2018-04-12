@@ -182,9 +182,6 @@
 					<v8:content>Segment</v8:content>
 				</v8:item>
 			</title>
-			<role>
-				<dcscom:dimension>true</dcscom:dimension>
-			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>SubSegment</dataPath>
@@ -205,9 +202,6 @@
 					<v8:content>Sub Geo</v8:content>
 				</v8:item>
 			</title>
-			<role>
-				<dcscom:dimension>true</dcscom:dimension>
-			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>SubSubSegment</dataPath>
@@ -218,6 +212,9 @@
 					<v8:content>Sub Sub Segment</v8:content>
 				</v8:item>
 			</title>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>GeoMarket</dataPath>
@@ -354,23 +351,23 @@
 ВЫБРАТЬ
 	NULL,
 	NULL,
+	ЗНАЧЕНИЕ(Справочник.Контрагенты.Unreconciled),
 	NULL,
 	NULL,
 	NULL,
+	&amp;USD,
 	NULL,
-	NULL,
-	NULL,
-	NULL,
+	HFMAdjRevenueОбороты.AmountОборот,
 	HFMAdjRevenueОбороты.AmountОборот,
 	HFMAdjRevenueОбороты.Период,
 	НАЧАЛОПЕРИОДА(HFMAdjRevenueОбороты.Период, КВАРТАЛ),
 	НАЧАЛОПЕРИОДА(HFMAdjRevenueОбороты.Период, ГОД),
 	NULL,
-	HFMAdjRevenueОбороты.Location.GeoMarket.Родитель,
-	HFMAdjRevenueОбороты.Location,
-	NULL,
-	NULL,
+	HFMAdjRevenueОбороты.Location.GeoMarket.Родитель.Родитель,
+	HFMAdjRevenueОбороты.Location.GeoMarket,
 	HFMAdjRevenueОбороты.Segment,
+	HFMAdjRevenueОбороты.Segment.Родитель,
+	HFMAdjRevenueОбороты.Segment.Родитель.Родитель,
 	NULL,
 	NULL
 ИЗ
@@ -520,6 +517,17 @@
 		</value>
 		<useRestriction>false</useRestriction>
 	</parameter>
+	<parameter>
+		<name>USD</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>USD</v8:content>
+			</v8:item>
+		</title>
+		<value xsi:nil="true"/>
+		<useRestriction>true</useRestriction>
+	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
 		<dcsset:presentation xsi:type="v8:LocalStringType">
@@ -595,6 +603,11 @@
 						<v8:endDate>0001-01-01T00:00:00</v8:endDate>
 					</dcscor:value>
 					<dcsset:userSettingID>c324c94f-3087-44ef-824e-5bd60273e737</dcsset:userSettingID>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:use>false</dcscor:use>
+					<dcscor:parameter>USD</dcscor:parameter>
+					<dcscor:value xsi:nil="true"/>
 				</dcscor:item>
 			</dcsset:dataParameters>
 			<dcsset:order>
