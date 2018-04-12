@@ -74,10 +74,13 @@
 		Иначе
 			//{RGS AArsentev 26.01.2017 S-E-0000048
 			//ListOfRecipients = ListOfRecipients + ОбщегоНазначения.ЗначениеРеквизитаОбъекта(СтрокаТЧ.Recipient, "Mail") + ", ";
-			Если СтрокаТЧ.Recipient = Тип("СправочникСсылка.LDAPUsers") Тогда
+			// { RGS TAlmazova 12.04.2018 19:04:23 - 
+			//Если СтрокаТЧ.Recipient = Тип("СправочникСсылка.LDAPUsers") Тогда
+			Если ТипЗнч(СтрокаТЧ.Recipient) = Тип("СправочникСсылка.LDAPUsers") Тогда
+			// } RGS TAlmazova 12.04.2018 19:04:24 - 
 				ListOfRecipients = ListOfRecipients + ОбщегоНазначения.ЗначениеРеквизитаОбъекта(СтрокаТЧ.Recipient, "Mail") + ", ";
 			Иначе
-				ListOfRecipients = СтрокаТЧ.Recipient + ", ";
+				ListOfRecipients = ListOfRecipients + СтрокаТЧ.Recipient + ", ";
 			КонецЕсли;
 			//}RGS AArsentev 26.01.2017 S-E-0000048
 			ИндексСтроки = ИндексСтроки+1;
