@@ -1,4 +1,4 @@
-﻿
+
 //Производит загрузку Accounting units из excel-файла "AU_master" с hub'a 
 
 //регламентное задание

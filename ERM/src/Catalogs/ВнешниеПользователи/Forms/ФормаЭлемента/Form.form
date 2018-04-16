@@ -1,1444 +1,3376 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5">
-	<AutoSaveDataInSettings>Use</AutoSaveDataInSettings>
-	<UseForFoldersAndItems>Items</UseForFoldersAndItems>
-	<AutoCommandBar name="ФормаКоманднаяПанель" id="-1"/>
-	<Events>
-		<Event name="AfterWrite">ПослеЗаписи</Event>
-		<Event name="AfterWriteAtServer">ПослеЗаписиНаСервере</Event>
-		<Event name="NotificationProcessing">ОбработкаОповещения</Event>
-		<Event name="OnReadAtServer">ПриЧтенииНаСервере</Event>
-		<Event name="OnOpen">ПриОткрытии</Event>
-		<Event name="BeforeWrite">ПередЗаписью</Event>
-		<Event name="OnCreateAtServer">ПриСозданииНаСервере</Event>
-		<Event name="BeforeWriteAtServer">ПередЗаписьюНаСервере</Event>
-		<Event name="OnWriteAtServer">ПриЗаписиНаСервере</Event>
-		<Event name="FillCheckProcessingAtServer">ОбработкаПроверкиЗаполненияНаСервере</Event>
-		<Event name="BeforeLoadDataFromSettingsAtServer">ПриЗагрузкеДанныхИзНастроекНаСервере</Event>
-	</Events>
-	<ChildItems>
-		<UsualGroup name="СвойстваОбработкаНесоответствия" id="228">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Свойства обработка несоответствия</v8:content>
-				</v8:item>
-			</Title>
-			<HorizontalStretch>true</HorizontalStretch>
-			<Group>Horizontal</Group>
-			<Representation>NormalSeparation</Representation>
-			<ShowTitle>false</ShowTitle>
-			<ExtendedTooltip name="СвойстваОбработкаНесоответствияРасширеннаяПодсказка" id="229"/>
-			<ChildItems>
-				<PictureDecoration name="СвойстваКартинкаПредупреждения" id="230">
-					<Width>5</Width>
-					<Height>2</Height>
-					<HorizontalStretch>false</HorizontalStretch>
-					<SkipOnInput>false</SkipOnInput>
-					<Title formatted="false">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Свойства картинка предупреждения</v8:content>
-						</v8:item>
-					</Title>
-					<Picture>
-						<xr:Ref>CommonPicture.Предупреждение32</xr:Ref>
-						<xr:LoadTransparent>false</xr:LoadTransparent>
-					</Picture>
-					<ContextMenu name="СвойстваКартинкаПредупрежденияКонтекстноеМеню" id="231"/>
-					<ExtendedTooltip name="СвойстваКартинкаПредупрежденияРасширеннаяПодсказка" id="232"/>
-				</PictureDecoration>
-				<UsualGroup name="СвойстваПояснениеИКоманды" id="250">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Свойства пояснение и команды</v8:content>
-						</v8:item>
-					</Title>
-					<VerticalStretch>false</VerticalStretch>
-					<Group>Vertical</Group>
-					<Representation>None</Representation>
-					<ShowTitle>false</ShowTitle>
-					<ExtendedTooltip name="СвойстваПояснениеИКомандыРасширеннаяПодсказка" id="251"/>
-					<ChildItems>
-						<LabelDecoration name="СвойстваПояснениеНесоответствия" id="235">
-							<SkipOnInput>false</SkipOnInput>
-							<Title formatted="false">
-								<v8:item>
-									<v8:lang>ru</v8:lang>
-									<v8:content>Следующие свойства пользователя информационной базы отличаются от указанных в этой форме:
+<?xml version="1.0" encoding="UTF-8"?>
+<form:Form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:form="http://g5.1c.ru/v8/dt/form">
+  <items xsi:type="form:FormGroup">
+    <name>СвойстваОбработкаНесоответствия</name>
+    <id>228</id>
+    <items xsi:type="form:Decoration">
+      <name>СвойстваКартинкаПредупреждения</name>
+      <id>230</id>
+      <title>
+        <key>ru</key>
+        <value>Свойства картинка предупреждения</value>
+      </title>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <extendedTooltip>
+        <name>СвойстваКартинкаПредупрежденияРасширеннаяПодсказка</name>
+        <id>232</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <contextMenu>
+        <name>СвойстваКартинкаПредупрежденияКонтекстноеМеню</name>
+        <id>231</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <autoFill>true</autoFill>
+      </contextMenu>
+      <width>5</width>
+      <autoMaxWidth>true</autoMaxWidth>
+      <height>2</height>
+      <autoMaxHeight>true</autoMaxHeight>
+      <horizontalStretch>false</horizontalStretch>
+      <skipOnInput>false</skipOnInput>
+      <extInfo xsi:type="form:PictureDecorationExtInfo">
+        <picture xsi:type="core:PictureRef">
+          <picture>CommonPicture.Предупреждение32</picture>
+        </picture>
+      </extInfo>
+    </items>
+    <items xsi:type="form:FormGroup">
+      <name>СвойстваПояснениеИКоманды</name>
+      <id>250</id>
+      <items xsi:type="form:Decoration">
+        <name>СвойстваПояснениеНесоответствия</name>
+        <id>235</id>
+        <title>
+          <key>ru</key>
+          <value>Следующие свойства пользователя информационной базы отличаются от указанных в этой форме:
 %1.
-Нажмите "Записать", чтобы устранить различия и не выводить это предупреждение.</v8:content>
-								</v8:item>
-							</Title>
-							<ToolTip>
-								<v8:item>
-									<v8:lang>ru</v8:lang>
-									<v8:content>Некоторые свойства пользователя информационной базы сохраняются в карточке внешнего пользователя. Между значениями этих свойств найдены различия.</v8:content>
-								</v8:item>
-							</ToolTip>
-							<VerticalAlign>Top</VerticalAlign>
-							<ContextMenu name="СвойстваПояснениеНесоответствияКонтекстноеМеню" id="236"/>
-							<ExtendedTooltip name="СвойстваПояснениеНесоответствияРасширеннаяПодсказка" id="237"/>
-						</LabelDecoration>
-					</ChildItems>
-				</UsualGroup>
-			</ChildItems>
-		</UsualGroup>
-		<UsualGroup name="СопоставлениеОбработкаНесоответствия" id="169">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Сопоставление обработка несоответствия</v8:content>
-				</v8:item>
-			</Title>
-			<HorizontalStretch>true</HorizontalStretch>
-			<VerticalStretch>false</VerticalStretch>
-			<Group>Horizontal</Group>
-			<Representation>NormalSeparation</Representation>
-			<ShowTitle>false</ShowTitle>
-			<ExtendedTooltip name="СопоставлениеОбработкаНесоответствияРасширеннаяПодсказка" id="199"/>
-			<ChildItems>
-				<PictureDecoration name="СопоставлениеКартинкаПредупреждения" id="170">
-					<Width>5</Width>
-					<Height>2</Height>
-					<HorizontalStretch>false</HorizontalStretch>
-					<SkipOnInput>false</SkipOnInput>
-					<Title formatted="false">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Сопоставление картинка предупреждения</v8:content>
-						</v8:item>
-					</Title>
-					<Picture>
-						<xr:Ref>CommonPicture.Предупреждение32</xr:Ref>
-						<xr:LoadTransparent>false</xr:LoadTransparent>
-					</Picture>
-					<ContextMenu name="СопоставлениеКартинкаПредупрежденияКонтекстноеМеню" id="171"/>
-					<ExtendedTooltip name="СопоставлениеКартинкаПредупрежденияРасширеннаяПодсказка" id="200"/>
-				</PictureDecoration>
-				<LabelDecoration name="СопоставлениеПояснениеНесоответствия" id="172">
-					<Width>20</Width>
-					<Height>2</Height>
-					<HorizontalStretch>true</HorizontalStretch>
-					<VerticalStretch>false</VerticalStretch>
-					<SkipOnInput>false</SkipOnInput>
-					<Title formatted="false">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Пользователь информационной базы не найден.
-Нажмите "Записать", чтобы устранить проблему и не выводить это предупреждение.</v8:content>
-						</v8:item>
-					</Title>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Пользователь информационной базы сопоставлен с этим внешним пользователем справочника,
-однако его не удается найти по сохраненному идентификатору.</v8:content>
-						</v8:item>
-					</ToolTip>
-					<VerticalAlign>Center</VerticalAlign>
-					<ContextMenu name="СопоставлениеПояснениеНесоответствияКонтекстноеМеню" id="173"/>
-					<ExtendedTooltip name="СопоставлениеПояснениеНесоответствияРасширеннаяПодсказка" id="201"/>
-				</LabelDecoration>
-			</ChildItems>
-		</UsualGroup>
-		<UsualGroup name="ГруппаШапка" id="287">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Группа шапка</v8:content>
-				</v8:item>
-			</Title>
-			<Group>Horizontal</Group>
-			<Representation>None</Representation>
-			<ShowTitle>false</ShowTitle>
-			<ExtendedTooltip name="ГруппаШапкаРасширеннаяПодсказка" id="288"/>
-			<ChildItems>
-				<UsualGroup name="ГруппаНаименование" id="332">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Группа наименование</v8:content>
-						</v8:item>
-					</Title>
-					<Group>Horizontal</Group>
-					<Representation>None</Representation>
-					<ShowTitle>false</ShowTitle>
-					<ExtendedTooltip name="ГруппаНаименованиеРасширеннаяПодсказка" id="333"/>
-					<ChildItems>
-						<InputField name="ОбъектАвторизации" id="164">
-							<DataPath>Объект.ОбъектАвторизации</DataPath>
-							<Width>45</Width>
-							<ContextMenu name="ОбъектАвторизацииКонтекстноеМеню" id="165"/>
-							<ExtendedTooltip name="ОбъектАвторизацииExtendedTooltip" id="202"/>
-							<Events>
-								<Event name="OnChange">ОбъектАвторизацииПриИзменении</Event>
-							</Events>
-						</InputField>
-						<CheckBoxField name="Недействителен" id="190">
-							<DataPath>Объект.Недействителен</DataPath>
-							<TitleLocation>Right</TitleLocation>
-							<ToolTipRepresentation>Button</ToolTipRepresentation>
-							<CheckBoxType>Auto</CheckBoxType>
-							<ContextMenu name="НедействителенКонтекстноеМеню" id="191"/>
-							<ExtendedTooltip name="НедействителенExtendedTooltip" id="203"/>
-							<Events>
-								<Event name="OnChange">НедействителенПриИзменении</Event>
-							</Events>
-						</CheckBoxField>
-					</ChildItems>
-				</UsualGroup>
-			</ChildItems>
-		</UsualGroup>
-		<UsualGroup name="ГруппаВходВПрограммуРазрешен" id="264">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Группа вход в программу разрешен</v8:content>
-				</v8:item>
-			</Title>
-			<Group>Horizontal</Group>
-			<Representation>None</Representation>
-			<ShowTitle>false</ShowTitle>
-			<ExtendedTooltip name="ГруппаВходВПрограммуРазрешенРасширеннаяПодсказка" id="265"/>
-			<ChildItems>
-				<CheckBoxField name="ВходВПрограммуРазрешен" id="99">
-					<DataPath>ВходВПрограммуРазрешен</DataPath>
-					<TitleLocation>Right</TitleLocation>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Разрешить вход внешнего пользователя в программу
-указанными способами аутентификации.</v8:content>
-						</v8:item>
-					</ToolTip>
-					<CheckBoxType>Auto</CheckBoxType>
-					<ContextMenu name="ВходВПрограммуРазрешенКонтекстноеМеню" id="100"/>
-					<ExtendedTooltip name="ВходВПрограммуРазрешенРасширеннаяПодсказка" id="204"/>
-					<Events>
-						<Event name="OnChange">ВходВПрограммуРазрешенПриИзменении</Event>
-					</Events>
-				</CheckBoxField>
-				<UsualGroup name="ГруппаИзменитьОграничение" id="346">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Группа изменить ограничение</v8:content>
-						</v8:item>
-					</Title>
-					<Group>Vertical</Group>
-					<Representation>None</Representation>
-					<ShowTitle>false</ShowTitle>
-					<ExtendedTooltip name="ГруппаИзменитьОграничениеРасширеннаяПодсказка" id="347"/>
-					<ChildItems>
-						<Button name="ИзменитьОграничениеНаВходВПрограмму" id="344">
-							<Type>Hyperlink</Type>
-							<CommandName>Form.Command.ИзменитьОграничениеНаВходВПрограмму</CommandName>
-							<ExtendedTooltip name="ИзменитьОграничениеНаВходВПрограммуРасширеннаяПодсказка" id="345"/>
-						</Button>
-					</ChildItems>
-				</UsualGroup>
-				<LabelDecoration name="РекомендуетсяПроверитьНастройкиДляВхода" id="269">
-					<TextColor>style:ПоясняющийТекст</TextColor>
-					<Title formatted="false">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Рекомендуется проверить настройки для входа</v8:content>
-						</v8:item>
-					</Title>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Перед разрешением входа в программу рекомендуется проверить настройки, т.к. пользователь
-был введен не администратором, а ответственным за список внешних пользователей.</v8:content>
-						</v8:item>
-					</ToolTip>
-					<ToolTipRepresentation>Button</ToolTipRepresentation>
-					<ContextMenu name="РекомендуетсяПроверитьНастройкиДляВходаКонтекстноеМеню" id="270"/>
-					<ExtendedTooltip name="РекомендуетсяПроверитьНастройкиДляВходаРасширеннаяПодсказка" id="271"/>
-				</LabelDecoration>
-			</ChildItems>
-		</UsualGroup>
-		<Pages name="СтраницыГлавноеИКомментарий" id="281">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Страницы главное и комментарий</v8:content>
-				</v8:item>
-			</Title>
-			<ExtendedTooltip name="СтраницыГлавноеИКомментарийРасширеннаяПодсказка" id="282"/>
-			<Events>
-				<Event name="OnCurrentPageChange">СтраницыГлавноеИКомментарийПриСменеСтраницы</Event>
-			</Events>
-			<ChildItems>
-				<Page name="СтраницаГлавное" id="283">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Главное</v8:content>
-						</v8:item>
-					</Title>
-					<ExtendedTooltip name="СтраницаГлавноеРасширеннаяПодсказка" id="284"/>
-					<ChildItems>
-						<UsualGroup name="СвойстваПользователяИБ" id="65">
-							<Title>
-								<v8:item>
-									<v8:lang>ru</v8:lang>
-									<v8:content>Свойства пользователя информационной базы</v8:content>
-								</v8:item>
-							</Title>
-							<HorizontalStretch>true</HorizontalStretch>
-							<Group>Horizontal</Group>
-							<Representation>NormalSeparation</Representation>
-							<ShowTitle>false</ShowTitle>
-							<ExtendedTooltip name="СвойстваПользователяИБExtendedTooltip" id="205"/>
-							<ChildItems>
-								<UsualGroup name="ОсновныеСвойства" id="75">
-									<Title>
-										<v8:item>
-											<v8:lang>ru</v8:lang>
-											<v8:content>Основные свойства</v8:content>
-										</v8:item>
-									</Title>
-									<Width>36</Width>
-									<VerticalStretch>true</VerticalStretch>
-									<Group>Vertical</Group>
-									<Representation>None</Representation>
-									<ShowTitle>false</ShowTitle>
-									<ExtendedTooltip name="ОсновныеСвойстваExtendedTooltip" id="206"/>
-									<ChildItems>
-										<Pages name="ИмяПереключениеОтметкиНезаполненного" id="238">
-											<Title>
-												<v8:item>
-													<v8:lang>ru</v8:lang>
-													<v8:content>Имя (переключение отметки незаполненного)</v8:content>
-												</v8:item>
-											</Title>
-											<PagesRepresentation>None</PagesRepresentation>
-											<ExtendedTooltip name="ИмяПереключениеОтметкиНезаполненногоРасширеннаяПодсказка" id="239"/>
-											<ChildItems>
-												<Page name="ИмяСОтметкойНезаполненного" id="240">
-													<Title>
-														<v8:item>
-															<v8:lang>ru</v8:lang>
-															<v8:content>Имя с отметкой незаполненного</v8:content>
-														</v8:item>
-													</Title>
-													<ExtendedTooltip name="ИмяСОтметкойНезаполненногоРасширеннаяПодсказка" id="241"/>
-													<ChildItems>
-														<InputField name="ПользовательИБИмя1" id="242">
-															<DataPath>ПользовательИБИмя</DataPath>
-															<Width>23</Width>
-															<HorizontalStretch>false</HorizontalStretch>
-															<AutoMarkIncomplete>true</AutoMarkIncomplete>
-															<ContextMenu name="ПользовательИБИмя1КонтекстноеМеню" id="243"/>
-															<ExtendedTooltip name="ПользовательИБИмя1РасширеннаяПодсказка" id="244"/>
-															<Events>
-																<Event name="OnChange">ПользовательИБИмяПриИзменении</Event>
-															</Events>
-														</InputField>
-													</ChildItems>
-												</Page>
-												<Page name="ИмяБезОтметкиНезаполненного" id="245">
-													<Title>
-														<v8:item>
-															<v8:lang>ru</v8:lang>
-															<v8:content>Имя без отметки незаполненного</v8:content>
-														</v8:item>
-													</Title>
-													<ExtendedTooltip name="ИмяБезОтметкиНезаполненногоРасширеннаяПодсказка" id="246"/>
-													<ChildItems>
-														<InputField name="ПользовательИБИмя2" id="247">
-															<DataPath>ПользовательИБИмя</DataPath>
-															<Width>23</Width>
-															<HorizontalStretch>false</HorizontalStretch>
-															<ContextMenu name="ПользовательИБИмя2КонтекстноеМеню" id="248"/>
-															<ExtendedTooltip name="ПользовательИБИмя2РасширеннаяПодсказка" id="249"/>
-															<Events>
-																<Event name="OnChange">ПользовательИБИмяПриИзменении</Event>
-															</Events>
-														</InputField>
-													</ChildItems>
-												</Page>
-											</ChildItems>
-										</Pages>
-										<UsualGroup name="СвойстваАутентификации1СПредприятия" id="193">
-											<Group>Vertical</Group>
-											<Representation>None</Representation>
-											<ShowTitle>false</ShowTitle>
-											<ExtendedTooltip name="СвойстваАутентификации1СПредприятияExtendedTooltip" id="208"/>
-											<ChildItems>
-												<CheckBoxField name="ПользовательИБАутентификацияСтандартная" id="194">
-													<DataPath>ПользовательИБАутентификацияСтандартная</DataPath>
-													<TitleLocation>Right</TitleLocation>
-													<ToolTip>
-														<v8:item>
-															<v8:lang>ru</v8:lang>
-															<v8:content>Способ входа в программу с помощью имени и пароля,
-указанного для пользователя 1С:Предприятия.</v8:content>
-														</v8:item>
-													</ToolTip>
-													<FooterHorizontalAlign>Left</FooterHorizontalAlign>
-													<CheckBoxType>Auto</CheckBoxType>
-													<ContextMenu name="ПользовательИБАутентификацияСтандартнаяКонтекстноеМеню" id="195"/>
-													<ExtendedTooltip name="ПользовательИБАутентификацияСтандартнаяРасширеннаяПодсказка" id="209"/>
-													<Events>
-														<Event name="OnChange">ПользовательИБАутентификацияСтандартнаяПриИзменении</Event>
-													</Events>
-												</CheckBoxField>
-												<UsualGroup name="ГруппаОтступ" id="274">
-													<Title>
-														<v8:item>
-															<v8:lang>ru</v8:lang>
-															<v8:content>Группа отступ</v8:content>
-														</v8:item>
-													</Title>
-													<Group>Horizontal</Group>
-													<Representation>None</Representation>
-													<ShowTitle>false</ShowTitle>
-													<ExtendedTooltip name="ГруппаОтступРасширеннаяПодсказка" id="275"/>
-													<ChildItems>
-														<LabelDecoration name="Отступ" id="276">
-															<ContextMenu name="ОтступКонтекстноеМеню" id="277"/>
-															<ExtendedTooltip name="ОтступРасширеннаяПодсказка" id="278"/>
-														</LabelDecoration>
-														<UsualGroup name="ПараметрыАутентификации1СПредприятия" id="196">
-															<Title>
-																<v8:item>
-																	<v8:lang>ru</v8:lang>
-																	<v8:content>Параметры аутентификации 1С:Предприятия</v8:content>
-																</v8:item>
-															</Title>
-															<HorizontalStretch>true</HorizontalStretch>
-															<Group>Vertical</Group>
-															<Representation>None</Representation>
-															<ShowTitle>false</ShowTitle>
-															<ExtendedTooltip name="ПараметрыАутентификации1СПредприятияРасширеннаяПодсказка" id="210"/>
-															<ChildItems>
-																<UsualGroup name="ГруппаПароль" id="319">
-																	<Title>
-																		<v8:item>
-																			<v8:lang>ru</v8:lang>
-																			<v8:content>Группа пароль</v8:content>
-																		</v8:item>
-																	</Title>
-																	<Group>Horizontal</Group>
-																	<Representation>None</Representation>
-																	<ShowTitle>false</ShowTitle>
-																	<ExtendedTooltip name="ГруппаПарольРасширеннаяПодсказка" id="320"/>
-																	<ChildItems>
-																		<LabelDecoration name="НадписьНаличиеПароля" id="321">
-																			<TextColor>style:ПоясняющийТекст</TextColor>
-																			<Title formatted="false">
-																				<v8:item>
-																					<v8:lang>ru</v8:lang>
-																					<v8:content>Пустой пароль</v8:content>
-																				</v8:item>
-																			</Title>
-																			<ContextMenu name="НадписьНаличиеПароляКонтекстноеМеню" id="322"/>
-																			<ExtendedTooltip name="НадписьНаличиеПароляРасширеннаяПодсказка" id="323"/>
-																		</LabelDecoration>
-																		<Button name="СменитьПароль" id="324">
-																			<Type>UsualButton</Type>
-																			<CommandName>Form.Command.СменитьПароль</CommandName>
-																			<ExtendedTooltip name="СменитьПарольРасширеннаяПодсказка" id="325"/>
-																		</Button>
-																	</ChildItems>
-																</UsualGroup>
-																<CheckBoxField name="ПотребоватьСменуПароляПриВходе" id="326">
-																	<DataPath>ПотребоватьСменуПароляПриВходе</DataPath>
-																	<TitleLocation>Right</TitleLocation>
-																	<CheckBoxType>Auto</CheckBoxType>
-																	<ContextMenu name="ПотребоватьСменуПароляПриВходеКонтекстноеМеню" id="327"/>
-																	<ExtendedTooltip name="ПотребоватьСменуПароляПриВходеРасширеннаяПодсказка" id="328"/>
-																	<Events>
-																		<Event name="OnChange">ПотребоватьСменуПароляПриВходеПриИзменении</Event>
-																	</Events>
-																</CheckBoxField>
-																<CheckBoxField name="ПользовательИБЗапрещеноИзменятьПароль" id="51">
-																	<DataPath>ПользовательИБЗапрещеноИзменятьПароль</DataPath>
-																	<TitleLocation>Right</TitleLocation>
-																	<ToolTip>
-																		<v8:item>
-																			<v8:lang>ru</v8:lang>
-																			<v8:content>Запрещает изменение пароля
-внешнему пользователю.</v8:content>
-																		</v8:item>
-																	</ToolTip>
-																	<CheckBoxType>Auto</CheckBoxType>
-																	<ContextMenu name="ПользовательИБЗапрещеноИзменятьПарольКонтекстноеМеню" id="52"/>
-																	<ExtendedTooltip name="ПользовательИБЗапрещеноИзменятьПарольРасширеннаяПодсказка" id="213"/>
-																	<Events>
-																		<Event name="OnChange">ПользовательИБЗапрещеноИзменятьПарольПриИзменении</Event>
-																	</Events>
-																</CheckBoxField>
-															</ChildItems>
-														</UsualGroup>
-													</ChildItems>
-												</UsualGroup>
-											</ChildItems>
-										</UsualGroup>
-										<UsualGroup name="СвойстваАутентификацииOpenID" id="279">
-											<Group>Vertical</Group>
-											<Representation>NormalSeparation</Representation>
-											<ShowTitle>false</ShowTitle>
-											<ExtendedTooltip name="СвойстваАутентификацииOpenIDРасширеннаяПодсказка" id="280"/>
-											<ChildItems>
-												<CheckBoxField name="ПользовательИБАутентификацияOpenID" id="197">
-													<DataPath>ПользовательИБАутентификацияOpenID</DataPath>
-													<TitleLocation>Right</TitleLocation>
-													<ToolTip>
-														<v8:item>
-															<v8:lang>ru</v8:lang>
-															<v8:content>Способ входа в программу с помощью имени, указанного для пользователя 1С:Предприятия,
+Нажмите &quot;Записать&quot;, чтобы устранить различия и не выводить это предупреждение.</value>
+        </title>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <toolTip>
+          <key>ru</key>
+          <value>Некоторые свойства пользователя информационной базы сохраняются в карточке внешнего пользователя. Между значениями этих свойств найдены различия.</value>
+        </toolTip>
+        <extendedTooltip>
+          <name>СвойстваПояснениеНесоответствияРасширеннаяПодсказка</name>
+          <id>237</id>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <type>Label</type>
+          <autoMaxWidth>true</autoMaxWidth>
+          <autoMaxHeight>true</autoMaxHeight>
+          <extInfo xsi:type="form:LabelDecorationExtInfo">
+            <horizontalAlign>Left</horizontalAlign>
+          </extInfo>
+        </extendedTooltip>
+        <contextMenu>
+          <name>СвойстваПояснениеНесоответствияКонтекстноеМеню</name>
+          <id>236</id>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <autoFill>true</autoFill>
+        </contextMenu>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <skipOnInput>false</skipOnInput>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+          <verticalAlign>Top</verticalAlign>
+        </extInfo>
+      </items>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <title>
+        <key>ru</key>
+        <value>Свойства пояснение и команды</value>
+      </title>
+      <verticalStretch>false</verticalStretch>
+      <extendedTooltip>
+        <name>СвойстваПояснениеИКомандыРасширеннаяПодсказка</name>
+        <id>251</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <type>UsualGroup</type>
+      <extInfo xsi:type="form:UsualGroupExtInfo">
+        <group>Vertical</group>
+        <showLeftMargin>true</showLeftMargin>
+        <united>true</united>
+        <throughAlign>Auto</throughAlign>
+      </extInfo>
+    </items>
+    <visible>true</visible>
+    <enabled>true</enabled>
+    <userVisible>
+      <common>true</common>
+    </userVisible>
+    <title>
+      <key>ru</key>
+      <value>Свойства обработка несоответствия</value>
+    </title>
+    <horizontalStretch>true</horizontalStretch>
+    <extendedTooltip>
+      <name>СвойстваОбработкаНесоответствияРасширеннаяПодсказка</name>
+      <id>229</id>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <type>Label</type>
+      <autoMaxWidth>true</autoMaxWidth>
+      <autoMaxHeight>true</autoMaxHeight>
+      <extInfo xsi:type="form:LabelDecorationExtInfo">
+        <horizontalAlign>Left</horizontalAlign>
+      </extInfo>
+    </extendedTooltip>
+    <type>UsualGroup</type>
+    <extInfo xsi:type="form:UsualGroupExtInfo">
+      <representation>NormalSeparation</representation>
+      <showLeftMargin>true</showLeftMargin>
+      <united>true</united>
+      <throughAlign>Auto</throughAlign>
+    </extInfo>
+  </items>
+  <items xsi:type="form:FormGroup">
+    <name>СопоставлениеОбработкаНесоответствия</name>
+    <id>169</id>
+    <items xsi:type="form:Decoration">
+      <name>СопоставлениеКартинкаПредупреждения</name>
+      <id>170</id>
+      <title>
+        <key>ru</key>
+        <value>Сопоставление картинка предупреждения</value>
+      </title>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <extendedTooltip>
+        <name>СопоставлениеКартинкаПредупрежденияРасширеннаяПодсказка</name>
+        <id>200</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <contextMenu>
+        <name>СопоставлениеКартинкаПредупрежденияКонтекстноеМеню</name>
+        <id>171</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <autoFill>true</autoFill>
+      </contextMenu>
+      <width>5</width>
+      <autoMaxWidth>true</autoMaxWidth>
+      <height>2</height>
+      <autoMaxHeight>true</autoMaxHeight>
+      <horizontalStretch>false</horizontalStretch>
+      <skipOnInput>false</skipOnInput>
+      <extInfo xsi:type="form:PictureDecorationExtInfo">
+        <picture xsi:type="core:PictureRef">
+          <picture>CommonPicture.Предупреждение32</picture>
+        </picture>
+      </extInfo>
+    </items>
+    <items xsi:type="form:Decoration">
+      <name>СопоставлениеПояснениеНесоответствия</name>
+      <id>172</id>
+      <title>
+        <key>ru</key>
+        <value>Пользователь информационной базы не найден.
+Нажмите &quot;Записать&quot;, чтобы устранить проблему и не выводить это предупреждение.</value>
+      </title>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <toolTip>
+        <key>ru</key>
+        <value>Пользователь информационной базы сопоставлен с этим внешним пользователем справочника,
+однако его не удается найти по сохраненному идентификатору.</value>
+      </toolTip>
+      <extendedTooltip>
+        <name>СопоставлениеПояснениеНесоответствияРасширеннаяПодсказка</name>
+        <id>201</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <contextMenu>
+        <name>СопоставлениеПояснениеНесоответствияКонтекстноеМеню</name>
+        <id>173</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <autoFill>true</autoFill>
+      </contextMenu>
+      <type>Label</type>
+      <width>20</width>
+      <autoMaxWidth>true</autoMaxWidth>
+      <height>2</height>
+      <autoMaxHeight>true</autoMaxHeight>
+      <horizontalStretch>true</horizontalStretch>
+      <verticalStretch>false</verticalStretch>
+      <skipOnInput>false</skipOnInput>
+      <extInfo xsi:type="form:LabelDecorationExtInfo">
+        <horizontalAlign>Left</horizontalAlign>
+        <verticalAlign>Center</verticalAlign>
+      </extInfo>
+    </items>
+    <visible>true</visible>
+    <enabled>true</enabled>
+    <userVisible>
+      <common>true</common>
+    </userVisible>
+    <title>
+      <key>ru</key>
+      <value>Сопоставление обработка несоответствия</value>
+    </title>
+    <horizontalStretch>true</horizontalStretch>
+    <verticalStretch>false</verticalStretch>
+    <extendedTooltip>
+      <name>СопоставлениеОбработкаНесоответствияРасширеннаяПодсказка</name>
+      <id>199</id>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <type>Label</type>
+      <autoMaxWidth>true</autoMaxWidth>
+      <autoMaxHeight>true</autoMaxHeight>
+      <extInfo xsi:type="form:LabelDecorationExtInfo">
+        <horizontalAlign>Left</horizontalAlign>
+      </extInfo>
+    </extendedTooltip>
+    <type>UsualGroup</type>
+    <extInfo xsi:type="form:UsualGroupExtInfo">
+      <representation>NormalSeparation</representation>
+      <showLeftMargin>true</showLeftMargin>
+      <united>true</united>
+      <throughAlign>Auto</throughAlign>
+    </extInfo>
+  </items>
+  <items xsi:type="form:FormGroup">
+    <name>ГруппаШапка</name>
+    <id>287</id>
+    <items xsi:type="form:FormGroup">
+      <name>ГруппаНаименование</name>
+      <id>332</id>
+      <items xsi:type="form:FormField">
+        <name>ОбъектАвторизации</name>
+        <id>164</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <dataPath xsi:type="form:MultiLanguageDataPath">
+          <paths xsi:type="form:DataPath">
+            <segments>Объект.ОбъектАвторизации</segments>
+          </paths>
+        </dataPath>
+        <handlers>
+          <event>OnChange</event>
+          <name>ОбъектАвторизацииПриИзменении</name>
+        </handlers>
+        <extendedTooltip>
+          <name>ОбъектАвторизацииExtendedTooltip</name>
+          <id>202</id>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <type>Label</type>
+          <autoMaxWidth>true</autoMaxWidth>
+          <autoMaxHeight>true</autoMaxHeight>
+          <extInfo xsi:type="form:LabelDecorationExtInfo">
+            <horizontalAlign>Left</horizontalAlign>
+          </extInfo>
+        </extendedTooltip>
+        <contextMenu>
+          <name>ОбъектАвторизацииКонтекстноеМеню</name>
+          <id>165</id>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <autoFill>true</autoFill>
+        </contextMenu>
+        <type>InputField</type>
+        <editMode>Enter</editMode>
+        <showInHeader>true</showInHeader>
+        <headerHorizontalAlign>Left</headerHorizontalAlign>
+        <showInFooter>true</showInFooter>
+        <extInfo xsi:type="form:InputFieldExtInfo">
+          <width>45</width>
+          <autoMaxWidth>true</autoMaxWidth>
+          <autoMaxHeight>true</autoMaxHeight>
+          <wrap>true</wrap>
+          <chooseType>true</chooseType>
+          <typeDomainEnabled>true</typeDomainEnabled>
+          <textEdit>true</textEdit>
+        </extInfo>
+      </items>
+      <items xsi:type="form:FormField">
+        <name>Недействителен</name>
+        <id>190</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <dataPath xsi:type="form:MultiLanguageDataPath">
+          <paths xsi:type="form:DataPath">
+            <segments>Объект.Недействителен</segments>
+          </paths>
+        </dataPath>
+        <titleLocation>Right</titleLocation>
+        <toolTipRepresentation>Button</toolTipRepresentation>
+        <handlers>
+          <event>OnChange</event>
+          <name>НедействителенПриИзменении</name>
+        </handlers>
+        <extendedTooltip>
+          <name>НедействителенExtendedTooltip</name>
+          <id>203</id>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <type>Label</type>
+          <autoMaxWidth>true</autoMaxWidth>
+          <autoMaxHeight>true</autoMaxHeight>
+          <extInfo xsi:type="form:LabelDecorationExtInfo">
+            <horizontalAlign>Left</horizontalAlign>
+          </extInfo>
+        </extendedTooltip>
+        <contextMenu>
+          <name>НедействителенКонтекстноеМеню</name>
+          <id>191</id>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <autoFill>true</autoFill>
+        </contextMenu>
+        <type>CheckBoxField</type>
+        <editMode>Enter</editMode>
+        <showInHeader>true</showInHeader>
+        <headerHorizontalAlign>Left</headerHorizontalAlign>
+        <showInFooter>true</showInFooter>
+        <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
+      </items>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <title>
+        <key>ru</key>
+        <value>Группа наименование</value>
+      </title>
+      <extendedTooltip>
+        <name>ГруппаНаименованиеРасширеннаяПодсказка</name>
+        <id>333</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <type>UsualGroup</type>
+      <extInfo xsi:type="form:UsualGroupExtInfo">
+        <showLeftMargin>true</showLeftMargin>
+        <united>true</united>
+        <throughAlign>Auto</throughAlign>
+      </extInfo>
+    </items>
+    <visible>true</visible>
+    <enabled>true</enabled>
+    <userVisible>
+      <common>true</common>
+    </userVisible>
+    <title>
+      <key>ru</key>
+      <value>Группа шапка</value>
+    </title>
+    <extendedTooltip>
+      <name>ГруппаШапкаРасширеннаяПодсказка</name>
+      <id>288</id>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <type>Label</type>
+      <autoMaxWidth>true</autoMaxWidth>
+      <autoMaxHeight>true</autoMaxHeight>
+      <extInfo xsi:type="form:LabelDecorationExtInfo">
+        <horizontalAlign>Left</horizontalAlign>
+      </extInfo>
+    </extendedTooltip>
+    <type>UsualGroup</type>
+    <extInfo xsi:type="form:UsualGroupExtInfo">
+      <showLeftMargin>true</showLeftMargin>
+      <united>true</united>
+      <throughAlign>Auto</throughAlign>
+    </extInfo>
+  </items>
+  <items xsi:type="form:FormGroup">
+    <name>ГруппаВходВПрограммуРазрешен</name>
+    <id>264</id>
+    <items xsi:type="form:FormField">
+      <name>ВходВПрограммуРазрешен</name>
+      <id>99</id>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <dataPath xsi:type="form:MultiLanguageDataPath">
+        <paths xsi:type="form:DataPath">
+          <segments>ВходВПрограммуРазрешен</segments>
+        </paths>
+      </dataPath>
+      <titleLocation>Right</titleLocation>
+      <toolTip>
+        <key>ru</key>
+        <value>Разрешить вход внешнего пользователя в программу
+указанными способами аутентификации.</value>
+      </toolTip>
+      <handlers>
+        <event>OnChange</event>
+        <name>ВходВПрограммуРазрешенПриИзменении</name>
+      </handlers>
+      <extendedTooltip>
+        <name>ВходВПрограммуРазрешенРасширеннаяПодсказка</name>
+        <id>204</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <contextMenu>
+        <name>ВходВПрограммуРазрешенКонтекстноеМеню</name>
+        <id>100</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <autoFill>true</autoFill>
+      </contextMenu>
+      <type>CheckBoxField</type>
+      <editMode>Enter</editMode>
+      <showInHeader>true</showInHeader>
+      <headerHorizontalAlign>Left</headerHorizontalAlign>
+      <showInFooter>true</showInFooter>
+      <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
+    </items>
+    <items xsi:type="form:FormGroup">
+      <name>ГруппаИзменитьОграничение</name>
+      <id>346</id>
+      <items xsi:type="form:Button">
+        <name>ИзменитьОграничениеНаВходВПрограмму</name>
+        <id>344</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <extendedTooltip>
+          <name>ИзменитьОграничениеНаВходВПрограммуРасширеннаяПодсказка</name>
+          <id>345</id>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <type>Label</type>
+          <autoMaxWidth>true</autoMaxWidth>
+          <autoMaxHeight>true</autoMaxHeight>
+          <extInfo xsi:type="form:LabelDecorationExtInfo">
+            <horizontalAlign>Left</horizontalAlign>
+          </extInfo>
+        </extendedTooltip>
+        <type>Hyperlink</type>
+        <commandName>Form.Command.ИзменитьОграничениеНаВходВПрограмму</commandName>
+        <representation>Auto</representation>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <placementArea>UserCmds</placementArea>
+      </items>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <title>
+        <key>ru</key>
+        <value>Группа изменить ограничение</value>
+      </title>
+      <extendedTooltip>
+        <name>ГруппаИзменитьОграничениеРасширеннаяПодсказка</name>
+        <id>347</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <type>UsualGroup</type>
+      <extInfo xsi:type="form:UsualGroupExtInfo">
+        <group>Vertical</group>
+        <showLeftMargin>true</showLeftMargin>
+        <united>true</united>
+        <throughAlign>Auto</throughAlign>
+      </extInfo>
+    </items>
+    <items xsi:type="form:Decoration">
+      <name>РекомендуетсяПроверитьНастройкиДляВхода</name>
+      <id>269</id>
+      <title>
+        <key>ru</key>
+        <value>Рекомендуется проверить настройки для входа</value>
+      </title>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <toolTip>
+        <key>ru</key>
+        <value>Перед разрешением входа в программу рекомендуется проверить настройки, т.к. пользователь
+был введен не администратором, а ответственным за список внешних пользователей.</value>
+      </toolTip>
+      <toolTipRepresentation>Button</toolTipRepresentation>
+      <extendedTooltip>
+        <name>РекомендуетсяПроверитьНастройкиДляВходаРасширеннаяПодсказка</name>
+        <id>271</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <contextMenu>
+        <name>РекомендуетсяПроверитьНастройкиДляВходаКонтекстноеМеню</name>
+        <id>270</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <autoFill>true</autoFill>
+      </contextMenu>
+      <type>Label</type>
+      <autoMaxWidth>true</autoMaxWidth>
+      <autoMaxHeight>true</autoMaxHeight>
+      <textColor xsi:type="core:ColorRef">
+        <color>Style.ПоясняющийТекст</color>
+      </textColor>
+      <extInfo xsi:type="form:LabelDecorationExtInfo">
+        <horizontalAlign>Left</horizontalAlign>
+      </extInfo>
+    </items>
+    <visible>true</visible>
+    <enabled>true</enabled>
+    <userVisible>
+      <common>true</common>
+    </userVisible>
+    <title>
+      <key>ru</key>
+      <value>Группа вход в программу разрешен</value>
+    </title>
+    <extendedTooltip>
+      <name>ГруппаВходВПрограммуРазрешенРасширеннаяПодсказка</name>
+      <id>265</id>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <type>Label</type>
+      <autoMaxWidth>true</autoMaxWidth>
+      <autoMaxHeight>true</autoMaxHeight>
+      <extInfo xsi:type="form:LabelDecorationExtInfo">
+        <horizontalAlign>Left</horizontalAlign>
+      </extInfo>
+    </extendedTooltip>
+    <type>UsualGroup</type>
+    <extInfo xsi:type="form:UsualGroupExtInfo">
+      <showLeftMargin>true</showLeftMargin>
+      <united>true</united>
+      <throughAlign>Auto</throughAlign>
+    </extInfo>
+  </items>
+  <items xsi:type="form:FormGroup">
+    <name>СтраницыГлавноеИКомментарий</name>
+    <id>281</id>
+    <items xsi:type="form:FormGroup">
+      <name>СтраницаГлавное</name>
+      <id>283</id>
+      <items xsi:type="form:FormGroup">
+        <name>СвойстваПользователяИБ</name>
+        <id>65</id>
+        <items xsi:type="form:FormGroup">
+          <name>ОсновныеСвойства</name>
+          <id>75</id>
+          <items xsi:type="form:FormGroup">
+            <name>ИмяПереключениеОтметкиНезаполненного</name>
+            <id>238</id>
+            <items xsi:type="form:FormGroup">
+              <name>ИмяСОтметкойНезаполненного</name>
+              <id>240</id>
+              <items xsi:type="form:FormField">
+                <name>ПользовательИБИмя1</name>
+                <id>242</id>
+                <visible>true</visible>
+                <enabled>true</enabled>
+                <userVisible>
+                  <common>true</common>
+                </userVisible>
+                <dataPath xsi:type="form:MultiLanguageDataPath">
+                  <paths xsi:type="form:DataPath">
+                    <segments>ПользовательИБИмя</segments>
+                  </paths>
+                </dataPath>
+                <handlers>
+                  <event>OnChange</event>
+                  <name>ПользовательИБИмяПриИзменении</name>
+                </handlers>
+                <extendedTooltip>
+                  <name>ПользовательИБИмя1РасширеннаяПодсказка</name>
+                  <id>244</id>
+                  <visible>true</visible>
+                  <enabled>true</enabled>
+                  <userVisible>
+                    <common>true</common>
+                  </userVisible>
+                  <type>Label</type>
+                  <autoMaxWidth>true</autoMaxWidth>
+                  <autoMaxHeight>true</autoMaxHeight>
+                  <extInfo xsi:type="form:LabelDecorationExtInfo">
+                    <horizontalAlign>Left</horizontalAlign>
+                  </extInfo>
+                </extendedTooltip>
+                <contextMenu>
+                  <name>ПользовательИБИмя1КонтекстноеМеню</name>
+                  <id>243</id>
+                  <visible>true</visible>
+                  <enabled>true</enabled>
+                  <userVisible>
+                    <common>true</common>
+                  </userVisible>
+                  <autoFill>true</autoFill>
+                </contextMenu>
+                <type>InputField</type>
+                <editMode>Enter</editMode>
+                <showInHeader>true</showInHeader>
+                <headerHorizontalAlign>Left</headerHorizontalAlign>
+                <showInFooter>true</showInFooter>
+                <extInfo xsi:type="form:InputFieldExtInfo">
+                  <width>23</width>
+                  <autoMaxWidth>true</autoMaxWidth>
+                  <autoMaxHeight>true</autoMaxHeight>
+                  <horizontalStretch>false</horizontalStretch>
+                  <wrap>true</wrap>
+                  <autoMarkIncomplete>true</autoMarkIncomplete>
+                  <chooseType>true</chooseType>
+                  <typeDomainEnabled>true</typeDomainEnabled>
+                  <textEdit>true</textEdit>
+                </extInfo>
+              </items>
+              <visible>true</visible>
+              <enabled>true</enabled>
+              <userVisible>
+                <common>true</common>
+              </userVisible>
+              <title>
+                <key>ru</key>
+                <value>Имя с отметкой незаполненного</value>
+              </title>
+              <extendedTooltip>
+                <name>ИмяСОтметкойНезаполненногоРасширеннаяПодсказка</name>
+                <id>241</id>
+                <visible>true</visible>
+                <enabled>true</enabled>
+                <userVisible>
+                  <common>true</common>
+                </userVisible>
+                <type>Label</type>
+                <autoMaxWidth>true</autoMaxWidth>
+                <autoMaxHeight>true</autoMaxHeight>
+                <extInfo xsi:type="form:LabelDecorationExtInfo">
+                  <horizontalAlign>Left</horizontalAlign>
+                </extInfo>
+              </extendedTooltip>
+              <type>Page</type>
+              <extInfo xsi:type="form:PageGroupExtInfo">
+                <group>Vertical</group>
+                <showTitle>true</showTitle>
+              </extInfo>
+            </items>
+            <items xsi:type="form:FormGroup">
+              <name>ИмяБезОтметкиНезаполненного</name>
+              <id>245</id>
+              <items xsi:type="form:FormField">
+                <name>ПользовательИБИмя2</name>
+                <id>247</id>
+                <visible>true</visible>
+                <enabled>true</enabled>
+                <userVisible>
+                  <common>true</common>
+                </userVisible>
+                <dataPath xsi:type="form:MultiLanguageDataPath">
+                  <paths xsi:type="form:DataPath">
+                    <segments>ПользовательИБИмя</segments>
+                  </paths>
+                </dataPath>
+                <handlers>
+                  <event>OnChange</event>
+                  <name>ПользовательИБИмяПриИзменении</name>
+                </handlers>
+                <extendedTooltip>
+                  <name>ПользовательИБИмя2РасширеннаяПодсказка</name>
+                  <id>249</id>
+                  <visible>true</visible>
+                  <enabled>true</enabled>
+                  <userVisible>
+                    <common>true</common>
+                  </userVisible>
+                  <type>Label</type>
+                  <autoMaxWidth>true</autoMaxWidth>
+                  <autoMaxHeight>true</autoMaxHeight>
+                  <extInfo xsi:type="form:LabelDecorationExtInfo">
+                    <horizontalAlign>Left</horizontalAlign>
+                  </extInfo>
+                </extendedTooltip>
+                <contextMenu>
+                  <name>ПользовательИБИмя2КонтекстноеМеню</name>
+                  <id>248</id>
+                  <visible>true</visible>
+                  <enabled>true</enabled>
+                  <userVisible>
+                    <common>true</common>
+                  </userVisible>
+                  <autoFill>true</autoFill>
+                </contextMenu>
+                <type>InputField</type>
+                <editMode>Enter</editMode>
+                <showInHeader>true</showInHeader>
+                <headerHorizontalAlign>Left</headerHorizontalAlign>
+                <showInFooter>true</showInFooter>
+                <extInfo xsi:type="form:InputFieldExtInfo">
+                  <width>23</width>
+                  <autoMaxWidth>true</autoMaxWidth>
+                  <autoMaxHeight>true</autoMaxHeight>
+                  <horizontalStretch>false</horizontalStretch>
+                  <wrap>true</wrap>
+                  <chooseType>true</chooseType>
+                  <typeDomainEnabled>true</typeDomainEnabled>
+                  <textEdit>true</textEdit>
+                </extInfo>
+              </items>
+              <visible>true</visible>
+              <enabled>true</enabled>
+              <userVisible>
+                <common>true</common>
+              </userVisible>
+              <title>
+                <key>ru</key>
+                <value>Имя без отметки незаполненного</value>
+              </title>
+              <extendedTooltip>
+                <name>ИмяБезОтметкиНезаполненногоРасширеннаяПодсказка</name>
+                <id>246</id>
+                <visible>true</visible>
+                <enabled>true</enabled>
+                <userVisible>
+                  <common>true</common>
+                </userVisible>
+                <type>Label</type>
+                <autoMaxWidth>true</autoMaxWidth>
+                <autoMaxHeight>true</autoMaxHeight>
+                <extInfo xsi:type="form:LabelDecorationExtInfo">
+                  <horizontalAlign>Left</horizontalAlign>
+                </extInfo>
+              </extendedTooltip>
+              <type>Page</type>
+              <extInfo xsi:type="form:PageGroupExtInfo">
+                <group>Vertical</group>
+                <showTitle>true</showTitle>
+              </extInfo>
+            </items>
+            <visible>true</visible>
+            <enabled>true</enabled>
+            <userVisible>
+              <common>true</common>
+            </userVisible>
+            <title>
+              <key>ru</key>
+              <value>Имя (переключение отметки незаполненного)</value>
+            </title>
+            <extendedTooltip>
+              <name>ИмяПереключениеОтметкиНезаполненногоРасширеннаяПодсказка</name>
+              <id>239</id>
+              <visible>true</visible>
+              <enabled>true</enabled>
+              <userVisible>
+                <common>true</common>
+              </userVisible>
+              <type>Label</type>
+              <autoMaxWidth>true</autoMaxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <extInfo xsi:type="form:LabelDecorationExtInfo">
+                <horizontalAlign>Left</horizontalAlign>
+              </extInfo>
+            </extendedTooltip>
+            <type>Pages</type>
+            <extInfo xsi:type="form:PagesGroupExtInfo"/>
+          </items>
+          <items xsi:type="form:FormGroup">
+            <name>СвойстваАутентификации1СПредприятия</name>
+            <id>193</id>
+            <items xsi:type="form:FormField">
+              <name>ПользовательИБАутентификацияСтандартная</name>
+              <id>194</id>
+              <visible>true</visible>
+              <enabled>true</enabled>
+              <userVisible>
+                <common>true</common>
+              </userVisible>
+              <dataPath xsi:type="form:MultiLanguageDataPath">
+                <paths xsi:type="form:DataPath">
+                  <segments>ПользовательИБАутентификацияСтандартная</segments>
+                </paths>
+              </dataPath>
+              <titleLocation>Right</titleLocation>
+              <toolTip>
+                <key>ru</key>
+                <value>Способ входа в программу с помощью имени и пароля,
+указанного для пользователя 1С:Предприятия.</value>
+              </toolTip>
+              <handlers>
+                <event>OnChange</event>
+                <name>ПользовательИБАутентификацияСтандартнаяПриИзменении</name>
+              </handlers>
+              <extendedTooltip>
+                <name>ПользовательИБАутентификацияСтандартнаяРасширеннаяПодсказка</name>
+                <id>209</id>
+                <visible>true</visible>
+                <enabled>true</enabled>
+                <userVisible>
+                  <common>true</common>
+                </userVisible>
+                <type>Label</type>
+                <autoMaxWidth>true</autoMaxWidth>
+                <autoMaxHeight>true</autoMaxHeight>
+                <extInfo xsi:type="form:LabelDecorationExtInfo">
+                  <horizontalAlign>Left</horizontalAlign>
+                </extInfo>
+              </extendedTooltip>
+              <contextMenu>
+                <name>ПользовательИБАутентификацияСтандартнаяКонтекстноеМеню</name>
+                <id>195</id>
+                <visible>true</visible>
+                <enabled>true</enabled>
+                <userVisible>
+                  <common>true</common>
+                </userVisible>
+                <autoFill>true</autoFill>
+              </contextMenu>
+              <type>CheckBoxField</type>
+              <editMode>Enter</editMode>
+              <showInHeader>true</showInHeader>
+              <headerHorizontalAlign>Left</headerHorizontalAlign>
+              <showInFooter>true</showInFooter>
+              <footerHorizontalAlign>Left</footerHorizontalAlign>
+              <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
+            </items>
+            <items xsi:type="form:FormGroup">
+              <name>ГруппаОтступ</name>
+              <id>274</id>
+              <items xsi:type="form:Decoration">
+                <name>Отступ</name>
+                <id>276</id>
+                <visible>true</visible>
+                <enabled>true</enabled>
+                <userVisible>
+                  <common>true</common>
+                </userVisible>
+                <extendedTooltip>
+                  <name>ОтступРасширеннаяПодсказка</name>
+                  <id>278</id>
+                  <visible>true</visible>
+                  <enabled>true</enabled>
+                  <userVisible>
+                    <common>true</common>
+                  </userVisible>
+                  <type>Label</type>
+                  <autoMaxWidth>true</autoMaxWidth>
+                  <autoMaxHeight>true</autoMaxHeight>
+                  <extInfo xsi:type="form:LabelDecorationExtInfo">
+                    <horizontalAlign>Left</horizontalAlign>
+                  </extInfo>
+                </extendedTooltip>
+                <contextMenu>
+                  <name>ОтступКонтекстноеМеню</name>
+                  <id>277</id>
+                  <visible>true</visible>
+                  <enabled>true</enabled>
+                  <userVisible>
+                    <common>true</common>
+                  </userVisible>
+                  <autoFill>true</autoFill>
+                </contextMenu>
+                <type>Label</type>
+                <autoMaxWidth>true</autoMaxWidth>
+                <autoMaxHeight>true</autoMaxHeight>
+                <extInfo xsi:type="form:LabelDecorationExtInfo">
+                  <horizontalAlign>Left</horizontalAlign>
+                </extInfo>
+              </items>
+              <items xsi:type="form:FormGroup">
+                <name>ПараметрыАутентификации1СПредприятия</name>
+                <id>196</id>
+                <items xsi:type="form:FormGroup">
+                  <name>ГруппаПароль</name>
+                  <id>319</id>
+                  <items xsi:type="form:Decoration">
+                    <name>НадписьНаличиеПароля</name>
+                    <id>321</id>
+                    <title>
+                      <key>ru</key>
+                      <value>Пустой пароль</value>
+                    </title>
+                    <visible>true</visible>
+                    <enabled>true</enabled>
+                    <userVisible>
+                      <common>true</common>
+                    </userVisible>
+                    <extendedTooltip>
+                      <name>НадписьНаличиеПароляРасширеннаяПодсказка</name>
+                      <id>323</id>
+                      <visible>true</visible>
+                      <enabled>true</enabled>
+                      <userVisible>
+                        <common>true</common>
+                      </userVisible>
+                      <type>Label</type>
+                      <autoMaxWidth>true</autoMaxWidth>
+                      <autoMaxHeight>true</autoMaxHeight>
+                      <extInfo xsi:type="form:LabelDecorationExtInfo">
+                        <horizontalAlign>Left</horizontalAlign>
+                      </extInfo>
+                    </extendedTooltip>
+                    <contextMenu>
+                      <name>НадписьНаличиеПароляКонтекстноеМеню</name>
+                      <id>322</id>
+                      <visible>true</visible>
+                      <enabled>true</enabled>
+                      <userVisible>
+                        <common>true</common>
+                      </userVisible>
+                      <autoFill>true</autoFill>
+                    </contextMenu>
+                    <type>Label</type>
+                    <autoMaxWidth>true</autoMaxWidth>
+                    <autoMaxHeight>true</autoMaxHeight>
+                    <textColor xsi:type="core:ColorRef">
+                      <color>Style.ПоясняющийТекст</color>
+                    </textColor>
+                    <extInfo xsi:type="form:LabelDecorationExtInfo">
+                      <horizontalAlign>Left</horizontalAlign>
+                    </extInfo>
+                  </items>
+                  <items xsi:type="form:Button">
+                    <name>СменитьПароль</name>
+                    <id>324</id>
+                    <visible>true</visible>
+                    <enabled>true</enabled>
+                    <userVisible>
+                      <common>true</common>
+                    </userVisible>
+                    <extendedTooltip>
+                      <name>СменитьПарольРасширеннаяПодсказка</name>
+                      <id>325</id>
+                      <visible>true</visible>
+                      <enabled>true</enabled>
+                      <userVisible>
+                        <common>true</common>
+                      </userVisible>
+                      <type>Label</type>
+                      <autoMaxWidth>true</autoMaxWidth>
+                      <autoMaxHeight>true</autoMaxHeight>
+                      <extInfo xsi:type="form:LabelDecorationExtInfo">
+                        <horizontalAlign>Left</horizontalAlign>
+                      </extInfo>
+                    </extendedTooltip>
+                    <type>UsualButton</type>
+                    <commandName>Form.Command.СменитьПароль</commandName>
+                    <representation>Auto</representation>
+                    <autoMaxWidth>true</autoMaxWidth>
+                    <autoMaxHeight>true</autoMaxHeight>
+                    <placementArea>UserCmds</placementArea>
+                  </items>
+                  <visible>true</visible>
+                  <enabled>true</enabled>
+                  <userVisible>
+                    <common>true</common>
+                  </userVisible>
+                  <title>
+                    <key>ru</key>
+                    <value>Группа пароль</value>
+                  </title>
+                  <extendedTooltip>
+                    <name>ГруппаПарольРасширеннаяПодсказка</name>
+                    <id>320</id>
+                    <visible>true</visible>
+                    <enabled>true</enabled>
+                    <userVisible>
+                      <common>true</common>
+                    </userVisible>
+                    <type>Label</type>
+                    <autoMaxWidth>true</autoMaxWidth>
+                    <autoMaxHeight>true</autoMaxHeight>
+                    <extInfo xsi:type="form:LabelDecorationExtInfo">
+                      <horizontalAlign>Left</horizontalAlign>
+                    </extInfo>
+                  </extendedTooltip>
+                  <type>UsualGroup</type>
+                  <extInfo xsi:type="form:UsualGroupExtInfo">
+                    <showLeftMargin>true</showLeftMargin>
+                    <united>true</united>
+                    <throughAlign>Auto</throughAlign>
+                  </extInfo>
+                </items>
+                <items xsi:type="form:FormField">
+                  <name>ПотребоватьСменуПароляПриВходе</name>
+                  <id>326</id>
+                  <visible>true</visible>
+                  <enabled>true</enabled>
+                  <userVisible>
+                    <common>true</common>
+                  </userVisible>
+                  <dataPath xsi:type="form:MultiLanguageDataPath">
+                    <paths xsi:type="form:DataPath">
+                      <segments>ПотребоватьСменуПароляПриВходе</segments>
+                    </paths>
+                  </dataPath>
+                  <titleLocation>Right</titleLocation>
+                  <handlers>
+                    <event>OnChange</event>
+                    <name>ПотребоватьСменуПароляПриВходеПриИзменении</name>
+                  </handlers>
+                  <extendedTooltip>
+                    <name>ПотребоватьСменуПароляПриВходеРасширеннаяПодсказка</name>
+                    <id>328</id>
+                    <visible>true</visible>
+                    <enabled>true</enabled>
+                    <userVisible>
+                      <common>true</common>
+                    </userVisible>
+                    <type>Label</type>
+                    <autoMaxWidth>true</autoMaxWidth>
+                    <autoMaxHeight>true</autoMaxHeight>
+                    <extInfo xsi:type="form:LabelDecorationExtInfo">
+                      <horizontalAlign>Left</horizontalAlign>
+                    </extInfo>
+                  </extendedTooltip>
+                  <contextMenu>
+                    <name>ПотребоватьСменуПароляПриВходеКонтекстноеМеню</name>
+                    <id>327</id>
+                    <visible>true</visible>
+                    <enabled>true</enabled>
+                    <userVisible>
+                      <common>true</common>
+                    </userVisible>
+                    <autoFill>true</autoFill>
+                  </contextMenu>
+                  <type>CheckBoxField</type>
+                  <editMode>Enter</editMode>
+                  <showInHeader>true</showInHeader>
+                  <headerHorizontalAlign>Left</headerHorizontalAlign>
+                  <showInFooter>true</showInFooter>
+                  <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
+                </items>
+                <items xsi:type="form:FormField">
+                  <name>ПользовательИБЗапрещеноИзменятьПароль</name>
+                  <id>51</id>
+                  <visible>true</visible>
+                  <enabled>true</enabled>
+                  <userVisible>
+                    <common>true</common>
+                  </userVisible>
+                  <dataPath xsi:type="form:MultiLanguageDataPath">
+                    <paths xsi:type="form:DataPath">
+                      <segments>ПользовательИБЗапрещеноИзменятьПароль</segments>
+                    </paths>
+                  </dataPath>
+                  <titleLocation>Right</titleLocation>
+                  <toolTip>
+                    <key>ru</key>
+                    <value>Запрещает изменение пароля
+внешнему пользователю.</value>
+                  </toolTip>
+                  <handlers>
+                    <event>OnChange</event>
+                    <name>ПользовательИБЗапрещеноИзменятьПарольПриИзменении</name>
+                  </handlers>
+                  <extendedTooltip>
+                    <name>ПользовательИБЗапрещеноИзменятьПарольРасширеннаяПодсказка</name>
+                    <id>213</id>
+                    <visible>true</visible>
+                    <enabled>true</enabled>
+                    <userVisible>
+                      <common>true</common>
+                    </userVisible>
+                    <type>Label</type>
+                    <autoMaxWidth>true</autoMaxWidth>
+                    <autoMaxHeight>true</autoMaxHeight>
+                    <extInfo xsi:type="form:LabelDecorationExtInfo">
+                      <horizontalAlign>Left</horizontalAlign>
+                    </extInfo>
+                  </extendedTooltip>
+                  <contextMenu>
+                    <name>ПользовательИБЗапрещеноИзменятьПарольКонтекстноеМеню</name>
+                    <id>52</id>
+                    <visible>true</visible>
+                    <enabled>true</enabled>
+                    <userVisible>
+                      <common>true</common>
+                    </userVisible>
+                    <autoFill>true</autoFill>
+                  </contextMenu>
+                  <type>CheckBoxField</type>
+                  <editMode>Enter</editMode>
+                  <showInHeader>true</showInHeader>
+                  <headerHorizontalAlign>Left</headerHorizontalAlign>
+                  <showInFooter>true</showInFooter>
+                  <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
+                </items>
+                <visible>true</visible>
+                <enabled>true</enabled>
+                <userVisible>
+                  <common>true</common>
+                </userVisible>
+                <title>
+                  <key>ru</key>
+                  <value>Параметры аутентификации 1С:Предприятия</value>
+                </title>
+                <horizontalStretch>true</horizontalStretch>
+                <extendedTooltip>
+                  <name>ПараметрыАутентификации1СПредприятияРасширеннаяПодсказка</name>
+                  <id>210</id>
+                  <visible>true</visible>
+                  <enabled>true</enabled>
+                  <userVisible>
+                    <common>true</common>
+                  </userVisible>
+                  <type>Label</type>
+                  <autoMaxWidth>true</autoMaxWidth>
+                  <autoMaxHeight>true</autoMaxHeight>
+                  <extInfo xsi:type="form:LabelDecorationExtInfo">
+                    <horizontalAlign>Left</horizontalAlign>
+                  </extInfo>
+                </extendedTooltip>
+                <type>UsualGroup</type>
+                <extInfo xsi:type="form:UsualGroupExtInfo">
+                  <group>Vertical</group>
+                  <showLeftMargin>true</showLeftMargin>
+                  <united>true</united>
+                  <throughAlign>Auto</throughAlign>
+                </extInfo>
+              </items>
+              <visible>true</visible>
+              <enabled>true</enabled>
+              <userVisible>
+                <common>true</common>
+              </userVisible>
+              <title>
+                <key>ru</key>
+                <value>Группа отступ</value>
+              </title>
+              <extendedTooltip>
+                <name>ГруппаОтступРасширеннаяПодсказка</name>
+                <id>275</id>
+                <visible>true</visible>
+                <enabled>true</enabled>
+                <userVisible>
+                  <common>true</common>
+                </userVisible>
+                <type>Label</type>
+                <autoMaxWidth>true</autoMaxWidth>
+                <autoMaxHeight>true</autoMaxHeight>
+                <extInfo xsi:type="form:LabelDecorationExtInfo">
+                  <horizontalAlign>Left</horizontalAlign>
+                </extInfo>
+              </extendedTooltip>
+              <type>UsualGroup</type>
+              <extInfo xsi:type="form:UsualGroupExtInfo">
+                <showLeftMargin>true</showLeftMargin>
+                <united>true</united>
+                <throughAlign>Auto</throughAlign>
+              </extInfo>
+            </items>
+            <visible>true</visible>
+            <enabled>true</enabled>
+            <userVisible>
+              <common>true</common>
+            </userVisible>
+            <extendedTooltip>
+              <name>СвойстваАутентификации1СПредприятияExtendedTooltip</name>
+              <id>208</id>
+              <visible>true</visible>
+              <enabled>true</enabled>
+              <userVisible>
+                <common>true</common>
+              </userVisible>
+              <type>Label</type>
+              <autoMaxWidth>true</autoMaxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <extInfo xsi:type="form:LabelDecorationExtInfo">
+                <horizontalAlign>Left</horizontalAlign>
+              </extInfo>
+            </extendedTooltip>
+            <type>UsualGroup</type>
+            <extInfo xsi:type="form:UsualGroupExtInfo">
+              <group>Vertical</group>
+              <showLeftMargin>true</showLeftMargin>
+              <united>true</united>
+              <throughAlign>Auto</throughAlign>
+            </extInfo>
+          </items>
+          <items xsi:type="form:FormGroup">
+            <name>СвойстваАутентификацииOpenID</name>
+            <id>279</id>
+            <items xsi:type="form:FormField">
+              <name>ПользовательИБАутентификацияOpenID</name>
+              <id>197</id>
+              <visible>true</visible>
+              <enabled>true</enabled>
+              <userVisible>
+                <common>true</common>
+              </userVisible>
+              <dataPath xsi:type="form:MultiLanguageDataPath">
+                <paths xsi:type="form:DataPath">
+                  <segments>ПользовательИБАутентификацияOpenID</segments>
+                </paths>
+              </dataPath>
+              <titleLocation>Right</titleLocation>
+              <toolTip>
+                <key>ru</key>
+                <value>Способ входа в программу с помощью имени, указанного для пользователя 1С:Предприятия,
 которое передается службе аутентификации по протоколу OpenID.
-Используется только при подключении через веб-сервер (адрес службы должен быть настроен).</v8:content>
-														</v8:item>
-													</ToolTip>
-													<CheckBoxType>Auto</CheckBoxType>
-													<ContextMenu name="ПользовательИБАутентификацияOpenIDКонтекстноеМеню" id="198"/>
-													<ExtendedTooltip name="ПользовательИБАутентификацияOpenIDРасширеннаяПодсказка" id="214"/>
-													<Events>
-														<Event name="OnChange">ПользовательИБАутентификацияOpenIDПриИзменении</Event>
-													</Events>
-												</CheckBoxField>
-											</ChildItems>
-										</UsualGroup>
-										<UsualGroup name="ГруппаПредставлениеЯзыка" id="192">
-											<Group>Vertical</Group>
-											<Representation>None</Representation>
-											<ShowTitle>false</ShowTitle>
-											<ExtendedTooltip name="ГруппаПредставлениеЯзыкаExtendedTooltip" id="215"/>
-											<ChildItems>
-												<InputField name="ПользовательИБЯзык" id="33">
-													<DataPath>ПользовательИБЯзык</DataPath>
-													<FooterHorizontalAlign>Left</FooterHorizontalAlign>
-													<Width>15</Width>
-													<HorizontalStretch>false</HorizontalStretch>
-													<Wrap>false</Wrap>
-													<TextEdit>false</TextEdit>
-													<ChoiceListButton>true</ChoiceListButton>
-													<BorderColor>style:BorderColor</BorderColor>
-													<ContextMenu name="ПользовательИБЯзыкКонтекстноеМеню" id="34"/>
-													<ExtendedTooltip name="ПользовательИБЯзыкРасширеннаяПодсказка" id="216"/>
-												</InputField>
-											</ChildItems>
-										</UsualGroup>
-									</ChildItems>
-								</UsualGroup>
-								<UsualGroup name="РедактированиеИлиПросмотрРолей" id="168">
-									<Title>
-										<v8:item>
-											<v8:lang>ru</v8:lang>
-											<v8:content>Редактирование или просмотр ролей</v8:content>
-										</v8:item>
-									</Title>
-									<ToolTip>
-										<v8:item>
-											<v8:lang>ru</v8:lang>
-											<v8:content>Редактирование или просмотр ролей</v8:content>
-										</v8:item>
-									</ToolTip>
-									<Group>Vertical</Group>
-									<Representation>None</Representation>
-									<ShowTitle>false</ShowTitle>
-									<ExtendedTooltip name="РедактированиеИлиПросмотрРолейExtendedTooltip" id="217"/>
-									<ChildItems>
-										<CheckBoxField name="УстановитьРолиНепосредственно" id="166">
-											<DataPath>Объект.УстановитьРолиНепосредственно</DataPath>
-											<TitleLocation>Right</TitleLocation>
-											<CheckBoxType>Auto</CheckBoxType>
-											<ContextMenu name="УстановитьРолиНепосредственноКонтекстноеМеню" id="167"/>
-											<ExtendedTooltip name="УстановитьРолиНепосредственноExtendedTooltip" id="218"/>
-											<Events>
-												<Event name="OnChange">УстановитьРолиНепосредственноПриИзменении</Event>
-											</Events>
-										</CheckBoxField>
-										<UsualGroup name="ОтображениеРолей" id="103">
-											<Title>
-												<v8:item>
-													<v8:lang>ru</v8:lang>
-													<v8:content>Список ролей</v8:content>
-												</v8:item>
-											</Title>
-											<Group>Vertical</Group>
-											<Representation>None</Representation>
-											<ShowTitle>false</ShowTitle>
-											<ExtendedTooltip name="ОтображениеРолейExtendedTooltip" id="219"/>
-											<ChildItems>
-												<Table name="Роли" id="174">
-													<Representation>Tree</Representation>
-													<SkipOnInput>false</SkipOnInput>
-													<ChangeRowSet>false</ChangeRowSet>
-													<ChangeRowOrder>false</ChangeRowOrder>
-													<SelectionMode>SingleRow</SelectionMode>
-													<Header>false</Header>
-													<UseAlternationRowColor>true</UseAlternationRowColor>
-													<AutoInsertNewRow>true</AutoInsertNewRow>
-													<InitialTreeView>ExpandAllLevels</InitialTreeView>
-													<EnableStartDrag>true</EnableStartDrag>
-													<EnableDrag>true</EnableDrag>
-													<DataPath>Роли</DataPath>
-													<RowPictureDataPath>Роли.НомерКартинки</RowPictureDataPath>
-													<RowsPicture>
-														<xr:Ref>CommonPicture.ПиктограммыЭлементов</xr:Ref>
-														<xr:LoadTransparent>false</xr:LoadTransparent>
-													</RowsPicture>
-													<Title>
-														<v8:item>
-															<v8:lang>ru</v8:lang>
-															<v8:content>Разрешенные действия (роли)</v8:content>
-														</v8:item>
-													</Title>
-													<CommandSet>
-														<ExcludedCommand>Add</ExcludedCommand>
-														<ExcludedCommand>Change</ExcludedCommand>
-														<ExcludedCommand>Copy</ExcludedCommand>
-														<ExcludedCommand>Delete</ExcludedCommand>
-														<ExcludedCommand>EndEdit</ExcludedCommand>
-														<ExcludedCommand>HierarchicalList</ExcludedCommand>
-														<ExcludedCommand>List</ExcludedCommand>
-														<ExcludedCommand>MoveDown</ExcludedCommand>
-														<ExcludedCommand>MoveUp</ExcludedCommand>
-														<ExcludedCommand>SortListAsc</ExcludedCommand>
-														<ExcludedCommand>SortListDesc</ExcludedCommand>
-														<ExcludedCommand>Tree</ExcludedCommand>
-													</CommandSet>
-													<SearchStringLocation>None</SearchStringLocation>
-													<ViewStatusLocation>None</ViewStatusLocation>
-													<SearchControlLocation>None</SearchControlLocation>
-													<ContextMenu name="РолиКонтекстноеМеню" id="175">
-														<Autofill>false</Autofill>
-													</ContextMenu>
-													<AutoCommandBar name="РолиКоманднаяПанель" id="176">
-														<Autofill>false</Autofill>
-														<ChildItems>
-															<Button name="РолиУстановитьФлажки" id="182">
-																<Type>CommandBarButton</Type>
-																<SkipOnInput>false</SkipOnInput>
-																<CommandName>Form.Command.ВключитьРоли</CommandName>
-																<ExtendedTooltip name="РолиУстановитьФлажкиExtendedTooltip" id="220"/>
-															</Button>
-															<Button name="РолиСнятьФлажки" id="183">
-																<Type>CommandBarButton</Type>
-																<SkipOnInput>false</SkipOnInput>
-																<CommandName>Form.Command.ИсключитьРоли</CommandName>
-																<ExtendedTooltip name="РолиСнятьФлажкиExtendedTooltip" id="221"/>
-															</Button>
-															<Button name="РолиПоказатьТолькоВыбранныеРоли" id="184">
-																<Type>CommandBarButton</Type>
-																<SkipOnInput>false</SkipOnInput>
-																<CommandName>Form.Command.ПоказатьТолькоВыбранныеРоли</CommandName>
-																<ExtendedTooltip name="РолиПоказатьТолькоВыбранныеРолиExtendedTooltip" id="222"/>
-															</Button>
-															<Button name="РолиПоказатьПодсистемыРолей" id="189">
-																<Type>CommandBarButton</Type>
-																<CommandName>Form.Command.ГруппировкаРолейПоПодсистемам</CommandName>
-																<ExtendedTooltip name="РолиПоказатьПодсистемыРолейExtendedTooltip" id="223"/>
-															</Button>
-															<ButtonGroup name="РолиСтандартныеКоманды" id="289">
-																<Title>
-																	<v8:item>
-																		<v8:lang>ru</v8:lang>
-																		<v8:content>Роли стандартные команды</v8:content>
-																	</v8:item>
-																</Title>
-																<CommandSource>Item.Роли</CommandSource>
-																<ExtendedTooltip name="РолиСтандартныеКомандыРасширеннаяПодсказка" id="290"/>
-															</ButtonGroup>
-														</ChildItems>
-													</AutoCommandBar>
-													<ExtendedTooltip name="РолиExtendedTooltip" id="224"/>
-													<SearchStringAddition name="РолиСтрокаПоиска" id="291">
-														<AdditionSource>
-															<Item>Роли</Item>
-															<Type>SearchStringRepresentation</Type>
-														</AdditionSource>
-														<ContextMenu name="РолиСтрокаПоискаКонтекстноеМеню" id="292"/>
-														<ExtendedTooltip name="РолиСтрокаПоискаРасширеннаяПодсказка" id="293"/>
-													</SearchStringAddition>
-													<ViewStatusAddition name="РолиСостояниеПросмотра" id="294">
-														<AdditionSource>
-															<Item>Роли</Item>
-															<Type>ViewStatusRepresentation</Type>
-														</AdditionSource>
-														<ContextMenu name="РолиСостояниеПросмотраКонтекстноеМеню" id="295"/>
-														<ExtendedTooltip name="РолиСостояниеПросмотраРасширеннаяПодсказка" id="296"/>
-													</ViewStatusAddition>
-													<SearchControlAddition name="РолиУправлениеПоиском" id="297">
-														<AdditionSource>
-															<Item>Роли</Item>
-															<Type>SearchControl</Type>
-														</AdditionSource>
-														<ContextMenu name="РолиУправлениеПоискомКонтекстноеМеню" id="298"/>
-														<ExtendedTooltip name="РолиУправлениеПоискомРасширеннаяПодсказка" id="299"/>
-													</SearchControlAddition>
-													<ChildItems>
-														<ColumnGroup name="РолиКолонок" id="177">
-															<Title>
-																<v8:item>
-																	<v8:lang>ru</v8:lang>
-																	<v8:content>Роли колонок</v8:content>
-																</v8:item>
-															</Title>
-															<Group>InCell</Group>
-															<ExtendedTooltip name="РолиКолонокExtendedTooltip" id="225"/>
-															<ChildItems>
-																<CheckBoxField name="РолиПометка" id="185">
-																	<DataPath>Роли.Пометка</DataPath>
-																	<EditMode>Directly</EditMode>
-																	<ShowInHeader>false</ShowInHeader>
-																	<CheckBoxType>Auto</CheckBoxType>
-																	<ContextMenu name="РолиПометкаКонтекстноеМеню" id="186"/>
-																	<ExtendedTooltip name="РолиПометкаExtendedTooltip" id="226"/>
-																	<Events>
-																		<Event name="OnChange">РолиПометкаПриИзменении</Event>
-																	</Events>
-																</CheckBoxField>
-																<InputField name="РолиСиноним" id="187">
-																	<DataPath>Роли.Синоним</DataPath>
-																	<ReadOnly>true</ReadOnly>
-																	<EditMode>EnterOnInput</EditMode>
-																	<ContextMenu name="РолиСинонимКонтекстноеМеню" id="188"/>
-																	<ExtendedTooltip name="РолиСинонимExtendedTooltip" id="227"/>
-																</InputField>
-															</ChildItems>
-														</ColumnGroup>
-													</ChildItems>
-												</Table>
-											</ChildItems>
-										</UsualGroup>
-									</ChildItems>
-								</UsualGroup>
-							</ChildItems>
-						</UsualGroup>
-					</ChildItems>
-				</Page>
-				<Page name="СтраницаДополнительныеРеквизиты" id="300">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Дополнительные реквизиты</v8:content>
-						</v8:item>
-					</Title>
-					<ExtendedTooltip name="СтраницаДополнительныеРеквизитыРасширеннаяПодсказка" id="301"/>
-				</Page>
-				<Page name="СтраницаКомментарий" id="285">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Комментарий</v8:content>
-						</v8:item>
-					</Title>
-					<ExtendedTooltip name="СтраницаКомментарийРасширеннаяПодсказка" id="286"/>
-					<ChildItems>
-						<InputField name="Комментарий" id="257">
-							<DataPath>Объект.Комментарий</DataPath>
-							<TitleLocation>None</TitleLocation>
-							<VerticalStretch>true</VerticalStretch>
-							<MultiLine>true</MultiLine>
-							<ContextMenu name="КомментарийКонтекстноеМеню" id="258"/>
-							<ExtendedTooltip name="КомментарийExtendedTooltip" id="259"/>
-							<Events>
-								<Event name="StartChoice">КомментарийНачалоВыбора</Event>
-							</Events>
-						</InputField>
-					</ChildItems>
-				</Page>
-			</ChildItems>
-		</Pages>
-	</ChildItems>
-	<Attributes>
-		<Attribute name="Объект" id="1">
-			<Type>
-				<v8:Type>cfg:CatalogObject.ВнешниеПользователи</v8:Type>
-			</Type>
-			<MainAttribute>true</MainAttribute>
-			<SavedData>true</SavedData>
-		</Attribute>
-		<Attribute name="ПользовательИБЯзык" id="10">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Язык интерфейса программы</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:string</v8:Type>
-				<v8:StringQualifiers>
-					<v8:Length>0</v8:Length>
-					<v8:AllowedLength>Variable</v8:AllowedLength>
-				</v8:StringQualifiers>
-			</Type>
-			<SavedData>true</SavedData>
-			<FunctionalOptions>
-				<Item>FunctionalOption.ИспользоватьВнешнихПользователей</Item>
-			</FunctionalOptions>
-		</Attribute>
-		<Attribute name="ПользовательИБЗапрещеноИзменятьПароль" id="13">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Пользователю запрещено изменять пароль</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:boolean</v8:Type>
-			</Type>
-			<SavedData>true</SavedData>
-			<FunctionalOptions>
-				<Item>FunctionalOption.ИспользоватьВнешнихПользователей</Item>
-			</FunctionalOptions>
-		</Attribute>
-		<Attribute name="ПользовательИБИмя" id="16">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Имя (для входа)</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:string</v8:Type>
-				<v8:StringQualifiers>
-					<v8:Length>0</v8:Length>
-					<v8:AllowedLength>Variable</v8:AllowedLength>
-				</v8:StringQualifiers>
-			</Type>
-			<SavedData>true</SavedData>
-			<FunctionalOptions>
-				<Item>FunctionalOption.ИспользоватьВнешнихПользователей</Item>
-			</FunctionalOptions>
-		</Attribute>
-		<Attribute name="ВходВПрограммуРазрешен" id="17">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Вход в программу разрешен</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:boolean</v8:Type>
-			</Type>
-			<SavedData>true</SavedData>
-			<FunctionalOptions>
-				<Item>FunctionalOption.ИспользоватьВнешнихПользователей</Item>
-			</FunctionalOptions>
-		</Attribute>
-		<Attribute name="ПользовательИБСуществует" id="23">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Пользователь ИБ существует</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:boolean</v8:Type>
-			</Type>
-			<SavedData>true</SavedData>
-		</Attribute>
-		<Attribute name="ГруппаНовогоВнешнегоПользователя" id="2">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Группа нового внешнего пользователя</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>cfg:CatalogRef.ГруппыВнешнихПользователей</v8:Type>
-			</Type>
-		</Attribute>
-		<Attribute name="ДействияВФорме" id="8">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Действия в форме</v8:content>
-				</v8:item>
-			</Title>
-			<Type/>
-		</Attribute>
-		<Attribute name="ТекущееПредставлениеОбъектаАвторизации" id="18">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Текущее представление объекта авторизации</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:string</v8:Type>
-				<v8:StringQualifiers>
-					<v8:Length>0</v8:Length>
-					<v8:AllowedLength>Variable</v8:AllowedLength>
-				</v8:StringQualifiers>
-			</Type>
-		</Attribute>
-		<Attribute name="ТипОбъектовАвторизации" id="5">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Тип объектов авторизации</v8:content>
-				</v8:item>
-			</Title>
-			<Type/>
-		</Attribute>
-		<Attribute name="ОбъектАвторизацииЗаданПриОткрытии" id="6">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Объект авторизации задан при открытии</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:boolean</v8:Type>
-			</Type>
-		</Attribute>
-		<Attribute name="ЕстьСопоставлениеСНесуществующимПользователемИБ" id="9">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Есть сопоставление с несуществующим пользователем ИБ</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:boolean</v8:Type>
-			</Type>
-		</Attribute>
-		<Attribute name="ПользовательИБРоли" id="11">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Пользователь ИБ роли</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>v8:ValueTable</v8:Type>
-			</Type>
-			<Columns>
-				<Column name="Роль" id="1">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Роль</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>150</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<AdditionalColumns table="ПользовательИБРоли.Роль"/>
-			</Columns>
-		</Attribute>
-		<Attribute name="Роли" id="12">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Роли</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>v8:ValueTree</v8:Type>
-			</Type>
-			<SavedData>true</SavedData>
-			<FunctionalOptions>
-				<Item>FunctionalOption.ИспользоватьВнешнихПользователей</Item>
-			</FunctionalOptions>
-			<Columns>
-				<Column name="Пометка" id="1">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Пометка</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:boolean</v8:Type>
-					</Type>
-				</Column>
-				<Column name="Синоним" id="2">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Разрешенное действие (роль)</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>0</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="НомерКартинки" id="3">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Номер картинки</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:decimal</v8:Type>
-						<v8:NumberQualifiers>
-							<v8:Digits>1</v8:Digits>
-							<v8:FractionDigits>0</v8:FractionDigits>
-							<v8:AllowedSign>Nonnegative</v8:AllowedSign>
-						</v8:NumberQualifiers>
-					</Type>
-				</Column>
-				<Column name="Имя" id="4">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Имя</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>0</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="ЭтоРоль" id="5">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Это роль</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:boolean</v8:Type>
-					</Type>
-				</Column>
-				<Column name="ЭтоНедоступнаяРоль" id="6">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Это недоступная роль</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:boolean</v8:Type>
-					</Type>
-				</Column>
-				<Column name="ЭтоНесуществующаяРоль" id="7">
-					<Title>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Это несуществующая роль</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:boolean</v8:Type>
-					</Type>
-				</Column>
-			</Columns>
-		</Attribute>
-		<Attribute name="ЗапретРедактированияРолей" id="14">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Запрет редактирования ролей</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:boolean</v8:Type>
-			</Type>
-		</Attribute>
-		<Attribute name="ПоказатьПодсистемыРолей" id="15">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Показать подсистемы ролей</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:boolean</v8:Type>
-			</Type>
-			<Save>
-				<Field>ПоказатьПодсистемыРолей</Field>
-			</Save>
-		</Attribute>
-		<Attribute name="ЗначениеКопирования" id="20">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Значение копирования</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>cfg:CatalogRef.ВнешниеПользователи</v8:Type>
-			</Type>
-		</Attribute>
-		<Attribute name="ПользовательИБАутентификацияOpenID" id="21">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Аутентификация по протоколу OpenID</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:boolean</v8:Type>
-			</Type>
-			<SavedData>true</SavedData>
-			<FunctionalOptions>
-				<Item>FunctionalOption.ИспользоватьВнешнихПользователей</Item>
-			</FunctionalOptions>
-		</Attribute>
-		<Attribute name="ПользовательИБАутентификацияСтандартная" id="22">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Аутентификация 1С:Предприятия</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:boolean</v8:Type>
-			</Type>
-			<SavedData>true</SavedData>
-			<FunctionalOptions>
-				<Item>FunctionalOption.ИспользоватьВнешнихПользователей</Item>
-			</FunctionalOptions>
-		</Attribute>
-		<Attribute name="НачальноеОписаниеПользователяИБ" id="24">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Начальное описание пользователя ИБ</v8:content>
-				</v8:item>
-			</Title>
-			<Type/>
-		</Attribute>
-		<Attribute name="ПользовательИБПолноеИмя" id="25">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Пользователь ИБПолное имя</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:string</v8:Type>
-				<v8:StringQualifiers>
-					<v8:Length>0</v8:Length>
-					<v8:AllowedLength>Variable</v8:AllowedLength>
-				</v8:StringQualifiers>
-			</Type>
-			<SavedData>true</SavedData>
-		</Attribute>
-		<Attribute name="УровеньДоступа" id="26">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Уровень доступа</v8:content>
-				</v8:item>
-			</Title>
-			<Type/>
-		</Attribute>
-		<Attribute name="ПользовательИБАутентификацияОС" id="29">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Аутентификация операционной системы</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:boolean</v8:Type>
-			</Type>
-			<SavedData>true</SavedData>
-		</Attribute>
-		<Attribute name="ПользовательИБПользовательОС" id="27">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Пользователь</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:string</v8:Type>
-				<v8:StringQualifiers>
-					<v8:Length>0</v8:Length>
-					<v8:AllowedLength>Variable</v8:AllowedLength>
-				</v8:StringQualifiers>
-			</Type>
-			<SavedData>true</SavedData>
-		</Attribute>
-		<Attribute name="ПользовательИБРежимЗапуска" id="30">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Режим запуска</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:string</v8:Type>
-				<v8:StringQualifiers>
-					<v8:Length>0</v8:Length>
-					<v8:AllowedLength>Variable</v8:AllowedLength>
-				</v8:StringQualifiers>
-			</Type>
-			<SavedData>true</SavedData>
-		</Attribute>
-		<Attribute name="ПользовательИБПоказыватьВСпискеВыбора" id="31">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Показывать в списке выбора</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:boolean</v8:Type>
-			</Type>
-			<SavedData>true</SavedData>
-		</Attribute>
-		<Attribute name="ПриЧтенииВходВПрограммуРазрешен" id="19">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>При чтении вход в программу разрешен</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:boolean</v8:Type>
-			</Type>
-		</Attribute>
-		<Attribute name="ВходВПрограммуРазрешенЗначениеПрямогоИзменения" id="28">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Вход в программу разрешен значение прямого изменения</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:boolean</v8:Type>
-			</Type>
-		</Attribute>
-		<Attribute name="ПотребоватьСменуПароляПриВходе" id="33">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Потребовать смену пароля при входе</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:boolean</v8:Type>
-			</Type>
-			<SavedData>true</SavedData>
-			<FunctionalOptions>
-				<Item>FunctionalOption.ИспользоватьВнешнихПользователей</Item>
-			</FunctionalOptions>
-		</Attribute>
-		<Attribute name="СрокДействия" id="34">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Срок действия</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:dateTime</v8:Type>
-				<v8:DateQualifiers>
-					<v8:DateFractions>Date</v8:DateFractions>
-				</v8:DateQualifiers>
-			</Type>
-			<SavedData>true</SavedData>
-		</Attribute>
-		<Attribute name="СрокДействияНеОграничен" id="35">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Срок действия не ограничен</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:boolean</v8:Type>
-			</Type>
-		</Attribute>
-		<Attribute name="ПросрочкаРаботыВПрограммеДоЗапрещенияВхода" id="36">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Просрочка работы в программе до запрещения входа</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:decimal</v8:Type>
-				<v8:NumberQualifiers>
-					<v8:Digits>3</v8:Digits>
-					<v8:FractionDigits>0</v8:FractionDigits>
-					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
-				</v8:NumberQualifiers>
-			</Type>
-		</Attribute>
-		<Attribute name="ПользовательИБИмяЗначениеПрямогоИзменения" id="37">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Имя (для входа) - значение прямого изменения</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:string</v8:Type>
-				<v8:StringQualifiers>
-					<v8:Length>0</v8:Length>
-					<v8:AllowedLength>Variable</v8:AllowedLength>
-				</v8:StringQualifiers>
-			</Type>
-		</Attribute>
-		<Attribute name="ПользовательИБПароль" id="38">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Пользователь ИБПароль</v8:content>
-				</v8:item>
-			</Title>
-			<Type/>
-			<SavedData>true</SavedData>
-		</Attribute>
-		<Attribute name="ПользовательИБСтарыйПароль" id="39">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Пользователь ИБСтарый пароль</v8:content>
-				</v8:item>
-			</Title>
-			<Type/>
-		</Attribute>
-	</Attributes>
-	<Commands>
-		<Command name="ПоказатьТолькоВыбранныеРоли" id="3">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Только выбранные роли</v8:content>
-				</v8:item>
-			</Title>
-			<ToolTip>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Показать только выбранные роли</v8:content>
-				</v8:item>
-			</ToolTip>
-			<Picture>
-				<xr:Ref>CommonPicture.ПоказатьТолькоВыбранныеРоли</xr:Ref>
-				<xr:LoadTransparent>false</xr:LoadTransparent>
-			</Picture>
-			<Action>ПоказатьТолькоВыбранныеРоли</Action>
-			<FunctionalOptions>
-				<Item>FunctionalOption.ИспользоватьВнешнихПользователей</Item>
-			</FunctionalOptions>
-			<Representation>TextPicture</Representation>
-		</Command>
-		<Command name="ИсключитьРоли" id="5">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Исключить роли</v8:content>
-				</v8:item>
-			</Title>
-			<ToolTip>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Исключить роли</v8:content>
-				</v8:item>
-			</ToolTip>
-			<Picture>
-				<xr:Ref>StdPicture.UncheckAll</xr:Ref>
-				<xr:LoadTransparent>true</xr:LoadTransparent>
-			</Picture>
-			<Action>ИсключитьРоли</Action>
-			<FunctionalOptions>
-				<Item>FunctionalOption.ИспользоватьВнешнихПользователей</Item>
-			</FunctionalOptions>
-			<ModifiesSavedData>true</ModifiesSavedData>
-		</Command>
-		<Command name="ВключитьРоли" id="6">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Включить роли</v8:content>
-				</v8:item>
-			</Title>
-			<ToolTip>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Включить роли</v8:content>
-				</v8:item>
-			</ToolTip>
-			<Picture>
-				<xr:Ref>StdPicture.CheckAll</xr:Ref>
-				<xr:LoadTransparent>true</xr:LoadTransparent>
-			</Picture>
-			<Action>ВключитьРоли</Action>
-			<FunctionalOptions>
-				<Item>FunctionalOption.ИспользоватьВнешнихПользователей</Item>
-			</FunctionalOptions>
-			<ModifiesSavedData>true</ModifiesSavedData>
-		</Command>
-		<Command name="ГруппировкаРолейПоПодсистемам" id="1">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>По подсистемам</v8:content>
-				</v8:item>
-			</Title>
-			<ToolTip>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Группировать список ролей по подсистемам</v8:content>
-				</v8:item>
-			</ToolTip>
-			<Picture>
-				<xr:Ref>CommonPicture.Подсистема</xr:Ref>
-				<xr:LoadTransparent>false</xr:LoadTransparent>
-			</Picture>
-			<Action>ГруппировкаРолейПоПодсистемам</Action>
-			<FunctionalOptions>
-				<Item>FunctionalOption.ИспользоватьВнешнихПользователей</Item>
-			</FunctionalOptions>
-			<Representation>TextPicture</Representation>
-		</Command>
-		<Command name="СменитьПароль" id="2">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Сменить пароль...</v8:content>
-				</v8:item>
-			</Title>
-			<Action>СменитьПароль</Action>
-			<FunctionalOptions>
-				<Item>FunctionalOption.ИспользоватьВнешнихПользователей</Item>
-			</FunctionalOptions>
-			<ModifiesSavedData>true</ModifiesSavedData>
-		</Command>
-		<Command name="ИзменитьОграничениеНаВходВПрограмму" id="4">
-			<Title>
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Изменить ограничение</v8:content>
-				</v8:item>
-			</Title>
-			<Action>ИзменитьОграничениеНаВходВПрограмму</Action>
-			<FunctionalOptions>
-				<Item>FunctionalOption.ИспользоватьВнешнихПользователей</Item>
-			</FunctionalOptions>
-			<ModifiesSavedData>true</ModifiesSavedData>
-		</Command>
-	</Commands>
-	<Parameters>
-		<Parameter name="ГруппаНовогоВнешнегоПользователя">
-			<Type>
-				<v8:Type>cfg:CatalogRef.ГруппыВнешнихПользователей</v8:Type>
-			</Type>
-		</Parameter>
-		<Parameter name="ИдентификаторПользователяИБ">
-			<Type>
-				<v8:Type>v8:UUID</v8:Type>
-			</Type>
-		</Parameter>
-	</Parameters>
-</Form>
+Используется только при подключении через веб-сервер (адрес службы должен быть настроен).</value>
+              </toolTip>
+              <handlers>
+                <event>OnChange</event>
+                <name>ПользовательИБАутентификацияOpenIDПриИзменении</name>
+              </handlers>
+              <extendedTooltip>
+                <name>ПользовательИБАутентификацияOpenIDРасширеннаяПодсказка</name>
+                <id>214</id>
+                <visible>true</visible>
+                <enabled>true</enabled>
+                <userVisible>
+                  <common>true</common>
+                </userVisible>
+                <type>Label</type>
+                <autoMaxWidth>true</autoMaxWidth>
+                <autoMaxHeight>true</autoMaxHeight>
+                <extInfo xsi:type="form:LabelDecorationExtInfo">
+                  <horizontalAlign>Left</horizontalAlign>
+                </extInfo>
+              </extendedTooltip>
+              <contextMenu>
+                <name>ПользовательИБАутентификацияOpenIDКонтекстноеМеню</name>
+                <id>198</id>
+                <visible>true</visible>
+                <enabled>true</enabled>
+                <userVisible>
+                  <common>true</common>
+                </userVisible>
+                <autoFill>true</autoFill>
+              </contextMenu>
+              <type>CheckBoxField</type>
+              <editMode>Enter</editMode>
+              <showInHeader>true</showInHeader>
+              <headerHorizontalAlign>Left</headerHorizontalAlign>
+              <showInFooter>true</showInFooter>
+              <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
+            </items>
+            <visible>true</visible>
+            <enabled>true</enabled>
+            <userVisible>
+              <common>true</common>
+            </userVisible>
+            <extendedTooltip>
+              <name>СвойстваАутентификацииOpenIDРасширеннаяПодсказка</name>
+              <id>280</id>
+              <visible>true</visible>
+              <enabled>true</enabled>
+              <userVisible>
+                <common>true</common>
+              </userVisible>
+              <type>Label</type>
+              <autoMaxWidth>true</autoMaxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <extInfo xsi:type="form:LabelDecorationExtInfo">
+                <horizontalAlign>Left</horizontalAlign>
+              </extInfo>
+            </extendedTooltip>
+            <type>UsualGroup</type>
+            <extInfo xsi:type="form:UsualGroupExtInfo">
+              <group>Vertical</group>
+              <representation>NormalSeparation</representation>
+              <showLeftMargin>true</showLeftMargin>
+              <united>true</united>
+              <throughAlign>Auto</throughAlign>
+            </extInfo>
+          </items>
+          <items xsi:type="form:FormGroup">
+            <name>ГруппаПредставлениеЯзыка</name>
+            <id>192</id>
+            <items xsi:type="form:FormField">
+              <name>ПользовательИБЯзык</name>
+              <id>33</id>
+              <visible>true</visible>
+              <enabled>true</enabled>
+              <userVisible>
+                <common>true</common>
+              </userVisible>
+              <dataPath xsi:type="form:MultiLanguageDataPath">
+                <paths xsi:type="form:DataPath">
+                  <segments>ПользовательИБЯзык</segments>
+                </paths>
+              </dataPath>
+              <extendedTooltip>
+                <name>ПользовательИБЯзыкРасширеннаяПодсказка</name>
+                <id>216</id>
+                <visible>true</visible>
+                <enabled>true</enabled>
+                <userVisible>
+                  <common>true</common>
+                </userVisible>
+                <type>Label</type>
+                <autoMaxWidth>true</autoMaxWidth>
+                <autoMaxHeight>true</autoMaxHeight>
+                <extInfo xsi:type="form:LabelDecorationExtInfo">
+                  <horizontalAlign>Left</horizontalAlign>
+                </extInfo>
+              </extendedTooltip>
+              <contextMenu>
+                <name>ПользовательИБЯзыкКонтекстноеМеню</name>
+                <id>34</id>
+                <visible>true</visible>
+                <enabled>true</enabled>
+                <userVisible>
+                  <common>true</common>
+                </userVisible>
+                <autoFill>true</autoFill>
+              </contextMenu>
+              <type>InputField</type>
+              <editMode>Enter</editMode>
+              <showInHeader>true</showInHeader>
+              <headerHorizontalAlign>Left</headerHorizontalAlign>
+              <showInFooter>true</showInFooter>
+              <footerHorizontalAlign>Left</footerHorizontalAlign>
+              <extInfo xsi:type="form:InputFieldExtInfo">
+                <width>15</width>
+                <autoMaxWidth>true</autoMaxWidth>
+                <autoMaxHeight>true</autoMaxHeight>
+                <horizontalStretch>false</horizontalStretch>
+                <choiceListButton>true</choiceListButton>
+                <chooseType>true</chooseType>
+                <typeDomainEnabled>true</typeDomainEnabled>
+                <borderColor xsi:type="core:ColorRef">
+                  <color>Style.BorderColor</color>
+                </borderColor>
+              </extInfo>
+            </items>
+            <visible>true</visible>
+            <enabled>true</enabled>
+            <userVisible>
+              <common>true</common>
+            </userVisible>
+            <extendedTooltip>
+              <name>ГруппаПредставлениеЯзыкаExtendedTooltip</name>
+              <id>215</id>
+              <visible>true</visible>
+              <enabled>true</enabled>
+              <userVisible>
+                <common>true</common>
+              </userVisible>
+              <type>Label</type>
+              <autoMaxWidth>true</autoMaxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <extInfo xsi:type="form:LabelDecorationExtInfo">
+                <horizontalAlign>Left</horizontalAlign>
+              </extInfo>
+            </extendedTooltip>
+            <type>UsualGroup</type>
+            <extInfo xsi:type="form:UsualGroupExtInfo">
+              <group>Vertical</group>
+              <showLeftMargin>true</showLeftMargin>
+              <united>true</united>
+              <throughAlign>Auto</throughAlign>
+            </extInfo>
+          </items>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <title>
+            <key>ru</key>
+            <value>Основные свойства</value>
+          </title>
+          <width>36</width>
+          <verticalStretch>true</verticalStretch>
+          <extendedTooltip>
+            <name>ОсновныеСвойстваExtendedTooltip</name>
+            <id>206</id>
+            <visible>true</visible>
+            <enabled>true</enabled>
+            <userVisible>
+              <common>true</common>
+            </userVisible>
+            <type>Label</type>
+            <autoMaxWidth>true</autoMaxWidth>
+            <autoMaxHeight>true</autoMaxHeight>
+            <extInfo xsi:type="form:LabelDecorationExtInfo">
+              <horizontalAlign>Left</horizontalAlign>
+            </extInfo>
+          </extendedTooltip>
+          <type>UsualGroup</type>
+          <extInfo xsi:type="form:UsualGroupExtInfo">
+            <group>Vertical</group>
+            <showLeftMargin>true</showLeftMargin>
+            <united>true</united>
+            <throughAlign>Auto</throughAlign>
+          </extInfo>
+        </items>
+        <items xsi:type="form:FormGroup">
+          <name>РедактированиеИлиПросмотрРолей</name>
+          <id>168</id>
+          <items xsi:type="form:FormField">
+            <name>УстановитьРолиНепосредственно</name>
+            <id>166</id>
+            <visible>true</visible>
+            <enabled>true</enabled>
+            <userVisible>
+              <common>true</common>
+            </userVisible>
+            <dataPath xsi:type="form:MultiLanguageDataPath">
+              <paths xsi:type="form:DataPath">
+                <segments>Объект.УстановитьРолиНепосредственно</segments>
+              </paths>
+            </dataPath>
+            <titleLocation>Right</titleLocation>
+            <handlers>
+              <event>OnChange</event>
+              <name>УстановитьРолиНепосредственноПриИзменении</name>
+            </handlers>
+            <extendedTooltip>
+              <name>УстановитьРолиНепосредственноExtendedTooltip</name>
+              <id>218</id>
+              <visible>true</visible>
+              <enabled>true</enabled>
+              <userVisible>
+                <common>true</common>
+              </userVisible>
+              <type>Label</type>
+              <autoMaxWidth>true</autoMaxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <extInfo xsi:type="form:LabelDecorationExtInfo">
+                <horizontalAlign>Left</horizontalAlign>
+              </extInfo>
+            </extendedTooltip>
+            <contextMenu>
+              <name>УстановитьРолиНепосредственноКонтекстноеМеню</name>
+              <id>167</id>
+              <visible>true</visible>
+              <enabled>true</enabled>
+              <userVisible>
+                <common>true</common>
+              </userVisible>
+              <autoFill>true</autoFill>
+            </contextMenu>
+            <type>CheckBoxField</type>
+            <editMode>Enter</editMode>
+            <showInHeader>true</showInHeader>
+            <headerHorizontalAlign>Left</headerHorizontalAlign>
+            <showInFooter>true</showInFooter>
+            <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
+          </items>
+          <items xsi:type="form:FormGroup">
+            <name>ОтображениеРолей</name>
+            <id>103</id>
+            <items xsi:type="form:Table">
+              <name>Роли</name>
+              <id>174</id>
+              <title>
+                <key>ru</key>
+                <value>Разрешенные действия (роли)</value>
+              </title>
+              <visible>true</visible>
+              <enabled>true</enabled>
+              <userVisible>
+                <common>true</common>
+              </userVisible>
+              <dataPath xsi:type="form:DataPath">
+                <segments>Роли</segments>
+              </dataPath>
+              <skipOnInput>false</skipOnInput>
+              <titleLocation>None</titleLocation>
+              <excludedCommands>Add</excludedCommands>
+              <excludedCommands>Change</excludedCommands>
+              <excludedCommands>Copy</excludedCommands>
+              <excludedCommands>Delete</excludedCommands>
+              <excludedCommands>EndEdit</excludedCommands>
+              <excludedCommands>HierarchicalList</excludedCommands>
+              <excludedCommands>List</excludedCommands>
+              <excludedCommands>MoveDown</excludedCommands>
+              <excludedCommands>MoveUp</excludedCommands>
+              <excludedCommands>SortListAsc</excludedCommands>
+              <excludedCommands>SortListDesc</excludedCommands>
+              <excludedCommands>Tree</excludedCommands>
+              <items xsi:type="form:FormGroup">
+                <name>РолиКолонок</name>
+                <id>177</id>
+                <items xsi:type="form:FormField">
+                  <name>РолиПометка</name>
+                  <id>185</id>
+                  <visible>true</visible>
+                  <enabled>true</enabled>
+                  <userVisible>
+                    <common>true</common>
+                  </userVisible>
+                  <dataPath xsi:type="form:MultiLanguageDataPath">
+                    <paths xsi:type="form:DataPath">
+                      <segments>Роли.Пометка</segments>
+                    </paths>
+                  </dataPath>
+                  <handlers>
+                    <event>OnChange</event>
+                    <name>РолиПометкаПриИзменении</name>
+                  </handlers>
+                  <extendedTooltip>
+                    <name>РолиПометкаExtendedTooltip</name>
+                    <id>226</id>
+                    <visible>true</visible>
+                    <enabled>true</enabled>
+                    <userVisible>
+                      <common>true</common>
+                    </userVisible>
+                    <type>Label</type>
+                    <autoMaxWidth>true</autoMaxWidth>
+                    <autoMaxHeight>true</autoMaxHeight>
+                    <extInfo xsi:type="form:LabelDecorationExtInfo">
+                      <horizontalAlign>Left</horizontalAlign>
+                    </extInfo>
+                  </extendedTooltip>
+                  <contextMenu>
+                    <name>РолиПометкаКонтекстноеМеню</name>
+                    <id>186</id>
+                    <visible>true</visible>
+                    <enabled>true</enabled>
+                    <userVisible>
+                      <common>true</common>
+                    </userVisible>
+                    <autoFill>true</autoFill>
+                  </contextMenu>
+                  <type>CheckBoxField</type>
+                  <headerHorizontalAlign>Left</headerHorizontalAlign>
+                  <showInFooter>true</showInFooter>
+                  <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
+                </items>
+                <items xsi:type="form:FormField">
+                  <name>РолиСиноним</name>
+                  <id>187</id>
+                  <visible>true</visible>
+                  <enabled>true</enabled>
+                  <userVisible>
+                    <common>true</common>
+                  </userVisible>
+                  <dataPath xsi:type="form:MultiLanguageDataPath">
+                    <paths xsi:type="form:DataPath">
+                      <segments>Роли.Синоним</segments>
+                    </paths>
+                  </dataPath>
+                  <extendedTooltip>
+                    <name>РолиСинонимExtendedTooltip</name>
+                    <id>227</id>
+                    <visible>true</visible>
+                    <enabled>true</enabled>
+                    <userVisible>
+                      <common>true</common>
+                    </userVisible>
+                    <type>Label</type>
+                    <autoMaxWidth>true</autoMaxWidth>
+                    <autoMaxHeight>true</autoMaxHeight>
+                    <extInfo xsi:type="form:LabelDecorationExtInfo">
+                      <horizontalAlign>Left</horizontalAlign>
+                    </extInfo>
+                  </extendedTooltip>
+                  <contextMenu>
+                    <name>РолиСинонимКонтекстноеМеню</name>
+                    <id>188</id>
+                    <visible>true</visible>
+                    <enabled>true</enabled>
+                    <userVisible>
+                      <common>true</common>
+                    </userVisible>
+                    <autoFill>true</autoFill>
+                  </contextMenu>
+                  <type>InputField</type>
+                  <readOnly>true</readOnly>
+                  <editMode>EnterOnInput</editMode>
+                  <showInHeader>true</showInHeader>
+                  <headerHorizontalAlign>Left</headerHorizontalAlign>
+                  <showInFooter>true</showInFooter>
+                  <extInfo xsi:type="form:InputFieldExtInfo">
+                    <autoMaxWidth>true</autoMaxWidth>
+                    <autoMaxHeight>true</autoMaxHeight>
+                    <wrap>true</wrap>
+                    <chooseType>true</chooseType>
+                    <typeDomainEnabled>true</typeDomainEnabled>
+                    <textEdit>true</textEdit>
+                  </extInfo>
+                </items>
+                <visible>true</visible>
+                <enabled>true</enabled>
+                <userVisible>
+                  <common>true</common>
+                </userVisible>
+                <title>
+                  <key>ru</key>
+                  <value>Роли колонок</value>
+                </title>
+                <extendedTooltip>
+                  <name>РолиКолонокExtendedTooltip</name>
+                  <id>225</id>
+                  <visible>true</visible>
+                  <enabled>true</enabled>
+                  <userVisible>
+                    <common>true</common>
+                  </userVisible>
+                  <type>Label</type>
+                  <autoMaxWidth>true</autoMaxWidth>
+                  <autoMaxHeight>true</autoMaxHeight>
+                  <extInfo xsi:type="form:LabelDecorationExtInfo">
+                    <horizontalAlign>Left</horizontalAlign>
+                  </extInfo>
+                </extendedTooltip>
+                <type>ColumnGroup</type>
+                <extInfo xsi:type="form:ColumnGroupExtInfo">
+                  <group>InCell</group>
+                  <showTitle>true</showTitle>
+                </extInfo>
+              </items>
+              <autoCommandBar>
+                <name>РолиКоманднаяПанель</name>
+                <id>176</id>
+                <items xsi:type="form:Button">
+                  <name>РолиУстановитьФлажки</name>
+                  <id>182</id>
+                  <visible>true</visible>
+                  <enabled>true</enabled>
+                  <userVisible>
+                    <common>true</common>
+                  </userVisible>
+                  <skipOnInput>false</skipOnInput>
+                  <extendedTooltip>
+                    <name>РолиУстановитьФлажкиExtendedTooltip</name>
+                    <id>220</id>
+                    <visible>true</visible>
+                    <enabled>true</enabled>
+                    <userVisible>
+                      <common>true</common>
+                    </userVisible>
+                    <type>Label</type>
+                    <autoMaxWidth>true</autoMaxWidth>
+                    <autoMaxHeight>true</autoMaxHeight>
+                    <extInfo xsi:type="form:LabelDecorationExtInfo">
+                      <horizontalAlign>Left</horizontalAlign>
+                    </extInfo>
+                  </extendedTooltip>
+                  <commandName>Form.Command.ВключитьРоли</commandName>
+                  <representation>Auto</representation>
+                  <autoMaxWidth>true</autoMaxWidth>
+                  <autoMaxHeight>true</autoMaxHeight>
+                  <placementArea>UserCmds</placementArea>
+                </items>
+                <items xsi:type="form:Button">
+                  <name>РолиСнятьФлажки</name>
+                  <id>183</id>
+                  <visible>true</visible>
+                  <enabled>true</enabled>
+                  <userVisible>
+                    <common>true</common>
+                  </userVisible>
+                  <skipOnInput>false</skipOnInput>
+                  <extendedTooltip>
+                    <name>РолиСнятьФлажкиExtendedTooltip</name>
+                    <id>221</id>
+                    <visible>true</visible>
+                    <enabled>true</enabled>
+                    <userVisible>
+                      <common>true</common>
+                    </userVisible>
+                    <type>Label</type>
+                    <autoMaxWidth>true</autoMaxWidth>
+                    <autoMaxHeight>true</autoMaxHeight>
+                    <extInfo xsi:type="form:LabelDecorationExtInfo">
+                      <horizontalAlign>Left</horizontalAlign>
+                    </extInfo>
+                  </extendedTooltip>
+                  <commandName>Form.Command.ИсключитьРоли</commandName>
+                  <representation>Auto</representation>
+                  <autoMaxWidth>true</autoMaxWidth>
+                  <autoMaxHeight>true</autoMaxHeight>
+                  <placementArea>UserCmds</placementArea>
+                </items>
+                <items xsi:type="form:Button">
+                  <name>РолиПоказатьТолькоВыбранныеРоли</name>
+                  <id>184</id>
+                  <visible>true</visible>
+                  <enabled>true</enabled>
+                  <userVisible>
+                    <common>true</common>
+                  </userVisible>
+                  <skipOnInput>false</skipOnInput>
+                  <extendedTooltip>
+                    <name>РолиПоказатьТолькоВыбранныеРолиExtendedTooltip</name>
+                    <id>222</id>
+                    <visible>true</visible>
+                    <enabled>true</enabled>
+                    <userVisible>
+                      <common>true</common>
+                    </userVisible>
+                    <type>Label</type>
+                    <autoMaxWidth>true</autoMaxWidth>
+                    <autoMaxHeight>true</autoMaxHeight>
+                    <extInfo xsi:type="form:LabelDecorationExtInfo">
+                      <horizontalAlign>Left</horizontalAlign>
+                    </extInfo>
+                  </extendedTooltip>
+                  <commandName>Form.Command.ПоказатьТолькоВыбранныеРоли</commandName>
+                  <representation>Auto</representation>
+                  <autoMaxWidth>true</autoMaxWidth>
+                  <autoMaxHeight>true</autoMaxHeight>
+                  <placementArea>UserCmds</placementArea>
+                </items>
+                <items xsi:type="form:Button">
+                  <name>РолиПоказатьПодсистемыРолей</name>
+                  <id>189</id>
+                  <visible>true</visible>
+                  <enabled>true</enabled>
+                  <userVisible>
+                    <common>true</common>
+                  </userVisible>
+                  <extendedTooltip>
+                    <name>РолиПоказатьПодсистемыРолейExtendedTooltip</name>
+                    <id>223</id>
+                    <visible>true</visible>
+                    <enabled>true</enabled>
+                    <userVisible>
+                      <common>true</common>
+                    </userVisible>
+                    <type>Label</type>
+                    <autoMaxWidth>true</autoMaxWidth>
+                    <autoMaxHeight>true</autoMaxHeight>
+                    <extInfo xsi:type="form:LabelDecorationExtInfo">
+                      <horizontalAlign>Left</horizontalAlign>
+                    </extInfo>
+                  </extendedTooltip>
+                  <commandName>Form.Command.ГруппировкаРолейПоПодсистемам</commandName>
+                  <representation>Auto</representation>
+                  <autoMaxWidth>true</autoMaxWidth>
+                  <autoMaxHeight>true</autoMaxHeight>
+                  <placementArea>UserCmds</placementArea>
+                </items>
+                <items xsi:type="form:FormGroup">
+                  <name>РолиСтандартныеКоманды</name>
+                  <id>289</id>
+                  <visible>true</visible>
+                  <enabled>true</enabled>
+                  <userVisible>
+                    <common>true</common>
+                  </userVisible>
+                  <title>
+                    <key>ru</key>
+                    <value>Роли стандартные команды</value>
+                  </title>
+                  <extendedTooltip>
+                    <name>РолиСтандартныеКомандыРасширеннаяПодсказка</name>
+                    <id>290</id>
+                    <visible>true</visible>
+                    <enabled>true</enabled>
+                    <userVisible>
+                      <common>true</common>
+                    </userVisible>
+                    <type>Label</type>
+                    <autoMaxWidth>true</autoMaxWidth>
+                    <autoMaxHeight>true</autoMaxHeight>
+                    <extInfo xsi:type="form:LabelDecorationExtInfo">
+                      <horizontalAlign>Left</horizontalAlign>
+                    </extInfo>
+                  </extendedTooltip>
+                  <extInfo xsi:type="form:ButtonGroupExtInfo">
+                    <commandSource>Item.Роли</commandSource>
+                  </extInfo>
+                </items>
+                <visible>true</visible>
+                <enabled>true</enabled>
+                <userVisible>
+                  <common>true</common>
+                </userVisible>
+                <horizontalAlign>Left</horizontalAlign>
+              </autoCommandBar>
+              <searchStringAddition>
+                <visible>true</visible>
+                <enabled>true</enabled>
+                <userVisible>
+                  <common>true</common>
+                </userVisible>
+                <name>РолиСтрокаПоиска</name>
+                <id>291</id>
+                <extendedTooltip>
+                  <name>РолиСтрокаПоискаРасширеннаяПодсказка</name>
+                  <id>293</id>
+                  <visible>true</visible>
+                  <enabled>true</enabled>
+                  <userVisible>
+                    <common>true</common>
+                  </userVisible>
+                  <type>Label</type>
+                  <autoMaxWidth>true</autoMaxWidth>
+                  <autoMaxHeight>true</autoMaxHeight>
+                  <extInfo xsi:type="form:LabelDecorationExtInfo">
+                    <horizontalAlign>Left</horizontalAlign>
+                  </extInfo>
+                </extendedTooltip>
+                <contextMenu>
+                  <name>РолиСтрокаПоискаКонтекстноеМеню</name>
+                  <id>292</id>
+                  <visible>true</visible>
+                  <enabled>true</enabled>
+                  <userVisible>
+                    <common>true</common>
+                  </userVisible>
+                  <autoFill>true</autoFill>
+                </contextMenu>
+                <source>РолиСтрокаПоиска</source>
+                <extInfo xsi:type="form:SearchStringAdditionExtInfo">
+                  <autoMaxWidth>true</autoMaxWidth>
+                </extInfo>
+              </searchStringAddition>
+              <viewStatusAddition>
+                <visible>true</visible>
+                <enabled>true</enabled>
+                <userVisible>
+                  <common>true</common>
+                </userVisible>
+                <name>РолиСостояниеПросмотра</name>
+                <id>294</id>
+                <extendedTooltip>
+                  <name>РолиСостояниеПросмотраРасширеннаяПодсказка</name>
+                  <id>296</id>
+                  <visible>true</visible>
+                  <enabled>true</enabled>
+                  <userVisible>
+                    <common>true</common>
+                  </userVisible>
+                  <type>Label</type>
+                  <autoMaxWidth>true</autoMaxWidth>
+                  <autoMaxHeight>true</autoMaxHeight>
+                  <extInfo xsi:type="form:LabelDecorationExtInfo">
+                    <horizontalAlign>Left</horizontalAlign>
+                  </extInfo>
+                </extendedTooltip>
+                <contextMenu>
+                  <name>РолиСостояниеПросмотраКонтекстноеМеню</name>
+                  <id>295</id>
+                  <visible>true</visible>
+                  <enabled>true</enabled>
+                  <userVisible>
+                    <common>true</common>
+                  </userVisible>
+                  <autoFill>true</autoFill>
+                </contextMenu>
+                <type>ViewStatusAddition</type>
+                <source>РолиСостояниеПросмотра</source>
+                <extInfo xsi:type="form:ViewStatusAdditionExtInfo">
+                  <autoMaxWidth>true</autoMaxWidth>
+                  <horizontalLocation>Left</horizontalLocation>
+                </extInfo>
+              </viewStatusAddition>
+              <searchControlAddition>
+                <visible>true</visible>
+                <enabled>true</enabled>
+                <userVisible>
+                  <common>true</common>
+                </userVisible>
+                <name>РолиУправлениеПоиском</name>
+                <id>297</id>
+                <extendedTooltip>
+                  <name>РолиУправлениеПоискомРасширеннаяПодсказка</name>
+                  <id>299</id>
+                  <visible>true</visible>
+                  <enabled>true</enabled>
+                  <userVisible>
+                    <common>true</common>
+                  </userVisible>
+                  <type>Label</type>
+                  <autoMaxWidth>true</autoMaxWidth>
+                  <autoMaxHeight>true</autoMaxHeight>
+                  <extInfo xsi:type="form:LabelDecorationExtInfo">
+                    <horizontalAlign>Left</horizontalAlign>
+                  </extInfo>
+                </extendedTooltip>
+                <contextMenu>
+                  <name>РолиУправлениеПоискомКонтекстноеМеню</name>
+                  <id>298</id>
+                  <visible>true</visible>
+                  <enabled>true</enabled>
+                  <userVisible>
+                    <common>true</common>
+                  </userVisible>
+                  <autoFill>true</autoFill>
+                </contextMenu>
+                <type>SearchControlAddition</type>
+                <source>РолиУправлениеПоиском</source>
+                <extInfo xsi:type="form:SearchControlAdditionExtInfo">
+                  <autoMaxWidth>true</autoMaxWidth>
+                </extInfo>
+              </searchControlAddition>
+              <extendedTooltip>
+                <name>РолиExtendedTooltip</name>
+                <id>224</id>
+                <visible>true</visible>
+                <enabled>true</enabled>
+                <userVisible>
+                  <common>true</common>
+                </userVisible>
+                <type>Label</type>
+                <autoMaxWidth>true</autoMaxWidth>
+                <autoMaxHeight>true</autoMaxHeight>
+                <extInfo xsi:type="form:LabelDecorationExtInfo">
+                  <horizontalAlign>Left</horizontalAlign>
+                </extInfo>
+              </extendedTooltip>
+              <contextMenu>
+                <name>РолиКонтекстноеМеню</name>
+                <id>175</id>
+                <visible>true</visible>
+                <enabled>true</enabled>
+                <userVisible>
+                  <common>true</common>
+                </userVisible>
+              </contextMenu>
+              <representation>Tree</representation>
+              <autoMaxWidth>true</autoMaxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <autoMaxRowsCount>true</autoMaxRowsCount>
+              <headerHeight>1</headerHeight>
+              <footerHeight>1</footerHeight>
+              <horizontalScrollBar>AutoUse</horizontalScrollBar>
+              <verticalScrollBar>AutoUse</verticalScrollBar>
+              <horizontalLines>true</horizontalLines>
+              <verticalLines>true</verticalLines>
+              <useAlternationRowColor>true</useAlternationRowColor>
+              <autoInsertNewRow>true</autoInsertNewRow>
+              <searchOnInput>Auto</searchOnInput>
+              <initialListView>Auto</initialListView>
+              <initialTreeView>ExpandAllLevels</initialTreeView>
+              <horizontalStretch>true</horizontalStretch>
+              <verticalStretch>true</verticalStretch>
+              <enableStartDrag>true</enableStartDrag>
+              <enableDrag>true</enableDrag>
+              <rowPictureDataPath xsi:type="form:DataPath">
+                <segments>Роли.НомерКартинки</segments>
+              </rowPictureDataPath>
+              <rowsPicture xsi:type="core:PictureRef">
+                <picture>CommonPicture.ПиктограммыЭлементов</picture>
+              </rowsPicture>
+              <searchStringLocation>None</searchStringLocation>
+              <viewStatusLocation>None</viewStatusLocation>
+              <searchControlLocation>None</searchControlLocation>
+            </items>
+            <visible>true</visible>
+            <enabled>true</enabled>
+            <userVisible>
+              <common>true</common>
+            </userVisible>
+            <title>
+              <key>ru</key>
+              <value>Список ролей</value>
+            </title>
+            <extendedTooltip>
+              <name>ОтображениеРолейExtendedTooltip</name>
+              <id>219</id>
+              <visible>true</visible>
+              <enabled>true</enabled>
+              <userVisible>
+                <common>true</common>
+              </userVisible>
+              <type>Label</type>
+              <autoMaxWidth>true</autoMaxWidth>
+              <autoMaxHeight>true</autoMaxHeight>
+              <extInfo xsi:type="form:LabelDecorationExtInfo">
+                <horizontalAlign>Left</horizontalAlign>
+              </extInfo>
+            </extendedTooltip>
+            <type>UsualGroup</type>
+            <extInfo xsi:type="form:UsualGroupExtInfo">
+              <group>Vertical</group>
+              <showLeftMargin>true</showLeftMargin>
+              <united>true</united>
+              <throughAlign>Auto</throughAlign>
+            </extInfo>
+          </items>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <title>
+            <key>ru</key>
+            <value>Редактирование или просмотр ролей</value>
+          </title>
+          <toolTip>
+            <key>ru</key>
+            <value>Редактирование или просмотр ролей</value>
+          </toolTip>
+          <extendedTooltip>
+            <name>РедактированиеИлиПросмотрРолейExtendedTooltip</name>
+            <id>217</id>
+            <visible>true</visible>
+            <enabled>true</enabled>
+            <userVisible>
+              <common>true</common>
+            </userVisible>
+            <type>Label</type>
+            <autoMaxWidth>true</autoMaxWidth>
+            <autoMaxHeight>true</autoMaxHeight>
+            <extInfo xsi:type="form:LabelDecorationExtInfo">
+              <horizontalAlign>Left</horizontalAlign>
+            </extInfo>
+          </extendedTooltip>
+          <type>UsualGroup</type>
+          <extInfo xsi:type="form:UsualGroupExtInfo">
+            <group>Vertical</group>
+            <showLeftMargin>true</showLeftMargin>
+            <united>true</united>
+            <throughAlign>Auto</throughAlign>
+          </extInfo>
+        </items>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <title>
+          <key>ru</key>
+          <value>Свойства пользователя информационной базы</value>
+        </title>
+        <horizontalStretch>true</horizontalStretch>
+        <extendedTooltip>
+          <name>СвойстваПользователяИБExtendedTooltip</name>
+          <id>205</id>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <type>Label</type>
+          <autoMaxWidth>true</autoMaxWidth>
+          <autoMaxHeight>true</autoMaxHeight>
+          <extInfo xsi:type="form:LabelDecorationExtInfo">
+            <horizontalAlign>Left</horizontalAlign>
+          </extInfo>
+        </extendedTooltip>
+        <type>UsualGroup</type>
+        <extInfo xsi:type="form:UsualGroupExtInfo">
+          <representation>NormalSeparation</representation>
+          <showLeftMargin>true</showLeftMargin>
+          <united>true</united>
+          <throughAlign>Auto</throughAlign>
+        </extInfo>
+      </items>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <title>
+        <key>ru</key>
+        <value>Главное</value>
+      </title>
+      <extendedTooltip>
+        <name>СтраницаГлавноеРасширеннаяПодсказка</name>
+        <id>284</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <type>Page</type>
+      <extInfo xsi:type="form:PageGroupExtInfo">
+        <group>Vertical</group>
+        <showTitle>true</showTitle>
+      </extInfo>
+    </items>
+    <items xsi:type="form:FormGroup">
+      <name>СтраницаДополнительныеРеквизиты</name>
+      <id>300</id>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <title>
+        <key>ru</key>
+        <value>Дополнительные реквизиты</value>
+      </title>
+      <extendedTooltip>
+        <name>СтраницаДополнительныеРеквизитыРасширеннаяПодсказка</name>
+        <id>301</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <type>Page</type>
+      <extInfo xsi:type="form:PageGroupExtInfo">
+        <group>Vertical</group>
+        <showTitle>true</showTitle>
+      </extInfo>
+    </items>
+    <items xsi:type="form:FormGroup">
+      <name>СтраницаКомментарий</name>
+      <id>285</id>
+      <items xsi:type="form:FormField">
+        <name>Комментарий</name>
+        <id>257</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <dataPath xsi:type="form:MultiLanguageDataPath">
+          <paths xsi:type="form:DataPath">
+            <segments>Объект.Комментарий</segments>
+          </paths>
+        </dataPath>
+        <titleLocation>None</titleLocation>
+        <extendedTooltip>
+          <name>КомментарийExtendedTooltip</name>
+          <id>259</id>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <type>Label</type>
+          <autoMaxWidth>true</autoMaxWidth>
+          <autoMaxHeight>true</autoMaxHeight>
+          <extInfo xsi:type="form:LabelDecorationExtInfo">
+            <horizontalAlign>Left</horizontalAlign>
+          </extInfo>
+        </extendedTooltip>
+        <contextMenu>
+          <name>КомментарийКонтекстноеМеню</name>
+          <id>258</id>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <autoFill>true</autoFill>
+        </contextMenu>
+        <type>InputField</type>
+        <editMode>Enter</editMode>
+        <showInHeader>true</showInHeader>
+        <headerHorizontalAlign>Left</headerHorizontalAlign>
+        <showInFooter>true</showInFooter>
+        <extInfo xsi:type="form:InputFieldExtInfo">
+          <handlers>
+            <event>StartChoice</event>
+            <name>КомментарийНачалоВыбора</name>
+          </handlers>
+          <autoMaxWidth>true</autoMaxWidth>
+          <autoMaxHeight>true</autoMaxHeight>
+          <verticalStretch>true</verticalStretch>
+          <wrap>true</wrap>
+          <multiLine>true</multiLine>
+          <chooseType>true</chooseType>
+          <typeDomainEnabled>true</typeDomainEnabled>
+          <textEdit>true</textEdit>
+        </extInfo>
+      </items>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <title>
+        <key>ru</key>
+        <value>Комментарий</value>
+      </title>
+      <extendedTooltip>
+        <name>СтраницаКомментарийРасширеннаяПодсказка</name>
+        <id>286</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <type>Page</type>
+      <extInfo xsi:type="form:PageGroupExtInfo">
+        <group>Vertical</group>
+        <showTitle>true</showTitle>
+      </extInfo>
+    </items>
+    <visible>true</visible>
+    <enabled>true</enabled>
+    <userVisible>
+      <common>true</common>
+    </userVisible>
+    <title>
+      <key>ru</key>
+      <value>Страницы главное и комментарий</value>
+    </title>
+    <extendedTooltip>
+      <name>СтраницыГлавноеИКомментарийРасширеннаяПодсказка</name>
+      <id>282</id>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <type>Label</type>
+      <autoMaxWidth>true</autoMaxWidth>
+      <autoMaxHeight>true</autoMaxHeight>
+      <extInfo xsi:type="form:LabelDecorationExtInfo">
+        <horizontalAlign>Left</horizontalAlign>
+      </extInfo>
+    </extendedTooltip>
+    <type>Pages</type>
+    <extInfo xsi:type="form:PagesGroupExtInfo">
+      <handlers>
+        <event>OnCurrentPageChange</event>
+        <name>СтраницыГлавноеИКомментарийПриСменеСтраницы</name>
+      </handlers>
+      <pagesRepresentation>TabsOnTop</pagesRepresentation>
+    </extInfo>
+  </items>
+  <autoCommandBar>
+    <name>ФормаКоманднаяПанель</name>
+    <id>-1</id>
+    <visible>true</visible>
+    <enabled>true</enabled>
+    <userVisible>
+      <common>true</common>
+    </userVisible>
+    <horizontalAlign>Left</horizontalAlign>
+    <autoFill>true</autoFill>
+  </autoCommandBar>
+  <handlers>
+    <event>NotificationProcessing</event>
+    <name>ОбработкаОповещения</name>
+  </handlers>
+  <handlers>
+    <event>OnOpen</event>
+    <name>ПриОткрытии</name>
+  </handlers>
+  <handlers>
+    <event>OnCreateAtServer</event>
+    <name>ПриСозданииНаСервере</name>
+  </handlers>
+  <handlers>
+    <event>FillCheckProcessingAtServer</event>
+    <name>ОбработкаПроверкиЗаполненияНаСервере</name>
+  </handlers>
+  <handlers>
+    <event>BeforeLoadDataFromSettingsAtServer</event>
+    <name>ПриЗагрузкеДанныхИзНастроекНаСервере</name>
+  </handlers>
+  <autoSaveDataInSettings>Use</autoSaveDataInSettings>
+  <autoTitle>true</autoTitle>
+  <autoUrl>true</autoUrl>
+  <group>Vertical</group>
+  <autoFillCheck>true</autoFillCheck>
+  <allowFormCustomize>true</allowFormCustomize>
+  <enabled>true</enabled>
+  <showTitle>true</showTitle>
+  <showCloseButton>true</showCloseButton>
+  <attributes>
+    <name>Объект</name>
+    <id>1</id>
+    <valueType>
+      <types>CatalogObject.ВнешниеПользователи</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+    <main>true</main>
+    <savedData>true</savedData>
+  </attributes>
+  <attributes>
+    <name>ПользовательИБЯзык</name>
+    <title>
+      <key>ru</key>
+      <value>Язык интерфейса программы</value>
+    </title>
+    <id>10</id>
+    <valueType>
+      <types>String</types>
+      <stringQualifiers/>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+    <functionalOptions>FunctionalOption.ИспользоватьВнешнихПользователей</functionalOptions>
+    <savedData>true</savedData>
+  </attributes>
+  <attributes>
+    <name>ПользовательИБЗапрещеноИзменятьПароль</name>
+    <title>
+      <key>ru</key>
+      <value>Пользователю запрещено изменять пароль</value>
+    </title>
+    <id>13</id>
+    <valueType>
+      <types>Boolean</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+    <functionalOptions>FunctionalOption.ИспользоватьВнешнихПользователей</functionalOptions>
+    <savedData>true</savedData>
+  </attributes>
+  <attributes>
+    <name>ПользовательИБИмя</name>
+    <title>
+      <key>ru</key>
+      <value>Имя (для входа)</value>
+    </title>
+    <id>16</id>
+    <valueType>
+      <types>String</types>
+      <stringQualifiers/>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+    <functionalOptions>FunctionalOption.ИспользоватьВнешнихПользователей</functionalOptions>
+    <savedData>true</savedData>
+  </attributes>
+  <attributes>
+    <name>ВходВПрограммуРазрешен</name>
+    <title>
+      <key>ru</key>
+      <value>Вход в программу разрешен</value>
+    </title>
+    <id>17</id>
+    <valueType>
+      <types>Boolean</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+    <functionalOptions>FunctionalOption.ИспользоватьВнешнихПользователей</functionalOptions>
+    <savedData>true</savedData>
+  </attributes>
+  <attributes>
+    <name>ПользовательИБСуществует</name>
+    <title>
+      <key>ru</key>
+      <value>Пользователь ИБ существует</value>
+    </title>
+    <id>23</id>
+    <valueType>
+      <types>Boolean</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+    <savedData>true</savedData>
+  </attributes>
+  <attributes>
+    <name>ГруппаНовогоВнешнегоПользователя</name>
+    <title>
+      <key>ru</key>
+      <value>Группа нового внешнего пользователя</value>
+    </title>
+    <id>2</id>
+    <valueType>
+      <types>CatalogRef.ГруппыВнешнихПользователей</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+  </attributes>
+  <attributes>
+    <name>ДействияВФорме</name>
+    <title>
+      <key>ru</key>
+      <value>Действия в форме</value>
+    </title>
+    <id>8</id>
+    <valueType/>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+  </attributes>
+  <attributes>
+    <name>ТекущееПредставлениеОбъектаАвторизации</name>
+    <title>
+      <key>ru</key>
+      <value>Текущее представление объекта авторизации</value>
+    </title>
+    <id>18</id>
+    <valueType>
+      <types>String</types>
+      <stringQualifiers/>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+  </attributes>
+  <attributes>
+    <name>ТипОбъектовАвторизации</name>
+    <title>
+      <key>ru</key>
+      <value>Тип объектов авторизации</value>
+    </title>
+    <id>5</id>
+    <valueType/>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+  </attributes>
+  <attributes>
+    <name>ОбъектАвторизацииЗаданПриОткрытии</name>
+    <title>
+      <key>ru</key>
+      <value>Объект авторизации задан при открытии</value>
+    </title>
+    <id>6</id>
+    <valueType>
+      <types>Boolean</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+  </attributes>
+  <attributes>
+    <name>ЕстьСопоставлениеСНесуществующимПользователемИБ</name>
+    <title>
+      <key>ru</key>
+      <value>Есть сопоставление с несуществующим пользователем ИБ</value>
+    </title>
+    <id>9</id>
+    <valueType>
+      <types>Boolean</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+  </attributes>
+  <attributes>
+    <name>ПользовательИБРоли</name>
+    <title>
+      <key>ru</key>
+      <value>Пользователь ИБ роли</value>
+    </title>
+    <id>11</id>
+    <valueType>
+      <types>ValueTable</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+    <columns>
+      <name>Роль</name>
+      <title>
+        <key>ru</key>
+        <value>Роль</value>
+      </title>
+      <id>1</id>
+      <valueType>
+        <types>String</types>
+        <stringQualifiers>
+          <length>150</length>
+        </stringQualifiers>
+      </valueType>
+      <view>
+        <common>true</common>
+      </view>
+      <edit>
+        <common>true</common>
+      </edit>
+    </columns>
+    <additionalColumns>
+      <tablePath xsi:type="form:DataPath">
+        <segments>ПользовательИБРоли.Роль</segments>
+      </tablePath>
+    </additionalColumns>
+  </attributes>
+  <attributes>
+    <name>Роли</name>
+    <title>
+      <key>ru</key>
+      <value>Роли</value>
+    </title>
+    <id>12</id>
+    <valueType>
+      <types>ValueTree</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+    <functionalOptions>FunctionalOption.ИспользоватьВнешнихПользователей</functionalOptions>
+    <savedData>true</savedData>
+    <columns>
+      <name>Пометка</name>
+      <title>
+        <key>ru</key>
+        <value>Пометка</value>
+      </title>
+      <id>1</id>
+      <valueType>
+        <types>Boolean</types>
+      </valueType>
+      <view>
+        <common>true</common>
+      </view>
+      <edit>
+        <common>true</common>
+      </edit>
+    </columns>
+    <columns>
+      <name>Синоним</name>
+      <title>
+        <key>ru</key>
+        <value>Разрешенное действие (роль)</value>
+      </title>
+      <id>2</id>
+      <valueType>
+        <types>String</types>
+        <stringQualifiers/>
+      </valueType>
+      <view>
+        <common>true</common>
+      </view>
+      <edit>
+        <common>true</common>
+      </edit>
+    </columns>
+    <columns>
+      <name>НомерКартинки</name>
+      <title>
+        <key>ru</key>
+        <value>Номер картинки</value>
+      </title>
+      <id>3</id>
+      <valueType>
+        <types>Number</types>
+        <numberQualifiers>
+          <precision>1</precision>
+          <nonNegative>true</nonNegative>
+        </numberQualifiers>
+      </valueType>
+      <view>
+        <common>true</common>
+      </view>
+      <edit>
+        <common>true</common>
+      </edit>
+    </columns>
+    <columns>
+      <name>Имя</name>
+      <title>
+        <key>ru</key>
+        <value>Имя</value>
+      </title>
+      <id>4</id>
+      <valueType>
+        <types>String</types>
+        <stringQualifiers/>
+      </valueType>
+      <view>
+        <common>true</common>
+      </view>
+      <edit>
+        <common>true</common>
+      </edit>
+    </columns>
+    <columns>
+      <name>ЭтоРоль</name>
+      <title>
+        <key>ru</key>
+        <value>Это роль</value>
+      </title>
+      <id>5</id>
+      <valueType>
+        <types>Boolean</types>
+      </valueType>
+      <view>
+        <common>true</common>
+      </view>
+      <edit>
+        <common>true</common>
+      </edit>
+    </columns>
+    <columns>
+      <name>ЭтоНедоступнаяРоль</name>
+      <title>
+        <key>ru</key>
+        <value>Это недоступная роль</value>
+      </title>
+      <id>6</id>
+      <valueType>
+        <types>Boolean</types>
+      </valueType>
+      <view>
+        <common>true</common>
+      </view>
+      <edit>
+        <common>true</common>
+      </edit>
+    </columns>
+    <columns>
+      <name>ЭтоНесуществующаяРоль</name>
+      <title>
+        <key>ru</key>
+        <value>Это несуществующая роль</value>
+      </title>
+      <id>7</id>
+      <valueType>
+        <types>Boolean</types>
+      </valueType>
+      <view>
+        <common>true</common>
+      </view>
+      <edit>
+        <common>true</common>
+      </edit>
+    </columns>
+  </attributes>
+  <attributes>
+    <name>ЗапретРедактированияРолей</name>
+    <title>
+      <key>ru</key>
+      <value>Запрет редактирования ролей</value>
+    </title>
+    <id>14</id>
+    <valueType>
+      <types>Boolean</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+  </attributes>
+  <attributes>
+    <name>ПоказатьПодсистемыРолей</name>
+    <title>
+      <key>ru</key>
+      <value>Показать подсистемы ролей</value>
+    </title>
+    <id>15</id>
+    <valueType>
+      <types>Boolean</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+    <settingsSavedData xsi:type="form:DataPath">
+      <segments>ПоказатьПодсистемыРолей</segments>
+    </settingsSavedData>
+  </attributes>
+  <attributes>
+    <name>ЗначениеКопирования</name>
+    <title>
+      <key>ru</key>
+      <value>Значение копирования</value>
+    </title>
+    <id>20</id>
+    <valueType>
+      <types>CatalogRef.ВнешниеПользователи</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+  </attributes>
+  <attributes>
+    <name>ПользовательИБАутентификацияOpenID</name>
+    <title>
+      <key>ru</key>
+      <value>Аутентификация по протоколу OpenID</value>
+    </title>
+    <id>21</id>
+    <valueType>
+      <types>Boolean</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+    <functionalOptions>FunctionalOption.ИспользоватьВнешнихПользователей</functionalOptions>
+    <savedData>true</savedData>
+  </attributes>
+  <attributes>
+    <name>ПользовательИБАутентификацияСтандартная</name>
+    <title>
+      <key>ru</key>
+      <value>Аутентификация 1С:Предприятия</value>
+    </title>
+    <id>22</id>
+    <valueType>
+      <types>Boolean</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+    <functionalOptions>FunctionalOption.ИспользоватьВнешнихПользователей</functionalOptions>
+    <savedData>true</savedData>
+  </attributes>
+  <attributes>
+    <name>НачальноеОписаниеПользователяИБ</name>
+    <title>
+      <key>ru</key>
+      <value>Начальное описание пользователя ИБ</value>
+    </title>
+    <id>24</id>
+    <valueType/>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+  </attributes>
+  <attributes>
+    <name>ПользовательИБПолноеИмя</name>
+    <title>
+      <key>ru</key>
+      <value>Пользователь ИБПолное имя</value>
+    </title>
+    <id>25</id>
+    <valueType>
+      <types>String</types>
+      <stringQualifiers/>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+    <savedData>true</savedData>
+  </attributes>
+  <attributes>
+    <name>УровеньДоступа</name>
+    <title>
+      <key>ru</key>
+      <value>Уровень доступа</value>
+    </title>
+    <id>26</id>
+    <valueType/>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+  </attributes>
+  <attributes>
+    <name>ПользовательИБАутентификацияОС</name>
+    <title>
+      <key>ru</key>
+      <value>Аутентификация операционной системы</value>
+    </title>
+    <id>29</id>
+    <valueType>
+      <types>Boolean</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+    <savedData>true</savedData>
+  </attributes>
+  <attributes>
+    <name>ПользовательИБПользовательОС</name>
+    <title>
+      <key>ru</key>
+      <value>Пользователь</value>
+    </title>
+    <id>27</id>
+    <valueType>
+      <types>String</types>
+      <stringQualifiers/>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+    <savedData>true</savedData>
+  </attributes>
+  <attributes>
+    <name>ПользовательИБРежимЗапуска</name>
+    <title>
+      <key>ru</key>
+      <value>Режим запуска</value>
+    </title>
+    <id>30</id>
+    <valueType>
+      <types>String</types>
+      <stringQualifiers/>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+    <savedData>true</savedData>
+  </attributes>
+  <attributes>
+    <name>ПользовательИБПоказыватьВСпискеВыбора</name>
+    <title>
+      <key>ru</key>
+      <value>Показывать в списке выбора</value>
+    </title>
+    <id>31</id>
+    <valueType>
+      <types>Boolean</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+    <savedData>true</savedData>
+  </attributes>
+  <attributes>
+    <name>ПриЧтенииВходВПрограммуРазрешен</name>
+    <title>
+      <key>ru</key>
+      <value>При чтении вход в программу разрешен</value>
+    </title>
+    <id>19</id>
+    <valueType>
+      <types>Boolean</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+  </attributes>
+  <attributes>
+    <name>ВходВПрограммуРазрешенЗначениеПрямогоИзменения</name>
+    <title>
+      <key>ru</key>
+      <value>Вход в программу разрешен значение прямого изменения</value>
+    </title>
+    <id>28</id>
+    <valueType>
+      <types>Boolean</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+  </attributes>
+  <attributes>
+    <name>ПотребоватьСменуПароляПриВходе</name>
+    <title>
+      <key>ru</key>
+      <value>Потребовать смену пароля при входе</value>
+    </title>
+    <id>33</id>
+    <valueType>
+      <types>Boolean</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+    <functionalOptions>FunctionalOption.ИспользоватьВнешнихПользователей</functionalOptions>
+    <savedData>true</savedData>
+  </attributes>
+  <attributes>
+    <name>СрокДействия</name>
+    <title>
+      <key>ru</key>
+      <value>Срок действия</value>
+    </title>
+    <id>34</id>
+    <valueType>
+      <types>Date</types>
+      <dateQualifiers>
+        <dateFractions>Date</dateFractions>
+      </dateQualifiers>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+    <savedData>true</savedData>
+  </attributes>
+  <attributes>
+    <name>СрокДействияНеОграничен</name>
+    <title>
+      <key>ru</key>
+      <value>Срок действия не ограничен</value>
+    </title>
+    <id>35</id>
+    <valueType>
+      <types>Boolean</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+  </attributes>
+  <attributes>
+    <name>ПросрочкаРаботыВПрограммеДоЗапрещенияВхода</name>
+    <title>
+      <key>ru</key>
+      <value>Просрочка работы в программе до запрещения входа</value>
+    </title>
+    <id>36</id>
+    <valueType>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>3</precision>
+        <nonNegative>true</nonNegative>
+      </numberQualifiers>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+  </attributes>
+  <attributes>
+    <name>ПользовательИБИмяЗначениеПрямогоИзменения</name>
+    <title>
+      <key>ru</key>
+      <value>Имя (для входа) - значение прямого изменения</value>
+    </title>
+    <id>37</id>
+    <valueType>
+      <types>String</types>
+      <stringQualifiers/>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+  </attributes>
+  <attributes>
+    <name>ПользовательИБПароль</name>
+    <title>
+      <key>ru</key>
+      <value>Пользователь ИБПароль</value>
+    </title>
+    <id>38</id>
+    <valueType/>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+    <savedData>true</savedData>
+  </attributes>
+  <attributes>
+    <name>ПользовательИБСтарыйПароль</name>
+    <title>
+      <key>ru</key>
+      <value>Пользователь ИБСтарый пароль</value>
+    </title>
+    <id>39</id>
+    <valueType/>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+  </attributes>
+  <formCommands>
+    <name>ПоказатьТолькоВыбранныеРоли</name>
+    <title>
+      <key>ru</key>
+      <value>Только выбранные роли</value>
+    </title>
+    <id>3</id>
+    <toolTip>
+      <key>ru</key>
+      <value>Показать только выбранные роли</value>
+    </toolTip>
+    <use>
+      <common>true</common>
+    </use>
+    <picture xsi:type="core:PictureRef">
+      <picture>CommonPicture.ПоказатьТолькоВыбранныеРоли</picture>
+    </picture>
+    <action xsi:type="form:FormCommandHandlerContainer">
+      <handler>
+        <name>ПоказатьТолькоВыбранныеРоли</name>
+      </handler>
+    </action>
+    <functionalOptions>FunctionalOption.ИспользоватьВнешнихПользователей</functionalOptions>
+    <representation>TextPicture</representation>
+  </formCommands>
+  <formCommands>
+    <name>ИсключитьРоли</name>
+    <title>
+      <key>ru</key>
+      <value>Исключить роли</value>
+    </title>
+    <id>5</id>
+    <toolTip>
+      <key>ru</key>
+      <value>Исключить роли</value>
+    </toolTip>
+    <use>
+      <common>true</common>
+    </use>
+    <picture xsi:type="core:PictureRef">
+      <picture>StdPicture.UncheckAll</picture>
+    </picture>
+    <action xsi:type="form:FormCommandHandlerContainer">
+      <handler>
+        <name>ИсключитьРоли</name>
+      </handler>
+    </action>
+    <functionalOptions>FunctionalOption.ИспользоватьВнешнихПользователей</functionalOptions>
+    <modifiesStoredData>true</modifiesStoredData>
+  </formCommands>
+  <formCommands>
+    <name>ВключитьРоли</name>
+    <title>
+      <key>ru</key>
+      <value>Включить роли</value>
+    </title>
+    <id>6</id>
+    <toolTip>
+      <key>ru</key>
+      <value>Включить роли</value>
+    </toolTip>
+    <use>
+      <common>true</common>
+    </use>
+    <picture xsi:type="core:PictureRef">
+      <picture>StdPicture.CheckAll</picture>
+    </picture>
+    <action xsi:type="form:FormCommandHandlerContainer">
+      <handler>
+        <name>ВключитьРоли</name>
+      </handler>
+    </action>
+    <functionalOptions>FunctionalOption.ИспользоватьВнешнихПользователей</functionalOptions>
+    <modifiesStoredData>true</modifiesStoredData>
+  </formCommands>
+  <formCommands>
+    <name>ГруппировкаРолейПоПодсистемам</name>
+    <title>
+      <key>ru</key>
+      <value>По подсистемам</value>
+    </title>
+    <id>1</id>
+    <toolTip>
+      <key>ru</key>
+      <value>Группировать список ролей по подсистемам</value>
+    </toolTip>
+    <use>
+      <common>true</common>
+    </use>
+    <picture xsi:type="core:PictureRef">
+      <picture>CommonPicture.Подсистема</picture>
+    </picture>
+    <action xsi:type="form:FormCommandHandlerContainer">
+      <handler>
+        <name>ГруппировкаРолейПоПодсистемам</name>
+      </handler>
+    </action>
+    <functionalOptions>FunctionalOption.ИспользоватьВнешнихПользователей</functionalOptions>
+    <representation>TextPicture</representation>
+  </formCommands>
+  <formCommands>
+    <name>СменитьПароль</name>
+    <title>
+      <key>ru</key>
+      <value>Сменить пароль...</value>
+    </title>
+    <id>2</id>
+    <use>
+      <common>true</common>
+    </use>
+    <action xsi:type="form:FormCommandHandlerContainer">
+      <handler>
+        <name>СменитьПароль</name>
+      </handler>
+    </action>
+    <functionalOptions>FunctionalOption.ИспользоватьВнешнихПользователей</functionalOptions>
+    <modifiesStoredData>true</modifiesStoredData>
+  </formCommands>
+  <formCommands>
+    <name>ИзменитьОграничениеНаВходВПрограмму</name>
+    <title>
+      <key>ru</key>
+      <value>Изменить ограничение</value>
+    </title>
+    <id>4</id>
+    <use>
+      <common>true</common>
+    </use>
+    <action xsi:type="form:FormCommandHandlerContainer">
+      <handler>
+        <name>ИзменитьОграничениеНаВходВПрограмму</name>
+      </handler>
+    </action>
+    <functionalOptions>FunctionalOption.ИспользоватьВнешнихПользователей</functionalOptions>
+    <modifiesStoredData>true</modifiesStoredData>
+  </formCommands>
+  <parameters>
+    <name>ГруппаНовогоВнешнегоПользователя</name>
+    <valueType>
+      <types>CatalogRef.ГруппыВнешнихПользователей</types>
+    </valueType>
+  </parameters>
+  <parameters>
+    <name>ИдентификаторПользователяИБ</name>
+    <valueType>
+      <types>UUID</types>
+    </valueType>
+  </parameters>
+  <commandInterface>
+    <navigationPanel/>
+    <commandBar/>
+  </commandInterface>
+  <extInfo xsi:type="form:CatalogFormExtInfo">
+    <handlers>
+      <event>AfterWrite</event>
+      <name>ПослеЗаписи</name>
+    </handlers>
+    <handlers>
+      <event>AfterWriteAtServer</event>
+      <name>ПослеЗаписиНаСервере</name>
+    </handlers>
+    <handlers>
+      <event>OnReadAtServer</event>
+      <name>ПриЧтенииНаСервере</name>
+    </handlers>
+    <handlers>
+      <event>BeforeWrite</event>
+      <name>ПередЗаписью</name>
+    </handlers>
+    <handlers>
+      <event>BeforeWriteAtServer</event>
+      <name>ПередЗаписьюНаСервере</name>
+    </handlers>
+    <handlers>
+      <event>OnWriteAtServer</event>
+      <name>ПриЗаписиНаСервере</name>
+    </handlers>
+  </extInfo>
+</form:Form>

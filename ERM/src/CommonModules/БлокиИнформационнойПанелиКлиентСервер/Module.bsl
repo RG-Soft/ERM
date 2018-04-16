@@ -1,4 +1,4 @@
-﻿
+
 #Область RWDDeadline
 
 Функция ИмяБлокаRWDDeadline() Экспорт

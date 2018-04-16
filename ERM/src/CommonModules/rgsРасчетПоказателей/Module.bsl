@@ -1,4 +1,4 @@
-﻿
+
 Функция РассчитатьDSO(AR, Период, Billing0, Billing1, Billing2, Billing3, Billing4,
 	Billing5, Billing6, Billing7, Billing8, Billing9, Billing10, Billing11, Billing12,
 	Billing13, Billing14, Billing15, Billing16, Billing17, Billing18, Billing19, Billing20,
