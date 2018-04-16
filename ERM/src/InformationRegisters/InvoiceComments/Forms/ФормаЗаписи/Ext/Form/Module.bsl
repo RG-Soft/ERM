@@ -43,9 +43,7 @@
 		
 	КонецЕсли;
 	
-	 	//{{КОНСТРУКТОР_ЗАПРОСА_С_ОБРАБОТКОЙ_РЕЗУЛЬТАТА
-	// Данный фрагмент построен конструктором.
-	// При повторном использовании конструктора, внесенные вручную изменения будут утеряны!!!
+	АвтоматическоеЗаполнениеСтатуса = Ложь;
 	
 	Запрос = Новый Запрос;
 	Запрос.Текст = 
@@ -62,21 +60,30 @@
 	
 	ВыборкаДетальныеЗаписи = РезультатЗапроса.Выбрать();
 	
-	МассивСтатусов = Новый Массив;
-	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.BillingError);
-	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.ClientConfirmedPayment);
-	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.ClientHasLiquidityProblems);
-	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.CustomerIsInsolventOrBankrupt);
-	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.CustomerIsUnavailable);
-	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.EscalatedToSales);
-	//МассивСтатусов.Добавить(Перечисления.InvoiceStatus.InvoiceNotDue;
-	
-	
-	
-	
 	Если ВыборкаДетальныеЗаписи.Количество() > 0 Тогда
-		
+		АвтоматическоеЗаполнениеСтатуса = Истина
 	КонецЕсли;
+	
+	МассивСтатусов = Новый Массив;
+	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.CustomerIsInsolventOrBankrupt);
+	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.PendingSLBDocumentation);
+	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.Pricing);
+	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.TechnicalSQ);
+	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.LostInHole);
+	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.PendingInvoiceApproval);
+	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.PendingPaymentAllocation);
+	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.ClientConfirmedPayment);
+	Если НЕ АвтоматическоеЗаполнениеСтатуса Тогда
+		МассивСтатусов.Добавить(Перечисления.InvoiceStatus.InvoicePaid);
+	КонецЕсли;
+	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.EscalatedToSales);
+	Если НЕ АвтоматическоеЗаполнениеСтатуса Тогда
+		МассивСтатусов.Добавить(Перечисления.InvoiceStatus.InvoiceNotDue);
+	КонецЕсли;
+	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.CustomerIsUnavailable);
+	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.ClientHasLiquidityProblems);
+	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.BillingError);
+	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.PartiallyPaid);
 	
 	ЭтаФорма.ПодчиненныеЭлементы.Status.СписокВыбора.ЗагрузитьЗначения(МассивСтатусов);
 	
