@@ -190,29 +190,30 @@
 	Запрос.Текст = 
 		"ВЫБРАТЬ
 		|	ЕСТЬNULL(СУММА(ВЫБОР
-		|				КОГДА РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.RWDTargetDate, &ТекущаяДата, ДЕНЬ) = 0
-		|					ТОГДА 1
-		|				ИНАЧЕ 0
-		|			КОНЕЦ), 0) КАК RWDDeadline_Today,
+		|		КОГДА РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.RWDTargetDate, &ТекущаяДата, ДЕНЬ) = 0
+		|			ТОГДА 1
+		|		ИНАЧЕ 0
+		|	КОНЕЦ), 0) КАК RWDDeadline_Today,
 		|	ЕСТЬNULL(СУММА(ВЫБОР
-		|				КОГДА РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.RWDTargetDate, &ТекущаяДата, ДЕНЬ) > 0
-		|						И РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.RWDTargetDate, &ТекущаяДата, ДЕНЬ) <= 5
-		|					ТОГДА 1
-		|				ИНАЧЕ 0
-		|			КОНЕЦ), 0) КАК RWDDeadline_5days,
+		|		КОГДА РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.RWDTargetDate, &ТекущаяДата, ДЕНЬ) > 0
+		|		И РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.RWDTargetDate, &ТекущаяДата, ДЕНЬ) <= 5
+		|			ТОГДА 1
+		|		ИНАЧЕ 0
+		|	КОНЕЦ), 0) КАК RWDDeadline_5days,
 		|	ЕСТЬNULL(СУММА(ВЫБОР
-		|				КОГДА РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.RWDTargetDate, &ТекущаяДата, ДЕНЬ) > 5
-		|					ТОГДА 1
-		|				ИНАЧЕ 0
-		|			КОНЕЦ), 0) КАК RWDDeadline_More5days,
+		|		КОГДА РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.RWDTargetDate, &ТекущаяДата, ДЕНЬ) > 5
+		|			ТОГДА 1
+		|		ИНАЧЕ 0
+		|	КОНЕЦ), 0) КАК RWDDeadline_More5days,
 		|	ЕСТЬNULL(СУММА(1), 0) КАК RWDDeadline_Total
 		|ИЗ
 		|	РегистрСведений.InvoiceComments.СрезПоследних(, Invoice.Client = &Клиент) КАК InvoiceCommentsСрезПоследних
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.Collectors КАК Collectors
 		|		ПО InvoiceCommentsСрезПоследних.Invoice.Client = Collectors.Client
-		|			И (InvoiceCommentsСрезПоследних.Invoice.Location.БазовыйЭлемент.GeoMarket.Родитель = Collectors.GeoMarket
-		|				ИЛИ Collectors.GeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка))
-		|			И (Collectors.Collector = &Коллектор)
+		|		И
+		|			(InvoiceCommentsСрезПоследних.Invoice.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket = Collectors.ManagementGeomarket
+		|		ИЛИ Collectors.ManagementGeomarket = ЗНАЧЕНИЕ(Справочник.ManagementGeography.ПустаяСсылка))
+		|		И Collectors.Collector = &Коллектор
 		|ГДЕ
 		|	InvoiceCommentsСрезПоследних.Problem.RWDTargetDate <> ДАТАВРЕМЯ(1, 1, 1)
 		|	И InvoiceCommentsСрезПоследних.Problem.RWDTargetDate <= &ТекущаяДата";
@@ -393,29 +394,30 @@
 	Запрос.Текст = 
 		"ВЫБРАТЬ
 		|	ЕСТЬNULL(СУММА(ВЫБОР
-		|				КОГДА РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.ForecastDate, &ТекущаяДата, ДЕНЬ) = 1
-		|					ТОГДА 1
-		|				ИНАЧЕ 0
-		|			КОНЕЦ), 0) КАК BrokenPromises_Today,
+		|		КОГДА РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.ForecastDate, &ТекущаяДата, ДЕНЬ) = 1
+		|			ТОГДА 1
+		|		ИНАЧЕ 0
+		|	КОНЕЦ), 0) КАК BrokenPromises_Today,
 		|	ЕСТЬNULL(СУММА(ВЫБОР
-		|				КОГДА РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.ForecastDate, &ТекущаяДата, ДЕНЬ) > 1
-		|						И РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.ForecastDate, &ТекущаяДата, ДЕНЬ) <= 5
-		|					ТОГДА 1
-		|				ИНАЧЕ 0
-		|			КОНЕЦ), 0) КАК BrokenPromises_5days,
+		|		КОГДА РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.ForecastDate, &ТекущаяДата, ДЕНЬ) > 1
+		|		И РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.ForecastDate, &ТекущаяДата, ДЕНЬ) <= 5
+		|			ТОГДА 1
+		|		ИНАЧЕ 0
+		|	КОНЕЦ), 0) КАК BrokenPromises_5days,
 		|	ЕСТЬNULL(СУММА(ВЫБОР
-		|				КОГДА РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.ForecastDate, &ТекущаяДата, ДЕНЬ) > 5
-		|					ТОГДА 1
-		|				ИНАЧЕ 0
-		|			КОНЕЦ), 0) КАК BrokenPromises_More5days,
+		|		КОГДА РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.ForecastDate, &ТекущаяДата, ДЕНЬ) > 5
+		|			ТОГДА 1
+		|		ИНАЧЕ 0
+		|	КОНЕЦ), 0) КАК BrokenPromises_More5days,
 		|	ЕСТЬNULL(СУММА(1), 0) КАК BrokenPromises_Total
 		|ИЗ
 		|	РегистрСведений.InvoiceComments.СрезПоследних(, Invoice.Client = &Клиент) КАК InvoiceCommentsСрезПоследних
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.Collectors КАК Collectors
 		|		ПО InvoiceCommentsСрезПоследних.Invoice.Client = Collectors.Client
-		|			И (InvoiceCommentsСрезПоследних.Invoice.Location.БазовыйЭлемент.GeoMarket.Родитель = Collectors.GeoMarket
-		|				ИЛИ Collectors.GeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка))
-		|			И (Collectors.Collector = &Коллектор)
+		|		И
+		|			(InvoiceCommentsСрезПоследних.Invoice.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket = Collectors.ManagementGeomarket
+		|		ИЛИ Collectors.ManagementGeomarket = ЗНАЧЕНИЕ(Справочник.ManagementGeography.ПустаяСсылка))
+		|		И Collectors.Collector = &Коллектор
 		|ГДЕ
 		|	InvoiceCommentsСрезПоследних.Problem.ForecastDate <> ДАТАВРЕМЯ(1, 1, 1)
 		|	И InvoiceCommentsСрезПоследних.Problem.Status <> ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid)
