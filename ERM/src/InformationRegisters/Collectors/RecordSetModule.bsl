@@ -6,18 +6,17 @@
 	Запрос = Новый Запрос;
 	Запрос.Текст = 
 		"ВЫБРАТЬ
-		|	КОЛИЧЕСТВО(РАЗЛИЧНЫЕ Collectors.GeoMarket) КАК КоличествоЗаписейПоКлиенту,
+		|	КОЛИЧЕСТВО(РАЗЛИЧНЫЕ Collectors.ManagementGeomarket) КАК КоличествоЗаписейПоКлиенту,
 		|	Collectors.Client,
 		|	МАКСИМУМ(ВЫБОР
-		|			КОГДА Collectors.GeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка)
-		|				ТОГДА 1
-		|			ИНАЧЕ 0
-		|		КОНЕЦ) КАК ЕстьПустойГеомаркет
+		|		КОГДА Collectors.ManagementGeomarket = ЗНАЧЕНИЕ(Справочник.ManagementGeography.ПустаяСсылка)
+		|			ТОГДА 1
+		|		ИНАЧЕ 0
+		|	КОНЕЦ) КАК ЕстьПустойManagementGeomarket
 		|ИЗ
 		|	РегистрСведений.Collectors КАК Collectors
 		|ГДЕ
-		|	Collectors.Client В(&Clients)
-		|
+		|	Collectors.Client В (&Clients)
 		|СГРУППИРОВАТЬ ПО
 		|	Collectors.Client";
 	
@@ -28,9 +27,9 @@
 	ВыборкаДетальныеЗаписи = РезультатЗапроса.Выбрать();
 	
 	Пока ВыборкаДетальныеЗаписи.Следующий() Цикл
-		Если  ВыборкаДетальныеЗаписи.КоличествоЗаписейПоКлиенту > 1 И ВыборкаДетальныеЗаписи.ЕстьПустойГеомаркет Тогда
+		Если  ВыборкаДетальныеЗаписи.КоличествоЗаписейПоКлиенту > 1 И ВыборкаДетальныеЗаписи.ЕстьПустойManagementGeomarket Тогда
 			Отказ = Истина;
-			Сообщить("Error writing. Select Geomarket for each collector.");
+			Сообщить("Error writing. Select Management Geomarket for each collector.");
 		КонецЕсли;
 	КонецЦикла;
 	
