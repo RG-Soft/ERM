@@ -1,8 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <DataCompositionSchema xmlns="http://v8.1c.ru/8.1/data-composition-system/schema" xmlns:dcscom="http://v8.1c.ru/8.1/data-composition-system/common" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<dataSource>
+		<name>ИсточникДанных1</name>
+		<dataSourceType>Local</dataSourceType>
+	</dataSource>
 	<dataSet xsi:type="DataSetQuery">
 		<name>НаборДанных1</name>
-		<query></query>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>AU</dataPath>
+			<field>AU</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>AU</v8:content>
+				</v8:item>
+			</title>
+			<attributeUseRestriction>
+				<field>false</field>
+				<condition>false</condition>
+				<group>true</group>
+				<order>true</order>
+			</attributeUseRestriction>
+			<role>
+				<dcscom:required>true</dcscom:required>
+			</role>
+			<valueType>
+				<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:CatalogRef.КостЦентры</v8:Type>
+			</valueType>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Client</dataPath>
+			<field>Client</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>SubGeoMarket</dataPath>
+			<field>SubGeoMarket</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>MgmtGeomarket</dataPath>
+			<field>MgmtGeomarket</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>SubSubSegment</dataPath>
+			<field>SubSubSegment</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>SalesAccount</dataPath>
+			<field>SalesAccount</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Source</dataPath>
+			<field>Source</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>ParentClient</dataPath>
+			<field>ParentClient</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>SubSegment</dataPath>
+			<field>SubSegment</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>GeoMarket</dataPath>
+			<field>GeoMarket</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>LegalEntity</dataPath>
+			<field>LegalEntity</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Segment</dataPath>
+			<field>Segment</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Company</dataPath>
+			<field>Company</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Location</dataPath>
+			<field>Location</field>
+		</field>
+		<dataSource>ИсточникДанных1</dataSource>
+		<query>ВЫБРАТЬ
+	ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка) КАК Client,
+	ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка) КАК ParentClient,
+	ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка) КАК SalesAccount,
+	ЗНАЧЕНИЕ(Справочник.Организации.ПустаяСсылка) КАК Company,
+	ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.ПустаяСсылка) КАК Source,
+	ЗНАЧЕНИЕ(Справочник.ManagementGeography.ПустаяСсылка) КАК MgmtGeomarket,
+	ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка) КАК GeoMarket,
+	ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка) КАК SubGeoMarket,
+	ЗНАЧЕНИЕ(Справочник.HFM_Locations.ПустаяСсылка) КАК Location,
+	ЗНАЧЕНИЕ(Справочник.HFM_Technology.ПустаяСсылка) КАК Segment,
+	ЗНАЧЕНИЕ(Справочник.HFM_Technology.ПустаяСсылка) КАК SubSegment,
+	ЗНАЧЕНИЕ(Справочник.HFM_Technology.ПустаяСсылка) КАК SubSubSegment,
+	ЗНАЧЕНИЕ(Справочник.КостЦентры.ПустаяСсылка) КАК AU,
+	ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка) КАК LegalEntity
+{ВЫБРАТЬ
+	AU, Client, ParentClient, SalesAccount, Company, Source, MgmtGeomarket, GeoMarket, SubGeoMarket,
+	Location, Segment, SubSegment, SubSubSegment, AU, LegalEntity}</query>
 		<autoFillFields>false</autoFillFields>
 	</dataSet>
 	<parameter>
@@ -30,7 +126,7 @@
 			</v8:item>
 		</title>
 		<valueType>
-			<v8:Type xmlns:d3p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d3p1:EnumRef.ТипыСоответствий</v8:Type>
+			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:EnumRef.ТипыСоответствий</v8:Type>
 		</valueType>
 		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.Lawson</value>
 		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.OracleSmith</value>
@@ -52,7 +148,7 @@
 			</v8:item>
 		</title>
 		<valueType>
-			<v8:Type xmlns:d3p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d3p1:EnumRef.ТипыСоответствий</v8:Type>
+			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:EnumRef.ТипыСоответствий</v8:Type>
 		</valueType>
 		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.Lawson</value>
 		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.HOBs</value>
@@ -71,7 +167,7 @@
 			</v8:item>
 		</title>
 		<valueType>
-			<v8:Type xmlns:d3p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d3p1:EnumRef.ТипыСоответствий</v8:Type>
+			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:EnumRef.ТипыСоответствий</v8:Type>
 		</valueType>
 		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.OracleSmith</value>
 		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.OracleMI</value>

@@ -442,7 +442,9 @@
 	|	ВложенныйЗапрос.LegalEntity КАК LegalEntity,
 	|	%РесурсыБиллинга%
 	|	%РесурсыAR%
-	|	{ВЫБРАТЬ Client, Company}
+	|	{ВЫБРАТЬ Client.*, ParentClient.*, SalesAccount.*, Company.*, Source, MgmtGeomarket.*, 
+	|	GeoMarket.*, SubGeoMarket.*, Location.*, Segment.*, SubSegment*, SubSubSegment.*, AU.*, LegalEntity.*
+	|	%ПоляБиллинга%, %ПоляAR%}
 	|ИЗ
 	|	(" + Объединение + ") КАК ВложенныйЗапрос
 	|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИерархияКонтрагентов.СрезПоследних КАК ИерархияКонтрагентовСрезПоследних
