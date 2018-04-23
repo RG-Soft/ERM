@@ -6840,13 +6840,13 @@
     <edit>
       <common>true</common>
     </edit>
-    <notDefaultUseAlwaysAttributes xsi:type="form:DataPath">
-      <segments>InvoicesRWDDeadline.Ref</segments>
-    </notDefaultUseAlwaysAttributes>
     <notDefaultUseAlwaysAttributes xsi:type="form:MultiLanguageDataPath">
       <paths xsi:type="form:DataPath">
         <segments>InvoicesRWDDeadline.Invoice</segments>
       </paths>
+    </notDefaultUseAlwaysAttributes>
+    <notDefaultUseAlwaysAttributes xsi:type="form:DataPath">
+      <segments>InvoicesRWDDeadline.Ref</segments>
     </notDefaultUseAlwaysAttributes>
     <extInfo xsi:type="form:DynamicListExtInfo">
       <queryText>ВЫБРАТЬ
@@ -6891,8 +6891,8 @@
 		ПО InvoiceДокумент.Ссылка = InvoiceCommentsСрезПоследних.Invoice
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.Collectors КАК Collectors
 		ПО InvoiceДокумент.Client = Collectors.Client
-			И (Collectors.GeoMarket = InvoiceДокумент.Location.БазовыйЭлемент.GeoMarket.Родитель
-				ИЛИ Collectors.GeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка))
+			И (Collectors.ManagementGeomarket = InvoiceДокумент.Location.БазовыйЭлемент.GeoMarket.ManagementGeomarket
+				ИЛИ Collectors.ManagementGeomarket = ЗНАЧЕНИЕ(Справочник.ManagementGeography.ПустаяСсылка))
 ГДЕ
 	InvoiceCommentsСрезПоследних.Problem.RWDTargetDate &lt;> ДАТАВРЕМЯ(1, 1, 1)
 	И InvoiceCommentsСрезПоследних.Problem.RWDTargetDate &lt;= &amp;RWDTargetDateГраница
@@ -6922,13 +6922,13 @@
     <edit>
       <common>true</common>
     </edit>
-    <notDefaultUseAlwaysAttributes xsi:type="form:DataPath">
-      <segments>InvoicesBrokenPromises.Ref</segments>
-    </notDefaultUseAlwaysAttributes>
     <notDefaultUseAlwaysAttributes xsi:type="form:MultiLanguageDataPath">
       <paths xsi:type="form:DataPath">
         <segments>InvoicesBrokenPromises.Invoice</segments>
       </paths>
+    </notDefaultUseAlwaysAttributes>
+    <notDefaultUseAlwaysAttributes xsi:type="form:DataPath">
+      <segments>InvoicesBrokenPromises.Ref</segments>
     </notDefaultUseAlwaysAttributes>
     <extInfo xsi:type="form:DynamicListExtInfo">
       <queryText>ВЫБРАТЬ
@@ -6973,8 +6973,8 @@
 		ПО InvoiceДокумент.Ссылка = InvoiceCommentsСрезПоследних.Invoice
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.Collectors КАК Collectors
 		ПО InvoiceДокумент.Client = Collectors.Client
-			И (Collectors.GeoMarket = InvoiceДокумент.Location.БазовыйЭлемент.GeoMarket.Родитель
-				ИЛИ Collectors.GeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка))
+			И (Collectors.ManagementGeomarket = InvoiceДокумент.Location.БазовыйЭлемент.GeoMarket.ManagementGeomarket
+				ИЛИ Collectors.ManagementGeomarket = ЗНАЧЕНИЕ(Справочник.ManagementGeography.ПустаяСсылка))
 ГДЕ
 	InvoiceCommentsСрезПоследних.Problem.ForecastDate &lt;> ДАТАВРЕМЯ(1, 1, 1)
 	И РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.ForecastDate, &amp;ForecastDateГраница, ДЕНЬ) > 0
