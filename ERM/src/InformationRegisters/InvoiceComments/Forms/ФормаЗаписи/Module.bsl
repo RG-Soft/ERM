@@ -73,9 +73,9 @@
 	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.PendingInvoiceApproval);
 	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.PendingPaymentAllocation);
 	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.ClientConfirmedPayment);
-	Если НЕ АвтоматическоеЗаполнениеСтатуса Тогда
+	//Если НЕ АвтоматическоеЗаполнениеСтатуса Тогда
 		МассивСтатусов.Добавить(Перечисления.InvoiceStatus.InvoicePaid);
-	КонецЕсли;
+	//КонецЕсли;
 	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.EscalatedToSales);
 	Если НЕ АвтоматическоеЗаполнениеСтатуса Тогда
 		МассивСтатусов.Добавить(Перечисления.InvoiceStatus.InvoiceNotDue);
