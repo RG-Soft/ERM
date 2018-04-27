@@ -52,7 +52,7 @@
 	
 	ПутьСхемы = ИмяКаталога+"\schema.ini";
 	ФайлСхемы = Новый ТекстовыйДокумент;
-	ФайлСхемы.УстановитьТекст(Документы.ЗагрузкаДанныхCRMAccountsExtract.ПолучитьМакет("Schema").ПолучитьТекст());
+	ФайлСхемы.УстановитьТекст(Документы.ЗагрузкаДанныхCRMAccountsExtract.ПолучитьМакет("Sсhema").ПолучитьТекст());
 	ФайлСхемы.Записать(ПутьСхемы, КодировкаТекста.OEM);
 	
 	Connection = Новый COMОбъект("ADODB.Connection");
@@ -180,6 +180,11 @@
 		|	РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
 		|ГДЕ
 		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
+		|	И CRMAccountsExtractSourceData.AreaOfOperation В
+		|		(ВЫБРАТЬ
+		|			CRMClientsArea.Area
+		|		ИЗ
+		|			РегистрСведений.CRMClientsArea КАК CRMClientsArea)
 		|	И CRMAccountsExtractSourceData.CorporateAccount <> """"
 		|	И CRMAccountsExtractSourceData.BillingFlag = ""Y""
 		|
@@ -271,6 +276,11 @@
 		|	РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
 		|ГДЕ
 		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
+		|	И CRMAccountsExtractSourceData.AreaOfOperation В
+		|		(ВЫБРАТЬ
+		|			CRMClientsArea.Area
+		|		ИЗ
+		|			РегистрСведений.CRMClientsArea КАК CRMClientsArea)
 		|	И CRMAccountsExtractSourceData.CorporateAccount <> """"
 		|	И CRMAccountsExtractSourceData.BillingFlag = ""Y""
 		|
@@ -334,13 +344,17 @@
 		|ГДЕ
 		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
 		// { RGS AGorlenko 20.03.2018 13:22:04 - из-за изменений сэйлз аккаунтов здесь учитываем всех
-		//|	И (CRMAccountsExtractSourceData.MIIntegrationId <> """"
-		//|			ИЛИ CRMAccountsExtractSourceData.SMITHIntegrationId <> """"
-		//|			ИЛИ CRMAccountsExtractSourceData.LawsonIntegrationId <> """")
+		//|	И (CRMAccountsExtractSourceData.MIIntegrationId <> """"""""
+		//|			ИЛИ CRMAccountsExtractSourceData.SMITHIntegrationId <> """"""""
+		//|			ИЛИ CRMAccountsExtractSourceData.LawsonIntegrationId <> """""""")
 		// } RGS AGorlenko 20.03.2018 13:22:43 - из-за изменений сэйлз аккаунтов здесь учитываем всех
+		|	И CRMAccountsExtractSourceData.AreaOfOperation В
+		|		(ВЫБРАТЬ
+		|			CRMClientsArea.Area
+		|		ИЗ
+		|			РегистрСведений.CRMClientsArea КАК CRMClientsArea)
 		|	И CRMAccountsExtractSourceData.BillingFlag = ""Y""
 		|	И CRMAccountsExtractSourceData.AccountStatus = ""Active""
-		|
 		|ИНДЕКСИРОВАТЬ ПО
 		|	CRMAccountsExtractSourceData.AccountId
 		|;
@@ -359,10 +373,10 @@
 		|	ВТ_BillingAccounts КАК ВТ_BillingAccounts
 		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Контрагенты КАК Контрагенты
 		|		ПО ВТ_BillingAccounts.CRMID = Контрагенты.CRMID
-		|			И (НЕ Контрагенты.ПометкаУдаления)
-		|			И (Контрагенты.AccountType = ЗНАЧЕНИЕ(Перечисление.ТипыКлиентов.BillingAccount))
+		|		И (НЕ Контрагенты.ПометкаУдаления)
+		|		И (Контрагенты.AccountType = ЗНАЧЕНИЕ(Перечисление.ТипыКлиентов.BillingAccount))
 		|ГДЕ
-		|	Контрагенты.Ссылка ЕСТЬ NULL ";
+		|	Контрагенты.Ссылка ЕСТЬ NULL";
 	
 	Запрос.УстановитьПараметр("Ссылка", Ссылка);
 	
@@ -405,6 +419,11 @@
 		|	РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
 		|ГДЕ
 		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
+		|	И CRMAccountsExtractSourceData.AreaOfOperation В
+		|		(ВЫБРАТЬ
+		|			CRMClientsArea.Area
+		|		ИЗ
+		|			РегистрСведений.CRMClientsArea КАК CRMClientsArea)
 		|	И CRMAccountsExtractSourceData.BillingFlag = ""Y""
 		|
 		|ИНДЕКСИРОВАТЬ ПО
@@ -595,6 +614,11 @@
 		|			И (Контрагенты2.AccountType = ЗНАЧЕНИЕ(Перечисление.ТипыКлиентов.SalesAccount))
 		|ГДЕ
 		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
+		|	И CRMAccountsExtractSourceData.AreaOfOperation В
+		|		(ВЫБРАТЬ
+		|			CRMClientsArea.Area
+		|		ИЗ
+		|			РегистрСведений.CRMClientsArea КАК CRMClientsArea)
 		|	И CRMAccountsExtractSourceData.BillingFlag = ""Y""
 		|
 		|ИНДЕКСИРОВАТЬ ПО
@@ -683,6 +707,11 @@
 		|			И (Контрагенты.AccountType = ЗНАЧЕНИЕ(Перечисление.ТипыКлиентов.BillingAccount))
 		|ГДЕ
 		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
+		|	И CRMAccountsExtractSourceData.AreaOfOperation В
+		|		(ВЫБРАТЬ
+		|			CRMClientsArea.Area
+		|		ИЗ
+		|			РегистрСведений.CRMClientsArea КАК CRMClientsArea)
 		|	И (CRMAccountsExtractSourceData.Account <> Контрагенты.Наименование
 		|			ИЛИ ВЫБОР
 		|				КОГДА CRMAccountsExtractSourceData.CreditRating = ""Banned""
@@ -713,36 +742,6 @@
 	
 КонецФункции
 
-Функция ПолучитьТаблицуОтсутствующиеКлиенты(Ссылка)
-	
-	Запрос = Новый Запрос;
-	Запрос.Текст = 
-		"ВЫБРАТЬ
-		|	Контрагенты.Ссылка КАК Client
-		|ИЗ
-		|	Справочник.Контрагенты КАК Контрагенты
-		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
-		|		ПО Контрагенты.CRMID = CRMAccountsExtractSourceData.AccountId
-		|			И (CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка)
-		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceDataParentClient
-		|		ПО Контрагенты.CRMID = CRMAccountsExtractSourceDataParentClient.CorporateAccountId
-		|			И (CRMAccountsExtractSourceDataParentClient.ДокументЗагрузки = &Ссылка)
-		|ГДЕ
-		|	CRMAccountsExtractSourceData.СтрокаФайла ЕСТЬ NULL 
-		|	И НЕ Контрагенты.ПометкаУдаления
-		|	И CRMAccountsExtractSourceDataParentClient.СтрокаФайла ЕСТЬ NULL";
-
-	
-	Запрос.УстановитьПараметр("Ссылка", Ссылка);
-	
-	РезультатЗапроса = Запрос.Выполнить();
-	
-	ТаблицаОтсутствующиеКлиенты = РезультатЗапроса.Выгрузить();
-	
-	Возврат ТаблицаОтсутствующиеКлиенты;
-	
-КонецФункции
-
 Функция ПолучитьТаблицуКлиентыДляДективации(Ссылка)
 	
 	Запрос = Новый Запрос;
@@ -754,6 +753,11 @@
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
 		|		ПО Контрагенты.CRMID = CRMAccountsExtractSourceData.AccountId
 		|			И (CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка)
+		|			И (CRMAccountsExtractSourceData.AreaOfOperation В
+		|				(ВЫБРАТЬ
+		|					CRMClientsArea.Area
+		|				ИЗ
+		|					РегистрСведений.CRMClientsArea КАК CRMClientsArea))
 		|			И (НЕ Контрагенты.ПометкаУдаления)
 		|			И (CRMAccountsExtractSourceData.AccountStatus = ""Inactive"")
 		|			И (Контрагенты.СостояниеАктивности <> ЗНАЧЕНИЕ(Перечисление.СостоянияАктивностиКонтрагентов.Неактивен))";
