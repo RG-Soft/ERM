@@ -103,13 +103,13 @@
 		ДД.Записать(ПутьКФайлу);
 		
 		Connection = Новый COMОбъект("ADODB.Connection");
-		СтрокаПодключения = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + СокрЛП(ПутьКФайлу) + ";Extended Properties=""Excel 12.0 Xml;HDR=" + ?(ИменаКолонокВПервойСтроке, "Yes", "No") + """";
+		СтрокаПодключения = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + СокрЛП(ПутьКФайлу) + ";Extended Properties=""Excel 12.0 Xml;MAXSCANROWS=0;HDR=" + ?(ИменаКолонокВПервойСтроке, "Yes", "No") + """";
 		
 		Попытка
 			Connection.Open(СтрокаПодключения);
 		Исключение
 			Попытка
-				СтрокаПодключения = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + СокрЛП(ПутьКФайлу) + ";Extended Properties=""Excel 8.0;HDR=" + ?(ИменаКолонокВПервойСтроке, "Yes", "No") + """";
+				СтрокаПодключения = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + СокрЛП(ПутьКФайлу) + ";Extended Properties=""Excel 8.0;MAXSCANROWS=0;HDR=" + ?(ИменаКолонокВПервойСтроке, "Yes", "No") + """";
 				Connection.Open(СтрокаПодключения);
 			Исключение
 				ТекстОшибки = ОписаниеОшибки();
@@ -152,6 +152,10 @@
 				
 				Попытка
 					ТекЗначение = rs.Fields(ЭлементСоответствия.Значение).Value;
+//					Если ЭлементСоответствия.Значение = "Invoice" И rs.Fields("TransType").Value = "I" И ТекЗначение = Null Тогда
+					Если ЭлементСоответствия.Значение = "Invoice" И ТекЗначение = Null Тогда
+						Возврат;
+					КонецЕсли;
 				Исключение
 					ДанныеДляЗаполнения.Вставить("ОшибкаЗаполнения", ОписаниеОшибки());
 					ПоместитьВоВременноеХранилище(ДанныеДляЗаполнения, АдресВХранилище);
@@ -196,7 +200,9 @@
 	
 	Если Результат Тогда
 		ТекстСообщения = НСтр("ru = 'Balances loaded'");
-	Иначе
+	ИначеЕсли ТаблицаКоллизий.Количество() = 0 Тогда
+		ТекстСообщения = "The column ""Invoice"" is not filled. Check the downloaded data.";
+	Иначе	
 		ТекстСообщения = НСтр("ru = 'Balances are not loaded, add the missing data and download it again'");
 	КонецЕсли;
 	ПоказатьПредупреждение(, ТекстСообщения);

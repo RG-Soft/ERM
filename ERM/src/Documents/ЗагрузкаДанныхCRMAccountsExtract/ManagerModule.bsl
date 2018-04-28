@@ -1,6 +1,6 @@
 #Если Сервер Или ТолстыйКлиентОбычноеПриложение Или ВнешнееСоединение Тогда
 
-Процедура ЗагрузитьДанныеИзФайла(СтруктураПараметров, АдресХранилища) Экспорт
+Процедура _ЗагрузитьДанныеИзФайла(СтруктураПараметров, АдресХранилища) Экспорт
 	
 	ДанныеДляЗаполнения = Новый Структура();
 	СтруктураКолонок = СтруктураПараметров.СтруктураКолонок;
@@ -14,6 +14,111 @@
 	// { RGS  PMatkov 01.12.2015 16:47:17 - Перенос повторяющегося кода в общий модуль
 	rgsЗагрузкаИзExcel.ВыгрузитьЭксельВТаблицуДанныхПоИменамКолонок(ПутьКФайлу, ТаблицаДанных, ДанныеДляЗаполнения, АдресХранилища, СтруктураПараметров);
 	// } RGS  PMatkov 01.12.2015 16:47:33 - Перенос повторяющегося кода в общий модуль
+	
+	ЗагрузитьИЗаписатьДвижения(СтруктураПараметров.Ссылка, СтруктураПараметров.Дата, ТаблицаДанных);
+	
+	ТаблицаНовыеParentClients      = ПолучитьТаблицуНовыеParentClients(СтруктураПараметров.Ссылка);
+	ТаблицаНовыеSalesКлиенты       = ПолучитьТаблицуНовыеSalesКлиенты(СтруктураПараметров.Ссылка);
+	ТаблицаНовыеBillingКлиенты     = ПолучитьТаблицуНовыеBillingКлиенты(СтруктураПараметров.Ссылка);
+	ТаблицаИзмененныеBillingID     = ПолучитьТаблицуИзмененныеBillingID(СтруктураПараметров.Ссылка, СтруктураПараметров.Дата);
+	ТаблицаИзмененныеParentClients = ПолучитьТаблицуИзмененныеParentClients(СтруктураПараметров.Ссылка, СтруктураПараметров.Дата);
+	ТаблицаИзмененныеРеквизиты     = ПолучитьТаблицуИзмененныеРеквизиты(СтруктураПараметров.Ссылка);
+	//ТаблицаОтсутствующиеКлиенты    = ПолучитьТаблицуОтсутствующиеКлиенты(СтруктураПараметров.Ссылка);
+	ТаблицаКлиентыДляДективации    = ПолучитьТаблицуКлиентыДляДективации(СтруктураПараметров.Ссылка);
+	
+	ДанныеДляЗаполнения.Вставить("ТаблицаНовыеParentClients", ТаблицаНовыеParentClients);
+	ДанныеДляЗаполнения.Вставить("ТаблицаНовыеSalesКлиенты", ТаблицаНовыеSalesКлиенты);
+	ДанныеДляЗаполнения.Вставить("ТаблицаНовыеBillingКлиенты", ТаблицаНовыеBillingКлиенты);
+	ДанныеДляЗаполнения.Вставить("ТаблицаИзмененныеBillingID", ТаблицаИзмененныеBillingID);
+	ДанныеДляЗаполнения.Вставить("ТаблицаИзмененныеParentClients", ТаблицаИзмененныеParentClients);
+	ДанныеДляЗаполнения.Вставить("ТаблицаИзмененныеРеквизиты", ТаблицаИзмененныеРеквизиты);
+	ДанныеДляЗаполнения.Вставить("ТаблицаКлиентыДляДективации", ТаблицаКлиентыДляДективации);
+	
+	ПоместитьВоВременноеХранилище(ДанныеДляЗаполнения, АдресХранилища);
+	
+КонецПроцедуры
+
+Процедура ЗагрузитьДанныеИзФайла(СтруктураПараметров, АдресХранилища) Экспорт
+	
+	ДанныеДляЗаполнения = Новый Структура();
+	ТекстОшибки = "";
+	
+	ФайлДанных = СтруктураПараметров.ИсточникДанных.Получить();
+	
+	ИмяКаталога = КаталогВременныхФайлов() + Строка(Новый УникальныйИдентификатор());
+	СоздатьКаталог(ИмяКаталога);
+	ПутьКФайлу = ИмяКаталога + "\CRMClients.csv";
+	ФайлДанных.Записать(ПутьКФайлу);
+	
+	ПутьСхемы = ИмяКаталога+"\schema.ini";
+	ФайлСхемы = Новый ТекстовыйДокумент;
+	ФайлСхемы.УстановитьТекст(Документы.ЗагрузкаДанныхCRMAccountsExtract.ПолучитьМакет("Sсhema").ПолучитьТекст());
+	ФайлСхемы.Записать(ПутьСхемы, КодировкаТекста.OEM);
+	
+	Connection = Новый COMОбъект("ADODB.Connection");
+	
+	Попытка
+		СтрокаПодключения = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + ИмяКаталога + ";Extended Properties=""text;HDR=NO;IMEX=1;""";
+		Connection.Open(СтрокаПодключения);
+	Исключение
+		Попытка
+			СтрокаПодключения = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + ИмяКаталога + ";Extended Properties=""text;HDR=NO;IMEX=1;""";
+			Connection.Open(СтрокаПодключения);
+		Исключение
+			ВызватьИсключение "Can't open connection! " + ОписаниеОшибки();
+		КонецПопытки;		
+	КонецПопытки;
+	
+	rs = Новый COMObject("ADODB.RecordSet");
+	
+	Стр_SQL = "Select * FROM CRMClients.csv";
+	rs.Open(Стр_SQL, Connection);
+	
+	СтруктураКолонок = СтруктураПараметров.СтруктураКолонок;
+	СоответствиеКолонок = Новый Соответствие;
+	Для каждого ЭлементСтруктурыКолонок Из СтруктураКолонок Цикл
+		СоответствиеКолонок.Вставить(ЭлементСтруктурыКолонок.ИмяПоля, ЭлементСтруктурыКолонок.ИмяКолонки);
+	КонецЦикла;
+	
+	ТаблицаДанных = ИнициализироватьТаблицуДанных(СтруктураКолонок);
+	
+	ТекНомерСтроки = 1;
+	
+	rs.MoveFirst();
+	
+	Пока rs.EOF() = 0 Цикл
+		
+		СтрокаДанных = ТаблицаДанных.Добавить();
+		
+		Для каждого ЭлементСоответствия Из СоответствиеКолонок Цикл
+			
+			Попытка
+				ТекЗначение = rs.Fields(ЭлементСоответствия.Значение).Value;
+			Исключение
+				ДанныеДляЗаполнения.Вставить("ОшибкаЗаполнения", ОписаниеОшибки());
+				ПоместитьВоВременноеХранилище(ДанныеДляЗаполнения, АдресХранилища);
+				Возврат;
+			КонецПопытки;
+			
+			Если ТипЗнч(ТекЗначение) = ТипЗнч("Строка") Тогда
+				СтрокаДанных[ЭлементСоответствия.Ключ] = СокрЛП(ТекЗначение);
+			Иначе
+				СтрокаДанных[ЭлементСоответствия.Ключ] = ТекЗначение;
+			КонецЕсли;
+			
+		КонецЦикла;
+		
+		СтрокаДанных.СтрокаФайла = ТекНомерСтроки;
+		ТекНомерСтроки = ТекНомерСтроки + 1;
+		
+		rs.MoveNext();
+		
+	КонецЦикла;
+	
+	rs.Close();
+	Connection.Close();
+	
+	УдалитьФайлы(ИмяКаталога);
 	
 	ЗагрузитьИЗаписатьДвижения(СтруктураПараметров.Ссылка, СтруктураПараметров.Дата, ТаблицаДанных);
 	
@@ -75,6 +180,11 @@
 		|	РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
 		|ГДЕ
 		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
+		|	И CRMAccountsExtractSourceData.AreaOfOperation В
+		|		(ВЫБРАТЬ
+		|			CRMClientsArea.Area
+		|		ИЗ
+		|			РегистрСведений.CRMClientsArea КАК CRMClientsArea)
 		|	И CRMAccountsExtractSourceData.CorporateAccount <> """"
 		|	И CRMAccountsExtractSourceData.BillingFlag = ""Y""
 		|
@@ -166,6 +276,11 @@
 		|	РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
 		|ГДЕ
 		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
+		|	И CRMAccountsExtractSourceData.AreaOfOperation В
+		|		(ВЫБРАТЬ
+		|			CRMClientsArea.Area
+		|		ИЗ
+		|			РегистрСведений.CRMClientsArea КАК CRMClientsArea)
 		|	И CRMAccountsExtractSourceData.CorporateAccount <> """"
 		|	И CRMAccountsExtractSourceData.BillingFlag = ""Y""
 		|
@@ -229,13 +344,17 @@
 		|ГДЕ
 		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
 		// { RGS AGorlenko 20.03.2018 13:22:04 - из-за изменений сэйлз аккаунтов здесь учитываем всех
-		//|	И (CRMAccountsExtractSourceData.MIIntegrationId <> """"
-		//|			ИЛИ CRMAccountsExtractSourceData.SMITHIntegrationId <> """"
-		//|			ИЛИ CRMAccountsExtractSourceData.LawsonIntegrationId <> """")
+		//|	И (CRMAccountsExtractSourceData.MIIntegrationId <> """"""""
+		//|			ИЛИ CRMAccountsExtractSourceData.SMITHIntegrationId <> """"""""
+		//|			ИЛИ CRMAccountsExtractSourceData.LawsonIntegrationId <> """""""")
 		// } RGS AGorlenko 20.03.2018 13:22:43 - из-за изменений сэйлз аккаунтов здесь учитываем всех
+		|	И CRMAccountsExtractSourceData.AreaOfOperation В
+		|		(ВЫБРАТЬ
+		|			CRMClientsArea.Area
+		|		ИЗ
+		|			РегистрСведений.CRMClientsArea КАК CRMClientsArea)
 		|	И CRMAccountsExtractSourceData.BillingFlag = ""Y""
 		|	И CRMAccountsExtractSourceData.AccountStatus = ""Active""
-		|
 		|ИНДЕКСИРОВАТЬ ПО
 		|	CRMAccountsExtractSourceData.AccountId
 		|;
@@ -254,10 +373,10 @@
 		|	ВТ_BillingAccounts КАК ВТ_BillingAccounts
 		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Контрагенты КАК Контрагенты
 		|		ПО ВТ_BillingAccounts.CRMID = Контрагенты.CRMID
-		|			И (НЕ Контрагенты.ПометкаУдаления)
-		|			И (Контрагенты.AccountType = ЗНАЧЕНИЕ(Перечисление.ТипыКлиентов.BillingAccount))
+		|		И (НЕ Контрагенты.ПометкаУдаления)
+		|		И (Контрагенты.AccountType = ЗНАЧЕНИЕ(Перечисление.ТипыКлиентов.BillingAccount))
 		|ГДЕ
-		|	Контрагенты.Ссылка ЕСТЬ NULL ";
+		|	Контрагенты.Ссылка ЕСТЬ NULL";
 	
 	Запрос.УстановитьПараметр("Ссылка", Ссылка);
 	
@@ -300,6 +419,11 @@
 		|	РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
 		|ГДЕ
 		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
+		|	И CRMAccountsExtractSourceData.AreaOfOperation В
+		|		(ВЫБРАТЬ
+		|			CRMClientsArea.Area
+		|		ИЗ
+		|			РегистрСведений.CRMClientsArea КАК CRMClientsArea)
 		|	И CRMAccountsExtractSourceData.BillingFlag = ""Y""
 		|
 		|ИНДЕКСИРОВАТЬ ПО
@@ -490,6 +614,11 @@
 		|			И (Контрагенты2.AccountType = ЗНАЧЕНИЕ(Перечисление.ТипыКлиентов.SalesAccount))
 		|ГДЕ
 		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
+		|	И CRMAccountsExtractSourceData.AreaOfOperation В
+		|		(ВЫБРАТЬ
+		|			CRMClientsArea.Area
+		|		ИЗ
+		|			РегистрСведений.CRMClientsArea КАК CRMClientsArea)
 		|	И CRMAccountsExtractSourceData.BillingFlag = ""Y""
 		|
 		|ИНДЕКСИРОВАТЬ ПО
@@ -578,6 +707,11 @@
 		|			И (Контрагенты.AccountType = ЗНАЧЕНИЕ(Перечисление.ТипыКлиентов.BillingAccount))
 		|ГДЕ
 		|	CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка
+		|	И CRMAccountsExtractSourceData.AreaOfOperation В
+		|		(ВЫБРАТЬ
+		|			CRMClientsArea.Area
+		|		ИЗ
+		|			РегистрСведений.CRMClientsArea КАК CRMClientsArea)
 		|	И (CRMAccountsExtractSourceData.Account <> Контрагенты.Наименование
 		|			ИЛИ ВЫБОР
 		|				КОГДА CRMAccountsExtractSourceData.CreditRating = ""Banned""
@@ -608,36 +742,6 @@
 	
 КонецФункции
 
-Функция ПолучитьТаблицуОтсутствующиеКлиенты(Ссылка)
-	
-	Запрос = Новый Запрос;
-	Запрос.Текст = 
-		"ВЫБРАТЬ
-		|	Контрагенты.Ссылка КАК Client
-		|ИЗ
-		|	Справочник.Контрагенты КАК Контрагенты
-		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
-		|		ПО Контрагенты.CRMID = CRMAccountsExtractSourceData.AccountId
-		|			И (CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка)
-		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceDataParentClient
-		|		ПО Контрагенты.CRMID = CRMAccountsExtractSourceDataParentClient.CorporateAccountId
-		|			И (CRMAccountsExtractSourceDataParentClient.ДокументЗагрузки = &Ссылка)
-		|ГДЕ
-		|	CRMAccountsExtractSourceData.СтрокаФайла ЕСТЬ NULL 
-		|	И НЕ Контрагенты.ПометкаУдаления
-		|	И CRMAccountsExtractSourceDataParentClient.СтрокаФайла ЕСТЬ NULL";
-
-	
-	Запрос.УстановитьПараметр("Ссылка", Ссылка);
-	
-	РезультатЗапроса = Запрос.Выполнить();
-	
-	ТаблицаОтсутствующиеКлиенты = РезультатЗапроса.Выгрузить();
-	
-	Возврат ТаблицаОтсутствующиеКлиенты;
-	
-КонецФункции
-
 Функция ПолучитьТаблицуКлиентыДляДективации(Ссылка)
 	
 	Запрос = Новый Запрос;
@@ -649,6 +753,11 @@
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.CRMAccountsExtractSourceData КАК CRMAccountsExtractSourceData
 		|		ПО Контрагенты.CRMID = CRMAccountsExtractSourceData.AccountId
 		|			И (CRMAccountsExtractSourceData.ДокументЗагрузки = &Ссылка)
+		|			И (CRMAccountsExtractSourceData.AreaOfOperation В
+		|				(ВЫБРАТЬ
+		|					CRMClientsArea.Area
+		|				ИЗ
+		|					РегистрСведений.CRMClientsArea КАК CRMClientsArea))
 		|			И (НЕ Контрагенты.ПометкаУдаления)
 		|			И (CRMAccountsExtractSourceData.AccountStatus = ""Inactive"")
 		|			И (Контрагенты.СостояниеАктивности <> ЗНАЧЕНИЕ(Перечисление.СостоянияАктивностиКонтрагентов.Неактивен))";
