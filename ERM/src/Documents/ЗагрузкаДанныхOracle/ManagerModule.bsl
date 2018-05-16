@@ -1422,61 +1422,66 @@
 	Запрос = Новый Запрос;
 	Запрос.Текст = 
 		"ВЫБРАТЬ
-		|	OracleSourceData.SOURCE_SYSTEM,
-		|	OracleSourceData.OU,
-		|	OracleSourceData.GL_SOURCE,
-		|	OracleSourceData.GL_DATE,
-		|	OracleSourceData.CURRENCY_CODE,
-		|	OracleSourceData.EXCHANGE_RATE,
-		|	OracleSourceData.GL_ACCOUNT,
-		|	OracleSourceData.CUSTOMER_ID,
-		|	OracleSourceData.CUSTOMER_NUMBER,
-		|	OracleSourceData.CUSTOMER_NAME,
-		|	OracleSourceData.CONTRACT_NAME,
-		|	OracleSourceData.ENTERED,
-		|	OracleSourceData.ACCOUNTED,
-		|	OracleSourceData.DOC_TYPE,
-		|	OracleSourceData.DESCRIPTION,
-		|	OracleSourceData.DOC_NUMBER,
-		|	OracleSourceData.DOC_NUMBER_2,
-		|	OracleSourceData.TRANS_TYPE,
-		|	OracleSourceData.INV_DATE,
-		|	OracleSourceData.LINE_TYPE,
-		|	OracleSourceData.SALESPERSON,
-		|	OracleSourceData.DUE_DATE,
-		|	OracleSourceData.TAX_RATE,
-		|	OracleSourceData.ORIGINAL_TRX_NUMBER,
-		|	OracleSourceData.PO_NUMBER,
-		|	OracleSourceData.SO_NUM,
-		|	OracleSourceData.SO_DATE,
-		|	OracleSourceData.SHIP_DATE_ACTUAL,
-		|	OracleSourceData.ITEM_NO,
-		|	OracleSourceData.ITEM_DESC,
-		|	OracleSourceData.PRICE_UNIT,
-		|	OracleSourceData.SHIPPED_QUANTITY,
-		|	OracleSourceData.RECEIPT_AMOUNT,
-		|	OracleSourceData.CREATION_DATE,
-		|	OracleSourceData.CREATED_BY,
-		|	OracleSourceData.BILL_SITE_NAME,
-		|	OracleSourceData.BILL_SITE_ID,
-		|	OracleSourceData.SHIP_SITE_NAME,
-		|	OracleSourceData.SHIP_SITE_ID,
-		|	OracleSourceData.DOC_ID,
-		|	OracleSourceData.LINE_ID,
-		|	OracleSourceData.DOC_TRANS_ID,
-		|	OracleSourceData.ID_ORIG,
+		|	OracleSourceData.SOURCE_SYSTEM КАК SOURCE_SYSTEM,
+		|	OracleSourceData.OU КАК OU,
+		|	OracleSourceData.GL_SOURCE КАК GL_SOURCE,
+		|	OracleSourceData.GL_DATE КАК GL_DATE,
+		|	OracleSourceData.CURRENCY_CODE КАК CURRENCY_CODE,
+		|	OracleSourceData.EXCHANGE_RATE КАК EXCHANGE_RATE,
+		|	OracleSourceData.GL_ACCOUNT КАК GL_ACCOUNT,
+		|	OracleSourceData.CUSTOMER_ID КАК CUSTOMER_ID,
+		|	OracleSourceData.CUSTOMER_NUMBER КАК CUSTOMER_NUMBER,
+		|	OracleSourceData.CUSTOMER_NAME КАК CUSTOMER_NAME,
+		|	OracleSourceData.CONTRACT_NAME КАК CONTRACT_NAME,
+		|	OracleSourceData.ENTERED КАК ENTERED,
+		|	OracleSourceData.ACCOUNTED КАК ACCOUNTED,
+		|	OracleSourceData.DOC_TYPE КАК DOC_TYPE,
+		|	OracleSourceData.DESCRIPTION КАК DESCRIPTION,
+		|	OracleSourceData.DOC_NUMBER КАК DOC_NUMBER,
+		|	OracleSourceData.DOC_NUMBER_2 КАК DOC_NUMBER_2,
+		|	OracleSourceData.TRANS_TYPE КАК TRANS_TYPE,
+		|	OracleSourceData.INV_DATE КАК INV_DATE,
+		|	OracleSourceData.LINE_TYPE КАК LINE_TYPE,
+		|	OracleSourceData.SALESPERSON КАК SALESPERSON,
+		|	OracleSourceData.DUE_DATE КАК DUE_DATE,
+		|	OracleSourceData.TAX_RATE КАК TAX_RATE,
+		|	OracleSourceData.ORIGINAL_TRX_NUMBER КАК ORIGINAL_TRX_NUMBER,
+		|	OracleSourceData.PO_NUMBER КАК PO_NUMBER,
+		|	OracleSourceData.SO_NUM КАК SO_NUM,
+		|	OracleSourceData.SO_DATE КАК SO_DATE,
+		|	OracleSourceData.SHIP_DATE_ACTUAL КАК SHIP_DATE_ACTUAL,
+		|	OracleSourceData.ITEM_NO КАК ITEM_NO,
+		|	OracleSourceData.ITEM_DESC КАК ITEM_DESC,
+		|	OracleSourceData.PRICE_UNIT КАК PRICE_UNIT,
+		|	OracleSourceData.SHIPPED_QUANTITY КАК SHIPPED_QUANTITY,
+		|	OracleSourceData.RECEIPT_AMOUNT КАК RECEIPT_AMOUNT,
+		|	OracleSourceData.CREATION_DATE КАК CREATION_DATE,
+		|	OracleSourceData.CREATED_BY КАК CREATED_BY,
+		|	OracleSourceData.BILL_SITE_NAME КАК BILL_SITE_NAME,
+		|	OracleSourceData.BILL_SITE_ID КАК BILL_SITE_ID,
+		|	OracleSourceData.SHIP_SITE_NAME КАК SHIP_SITE_NAME,
+		|	OracleSourceData.SHIP_SITE_ID КАК SHIP_SITE_ID,
+		|	OracleSourceData.DOC_ID КАК DOC_ID,
+		|	OracleSourceData.LINE_ID КАК LINE_ID,
+		|	OracleSourceData.DOC_TRANS_ID КАК DOC_TRANS_ID,
+		|	OracleSourceData.ID_ORIG КАК ID_ORIG,
 		|	ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 17, 4) + ""."" + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 22, 3) + ""."" + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 26, 4) + ""."" + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 6, 3) КАК Account,
 		|	ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 6, 3) КАК SubSubSegment,
 		|	ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 10, 6) КАК Location,
 		|	ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 10, 6) + ""."" + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 6, 3) КАК AU,
-		|	OracleSourceData.CREATED_BY_NAME,
-		|	OracleSourceData.INVOICE_NUMBER_SAM,
-		|	OracleSourceData.INVOICE_AMOUNT
+		|	OracleSourceData.CREATED_BY_NAME КАК CREATED_BY_NAME,
+		|	OracleSourceData.INVOICE_NUMBER_SAM КАК INVOICE_NUMBER_SAM,
+		|	""SAM-"" + OracleSourceData.INVOICE_NUMBER_SAM КАК INVOICE_NUMBER_SAMсПрефиксом,
+		|	OracleSourceData.INVOICE_AMOUNT КАК INVOICE_AMOUNT,
+		|	&Префикс + OracleSourceData.ID_ORIG КАК НомерТранзакции
 		|ПОМЕСТИТЬ ВТ_ДанныеФайла
 		|ИЗ
 		|	РегистрСведений.OracleSourceData КАК OracleSourceData
 		|ГДЕ
 		|	OracleSourceData.ДокументЗагрузки = &ДокументЗагрузки
+		|
+		|ИНДЕКСИРОВАТЬ ПО
+		|	НомерТранзакции
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
@@ -1540,7 +1545,7 @@
 		|ИЗ
 		|	РегистрСведений.КлючиSalesOrders КАК КлючиSalesOrders
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
-		|		ПО (КлючиSalesOrders.ArInvoice = ""SAM-"" + ВТ_ДанныеФайла.INVOICE_NUMBER_SAM)
+		|		ПО КлючиSalesOrders.ArInvoice = ВТ_ДанныеФайла.INVOICE_NUMBER_SAMсПрефиксом
 		|			И (КлючиSalesOrders.Source = &ТипВнешнейСистемы)
 		|			И КлючиSalesOrders.Company.Код = ВТ_ДанныеФайла.OU
 		|;
@@ -1562,39 +1567,16 @@
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
-		|ВЫБРАТЬ
-		|	КлючиИнвойсов.ArInvoice,
-		|	КлючиИнвойсов.Invoice
-		|ИЗ
-		|	РегистрСведений.КлючиИнвойсов КАК КлючиИнвойсов
-		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
-		|		ПО КлючиИнвойсов.ArInvoice = ВТ_ДанныеФайла.DOC_NUMBER_2
-		|			И (ВТ_ДанныеФайла.DOC_NUMBER_2 <> """")
-		|			И (КлючиИнвойсов.Source = &ТипВнешнейСистемы)
-		|
-		|ОБЪЕДИНИТЬ
-		|
-		|ВЫБРАТЬ
-		|	КлючиИнвойсов.ArInvoice,
-		|	КлючиИнвойсов.Invoice
-		|ИЗ
-		|	РегистрСведений.КлючиИнвойсов КАК КлючиИнвойсов
-		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
-		|		ПО КлючиИнвойсов.ArInvoice = ВТ_ДанныеФайла.DOC_NUMBER
-		|			И (ВТ_ДанныеФайла.DOC_NUMBER_2 = """")
-		|			И (КлючиИнвойсов.Source = &ТипВнешнейСистемы)
-		|;
-		|
-		|////////////////////////////////////////////////////////////////////////////////
-		|ВЫБРАТЬ
-		|	CashBatch.PaymentNumber,
-		|	CashBatch.Ссылка
+		|ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	CashBatch.PaymentNumber КАК PaymentNumber,
+		|	CashBatch.Ссылка КАК Ссылка
 		|ИЗ
 		|	Документ.CashBatch КАК CashBatch
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
 		|		ПО CashBatch.PaymentNumber = ВТ_ДанныеФайла.DOC_NUMBER
 		|			И (НЕ CashBatch.ПометкаУдаления)
 		|			И (CashBatch.Source = &ТипВнешнейСистемы)
+		|			И (ВТ_ДанныеФайла.DOC_NUMBER <> """")
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
@@ -1676,8 +1658,8 @@
 		|	ВТ_ДанныеФайла.AU КАК КодAU,
 		|	ВТ_ДанныеФайла.CREATED_BY_NAME КАК CreatedByName,
 		|	ВТ_ДанныеФайла.INVOICE_NUMBER_SAM КАК InvoiceNumberSAM,
-		|	ВТ_ДанныеФайла.INVOICE_AMOUNT КАК InvoiceAmount,
-		|	КорректировкаТранзакции.Ссылка КАК КорректировкаТранзакции
+		|	ВТ_ДанныеФайла.INVOICE_AMOUNT КАК InvoiceAmount
+		|ПОМЕСТИТЬ ИтоговаяБезКорректировок
 		|ИЗ
 		|	ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
@@ -1700,15 +1682,61 @@
 		|		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_СоответствиеКлиентовCustomerNumber КАК ВТ_СоответствиеКлиентовCustomerNumber
 		|		ПО ВТ_ДанныеФайла.CUSTOMER_NUMBER = ВТ_СоответствиеКлиентовCustomerNumber.Идентификатор
 		|		ЛЕВОЕ СОЕДИНЕНИЕ Документ.ТранзакцияOracle КАК ТранзакцияOracle
-		|			ЛЕВОЕ СОЕДИНЕНИЕ Документ.КорректировкаТранзакции КАК КорректировкаТранзакции
-		|			ПО ТранзакцияOracle.Ссылка = КорректировкаТранзакции.ДокументОснование
-		|				И (НЕ КорректировкаТранзакции.ПометкаУдаления)
-		|		ПО (&Префикс + ВТ_ДанныеФайла.ID_ORIG = ТранзакцияOracle.Номер)
+		|		ПО ВТ_ДанныеФайла.НомерТранзакции = ТранзакцияOracle.Номер
 		|			И (НЕ ТранзакцияOracle.ПометкаУдаления)
 		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.КостЦентры КАК КостЦентры
 		|		ПО ВТ_ДанныеФайла.AU = КостЦентры.Код
 		|			И (НЕ КостЦентры.ПометкаУдаления)
 		|			И (КостЦентры.Source = &ТипВнешнейСистемы)
+		|;
+		|
+		|////////////////////////////////////////////////////////////////////////////////
+		|ВЫБРАТЬ
+		|	ИтоговаяБезКорректировок.GlDate КАК GlDate,
+		|	ИтоговаяБезКорректировок.GlSourceType КАК GlSourceType,
+		|	ИтоговаяБезКорректировок.Company КАК Company,
+		|	ИтоговаяБезКорректировок.Account КАК Account,
+		|	ИтоговаяБезКорректировок.Location КАК Location,
+		|	ИтоговаяБезКорректировок.SubSubSegment КАК SubSubSegment,
+		|	ИтоговаяБезКорректировок.Currency КАК Currency,
+		|	ИтоговаяБезКорректировок.ExchangeRate КАК ExchangeRate,
+		|	ИтоговаяБезКорректировок.GL_Account КАК GL_Account,
+		|	ИтоговаяБезКорректировок.Client КАК Client,
+		|	ИтоговаяБезКорректировок.Contract КАК Contract,
+		|	ИтоговаяБезКорректировок.Amount КАК Amount,
+		|	ИтоговаяБезКорректировок.BaseAmount КАК BaseAmount,
+		|	ИтоговаяБезКорректировок.DocType КАК DocType,
+		|	ИтоговаяБезКорректировок.Description КАК Description,
+		|	ИтоговаяБезКорректировок.TransType КАК TransType,
+		|	ИтоговаяБезКорректировок.SONum КАК SONum,
+		|	ИтоговаяБезКорректировок.SODate КАК SODate,
+		|	ИтоговаяБезКорректировок.ShipDateActual КАК ShipDateActual,
+		|	ИтоговаяБезКорректировок.CreationDate КАК CreationDate,
+		|	ИтоговаяБезКорректировок.CreatedBy КАК CreatedBy,
+		|	ИтоговаяБезКорректировок.DocID КАК DocID,
+		|	ИтоговаяБезКорректировок.LineID КАК LineID,
+		|	ИтоговаяБезКорректировок.ID_ORIG КАК ID_ORIG,
+		|	ИтоговаяБезКорректировок.Транзакция КАК Транзакция,
+		|	ИтоговаяБезКорректировок.CustomerNumber КАК CustomerNumber,
+		|	ИтоговаяБезКорректировок.DocTransID КАК DocTransID,
+		|	ИтоговаяБезКорректировок.DocNumber КАК DocNumber,
+		|	ИтоговаяБезКорректировок.DocNumber2 КАК DocNumber2,
+		|	ИтоговаяБезКорректировок.InvDate КАК InvDate,
+		|	ИтоговаяБезКорректировок.OriginalTrxNumber КАК OriginalTrxNumber,
+		|	ИтоговаяБезКорректировок.ПорядокAccruals КАК ПорядокAccruals,
+		|	ИтоговаяБезКорректировок.GeoMarketHFM КАК GeoMarketHFM,
+		|	ИтоговаяБезКорректировок.Priority КАК Priority,
+		|	ИтоговаяБезКорректировок.AU КАК AU,
+		|	ИтоговаяБезКорректировок.КодAU КАК КодAU,
+		|	ИтоговаяБезКорректировок.CreatedByName КАК CreatedByName,
+		|	ИтоговаяБезКорректировок.InvoiceNumberSAM КАК InvoiceNumberSAM,
+		|	ИтоговаяБезКорректировок.InvoiceAmount КАК InvoiceAmount,
+		|	КорректировкаТранзакции.Ссылка КАК КорректировкаТранзакции
+		|ИЗ
+		|	ИтоговаяБезКорректировок КАК ИтоговаяБезКорректировок
+		|		ЛЕВОЕ СОЕДИНЕНИЕ Документ.КорректировкаТранзакции КАК КорректировкаТранзакции
+		|		ПО ИтоговаяБезКорректировок.Транзакция = КорректировкаТранзакции.ДокументОснование
+		|			И (НЕ КорректировкаТранзакции.ПометкаУдаления)
 		|
 		|УПОРЯДОЧИТЬ ПО
 		|	Priority,
@@ -1733,18 +1761,19 @@
 	КэшРучныхКоррерктировок.Индексы.Добавить("Source, Company, Client, Location, SubSubSegment, Account, Currency");
 	//КэшРучныхКоррерктировок.Индексы.Добавить("Source, Company, Location, SubSubSegment, Account, Currency");
 	
-	КэшИнвойсов = РезультатЗапроса[5].Выгрузить();
-	КэшИнвойсов.Индексы.Добавить("ArInvoice");
+	//КэшИнвойсов = РезультатЗапроса[5].Выгрузить();
+	//КэшИнвойсов.Индексы.Добавить("ArInvoice");
+	КэшИнвойсов = Новый ТаблицаЗначений;
 	
-	КэшCashBatch = РезультатЗапроса[6].Выгрузить();
+	КэшCashBatch = РезультатЗапроса[5].Выгрузить();
 	КэшCashBatch.Индексы.Добавить("PaymentNumber");
 	
-	КэшBatchAllocation = РезультатЗапроса[7].Выгрузить();
+	КэшBatchAllocation = РезультатЗапроса[6].Выгрузить();
 	КэшBatchAllocation.Индексы.Добавить("Source, Company, Client, Location, SubSubSegment, Account, Currency");
 	
 	КэшAU = Новый Соответствие;
 	
-	ТаблицаДаты = РезультатЗапроса[8].Выгрузить();
+	ТаблицаДаты = РезультатЗапроса[7].Выгрузить();
 	ТаблицаДаты.Индексы.Добавить("GeoMarket");
 	
 	// { RGS TAlmazova 06.07.2017 14:36:48 - проверка контрольных сумм
