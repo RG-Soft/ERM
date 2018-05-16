@@ -6575,7 +6575,7 @@
 		BilledARОстатки.Source КАК Source,
 		BilledARОстатки.Account.БазовыйЭлемент КАК Account,
 		BilledARОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент КАК Location,
-		BilledARОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
+		BilledARОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket КАК GeoMarket,
 		BilledARОстатки.AU.Сегмент.БазовыйЭлемент КАК SubSubSegment,
 		BilledARОстатки.Currency КАК Currency,
 		BilledARОстатки.AU КАК AU,
@@ -6625,7 +6625,7 @@
 			ИНАЧЕ BilledARОстатки.Invoice.Contract.crmContractName
 		КОНЕЦ КАК Agreement
 	ИЗ
-		РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, Invoice ССЫЛКА Документ.Invoice {(AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket)}) КАК BilledARОстатки
+		РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, Invoice ССЫЛКА Документ.Invoice {(AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket = &amp;GeoMarket)}) КАК BilledARОстатки
 			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments.СрезПоследних(, ) КАК InvoiceCommentsСрезПоследних
 			ПО BilledARОстатки.Invoice = InvoiceCommentsСрезПоследних.Invoice
 			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.Collectors КАК Collectors
@@ -6726,7 +6726,7 @@
     </title>
     <id>6</id>
     <valueType>
-      <types>CatalogRef.HFM_Geomarkets</types>
+      <types>CatalogRef.ManagementGeography</types>
     </valueType>
     <view>
       <common>true</common>
@@ -6862,7 +6862,7 @@
 	InvoiceДокумент.Source,
 	BilledARОстатки.Account.БазовыйЭлемент КАК Account,
 	BilledARОстатки.Location.БазовыйЭлемент КАК Location,
-	BilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
+	BilledARОстатки.Location.БазовыйЭлемент.GeoMarket.ManagementGeomarket КАК GeoMarket,
 	BilledARОстатки.SubSubSegment.БазовыйЭлемент КАК SubSubSegment,
 	BilledARОстатки.Currency,
 	BilledARОстатки.AU,
@@ -6882,7 +6882,7 @@
 	InvoiceCommentsСрезПоследних.Problem.Comment КАК Comment
 ИЗ
 	Документ.Invoice КАК InvoiceДокумент
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, Invoice ССЫЛКА Документ.Invoice {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket)}) КАК BilledARОстатки
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, Invoice ССЫЛКА Документ.Invoice {(Location.БазовыйЭлемент.GeoMarket.ManagementGeomarket = &amp;GeoMarket)}) КАК BilledARОстатки
 		ПО InvoiceДокумент.Ссылка = BilledARОстатки.Invoice
 			И InvoiceДокумент.Client = BilledARОстатки.Client
 			И InvoiceДокумент.Company = BilledARОстатки.Company
@@ -6944,7 +6944,7 @@
 	InvoiceДокумент.Source,
 	BilledARОстатки.Account.БазовыйЭлемент КАК Account,
 	BilledARОстатки.Location.БазовыйЭлемент КАК Location,
-	BilledARОстатки.Location.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
+	BilledARОстатки.Location.БазовыйЭлемент.GeoMarket.ManagementGeomarket КАК GeoMarket,
 	BilledARОстатки.SubSubSegment.БазовыйЭлемент КАК SubSubSegment,
 	BilledARОстатки.Currency,
 	BilledARОстатки.AU,
@@ -6964,7 +6964,7 @@
 	InvoiceCommentsСрезПоследних.Problem.Comment КАК Comment
 ИЗ
 	Документ.Invoice КАК InvoiceДокумент
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, Invoice ССЫЛКА Документ.Invoice {(Location.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket)}) КАК BilledARОстатки
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, Invoice ССЫЛКА Документ.Invoice {(Location.БазовыйЭлемент.GeoMarket.ManagementGeomarket = &amp;GeoMarket)}) КАК BilledARОстатки
 		ПО InvoiceДокумент.Ссылка = BilledARОстатки.Invoice
 			И InvoiceДокумент.Client = BilledARОстатки.Client
 			И InvoiceДокумент.Company = BilledARОстатки.Company
