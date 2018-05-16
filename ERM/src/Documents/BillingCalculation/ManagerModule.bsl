@@ -155,9 +155,9 @@
 		|				Source В (&Sources)
 		|					И ВЫРАЗИТЬ(Account КАК ПланСчетов.Lawson).КодЧислом <> 209000
 		|					И ВЫРАЗИТЬ(Account КАК ПланСчетов.Lawson).КодЧислом <> 2090001) КАК UnbilledARОстатки
-		|	
+		|
 		|	ОБЪЕДИНИТЬ ВСЕ
-		|	
+		|
 		|	ВЫБРАТЬ
 		|		BilledARОстатки.Client,
 		|		BilledARОстатки.Company,
@@ -178,9 +178,9 @@
 		|				Source В (&Sources)
 		|					И ВЫРАЗИТЬ(Account КАК ПланСчетов.Lawson).КодЧислом <> 209000
 		|					И ВЫРАЗИТЬ(Account КАК ПланСчетов.Lawson).КодЧислом <> 2090001) КАК BilledARОстатки
-		|	
+		|
 		|	ОБЪЕДИНИТЬ ВСЕ
-		|	
+		|
 		|	ВЫБРАТЬ
 		|		UnallocatedCashОстатки.Client,
 		|		UnallocatedCashОстатки.Company,
@@ -210,9 +210,9 @@
 		|							ИЛИ UnallocatedCashОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith)
 		|				ИНАЧЕ ИСТИНА
 		|			КОНЕЦ
-		|	
+		|
 		|	ОБЪЕДИНИТЬ ВСЕ
-		|	
+		|
 		|	ВЫБРАТЬ
 		|		ManualTransactionsОстатки.Client,
 		|		ManualTransactionsОстатки.Company,
@@ -233,9 +233,9 @@
 		|				Source В (&Sources)
 		|					И ВЫРАЗИТЬ(Account КАК ПланСчетов.Lawson).КодЧислом <> 209000
 		|					И ВЫРАЗИТЬ(Account КАК ПланСчетов.Lawson).КодЧислом <> 2090001) КАК ManualTransactionsОстатки
-		|	
+		|
 		|	ОБЪЕДИНИТЬ ВСЕ
-		|	
+		|
 		|	ВЫБРАТЬ
 		|		UnallocatedMemoОстатки.Client,
 		|		UnallocatedMemoОстатки.Company,
@@ -302,10 +302,14 @@
 		|			ИНАЧЕ UnbilledARОстатки.Company.DefaultLegalEntity
 		|		КОНЕЦ КАК LegalEntity
 		|	ИЗ
-		|		РегистрНакопления.UnbilledAR.Остатки(&ПериодОстатковПредыдущийМесяц, Source В (&Sources)) КАК UnbilledARОстатки
-		|	
+		|		РегистрНакопления.UnbilledAR.Остатки(
+		|				&ПериодОстатковПредыдущийМесяц,
+		|				Source В (&Sources) 
+		|					И ВЫРАЗИТЬ(Account КАК ПланСчетов.Lawson).КодЧислом <> 209000 
+		|					И ВЫРАЗИТЬ(Account КАК ПланСчетов.Lawson).КодЧислом <> 2090001) КАК UnbilledARОстатки
+		|
 		|	ОБЪЕДИНИТЬ ВСЕ
-		|	
+		|
 		|	ВЫБРАТЬ
 		|		BilledARОстатки.Client,
 		|		BilledARОстатки.Company,
@@ -321,10 +325,14 @@
 		|			ИНАЧЕ BilledARОстатки.Company.DefaultLegalEntity
 		|		КОНЕЦ
 		|	ИЗ
-		|		РегистрНакопления.BilledAR.Остатки(&ПериодОстатковПредыдущийМесяц, Source В (&Sources)) КАК BilledARОстатки
-		|	
+		|		РегистрНакопления.BilledAR.Остатки(
+		|				&ПериодОстатковПредыдущийМесяц,
+		|				Source В (&Sources)
+		|					И ВЫРАЗИТЬ(Account КАК ПланСчетов.Lawson).КодЧислом <> 209000
+		|					И ВЫРАЗИТЬ(Account КАК ПланСчетов.Lawson).КодЧислом <> 2090001) КАК BilledARОстатки
+		|
 		|	ОБЪЕДИНИТЬ ВСЕ
-		|	
+		|
 		|	ВЫБРАТЬ
 		|		UnallocatedCashОстатки.Client,
 		|		UnallocatedCashОстатки.Company,
@@ -350,9 +358,9 @@
 		|							ИЛИ UnallocatedCashОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith)
 		|				ИНАЧЕ ИСТИНА
 		|			КОНЕЦ
-		|	
+		|
 		|	ОБЪЕДИНИТЬ ВСЕ
-		|	
+		|
 		|	ВЫБРАТЬ
 		|		ManualTransactionsОстатки.Client,
 		|		ManualTransactionsОстатки.Company,
@@ -368,10 +376,14 @@
 		|			ИНАЧЕ ManualTransactionsОстатки.Company.DefaultLegalEntity
 		|		КОНЕЦ
 		|	ИЗ
-		|		РегистрНакопления.ManualTransactions.Остатки(&ПериодОстатковПредыдущийМесяц, Source В (&Sources)) КАК ManualTransactionsОстатки
-		|	
+		|		РегистрНакопления.ManualTransactions.Остатки(
+		|				&ПериодОстатковПредыдущийМесяц,
+		|				Source В (&Sources)
+		|					И ВЫРАЗИТЬ(Account КАК ПланСчетов.Lawson).КодЧислом <> 209000
+		|					И ВЫРАЗИТЬ(Account КАК ПланСчетов.Lawson).КодЧислом <> 2090001) КАК ManualTransactionsОстатки
+		|
 		|	ОБЪЕДИНИТЬ ВСЕ
-		|	
+		|
 		|	ВЫБРАТЬ
 		|		UnallocatedMemoОстатки.Client,
 		|		UnallocatedMemoОстатки.Company,
@@ -387,7 +399,11 @@
 		|			ИНАЧЕ UnallocatedMemoОстатки.Company.DefaultLegalEntity
 		|		КОНЕЦ
 		|	ИЗ
-		|		РегистрНакопления.UnallocatedMemo.Остатки(&ПериодОстатковПредыдущийМесяц, Source В (&Sources)) КАК UnallocatedMemoОстатки) КАК ВложенныйЗапросОстатки
+		|		РегистрНакопления.UnallocatedMemo.Остатки(
+		|				&ПериодОстатковПредыдущийМесяц,
+		|				Source В (&Sources)
+		|					И ВЫРАЗИТЬ(Account КАК ПланСчетов.Lawson).КодЧислом <> 209000
+		|					И ВЫРАЗИТЬ(Account КАК ПланСчетов.Lawson).КодЧислом <> 2090001) КАК UnallocatedMemoОстатки) КАК ВложенныйЗапросОстатки
 		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних(&ПериодОстатков, ) КАК ВнутренниеКурсыВалютСрезПоследних
 		|		ПО ВложенныйЗапросОстатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
 		|
