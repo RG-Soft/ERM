@@ -54,14 +54,14 @@
 	|	ПроводкаDSS.Документ,
 	|	ПроводкаDSS.Модуль,
 	|	ПроводкаDSS.SourceCode,
-	|	ПроводкаDSS.AccountLawson,
+	|	ПроводкаDSS.AccountLawson КАК Account,
 	|	ПроводкаDSS.AU,
 	|	ПроводкаDSS.Location,
 	|	ПроводкаDSS.BaseAmount,
 	|	ПроводкаDSS.DateLawson,
 	|	ПроводкаDSS.Reference,
 	|	ПроводкаDSS.Description,
-	|	ПроводкаDSS.TranAmount,
+	|	ПроводкаDSS.TranAmount КАК Amount,
 	|	ПроводкаDSS.Currency,
 	|	ПроводкаDSS.GUID,
 	|	ПроводкаDSS.PeriodLawson,
@@ -97,7 +97,7 @@
 	|	ПроводкаDSS.AktOfAcceptance,
 	|	ПроводкаDSS.AktDateLawson,
 	|	ПроводкаDSS.ApTransFormId,
-	|	ПроводкаDSS.КонтрагентLawson,
+	|	ПроводкаDSS.КонтрагентLawson КАК Client,
 	|	ПроводкаDSS.Deferred,
 	|	ПроводкаDSS.Ответственный,
 	|	ПроводкаDSS.Комментарий,
@@ -133,14 +133,14 @@
 	
 КонецФункции
 
-Функция ПолучитьСуммыДляПроводки(Реквизиты, СвязанныеДокументы, СчетВыручкиHFM, ВалютаUSD, Отказ)
+Функция ПолучитьСуммыДляПроводки(Реквизиты, СвязанныеДокументы, СчетВыручкиHFM, ВалютаUSD, Отказ) Экспорт
 	
 	СуммыДляПроводки = Новый Структура("Amount,BaseAmount");
 	
 	Если НЕ Реквизиты.HFMAccount.ПринадлежитЭлементу(СчетВыручкиHFM) И
 		Реквизиты.System = "AR" И
 		(Реквизиты.SourceCode = "RL" ИЛИ Реквизиты.SourceCode = "RY") И
-		 Реквизиты.AccountLawson = ПланыСчетов.Lawson.TradeReceivables Тогда
+		 Реквизиты.Account = ПланыСчетов.Lawson.TradeReceivables Тогда
 
 		ДокументРасчетов = ?(ЗначениеЗаполнено(СвязанныеДокументы.Invoice), СвязанныеДокументы.Invoice, СвязанныеДокументы.Memo);
 		// { RGS TAlmazova 11.08.2016 16:41:21 - может не найти инвойс
@@ -162,14 +162,14 @@
 			
 		Иначе
 			
-			СуммыДляПроводки.Amount = Реквизиты.TranAmount;
+			СуммыДляПроводки.Amount = Реквизиты.Amount;
 			СуммыДляПроводки.BaseAmount = Реквизиты.BaseAmount;
 			
 		КонецЕсли;
 		// } RGS TAlmazova 01.08.2017 18:00:17 - изменение алгоритма при различных валютах транзакции и инвойса
 	Иначе
 	
-		СуммыДляПроводки.Amount = Реквизиты.TranAmount;
+		СуммыДляПроводки.Amount = Реквизиты.Amount;
 		СуммыДляПроводки.BaseAmount = Реквизиты.BaseAmount;
 
 	КонецЕсли;

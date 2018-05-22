@@ -166,7 +166,8 @@
 			Если Реквизиты.SourceCode = "RL" ИЛИ Реквизиты.SourceCode = "RY" Тогда
 				
 				// разнесение платежей. Закрытие unallocated cash и billed AR
-				Если Реквизиты.AccountLawson = ПланыСчетов.Lawson.TradeReceivables Тогда // 120101
+				//Если Реквизиты.AccountLawson = ПланыСчетов.Lawson.TradeReceivables Тогда // 120101
+				Если Реквизиты.Account = ПланыСчетов.Lawson.TradeReceivables Тогда // 120101
 					ДокументРасчетов = ?(ЗначениеЗаполнено(ПараметрыПроведения.СвязанныеДокументы.Invoice), ПараметрыПроведения.СвязанныеДокументы.Invoice, ПараметрыПроведения.СвязанныеДокументы.Memo);
 					// { RGS TAlmazova 11.08.2016 16:41:21 - может не найти инвойс
 					//ВалютаИнвойса = ОбщегоНазначения.ЗначениеРеквизитаОбъекта(ДокументРасчетов, "Currency");
@@ -216,7 +217,8 @@
 						КонецЕсли;
 					КонецЕсли;
 					// } RGS TAlmazova 01.08.2017 18:00:17 - изменение алгоритма при различных валютах транзакции и инвойса
-				ИначеЕсли Реквизиты.AccountLawson = ПланыСчетов.Lawson.ReceivedNotApplied ИЛИ Реквизиты.AccountLawson = ПланыСчетов.Lawson.AdvancesFromCustomers Тогда // 120102 или 209000
+				//ИначеЕсли Реквизиты.AccountLawson = ПланыСчетов.Lawson.ReceivedNotApplied ИЛИ Реквизиты.AccountLawson = ПланыСчетов.Lawson.AdvancesFromCustomers Тогда // 120102 или 209000
+				ИначеЕсли Реквизиты.Account = ПланыСчетов.Lawson.ReceivedNotApplied ИЛИ Реквизиты.Account = ПланыСчетов.Lawson.AdvancesFromCustomers Тогда // 120102 или 209000
 					Если Реквизиты.SourceCode = "RY" Тогда // разворот вешаем на последнюю оплату
 						ВыполнитьСписаниеUnallocatedCashРазворот(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, Движения, СуммыДляПроводки.Amount, СуммыДляПроводки.BaseAmount, Отказ);
 					Иначе
@@ -229,7 +231,8 @@
 				
 			ИначеЕсли Реквизиты.SourceCode = "RP" ИЛИ Реквизиты.SourceCode = "RQ" ИЛИ Реквизиты.SourceCode = "RX" Тогда
 				
-				Если Реквизиты.AccountLawson = ПланыСчетов.Lawson.ReceivedNotApplied  ИЛИ Реквизиты.AccountLawson = ПланыСчетов.Lawson.AdvancesFromCustomers Тогда //120102 или 209000
+				//Если Реквизиты.AccountLawson = ПланыСчетов.Lawson.ReceivedNotApplied  ИЛИ Реквизиты.AccountLawson = ПланыСчетов.Lawson.AdvancesFromCustomers Тогда //120102 или 209000
+				Если Реквизиты.Account = ПланыСчетов.Lawson.ReceivedNotApplied  ИЛИ Реквизиты.Account = ПланыСчетов.Lawson.AdvancesFromCustomers Тогда //120102 или 209000
 				
 					// поступление денег от клииента. Приход в Unallocated cash. Или корректировка платежа. Корректировка unallocated cash в привязке к CashBatch
 					ВыполнитьНачислениеUnallocatedCash(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, Движения, -СуммыДляПроводки.Amount, -СуммыДляПроводки.BaseAmount, Отказ);
@@ -302,9 +305,11 @@
 	//НовоеДвижение.Segment = Реквизиты.Segment;
 	//НовоеДвижение.SubSegment = Реквизиты.SubSegment;
 	НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
-	НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+	//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+	НовоеДвижение.Client = Реквизиты.Client;
 	НовоеДвижение.SalesOrder = СвязанныеДокументы.SalesOrder;
-	НовоеДвижение.Account = Реквизиты.AccountLawson;
+	//НовоеДвижение.Account = Реквизиты.AccountLawson;
+	НовоеДвижение.Account = Реквизиты.Account;
 	НовоеДвижение.AU = Реквизиты.AU;
 	НовоеДвижение.Currency = Реквизиты.Currency;
 	
@@ -332,9 +337,11 @@
 	//НовоеДвижение.Segment = Реквизиты.Segment;
 	//НовоеДвижение.SubSegment = Реквизиты.SubSegment;
 	НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
-	НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+	//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+	НовоеДвижение.Client = Реквизиты.Client;
 	НовоеДвижение.SalesOrder = СвязанныеДокументы.SalesOrder;
-	НовоеДвижение.Account = Реквизиты.AccountLawson;
+	//НовоеДвижение.Account = Реквизиты.AccountLawson;
+	НовоеДвижение.Account = Реквизиты.Account;
 	НовоеДвижение.AU = Реквизиты.AU;
 	НовоеДвижение.Currency = Реквизиты.Currency;
 	
@@ -364,9 +371,11 @@
 	//НовоеДвижение.Segment = Реквизиты.Segment;
 	//НовоеДвижение.SubSegment = Реквизиты.SubSegment;
 	НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
-	НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+	//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+	НовоеДвижение.Client = Реквизиты.Client;
 	НовоеДвижение.Invoice = ?(ЗначениеЗаполнено(СвязанныеДокументы.Invoice), СвязанныеДокументы.Invoice, СвязанныеДокументы.Memo);
-	НовоеДвижение.Account = Реквизиты.AccountLawson;
+	//НовоеДвижение.Account = Реквизиты.AccountLawson;
+	НовоеДвижение.Account = Реквизиты.Account;
 	НовоеДвижение.AU = Реквизиты.AU;
 	НовоеДвижение.Currency = Реквизиты.Currency;
 	
@@ -392,9 +401,11 @@
 	НовоеДвижение.Company = Реквизиты.Company;
 	НовоеДвижение.Location = Реквизиты.Location;
 	НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
-	НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+	//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+	НовоеДвижение.Client = Реквизиты.Client;
 	НовоеДвижение.Invoice = ?(ЗначениеЗаполнено(СвязанныеДокументы.Invoice), СвязанныеДокументы.Invoice, СвязанныеДокументы.Memo);
-	НовоеДвижение.Account = Реквизиты.AccountLawson;
+	//НовоеДвижение.Account = Реквизиты.AccountLawson;
+	НовоеДвижение.Account = Реквизиты.Account;
 	НовоеДвижение.AU = Реквизиты.AU;
 	Если ИспользоватьВалютуТранзакции Тогда
 		НовоеДвижение.Currency = Реквизиты.Currency;
@@ -470,9 +481,11 @@
 	|	UnallocatedCashОстатки.CashBatch.МоментВремени";
 	
 	//Запрос.УстановитьПараметр("Период", Новый Граница(МоментВремени(), ВидГраницы.Исключая));
-	Запрос.УстановитьПараметр("Account", Реквизиты.AccountLawson);
+	//Запрос.УстановитьПараметр("Account", Реквизиты.AccountLawson);
+	Запрос.УстановитьПараметр("Account", Реквизиты.Account);
 	Запрос.УстановитьПараметр("AU", Реквизиты.AU);
-	Запрос.УстановитьПараметр("Client", Реквизиты.КонтрагентLawson);
+	//Запрос.УстановитьПараметр("Client", Реквизиты.КонтрагентLawson);
+	Запрос.УстановитьПараметр("Client", Реквизиты.Client);
 	Запрос.УстановитьПараметр("Company", Реквизиты.Company);
 	Запрос.УстановитьПараметр("Location", Реквизиты.Location);
 	Запрос.УстановитьПараметр("Source", Перечисления.ТипыСоответствий.Lawson);
@@ -503,9 +516,11 @@
 			НовоеДвижение.Company = Реквизиты.Company;
 			НовоеДвижение.Location = Реквизиты.Location;
 			НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
-			НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+			//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+			НовоеДвижение.Client = Реквизиты.Client;
 			НовоеДвижение.CashBatch = ВыборкаОстатков.CashBatch;
-			НовоеДвижение.Account = Реквизиты.AccountLawson;
+			//НовоеДвижение.Account = Реквизиты.AccountLawson;
+			НовоеДвижение.Account = Реквизиты.Account;
 			НовоеДвижение.AU = Реквизиты.AU;
 			НовоеДвижение.Currency = Реквизиты.Currency;
 			
@@ -528,9 +543,11 @@
 			НовоеДвижение.Company = Реквизиты.Company;
 			НовоеДвижение.Location = Реквизиты.Location;
 			НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
-			НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+			//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+			НовоеДвижение.Client = Реквизиты.Client;
 			НовоеДвижение.CashBatch = СвязанныеДокументы.CashBatch;
-			НовоеДвижение.Account = Реквизиты.AccountLawson;
+			//НовоеДвижение.Account = Реквизиты.AccountLawson;
+			НовоеДвижение.Account = Реквизиты.Account;
 			НовоеДвижение.AU = Реквизиты.AU;
 			НовоеДвижение.Currency = Реквизиты.Currency;
 			
@@ -550,9 +567,11 @@
 		НовоеДвижение.Company = Реквизиты.Company;
 		НовоеДвижение.Location = Реквизиты.Location;
 		НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
-		НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+		//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+		НовоеДвижение.Client = Реквизиты.Client;
 		НовоеДвижение.CashBatch = СвязанныеДокументы.CashBatch;
-		НовоеДвижение.Account = Реквизиты.AccountLawson;
+		//НовоеДвижение.Account = Реквизиты.AccountLawson;
+		НовоеДвижение.Account = Реквизиты.Account;
 		НовоеДвижение.AU = Реквизиты.AU;
 		НовоеДвижение.Currency = Реквизиты.Currency;
 		
@@ -597,9 +616,11 @@
 	|	UnallocatedCashОстатки.CashBatch.МоментВремени";
 	
 	//Запрос.УстановитьПараметр("Период", Новый Граница(МоментВремени(), ВидГраницы.Исключая));
-	Запрос.УстановитьПараметр("Account", Реквизиты.AccountLawson);
+	//Запрос.УстановитьПараметр("Account", Реквизиты.AccountLawson);
+	Запрос.УстановитьПараметр("Account", Реквизиты.Account);
 	Запрос.УстановитьПараметр("AU", Реквизиты.AU);
-	Запрос.УстановитьПараметр("Client", Реквизиты.КонтрагентLawson);
+	//Запрос.УстановитьПараметр("Client", Реквизиты.КонтрагентLawson);
+	Запрос.УстановитьПараметр("Client", Реквизиты.Client);
 	Запрос.УстановитьПараметр("Company", Реквизиты.Company);
 	Запрос.УстановитьПараметр("Location", Реквизиты.Location);
 	Запрос.УстановитьПараметр("Source", Перечисления.ТипыСоответствий.Lawson);
@@ -624,9 +645,11 @@
 		НовоеДвижение.Company = Реквизиты.Company;
 		НовоеДвижение.Location = Реквизиты.Location;
 		НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
-		НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+		//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+		НовоеДвижение.Client = Реквизиты.Client;
 		НовоеДвижение.CashBatch = ВыборкаОстатков.CashBatch;
-		НовоеДвижение.Account = Реквизиты.AccountLawson;
+		//НовоеДвижение.Account = Реквизиты.AccountLawson;
+		НовоеДвижение.Account = Реквизиты.Account;
 		НовоеДвижение.AU = Реквизиты.AU;
 		НовоеДвижение.Currency = Реквизиты.Currency;
 		
@@ -663,9 +686,11 @@
 		НовоеДвижение.Company = Реквизиты.Company;
 		НовоеДвижение.Location = Реквизиты.Location;
 		НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
-		НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+		//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+		НовоеДвижение.Client = Реквизиты.Client;
 		НовоеДвижение.CashBatch = Документы.CashBatch.ПустаяСсылка();
-		НовоеДвижение.Account = Реквизиты.AccountLawson;
+		//НовоеДвижение.Account = Реквизиты.AccountLawson;
+		НовоеДвижение.Account = Реквизиты.Account;
 		НовоеДвижение.AU = Реквизиты.AU;
 		НовоеДвижение.Currency = Реквизиты.Currency;
 		
@@ -728,9 +753,11 @@
 	|	CashBatchAllocation.CashBatch.МоментВремени УБЫВ";
 	
 	Запрос.УстановитьПараметр("BatchAllocation", СвязанныеДокументы.BatchAllocation);
-	Запрос.УстановитьПараметр("Account", Реквизиты.AccountLawson);
+	//Запрос.УстановитьПараметр("Account", Реквизиты.AccountLawson);
+	Запрос.УстановитьПараметр("Account", Реквизиты.Account);
 	Запрос.УстановитьПараметр("AU", Реквизиты.AU);
-	Запрос.УстановитьПараметр("Client", Реквизиты.КонтрагентLawson);
+	//Запрос.УстановитьПараметр("Client", Реквизиты.КонтрагентLawson);
+	Запрос.УстановитьПараметр("Client", Реквизиты.Client);
 	Запрос.УстановитьПараметр("Company", Реквизиты.Company);
 	Запрос.УстановитьПараметр("Location", Реквизиты.Location);
 	Запрос.УстановитьПараметр("Source", Перечисления.ТипыСоответствий.Lawson);
@@ -760,9 +787,11 @@
 		НовоеДвижение.Company = Реквизиты.Company;
 		НовоеДвижение.Location = Реквизиты.Location;
 		НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
-		НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+		//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+		НовоеДвижение.Client = Реквизиты.Client;
 		НовоеДвижение.CashBatch = документы.CashBatch.ПустаяСсылка();
-		НовоеДвижение.Account = Реквизиты.AccountLawson;
+		//НовоеДвижение.Account = Реквизиты.AccountLawson;
+		НовоеДвижение.Account = Реквизиты.Account;
 		НовоеДвижение.AU = Реквизиты.AU;
 		НовоеДвижение.Currency = Реквизиты.Currency;
 	
@@ -795,9 +824,11 @@
 		НовоеДвижение.Company = Реквизиты.Company;
 		НовоеДвижение.Location = Реквизиты.Location;
 		НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
-		НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+		//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+		НовоеДвижение.Client = Реквизиты.Client;
 		НовоеДвижение.CashBatch = CashBatch;
-		НовоеДвижение.Account = Реквизиты.AccountLawson;
+		//НовоеДвижение.Account = Реквизиты.AccountLawson;
+		НовоеДвижение.Account = Реквизиты.Account;
 		НовоеДвижение.AU = Реквизиты.AU;
 		НовоеДвижение.Currency = Реквизиты.Currency;
 		
@@ -829,9 +860,11 @@
 	//НовоеДвижение.Segment = Реквизиты.Segment;
 	//НовоеДвижение.SubSegment = Реквизиты.SubSegment;
 	НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
-	НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+	//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+	НовоеДвижение.Client = Реквизиты.Client;
 	НовоеДвижение.РучнаяКорректировка = СвязанныеДокументы.РучнаяКорректировка;
-	НовоеДвижение.Account = Реквизиты.AccountLawson;
+	//НовоеДвижение.Account = Реквизиты.AccountLawson;
+	НовоеДвижение.Account = Реквизиты.Account;
 	НовоеДвижение.AU = Реквизиты.AU;
 	НовоеДвижение.Currency = Реквизиты.Currency;
 	
@@ -859,9 +892,11 @@
 	//НовоеДвижение.Segment = Реквизиты.Segment;
 	//НовоеДвижение.SubSegment = Реквизиты.SubSegment;
 	НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
-	НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+	//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+	НовоеДвижение.Client = Реквизиты.Client;
 	НовоеДвижение.Memo = СвязанныеДокументы.Memo;
-	НовоеДвижение.Account = Реквизиты.AccountLawson;
+	//НовоеДвижение.Account = Реквизиты.AccountLawson;
+	НовоеДвижение.Account = Реквизиты.Account;
 	НовоеДвижение.AU = Реквизиты.AU;
 	НовоеДвижение.Currency = Реквизиты.Currency;
 	
@@ -888,8 +923,10 @@
 				НовоеДвижение.AU = Реквизиты.AU;
 				НовоеДвижение.Location = Реквизиты.Location;
 				НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
-				НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
-				НовоеДвижение.Account = Реквизиты.AccountLawson;
+				//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+				НовоеДвижение.Client = Реквизиты.Client;
+				//НовоеДвижение.Account = Реквизиты.AccountLawson;
+				НовоеДвижение.Account = Реквизиты.Account;
 				НовоеДвижение.Invoice = Документы.Invoice.ПустаяСсылка();
 				НовоеДвижение.CashBatch = СвязанныеДокументы.CashBatch;
 				Если ИспользоватьВалютуТранзакции Тогда
@@ -908,8 +945,10 @@
 					НовоеДвижение.AU = Реквизиты.AU;
 					НовоеДвижение.Location = Реквизиты.Location;
 					НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
-					НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
-					НовоеДвижение.Account = Реквизиты.AccountLawson;
+					//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+					НовоеДвижение.Client = Реквизиты.Client;
+					//НовоеДвижение.Account = Реквизиты.AccountLawson;
+					НовоеДвижение.Account = Реквизиты.Account;
 					НовоеДвижение.Invoice = Документы.Invoice.ПустаяСсылка();
 					НовоеДвижение.CashBatch = Движение.CashBatch;
 					НовоеДвижение.Currency = Движение.Currency;
@@ -925,8 +964,10 @@
 			НовоеДвижение.AU = Реквизиты.AU;
 			НовоеДвижение.Location = Реквизиты.Location;
 			НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
-			НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
-			НовоеДвижение.Account = Реквизиты.AccountLawson;
+			//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+			НовоеДвижение.Client = Реквизиты.Client;
+			//НовоеДвижение.Account = Реквизиты.AccountLawson;
+			НовоеДвижение.Account = Реквизиты.Account;
 			НовоеДвижение.Invoice = ?(ЗначениеЗаполнено(СвязанныеДокументы.Invoice), СвязанныеДокументы.Invoice, СвязанныеДокументы.Memo);
 			Если ЗначениеЗаполнено(СвязанныеДокументы.CashBatch) Тогда
 				НовоеДвижение.CashBatch = СвязанныеДокументы.CashBatch;
@@ -983,7 +1024,8 @@
 	НовоеДвижение.Период = Реквизиты.AccountingPeriod;
 	НовоеДвижение.Source = Перечисления.ТипыСоответствий.Lawson;
 	НовоеДвижение.Company = Реквизиты.Company;
-	НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+	//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
+	НовоеДвижение.Client = Реквизиты.Client;
 	
 	Если Реквизиты.System = "GL" Тогда
 		НовоеДвижение.Document = СвязанныеДокументы.РучнаяКорректировка;
@@ -996,7 +1038,8 @@
 		ОбщегоНазначенияКлиентСервер.СообщитьПользователю("Filed to determine revenue document!", , , , Отказ);
 	КонецЕсли;
 	
-	НовоеДвижение.Account = Реквизиты.AccountLawson;
+	//НовоеДвижение.Account = Реквизиты.AccountLawson;
+	НовоеДвижение.Account = Реквизиты.Account;
 	НовоеДвижение.AU = Реквизиты.AU;
 	НовоеДвижение.Currency = Реквизиты.Currency;
 	НовоеДвижение.LegalEntity = Реквизиты.LegalEntity;
