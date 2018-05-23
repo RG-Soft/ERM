@@ -2,7 +2,9 @@
 <mdclass:Document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="587db156-cd0f-4c32-8f52-a0d264c59deb">
   <producedTypes>
     <objectType typeId="f1be086d-2ba3-48d5-b0fe-c8b3871d2b61" valueTypeId="eccad8fa-b3c8-49b8-bdf7-1099d937df18"/>
-    <refType typeId="2c4c3bc4-0840-4c73-9d75-642fc0ee6cd8" valueTypeId="9afdc8e2-c16c-4bab-b7ff-ec74aa744634"/>
+    <refType typeId="2c4c3bc4-0840-4c73-9d75-642fc0ee6cd8" valueTypeId="9afdc8e2-c16c-4bab-b7ff-ec74aa744634">
+      <emptyRef/>
+    </refType>
     <selectionType typeId="3592720f-7601-4289-8759-dbf9a41bef12" valueTypeId="79223abb-007d-4ea4-8003-d33788b4db59"/>
     <listType typeId="6e8ffcb8-29a2-4d8f-b822-55a78750f304" valueTypeId="cef60db0-7d0d-4de9-93fe-702f6507f79f"/>
     <managerType typeId="d4f90441-5369-483b-b5e0-3001a7073cdc" valueTypeId="1349ac8d-2075-422f-9a03-a2896317fc06"/>
@@ -128,7 +130,7 @@
     <name>LawsonBilling</name>
     <synonym>
       <key>ru</key>
-      <value>Lawson Billing</value>
+      <value>Lawson</value>
     </synonym>
     <comment></comment>
     <attributes uuid="d4ce72f3-bff1-4d2d-bb43-0008f0aa8ebf">
@@ -269,6 +271,17 @@
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>
     </attributes>
+    <attributes uuid="b0fdb0a6-2a52-4b7b-b59f-bcb76cd8e739">
+      <name>Method</name>
+      <synonym>
+        <key>ru</key>
+        <value>Method</value>
+      </synonym>
+      <type>
+        <types>EnumRef.BillingCalculationMethods</types>
+      </type>
+      <dataHistory>Use</dataHistory>
+    </attributes>
   </tabularSections>
   <tabularSections uuid="e195613e-e87e-464a-8792-91ef56d091b3">
     <producedTypes>
@@ -278,7 +291,7 @@
     <name>HOBBilling</name>
     <synonym>
       <key>ru</key>
-      <value>HOB Billing</value>
+      <value>HOB</value>
     </synonym>
     <comment></comment>
     <attributes uuid="c0ebcfc2-2c39-4137-808b-88224429e7fd">
@@ -538,6 +551,337 @@
       <maxValue xsi:type="core:UndefinedValue"/>
       <dataHistory>Use</dataHistory>
       <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="d94c94f7-db6d-4693-b576-730e1cc8ec7d">
+      <name>Method</name>
+      <synonym>
+        <key>ru</key>
+        <value>Method</value>
+      </synonym>
+      <type>
+        <types>EnumRef.BillingCalculationMethods</types>
+      </type>
+      <dataHistory>Use</dataHistory>
+    </attributes>
+  </tabularSections>
+  <tabularSections uuid="77b0fcec-ef91-405a-a289-6fc942c3acf9">
+    <producedTypes>
+      <objectType typeId="f3ea2d11-974a-4e17-97b3-fd9880e6c514" valueTypeId="1ab3ecdd-2e5e-4b95-b1b5-f93753e88393"/>
+      <rowType typeId="f8cbf03a-1b8f-4471-8d86-308a98efe3db" valueTypeId="d945ae2c-0da4-4370-a06e-f4cf19541cd3"/>
+    </producedTypes>
+    <name>OracleMIBilling</name>
+    <synonym>
+      <key>ru</key>
+      <value>Oracle MI</value>
+    </synonym>
+    <attributes uuid="b3385ecd-f82e-429b-948f-eb7506020310">
+      <name>Company</name>
+      <synonym>
+        <key>ru</key>
+        <value>Company</value>
+      </synonym>
+      <comment></comment>
+      <type>
+        <types>CatalogRef.Организации</types>
+      </type>
+      <mask></mask>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <choiceParameters>
+        <name>Отбор.Source</name>
+        <value xsi:type="core:ReferenceValue">
+          <value>Enum.ТипыСоответствий.EnumValue.OracleMI</value>
+        </value>
+      </choiceParameters>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="531b083f-98a2-444f-8a09-2f2058c93e6a">
+      <name>LegalEntity</name>
+      <synonym>
+        <key>ru</key>
+        <value>Legal entity</value>
+      </synonym>
+      <comment></comment>
+      <type>
+        <types>CatalogRef.LegalEntiites</types>
+      </type>
+      <mask></mask>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <choiceParameters>
+        <name>Отбор.Source</name>
+        <value xsi:type="core:ReferenceValue">
+          <value>Enum.ТипыСоответствий.EnumValue.OracleMI</value>
+        </value>
+      </choiceParameters>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="9fe4231f-19a9-41cd-a003-6cc2265ad80b">
+      <name>AU</name>
+      <synonym>
+        <key>ru</key>
+        <value>AU</value>
+      </synonym>
+      <comment></comment>
+      <type>
+        <types>CatalogRef.КостЦентры</types>
+      </type>
+      <mask></mask>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <choiceParameters>
+        <name>Отбор.Source</name>
+        <value xsi:type="core:ReferenceValue">
+          <value>Enum.ТипыСоответствий.EnumValue.OracleMI</value>
+        </value>
+      </choiceParameters>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="f1211378-444c-48a9-9921-f7e68b8cee63">
+      <name>Client</name>
+      <synonym>
+        <key>ru</key>
+        <value>Client</value>
+      </synonym>
+      <comment></comment>
+      <type>
+        <types>CatalogRef.Контрагенты</types>
+      </type>
+      <mask></mask>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="91ae9200-6fc8-4fea-a3e9-e309478b285b">
+      <name>Currency</name>
+      <synonym>
+        <key>ru</key>
+        <value>Currency</value>
+      </synonym>
+      <comment></comment>
+      <type>
+        <types>CatalogRef.Валюты</types>
+      </type>
+      <mask></mask>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="885d5785-c65a-44b0-98ee-42b1f2a48f11">
+      <name>Amount</name>
+      <synonym>
+        <key>ru</key>
+        <value>Amount</value>
+      </synonym>
+      <comment></comment>
+      <type>
+        <types>Number</types>
+        <numberQualifiers>
+          <precision>15</precision>
+          <scale>2</scale>
+        </numberQualifiers>
+      </type>
+      <mask></mask>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="2c0370bd-7a0c-4737-9da6-58a1beac6198">
+      <name>USDAmount</name>
+      <synonym>
+        <key>ru</key>
+        <value>USD Amount</value>
+      </synonym>
+      <comment></comment>
+      <type>
+        <types>Number</types>
+        <numberQualifiers>
+          <precision>15</precision>
+          <scale>2</scale>
+        </numberQualifiers>
+      </type>
+      <mask></mask>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="65cf8273-1f13-4501-a3bd-6f5ad401fa1f">
+      <name>Method</name>
+      <synonym>
+        <key>ru</key>
+        <value>Method</value>
+      </synonym>
+      <type>
+        <types>EnumRef.BillingCalculationMethods</types>
+      </type>
+      <dataHistory>Use</dataHistory>
+    </attributes>
+  </tabularSections>
+  <tabularSections uuid="db3e73b5-c575-48ed-958e-451b027ff5db">
+    <producedTypes>
+      <objectType typeId="8d4b0f02-4b2d-404d-b019-87f98be4f23a" valueTypeId="434ce33f-0386-4fdb-aaea-445a3826bcd6"/>
+      <rowType typeId="9229d213-a891-4b20-b036-f434f6c64fb5" valueTypeId="8d3e70d3-d59c-4937-bb8d-200d598f5073"/>
+    </producedTypes>
+    <name>OracleSmithBilling</name>
+    <synonym>
+      <key>ru</key>
+      <value>Oracle Smith</value>
+    </synonym>
+    <attributes uuid="84095ec2-41af-4008-8d8d-b409625aeab7">
+      <name>Company</name>
+      <synonym>
+        <key>ru</key>
+        <value>Company</value>
+      </synonym>
+      <comment></comment>
+      <type>
+        <types>CatalogRef.Организации</types>
+      </type>
+      <mask></mask>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <choiceParameters>
+        <name>Отбор.Source</name>
+        <value xsi:type="core:ReferenceValue">
+          <value>Enum.ТипыСоответствий.EnumValue.OracleSmith</value>
+        </value>
+      </choiceParameters>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="ca3cc0e4-14fd-423f-b035-862dc51eecb3">
+      <name>LegalEntity</name>
+      <synonym>
+        <key>ru</key>
+        <value>Legal entity</value>
+      </synonym>
+      <comment></comment>
+      <type>
+        <types>CatalogRef.LegalEntiites</types>
+      </type>
+      <mask></mask>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <choiceParameters>
+        <name>Отбор.Source</name>
+        <value xsi:type="core:ReferenceValue">
+          <value>Enum.ТипыСоответствий.EnumValue.OracleSmith</value>
+        </value>
+      </choiceParameters>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="46ab7ecd-c51f-4547-b155-3b420717a47d">
+      <name>AU</name>
+      <synonym>
+        <key>ru</key>
+        <value>AU</value>
+      </synonym>
+      <comment></comment>
+      <type>
+        <types>CatalogRef.КостЦентры</types>
+      </type>
+      <mask></mask>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <choiceParameters>
+        <name>Отбор.Source</name>
+        <value xsi:type="core:ReferenceValue">
+          <value>Enum.ТипыСоответствий.EnumValue.OracleSmith</value>
+        </value>
+      </choiceParameters>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="7f634c14-fd33-4ea8-9ffd-4d4821fc1927">
+      <name>Client</name>
+      <synonym>
+        <key>ru</key>
+        <value>Client</value>
+      </synonym>
+      <comment></comment>
+      <type>
+        <types>CatalogRef.Контрагенты</types>
+      </type>
+      <mask></mask>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="91a7e3dc-b024-4e95-b607-4e388c278e15">
+      <name>Currency</name>
+      <synonym>
+        <key>ru</key>
+        <value>Currency</value>
+      </synonym>
+      <comment></comment>
+      <type>
+        <types>CatalogRef.Валюты</types>
+      </type>
+      <mask></mask>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="726b89e4-8ddd-4a01-a5cf-56ea98305e2b">
+      <name>Amount</name>
+      <synonym>
+        <key>ru</key>
+        <value>Amount</value>
+      </synonym>
+      <comment></comment>
+      <type>
+        <types>Number</types>
+        <numberQualifiers>
+          <precision>15</precision>
+          <scale>2</scale>
+        </numberQualifiers>
+      </type>
+      <mask></mask>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="4f0456f2-d985-4743-9e25-45af081e5e88">
+      <name>USDAmount</name>
+      <synonym>
+        <key>ru</key>
+        <value>USD Amount</value>
+      </synonym>
+      <comment></comment>
+      <type>
+        <types>Number</types>
+        <numberQualifiers>
+          <precision>15</precision>
+          <scale>2</scale>
+        </numberQualifiers>
+      </type>
+      <mask></mask>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="807fa513-a98b-4e38-9488-82a21fc52776">
+      <name>Method</name>
+      <synonym>
+        <key>ru</key>
+        <value>Method</value>
+      </synonym>
+      <type>
+        <types>EnumRef.BillingCalculationMethods</types>
+      </type>
+      <dataHistory>Use</dataHistory>
     </attributes>
   </tabularSections>
 </mdclass:Document>
