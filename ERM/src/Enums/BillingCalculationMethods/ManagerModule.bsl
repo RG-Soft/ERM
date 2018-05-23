@@ -69,6 +69,12 @@
 	|////////////////////////////////////////////////////////////////////////////////
 	|ВЫБРАТЬ
 	|	ВТ_ДанныеТранзакций.Source КАК Source,
+	|	ВТ_ДанныеТранзакций.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
+	|	ВТ_ДанныеТранзакций.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель КАК Segment,
+	|	ВТ_ДанныеТранзакций.AU.Сегмент.БазовыйЭлемент.Родитель КАК SubSegment,
+	|	ВТ_ДанныеТранзакций.AU.Сегмент.БазовыйЭлемент КАК SubSubSegment,
+	|	ВТ_ДанныеТранзакций.Company.БазовыйЭлемент КАК HFMCompany,
+	|	ЗНАЧЕНИЕ(Перечисление.BillingCalculationMethods.TransactionClassification) КАК Method,
 	|	ВТ_ДанныеТранзакций.Company КАК Company,
 	|	ВТ_ДанныеТранзакций.LegalEntity КАК LegalEntity,
 	|	ВТ_ДанныеТранзакций.AU КАК AU,
@@ -89,6 +95,12 @@
 	|
 	|СГРУППИРОВАТЬ ПО
 	|	ВТ_ДанныеТранзакций.Source,
+	|	ВТ_ДанныеТранзакций.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель,
+	|	ВТ_ДанныеТранзакций.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель,
+	|	ВТ_ДанныеТранзакций.AU.Сегмент.БазовыйЭлемент.Родитель,
+	|	ВТ_ДанныеТранзакций.AU.Сегмент.БазовыйЭлемент,
+	|	ВТ_ДанныеТранзакций.Company.БазовыйЭлемент,
+	|	ЗНАЧЕНИЕ(Перечисление.BillingCalculationMethods.TransactionClassification),
 	|	ВТ_ДанныеТранзакций.Company,
 	|	ВТ_ДанныеТранзакций.LegalEntity,
 	|	ВТ_ДанныеТранзакций.AU,
@@ -476,6 +488,12 @@
 	|	ЕСТЬNULL(ВТ_ПолныеОстатки.Client, ВТ_Collection.Client) КАК Client,
 	|	ЕСТЬNULL(ВТ_ПолныеОстатки.Company, ВТ_Collection.Company) КАК Company,
 	|	ЕСТЬNULL(ВТ_ПолныеОстатки.Source, ВТ_Collection.Source) КАК Source,
+	|	ЕСТЬNULL(ВТ_ПолныеОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель, ВТ_Collection.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель) КАК GeoMarket,
+	|	ЕСТЬNULL(ВТ_ПолныеОстатки.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель, ВТ_Collection.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель) КАК Segment,
+	|	ЕСТЬNULL(ВТ_ПолныеОстатки.AU.Сегмент.БазовыйЭлемент.Родитель, ВТ_Collection.AU.Сегмент.БазовыйЭлемент.Родитель) КАК SubSegment,
+	|	ЕСТЬNULL(ВТ_ПолныеОстатки.AU.Сегмент.БазовыйЭлемент, ВТ_Collection.AU.Сегмент.БазовыйЭлемент) КАК SubSubSegment,
+	|	ЕСТЬNULL(ВТ_ПолныеОстатки.Company.БазовыйЭлемент, ВТ_Collection.Company.БазовыйЭлемент) КАК HFMCompany,
+	|	ЗНАЧЕНИЕ(Перечисление.BillingCalculationMethods.ARandCollection) КАК Method,
 	|	ЕСТЬNULL(ВТ_ПолныеОстатки.AU, ВТ_Collection.AU) КАК AU,
 	|	ЕСТЬNULL(ВТ_ПолныеОстатки.LegalEntity, ВТ_Collection.LegalEntity) КАК LegalEntity,
 	|	ЕСТЬNULL(ВТ_ПолныеОстатки.Currency, ВТ_Collection.Currency) КАК Currency,
@@ -515,6 +533,12 @@
 	|	КОНЕЦ,
 	|	RevenueОбороты.AU,
 	|	RevenueОбороты.Source,
+	|	RevenueОбороты.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
+	|	RevenueОбороты.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель КАК Segment,
+	|	RevenueОбороты.AU.Сегмент.БазовыйЭлемент.Родитель КАК SubSegment,
+	|	RevenueОбороты.AU.Сегмент.БазовыйЭлемент КАК SubSubSegment,
+	|	RevenueОбороты.Company.БазовыйЭлемент КАК HFMCompany,
+	|	ЗНАЧЕНИЕ(Перечисление.BillingCalculationMethods.Revenue) КАК Method,
 	|	RevenueОбороты.BaseAmountОборот
 	|ИЗ
 	|	РегистрНакопления.Revenue.Обороты(
