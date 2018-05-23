@@ -21,10 +21,14 @@
 	ДвиженияБиллинг = Движения.Billing;
 	ДвиженияБиллинг.Записывать = Истина;
 	
-	ТЗ_LawsonBilling = LawsonBilling.Выгрузить(, "Company, LegalEntity, AU, Client, Currency, Amount, USDAmount");
-	ТЗ_LawsonBilling.Свернуть("Company, LegalEntity, AU, Client, Currency", "Amount, USDAmount");
+	ТЗ_LawsonBilling = LawsonBilling.Выгрузить(, "Company, LegalEntity, AU, Client, Currency, Method, Amount, USDAmount");
+	ТЗ_LawsonBilling.Свернуть("Company, LegalEntity, AU, Client, Currency, Method", "Amount, USDAmount");
 	
 	Для каждого СтрокаТЧ Из ТЗ_LawsonBilling Цикл
+		
+		Если СтрокаТЧ.Method = Перечисления.BillingCalculationMethods.Ignore Тогда
+			Продолжить;
+		КонецЕсли;
 		
 		НовоеДвижение = ДвиженияБиллинг.Добавить();
 		ЗаполнитьЗначенияСвойств(НовоеДвижение, СтрокаТЧ);
@@ -33,11 +37,15 @@
 		
 	КонецЦикла;
 	
-	ТЗ_HOBBilling = HOBBilling.Выгрузить(, "Company, LegalEntity, AU, Client, Currency, Amount, USDAmount");
-	ТЗ_HOBBilling.Свернуть("Company, LegalEntity, AU, Client, Currency", "Amount, USDAmount");
+	ТЗ_HOBBilling = HOBBilling.Выгрузить(, "Company, LegalEntity, AU, Client, Currency, Method, Amount, USDAmount");
+	ТЗ_HOBBilling.Свернуть("Company, LegalEntity, AU, Client, Currency, Method", "Amount, USDAmount");
 	
 	Для каждого СтрокаТЧ Из ТЗ_HOBBilling Цикл
 		
+		Если СтрокаТЧ.Method = Перечисления.BillingCalculationMethods.Ignore Тогда
+			Продолжить;
+		КонецЕсли;
+			
 		НовоеДвижение = ДвиженияБиллинг.Добавить();
 		ЗаполнитьЗначенияСвойств(НовоеДвижение, СтрокаТЧ);
 		НовоеДвижение.Период = НачалоМесяца(Дата);
