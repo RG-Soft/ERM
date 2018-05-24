@@ -191,10 +191,6 @@
 			</valueType>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>EndClient</dataPath>
-			<field>EndClient</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>Billing4</dataPath>
 			<field>Billing4</field>
 			<title xsi:type="v8:LocalStringType">
@@ -349,10 +345,6 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>РучнаяКорректировка</dataPath>
 			<field>РучнаяКорректировка</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>Document</dataPath>
-			<field>Document</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Billing20</dataPath>
@@ -835,7 +827,7 @@
 	Billing.Период &lt;= &amp;Период
 	И Billing.Активность
 	И Billing.Период &gt;= ДОБАВИТЬКДАТЕ(&amp;Период, МЕСЯЦ, -24)
-	И Billing.Source В(&amp;SourcesBilling)
+	И Billing.Method В (&amp;МетодыРасчетаБиллингаСПереоценкой)
 
 СГРУППИРОВАТЬ ПО
 	Billing.Период,
@@ -852,24 +844,36 @@
 ОБЪЕДИНИТЬ ВСЕ
 
 ВЫБРАТЬ
-	RevenueОбороты.Период,
-	RevenueОбороты.Client,
-	RevenueОбороты.Company,
+	Billing.Период,
+	Billing.Client,
+	Billing.Company,
 	ВЫБОР
-		КОГДА RevenueОбороты.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
-			ТОГДА RevenueОбороты.LegalEntity
-		ИНАЧЕ RevenueОбороты.Company.DefaultLegalEntity
-	КОНЕЦ,
-	RevenueОбороты.AU,
-	RevenueОбороты.Source,
-	RevenueОбороты.BaseAmountОборот
+		КОГДА Billing.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+			ТОГДА Billing.LegalEntity
+		ИНАЧЕ Billing.Company.DefaultLegalEntity
+	КОНЕЦ КАК LegalEntity,
+	Billing.AU,
+	Billing.Source,
+	СУММА(Billing.USDAmount) КАК USDAmount
 ИЗ
-	РегистрНакопления.Revenue.Обороты(
-			ДОБАВИТЬКДАТЕ(&amp;Период, МЕСЯЦ, -24),
-			&amp;Период,
-			Месяц,
-			Source В (&amp;SourcesRevenue)
-				И НЕ Account.БазовыйЭлемент.Intercompany) КАК RevenueОбороты
+	РегистрСведений.Billing КАК Billing
+ГДЕ
+	Billing.Период &lt;= &amp;Период
+	И Billing.Активность
+	И Billing.Период &gt;= ДОБАВИТЬКДАТЕ(&amp;Период, МЕСЯЦ, -24)
+	И НЕ Billing.Method В (&amp;МетодыРасчетаБиллингаСПереоценкой)
+
+СГРУППИРОВАТЬ ПО
+	Billing.Период,
+	Billing.Client,
+	Billing.Company,
+	ВЫБОР
+		КОГДА Billing.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+			ТОГДА Billing.LegalEntity
+		ИНАЧЕ Billing.Company.DefaultLegalEntity
+	КОНЕЦ,
+	Billing.AU,
+	Billing.Source
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2499,48 +2503,6 @@
     Сумма(Billing21), Сумма(Billing22), Сумма(Billing23), Сумма(Billing24))</expression>
 	</totalField>
 	<parameter>
-		<name>НачалоПериода</name>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Начало периода</v8:content>
-			</v8:item>
-		</title>
-		<valueType>
-			<v8:Type>xs:dateTime</v8:Type>
-			<v8:DateQualifiers>
-				<v8:DateFractions>DateTime</v8:DateFractions>
-			</v8:DateQualifiers>
-		</valueType>
-		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
-		<useRestriction>true</useRestriction>
-		<valueListAllowed>false</valueListAllowed>
-		<availableAsField>true</availableAsField>
-		<denyIncompleteValues>false</denyIncompleteValues>
-		<use>Auto</use>
-	</parameter>
-	<parameter>
-		<name>КонецПериода</name>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Конец периода</v8:content>
-			</v8:item>
-		</title>
-		<valueType>
-			<v8:Type>xs:dateTime</v8:Type>
-			<v8:DateQualifiers>
-				<v8:DateFractions>DateTime</v8:DateFractions>
-			</v8:DateQualifiers>
-		</valueType>
-		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
-		<useRestriction>true</useRestriction>
-		<valueListAllowed>false</valueListAllowed>
-		<availableAsField>true</availableAsField>
-		<denyIncompleteValues>false</denyIncompleteValues>
-		<use>Auto</use>
-	</parameter>
-	<parameter>
 		<name>Sources</name>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
@@ -2553,45 +2515,6 @@
 		</valueType>
 		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.Lawson</value>
 		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.HOBs</value>
-		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.OracleMI</value>
-		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.OracleSmith</value>
-		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.Radius</value>
-		<useRestriction>true</useRestriction>
-		<valueListAllowed>true</valueListAllowed>
-		<availableAsField>true</availableAsField>
-		<denyIncompleteValues>false</denyIncompleteValues>
-		<use>Auto</use>
-	</parameter>
-	<parameter>
-		<name>SourcesBilling</name>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Sources billing</v8:content>
-			</v8:item>
-		</title>
-		<valueType>
-			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:EnumRef.ТипыСоответствий</v8:Type>
-		</valueType>
-		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.Lawson</value>
-		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.HOBs</value>
-		<useRestriction>true</useRestriction>
-		<valueListAllowed>true</valueListAllowed>
-		<availableAsField>true</availableAsField>
-		<denyIncompleteValues>false</denyIncompleteValues>
-		<use>Auto</use>
-	</parameter>
-	<parameter>
-		<name>SourcesRevenue</name>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Sources revenue</v8:content>
-			</v8:item>
-		</title>
-		<valueType>
-			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:EnumRef.ТипыСоответствий</v8:Type>
-		</valueType>
 		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.OracleMI</value>
 		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.OracleSmith</value>
 		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.Radius</value>
@@ -3191,6 +3114,25 @@
 		<useRestriction>true</useRestriction>
 		<expression>ДОБАВИТЬКДАТЕ(НачалоПериода(&amp;Период, "МЕСЯЦ") , "МЕСЯЦ",  -9)</expression>
 		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
+	</parameter>
+	<parameter>
+		<name>МетодыРасчетаБиллингаСПереоценкой</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Методы расчета биллинга с переоценкой</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:EnumRef.BillingCalculationMethods</v8:Type>
+		</valueType>
+		<value xsi:type="dcscor:DesignTimeValue">Перечисление.BillingCalculationMethods.TransactionClassification</value>
+		<value xsi:type="dcscor:DesignTimeValue">Перечисление.BillingCalculationMethods.ARandCollection</value>
+		<useRestriction>true</useRestriction>
+		<valueListAllowed>true</valueListAllowed>
 		<availableAsField>true</availableAsField>
 		<denyIncompleteValues>false</denyIncompleteValues>
 		<use>Auto</use>
