@@ -536,6 +536,7 @@
 	|	RevenueОбороты.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель КАК Segment,
 	|	RevenueОбороты.AU.Сегмент.БазовыйЭлемент.Родитель КАК SubSegment,
 	|	RevenueОбороты.AU.Сегмент.БазовыйЭлемент КАК SubSubSegment,
+	|	RevenueОбороты.Currency КАК Currency,
 	|	RevenueОбороты.Company.БазовыйЭлемент КАК HFMCompany,
 	|	ЗНАЧЕНИЕ(Перечисление.BillingCalculationMethods.Revenue) КАК Method,
 	|	RevenueОбороты.AmountОборот КАК Amount,
