@@ -523,7 +523,6 @@
 	
 	ТекстЗапроса =
 	"ВЫБРАТЬ
-	|	RevenueОбороты.Период,
 	|	RevenueОбороты.Client,
 	|	RevenueОбороты.Company,
 	|	ВЫБОР
@@ -539,7 +538,8 @@
 	|	RevenueОбороты.AU.Сегмент.БазовыйЭлемент КАК SubSubSegment,
 	|	RevenueОбороты.Company.БазовыйЭлемент КАК HFMCompany,
 	|	ЗНАЧЕНИЕ(Перечисление.BillingCalculationMethods.Revenue) КАК Method,
-	|	RevenueОбороты.BaseAmountОборот
+	|	RevenueОбороты.AmountОборот КАК Amount,
+	|	RevenueОбороты.BaseAmountОборот КАК USDAmount
 	|ИЗ
 	|	РегистрНакопления.Revenue.Обороты(
 	|			&НачалоПериода,
