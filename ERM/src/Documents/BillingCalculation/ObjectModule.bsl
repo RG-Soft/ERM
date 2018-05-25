@@ -85,6 +85,22 @@
 		
 	КонецЦикла;
 	
+	ТЗ_RadiusBilling = RadiusBilling.Выгрузить(, "Company, LegalEntity, AU, Client, Currency, Method, Amount, USDAmount");
+	ТЗ_RadiusBilling.Свернуть("Company, LegalEntity, AU, Client, Currency, Method", "Amount, USDAmount");
+	
+	Для каждого СтрокаТЧ Из ТЗ_RadiusBilling Цикл
+		
+		Если СтрокаТЧ.Method = Перечисления.BillingCalculationMethods.Ignore Тогда
+			Продолжить;
+		КонецЕсли;
+		
+		НовоеДвижение = ДвиженияБиллинг.Добавить();
+		ЗаполнитьЗначенияСвойств(НовоеДвижение, СтрокаТЧ);
+		НовоеДвижение.Период = НачалоМесяца(Дата);
+		НовоеДвижение.Source = Перечисления.ТипыСоответствий.Radius;
+		
+	КонецЦикла;
+	
 КонецПроцедуры
 
 #КонецЕсли
