@@ -191,10 +191,6 @@
 			</valueType>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>EndClient</dataPath>
-			<field>EndClient</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>Billing4</dataPath>
 			<field>Billing4</field>
 			<title xsi:type="v8:LocalStringType">
@@ -349,10 +345,6 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>РучнаяКорректировка</dataPath>
 			<field>РучнаяКорректировка</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>Document</dataPath>
-			<field>Document</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Billing20</dataPath>
@@ -825,43 +817,8 @@
 	КОНЕЦ КАК LegalEntity,
 	Billing.AU,
 	Billing.Source,
-	СУММА(Billing.USDAmount) КАК USDAmount
+	СУММА(Billing.Amount / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность) КАК USDAmount
 ПОМЕСТИТЬ ВТ_Биллинг
-ИЗ
-	РегистрСведений.Billing КАК Billing
-ГДЕ
-	Billing.Период &lt;= &amp;Период
-	И Billing.Активность
-	И Billing.Период &gt;= ДОБАВИТЬКДАТЕ(&amp;Период, МЕСЯЦ, -24)
-	И Billing.Source В(&amp;SourcesBilling)
-	И Billing.Source &lt;&gt; ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
-
-СГРУППИРОВАТЬ ПО
-	Billing.Период,
-	Billing.Client,
-	Billing.Company,
-	ВЫБОР
-		КОГДА Billing.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
-			ТОГДА Billing.LegalEntity
-		ИНАЧЕ Billing.Company.DefaultLegalEntity
-	КОНЕЦ,
-	Billing.AU,
-	Billing.Source
-
-ОБЪЕДИНИТЬ ВСЕ
-
-ВЫБРАТЬ
-	Billing.Период,
-	Billing.Client,
-	Billing.Company,
-	ВЫБОР
-		КОГДА Billing.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
-			ТОГДА Billing.LegalEntity
-		ИНАЧЕ Billing.Company.DefaultLegalEntity
-	КОНЕЦ,
-	Billing.AU,
-	Billing.Source,
-	СУММА(Billing.Amount / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность)
 ИЗ
 	РегистрСведений.Billing КАК Billing
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ПериодОстатков)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
@@ -870,8 +827,7 @@
 	Billing.Период &lt;= &amp;Период
 	И Billing.Активность
 	И Billing.Период &gt;= ДОБАВИТЬКДАТЕ(&amp;Период, МЕСЯЦ, -24)
-	И Billing.Source В(&amp;SourcesBilling)
-	И Billing.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
+	И Billing.Method В (&amp;МетодыРасчетаБиллингаСПереоценкой)
 
 СГРУППИРОВАТЬ ПО
 	Billing.Период,
@@ -888,24 +844,36 @@
 ОБЪЕДИНИТЬ ВСЕ
 
 ВЫБРАТЬ
-	RevenueОбороты.Период,
-	RevenueОбороты.Client,
-	RevenueОбороты.Company,
+	Billing.Период,
+	Billing.Client,
+	Billing.Company,
 	ВЫБОР
-		КОГДА RevenueОбороты.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
-			ТОГДА RevenueОбороты.LegalEntity
-		ИНАЧЕ RevenueОбороты.Company.DefaultLegalEntity
-	КОНЕЦ,
-	RevenueОбороты.AU,
-	RevenueОбороты.Source,
-	RevenueОбороты.BaseAmountОборот
+		КОГДА Billing.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+			ТОГДА Billing.LegalEntity
+		ИНАЧЕ Billing.Company.DefaultLegalEntity
+	КОНЕЦ КАК LegalEntity,
+	Billing.AU,
+	Billing.Source,
+	СУММА(Billing.USDAmount) КАК USDAmount
 ИЗ
-	РегистрНакопления.Revenue.Обороты(
-			ДОБАВИТЬКДАТЕ(&amp;Период, МЕСЯЦ, -24),
-			&amp;Период,
-			Месяц,
-			Source В (&amp;SourcesRevenue)
-				И НЕ Account.БазовыйЭлемент.Intercompany) КАК RevenueОбороты
+	РегистрСведений.Billing КАК Billing
+ГДЕ
+	Billing.Период &lt;= &amp;Период
+	И Billing.Активность
+	И Billing.Период &gt;= ДОБАВИТЬКДАТЕ(&amp;Период, МЕСЯЦ, -24)
+	И НЕ Billing.Method В (&amp;МетодыРасчетаБиллингаСПереоценкой)
+
+СГРУППИРОВАТЬ ПО
+	Billing.Период,
+	Billing.Client,
+	Billing.Company,
+	ВЫБОР
+		КОГДА Billing.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+			ТОГДА Billing.LegalEntity
+		ИНАЧЕ Billing.Company.DefaultLegalEntity
+	КОНЕЦ,
+	Billing.AU,
+	Billing.Source
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2535,48 +2503,6 @@
     Сумма(Billing21), Сумма(Billing22), Сумма(Billing23), Сумма(Billing24))</expression>
 	</totalField>
 	<parameter>
-		<name>НачалоПериода</name>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Начало периода</v8:content>
-			</v8:item>
-		</title>
-		<valueType>
-			<v8:Type>xs:dateTime</v8:Type>
-			<v8:DateQualifiers>
-				<v8:DateFractions>DateTime</v8:DateFractions>
-			</v8:DateQualifiers>
-		</valueType>
-		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
-		<useRestriction>true</useRestriction>
-		<valueListAllowed>false</valueListAllowed>
-		<availableAsField>true</availableAsField>
-		<denyIncompleteValues>false</denyIncompleteValues>
-		<use>Auto</use>
-	</parameter>
-	<parameter>
-		<name>КонецПериода</name>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Конец периода</v8:content>
-			</v8:item>
-		</title>
-		<valueType>
-			<v8:Type>xs:dateTime</v8:Type>
-			<v8:DateQualifiers>
-				<v8:DateFractions>DateTime</v8:DateFractions>
-			</v8:DateQualifiers>
-		</valueType>
-		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
-		<useRestriction>true</useRestriction>
-		<valueListAllowed>false</valueListAllowed>
-		<availableAsField>true</availableAsField>
-		<denyIncompleteValues>false</denyIncompleteValues>
-		<use>Auto</use>
-	</parameter>
-	<parameter>
 		<name>Sources</name>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
@@ -2589,45 +2515,6 @@
 		</valueType>
 		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.Lawson</value>
 		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.HOBs</value>
-		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.OracleMI</value>
-		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.OracleSmith</value>
-		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.Radius</value>
-		<useRestriction>true</useRestriction>
-		<valueListAllowed>true</valueListAllowed>
-		<availableAsField>true</availableAsField>
-		<denyIncompleteValues>false</denyIncompleteValues>
-		<use>Auto</use>
-	</parameter>
-	<parameter>
-		<name>SourcesBilling</name>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Sources billing</v8:content>
-			</v8:item>
-		</title>
-		<valueType>
-			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:EnumRef.ТипыСоответствий</v8:Type>
-		</valueType>
-		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.Lawson</value>
-		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.HOBs</value>
-		<useRestriction>true</useRestriction>
-		<valueListAllowed>true</valueListAllowed>
-		<availableAsField>true</availableAsField>
-		<denyIncompleteValues>false</denyIncompleteValues>
-		<use>Auto</use>
-	</parameter>
-	<parameter>
-		<name>SourcesRevenue</name>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Sources revenue</v8:content>
-			</v8:item>
-		</title>
-		<valueType>
-			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:EnumRef.ТипыСоответствий</v8:Type>
-		</valueType>
 		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.OracleMI</value>
 		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.OracleSmith</value>
 		<value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.Radius</value>
@@ -3231,6 +3118,25 @@
 		<denyIncompleteValues>false</denyIncompleteValues>
 		<use>Auto</use>
 	</parameter>
+	<parameter>
+		<name>МетодыРасчетаБиллингаСПереоценкой</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Методы расчета биллинга с переоценкой</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:EnumRef.BillingCalculationMethods</v8:Type>
+		</valueType>
+		<value xsi:type="dcscor:DesignTimeValue">Перечисление.BillingCalculationMethods.TransactionClassification</value>
+		<value xsi:type="dcscor:DesignTimeValue">Перечисление.BillingCalculationMethods.ARandCollection</value>
+		<useRestriction>true</useRestriction>
+		<valueListAllowed>true</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
+	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
 		<dcsset:presentation xsi:type="v8:LocalStringType">
@@ -3329,28 +3235,24 @@
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">MgmtGeomarket</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>4bfdd234-b1e2-4330-9f47-5d5a51e77d03</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">BU</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>03e46ac2-4a41-4d96-bc05-207a1517416f</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">ParentClient</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>4d8927d7-f4e9-4206-9df2-cfa91d106fd3</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">Client</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>f32af0ed-bfda-46f0-9c6e-e6927f1cde66</dcsset:userSettingID>
 				</dcsset:item>
 			</dcsset:filter>
@@ -3364,8 +3266,7 @@
 							<dcsset:field>DSO</dcsset:field>
 						</dcsset:item>
 					</dcsset:selection>
-					<dcsset:filter>
-					</dcsset:filter>
+					<dcsset:filter/>
 					<dcsset:appearance>
 						<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 							<dcscor:parameter>Формат</dcscor:parameter>
@@ -3377,13 +3278,6 @@
 							</dcscor:value>
 						</dcscor:item>
 					</dcsset:appearance>
-					<dcsset:useInGroup>Use</dcsset:useInGroup>
-					<dcsset:useInHierarchicalGroup>Use</dcsset:useInHierarchicalGroup>
-					<dcsset:useInOverall>Use</dcsset:useInOverall>
-					<dcsset:useInFieldsHeader>Use</dcsset:useInFieldsHeader>
-					<dcsset:useInHeader>Use</dcsset:useInHeader>
-					<dcsset:useInParameters>Use</dcsset:useInParameters>
-					<dcsset:useInFilter>Use</dcsset:useInFilter>
 				</dcsset:item>
 				<dcsset:viewMode>Normal</dcsset:viewMode>
 			</dcsset:conditionalAppearance>
@@ -3596,28 +3490,24 @@
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">MgmtGeomarket</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>42908203-2fa0-4678-a689-b73391af00ff</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">BU</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>3c9c4b8c-7639-4a14-b61b-f17b71dfdf3c</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">ParentClient</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>d9fa46b7-a83e-4581-bc3a-725c4df903aa</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">Client</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>c68fcf12-3b08-4930-9318-9790132c663d</dcsset:userSettingID>
 				</dcsset:item>
 			</dcsset:filter>
@@ -3628,8 +3518,7 @@
 							<dcsset:field>DSO</dcsset:field>
 						</dcsset:item>
 					</dcsset:selection>
-					<dcsset:filter>
-					</dcsset:filter>
+					<dcsset:filter/>
 					<dcsset:appearance>
 						<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 							<dcscor:parameter>Формат</dcscor:parameter>
@@ -3641,13 +3530,6 @@
 							</dcscor:value>
 						</dcscor:item>
 					</dcsset:appearance>
-					<dcsset:useInGroup>Use</dcsset:useInGroup>
-					<dcsset:useInHierarchicalGroup>Use</dcsset:useInHierarchicalGroup>
-					<dcsset:useInOverall>Use</dcsset:useInOverall>
-					<dcsset:useInFieldsHeader>Use</dcsset:useInFieldsHeader>
-					<dcsset:useInHeader>Use</dcsset:useInHeader>
-					<dcsset:useInParameters>Use</dcsset:useInParameters>
-					<dcsset:useInFilter>Use</dcsset:useInFilter>
 				</dcsset:item>
 			</dcsset:conditionalAppearance>
 			<dcsset:outputParameters>
@@ -3781,28 +3663,24 @@
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">MgmtGeomarket</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>ebf9895f-c326-4874-9a68-c3f9b70410e5</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">BU</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>50586c0b-b511-43b3-9ab0-33f3199f7e0d</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">ParentClient</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>355807fc-1b75-4171-a1eb-5e0c2c6a6118</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">Client</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>54052412-d3a1-479d-9017-b15eddfad8f1</dcsset:userSettingID>
 				</dcsset:item>
 			</dcsset:filter>
@@ -3813,8 +3691,7 @@
 							<dcsset:field>DSO</dcsset:field>
 						</dcsset:item>
 					</dcsset:selection>
-					<dcsset:filter>
-					</dcsset:filter>
+					<dcsset:filter/>
 					<dcsset:appearance>
 						<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 							<dcscor:parameter>Формат</dcscor:parameter>
@@ -3826,13 +3703,6 @@
 							</dcscor:value>
 						</dcscor:item>
 					</dcsset:appearance>
-					<dcsset:useInGroup>Use</dcsset:useInGroup>
-					<dcsset:useInHierarchicalGroup>Use</dcsset:useInHierarchicalGroup>
-					<dcsset:useInOverall>Use</dcsset:useInOverall>
-					<dcsset:useInFieldsHeader>Use</dcsset:useInFieldsHeader>
-					<dcsset:useInHeader>Use</dcsset:useInHeader>
-					<dcsset:useInParameters>Use</dcsset:useInParameters>
-					<dcsset:useInFilter>Use</dcsset:useInFilter>
 				</dcsset:item>
 			</dcsset:conditionalAppearance>
 			<dcsset:outputParameters>
@@ -3973,28 +3843,24 @@
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">MgmtGeomarket</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>3cfa3bac-aa78-4410-8d95-273d7ed3979c</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">BU</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>5e0622e3-ace5-4d71-ae3b-824c8900e7fa</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">ParentClient</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>87c40336-613a-434b-b294-9d00038d9b11</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">Client</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>ac6f111f-95f8-4843-b151-82a348c18726</dcsset:userSettingID>
 				</dcsset:item>
 			</dcsset:filter>
@@ -4005,8 +3871,7 @@
 							<dcsset:field>DSO</dcsset:field>
 						</dcsset:item>
 					</dcsset:selection>
-					<dcsset:filter>
-					</dcsset:filter>
+					<dcsset:filter/>
 					<dcsset:appearance>
 						<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 							<dcscor:parameter>Формат</dcscor:parameter>
@@ -4018,13 +3883,6 @@
 							</dcscor:value>
 						</dcscor:item>
 					</dcsset:appearance>
-					<dcsset:useInGroup>Use</dcsset:useInGroup>
-					<dcsset:useInHierarchicalGroup>Use</dcsset:useInHierarchicalGroup>
-					<dcsset:useInOverall>Use</dcsset:useInOverall>
-					<dcsset:useInFieldsHeader>Use</dcsset:useInFieldsHeader>
-					<dcsset:useInHeader>Use</dcsset:useInHeader>
-					<dcsset:useInParameters>Use</dcsset:useInParameters>
-					<dcsset:useInFilter>Use</dcsset:useInFilter>
 				</dcsset:item>
 			</dcsset:conditionalAppearance>
 			<dcsset:outputParameters>
@@ -4165,28 +4023,24 @@
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">MgmtGeomarket</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>04ed78a6-36f7-4857-98a4-22cbadfaaa43</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">BU</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>4170978f-3446-49cb-a857-7147c2f45989</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">ParentClient</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>981e5a95-00b3-48a2-8dbb-5fad1e0e9335</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">Client</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>e8283c07-213d-4f29-b2b2-11667fc2deba</dcsset:userSettingID>
 				</dcsset:item>
 			</dcsset:filter>
@@ -4197,8 +4051,7 @@
 							<dcsset:field>DSO</dcsset:field>
 						</dcsset:item>
 					</dcsset:selection>
-					<dcsset:filter>
-					</dcsset:filter>
+					<dcsset:filter/>
 					<dcsset:appearance>
 						<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 							<dcscor:parameter>Формат</dcscor:parameter>
@@ -4210,13 +4063,6 @@
 							</dcscor:value>
 						</dcscor:item>
 					</dcsset:appearance>
-					<dcsset:useInGroup>Use</dcsset:useInGroup>
-					<dcsset:useInHierarchicalGroup>Use</dcsset:useInHierarchicalGroup>
-					<dcsset:useInOverall>Use</dcsset:useInOverall>
-					<dcsset:useInFieldsHeader>Use</dcsset:useInFieldsHeader>
-					<dcsset:useInHeader>Use</dcsset:useInHeader>
-					<dcsset:useInParameters>Use</dcsset:useInParameters>
-					<dcsset:useInFilter>Use</dcsset:useInFilter>
 				</dcsset:item>
 			</dcsset:conditionalAppearance>
 			<dcsset:outputParameters>
@@ -4357,28 +4203,24 @@
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">MgmtGeomarket</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>d7072dff-b3a7-42ef-a8b1-2c1235262b5a</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">BU</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>2f009cb8-e5db-4454-99c9-93ddb46059c2</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">ParentClient</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>d6150b10-61cc-4a28-9eef-343435a700ea</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">Client</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>88f7c4cf-b224-4401-8fd4-d53e46ba652c</dcsset:userSettingID>
 				</dcsset:item>
 			</dcsset:filter>
@@ -4389,8 +4231,7 @@
 							<dcsset:field>DSO</dcsset:field>
 						</dcsset:item>
 					</dcsset:selection>
-					<dcsset:filter>
-					</dcsset:filter>
+					<dcsset:filter/>
 					<dcsset:appearance>
 						<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 							<dcscor:parameter>Формат</dcscor:parameter>
@@ -4402,13 +4243,6 @@
 							</dcscor:value>
 						</dcscor:item>
 					</dcsset:appearance>
-					<dcsset:useInGroup>Use</dcsset:useInGroup>
-					<dcsset:useInHierarchicalGroup>Use</dcsset:useInHierarchicalGroup>
-					<dcsset:useInOverall>Use</dcsset:useInOverall>
-					<dcsset:useInFieldsHeader>Use</dcsset:useInFieldsHeader>
-					<dcsset:useInHeader>Use</dcsset:useInHeader>
-					<dcsset:useInParameters>Use</dcsset:useInParameters>
-					<dcsset:useInFilter>Use</dcsset:useInFilter>
 				</dcsset:item>
 			</dcsset:conditionalAppearance>
 			<dcsset:outputParameters>
@@ -4542,28 +4376,24 @@
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">MgmtGeomarket</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>7749161a-0101-4af6-8f5a-4e0717cba360</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">BU</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>23ddc1a9-e503-4495-8399-b954ca5124ef</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">ParentClient</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>1227dd5d-103a-45dc-bbc8-c2179d5139cf</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">Client</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>a7765e40-6604-42b0-a566-01f6b58f9a14</dcsset:userSettingID>
 				</dcsset:item>
 			</dcsset:filter>
@@ -4574,8 +4404,7 @@
 							<dcsset:field>DSO</dcsset:field>
 						</dcsset:item>
 					</dcsset:selection>
-					<dcsset:filter>
-					</dcsset:filter>
+					<dcsset:filter/>
 					<dcsset:appearance>
 						<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 							<dcscor:parameter>Формат</dcscor:parameter>
@@ -4587,13 +4416,6 @@
 							</dcscor:value>
 						</dcscor:item>
 					</dcsset:appearance>
-					<dcsset:useInGroup>Use</dcsset:useInGroup>
-					<dcsset:useInHierarchicalGroup>Use</dcsset:useInHierarchicalGroup>
-					<dcsset:useInOverall>Use</dcsset:useInOverall>
-					<dcsset:useInFieldsHeader>Use</dcsset:useInFieldsHeader>
-					<dcsset:useInHeader>Use</dcsset:useInHeader>
-					<dcsset:useInParameters>Use</dcsset:useInParameters>
-					<dcsset:useInFilter>Use</dcsset:useInFilter>
 				</dcsset:item>
 			</dcsset:conditionalAppearance>
 			<dcsset:outputParameters>
@@ -4734,28 +4556,24 @@
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">MgmtGeomarket</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>3ef0ec67-2ef7-4f7b-9c14-5b1c5a12f355</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">BU</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>affe3ac7-4d01-4c36-b3ce-060034a12d05</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">ParentClient</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>c7f8fde0-1eb6-49f5-8212-2b17291f163f</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">Client</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>5008acc1-b38d-45d6-96a7-bbbaf12bd299</dcsset:userSettingID>
 				</dcsset:item>
 			</dcsset:filter>
@@ -4766,8 +4584,7 @@
 							<dcsset:field>DSO</dcsset:field>
 						</dcsset:item>
 					</dcsset:selection>
-					<dcsset:filter>
-					</dcsset:filter>
+					<dcsset:filter/>
 					<dcsset:appearance>
 						<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 							<dcscor:parameter>Формат</dcscor:parameter>
@@ -4779,13 +4596,6 @@
 							</dcscor:value>
 						</dcscor:item>
 					</dcsset:appearance>
-					<dcsset:useInGroup>Use</dcsset:useInGroup>
-					<dcsset:useInHierarchicalGroup>Use</dcsset:useInHierarchicalGroup>
-					<dcsset:useInOverall>Use</dcsset:useInOverall>
-					<dcsset:useInFieldsHeader>Use</dcsset:useInFieldsHeader>
-					<dcsset:useInHeader>Use</dcsset:useInHeader>
-					<dcsset:useInParameters>Use</dcsset:useInParameters>
-					<dcsset:useInFilter>Use</dcsset:useInFilter>
 				</dcsset:item>
 			</dcsset:conditionalAppearance>
 			<dcsset:outputParameters>
@@ -4926,28 +4736,24 @@
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">MgmtGeomarket</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>d534999d-3b09-48b2-8bfa-6fc75880389e</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">BU</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>2616c671-4054-49de-aabe-abb17af20a16</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">ParentClient</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>e50517a3-65eb-4ec6-bd47-0d2d8419200f</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">Client</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>47d98920-ce92-47a9-a2f3-972bbb678b1e</dcsset:userSettingID>
 				</dcsset:item>
 			</dcsset:filter>
@@ -4958,8 +4764,7 @@
 							<dcsset:field>DSO</dcsset:field>
 						</dcsset:item>
 					</dcsset:selection>
-					<dcsset:filter>
-					</dcsset:filter>
+					<dcsset:filter/>
 					<dcsset:appearance>
 						<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 							<dcscor:parameter>Формат</dcscor:parameter>
@@ -4971,13 +4776,6 @@
 							</dcscor:value>
 						</dcscor:item>
 					</dcsset:appearance>
-					<dcsset:useInGroup>Use</dcsset:useInGroup>
-					<dcsset:useInHierarchicalGroup>Use</dcsset:useInHierarchicalGroup>
-					<dcsset:useInOverall>Use</dcsset:useInOverall>
-					<dcsset:useInFieldsHeader>Use</dcsset:useInFieldsHeader>
-					<dcsset:useInHeader>Use</dcsset:useInHeader>
-					<dcsset:useInParameters>Use</dcsset:useInParameters>
-					<dcsset:useInFilter>Use</dcsset:useInFilter>
 				</dcsset:item>
 			</dcsset:conditionalAppearance>
 			<dcsset:outputParameters>
