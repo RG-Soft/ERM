@@ -166,7 +166,7 @@
 			</title>
 		</field>
 		<dataSource>ИсточникДанных1</dataSource>
-		<query>ВЫБРАТЬ
+		<query>ВЫБРАТЬ РАЗРЕШЕННЫЕ
 	PaymentsОбороты.Company КАК Company,
 	PaymentsОбороты.Client КАК Client,
 	PaymentsОбороты.Source КАК Source,
@@ -177,20 +177,20 @@
 	PaymentsОбороты.LegalEntity КАК LegalEntity,
 	PaymentsОбороты.Account КАК Account,
 	МАКСИМУМ(ВЫБОР
-			КОГДА PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
-					ИЛИ PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith)
-				ТОГДА PaymentsОбороты.Регистратор.Дата
-			КОГДА PaymentsОбороты.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
-					И PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
-				ТОГДА ВЫБОР
-						КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
-							ТОГДА PaymentsОбороты.Регистратор.ДокументОснование.DateLawson
-						ИНАЧЕ PaymentsОбороты.Регистратор.DateLawson
-					КОНЕЦ
-			КОГДА PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
-				ТОГДА PaymentsОбороты.Регистратор.Дата
-			ИНАЧЕ PaymentsОбороты.CashBatch.Дата
-		КОНЕЦ) КАК DateCollection,
+		КОГДА PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
+		ИЛИ PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith)
+			ТОГДА PaymentsОбороты.Регистратор.Дата
+		КОГДА PaymentsОбороты.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
+		И PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
+			ТОГДА ВЫБОР
+				КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
+					ТОГДА PaymentsОбороты.Регистратор.ДокументОснование.DateLawson
+				ИНАЧЕ PaymentsОбороты.Регистратор.DateLawson
+			КОНЕЦ
+		КОГДА PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
+			ТОГДА PaymentsОбороты.Регистратор.Дата
+		ИНАЧЕ PaymentsОбороты.CashBatch.Дата
+	КОНЕЦ) КАК DateCollection,
 	СУММА(PaymentsОбороты.AmountОборот) КАК AmountОборот,
 	ВЫБОР
 		КОГДА PaymentsОбороты.Регистратор.HOBDocumentType = ЗНАЧЕНИЕ(Перечисление.HOBDocumentTypes.КорректировкаДолга)
@@ -199,24 +199,21 @@
 	КОНЕЦ КАК HOBDocumentTypes
 ПОМЕСТИТЬ PaymentsГруппировка
 ИЗ
-	РегистрНакопления.Payments.Обороты(
-			{(&amp;НачалоПериода)},
-			{(&amp;КонецПериода)},
-			Регистратор,
-			(Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
-					И Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
-					И Invoice &lt;&gt; НЕОПРЕДЕЛЕНО
-				ИЛИ CashBatch &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка))
-				И Client &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)
-				И НЕ Client.Intercompany) КАК PaymentsОбороты
+	РегистрНакопления.Payments.Обороты({(&amp;НачалоПериода)}, {(&amp;КонецПериода)}, Регистратор,
+		(Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
+	И Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
+	И Invoice &lt;&gt; НЕОПРЕДЕЛЕНО
+	ИЛИ CashBatch &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка))
+	И Client &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)
+	И
+	НЕ Client.Intercompany) КАК PaymentsОбороты
 ГДЕ
 	ПОДСТРОКА(PaymentsОбороты.Account.Код, 1, 6) &lt;&gt; "209000"
 	И ВЫБОР
-			КОГДА PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
-				ТОГДА ПОДСТРОКА(PaymentsОбороты.Регистратор.CorAccount, 1, 6) &lt;&gt; "209000"
-			ИНАЧЕ ИСТИНА
-		КОНЕЦ
-
+		КОГДА PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
+			ТОГДА ПОДСТРОКА(PaymentsОбороты.Регистратор.CorAccount, 1, 6) &lt;&gt; "209000"
+		ИНАЧЕ ИСТИНА
+	КОНЕЦ
 СГРУППИРОВАТЬ ПО
 	PaymentsОбороты.CashBatch,
 	PaymentsОбороты.AU,
@@ -233,25 +230,24 @@
 		ИНАЧЕ ЗНАЧЕНИЕ(Перечисление.HOBDocumentTypes.ПустаяСсылка)
 	КОНЕЦ
 ;
-
 ////////////////////////////////////////////////////////////////////////////////
-ВЫБРАТЬ
+ ВЫБРАТЬ РАЗРЕШЕННЫЕ
 	PaymentsГруппировка.Company КАК Company,
 	PaymentsГруппировка.Client КАК Client,
 	PaymentsГруппировка.Source КАК Source,
 	PaymentsГруппировка.DateCollection КАК DateCollection,
 	ВЫБОР
 		КОГДА PaymentsГруппировка.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
-				И PaymentsГруппировка.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
-				И PaymentsГруппировка.Invoice &lt;&gt; НЕОПРЕДЕЛЕНО
+		И PaymentsГруппировка.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
+		И PaymentsГруппировка.Invoice &lt;&gt; НЕОПРЕДЕЛЕНО
 			ТОГДА PaymentsГруппировка.Invoice
 		ИНАЧЕ PaymentsГруппировка.CashBatch
 	КОНЕЦ КАК Invoice,
 	PaymentsГруппировка.Currency КАК Currency,
 	ВЫБОР
 		КОГДА PaymentsГруппировка.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
-				И PaymentsГруппировка.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
-				И PaymentsГруппировка.Invoice &lt;&gt; НЕОПРЕДЕЛЕНО
+		И PaymentsГруппировка.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
+		И PaymentsГруппировка.Invoice &lt;&gt; НЕОПРЕДЕЛЕНО
 			ТОГДА PaymentsГруппировка.AmountОборот
 		ИНАЧЕ ЕСТЬNULL(UnallocatedCashОстатки.AmountОстаток, 0)
 	КОНЕЦ КАК Amount,
@@ -272,18 +268,17 @@
 ПОМЕСТИТЬ Исходные
 ИЗ
 	PaymentsГруппировка КАК PaymentsГруппировка
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрНакопления.UnallocatedCash.Остатки({(&amp;КонецПериода)}, ) КАК UnallocatedCashОстатки
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрНакопления.UnallocatedCash.Остатки({(&amp;КонецПериода)},) КАК UnallocatedCashОстатки
 		ПО PaymentsГруппировка.CashBatch = UnallocatedCashОстатки.CashBatch
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрНакопления.UnallocatedCash.Остатки({(&amp;КонецПредыдущегоМесяца)}, ) КАК UnallocatedCashОстатки1
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрНакопления.UnallocatedCash.Остатки({(&amp;КонецПредыдущегоМесяца)},) КАК UnallocatedCashОстатки1
 		ПО PaymentsГруппировка.CashBatch = UnallocatedCashОстатки1.CashBatch
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.AnalyticsExceptions КАК AnalyticsExceptions
 		ПО PaymentsГруппировка.Source = AnalyticsExceptions.Source
-			И PaymentsГруппировка.Company = AnalyticsExceptions.Company
-			И PaymentsГруппировка.AU = AnalyticsExceptions.AU
+		И PaymentsГруппировка.Company = AnalyticsExceptions.Company
+		И PaymentsГруппировка.AU = AnalyticsExceptions.AU
 ;
-
 ////////////////////////////////////////////////////////////////////////////////
-ВЫБРАТЬ
+ ВЫБРАТЬ РАЗРЕШЕННЫЕ
 	Исходные.Client КАК Client,
 	Исходные.Company КАК Company,
 	Исходные.Source КАК Source,
@@ -292,13 +287,13 @@
 	ВнутренниеКурсыВалютСрезПоследних.Курс КАК Курс,
 	ВнутренниеКурсыВалютСрезПоследних.Кратность КАК Кратность,
 	СУММА(ВЫБОР
-			КОГДА Исходные.Currency = &amp;USD
-				ТОГДА Исходные.Amount - Исходные.AmountCashBatchПредыдущегоМесяца
-			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
-					ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
-				ТОГДА 0
-			ИНАЧЕ (Исходные.Amount - Исходные.AmountCashBatchПредыдущегоМесяца) / ВнутренниеКурсыВалютСрезПоследних.Курс
-		КОНЕЦ) КАК BaseAmount,
+		КОГДА Исходные.Currency = &amp;USD
+			ТОГДА Исходные.Amount - Исходные.AmountCashBatchПредыдущегоМесяца
+		КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
+		ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+			ТОГДА 0
+		ИНАЧЕ (Исходные.Amount - Исходные.AmountCashBatchПредыдущегоМесяца) / ВнутренниеКурсыВалютСрезПоследних.Курс
+	КОНЕЦ) КАК BaseAmount,
 	ВЫБОР
 		КОГДА Исходные.Invoice ССЫЛКА Документ.Invoice
 			ТОГДА Исходные.Invoice.DocNumber
@@ -321,9 +316,9 @@
 	Исходные.HOBDocumentTypes
 ИЗ
 	Исходные КАК Исходные
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;КонецПериода)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;КонецПериода)},) КАК
+			ВнутренниеКурсыВалютСрезПоследних
 		ПО Исходные.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
-
 СГРУППИРОВАТЬ ПО
 	Исходные.Client,
 	Исходные.Company,
@@ -350,7 +345,6 @@
 	Исходные.CashBatchПредыдущегоМесяца,
 	Исходные.SubSubSegment,
 	Исходные.HOBDocumentTypes
-
 ИМЕЮЩИЕ
 	СУММА(Исходные.Amount - Исходные.AmountCashBatchПредыдущегоМесяца) &lt;&gt; 0</query>
 	</dataSet>
@@ -655,7 +649,6 @@
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">Source</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>1984ea6c-3b71-4bc4-990e-3a0442ec1301</dcsset:userSettingID>
 				</dcsset:item>
 			</dcsset:filter>
@@ -687,8 +680,7 @@
 							<dcsset:field>Invoice.FiscalInvoiceDate</dcsset:field>
 						</dcsset:item>
 					</dcsset:selection>
-					<dcsset:filter>
-					</dcsset:filter>
+					<dcsset:filter/>
 					<dcsset:appearance>
 						<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 							<dcscor:parameter>Формат</dcscor:parameter>
@@ -700,13 +692,6 @@
 							</dcscor:value>
 						</dcscor:item>
 					</dcsset:appearance>
-					<dcsset:useInGroup>Use</dcsset:useInGroup>
-					<dcsset:useInHierarchicalGroup>Use</dcsset:useInHierarchicalGroup>
-					<dcsset:useInOverall>Use</dcsset:useInOverall>
-					<dcsset:useInFieldsHeader>Use</dcsset:useInFieldsHeader>
-					<dcsset:useInHeader>Use</dcsset:useInHeader>
-					<dcsset:useInParameters>Use</dcsset:useInParameters>
-					<dcsset:useInFilter>Use</dcsset:useInFilter>
 				</dcsset:item>
 			</dcsset:conditionalAppearance>
 			<dcsset:outputParameters>
