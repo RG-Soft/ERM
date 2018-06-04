@@ -2070,7 +2070,10 @@
 			
 		ИначеЕсли ПроводкаDSSОбъект.SourceCode = "RQ" ИЛИ ПроводкаDSSОбъект.SourceCode = "RX" Тогда // рассматриваем отдельно, т.к. это должно относиться к существующему бэтчу
 			
-			Если ПроводкаDSSОбъект.AccountLawson = ПланыСчетов.Lawson.ReceivedNotApplied ИЛИ ПроводкаDSSОбъект.AccountLawson = ПланыСчетов.Lawson.AdvancesFromCustomers Тогда // 120102 или 209000
+			// { RGS TAlmazova 04.06.2018 16:58:32 - добавление счета 120202
+			//Если ПроводкаDSSОбъект.AccountLawson = ПланыСчетов.Lawson.ReceivedNotApplied ИЛИ ПроводкаDSSОбъект.AccountLawson = ПланыСчетов.Lawson.AdvancesFromCustomers Тогда // 120102 или 209000
+			Если ПроводкаDSSОбъект.AccountLawson = ПланыСчетов.Lawson.ReceivedNotApplied ИЛИ ПроводкаDSSОбъект.AccountLawson = ПланыСчетов.Lawson.AdvancesFromCustomers ИЛИ ПроводкаDSSОбъект.AccountLawson = ПланыСчетов.Lawson.UnidentifiedCashReceipts Тогда // 120102 или 209000
+			// } RGS TAlmazova 04.06.2018 16:58:38 - добавление счета 120202
 				//СтрокаCashBatch = КэшCashBatch.Найти(ПроводкаDSSОбъект.ArBatchNbr, "ArBatchNbr");
 				//Если СтрокаCashBatch = Неопределено Тогда
 				СтруктураПоискаBatch.ARBatchNbr = ПроводкаDSSОбъект.ArBatchNbr;

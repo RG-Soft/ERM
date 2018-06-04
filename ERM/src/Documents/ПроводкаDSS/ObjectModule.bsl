@@ -231,9 +231,11 @@
 				
 			ИначеЕсли Реквизиты.SourceCode = "RP" ИЛИ Реквизиты.SourceCode = "RQ" ИЛИ Реквизиты.SourceCode = "RX" Тогда
 				
-				//Если Реквизиты.AccountLawson = ПланыСчетов.Lawson.ReceivedNotApplied  ИЛИ Реквизиты.AccountLawson = ПланыСчетов.Lawson.AdvancesFromCustomers Тогда //120102 или 209000
-				Если Реквизиты.Account = ПланыСчетов.Lawson.ReceivedNotApplied  ИЛИ Реквизиты.Account = ПланыСчетов.Lawson.AdvancesFromCustomers Тогда //120102 или 209000
-				
+				// { RGS TAlmazova 04.06.2018 17:00:33 - добавление счета 120202
+				////Если Реквизиты.AccountLawson = ПланыСчетов.Lawson.ReceivedNotApplied  ИЛИ Реквизиты.AccountLawson = ПланыСчетов.Lawson.AdvancesFromCustomers Тогда //120102 или 209000
+				//Если Реквизиты.Account = ПланыСчетов.Lawson.ReceivedNotApplied  ИЛИ Реквизиты.Account = ПланыСчетов.Lawson.AdvancesFromCustomers Тогда //120102 или 209000
+				Если Реквизиты.Account = ПланыСчетов.Lawson.ReceivedNotApplied  ИЛИ Реквизиты.Account = ПланыСчетов.Lawson.AdvancesFromCustomers ИЛИ Реквизиты.Account = ПланыСчетов.Lawson.UnidentifiedCashReceipts Тогда //120102 или 209000 или 120202
+				// } RGS TAlmazova 04.06.2018 17:00:43 - добавление счета 120202
 					// поступление денег от клииента. Приход в Unallocated cash. Или корректировка платежа. Корректировка unallocated cash в привязке к CashBatch
 					ВыполнитьНачислениеUnallocatedCash(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, Движения, -СуммыДляПроводки.Amount, -СуммыДляПроводки.BaseAmount, Отказ);
 					// { RGS TAlmazova 22.08.2016 9:41:38 - отражение в регистре Payments
