@@ -1,69 +1,49 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<Rights xmlns="http://v8.1c.ru/8.2/roles" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="Rights" version="2.5">
-	<setForNewObjects>false</setForNewObjects>
-	<setForAttributesByDefault>true</setForAttributesByDefault>
-	<independentRightsOfChildObjects>false</independentRightsOfChildObjects>
+<?xml version="1.0" encoding="UTF-8"?>
+<Rights xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://v8.1c.ru/8.2/roles" xsi:type="Rights">
 	<object>
-		<name>InformationRegister.СлужебныеАдресныеСведения</name>
+		<name>InformationRegister.НаличиеФайлов</name>
 		<right>
 			<name>Read</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.НомераОтсканированныхФайлов</name>
-		<right>
-			<name>Read</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Update</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.ВидыКонтактнойИнформации.Attribute.АдресТолькоРоссийский</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Constant.НастройкиПодчиненногоУзлаРИБ</name>
-		<right>
-			<name>Read</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Constant.НастройкаПроксиСервера</name>
-		<right>
-			<name>Read</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>View</name>
 			<value>true</value>
 		</right>
 	</object>
 	<object>
 		<name>InformationRegister.ДомаЗданияСтроения</name>
+		<right>
+			<name>Read</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>View</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.ВариантыОтчетов</name>
+		<right>
+			<name>Read</name>
+			<value>true</value>
+			<restrictionByCondition>
+				<condition>#Если &amp;ОграничениеДоступаНаУровнеЗаписейУниверсально #Тогда
+#ДляОбъекта(&quot;&quot;)
+#Иначе
+ВариантыОтчетов ГДЕ (ВариантыОтчетов.Пользовательский = ЛОЖЬ
+			ИЛИ ВариантыОтчетов.ТолькоДляАвтора = ЛОЖЬ
+			ИЛИ ВариантыОтчетов.Автор = &amp;АвторизованныйПользователь)
+#КонецЕсли</condition>
+			</restrictionByCondition>
+		</right>
+		<right>
+			<name>View</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>InputByString</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.ВнешниеКомпоненты</name>
 		<right>
 			<name>Read</name>
 			<value>true</value>
@@ -81,13 +61,6 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.Пользователи.TabularSection.КонтактнаяИнформация.Attribute.Страна</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
 		<name>DataProcessor.НерекомендуемаяВерсияПлатформы</name>
 		<right>
 			<name>Use</name>
@@ -96,13 +69,6 @@
 		<right>
 			<name>View</name>
 			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.ОриентирыАдресныхОбъектов.Dimension.КодСубъектаРФ</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -117,9 +83,31 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.НомераОтсканированныхФайлов</name>
+		<right>
+			<name>Read</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>View</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
 		<name>SessionParameter.ТекущийПользователь</name>
 		<right>
 			<name>Get</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.СлужебныеАдресныеСведения</name>
+		<right>
+			<name>Read</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>View</name>
 			<value>true</value>
 		</right>
 	</object>
@@ -138,6 +126,17 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.УровниСокращенийАдресныхСведений</name>
+		<right>
+			<name>Read</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>View</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
 		<name>Constant.ИспользоватьСинхронизациюДанныхВЛокальномРежиме</name>
 		<right>
 			<name>Read</name>
@@ -149,28 +148,14 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.УдалитьВерсииПодсистем.Dimension.ИмяПодсистемы</name>
+		<name>Constant.ВерсияКлассификатораБанков</name>
+		<right>
+			<name>Read</name>
+			<value>true</value>
+		</right>
 		<right>
 			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.TabularSection.ДополнительныеРеквизиты</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.ВидыКонтактнойИнформации.Attribute.Тип</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
+			<value>true</value>
 		</right>
 	</object>
 	<object>
@@ -185,10 +170,35 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.ОриентирыАдресныхОбъектов.Resource.Дополнительно</name>
+		<name>Catalog.ВариантыОтчетов.Command.Открыть</name>
 		<right>
-			<name>Edit</name>
-			<value>false</value>
+			<name>View</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ПредопределенныеВариантыОтчетовВерсийРасширений</name>
+		<right>
+			<name>Read</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>View</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>CommonForm.ДоступныеВидыКлиентовВнешнейКомпоненты</name>
+		<right>
+			<name>View</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>CommonForm.ВопросОбУстановкеВнешнейКомпоненты</name>
+		<right>
+			<name>View</name>
+			<value>true</value>
 		</right>
 	</object>
 	<object>
@@ -206,31 +216,17 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.УдалитьВерсииПодсистем.Resource.Версия</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.TabularSection.КонтактнаяИнформация.Attribute.ЗначенияПолей</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Constant.НастройкиВыполненияРегламентныхЗаданий</name>
+		<name>Catalog.ПредопределенныеВариантыОтчетовРасширений</name>
 		<right>
 			<name>Read</name>
 			<value>true</value>
 		</right>
 		<right>
 			<name>View</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>InputByString</name>
 			<value>true</value>
 		</right>
 	</object>
@@ -257,6 +253,13 @@
 		</right>
 	</object>
 	<object>
+		<name>CommonForm.ПредупреждениеБезопасности</name>
+		<right>
+			<name>View</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
 		<name>CommonForm.ПараметрыПроксиСервера</name>
 		<right>
 			<name>View</name>
@@ -271,17 +274,17 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.ВидыКонтактнойИнформации.Attribute.РедактированиеТолькоВДиалоге</name>
+		<name>Catalog.ОбщиеВнешниеКомпоненты</name>
 		<right>
-			<name>Edit</name>
-			<value>false</value>
+			<name>Read</name>
+			<value>true</value>
 		</right>
 	</object>
 	<object>
-		<name>Catalog.Пользователи.TabularSection.ДополнительныеРеквизиты.Attribute.Свойство</name>
+		<name>SessionParameter.ВыполняетсяОбновлениеИБ</name>
 		<right>
-			<name>Edit</name>
-			<value>false</value>
+			<name>Get</name>
+			<value>true</value>
 		</right>
 	</object>
 	<object>
@@ -296,7 +299,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.ВерсииРасширений</name>
+		<name>InformationRegister.ЗагруженныеВерсииАдресныхСведений</name>
 		<right>
 			<name>Read</name>
 			<value>true</value>
@@ -305,93 +308,12 @@
 			<name>View</name>
 			<value>true</value>
 		</right>
-		<right>
-			<name>InputByString</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>SessionParameter.ВыполняетсяОбновлениеИБ</name>
-		<right>
-			<name>Get</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.Attribute.Подготовлен</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
 	</object>
 	<object>
 		<name>CommonForm.Вопрос</name>
 		<right>
 			<name>View</name>
 			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.StandardAttribute.PredefinedDataName</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.StandardAttribute.Predefined</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.StandardAttribute.Ref</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.StandardAttribute.DeletionMark</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.StandardAttribute.IsFolder</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.StandardAttribute.Owner</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.StandardAttribute.Parent</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.StandardAttribute.Description</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.StandardAttribute.Code</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -424,9 +346,46 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.ВерсииПодсистем</name>
+		<name>Catalog.ПользовательскиеНастройкиОтчетов</name>
 		<right>
 			<name>Read</name>
+			<value>true</value>
+			<restrictionByCondition>
+				<condition>#Если &amp;ОграничениеДоступаНаУровнеЗаписейУниверсально #Тогда
+#ДляОбъекта(&quot;&quot;)
+#Иначе
+ГДЕ Пользователь = &amp;АвторизованныйПользователь
+#КонецЕсли</condition>
+			</restrictionByCondition>
+		</right>
+		<right>
+			<name>Insert</name>
+			<value>true</value>
+			<restrictionByCondition>
+				<condition>#Если &amp;ОграничениеДоступаНаУровнеЗаписейУниверсально #Тогда
+#ДляОбъекта(&quot;&quot;)
+#Иначе
+ГДЕ Пользователь = &amp;АвторизованныйПользователь
+#КонецЕсли</condition>
+			</restrictionByCondition>
+		</right>
+		<right>
+			<name>Update</name>
+			<value>true</value>
+			<restrictionByCondition>
+				<condition>#Если &amp;ОграничениеДоступаНаУровнеЗаписейУниверсально #Тогда
+#ДляОбъекта(&quot;&quot;)
+#Иначе
+ГДЕ Пользователь = &amp;АвторизованныйПользователь
+#КонецЕсли</condition>
+			</restrictionByCondition>
+		</right>
+		<right>
+			<name>View</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>InputByString</name>
 			<value>true</value>
 		</right>
 	</object>
@@ -438,6 +397,13 @@
 		</right>
 	</object>
 	<object>
+		<name>CommonForm.РезультатПроверки</name>
+		<right>
+			<name>View</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
 		<name>CommonForm.ФормаНастроекОтчета</name>
 		<right>
 			<name>View</name>
@@ -445,86 +411,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.УдалитьВерсииПодсистем.StandardAttribute.Active</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.УдалитьВерсииПодсистем.StandardAttribute.LineNumber</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.УдалитьВерсииПодсистем.StandardAttribute.Recorder</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.УдалитьВерсииПодсистем.StandardAttribute.Period</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.TabularSection.КонтактнаяИнформация.Attribute.АдресЭП</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.TabularSection.ДополнительныеРеквизиты.Attribute.Значение</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>CommonForm.АвторизацияНаСайтеПоддержкиПользователей</name>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Constant.ПараметрыРаботыПользователей</name>
-		<right>
-			<name>Read</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.TabularSection.КонтактнаяИнформация.Attribute.НомерТелефонаБезКодов</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>CommonForm.ВыборПроизвольногоПериода</name>
+		<name>CommonForm.ФормаПоиска</name>
 		<right>
 			<name>View</name>
 			<value>true</value>
@@ -538,9 +425,16 @@
 		</right>
 	</object>
 	<object>
-		<name>Constant.РазделыОписанияИзмененийСистемы</name>
+		<name>DataProcessor.ЗаполнениеКалендарныхГрафиков</name>
 		<right>
-			<name>Read</name>
+			<name>Use</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.РасширенныйВводКонтактнойИнформации</name>
+		<right>
+			<name>Use</name>
 			<value>true</value>
 		</right>
 		<right>
@@ -549,7 +443,73 @@
 		</right>
 	</object>
 	<object>
-		<name>Constant.ПараметрыБлокировкиРаботыСВнешнимиРесурсами</name>
+		<name>DataProcessor.ПолнотекстовыйПоискВДанных</name>
+		<right>
+			<name>Use</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>View</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>CommonForm.ПраваДоступа</name>
+		<right>
+			<name>View</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>CommonForm.СменаПароля</name>
+		<right>
+			<name>View</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.ЗаменаИОбъединениеЭлементов</name>
+		<right>
+			<name>Use</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>View</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.ВидыКонтактнойИнформации</name>
+		<right>
+			<name>Read</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>View</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>InputByString</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.СтраныМира</name>
+		<right>
+			<name>Read</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>View</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>InputByString</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>Constant.СтатусОбновленияКонфигурации</name>
 		<right>
 			<name>Read</name>
 			<value>true</value>
@@ -571,254 +531,6 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.ОриентирыАдресныхОбъектов</name>
-		<right>
-			<name>Read</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.ОриентирыАдресныхОбъектов.StandardAttribute.Active</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.ОриентирыАдресныхОбъектов.StandardAttribute.LineNumber</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.ОриентирыАдресныхОбъектов.StandardAttribute.Recorder</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.ОриентирыАдресныхОбъектов.StandardAttribute.Period</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>CommonForm.ПраваДоступа</name>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>CommonForm.СменаПароля</name>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Constant.НастройкиВходаПользователей</name>
-		<right>
-			<name>Read</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>DataProcessor.ЗаменаИОбъединениеЭлементов</name>
-		<right>
-			<name>Use</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.СостоянияКонтрагентов.StandardAttribute.Active</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.СостоянияКонтрагентов.StandardAttribute.LineNumber</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.СостоянияКонтрагентов.StandardAttribute.Recorder</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.СостоянияКонтрагентов.StandardAttribute.Period</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.ВидыКонтактнойИнформации</name>
-		<right>
-			<name>Read</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>InputByString</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.ВидыКонтактнойИнформации.StandardAttribute.Predefined</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.ВидыКонтактнойИнформации.StandardAttribute.Ref</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.ВидыКонтактнойИнформации.StandardAttribute.DeletionMark</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.ВидыКонтактнойИнформации.StandardAttribute.IsFolder</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.ВидыКонтактнойИнформации.StandardAttribute.Owner</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.ВидыКонтактнойИнформации.StandardAttribute.Parent</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.ВидыКонтактнойИнформации.StandardAttribute.Description</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.ВидыКонтактнойИнформации.StandardAttribute.Code</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.СтраныМира</name>
-		<right>
-			<name>Read</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>InputByString</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.ОриентирыАдресныхОбъектов.Resource.ПочтовыйИндекс</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.Attribute.Комментарий</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.ОриентирыАдресныхОбъектов.Resource.Описание</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Constant.СтатусОбновленияКонфигурации</name>
-		<right>
-			<name>Read</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.УдалитьВерсииПодсистем.Attribute.ПланОбновления</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
 		<name>InformationRegister.СоставыГруппПользователей</name>
 		<right>
 			<name>Read</name>
@@ -833,28 +545,10 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.ПользовательскиеМакетыПечати</name>
-		<right>
-			<name>Read</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
 		<name>CommonCommand.УстановитьРасширениеРаботыСФайлами</name>
 		<right>
 			<name>View</name>
 			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.СостоянияКонтрагентов.Attribute.ИНН</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -863,8 +557,8 @@
 			<name>Read</name>
 			<value>true</value>
 			<restrictionByCondition>
-				<condition>#ПоЗначениям( "Справочник.ВнешниеПользователи", "", "",
-"ВнешниеПользователи", "ссылка", "","", "","", "","", "","", "","", "","", "","", "","", "","", "","", "","", "","", "","", "","", "","")</condition>
+				<condition>#ПоЗначениям( &quot;Справочник.ВнешниеПользователи&quot;, &quot;&quot;, &quot;&quot;,
+&quot;ВнешниеПользователи&quot;, &quot;ссылка&quot;, &quot;&quot;,&quot;&quot;, &quot;&quot;,&quot;&quot;, &quot;&quot;,&quot;&quot;, &quot;&quot;,&quot;&quot;, &quot;&quot;,&quot;&quot;, &quot;&quot;,&quot;&quot;, &quot;&quot;,&quot;&quot;, &quot;&quot;,&quot;&quot;, &quot;&quot;,&quot;&quot;, &quot;&quot;,&quot;&quot;, &quot;&quot;,&quot;&quot;, &quot;&quot;,&quot;&quot;, &quot;&quot;,&quot;&quot;, &quot;&quot;,&quot;&quot;, &quot;&quot;,&quot;&quot;)</condition>
 			</restrictionByCondition>
 		</right>
 		<right>
@@ -899,79 +593,14 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.УдалитьВерсииПодсистем.Dimension.ОбластьДанных</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Constant.ПараметрыСлужебныхСобытий</name>
-		<right>
-			<name>Read</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.ОриентирыАдресныхОбъектов.Dimension.Идентификатор</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Constant.КаталогСообщенийОбменаДаннымиДляWindows</name>
-		<right>
-			<name>Read</name>
-			<value>true</value>
-		</right>
+		<name>CommonForm.СравнениеТабличныхДокументов</name>
 		<right>
 			<name>View</name>
 			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Constant.АвтоматическиНастраиватьРазрешенияВПрофиляхБезопасности</name>
-		<right>
-			<name>Read</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.ВидыКонтактнойИнформации.Attribute.РеквизитДопУпорядочивания</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
 		</right>
 	</object>
 	<object>
 		<name>Constant.НеИспользоватьРазделениеПоОбластямДанных</name>
-		<right>
-			<name>Read</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.Attribute.ИдентификаторПользователяИБ</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Constant.КаталогСообщенийОбменаДаннымиДляLinux</name>
 		<right>
 			<name>Read</name>
 			<value>true</value>
@@ -996,6 +625,21 @@
 		</right>
 		<right>
 			<name>View</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.ПредопределенныеВариантыОтчетов</name>
+		<right>
+			<name>Read</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>View</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>InputByString</name>
 			<value>true</value>
 		</right>
 	</object>
@@ -1036,13 +680,6 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.Пользователи.TabularSection.КонтактнаяИнформация.Attribute.Регион</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
 		<name>CommonForm.РедактированиеТабличногоДокумента</name>
 		<right>
 			<name>View</name>
@@ -1061,14 +698,10 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.СостоянияКонтрагентов.Attribute.КПП</name>
+		<name>CommonForm.НастройкаРабочегоКаталога</name>
 		<right>
 			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
+			<value>true</value>
 		</right>
 	</object>
 	<object>
@@ -1098,21 +731,18 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.Пользователи.TabularSection.КонтактнаяИнформация.Attribute.Вид</name>
+		<name>CommonForm.ПоказателиВыделенныхЯчеек</name>
 		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Constant.ПараметрыОграниченияДоступа</name>
-		<right>
-			<name>Read</name>
+			<name>View</name>
 			<value>true</value>
 		</right>
 	</object>
 	<object>
-		<name>CommonForm.ПоказателиВыделенныхЯчеек</name>
+		<name>Constant.ИспользоватьОнлайнПоддержку</name>
+		<right>
+			<name>Read</name>
+			<value>true</value>
+		</right>
 		<right>
 			<name>View</name>
 			<value>true</value>
@@ -1130,24 +760,6 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.Пользователи.Attribute.Недействителен</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.СостоянияКонтрагентов.Resource.Состояние</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
 		<name>Constant.НастройкаПодчиненногоУзлаРИБЗавершена</name>
 		<right>
 			<name>Read</name>
@@ -1159,51 +771,18 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.ДокументыСОшибкамиПроверкиКонтрагентов.StandardAttribute.Active</name>
+		<name>InformationRegister.АдресныеОбъекты</name>
 		<right>
-			<name>View</name>
-			<value>false</value>
+			<name>Read</name>
+			<value>true</value>
 		</right>
 		<right>
-			<name>Edit</name>
-			<value>false</value>
+			<name>View</name>
+			<value>true</value>
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.ДокументыСОшибкамиПроверкиКонтрагентов.StandardAttribute.LineNumber</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.ДокументыСОшибкамиПроверкиКонтрагентов.StandardAttribute.Recorder</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.ДокументыСОшибкамиПроверкиКонтрагентов.StandardAttribute.Period</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.КлассификаторБанковРФ</name>
+		<name>Catalog.КлассификаторБанков</name>
 		<right>
 			<name>Read</name>
 			<value>true</value>
@@ -1236,50 +815,34 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.Пользователи.TabularSection.КонтактнаяИнформация.Attribute.Представление</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Constant.ПараметрыВариантовОтчетов</name>
+		<name>InformationRegister.НастройкиВариантовОтчетов</name>
 		<right>
 			<name>Read</name>
 			<value>true</value>
+			<restrictionByCondition>
+				<condition>#Если &amp;ОграничениеДоступаНаУровнеЗаписейУниверсально #Тогда
+#ДляРегистра(&quot;ИдентификаторыОбъектовМетаданных.РегистрСведенийНастройкиВариантовОтчетов&quot;, &quot;Пользователь&quot;, &quot;Вариант&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;)
+#Иначе
+ГДЕ (Пользователь = &amp;ТекущийПользователь
+    ИЛИ Вариант.Автор = &amp;ТекущийПользователь)
+#КонецЕсли</condition>
+			</restrictionByCondition>
 		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.TabularSection.КонтактнаяИнформация.Attribute.НомерТелефона</name>
 		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.УровниСокращенийАдресныхСведений</name>
-		<right>
-			<name>Read</name>
+			<name>Update</name>
 			<value>true</value>
-		</right>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.Attribute.Служебный</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
+			<restrictionByCondition>
+				<condition>#Если &amp;ОграничениеДоступаНаУровнеЗаписейУниверсально #Тогда
+#ДляРегистра(&quot;ИдентификаторыОбъектовМетаданных.РегистрСведенийНастройкиВариантовОтчетов&quot;, &quot;Пользователь&quot;, &quot;Вариант&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;)
+#Иначе
+ГДЕ (Пользователь = &amp;ТекущийПользователь
+    ИЛИ Вариант.Автор = &amp;ТекущийПользователь)
+#КонецЕсли</condition>
+			</restrictionByCondition>
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.ПараметрыРаботыВерсийРасширений</name>
-		<right>
-			<name>Read</name>
-			<value>true</value>
-		</right>
+		<name>CommonCommand.ПрисоединенныеФайлы</name>
 		<right>
 			<name>View</name>
 			<value>true</value>
@@ -1300,6 +863,10 @@
 		<name>Constant.СообщениеОбменаДаннымиИзГлавногоУзла</name>
 		<right>
 			<name>Read</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>View</name>
 			<value>true</value>
 		</right>
 	</object>
@@ -1344,13 +911,6 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.Пользователи.Attribute.Подразделение</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
 		<name>Constant.ИспользоватьРазделениеПоОбластямДанных</name>
 		<right>
 			<name>Read</name>
@@ -1359,13 +919,6 @@
 		<right>
 			<name>View</name>
 			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.TabularSection.КонтактнаяИнформация.Attribute.Тип</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -1380,45 +933,10 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.ВидыКонтактнойИнформации.Attribute.МожноИзменятьСпособРедактирования</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
 		<name>CommonForm.ВводЗначенийСпискомСФлажками</name>
 		<right>
 			<name>View</name>
 			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.ОриентирыАдресныхОбъектов.Resource.АдресныйОбъект</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.TabularSection.КонтактнаяИнформация</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.Attribute.ФизическоеЛицо</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.Attribute.СвойстваПользователяИБ</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -1458,17 +976,6 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.СостоянияКонтрагентов.Dimension.Контрагент</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
 		<name>Constant.КоличествоЭлементовВТранзакцииЗагрузкиДанных</name>
 		<right>
 			<name>Read</name>
@@ -1477,13 +984,6 @@
 		<right>
 			<name>View</name>
 			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.Attribute.ИдентификаторПользователяСервиса</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -1519,18 +1019,14 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.ДокументыСОшибкамиПроверкиКонтрагентов.Dimension.Документ</name>
+		<name>CommonForm.ПустойРабочийСтол</name>
 		<right>
 			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
+			<value>true</value>
 		</right>
 	</object>
 	<object>
-		<name>Constant.ИсточникДанныхАдресногоКлассификатора</name>
+		<name>Constant.АдресПубликацииИнформационнойБазыВЛокальнойСети</name>
 		<right>
 			<name>Read</name>
 			<value>true</value>
@@ -1541,7 +1037,18 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.АдресныеОбъекты</name>
+		<name>InformationRegister.КодировкиФайлов</name>
+		<right>
+			<name>Read</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>View</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>Constant.ИсточникДанныхАдресногоКлассификатора</name>
 		<right>
 			<name>Read</name>
 			<value>true</value>
@@ -1559,17 +1066,21 @@
 		</right>
 	</object>
 	<object>
-		<name>CommonForm.ДлительнаяОперация</name>
+		<name>InformationRegister.ОриентирыАдресныхОбъектов</name>
+		<right>
+			<name>Read</name>
+			<value>true</value>
+		</right>
 		<right>
 			<name>View</name>
 			<value>true</value>
 		</right>
 	</object>
 	<object>
-		<name>Catalog.Пользователи.TabularSection.ДополнительныеРеквизиты.Attribute.ТекстоваяСтрока</name>
+		<name>CommonForm.ДлительнаяОперация</name>
 		<right>
-			<name>Edit</name>
-			<value>false</value>
+			<name>View</name>
+			<value>true</value>
 		</right>
 	</object>
 	<object>
@@ -1584,14 +1095,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Subsystem.СтандартныеПодсистемы.Subsystem.РаботаСКонтрагентами</name>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>SessionParameter.АдресСвойствРасширений</name>
+		<name>SessionParameter.ПодключенныеРасширения</name>
 		<right>
 			<name>Get</name>
 			<value>true</value>
@@ -1617,13 +1121,6 @@
 		<right>
 			<name>View</name>
 			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.TabularSection.КонтактнаяИнформация.Attribute.ДоменноеИмяСервера</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -1667,72 +1164,419 @@
 			<value>true</value>
 		</right>
 	</object>
-	<object>
-		<name>InformationRegister.ЗагруженныеВерсииАдресныхСведений</name>
-		<right>
-			<name>Read</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Пользователи.TabularSection.КонтактнаяИнформация.Attribute.Город</name>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
+	<restrictionTemplate>
+		<name>ДляОбъекта(ПолеОбъекта)</name>
+		<condition>// ДляОбъекта(ПолеОбъекта = &quot;&quot;)
+// Шаблон используется для ограничения элементов справочников, документов и
+// других списков объектов по полю Ссылка, а также элементов зависимых списков
+// объектов и записей регистров через поле объекта-владельца.
+//
+// Параметры:
+//  ПолеОбъекта - имя поля, содержащего ссылку на объект, от которого зависит элемент списка.
+//                Значение &quot;&quot; (по умолчанию) то же, что имя поля &quot;Ссылка&quot;.
+//
+
+#Если &amp;СпискиСОтключеннымОграничениемЧтения = &quot;Неопределено&quot; #Тогда
+  // Информационная база заблокирована для обновления.
+    ГДЕ ЛОЖЬ
+
+#ИначеЕсли Не СтрСодержит(&amp;ВерсииШаблоновОграниченияДоступа, &quot;,ДляОбъекта1,&quot;)
+         И Не СтрСодержит(&amp;ВерсииШаблоновОграниченияДоступа, &quot;,ДляОбъекта1ТребуетсяПерезапуститьСеанс,&quot;) #Тогда
+    Ошибка: Требуется обновить шаблон на актуальную версию, поставляемую в роли ИзменениеУчастниковГруппДоступа по причине: Используется устаревшая версия 1 шаблона ограничения доступа ДляОбъекта. Объект: #ИмяТекущейТаблицы, Право: #ИмяТекущегоПраваДоступа.
+
+#ИначеЕсли &amp;СпискиСОтключеннымОграничениемЧтения = &quot;Все&quot; #Тогда
+  // У пользователя отключены все виды доступа или
+  // ограничение на уровне записей не используется.
+
+#ИначеЕсли СтрСодержит(&amp;СпискиСОтключеннымОграничениемЧтения, #ИмяТекущейТаблицы) #Тогда
+  // У пользователя отключено ограничение для текущей таблицы.
+
+#ИначеЕсли СтрСодержит(&amp;ВерсииШаблоновОграниченияДоступа, &quot;,ДляОбъекта1ТребуетсяПерезапуститьСеанс,&quot;) #Тогда
+    Ошибка: Версия программы обновлена, требуется перезапустить сеанс. Объект: #ИмяТекущейТаблицы, Право: #ИмяТекущегоПраваДоступа.
+
+#ИначеЕсли #ИмяТекущегоПраваДоступа &lt;> &quot;Чтение&quot; #Тогда
+  // Проверка прав Добавление, Изменение, Удаление выполняется ПередЗаписью / ПриЗаписи.
+    ГДЕ ИСТИНА
+
+#ИначеЕсли &quot;#ПолеОбъекта&quot;  = &quot;&quot; И СтрСодержит(&amp;СпискиСОграничениемЧерезКлючиДоступаПользователей, #ИмяТекущейТаблицы + &quot;:;&quot;)
+       Или &quot;#ПолеОбъекта&quot; &lt;> &quot;&quot; И СтрСодержит(&amp;СпискиСОграничениемЧерезКлючиДоступаПользователей, #ИмяТекущейТаблицы + &quot;:#ПолеОбъекта;&quot;) #Тогда
+
+    ТекущаяТаблица ГДЕ ИСТИНА В
+ (
+  ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
+  ИЗ РегистрСведений.КлючиДоступаКОбъектам КАК КлючиДоступаКОбъектам
+#Если &amp;ТекущийВнешнийПользователь = Значение(Справочник.ВнешниеПользователи.ПустаяСсылка) #Тогда
+  ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.КлючиДоступаПользователей КАК РазрешенныеКлючиДоступа
+#Иначе
+  ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.КлючиДоступаВнешнихПользователей КАК РазрешенныеКлючиДоступа
+#КонецЕсли
+  ПО
+  #Если &quot;#ПолеОбъекта&quot;  = &quot;&quot; #Тогда
+      КлючиДоступаКОбъектам.Объект = ТекущаяТаблица.Ссылка
+  #Иначе
+      КлючиДоступаКОбъектам.Объект = ТекущаяТаблица.#ПолеОбъекта
+  #КонецЕсли
+  #Если &amp;ТекущийВнешнийПользователь = Значение(Справочник.ВнешниеПользователи.ПустаяСсылка) #Тогда
+    И РазрешенныеКлючиДоступа.КлючДоступа = КлючиДоступаКОбъектам.КлючДоступаПользователей
+    И РазрешенныеКлючиДоступа.Пользователь = &amp;ТекущийПользователь
+  #Иначе
+    И РазрешенныеКлючиДоступа.КлючДоступа = КлючиДоступаКОбъектам.КлючДоступаВнешнихПользователей
+    И РазрешенныеКлючиДоступа.ВнешнийПользователь = &amp;ТекущийВнешнийПользователь
+  #КонецЕсли
+ )
+#ИначеЕсли &quot;#ПолеОбъекта&quot;  = &quot;&quot; И СтрСодержит(&amp;СпискиСОграничениемЧерезКлючиДоступаГруппДоступа, #ИмяТекущейТаблицы + &quot;:;&quot;)
+       Или &quot;#ПолеОбъекта&quot; &lt;> &quot;&quot; И СтрСодержит(&amp;СпискиСОграничениемЧерезКлючиДоступаГруппДоступа, #ИмяТекущейТаблицы + &quot;:#ПолеОбъекта;&quot;) #Тогда
+
+    ТекущаяТаблица ГДЕ ИСТИНА В
+ (
+  ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
+  ИЗ РегистрСведений.КлючиДоступаКОбъектам КАК КлючиДоступаКОбъектам
+  ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.КлючиДоступаГруппДоступа КАК РазрешенныеКлючиДоступа
+  ПО
+  #Если &quot;#ПолеОбъекта&quot;  = &quot;&quot; #Тогда
+      КлючиДоступаКОбъектам.Объект = ТекущаяТаблица.Ссылка
+  #Иначе
+      КлючиДоступаКОбъектам.Объект = ТекущаяТаблица.#ПолеОбъекта
+  #КонецЕсли
+  #Если &amp;ТекущийВнешнийПользователь = Значение(Справочник.ВнешниеПользователи.ПустаяСсылка) #Тогда
+    И РазрешенныеКлючиДоступа.КлючДоступа = КлючиДоступаКОбъектам.КлючДоступаПользователей
+  #Иначе
+    И РазрешенныеКлючиДоступа.КлючДоступа = КлючиДоступаКОбъектам.КлючДоступаВнешнихПользователей
+  #КонецЕсли
+    И РазрешенныеКлючиДоступа.ГруппаДоступа В (&amp;ГруппыДоступаАвторизованногоПользователя)
+ )
+#ИначеЕсли &quot;#ПолеОбъекта&quot;  = &quot;&quot; И СтрСодержит(&amp;СпискиСОграничениемЧерезКлючиДоступаПользователейИГруппДоступа, #ИмяТекущейТаблицы + &quot;:;&quot;)
+       Или &quot;#ПолеОбъекта&quot; &lt;> &quot;&quot; И СтрСодержит(&amp;СпискиСОграничениемЧерезКлючиДоступаПользователейИГруппДоступа, #ИмяТекущейТаблицы + &quot;:#ПолеОбъекта;&quot;) #Тогда
+
+    ТекущаяТаблица ГДЕ ИСТИНА В
+ (
+  ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
+  ИЗ РегистрСведений.КлючиДоступаКОбъектам КАК КлючиДоступаКОбъектам
+  ГДЕ
+  #Если &quot;#ПолеОбъекта&quot;  = &quot;&quot; #Тогда
+      КлючиДоступаКОбъектам.Объект = ТекущаяТаблица.Ссылка
+  #Иначе
+      КлючиДоступаКОбъектам.Объект = ТекущаяТаблица.#ПолеОбъекта
+  #КонецЕсли
+    И (
+       ИСТИНА В (
+         ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
+       #Если &amp;ТекущийВнешнийПользователь = Значение(Справочник.ВнешниеПользователи.ПустаяСсылка) #Тогда
+         ИЗ РегистрСведений.КлючиДоступаПользователей КАК РазрешенныеКлючиДоступа
+       #Иначе
+         ИЗ РегистрСведений.КлючиДоступаВнешнихПользователей КАК РазрешенныеКлючиДоступа
+       #КонецЕсли
+         ГДЕ
+          #Если &amp;ТекущийВнешнийПользователь = Значение(Справочник.ВнешниеПользователи.ПустаяСсылка) #Тогда
+               РазрешенныеКлючиДоступа.КлючДоступа = КлючиДоступаКОбъектам.КлючДоступаПользователей
+             И РазрешенныеКлючиДоступа.Пользователь = &amp;ТекущийПользователь
+          #Иначе
+               РазрешенныеКлючиДоступа.КлючДоступа = КлючиДоступаКОбъектам.КлючДоступаВнешнихПользователей
+             И РазрешенныеКлючиДоступа.ВнешнийПользователь = &amp;ТекущийВнешнийПользователь
+          #КонецЕсли
+                )
+        ИЛИ
+          ИСТИНА В (
+            ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
+            ИЗ РегистрСведений.КлючиДоступаГруппДоступа КАК РазрешенныеКлючиДоступа
+            ГДЕ
+             #Если &amp;ТекущийВнешнийПользователь = Значение(Справочник.ВнешниеПользователи.ПустаяСсылка) #Тогда
+                 РазрешенныеКлючиДоступа.КлючДоступа = КлючиДоступаКОбъектам.КлючДоступаПользователей
+             #Иначе
+                 РазрешенныеКлючиДоступа.КлючДоступа = КлючиДоступаКОбъектам.КлючДоступаВнешнихПользователей
+             #КонецЕсли
+               И РазрешенныеКлючиДоступа.ГруппаДоступа В (&amp;ГруппыДоступаАвторизованногоПользователя)
+                   )
+      )
+ )
+
+#Иначе
+  Ошибка: Требуется актуализировать ограничение доступа по причине: Не удалось определить вариант ограничения доступа в параметрах сеанса для шаблона ДляОбъекта со значением параметра &quot;#ПолеОбъекта&quot;. Объект: #ИмяТекущейТаблицы, Право: #ИмяТекущегоПраваДоступа.
+#КонецЕсли
+</condition>
+	</restrictionTemplate>
+	<restrictionTemplate>
+		<name>ДляРегистра(Регистр, Поле1, Поле2, Поле3, Поле4, Поле5)</name>
+		<condition>// ДляРегистра(Регистр, Поле1, Поле2 = &quot;&quot;, Поле3 = &quot;&quot;, Поле4 = &quot;&quot;, Поле5 = &quot;&quot;)
+// Шаблон используется для ограничения групп записей регистров.
+//
+// Параметры:
+//  Регистр - имя предопределенного элемента справочника Идентификаторы объектов метаданных или справочника
+//            Идентификаторы объектов расширений в формате: имя справочника с точкой и полное имя таблицы
+//            без точки, например, ИдентификаторыОбъектовМетаданных.РегистрНакопленияОстаткиНаСкладах;
+//          - имя отдельного регистра ключей в формате КлючиДоступаКРегистру&lt;ОстатокИмени>,
+//            например, КлючиДоступаКРегиструОстаткиНаСкладах.
+//  Поле1   - имя первого поля (измерения, ресурса, реквизита), которое будет соединяться с полем Поле1
+//            регистра сведений КлючиДоступаКРегистр*
+//  Поле2   - аналогично предыдущему параметру, если используется в ограничении доступа к регистру.
+//  ...
+//  Поле5   - аналогично предыдущему параметру, если используется в ограничении доступа к регистру.
+
+#Если &amp;СпискиСОтключеннымОграничениемЧтения = &quot;Неопределено&quot; #Тогда
+  // Информационная база заблокирована для обновления.
+  ГДЕ ЛОЖЬ
+
+#ИначеЕсли Не СтрСодержит(&amp;ВерсииШаблоновОграниченияДоступа, &quot;,ДляРегистра1,&quot;) #Тогда
+         И Не СтрСодержит(&amp;ВерсииШаблоновОграниченияДоступа, &quot;,ДляРегистра1ТребуетсяПерезапуститьСеанс,&quot;) #Тогда
+    Ошибка: Требуется обновить шаблон на актуальную версию, поставляемую в роли ИзменениеУчастниковГруппДоступа по причине: Используется устаревшая версия 1 шаблона ограничения доступа ДляРегистра. Объект: #ИмяТекущейТаблицы, Право: #ИмяТекущегоПраваДоступа.
+
+#ИначеЕсли &amp;СпискиСОтключеннымОграничениемЧтения = &quot;Все&quot; #Тогда
+  // У пользователя отключены все виды доступа или
+  // ограничение на уровне записей не используется.
+
+#ИначеЕсли СтрСодержит(&amp;СпискиСОтключеннымОграничениемЧтения, #ИмяТекущейТаблицы) #Тогда
+  // У пользователя отключено ограничение для текущей таблицы.
+
+#ИначеЕсли СтрСодержит(&amp;ВерсииШаблоновОграниченияДоступа, &quot;,ДляРегистра1ТребуетсяПерезапуститьСеанс,&quot;) #Тогда
+    Ошибка: Версия программы обновлена, требуется перезапустить сеанс. Объект: #ИмяТекущейТаблицы, Право: #ИмяТекущегоПраваДоступа.
+
+#ИначеЕсли #ИмяТекущегоПраваДоступа &lt;> &quot;Чтение&quot; #Тогда
+  // Проверка прав Добавление, Изменение, Удаление выполняется ПередЗаписью / ПриЗаписи.
+  ГДЕ ИСТИНА
+
+#ИначеЕсли Не СтрСодержит(&amp;СпискиСОграничениемЧерезКлючиДоступаПользователей, #ИмяТекущейТаблицы + &quot;:[#Регистр]:#Поле1:#Поле2:#Поле3:#Поле4:#Поле5;&quot;)
+         И Не СтрСодержит(&amp;СпискиСОграничениемЧерезКлючиДоступаГруппДоступа,  #ИмяТекущейТаблицы + &quot;:[#Регистр]:#Поле1:#Поле2:#Поле3:#Поле4:#Поле5;&quot;) #Тогда
+
+  Ошибка: Требуется актуализировать ограничение доступа по причине: Не удалось определить вариант ограничения доступа в параметрах сеанса для шаблона ДляРегистра со значениями параметров &quot;#Регистр&quot;, &quot;#Поле1&quot;, &quot;#Поле2&quot;, &quot;#Поле3&quot;, &quot;#Поле4&quot;, &quot;#Поле5&quot;. Объект: #ИмяТекущейТаблицы, Право: #ИмяТекущегоПраваДоступа.
+#Иначе
+
+ТекущаяТаблица ГДЕ ИСТИНА В
+ (
+  ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
+#Если Не СтрСодержит(&quot;#Регистр&quot;, &quot;КлючиДоступаКРегистру&quot;) #Тогда
+  ИЗ РегистрСведений.КлючиДоступаКРегистрам КАК КлючиДоступаКРегистрам
+#Иначе
+  ИЗ РегистрСведений.#Регистр КАК КлючиДоступаКРегистрам
+#КонецЕсли
+#Если Не СтрСодержит(&amp;СпискиСОграничениемЧерезКлючиДоступаПользователей, #ИмяТекущейТаблицы + &quot;:[#Регистр]:#Поле1:#Поле2:#Поле3:#Поле4:#Поле5;&quot;) #Тогда
+  ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.КлючиДоступаГруппДоступа КАК РазрешенныеКлючиДоступа
+  
+#ИначеЕсли &amp;ТекущийВнешнийПользователь = Значение(Справочник.ВнешниеПользователи.ПустаяСсылка) #Тогда
+  ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.КлючиДоступаПользователей КАК РазрешенныеКлючиДоступа
+#Иначе
+  ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.КлючиДоступаВнешнихПользователей КАК РазрешенныеКлючиДоступа
+#КонецЕсли
+  ПО
+  #Если Не СтрСодержит(&quot;#Регистр&quot;, &quot;КлючиДоступаКРегистру&quot;) #Тогда
+      КлючиДоступаКРегистрам.Регистр = Значение(Справочник.#Регистр)
+  #Иначе
+      ИСТИНА
+  #КонецЕсли
+  
+  #Если &amp;ТекущийВнешнийПользователь = Значение(Справочник.ВнешниеПользователи.ПустаяСсылка) #Тогда
+    И КлючиДоступаКРегистрам.ДляВнешнихПользователей = ЛОЖЬ
+  #Иначе
+    И КлючиДоступаКРегистрам.ДляВнешнихПользователей = ИСТИНА
+  #КонецЕсли
+  
+  #Если Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле1;&quot;) #Тогда
+    И КлючиДоступаКРегистрам.Поле1 = ТекущаяТаблица.#Поле1
+  #КонецЕсли
+  
+  #Если &quot;#Поле2&quot; &lt;> &quot;&quot; И Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле2;&quot;) #Тогда
+    #Если Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле1;&quot;) #Тогда
+      И КлючиДоступаКРегистрам.Поле2 = ТекущаяТаблица.#Поле2
+    #Иначе
+      И КлючиДоступаКРегистрам.Поле1 = ТекущаяТаблица.#Поле2
+    #КонецЕсли
+  #КонецЕсли
+  
+  #Если &quot;#Поле3&quot; &lt;> &quot;&quot; И Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле3;&quot;) #Тогда
+    #Если Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле1;&quot;)
+        И Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле2;&quot;) #Тогда
+      
+      И КлючиДоступаКРегистрам.Поле3 = ТекущаяТаблица.#Поле3
+      
+    #ИначеЕсли Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле1;&quot;) #Тогда
+      И КлючиДоступаКРегистрам.Поле2 = ТекущаяТаблица.#Поле3
+    #Иначе
+      И КлючиДоступаКРегистрам.Поле1 = ТекущаяТаблица.#Поле3
+    #КонецЕсли
+  #КонецЕсли
+  
+  #Если &quot;#Поле4&quot; &lt;> &quot;&quot; И Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле4;&quot;) #Тогда
+    #Если Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле1;&quot;)
+        И Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле2;&quot;)
+        И Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле3;&quot;) #Тогда
+      
+      И КлючиДоступаКРегистрам.Поле4 = ТекущаяТаблица.#Поле4
+      
+    #ИначеЕсли Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле1;&quot;)
+             И Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле2;&quot;) #Тогда
+      
+      И КлючиДоступаКРегистрам.Поле3 = ТекущаяТаблица.#Поле4
+      
+    #ИначеЕсли Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле1;&quot;) #Тогда
+      И КлючиДоступаКРегистрам.Поле2 = ТекущаяТаблица.#Поле4
+    #Иначе
+      И КлючиДоступаКРегистрам.Поле1 = ТекущаяТаблица.#Поле4
+    #КонецЕсли
+  #КонецЕсли
+  
+  #Если &quot;#Поле5&quot; &lt;> &quot;&quot; И Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле5;&quot;) #Тогда
+    #Если Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле1;&quot;)
+        И Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле2;&quot;)
+        И Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле3;&quot;)
+        И Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле4;&quot;) #Тогда
+      
+      И КлючиДоступаКРегистрам.Поле5 = ТекущаяТаблица.#Поле5
+      
+    #ИначеЕсли Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле1;&quot;)
+             И Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле2;&quot;)
+             И Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле3;&quot;) #Тогда
+      
+      И КлючиДоступаКРегистрам.Поле4 = ТекущаяТаблица.#Поле5
+      
+    #ИначеЕсли Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле1;&quot;)
+             И Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле2;&quot;) #Тогда
+      
+      И КлючиДоступаКРегистрам.Поле3 = ТекущаяТаблица.#Поле5
+      
+    #ИначеЕсли Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле1;&quot;) #Тогда
+      И КлючиДоступаКРегистрам.Поле2 = ТекущаяТаблица.#Поле5
+    #Иначе
+      И КлючиДоступаКРегистрам.Поле1 = ТекущаяТаблица.#Поле5
+    #КонецЕсли
+  #КонецЕсли
+  
+  #Если Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле1;&quot;)
+      И Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле2;&quot;)
+      И Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле3;&quot;)
+      И Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле4;&quot;) #Тогда
+    
+    #Если &quot;#Поле5&quot; &lt;> &quot;&quot; И Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле5;&quot;) #Тогда
+      И КлючиДоступаКРегистрам.Поле5 = ТекущаяТаблица.#Поле5
+    #ИначеЕсли &quot;#Поле5&quot; &lt;> &quot;&quot; Или Не СтрСодержит(&amp;СпискиССокращеннымНаборомПолейВРегистрахКлючей, #ИмяТекущейТаблицы + &quot;:Поле5;&quot;) #Тогда
+      И КлючиДоступаКРегистрам.Поле5 = Значение(Перечисление.ДополнительныеЗначенияДоступа.Null)
+    #КонецЕсли
+    
+  #ИначеЕсли Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле1;&quot;)
+           И Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле2;&quot;)
+           И Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле3;&quot;) #Тогда
+      
+    #Если &quot;#Поле5&quot; &lt;> &quot;&quot; И Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле5;&quot;) #Тогда
+      И КлючиДоступаКРегистрам.Поле4 = ТекущаяТаблица.#Поле5
+    #ИначеЕсли &quot;#Поле4&quot; &lt;> &quot;&quot; Или Не СтрСодержит(&amp;СпискиССокращеннымНаборомПолейВРегистрахКлючей, #ИмяТекущейТаблицы + &quot;:Поле4;&quot;) #Тогда
+      И КлючиДоступаКРегистрам.Поле4 = Значение(Перечисление.ДополнительныеЗначенияДоступа.Null)
+    #КонецЕсли
+    #Если &quot;#Поле5&quot; &lt;> &quot;&quot; Или Не СтрСодержит(&amp;СпискиССокращеннымНаборомПолейВРегистрахКлючей, #ИмяТекущейТаблицы + &quot;:Поле5;&quot;) #Тогда
+      И КлючиДоступаКРегистрам.Поле5 = Значение(Перечисление.ДополнительныеЗначенияДоступа.Null)
+    #КонецЕсли
+      
+  #ИначеЕсли Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле1;&quot;)
+           И Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле2;&quot;) #Тогда
+      
+    #Если &quot;#Поле5&quot; &lt;> &quot;&quot; И Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле5;&quot;) #Тогда
+      И КлючиДоступаКРегистрам.Поле3 = ТекущаяТаблица.#Поле5
+    #ИначеЕсли &quot;#Поле3&quot; &lt;> &quot;&quot; Или Не СтрСодержит(&amp;СпискиССокращеннымНаборомПолейВРегистрахКлючей, #ИмяТекущейТаблицы + &quot;:Поле3;&quot;) #Тогда
+      И КлючиДоступаКРегистрам.Поле3 = Значение(Перечисление.ДополнительныеЗначенияДоступа.Null)
+    #КонецЕсли
+    #Если &quot;#Поле4&quot; &lt;> &quot;&quot; Или Не СтрСодержит(&amp;СпискиССокращеннымНаборомПолейВРегистрахКлючей, #ИмяТекущейТаблицы + &quot;:Поле4;&quot;) #Тогда
+      И КлючиДоступаКРегистрам.Поле4 = Значение(Перечисление.ДополнительныеЗначенияДоступа.Null)
+    #КонецЕсли
+    #Если &quot;#Поле5&quot; &lt;> &quot;&quot; Или Не СтрСодержит(&amp;СпискиССокращеннымНаборомПолейВРегистрахКлючей, #ИмяТекущейТаблицы + &quot;:Поле5;&quot;) #Тогда
+      И КлючиДоступаКРегистрам.Поле5 = Значение(Перечисление.ДополнительныеЗначенияДоступа.Null)
+    #КонецЕсли
+      
+  #ИначеЕсли Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле1;&quot;) #Тогда
+    #Если &quot;#Поле5&quot; &lt;> &quot;&quot; И Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле5;&quot;) #Тогда
+      И КлючиДоступаКРегистрам.Поле2 = ТекущаяТаблица.#Поле5
+    #ИначеЕсли &quot;#Поле2&quot; &lt;> &quot;&quot; Или Не СтрСодержит(&amp;СпискиССокращеннымНаборомПолейВРегистрахКлючей, #ИмяТекущейТаблицы + &quot;:Поле2;&quot;) #Тогда
+      И КлючиДоступаКРегистрам.Поле2 = Значение(Перечисление.ДополнительныеЗначенияДоступа.Null)
+    #КонецЕсли
+    #Если &quot;#Поле3&quot; &lt;> &quot;&quot; Или Не СтрСодержит(&amp;СпискиССокращеннымНаборомПолейВРегистрахКлючей, #ИмяТекущейТаблицы + &quot;:Поле3;&quot;) #Тогда
+      И КлючиДоступаКРегистрам.Поле3 = Значение(Перечисление.ДополнительныеЗначенияДоступа.Null)
+    #КонецЕсли
+    #Если &quot;#Поле4&quot; &lt;> &quot;&quot; Или Не СтрСодержит(&amp;СпискиССокращеннымНаборомПолейВРегистрахКлючей, #ИмяТекущейТаблицы + &quot;:Поле4;&quot;) #Тогда
+      И КлючиДоступаКРегистрам.Поле4 = Значение(Перечисление.ДополнительныеЗначенияДоступа.Null)
+    #КонецЕсли
+    #Если &quot;#Поле5&quot; &lt;> &quot;&quot; Или Не СтрСодержит(&amp;СпискиССокращеннымНаборомПолейВРегистрахКлючей, #ИмяТекущейТаблицы + &quot;:Поле5;&quot;) #Тогда
+      И КлючиДоступаКРегистрам.Поле5 = Значение(Перечисление.ДополнительныеЗначенияДоступа.Null)
+    #КонецЕсли
+  #Иначе
+    #Если &quot;#Поле5&quot; &lt;> &quot;&quot; И Не СтрСодержит(&amp;СпискиСОтключеннымОграничениемПоПолям, #ИмяТекущейТаблицы + &quot;:#Поле5;&quot;) #Тогда
+      И КлючиДоступаКРегистрам.Поле1 = ТекущаяТаблица.#Поле5
+    #Иначе
+      И КлючиДоступаКРегистрам.Поле1 = Значение(Перечисление.ДополнительныеЗначенияДоступа.Null)
+    #КонецЕсли
+    #Если &quot;#Поле2&quot; &lt;> &quot;&quot; Или Не СтрСодержит(&amp;СпискиССокращеннымНаборомПолейВРегистрахКлючей, #ИмяТекущейТаблицы + &quot;:Поле2;&quot;) #Тогда
+      И КлючиДоступаКРегистрам.Поле2 = Значение(Перечисление.ДополнительныеЗначенияДоступа.Null)
+    #КонецЕсли
+    #Если &quot;#Поле3&quot; &lt;> &quot;&quot; Или Не СтрСодержит(&amp;СпискиССокращеннымНаборомПолейВРегистрахКлючей, #ИмяТекущейТаблицы + &quot;:Поле3;&quot;) #Тогда
+      И КлючиДоступаКРегистрам.Поле3 = Значение(Перечисление.ДополнительныеЗначенияДоступа.Null)
+    #КонецЕсли
+    #Если &quot;#Поле4&quot; &lt;> &quot;&quot; Или Не СтрСодержит(&amp;СпискиССокращеннымНаборомПолейВРегистрахКлючей, #ИмяТекущейТаблицы + &quot;:Поле4;&quot;) #Тогда
+      И КлючиДоступаКРегистрам.Поле4 = Значение(Перечисление.ДополнительныеЗначенияДоступа.Null)
+    #КонецЕсли
+    #Если &quot;#Поле5&quot; &lt;> &quot;&quot; Или Не СтрСодержит(&amp;СпискиССокращеннымНаборомПолейВРегистрахКлючей, #ИмяТекущейТаблицы + &quot;:Поле5;&quot;) #Тогда
+      И КлючиДоступаКРегистрам.Поле5 = Значение(Перечисление.ДополнительныеЗначенияДоступа.Null)
+    #КонецЕсли
+  #КонецЕсли
+  
+  #Если Не СтрСодержит(&amp;СпискиСОграничениемЧерезКлючиДоступаПользователей, #ИмяТекущейТаблицы + &quot;:[#Регистр]:#Поле1:#Поле2:#Поле3:#Поле4:#Поле5;&quot;) #Тогда
+    И РазрешенныеКлючиДоступа.КлючДоступа = КлючиДоступаКРегистрам.КлючДоступа
+    И РазрешенныеКлючиДоступа.ГруппаДоступа В (&amp;ГруппыДоступаАвторизованногоПользователя)
+    
+  #ИначеЕсли &amp;ТекущийВнешнийПользователь = Значение(Справочник.ВнешниеПользователи.ПустаяСсылка) #Тогда
+    И РазрешенныеКлючиДоступа.КлючДоступа = КлючиДоступаКРегистрам.КлючДоступа
+    И РазрешенныеКлючиДоступа.Пользователь = &amp;ТекущийПользователь
+  #Иначе
+    И РазрешенныеКлючиДоступа.КлючДоступа = КлючиДоступаКРегистрам.КлючДоступа
+    И РазрешенныеКлючиДоступа.ВнешнийПользователь = &amp;ТекущийВнешнийПользователь
+  #КонецЕсли
+ )
+
+#КонецЕсли
+</condition>
+	</restrictionTemplate>
 	<restrictionTemplate>
 		<name>ПоЗначениям</name>
 		<condition>// ПоЗначениям(Таблица, -, Модификатор, В1,П1, В2,П2, ...,  В(n), П(n)).
 // № параметра:      1, 2,           3,  4, 5,  6, 7, ..., 2+n*2,3+n*2.
-// Читается так: "ограничение доступа по значениям".
+// Читается так: &quot;ограничение доступа по значениям&quot;.
 // Параметры:
-//     Таблица   - Имя текущей таблицы, например "Документ.ПоступлениеТоваровИУслуг".
+//     Таблица   - Имя текущей таблицы, например &quot;Документ.ПоступлениеТоваровИУслуг&quot;.
 //     Модификатор - изменяет шаблон.
-//                 1-й модификатор - строка "НеОграничиватьДоступКГруппам" указывает
+//                 1-й модификатор - строка &quot;НеОграничиватьДоступКГруппам&quot; указывает
 //                  безусловно выбирать группы иерархического справочника. 
 //                 Других модификаторов в этой версии шаблона не предусмотрено.
-//     В(n)      - Вид доступа - имя вида доступа, например, "Организации". Для полей составного типа, с целью повышения
-//                  производительности, лучше указать несколько имен, например, "Организации,ГруппыФизическихЛиц",
+//     В(n)      - Вид доступа - имя вида доступа, например, &quot;Организации&quot;. Для полей составного типа, с целью повышения
+//                  производительности, лучше указать несколько имен, например, &quot;Организации,ГруппыФизическихЛиц&quot;,
 //                  чем использовать несколько блоков параметров, с одним и тем же именем поля.
-//                  Специальные виды доступа "Условие", "НастройкиПрав", "ПравоЧтения", "ПравоИзменения"
+//                  Специальные виды доступа &quot;Условие&quot;, &quot;НастройкиПрав&quot;, &quot;ПравоЧтения&quot;, &quot;ПравоИзменения&quot;
 //                  можно использовать только отдельно.
-//                 Когда В(n) = "Условие" (или ""), тогда П(n) содержит строку условия на языке запросов, например
-//                  "Т.Автор = &amp;АвторизованныйПользователь",
-//                  "ТИПЗНАЧЕНИЯ(Т.Владелец) = ТИП(Справочник.Организации)", где Т - псевдоним текущей таблицы.
-//                 Когда В(n) = "ПравоЧтения" Или "ПравоИзменения",
+//                 Когда В(n) = &quot;Условие&quot; (или &quot;&quot;), тогда П(n) содержит строку условия на языке запросов, например
+//                  &quot;Т.Автор = &amp;АвторизованныйПользователь&quot;,
+//                  &quot;ТИПЗНАЧЕНИЯ(Т.Владелец) = ТИП(Справочник.Организации)&quot;, где Т - псевдоним текущей таблицы.
+//                 Когда В(n) = &quot;ПравоЧтения&quot; Или &quot;ПравоИзменения&quot;,
 //                  выполняется проверка наличия права на таблицу значения Т.П(n).
-//     П(n)      - Поле проверяемого значения, кроме случая В(n) = "Условие" (или "").
+//     П(n)      - Поле проверяемого значения, кроме случая В(n) = &quot;Условие&quot; (или &quot;&quot;).
 //  Примечение: максимальное количество одновременно проверяемых значений полей можно увеличить, изменив шаблон, но
 // необходимо будет указывать все параметры шаблона, т.е. указывать пустые строки, когда количество полей меньше максимального.
 //  Шаблон имеет структуру:
-//     &lt;Общая часть условий&gt; &lt;Условие по группе параметров 1&gt; И &lt;Условие по группе параметров 2&gt; И ... &lt;Условие по группе параметров(n)&gt;
+//     &lt;Общая часть условий> &lt;Условие по группе параметров 1> И &lt;Условие по группе параметров 2> И ... &lt;Условие по группе параметров(n)>
 //  Пример:
-//      ПоЗначениям("Документ.ПоступлениеТоваровИУслуг", "", "",
-//      "Организации","Организация",
-//      "Поставщики","Контрагент", "","", ...)
+//      ПоЗначениям(&quot;Документ.ПоступлениеТоваровИУслуг&quot;, &quot;&quot;, &quot;&quot;,
+//      &quot;Организации&quot;,&quot;Организация&quot;,
+//      &quot;Поставщики&quot;,&quot;Контрагент&quot;, &quot;&quot;,&quot;&quot;, ...)
 
 // Проверка правильности параметра Право.
-#Если Не ("#Параметр(2)" = "Чтение"    Или "#Параметр(2)" = "Добавление" Или
-          "#Параметр(2)" = "Изменение" Или "#Параметр(2)" = "Удаление"   Или "#Параметр(2)" = "")
-      Или #ИмяТекущегоПраваДоступа &lt;&gt; "Чтение" И "#Параметр(2)"  = "Чтение"
-      Или #ИмяТекущегоПраваДоступа  = "Чтение" И "#Параметр(2)" &lt;&gt; "Чтение" И "#Параметр(2)" &lt;&gt; "" #Тогда
+#Если Не (&quot;#Параметр(2)&quot; = &quot;Чтение&quot;    Или &quot;#Параметр(2)&quot; = &quot;Добавление&quot; Или
+          &quot;#Параметр(2)&quot; = &quot;Изменение&quot; Или &quot;#Параметр(2)&quot; = &quot;Удаление&quot;   Или &quot;#Параметр(2)&quot; = &quot;&quot;)
+      Или #ИмяТекущегоПраваДоступа &lt;> &quot;Чтение&quot; И &quot;#Параметр(2)&quot;  = &quot;Чтение&quot;
+      Или #ИмяТекущегоПраваДоступа  = &quot;Чтение&quot; И &quot;#Параметр(2)&quot; &lt;> &quot;Чтение&quot; И &quot;#Параметр(2)&quot; &lt;> &quot;&quot; #Тогда
     // Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
     НеверноеПраво: #Параметр(2)
 #КонецЕсли
 
 // Проверка правильности параметра ИмяТаблицы.
-#Если "#Параметр(1)" &lt;&gt; #ИмяТекущейТаблицы #Тогда
+#Если &quot;#Параметр(1)&quot; &lt;> #ИмяТекущейТаблицы #Тогда
 	// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-	НеверноеИмяТекущейТаблицы: "#Параметр(1)"
+	НеверноеИмяТекущейТаблицы: &quot;#Параметр(1)&quot;
 #КонецЕсли
 
 // Проверка правильности параметра Модификатор.
-#Если Не ("#Параметр(3)" = "НеОграничиватьДоступКГруппам" Или "#Параметр(3)" = "") #Тогда
+#Если Не (&quot;#Параметр(3)&quot; = &quot;НеОграничиватьДоступКГруппам&quot; Или &quot;#Параметр(3)&quot; = &quot;&quot;) #Тогда
 	// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
 	НеверныйМодификатор: #Параметр(3)
 #КонецЕсли
@@ -1741,76 +1585,76 @@
 // проверка использования хотя бы одного ограничения из указанных видов доступа.
 #Если &amp;ОграничиватьДоступНаУровнеЗаписей
   И Не (Истина
-      И ("#Параметр(4)" = "" И "#Параметр(5)" = ""
-         Или &amp;ВидыДоступаСОтключеннымИспользованием = "Все"
-           И Не СтрСодержит(",Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,", ",#Параметр(4),")
-         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(4),"))
-      И ("#Параметр(6)" = "" И "#Параметр(7)" = ""
-         Или &amp;ВидыДоступаСОтключеннымИспользованием = "Все"
-           И Не СтрСодержит(",Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,", ",#Параметр(6),")
-         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(6),"))
-      И ("#Параметр(8)" = "" И "#Параметр(9)" = ""
-         Или &amp;ВидыДоступаСОтключеннымИспользованием = "Все"
-           И Не СтрСодержит(",Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,", ",#Параметр(8),")
-         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(8),"))
-      И ("#Параметр(10)" = "" И "#Параметр(11)" = ""
-         Или &amp;ВидыДоступаСОтключеннымИспользованием = "Все"
-           И Не СтрСодержит(",Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,", ",#Параметр(10),")
-         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(10),"))
-      И ("#Параметр(12)" = "" И "#Параметр(13)" = ""
-         Или &amp;ВидыДоступаСОтключеннымИспользованием = "Все"
-           И Не СтрСодержит(",Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,", ",#Параметр(12),")
-         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(12),"))
-      И ("#Параметр(14)" = "" И "#Параметр(15)" = ""
-         Или &amp;ВидыДоступаСОтключеннымИспользованием = "Все"
-           И Не СтрСодержит(",Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,", ",#Параметр(14),")
-         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(14),"))
-      И ("#Параметр(16)" = "" И "#Параметр(17)" = ""
-         Или &amp;ВидыДоступаСОтключеннымИспользованием = "Все"
-           И Не СтрСодержит(",Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,", ",#Параметр(16),")
-         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(16),"))
-      И ("#Параметр(18)" = "" И "#Параметр(19)" = ""
-         Или &amp;ВидыДоступаСОтключеннымИспользованием = "Все"
-           И Не СтрСодержит(",Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,", ",#Параметр(18),")
-         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(18),"))
-      И ("#Параметр(20)" = "" И "#Параметр(21)" = ""
-         Или &amp;ВидыДоступаСОтключеннымИспользованием = "Все"
-           И Не СтрСодержит(",Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,", ",#Параметр(20),")
-         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(20),"))
-      И ("#Параметр(22)" = "" И "#Параметр(23)" = ""
-         Или &amp;ВидыДоступаСОтключеннымИспользованием = "Все"
-           И Не СтрСодержит(",Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,", ",#Параметр(22),")
-         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(22),"))
-      И ("#Параметр(24)" = "" И "#Параметр(25)" = ""
-         Или &amp;ВидыДоступаСОтключеннымИспользованием = "Все"
-           И Не СтрСодержит(",Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,", ",#Параметр(24),")
-         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(24),"))
-      И ("#Параметр(26)" = "" И "#Параметр(27)" = ""
-         Или &amp;ВидыДоступаСОтключеннымИспользованием = "Все"
-           И Не СтрСодержит(",Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,", ",#Параметр(26),")
-         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(26),"))
-      И ("#Параметр(28)" = "" И "#Параметр(29)" = ""
-         Или &amp;ВидыДоступаСОтключеннымИспользованием = "Все"
-           И Не СтрСодержит(",Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,", ",#Параметр(28),")
-         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(28),"))
-      И ("#Параметр(30)" = "" И "#Параметр(31)" = ""
-         Или &amp;ВидыДоступаСОтключеннымИспользованием = "Все"
-           И Не СтрСодержит(",Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,", ",#Параметр(30),")
-         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(30),"))
-      И ("#Параметр(32)" = "" И "#Параметр(33)" = ""
-         Или &amp;ВидыДоступаСОтключеннымИспользованием = "Все"
-           И Не СтрСодержит(",Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,", ",#Параметр(32),")
-         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(32),"))
-      И ("#Параметр(34)" = "" И "#Параметр(35)" = ""
-         Или &amp;ВидыДоступаСОтключеннымИспользованием = "Все"
-           И Не СтрСодержит(",Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,", ",#Параметр(34),")
-         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(34),"))
+      И (&quot;#Параметр(4)&quot; = &quot;&quot; И &quot;#Параметр(5)&quot; = &quot;&quot;
+         Или &amp;ВидыДоступаСОтключеннымИспользованием = &quot;Все&quot;
+           И Не СтрСодержит(&quot;,Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,&quot;, &quot;,#Параметр(4),&quot;)
+         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(4),&quot;))
+      И (&quot;#Параметр(6)&quot; = &quot;&quot; И &quot;#Параметр(7)&quot; = &quot;&quot;
+         Или &amp;ВидыДоступаСОтключеннымИспользованием = &quot;Все&quot;
+           И Не СтрСодержит(&quot;,Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,&quot;, &quot;,#Параметр(6),&quot;)
+         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(6),&quot;))
+      И (&quot;#Параметр(8)&quot; = &quot;&quot; И &quot;#Параметр(9)&quot; = &quot;&quot;
+         Или &amp;ВидыДоступаСОтключеннымИспользованием = &quot;Все&quot;
+           И Не СтрСодержит(&quot;,Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,&quot;, &quot;,#Параметр(8),&quot;)
+         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(8),&quot;))
+      И (&quot;#Параметр(10)&quot; = &quot;&quot; И &quot;#Параметр(11)&quot; = &quot;&quot;
+         Или &amp;ВидыДоступаСОтключеннымИспользованием = &quot;Все&quot;
+           И Не СтрСодержит(&quot;,Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,&quot;, &quot;,#Параметр(10),&quot;)
+         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(10),&quot;))
+      И (&quot;#Параметр(12)&quot; = &quot;&quot; И &quot;#Параметр(13)&quot; = &quot;&quot;
+         Или &amp;ВидыДоступаСОтключеннымИспользованием = &quot;Все&quot;
+           И Не СтрСодержит(&quot;,Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,&quot;, &quot;,#Параметр(12),&quot;)
+         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(12),&quot;))
+      И (&quot;#Параметр(14)&quot; = &quot;&quot; И &quot;#Параметр(15)&quot; = &quot;&quot;
+         Или &amp;ВидыДоступаСОтключеннымИспользованием = &quot;Все&quot;
+           И Не СтрСодержит(&quot;,Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,&quot;, &quot;,#Параметр(14),&quot;)
+         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(14),&quot;))
+      И (&quot;#Параметр(16)&quot; = &quot;&quot; И &quot;#Параметр(17)&quot; = &quot;&quot;
+         Или &amp;ВидыДоступаСОтключеннымИспользованием = &quot;Все&quot;
+           И Не СтрСодержит(&quot;,Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,&quot;, &quot;,#Параметр(16),&quot;)
+         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(16),&quot;))
+      И (&quot;#Параметр(18)&quot; = &quot;&quot; И &quot;#Параметр(19)&quot; = &quot;&quot;
+         Или &amp;ВидыДоступаСОтключеннымИспользованием = &quot;Все&quot;
+           И Не СтрСодержит(&quot;,Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,&quot;, &quot;,#Параметр(18),&quot;)
+         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(18),&quot;))
+      И (&quot;#Параметр(20)&quot; = &quot;&quot; И &quot;#Параметр(21)&quot; = &quot;&quot;
+         Или &amp;ВидыДоступаСОтключеннымИспользованием = &quot;Все&quot;
+           И Не СтрСодержит(&quot;,Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,&quot;, &quot;,#Параметр(20),&quot;)
+         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(20),&quot;))
+      И (&quot;#Параметр(22)&quot; = &quot;&quot; И &quot;#Параметр(23)&quot; = &quot;&quot;
+         Или &amp;ВидыДоступаСОтключеннымИспользованием = &quot;Все&quot;
+           И Не СтрСодержит(&quot;,Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,&quot;, &quot;,#Параметр(22),&quot;)
+         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(22),&quot;))
+      И (&quot;#Параметр(24)&quot; = &quot;&quot; И &quot;#Параметр(25)&quot; = &quot;&quot;
+         Или &amp;ВидыДоступаСОтключеннымИспользованием = &quot;Все&quot;
+           И Не СтрСодержит(&quot;,Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,&quot;, &quot;,#Параметр(24),&quot;)
+         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(24),&quot;))
+      И (&quot;#Параметр(26)&quot; = &quot;&quot; И &quot;#Параметр(27)&quot; = &quot;&quot;
+         Или &amp;ВидыДоступаСОтключеннымИспользованием = &quot;Все&quot;
+           И Не СтрСодержит(&quot;,Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,&quot;, &quot;,#Параметр(26),&quot;)
+         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(26),&quot;))
+      И (&quot;#Параметр(28)&quot; = &quot;&quot; И &quot;#Параметр(29)&quot; = &quot;&quot;
+         Или &amp;ВидыДоступаСОтключеннымИспользованием = &quot;Все&quot;
+           И Не СтрСодержит(&quot;,Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,&quot;, &quot;,#Параметр(28),&quot;)
+         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(28),&quot;))
+      И (&quot;#Параметр(30)&quot; = &quot;&quot; И &quot;#Параметр(31)&quot; = &quot;&quot;
+         Или &amp;ВидыДоступаСОтключеннымИспользованием = &quot;Все&quot;
+           И Не СтрСодержит(&quot;,Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,&quot;, &quot;,#Параметр(30),&quot;)
+         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(30),&quot;))
+      И (&quot;#Параметр(32)&quot; = &quot;&quot; И &quot;#Параметр(33)&quot; = &quot;&quot;
+         Или &amp;ВидыДоступаСОтключеннымИспользованием = &quot;Все&quot;
+           И Не СтрСодержит(&quot;,Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,&quot;, &quot;,#Параметр(32),&quot;)
+         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(32),&quot;))
+      И (&quot;#Параметр(34)&quot; = &quot;&quot; И &quot;#Параметр(35)&quot; = &quot;&quot;
+         Или &amp;ВидыДоступаСОтключеннымИспользованием = &quot;Все&quot;
+           И Не СтрСодержит(&quot;,Условие,,НастройкиПрав,Объект, ,ПравоЧтения,ПравоИзменения,&quot;, &quot;,#Параметр(34),&quot;)
+         Или СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(34),&quot;))
        ) #Тогда
 
 Т ГДЕ // Т - псевдоним текущей таблицы (выбран коротким, чтобы сократить количество символов в тексте параметра-условия на языке запросов).
 
 // Безусловная выборка групп в иерархическом объекте метаданных (если нужно).
-#Если "#Параметр(3)" = "НеОграничиватьДоступКГруппам" #Тогда
+#Если &quot;#Параметр(3)&quot; = &quot;НеОграничиватьДоступКГруппам&quot; #Тогда
 	Т.ЭтоГруппа ИЛИ
 #КонецЕсли
 
@@ -1822,7 +1666,7 @@
 		Справочник.ИдентификаторыОбъектовМетаданных КАК СвойстваТекущейТаблицы
 		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.ГруппыДоступа КАК ГруппыДоступа
 		ПО
-			  СвойстваТекущейТаблицы.ПолноеИмя = "#Параметр(1)"
+			  СвойстваТекущейТаблицы.ПолноеИмя = &quot;#Параметр(1)&quot;
 			И ИСТИНА В
 			  (
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
@@ -1831,7 +1675,7 @@
 					ГДЕ
 						  ТаблицыГруппДоступа.Таблица       = СвойстваТекущейТаблицы.Ссылка
 						И ТаблицыГруппДоступа.ГруппаДоступа = ГруппыДоступа.Ссылка
-					#Если Не #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+					#Если Не #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 						И ТаблицыГруппДоступа.Изменение
 					#КонецЕсли
 			  )
@@ -1850,11 +1694,11 @@
   ( // Поиск значений заданных полей в разрешенных значениях групп доступа (пользователей).
 
 //// Проверка значения поля группы параметров 1.
-#Если "#Параметр(4)" = "Условие" Или "#Параметр(4)" = "" #Тогда
-	// Когда имя вида доступа "Условие" (или ""), тогда вместо имени поля задано условие.
+#Если &quot;#Параметр(4)&quot; = &quot;Условие&quot; Или &quot;#Параметр(4)&quot; = &quot;&quot; #Тогда
+	// Когда имя вида доступа &quot;Условие&quot; (или &quot;&quot;), тогда вместо имени поля задано условие.
 	( #Параметр(5) )
-#ИначеЕсли "#Параметр(4)" = "ПравоЧтения" Или "#Параметр(4)" = "ПравоИзменения" #Тогда
-	  Т.#Параметр(5) &lt;&gt; НЕОПРЕДЕЛЕНО
+#ИначеЕсли &quot;#Параметр(4)&quot; = &quot;ПравоЧтения&quot; Или &quot;#Параметр(4)&quot; = &quot;ПравоИзменения&quot; #Тогда
+	  Т.#Параметр(5) &lt;> НЕОПРЕДЕЛЕНО
 	И ИСТИНА В
 	 (	// Проверка права пользователя на таблицу Значения, установленного в поле.
 		ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
@@ -1862,11 +1706,11 @@
 		ГДЕ
 			  ТаблицыГруппДоступаПроверкаПрава.ГруппаДоступа = ГруппыДоступа.Ссылка
 			И ТИПЗНАЧЕНИЯ(ТаблицыГруппДоступаПроверкаПрава.ТипТаблицы) = ТИПЗНАЧЕНИЯ(Т.#Параметр(5))
-		#Если Не "#Параметр(4)" = "ПравоЧтения" #Тогда
+		#Если Не &quot;#Параметр(4)&quot; = &quot;ПравоЧтения&quot; #Тогда
 			И ТаблицыГруппДоступаПроверкаПрава.Изменение
 		#КонецЕсли
 	 )
-#ИначеЕсли "#Параметр(4)" = "НастройкиПрав" #Тогда
+#ИначеЕсли &quot;#Параметр(4)&quot; = &quot;НастройкиПрав&quot; #Тогда
 	
 	 (
 		ИСТИНА В // Проверка, что пользователю или какой-нибудь группе пользователя право разрешено
@@ -1877,10 +1721,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(5)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньРазрешенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -1900,10 +1744,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(5)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньЗапрещенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -1916,21 +1760,21 @@
 					И СоставыГруппПользователей.ГруппаПользователей = НастройкиПрав.Пользователь
 			)
 	 )
-#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, ",#Параметр(4),") #Тогда
+#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, &quot;,#Параметр(4),&quot;) #Тогда
 	// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-	#Если СтрСодержит("#Параметр(4)", ",") #Тогда
-		НеверныйВидДоступа: "#Параметр(4)" - "Список имен видов доступа не найден"
+	#Если СтрСодержит(&quot;#Параметр(4)&quot;, &quot;,&quot;) #Тогда
+		НеверныйВидДоступа: &quot;#Параметр(4)&quot; - &quot;Список имен видов доступа не найден&quot;
 	#Иначе
-		НеверныйВидДоступа: "#Параметр(4)" - "Имя вида доступа не найдено"
+		НеверныйВидДоступа: &quot;#Параметр(4)&quot; - &quot;Имя вида доступа не найдено&quot;
 	#КонецЕсли
-#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;&gt; "Все"
-         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(4),") #Тогда
+#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;> &quot;Все&quot;
+         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(4),&quot;) #Тогда
 	
 	 (
-			ЕСТЬNULL(Т.#Параметр(5), НЕОПРЕДЕЛЕНО) &lt;&gt; НЕОПРЕДЕЛЕНО
+			ЕСТЬNULL(Т.#Параметр(5), НЕОПРЕДЕЛЕНО) &lt;> НЕОПРЕДЕЛЕНО
 			И
-		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",Пользователи,")        И СтрСодержит(",#Параметр(4),", ",Пользователи,"))
-		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",ВнешниеПользователи,") И СтрСодержит(",#Параметр(4),", ",ВнешниеПользователи,")) #Тогда
+		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,Пользователи,&quot;)        И СтрСодержит(&quot;,#Параметр(4),&quot;, &quot;,Пользователи,&quot;))
+		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,ВнешниеПользователи,&quot;) И СтрСодержит(&quot;,#Параметр(4),&quot;, &quot;,ВнешниеПользователи,&quot;)) #Тогда
 			НЕ
 			(
 			НЕ ИСТИНА В
@@ -1948,17 +1792,17 @@
 			ВЫБОР
 			КОГДА ИСТИНА В
 				(
-		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, ",#Параметр(4),") #Тогда
+		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, &quot;,#Параметр(4),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
 					  Значения.ГруппаДоступа   = ГруппыДоступа.Ссылка
 					И Значения.ЗначениеДоступа = Т.#Параметр(5)
-		#ИначеЕсли "Т.#Параметр(5)" = "Т.Ссылка" #Тогда
-			#Если СтрСодержит("#Параметр(4)", ",") #Тогда
+		#ИначеЕсли &quot;Т.#Параметр(5)&quot; = &quot;Т.Ссылка&quot; #Тогда
+			#Если СтрСодержит(&quot;#Параметр(4)&quot;, &quot;,&quot;) #Тогда
 				// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-				НеверныйВидДоступа: "#Параметр(4)" - "При проверке таблицы значения доступа можно указывать только один вид доступа"
-			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, ",#Параметр(4),") #Тогда
+				НеверныйВидДоступа: &quot;#Параметр(4)&quot; - &quot;При проверке таблицы значения доступа можно указывать только один вид доступа&quot;
+			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, &quot;,#Параметр(4),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
@@ -2007,13 +1851,13 @@
 #КонецЕсли
 
 //// Проверка значения поля группы параметров 2.
-#Если "#Параметр(6)" = "" И "#Параметр(7)" = "" #Тогда
+#Если &quot;#Параметр(6)&quot; = &quot;&quot; И &quot;#Параметр(7)&quot; = &quot;&quot; #Тогда
 	// Группа параметров не используется.
-#ИначеЕсли "#Параметр(6)" = "Условие" Или "#Параметр(6)" = "" #Тогда
-	// Когда имя вида доступа "Условие" (или ""), тогда вместо имени поля задано условие.
+#ИначеЕсли &quot;#Параметр(6)&quot; = &quot;Условие&quot; Или &quot;#Параметр(6)&quot; = &quot;&quot; #Тогда
+	// Когда имя вида доступа &quot;Условие&quot; (или &quot;&quot;), тогда вместо имени поля задано условие.
 	И ( #Параметр(7) )
-#ИначеЕсли "#Параметр(6)" = "ПравоЧтения" Или "#Параметр(6)" = "ПравоИзменения" #Тогда
-	И Т.#Параметр(7) &lt;&gt; НЕОПРЕДЕЛЕНО
+#ИначеЕсли &quot;#Параметр(6)&quot; = &quot;ПравоЧтения&quot; Или &quot;#Параметр(6)&quot; = &quot;ПравоИзменения&quot; #Тогда
+	И Т.#Параметр(7) &lt;> НЕОПРЕДЕЛЕНО
 	И ИСТИНА В
 	 (	// Проверка права пользователя на таблицу Значения, установленного в поле.
 		ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
@@ -2021,11 +1865,11 @@
 		ГДЕ
 			  ТаблицыГруппДоступаПроверкаПрава.ГруппаДоступа = ГруппыДоступа.Ссылка
 			И ТИПЗНАЧЕНИЯ(ТаблицыГруппДоступаПроверкаПрава.ТипТаблицы) = ТИПЗНАЧЕНИЯ(Т.#Параметр(7))
-		#Если Не "#Параметр(6)" = "ПравоЧтения" #Тогда
+		#Если Не &quot;#Параметр(6)&quot; = &quot;ПравоЧтения&quot; #Тогда
 			И ТаблицыГруппДоступаПроверкаПрава.Изменение
 		#КонецЕсли
 	 )
-#ИначеЕсли "#Параметр(6)" = "НастройкиПрав" #Тогда
+#ИначеЕсли &quot;#Параметр(6)&quot; = &quot;НастройкиПрав&quot; #Тогда
 	И
 	 (
 		ИСТИНА В // Проверка, что пользователю или какой-нибудь группе пользователя право разрешено
@@ -2036,10 +1880,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(7)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньРазрешенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -2059,10 +1903,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(7)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньЗапрещенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -2075,21 +1919,21 @@
 					И СоставыГруппПользователей.ГруппаПользователей = НастройкиПрав.Пользователь
 			)
 	 )
-#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, ",#Параметр(6),") #Тогда
+#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, &quot;,#Параметр(6),&quot;) #Тогда
 	// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-	#Если СтрСодержит("#Параметр(6)", ",") #Тогда
-		НеверныйВидДоступа: "#Параметр(6)" - "Список имен видов доступа не найден"
+	#Если СтрСодержит(&quot;#Параметр(6)&quot;, &quot;,&quot;) #Тогда
+		НеверныйВидДоступа: &quot;#Параметр(6)&quot; - &quot;Список имен видов доступа не найден&quot;
 	#Иначе
-		НеверныйВидДоступа: "#Параметр(6)" - "Имя вида доступа не найдено"
+		НеверныйВидДоступа: &quot;#Параметр(6)&quot; - &quot;Имя вида доступа не найдено&quot;
 	#КонецЕсли
-#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;&gt; "Все"
-         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(6),") #Тогда
+#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;> &quot;Все&quot;
+         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(6),&quot;) #Тогда
 	И
 	 (
-			ЕСТЬNULL(Т.#Параметр(7), НЕОПРЕДЕЛЕНО) &lt;&gt; НЕОПРЕДЕЛЕНО
+			ЕСТЬNULL(Т.#Параметр(7), НЕОПРЕДЕЛЕНО) &lt;> НЕОПРЕДЕЛЕНО
 			И
-		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",Пользователи,")        И СтрСодержит(",#Параметр(6),", ",Пользователи,"))
-		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",ВнешниеПользователи,") И СтрСодержит(",#Параметр(6),", ",ВнешниеПользователи,")) #Тогда
+		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,Пользователи,&quot;)        И СтрСодержит(&quot;,#Параметр(6),&quot;, &quot;,Пользователи,&quot;))
+		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,ВнешниеПользователи,&quot;) И СтрСодержит(&quot;,#Параметр(6),&quot;, &quot;,ВнешниеПользователи,&quot;)) #Тогда
 			НЕ
 			(
 			НЕ ИСТИНА В
@@ -2107,17 +1951,17 @@
 			ВЫБОР
 			КОГДА ИСТИНА В
 				(
-		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, ",#Параметр(6),") #Тогда
+		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, &quot;,#Параметр(6),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
 					  Значения.ГруппаДоступа   = ГруппыДоступа.Ссылка
 					И Значения.ЗначениеДоступа = Т.#Параметр(7)
-		#ИначеЕсли "Т.#Параметр(7)" = "Т.Ссылка" #Тогда
-			#Если СтрСодержит("#Параметр(6)", ",") #Тогда
+		#ИначеЕсли &quot;Т.#Параметр(7)&quot; = &quot;Т.Ссылка&quot; #Тогда
+			#Если СтрСодержит(&quot;#Параметр(6)&quot;, &quot;,&quot;) #Тогда
 				// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-				НеверныйВидДоступа: "#Параметр(6)" - "При проверке таблицы значения доступа можно указывать только один вид доступа"
-			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, ",#Параметр(6),") #Тогда
+				НеверныйВидДоступа: &quot;#Параметр(6)&quot; - &quot;При проверке таблицы значения доступа можно указывать только один вид доступа&quot;
+			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, &quot;,#Параметр(6),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
@@ -2164,13 +2008,13 @@
 #КонецЕсли
 
 //// Проверка значения поля группы параметров 3.
-#Если "#Параметр(8)" = "" И "#Параметр(9)" = "" #Тогда
+#Если &quot;#Параметр(8)&quot; = &quot;&quot; И &quot;#Параметр(9)&quot; = &quot;&quot; #Тогда
 	// Группа параметров не используется.
-#ИначеЕсли "#Параметр(8)" = "Условие" Или "#Параметр(8)" = "" #Тогда
-	// Когда имя вида доступа "Условие" (или ""), тогда вместо имени поля задано условие.
+#ИначеЕсли &quot;#Параметр(8)&quot; = &quot;Условие&quot; Или &quot;#Параметр(8)&quot; = &quot;&quot; #Тогда
+	// Когда имя вида доступа &quot;Условие&quot; (или &quot;&quot;), тогда вместо имени поля задано условие.
 	И ( #Параметр(9) )
-#ИначеЕсли "#Параметр(8)" = "ПравоЧтения" Или "#Параметр(8)" = "ПравоИзменения" #Тогда
-	И Т.#Параметр(9) &lt;&gt; НЕОПРЕДЕЛЕНО
+#ИначеЕсли &quot;#Параметр(8)&quot; = &quot;ПравоЧтения&quot; Или &quot;#Параметр(8)&quot; = &quot;ПравоИзменения&quot; #Тогда
+	И Т.#Параметр(9) &lt;> НЕОПРЕДЕЛЕНО
 	И ИСТИНА В
 	 (	// Проверка права пользователя на таблицу Значения, установленного в поле.
 		ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
@@ -2178,11 +2022,11 @@
 		ГДЕ
 			  ТаблицыГруппДоступаПроверкаПрава.ГруппаДоступа = ГруппыДоступа.Ссылка
 			И ТИПЗНАЧЕНИЯ(ТаблицыГруппДоступаПроверкаПрава.ТипТаблицы) = ТИПЗНАЧЕНИЯ(Т.#Параметр(9))
-		#Если Не "#Параметр(8)" = "ПравоЧтения" #Тогда
+		#Если Не &quot;#Параметр(8)&quot; = &quot;ПравоЧтения&quot; #Тогда
 			И ТаблицыГруппДоступаПроверкаПрава.Изменение
 		#КонецЕсли
 	 )
-#ИначеЕсли "#Параметр(8)" = "НастройкиПрав" #Тогда
+#ИначеЕсли &quot;#Параметр(8)&quot; = &quot;НастройкиПрав&quot; #Тогда
 	И
 	 (
 		ИСТИНА В // Проверка, что пользователю или какой-нибудь группе пользователя право разрешено
@@ -2193,10 +2037,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(9)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньРазрешенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -2216,10 +2060,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(9)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньЗапрещенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -2232,21 +2076,21 @@
 					И СоставыГруппПользователей.ГруппаПользователей = НастройкиПрав.Пользователь
 			)
 	 )
-#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, ",#Параметр(8),") #Тогда
+#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, &quot;,#Параметр(8),&quot;) #Тогда
 	// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-	#Если СтрСодержит("#Параметр(8)", ",") #Тогда
-		НеверныйВидДоступа: "#Параметр(8)" - "Список имен видов доступа не найден"
+	#Если СтрСодержит(&quot;#Параметр(8)&quot;, &quot;,&quot;) #Тогда
+		НеверныйВидДоступа: &quot;#Параметр(8)&quot; - &quot;Список имен видов доступа не найден&quot;
 	#Иначе
-		НеверныйВидДоступа: "#Параметр(8)" - "Имя вида доступа не найдено"
+		НеверныйВидДоступа: &quot;#Параметр(8)&quot; - &quot;Имя вида доступа не найдено&quot;
 	#КонецЕсли
-#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;&gt; "Все"
-         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(8),") #Тогда
+#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;> &quot;Все&quot;
+         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(8),&quot;) #Тогда
 	И
 	 (
-			ЕСТЬNULL(Т.#Параметр(9), НЕОПРЕДЕЛЕНО) &lt;&gt; НЕОПРЕДЕЛЕНО
+			ЕСТЬNULL(Т.#Параметр(9), НЕОПРЕДЕЛЕНО) &lt;> НЕОПРЕДЕЛЕНО
 			И
-		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",Пользователи,")        И СтрСодержит(",#Параметр(8),", ",Пользователи,"))
-		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",ВнешниеПользователи,") И СтрСодержит(",#Параметр(8),", ",ВнешниеПользователи,")) #Тогда
+		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,Пользователи,&quot;)        И СтрСодержит(&quot;,#Параметр(8),&quot;, &quot;,Пользователи,&quot;))
+		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,ВнешниеПользователи,&quot;) И СтрСодержит(&quot;,#Параметр(8),&quot;, &quot;,ВнешниеПользователи,&quot;)) #Тогда
 			НЕ
 			(
 			НЕ ИСТИНА В
@@ -2264,17 +2108,17 @@
 			ВЫБОР
 			КОГДА ИСТИНА В
 				(
-		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, ",#Параметр(8),") #Тогда
+		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, &quot;,#Параметр(8),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
 					  Значения.ГруппаДоступа   = ГруппыДоступа.Ссылка
 					И Значения.ЗначениеДоступа = Т.#Параметр(9)
-		#ИначеЕсли "Т.#Параметр(9)" = "Т.Ссылка" #Тогда
-			#Если СтрСодержит("#Параметр(8)", ",") #Тогда
+		#ИначеЕсли &quot;Т.#Параметр(9)&quot; = &quot;Т.Ссылка&quot; #Тогда
+			#Если СтрСодержит(&quot;#Параметр(8)&quot;, &quot;,&quot;) #Тогда
 				// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-				НеверныйВидДоступа: "#Параметр(8)" - "При проверке таблицы значения доступа можно указывать только один вид доступа"
-			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, ",#Параметр(8),") #Тогда
+				НеверныйВидДоступа: &quot;#Параметр(8)&quot; - &quot;При проверке таблицы значения доступа можно указывать только один вид доступа&quot;
+			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, &quot;,#Параметр(8),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
@@ -2321,13 +2165,13 @@
 #КонецЕсли
 
 //// Проверка значения поля группы параметров 4.
-#Если "#Параметр(10)" = "" И "#Параметр(11)" = "" #Тогда
+#Если &quot;#Параметр(10)&quot; = &quot;&quot; И &quot;#Параметр(11)&quot; = &quot;&quot; #Тогда
 	// Группа параметров не используется.
-#ИначеЕсли "#Параметр(10)" = "Условие" Или "#Параметр(10)" = "" #Тогда
-	// Когда имя вида доступа "Условие" (или ""), тогда вместо имени поля задано условие.
+#ИначеЕсли &quot;#Параметр(10)&quot; = &quot;Условие&quot; Или &quot;#Параметр(10)&quot; = &quot;&quot; #Тогда
+	// Когда имя вида доступа &quot;Условие&quot; (или &quot;&quot;), тогда вместо имени поля задано условие.
 	И ( #Параметр(11) )
-#ИначеЕсли "#Параметр(10)" = "ПравоЧтения" Или "#Параметр(10)" = "ПравоИзменения" #Тогда
-	И Т.#Параметр(11) &lt;&gt; НЕОПРЕДЕЛЕНО
+#ИначеЕсли &quot;#Параметр(10)&quot; = &quot;ПравоЧтения&quot; Или &quot;#Параметр(10)&quot; = &quot;ПравоИзменения&quot; #Тогда
+	И Т.#Параметр(11) &lt;> НЕОПРЕДЕЛЕНО
 	И ИСТИНА В
 	 (	// Проверка права пользователя на таблицу Значения, установленного в поле.
 		ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
@@ -2335,11 +2179,11 @@
 		ГДЕ
 			  ТаблицыГруппДоступаПроверкаПрава.ГруппаДоступа = ГруппыДоступа.Ссылка
 			И ТИПЗНАЧЕНИЯ(ТаблицыГруппДоступаПроверкаПрава.ТипТаблицы) = ТИПЗНАЧЕНИЯ(Т.#Параметр(11))
-		#Если Не "#Параметр(10)" = "ПравоЧтения" #Тогда
+		#Если Не &quot;#Параметр(10)&quot; = &quot;ПравоЧтения&quot; #Тогда
 			И ТаблицыГруппДоступаПроверкаПрава.Изменение
 		#КонецЕсли
 	 )
-#ИначеЕсли "#Параметр(10)" = "НастройкиПрав" #Тогда
+#ИначеЕсли &quot;#Параметр(10)&quot; = &quot;НастройкиПрав&quot; #Тогда
 	И
 	 (
 		ИСТИНА В // Проверка, что пользователю или какой-нибудь группе пользователя право разрешено
@@ -2350,10 +2194,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(11)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньРазрешенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -2373,10 +2217,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(11)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньЗапрещенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -2389,21 +2233,21 @@
 					И СоставыГруппПользователей.ГруппаПользователей = НастройкиПрав.Пользователь
 			)
 	 )
-#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, ",#Параметр(10),") #Тогда
+#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, &quot;,#Параметр(10),&quot;) #Тогда
 	// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-	#Если СтрСодержит("#Параметр(10)", ",") #Тогда
-		НеверныйВидДоступа: "#Параметр(10)" - "Список имен видов доступа не найден"
+	#Если СтрСодержит(&quot;#Параметр(10)&quot;, &quot;,&quot;) #Тогда
+		НеверныйВидДоступа: &quot;#Параметр(10)&quot; - &quot;Список имен видов доступа не найден&quot;
 	#Иначе
-		НеверныйВидДоступа: "#Параметр(10)" - "Имя вида доступа не найдено"
+		НеверныйВидДоступа: &quot;#Параметр(10)&quot; - &quot;Имя вида доступа не найдено&quot;
 	#КонецЕсли
-#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;&gt; "Все"
-         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(10),") #Тогда
+#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;> &quot;Все&quot;
+         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(10),&quot;) #Тогда
 	И
 	 (
-			ЕСТЬNULL(Т.#Параметр(11), НЕОПРЕДЕЛЕНО) &lt;&gt; НЕОПРЕДЕЛЕНО
+			ЕСТЬNULL(Т.#Параметр(11), НЕОПРЕДЕЛЕНО) &lt;> НЕОПРЕДЕЛЕНО
 			И
-		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",Пользователи,")        И СтрСодержит(",#Параметр(10),", ",Пользователи,"))
-		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",ВнешниеПользователи,") И СтрСодержит(",#Параметр(10),", ",ВнешниеПользователи,")) #Тогда
+		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,Пользователи,&quot;)        И СтрСодержит(&quot;,#Параметр(10),&quot;, &quot;,Пользователи,&quot;))
+		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,ВнешниеПользователи,&quot;) И СтрСодержит(&quot;,#Параметр(10),&quot;, &quot;,ВнешниеПользователи,&quot;)) #Тогда
 			НЕ
 			(
 			НЕ ИСТИНА В
@@ -2421,17 +2265,17 @@
 			ВЫБОР
 			КОГДА ИСТИНА В
 				(
-		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, ",#Параметр(10),") #Тогда
+		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, &quot;,#Параметр(10),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
 					  Значения.ГруппаДоступа   = ГруппыДоступа.Ссылка
 					И Значения.ЗначениеДоступа = Т.#Параметр(11)
-		#ИначеЕсли "Т.#Параметр(11)" = "Т.Ссылка" #Тогда
-			#Если СтрСодержит("#Параметр(10)", ",") #Тогда
+		#ИначеЕсли &quot;Т.#Параметр(11)&quot; = &quot;Т.Ссылка&quot; #Тогда
+			#Если СтрСодержит(&quot;#Параметр(10)&quot;, &quot;,&quot;) #Тогда
 				// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-				НеверныйВидДоступа: "#Параметр(10)" - "При проверке таблицы значения доступа можно указывать только один вид доступа"
-			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, ",#Параметр(10),") #Тогда
+				НеверныйВидДоступа: &quot;#Параметр(10)&quot; - &quot;При проверке таблицы значения доступа можно указывать только один вид доступа&quot;
+			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, &quot;,#Параметр(10),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
@@ -2478,13 +2322,13 @@
 #КонецЕсли
 
 //// Проверка значения поля группы параметров 5.
-#Если "#Параметр(12)" = "" И "#Параметр(13)" = "" #Тогда
+#Если &quot;#Параметр(12)&quot; = &quot;&quot; И &quot;#Параметр(13)&quot; = &quot;&quot; #Тогда
 	// Группа параметров не используется.
-#ИначеЕсли "#Параметр(12)" = "Условие" Или "#Параметр(12)" = "" #Тогда
-	// Когда имя вида доступа "Условие" (или ""), тогда вместо имени поля задано условие.
+#ИначеЕсли &quot;#Параметр(12)&quot; = &quot;Условие&quot; Или &quot;#Параметр(12)&quot; = &quot;&quot; #Тогда
+	// Когда имя вида доступа &quot;Условие&quot; (или &quot;&quot;), тогда вместо имени поля задано условие.
 	И ( #Параметр(13) )
-#ИначеЕсли "#Параметр(12)" = "ПравоЧтения" Или "#Параметр(12)" = "ПравоИзменения" #Тогда
-	И Т.#Параметр(13) &lt;&gt; НЕОПРЕДЕЛЕНО
+#ИначеЕсли &quot;#Параметр(12)&quot; = &quot;ПравоЧтения&quot; Или &quot;#Параметр(12)&quot; = &quot;ПравоИзменения&quot; #Тогда
+	И Т.#Параметр(13) &lt;> НЕОПРЕДЕЛЕНО
 	И ИСТИНА В
 	 (	// Проверка права пользователя на таблицу Значения, установленного в поле.
 		ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
@@ -2492,11 +2336,11 @@
 		ГДЕ
 			  ТаблицыГруппДоступаПроверкаПрава.ГруппаДоступа = ГруппыДоступа.Ссылка
 			И ТИПЗНАЧЕНИЯ(ТаблицыГруппДоступаПроверкаПрава.ТипТаблицы) = ТИПЗНАЧЕНИЯ(Т.#Параметр(13))
-		#Если Не "#Параметр(12)" = "ПравоЧтения" #Тогда
+		#Если Не &quot;#Параметр(12)&quot; = &quot;ПравоЧтения&quot; #Тогда
 			И ТаблицыГруппДоступаПроверкаПрава.Изменение
 		#КонецЕсли
 	 )
-#ИначеЕсли "#Параметр(12)" = "НастройкиПрав" #Тогда
+#ИначеЕсли &quot;#Параметр(12)&quot; = &quot;НастройкиПрав&quot; #Тогда
 	И
 	 (
 		ИСТИНА В // Проверка, что пользователю или какой-нибудь группе пользователя право разрешено
@@ -2507,10 +2351,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(13)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньРазрешенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -2530,10 +2374,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(13)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньЗапрещенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -2546,21 +2390,21 @@
 					И СоставыГруппПользователей.ГруппаПользователей = НастройкиПрав.Пользователь
 			)
 	 )
-#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, ",#Параметр(12),") #Тогда
+#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, &quot;,#Параметр(12),&quot;) #Тогда
 	// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-	#Если СтрСодержит("#Параметр(12)", ",") #Тогда
-		НеверныйВидДоступа: "#Параметр(12)" - "Список имен видов доступа не найден"
+	#Если СтрСодержит(&quot;#Параметр(12)&quot;, &quot;,&quot;) #Тогда
+		НеверныйВидДоступа: &quot;#Параметр(12)&quot; - &quot;Список имен видов доступа не найден&quot;
 	#Иначе
-		НеверныйВидДоступа: "#Параметр(12)" - "Имя вида доступа не найдено"
+		НеверныйВидДоступа: &quot;#Параметр(12)&quot; - &quot;Имя вида доступа не найдено&quot;
 	#КонецЕсли
-#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;&gt; "Все"
-         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(12),") #Тогда
+#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;> &quot;Все&quot;
+         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(12),&quot;) #Тогда
 	И
 	 (
-			ЕСТЬNULL(Т.#Параметр(13), НЕОПРЕДЕЛЕНО) &lt;&gt; НЕОПРЕДЕЛЕНО
+			ЕСТЬNULL(Т.#Параметр(13), НЕОПРЕДЕЛЕНО) &lt;> НЕОПРЕДЕЛЕНО
 			И
-		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",Пользователи,")        И СтрСодержит(",#Параметр(12),", ",Пользователи,"))
-		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",ВнешниеПользователи,") И СтрСодержит(",#Параметр(12),", ",ВнешниеПользователи,")) #Тогда
+		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,Пользователи,&quot;)        И СтрСодержит(&quot;,#Параметр(12),&quot;, &quot;,Пользователи,&quot;))
+		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,ВнешниеПользователи,&quot;) И СтрСодержит(&quot;,#Параметр(12),&quot;, &quot;,ВнешниеПользователи,&quot;)) #Тогда
 			НЕ
 			(
 			НЕ ИСТИНА В
@@ -2578,17 +2422,17 @@
 			ВЫБОР
 			КОГДА ИСТИНА В
 				(
-		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, ",#Параметр(12),") #Тогда
+		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, &quot;,#Параметр(12),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
 					  Значения.ГруппаДоступа   = ГруппыДоступа.Ссылка
 					И Значения.ЗначениеДоступа = Т.#Параметр(13)
-		#ИначеЕсли "Т.#Параметр(13)" = "Т.Ссылка" #Тогда
-			#Если СтрСодержит("#Параметр(12)", ",") #Тогда
+		#ИначеЕсли &quot;Т.#Параметр(13)&quot; = &quot;Т.Ссылка&quot; #Тогда
+			#Если СтрСодержит(&quot;#Параметр(12)&quot;, &quot;,&quot;) #Тогда
 				// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-				НеверныйВидДоступа: "#Параметр(12)" - "При проверке таблицы значения доступа можно указывать только один вид доступа"
-			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, ",#Параметр(12),") #Тогда
+				НеверныйВидДоступа: &quot;#Параметр(12)&quot; - &quot;При проверке таблицы значения доступа можно указывать только один вид доступа&quot;
+			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, &quot;,#Параметр(12),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
@@ -2635,13 +2479,13 @@
 #КонецЕсли
 
 //// Проверка значения поля группы параметров 6.
-#Если "#Параметр(14)" = "" И "#Параметр(15)" = "" #Тогда
+#Если &quot;#Параметр(14)&quot; = &quot;&quot; И &quot;#Параметр(15)&quot; = &quot;&quot; #Тогда
 	// Группа параметров не используется.
-#ИначеЕсли "#Параметр(14)" = "Условие" Или "#Параметр(14)" = "" #Тогда
-	// Когда имя вида доступа "Условие" (или ""), тогда вместо имени поля задано условие.
+#ИначеЕсли &quot;#Параметр(14)&quot; = &quot;Условие&quot; Или &quot;#Параметр(14)&quot; = &quot;&quot; #Тогда
+	// Когда имя вида доступа &quot;Условие&quot; (или &quot;&quot;), тогда вместо имени поля задано условие.
 	И ( #Параметр(15) )
-#ИначеЕсли "#Параметр(14)" = "ПравоЧтения" Или "#Параметр(14)" = "ПравоИзменения" #Тогда
-	И Т.#Параметр(15) &lt;&gt; НЕОПРЕДЕЛЕНО
+#ИначеЕсли &quot;#Параметр(14)&quot; = &quot;ПравоЧтения&quot; Или &quot;#Параметр(14)&quot; = &quot;ПравоИзменения&quot; #Тогда
+	И Т.#Параметр(15) &lt;> НЕОПРЕДЕЛЕНО
 	И ИСТИНА В
 	 (	// Проверка права пользователя на таблицу Значения, установленного в поле.
 		ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
@@ -2649,11 +2493,11 @@
 		ГДЕ
 			  ТаблицыГруппДоступаПроверкаПрава.ГруппаДоступа = ГруппыДоступа.Ссылка
 			И ТИПЗНАЧЕНИЯ(ТаблицыГруппДоступаПроверкаПрава.ТипТаблицы) = ТИПЗНАЧЕНИЯ(Т.#Параметр(15))
-		#Если Не "#Параметр(14)" = "ПравоЧтения" #Тогда
+		#Если Не &quot;#Параметр(14)&quot; = &quot;ПравоЧтения&quot; #Тогда
 			И ТаблицыГруппДоступаПроверкаПрава.Изменение
 		#КонецЕсли
 	 )
-#ИначеЕсли "#Параметр(14)" = "НастройкиПрав" #Тогда
+#ИначеЕсли &quot;#Параметр(14)&quot; = &quot;НастройкиПрав&quot; #Тогда
 	И
 	 (
 		ИСТИНА В // Проверка, что пользователю или какой-нибудь группе пользователя право разрешено
@@ -2664,10 +2508,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(15)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньРазрешенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -2687,10 +2531,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(15)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньЗапрещенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -2703,21 +2547,21 @@
 					И СоставыГруппПользователей.ГруппаПользователей = НастройкиПрав.Пользователь
 			)
 	 )
-#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, ",#Параметр(14),") #Тогда
+#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, &quot;,#Параметр(14),&quot;) #Тогда
 	// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-	#Если СтрСодержит("#Параметр(14)", ",") #Тогда
-		НеверныйВидДоступа: "#Параметр(14)" - "Список имен видов доступа не найден"
+	#Если СтрСодержит(&quot;#Параметр(14)&quot;, &quot;,&quot;) #Тогда
+		НеверныйВидДоступа: &quot;#Параметр(14)&quot; - &quot;Список имен видов доступа не найден&quot;
 	#Иначе
-		НеверныйВидДоступа: "#Параметр(14)" - "Имя вида доступа не найдено"
+		НеверныйВидДоступа: &quot;#Параметр(14)&quot; - &quot;Имя вида доступа не найдено&quot;
 	#КонецЕсли
-#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;&gt; "Все"
-         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(14),") #Тогда
+#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;> &quot;Все&quot;
+         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(14),&quot;) #Тогда
 	И
 	 (
-			ЕСТЬNULL(Т.#Параметр(15), НЕОПРЕДЕЛЕНО) &lt;&gt; НЕОПРЕДЕЛЕНО
+			ЕСТЬNULL(Т.#Параметр(15), НЕОПРЕДЕЛЕНО) &lt;> НЕОПРЕДЕЛЕНО
 			И
-		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",Пользователи,")        И СтрСодержит(",#Параметр(14),", ",Пользователи,"))
-		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",ВнешниеПользователи,") И СтрСодержит(",#Параметр(14),", ",ВнешниеПользователи,")) #Тогда
+		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,Пользователи,&quot;)        И СтрСодержит(&quot;,#Параметр(14),&quot;, &quot;,Пользователи,&quot;))
+		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,ВнешниеПользователи,&quot;) И СтрСодержит(&quot;,#Параметр(14),&quot;, &quot;,ВнешниеПользователи,&quot;)) #Тогда
 			НЕ
 			(
 			НЕ ИСТИНА В
@@ -2735,17 +2579,17 @@
 			ВЫБОР
 			КОГДА ИСТИНА В
 				(
-		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, ",#Параметр(14),") #Тогда
+		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, &quot;,#Параметр(14),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
 					  Значения.ГруппаДоступа   = ГруппыДоступа.Ссылка
 					И Значения.ЗначениеДоступа = Т.#Параметр(15)
-		#ИначеЕсли "Т.#Параметр(15)" = "Т.Ссылка" #Тогда
-			#Если СтрСодержит("#Параметр(14)", ",") #Тогда
+		#ИначеЕсли &quot;Т.#Параметр(15)&quot; = &quot;Т.Ссылка&quot; #Тогда
+			#Если СтрСодержит(&quot;#Параметр(14)&quot;, &quot;,&quot;) #Тогда
 				// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-				НеверныйВидДоступа: "#Параметр(14)" - "При проверке таблицы значения доступа можно указывать только один вид доступа"
-			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, ",#Параметр(14),") #Тогда
+				НеверныйВидДоступа: &quot;#Параметр(14)&quot; - &quot;При проверке таблицы значения доступа можно указывать только один вид доступа&quot;
+			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, &quot;,#Параметр(14),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
@@ -2792,13 +2636,13 @@
 #КонецЕсли
 
 //// Проверка значения поля группы параметров 7.
-#Если "#Параметр(16)" = "" И "#Параметр(17)" = "" #Тогда
+#Если &quot;#Параметр(16)&quot; = &quot;&quot; И &quot;#Параметр(17)&quot; = &quot;&quot; #Тогда
 	// Группа параметров не используется.
-#ИначеЕсли "#Параметр(16)" = "Условие" Или "#Параметр(16)" = "" #Тогда
-	// Когда имя вида доступа "Условие" (или ""), тогда вместо имени поля задано условие.
+#ИначеЕсли &quot;#Параметр(16)&quot; = &quot;Условие&quot; Или &quot;#Параметр(16)&quot; = &quot;&quot; #Тогда
+	// Когда имя вида доступа &quot;Условие&quot; (или &quot;&quot;), тогда вместо имени поля задано условие.
 	И ( #Параметр(17) )
-#ИначеЕсли "#Параметр(16)" = "ПравоЧтения" Или "#Параметр(16)" = "ПравоИзменения" #Тогда
-	И Т.#Параметр(17) &lt;&gt; НЕОПРЕДЕЛЕНО
+#ИначеЕсли &quot;#Параметр(16)&quot; = &quot;ПравоЧтения&quot; Или &quot;#Параметр(16)&quot; = &quot;ПравоИзменения&quot; #Тогда
+	И Т.#Параметр(17) &lt;> НЕОПРЕДЕЛЕНО
 	И ИСТИНА В
 	 (	// Проверка права пользователя на таблицу Значения, установленного в поле.
 		ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
@@ -2806,11 +2650,11 @@
 		ГДЕ
 			  ТаблицыГруппДоступаПроверкаПрава.ГруппаДоступа = ГруппыДоступа.Ссылка
 			И ТИПЗНАЧЕНИЯ(ТаблицыГруппДоступаПроверкаПрава.ТипТаблицы) = ТИПЗНАЧЕНИЯ(Т.#Параметр(17))
-		#Если Не "#Параметр(16)" = "ПравоЧтения" #Тогда
+		#Если Не &quot;#Параметр(16)&quot; = &quot;ПравоЧтения&quot; #Тогда
 			И ТаблицыГруппДоступаПроверкаПрава.Изменение
 		#КонецЕсли
 	 )
-#ИначеЕсли "#Параметр(16)" = "НастройкиПрав" #Тогда
+#ИначеЕсли &quot;#Параметр(16)&quot; = &quot;НастройкиПрав&quot; #Тогда
 	И
 	 (
 		ИСТИНА В // Проверка, что пользователю или какой-нибудь группе пользователя право разрешено
@@ -2821,10 +2665,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(17)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньРазрешенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -2844,10 +2688,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(17)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньЗапрещенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -2860,21 +2704,21 @@
 					И СоставыГруппПользователей.ГруппаПользователей = НастройкиПрав.Пользователь
 			)
 	 )
-#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, ",#Параметр(16),") #Тогда
+#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, &quot;,#Параметр(16),&quot;) #Тогда
 	// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-	#Если СтрСодержит("#Параметр(16)", ",") #Тогда
-		НеверныйВидДоступа: "#Параметр(16)" - "Список имен видов доступа не найден"
+	#Если СтрСодержит(&quot;#Параметр(16)&quot;, &quot;,&quot;) #Тогда
+		НеверныйВидДоступа: &quot;#Параметр(16)&quot; - &quot;Список имен видов доступа не найден&quot;
 	#Иначе
-		НеверныйВидДоступа: "#Параметр(16)" - "Имя вида доступа не найдено"
+		НеверныйВидДоступа: &quot;#Параметр(16)&quot; - &quot;Имя вида доступа не найдено&quot;
 	#КонецЕсли
-#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;&gt; "Все"
-         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(16),") #Тогда
+#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;> &quot;Все&quot;
+         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(16),&quot;) #Тогда
 	И
 	 (
-			ЕСТЬNULL(Т.#Параметр(17), НЕОПРЕДЕЛЕНО) &lt;&gt; НЕОПРЕДЕЛЕНО
+			ЕСТЬNULL(Т.#Параметр(17), НЕОПРЕДЕЛЕНО) &lt;> НЕОПРЕДЕЛЕНО
 			И
-		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",Пользователи,")        И СтрСодержит(",#Параметр(16),", ",Пользователи,"))
-		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",ВнешниеПользователи,") И СтрСодержит(",#Параметр(16),", ",ВнешниеПользователи,")) #Тогда
+		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,Пользователи,&quot;)        И СтрСодержит(&quot;,#Параметр(16),&quot;, &quot;,Пользователи,&quot;))
+		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,ВнешниеПользователи,&quot;) И СтрСодержит(&quot;,#Параметр(16),&quot;, &quot;,ВнешниеПользователи,&quot;)) #Тогда
 			НЕ
 			(
 			НЕ ИСТИНА В
@@ -2892,17 +2736,17 @@
 			ВЫБОР
 			КОГДА ИСТИНА В
 				(
-		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, ",#Параметр(16),") #Тогда
+		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, &quot;,#Параметр(16),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
 					  Значения.ГруппаДоступа   = ГруппыДоступа.Ссылка
 					И Значения.ЗначениеДоступа = Т.#Параметр(17)
-		#ИначеЕсли "Т.#Параметр(17)" = "Т.Ссылка" #Тогда
-			#Если СтрСодержит("#Параметр(16)", ",") #Тогда
+		#ИначеЕсли &quot;Т.#Параметр(17)&quot; = &quot;Т.Ссылка&quot; #Тогда
+			#Если СтрСодержит(&quot;#Параметр(16)&quot;, &quot;,&quot;) #Тогда
 				// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-				НеверныйВидДоступа: "#Параметр(16)" - "При проверке таблицы значения доступа можно указывать только один вид доступа"
-			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, ",#Параметр(16),") #Тогда
+				НеверныйВидДоступа: &quot;#Параметр(16)&quot; - &quot;При проверке таблицы значения доступа можно указывать только один вид доступа&quot;
+			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, &quot;,#Параметр(16),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
@@ -2949,13 +2793,13 @@
 #КонецЕсли
 
 //// Проверка значения поля группы параметров 8.
-#Если "#Параметр(18)" = "" И "#Параметр(19)" = "" #Тогда
+#Если &quot;#Параметр(18)&quot; = &quot;&quot; И &quot;#Параметр(19)&quot; = &quot;&quot; #Тогда
 	// Группа параметров не используется.
-#ИначеЕсли "#Параметр(18)" = "Условие" Или "#Параметр(18)" = "" #Тогда
-	// Когда имя вида доступа "Условие" (или ""), тогда вместо имени поля задано условие.
+#ИначеЕсли &quot;#Параметр(18)&quot; = &quot;Условие&quot; Или &quot;#Параметр(18)&quot; = &quot;&quot; #Тогда
+	// Когда имя вида доступа &quot;Условие&quot; (или &quot;&quot;), тогда вместо имени поля задано условие.
 	И ( #Параметр(19) )
-#ИначеЕсли "#Параметр(18)" = "ПравоЧтения" Или "#Параметр(18)" = "ПравоИзменения" #Тогда
-	И Т.#Параметр(19) &lt;&gt; НЕОПРЕДЕЛЕНО
+#ИначеЕсли &quot;#Параметр(18)&quot; = &quot;ПравоЧтения&quot; Или &quot;#Параметр(18)&quot; = &quot;ПравоИзменения&quot; #Тогда
+	И Т.#Параметр(19) &lt;> НЕОПРЕДЕЛЕНО
 	И ИСТИНА В
 	 (	// Проверка права пользователя на таблицу Значения, установленного в поле.
 		ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
@@ -2963,11 +2807,11 @@
 		ГДЕ
 			  ТаблицыГруппДоступаПроверкаПрава.ГруппаДоступа = ГруппыДоступа.Ссылка
 			И ТИПЗНАЧЕНИЯ(ТаблицыГруппДоступаПроверкаПрава.ТипТаблицы) = ТИПЗНАЧЕНИЯ(Т.#Параметр(19))
-		#Если Не "#Параметр(18)" = "ПравоЧтения" #Тогда
+		#Если Не &quot;#Параметр(18)&quot; = &quot;ПравоЧтения&quot; #Тогда
 			И ТаблицыГруппДоступаПроверкаПрава.Изменение
 		#КонецЕсли
 	 )
-#ИначеЕсли "#Параметр(18)" = "НастройкиПрав" #Тогда
+#ИначеЕсли &quot;#Параметр(18)&quot; = &quot;НастройкиПрав&quot; #Тогда
 	И
 	 (
 		ИСТИНА В // Проверка, что пользователю или какой-нибудь группе пользователя право разрешено
@@ -2978,10 +2822,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(19)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньРазрешенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -3001,10 +2845,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(19)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньЗапрещенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -3017,21 +2861,21 @@
 					И СоставыГруппПользователей.ГруппаПользователей = НастройкиПрав.Пользователь
 			)
 	 )
-#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, ",#Параметр(18),") #Тогда
+#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, &quot;,#Параметр(18),&quot;) #Тогда
 	// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-	#Если СтрСодержит("#Параметр(18)", ",") #Тогда
-		НеверныйВидДоступа: "#Параметр(18)" - "Список имен видов доступа не найден"
+	#Если СтрСодержит(&quot;#Параметр(18)&quot;, &quot;,&quot;) #Тогда
+		НеверныйВидДоступа: &quot;#Параметр(18)&quot; - &quot;Список имен видов доступа не найден&quot;
 	#Иначе
-		НеверныйВидДоступа: "#Параметр(18)" - "Имя вида доступа не найдено"
+		НеверныйВидДоступа: &quot;#Параметр(18)&quot; - &quot;Имя вида доступа не найдено&quot;
 	#КонецЕсли
-#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;&gt; "Все"
-         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(18),") #Тогда
+#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;> &quot;Все&quot;
+         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(18),&quot;) #Тогда
 	И
 	 (
-			ЕСТЬNULL(Т.#Параметр(19), НЕОПРЕДЕЛЕНО) &lt;&gt; НЕОПРЕДЕЛЕНО
+			ЕСТЬNULL(Т.#Параметр(19), НЕОПРЕДЕЛЕНО) &lt;> НЕОПРЕДЕЛЕНО
 			И
-		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",Пользователи,")        И СтрСодержит(",#Параметр(18),", ",Пользователи,"))
-		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",ВнешниеПользователи,") И СтрСодержит(",#Параметр(18),", ",ВнешниеПользователи,")) #Тогда
+		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,Пользователи,&quot;)        И СтрСодержит(&quot;,#Параметр(18),&quot;, &quot;,Пользователи,&quot;))
+		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,ВнешниеПользователи,&quot;) И СтрСодержит(&quot;,#Параметр(18),&quot;, &quot;,ВнешниеПользователи,&quot;)) #Тогда
 			НЕ
 			(
 			НЕ ИСТИНА В
@@ -3049,17 +2893,17 @@
 			ВЫБОР
 			КОГДА ИСТИНА В
 				(
-		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, ",#Параметр(18),") #Тогда
+		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, &quot;,#Параметр(18),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
 					  Значения.ГруппаДоступа   = ГруппыДоступа.Ссылка
 					И Значения.ЗначениеДоступа = Т.#Параметр(19)
-		#ИначеЕсли "Т.#Параметр(19)" = "Т.Ссылка" #Тогда
-			#Если СтрСодержит("#Параметр(18)", ",") #Тогда
+		#ИначеЕсли &quot;Т.#Параметр(19)&quot; = &quot;Т.Ссылка&quot; #Тогда
+			#Если СтрСодержит(&quot;#Параметр(18)&quot;, &quot;,&quot;) #Тогда
 				// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-				НеверныйВидДоступа: "#Параметр(18)" - "При проверке таблицы значения доступа можно указывать только один вид доступа"
-			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, ",#Параметр(18),") #Тогда
+				НеверныйВидДоступа: &quot;#Параметр(18)&quot; - &quot;При проверке таблицы значения доступа можно указывать только один вид доступа&quot;
+			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, &quot;,#Параметр(18),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
@@ -3106,13 +2950,13 @@
 #КонецЕсли
 
 //// Проверка значения поля группы параметров 9.
-#Если "#Параметр(20)" = "" И "#Параметр(21)" = "" #Тогда
+#Если &quot;#Параметр(20)&quot; = &quot;&quot; И &quot;#Параметр(21)&quot; = &quot;&quot; #Тогда
 	// Группа параметров не используется.
-#ИначеЕсли "#Параметр(20)" = "Условие" Или "#Параметр(20)" = "" #Тогда
-	// Когда имя вида доступа "Условие" (или ""), тогда вместо имени поля задано условие.
+#ИначеЕсли &quot;#Параметр(20)&quot; = &quot;Условие&quot; Или &quot;#Параметр(20)&quot; = &quot;&quot; #Тогда
+	// Когда имя вида доступа &quot;Условие&quot; (или &quot;&quot;), тогда вместо имени поля задано условие.
 	И ( #Параметр(21) )
-#ИначеЕсли "#Параметр(20)" = "ПравоЧтения" Или "#Параметр(20)" = "ПравоИзменения" #Тогда
-	И Т.#Параметр(21) &lt;&gt; НЕОПРЕДЕЛЕНО
+#ИначеЕсли &quot;#Параметр(20)&quot; = &quot;ПравоЧтения&quot; Или &quot;#Параметр(20)&quot; = &quot;ПравоИзменения&quot; #Тогда
+	И Т.#Параметр(21) &lt;> НЕОПРЕДЕЛЕНО
 	И ИСТИНА В
 	 (	// Проверка права пользователя на таблицу Значения, установленного в поле.
 		ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
@@ -3120,11 +2964,11 @@
 		ГДЕ
 			  ТаблицыГруппДоступаПроверкаПрава.ГруппаДоступа = ГруппыДоступа.Ссылка
 			И ТИПЗНАЧЕНИЯ(ТаблицыГруппДоступаПроверкаПрава.ТипТаблицы) = ТИПЗНАЧЕНИЯ(Т.#Параметр(21))
-		#Если Не "#Параметр(20)" = "ПравоЧтения" #Тогда
+		#Если Не &quot;#Параметр(20)&quot; = &quot;ПравоЧтения&quot; #Тогда
 			И ТаблицыГруппДоступаПроверкаПрава.Изменение
 		#КонецЕсли
 	 )
-#ИначеЕсли "#Параметр(20)" = "НастройкиПрав" #Тогда
+#ИначеЕсли &quot;#Параметр(20)&quot; = &quot;НастройкиПрав&quot; #Тогда
 	И
 	 (
 		ИСТИНА В // Проверка, что пользователю или какой-нибудь группе пользователя право разрешено
@@ -3135,10 +2979,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(21)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньРазрешенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -3158,10 +3002,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(21)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньЗапрещенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -3174,21 +3018,21 @@
 					И СоставыГруппПользователей.ГруппаПользователей = НастройкиПрав.Пользователь
 			)
 	 )
-#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, ",#Параметр(20),") #Тогда
+#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, &quot;,#Параметр(20),&quot;) #Тогда
 	// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-	#Если СтрСодержит("#Параметр(20)", ",") #Тогда
-		НеверныйВидДоступа: "#Параметр(20)" - "Список имен видов доступа не найден"
+	#Если СтрСодержит(&quot;#Параметр(20)&quot;, &quot;,&quot;) #Тогда
+		НеверныйВидДоступа: &quot;#Параметр(20)&quot; - &quot;Список имен видов доступа не найден&quot;
 	#Иначе
-		НеверныйВидДоступа: "#Параметр(20)" - "Имя вида доступа не найдено"
+		НеверныйВидДоступа: &quot;#Параметр(20)&quot; - &quot;Имя вида доступа не найдено&quot;
 	#КонецЕсли
-#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;&gt; "Все"
-         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(20),") #Тогда
+#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;> &quot;Все&quot;
+         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(20),&quot;) #Тогда
 	И
 	 (
-			ЕСТЬNULL(Т.#Параметр(21), НЕОПРЕДЕЛЕНО) &lt;&gt; НЕОПРЕДЕЛЕНО
+			ЕСТЬNULL(Т.#Параметр(21), НЕОПРЕДЕЛЕНО) &lt;> НЕОПРЕДЕЛЕНО
 			И
-		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",Пользователи,")        И СтрСодержит(",#Параметр(20),", ",Пользователи,"))
-		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",ВнешниеПользователи,") И СтрСодержит(",#Параметр(20),", ",ВнешниеПользователи,")) #Тогда
+		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,Пользователи,&quot;)        И СтрСодержит(&quot;,#Параметр(20),&quot;, &quot;,Пользователи,&quot;))
+		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,ВнешниеПользователи,&quot;) И СтрСодержит(&quot;,#Параметр(20),&quot;, &quot;,ВнешниеПользователи,&quot;)) #Тогда
 			НЕ
 			(
 			НЕ ИСТИНА В
@@ -3206,17 +3050,17 @@
 			ВЫБОР
 			КОГДА ИСТИНА В
 				(
-		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, ",#Параметр(20),") #Тогда
+		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, &quot;,#Параметр(20),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
 					  Значения.ГруппаДоступа   = ГруппыДоступа.Ссылка
 					И Значения.ЗначениеДоступа = Т.#Параметр(21)
-		#ИначеЕсли "Т.#Параметр(21)" = "Т.Ссылка" #Тогда
-			#Если СтрСодержит("#Параметр(20)", ",") #Тогда
+		#ИначеЕсли &quot;Т.#Параметр(21)&quot; = &quot;Т.Ссылка&quot; #Тогда
+			#Если СтрСодержит(&quot;#Параметр(20)&quot;, &quot;,&quot;) #Тогда
 				// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-				НеверныйВидДоступа: "#Параметр(20)" - "При проверке таблицы значения доступа можно указывать только один вид доступа"
-			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, ",#Параметр(20),") #Тогда
+				НеверныйВидДоступа: &quot;#Параметр(20)&quot; - &quot;При проверке таблицы значения доступа можно указывать только один вид доступа&quot;
+			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, &quot;,#Параметр(20),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
@@ -3263,13 +3107,13 @@
 #КонецЕсли
 
 //// Проверка значения поля группы параметров 10.
-#Если "#Параметр(22)" = "" И "#Параметр(23)" = "" #Тогда
+#Если &quot;#Параметр(22)&quot; = &quot;&quot; И &quot;#Параметр(23)&quot; = &quot;&quot; #Тогда
 	// Группа параметров не используется.
-#ИначеЕсли "#Параметр(22)" = "Условие" Или "#Параметр(22)" = "" #Тогда
-	// Когда имя вида доступа "Условие" (или ""), тогда вместо имени поля задано условие.
+#ИначеЕсли &quot;#Параметр(22)&quot; = &quot;Условие&quot; Или &quot;#Параметр(22)&quot; = &quot;&quot; #Тогда
+	// Когда имя вида доступа &quot;Условие&quot; (или &quot;&quot;), тогда вместо имени поля задано условие.
 	И ( #Параметр(23) )
-#ИначеЕсли "#Параметр(22)" = "ПравоЧтения" Или "#Параметр(22)" = "ПравоИзменения" #Тогда
-	И Т.#Параметр(23) &lt;&gt; НЕОПРЕДЕЛЕНО
+#ИначеЕсли &quot;#Параметр(22)&quot; = &quot;ПравоЧтения&quot; Или &quot;#Параметр(22)&quot; = &quot;ПравоИзменения&quot; #Тогда
+	И Т.#Параметр(23) &lt;> НЕОПРЕДЕЛЕНО
 	И ИСТИНА В
 	 (	// Проверка права пользователя на таблицу Значения, установленного в поле.
 		ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
@@ -3277,11 +3121,11 @@
 		ГДЕ
 			  ТаблицыГруппДоступаПроверкаПрава.ГруппаДоступа = ГруппыДоступа.Ссылка
 			И ТИПЗНАЧЕНИЯ(ТаблицыГруппДоступаПроверкаПрава.ТипТаблицы) = ТИПЗНАЧЕНИЯ(Т.#Параметр(23))
-		#Если Не "#Параметр(22)" = "ПравоЧтения" #Тогда
+		#Если Не &quot;#Параметр(22)&quot; = &quot;ПравоЧтения&quot; #Тогда
 			И ТаблицыГруппДоступаПроверкаПрава.Изменение
 		#КонецЕсли
 	 )
-#ИначеЕсли "#Параметр(22)" = "НастройкиПрав" #Тогда
+#ИначеЕсли &quot;#Параметр(22)&quot; = &quot;НастройкиПрав&quot; #Тогда
 	И
 	 (
 		ИСТИНА В // Проверка, что пользователю или какой-нибудь группе пользователя право разрешено
@@ -3292,10 +3136,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(23)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньРазрешенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -3315,10 +3159,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(23)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньЗапрещенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -3331,21 +3175,21 @@
 					И СоставыГруппПользователей.ГруппаПользователей = НастройкиПрав.Пользователь
 			)
 	 )
-#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, ",#Параметр(22),") #Тогда
+#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, &quot;,#Параметр(22),&quot;) #Тогда
 	// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-	#Если СтрСодержит("#Параметр(22)", ",") #Тогда
-		НеверныйВидДоступа: "#Параметр(22)" - "Список имен видов доступа не найден"
+	#Если СтрСодержит(&quot;#Параметр(22)&quot;, &quot;,&quot;) #Тогда
+		НеверныйВидДоступа: &quot;#Параметр(22)&quot; - &quot;Список имен видов доступа не найден&quot;
 	#Иначе
-		НеверныйВидДоступа: "#Параметр(22)" - "Имя вида доступа не найдено"
+		НеверныйВидДоступа: &quot;#Параметр(22)&quot; - &quot;Имя вида доступа не найдено&quot;
 	#КонецЕсли
-#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;&gt; "Все"
-         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(22),") #Тогда
+#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;> &quot;Все&quot;
+         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(22),&quot;) #Тогда
 	И
 	 (
-			ЕСТЬNULL(Т.#Параметр(23), НЕОПРЕДЕЛЕНО) &lt;&gt; НЕОПРЕДЕЛЕНО
+			ЕСТЬNULL(Т.#Параметр(23), НЕОПРЕДЕЛЕНО) &lt;> НЕОПРЕДЕЛЕНО
 			И
-		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",Пользователи,")        И СтрСодержит(",#Параметр(22),", ",Пользователи,"))
-		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",ВнешниеПользователи,") И СтрСодержит(",#Параметр(22),", ",ВнешниеПользователи,")) #Тогда
+		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,Пользователи,&quot;)        И СтрСодержит(&quot;,#Параметр(22),&quot;, &quot;,Пользователи,&quot;))
+		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,ВнешниеПользователи,&quot;) И СтрСодержит(&quot;,#Параметр(22),&quot;, &quot;,ВнешниеПользователи,&quot;)) #Тогда
 			НЕ
 			(
 			НЕ ИСТИНА В
@@ -3363,17 +3207,17 @@
 			ВЫБОР
 			КОГДА ИСТИНА В
 				(
-		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, ",#Параметр(22),") #Тогда
+		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, &quot;,#Параметр(22),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
 					  Значения.ГруппаДоступа   = ГруппыДоступа.Ссылка
 					И Значения.ЗначениеДоступа = Т.#Параметр(23)
-		#ИначеЕсли "Т.#Параметр(23)" = "Т.Ссылка" #Тогда
-			#Если СтрСодержит("#Параметр(22)", ",") #Тогда
+		#ИначеЕсли &quot;Т.#Параметр(23)&quot; = &quot;Т.Ссылка&quot; #Тогда
+			#Если СтрСодержит(&quot;#Параметр(22)&quot;, &quot;,&quot;) #Тогда
 				// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-				НеверныйВидДоступа: "#Параметр(22)" - "При проверке таблицы значения доступа можно указывать только один вид доступа"
-			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, ",#Параметр(22),") #Тогда
+				НеверныйВидДоступа: &quot;#Параметр(22)&quot; - &quot;При проверке таблицы значения доступа можно указывать только один вид доступа&quot;
+			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, &quot;,#Параметр(22),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
@@ -3420,13 +3264,13 @@
 #КонецЕсли
 
 //// Проверка значения поля группы параметров 11.
-#Если "#Параметр(24)" = "" И "#Параметр(25)" = "" #Тогда
+#Если &quot;#Параметр(24)&quot; = &quot;&quot; И &quot;#Параметр(25)&quot; = &quot;&quot; #Тогда
 	// Группа параметров не используется.
-#ИначеЕсли "#Параметр(24)" = "Условие" Или "#Параметр(24)" = "" #Тогда
-	// Когда имя вида доступа "Условие" (или ""), тогда вместо имени поля задано условие.
+#ИначеЕсли &quot;#Параметр(24)&quot; = &quot;Условие&quot; Или &quot;#Параметр(24)&quot; = &quot;&quot; #Тогда
+	// Когда имя вида доступа &quot;Условие&quot; (или &quot;&quot;), тогда вместо имени поля задано условие.
 	И ( #Параметр(25) )
-#ИначеЕсли "#Параметр(24)" = "ПравоЧтения" Или "#Параметр(24)" = "ПравоИзменения" #Тогда
-	И Т.#Параметр(25) &lt;&gt; НЕОПРЕДЕЛЕНО
+#ИначеЕсли &quot;#Параметр(24)&quot; = &quot;ПравоЧтения&quot; Или &quot;#Параметр(24)&quot; = &quot;ПравоИзменения&quot; #Тогда
+	И Т.#Параметр(25) &lt;> НЕОПРЕДЕЛЕНО
 	И ИСТИНА В
 	 (	// Проверка права пользователя на таблицу Значения, установленного в поле.
 		ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
@@ -3434,11 +3278,11 @@
 		ГДЕ
 			  ТаблицыГруппДоступаПроверкаПрава.ГруппаДоступа = ГруппыДоступа.Ссылка
 			И ТИПЗНАЧЕНИЯ(ТаблицыГруппДоступаПроверкаПрава.ТипТаблицы) = ТИПЗНАЧЕНИЯ(Т.#Параметр(25))
-		#Если Не "#Параметр(24)" = "ПравоЧтения" #Тогда
+		#Если Не &quot;#Параметр(24)&quot; = &quot;ПравоЧтения&quot; #Тогда
 			И ТаблицыГруппДоступаПроверкаПрава.Изменение
 		#КонецЕсли
 	 )
-#ИначеЕсли "#Параметр(24)" = "НастройкиПрав" #Тогда
+#ИначеЕсли &quot;#Параметр(24)&quot; = &quot;НастройкиПрав&quot; #Тогда
 	И
 	 (
 		ИСТИНА В // Проверка, что пользователю или какой-нибудь группе пользователя право разрешено
@@ -3449,10 +3293,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(25)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньРазрешенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -3472,10 +3316,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(25)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньЗапрещенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -3488,21 +3332,21 @@
 					И СоставыГруппПользователей.ГруппаПользователей = НастройкиПрав.Пользователь
 			)
 	 )
-#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, ",#Параметр(24),") #Тогда
+#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, &quot;,#Параметр(24),&quot;) #Тогда
 	// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-	#Если СтрСодержит("#Параметр(24)", ",") #Тогда
-		НеверныйВидДоступа: "#Параметр(24)" - "Список имен видов доступа не найден"
+	#Если СтрСодержит(&quot;#Параметр(24)&quot;, &quot;,&quot;) #Тогда
+		НеверныйВидДоступа: &quot;#Параметр(24)&quot; - &quot;Список имен видов доступа не найден&quot;
 	#Иначе
-		НеверныйВидДоступа: "#Параметр(24)" - "Имя вида доступа не найдено"
+		НеверныйВидДоступа: &quot;#Параметр(24)&quot; - &quot;Имя вида доступа не найдено&quot;
 	#КонецЕсли
-#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;&gt; "Все"
-         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(24),") #Тогда
+#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;> &quot;Все&quot;
+         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(24),&quot;) #Тогда
 	И
 	 (
-			ЕСТЬNULL(Т.#Параметр(25), НЕОПРЕДЕЛЕНО) &lt;&gt; НЕОПРЕДЕЛЕНО
+			ЕСТЬNULL(Т.#Параметр(25), НЕОПРЕДЕЛЕНО) &lt;> НЕОПРЕДЕЛЕНО
 			И
-		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",Пользователи,")        И СтрСодержит(",#Параметр(24),", ",Пользователи,"))
-		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",ВнешниеПользователи,") И СтрСодержит(",#Параметр(24),", ",ВнешниеПользователи,")) #Тогда
+		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,Пользователи,&quot;)        И СтрСодержит(&quot;,#Параметр(24),&quot;, &quot;,Пользователи,&quot;))
+		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,ВнешниеПользователи,&quot;) И СтрСодержит(&quot;,#Параметр(24),&quot;, &quot;,ВнешниеПользователи,&quot;)) #Тогда
 			НЕ
 			(
 			НЕ ИСТИНА В
@@ -3520,17 +3364,17 @@
 			ВЫБОР
 			КОГДА ИСТИНА В
 				(
-		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, ",#Параметр(24),") #Тогда
+		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, &quot;,#Параметр(24),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
 					  Значения.ГруппаДоступа   = ГруппыДоступа.Ссылка
 					И Значения.ЗначениеДоступа = Т.#Параметр(25)
-		#ИначеЕсли "Т.#Параметр(25)" = "Т.Ссылка" #Тогда
-			#Если СтрСодержит("#Параметр(24)", ",") #Тогда
+		#ИначеЕсли &quot;Т.#Параметр(25)&quot; = &quot;Т.Ссылка&quot; #Тогда
+			#Если СтрСодержит(&quot;#Параметр(24)&quot;, &quot;,&quot;) #Тогда
 				// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-				НеверныйВидДоступа: "#Параметр(24)" - "При проверке таблицы значения доступа можно указывать только один вид доступа"
-			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, ",#Параметр(24),") #Тогда
+				НеверныйВидДоступа: &quot;#Параметр(24)&quot; - &quot;При проверке таблицы значения доступа можно указывать только один вид доступа&quot;
+			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, &quot;,#Параметр(24),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
@@ -3577,13 +3421,13 @@
 #КонецЕсли
 
 //// Проверка значения поля группы параметров 12.
-#Если "#Параметр(26)" = "" И "#Параметр(27)" = "" #Тогда
+#Если &quot;#Параметр(26)&quot; = &quot;&quot; И &quot;#Параметр(27)&quot; = &quot;&quot; #Тогда
 	// Группа параметров не используется.
-#ИначеЕсли "#Параметр(26)" = "Условие" Или "#Параметр(26)" = "" #Тогда
-	// Когда имя вида доступа "Условие" (или ""), тогда вместо имени поля задано условие.
+#ИначеЕсли &quot;#Параметр(26)&quot; = &quot;Условие&quot; Или &quot;#Параметр(26)&quot; = &quot;&quot; #Тогда
+	// Когда имя вида доступа &quot;Условие&quot; (или &quot;&quot;), тогда вместо имени поля задано условие.
 	И ( #Параметр(27) )
-#ИначеЕсли "#Параметр(26)" = "ПравоЧтения" Или "#Параметр(26)" = "ПравоИзменения" #Тогда
-	И Т.#Параметр(27) &lt;&gt; НЕОПРЕДЕЛЕНО
+#ИначеЕсли &quot;#Параметр(26)&quot; = &quot;ПравоЧтения&quot; Или &quot;#Параметр(26)&quot; = &quot;ПравоИзменения&quot; #Тогда
+	И Т.#Параметр(27) &lt;> НЕОПРЕДЕЛЕНО
 	И ИСТИНА В
 	 (	// Проверка права пользователя на таблицу Значения, установленного в поле.
 		ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
@@ -3591,11 +3435,11 @@
 		ГДЕ
 			  ТаблицыГруппДоступаПроверкаПрава.ГруппаДоступа = ГруппыДоступа.Ссылка
 			И ТИПЗНАЧЕНИЯ(ТаблицыГруппДоступаПроверкаПрава.ТипТаблицы) = ТИПЗНАЧЕНИЯ(Т.#Параметр(27))
-		#Если Не "#Параметр(26)" = "ПравоЧтения" #Тогда
+		#Если Не &quot;#Параметр(26)&quot; = &quot;ПравоЧтения&quot; #Тогда
 			И ТаблицыГруппДоступаПроверкаПрава.Изменение
 		#КонецЕсли
 	 )
-#ИначеЕсли "#Параметр(26)" = "НастройкиПрав" #Тогда
+#ИначеЕсли &quot;#Параметр(26)&quot; = &quot;НастройкиПрав&quot; #Тогда
 	И
 	 (
 		ИСТИНА В // Проверка, что пользователю или какой-нибудь группе пользователя право разрешено
@@ -3606,10 +3450,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(27)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньРазрешенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -3629,10 +3473,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(27)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньЗапрещенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -3645,21 +3489,21 @@
 					И СоставыГруппПользователей.ГруппаПользователей = НастройкиПрав.Пользователь
 			)
 	 )
-#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, ",#Параметр(26),") #Тогда
+#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, &quot;,#Параметр(26),&quot;) #Тогда
 	// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-	#Если СтрСодержит("#Параметр(26)", ",") #Тогда
-		НеверныйВидДоступа: "#Параметр(26)" - "Список имен видов доступа не найден"
+	#Если СтрСодержит(&quot;#Параметр(26)&quot;, &quot;,&quot;) #Тогда
+		НеверныйВидДоступа: &quot;#Параметр(26)&quot; - &quot;Список имен видов доступа не найден&quot;
 	#Иначе
-		НеверныйВидДоступа: "#Параметр(26)" - "Имя вида доступа не найдено"
+		НеверныйВидДоступа: &quot;#Параметр(26)&quot; - &quot;Имя вида доступа не найдено&quot;
 	#КонецЕсли
-#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;&gt; "Все"
-         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(26),") #Тогда
+#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;> &quot;Все&quot;
+         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(26),&quot;) #Тогда
 	И
 	 (
-			ЕСТЬNULL(Т.#Параметр(27), НЕОПРЕДЕЛЕНО) &lt;&gt; НЕОПРЕДЕЛЕНО
+			ЕСТЬNULL(Т.#Параметр(27), НЕОПРЕДЕЛЕНО) &lt;> НЕОПРЕДЕЛЕНО
 			И
-		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",Пользователи,")        И СтрСодержит(",#Параметр(26),", ",Пользователи,"))
-		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",ВнешниеПользователи,") И СтрСодержит(",#Параметр(26),", ",ВнешниеПользователи,")) #Тогда
+		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,Пользователи,&quot;)        И СтрСодержит(&quot;,#Параметр(26),&quot;, &quot;,Пользователи,&quot;))
+		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,ВнешниеПользователи,&quot;) И СтрСодержит(&quot;,#Параметр(26),&quot;, &quot;,ВнешниеПользователи,&quot;)) #Тогда
 			НЕ
 			(
 			НЕ ИСТИНА В
@@ -3677,17 +3521,17 @@
 			ВЫБОР
 			КОГДА ИСТИНА В
 				(
-		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, ",#Параметр(26),") #Тогда
+		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, &quot;,#Параметр(26),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
 					  Значения.ГруппаДоступа   = ГруппыДоступа.Ссылка
 					И Значения.ЗначениеДоступа = Т.#Параметр(27)
-		#ИначеЕсли "Т.#Параметр(27)" = "Т.Ссылка" #Тогда
-			#Если СтрСодержит("#Параметр(26)", ",") #Тогда
+		#ИначеЕсли &quot;Т.#Параметр(27)&quot; = &quot;Т.Ссылка&quot; #Тогда
+			#Если СтрСодержит(&quot;#Параметр(26)&quot;, &quot;,&quot;) #Тогда
 				// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-				НеверныйВидДоступа: "#Параметр(26)" - "При проверке таблицы значения доступа можно указывать только один вид доступа"
-			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, ",#Параметр(26),") #Тогда
+				НеверныйВидДоступа: &quot;#Параметр(26)&quot; - &quot;При проверке таблицы значения доступа можно указывать только один вид доступа&quot;
+			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, &quot;,#Параметр(26),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
@@ -3734,13 +3578,13 @@
 #КонецЕсли
 
 //// Проверка значения поля группы параметров 13.
-#Если "#Параметр(28)" = "" И "#Параметр(29)" = "" #Тогда
+#Если &quot;#Параметр(28)&quot; = &quot;&quot; И &quot;#Параметр(29)&quot; = &quot;&quot; #Тогда
 	// Группа параметров не используется.
-#ИначеЕсли "#Параметр(28)" = "Условие" Или "#Параметр(28)" = "" #Тогда
-	// Когда имя вида доступа "Условие" (или ""), тогда вместо имени поля задано условие.
+#ИначеЕсли &quot;#Параметр(28)&quot; = &quot;Условие&quot; Или &quot;#Параметр(28)&quot; = &quot;&quot; #Тогда
+	// Когда имя вида доступа &quot;Условие&quot; (или &quot;&quot;), тогда вместо имени поля задано условие.
 	И ( #Параметр(29) )
-#ИначеЕсли "#Параметр(28)" = "ПравоЧтения" Или "#Параметр(28)" = "ПравоИзменения" #Тогда
-	И Т.#Параметр(29) &lt;&gt; НЕОПРЕДЕЛЕНО
+#ИначеЕсли &quot;#Параметр(28)&quot; = &quot;ПравоЧтения&quot; Или &quot;#Параметр(28)&quot; = &quot;ПравоИзменения&quot; #Тогда
+	И Т.#Параметр(29) &lt;> НЕОПРЕДЕЛЕНО
 	И ИСТИНА В
 	 (	// Проверка права пользователя на таблицу Значения, установленного в поле.
 		ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
@@ -3748,11 +3592,11 @@
 		ГДЕ
 			  ТаблицыГруппДоступаПроверкаПрава.ГруппаДоступа = ГруппыДоступа.Ссылка
 			И ТИПЗНАЧЕНИЯ(ТаблицыГруппДоступаПроверкаПрава.ТипТаблицы) = ТИПЗНАЧЕНИЯ(Т.#Параметр(29))
-		#Если Не "#Параметр(28)" = "ПравоЧтения" #Тогда
+		#Если Не &quot;#Параметр(28)&quot; = &quot;ПравоЧтения&quot; #Тогда
 			И ТаблицыГруппДоступаПроверкаПрава.Изменение
 		#КонецЕсли
 	 )
-#ИначеЕсли "#Параметр(28)" = "НастройкиПрав" #Тогда
+#ИначеЕсли &quot;#Параметр(28)&quot; = &quot;НастройкиПрав&quot; #Тогда
 	И
 	 (
 		ИСТИНА В // Проверка, что пользователю или какой-нибудь группе пользователя право разрешено
@@ -3763,10 +3607,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(29)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньРазрешенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -3786,10 +3630,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(29)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньЗапрещенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -3802,21 +3646,21 @@
 					И СоставыГруппПользователей.ГруппаПользователей = НастройкиПрав.Пользователь
 			)
 	 )
-#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, ",#Параметр(28),") #Тогда
+#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, &quot;,#Параметр(28),&quot;) #Тогда
 	// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-	#Если СтрСодержит("#Параметр(28)", ",") #Тогда
-		НеверныйВидДоступа: "#Параметр(28)" - "Список имен видов доступа не найден"
+	#Если СтрСодержит(&quot;#Параметр(28)&quot;, &quot;,&quot;) #Тогда
+		НеверныйВидДоступа: &quot;#Параметр(28)&quot; - &quot;Список имен видов доступа не найден&quot;
 	#Иначе
-		НеверныйВидДоступа: "#Параметр(28)" - "Имя вида доступа не найдено"
+		НеверныйВидДоступа: &quot;#Параметр(28)&quot; - &quot;Имя вида доступа не найдено&quot;
 	#КонецЕсли
-#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;&gt; "Все"
-         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(28),") #Тогда
+#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;> &quot;Все&quot;
+         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(28),&quot;) #Тогда
 	И
 	 (
-			ЕСТЬNULL(Т.#Параметр(29), НЕОПРЕДЕЛЕНО) &lt;&gt; НЕОПРЕДЕЛЕНО
+			ЕСТЬNULL(Т.#Параметр(29), НЕОПРЕДЕЛЕНО) &lt;> НЕОПРЕДЕЛЕНО
 			И
-		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",Пользователи,")        И СтрСодержит(",#Параметр(28),", ",Пользователи,"))
-		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",ВнешниеПользователи,") И СтрСодержит(",#Параметр(28),", ",ВнешниеПользователи,")) #Тогда
+		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,Пользователи,&quot;)        И СтрСодержит(&quot;,#Параметр(28),&quot;, &quot;,Пользователи,&quot;))
+		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,ВнешниеПользователи,&quot;) И СтрСодержит(&quot;,#Параметр(28),&quot;, &quot;,ВнешниеПользователи,&quot;)) #Тогда
 			НЕ
 			(
 			НЕ ИСТИНА В
@@ -3834,17 +3678,17 @@
 			ВЫБОР
 			КОГДА ИСТИНА В
 				(
-		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, ",#Параметр(28),") #Тогда
+		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, &quot;,#Параметр(28),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
 					  Значения.ГруппаДоступа   = ГруппыДоступа.Ссылка
 					И Значения.ЗначениеДоступа = Т.#Параметр(29)
-		#ИначеЕсли "Т.#Параметр(29)" = "Т.Ссылка" #Тогда
-			#Если СтрСодержит("#Параметр(28)", ",") #Тогда
+		#ИначеЕсли &quot;Т.#Параметр(29)&quot; = &quot;Т.Ссылка&quot; #Тогда
+			#Если СтрСодержит(&quot;#Параметр(28)&quot;, &quot;,&quot;) #Тогда
 				// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-				НеверныйВидДоступа: "#Параметр(28)" - "При проверке таблицы значения доступа можно указывать только один вид доступа"
-			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, ",#Параметр(28),") #Тогда
+				НеверныйВидДоступа: &quot;#Параметр(28)&quot; - &quot;При проверке таблицы значения доступа можно указывать только один вид доступа&quot;
+			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, &quot;,#Параметр(28),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
@@ -3891,13 +3735,13 @@
 #КонецЕсли
 
 //// Проверка значения поля группы параметров 14.
-#Если "#Параметр(30)" = "" И "#Параметр(31)" = "" #Тогда
+#Если &quot;#Параметр(30)&quot; = &quot;&quot; И &quot;#Параметр(31)&quot; = &quot;&quot; #Тогда
 	// Группа параметров не используется.
-#ИначеЕсли "#Параметр(30)" = "Условие" Или "#Параметр(30)" = "" #Тогда
-	// Когда имя вида доступа "Условие" (или ""), тогда вместо имени поля задано условие.
+#ИначеЕсли &quot;#Параметр(30)&quot; = &quot;Условие&quot; Или &quot;#Параметр(30)&quot; = &quot;&quot; #Тогда
+	// Когда имя вида доступа &quot;Условие&quot; (или &quot;&quot;), тогда вместо имени поля задано условие.
 	И ( #Параметр(31) )
-#ИначеЕсли "#Параметр(30)" = "ПравоЧтения" Или "#Параметр(30)" = "ПравоИзменения" #Тогда
-	И Т.#Параметр(31) &lt;&gt; НЕОПРЕДЕЛЕНО
+#ИначеЕсли &quot;#Параметр(30)&quot; = &quot;ПравоЧтения&quot; Или &quot;#Параметр(30)&quot; = &quot;ПравоИзменения&quot; #Тогда
+	И Т.#Параметр(31) &lt;> НЕОПРЕДЕЛЕНО
 	И ИСТИНА В
 	 (	// Проверка права пользователя на таблицу Значения, установленного в поле.
 		ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
@@ -3905,11 +3749,11 @@
 		ГДЕ
 			  ТаблицыГруппДоступаПроверкаПрава.ГруппаДоступа = ГруппыДоступа.Ссылка
 			И ТИПЗНАЧЕНИЯ(ТаблицыГруппДоступаПроверкаПрава.ТипТаблицы) = ТИПЗНАЧЕНИЯ(Т.#Параметр(31))
-		#Если Не "#Параметр(30)" = "ПравоЧтения" #Тогда
+		#Если Не &quot;#Параметр(30)&quot; = &quot;ПравоЧтения&quot; #Тогда
 			И ТаблицыГруппДоступаПроверкаПрава.Изменение
 		#КонецЕсли
 	 )
-#ИначеЕсли "#Параметр(30)" = "НастройкиПрав" #Тогда
+#ИначеЕсли &quot;#Параметр(30)&quot; = &quot;НастройкиПрав&quot; #Тогда
 	И
 	 (
 		ИСТИНА В // Проверка, что пользователю или какой-нибудь группе пользователя право разрешено
@@ -3920,10 +3764,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(31)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньРазрешенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -3943,10 +3787,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(31)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньЗапрещенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -3959,21 +3803,21 @@
 					И СоставыГруппПользователей.ГруппаПользователей = НастройкиПрав.Пользователь
 			)
 	 )
-#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, ",#Параметр(30),") #Тогда
+#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, &quot;,#Параметр(30),&quot;) #Тогда
 	// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-	#Если СтрСодержит("#Параметр(30)", ",") #Тогда
-		НеверныйВидДоступа: "#Параметр(30)" - "Список имен видов доступа не найден"
+	#Если СтрСодержит(&quot;#Параметр(30)&quot;, &quot;,&quot;) #Тогда
+		НеверныйВидДоступа: &quot;#Параметр(30)&quot; - &quot;Список имен видов доступа не найден&quot;
 	#Иначе
-		НеверныйВидДоступа: "#Параметр(30)" - "Имя вида доступа не найдено"
+		НеверныйВидДоступа: &quot;#Параметр(30)&quot; - &quot;Имя вида доступа не найдено&quot;
 	#КонецЕсли
-#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;&gt; "Все"
-         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(30),") #Тогда
+#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;> &quot;Все&quot;
+         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(30),&quot;) #Тогда
 	И
 	 (
-			ЕСТЬNULL(Т.#Параметр(31), НЕОПРЕДЕЛЕНО) &lt;&gt; НЕОПРЕДЕЛЕНО
+			ЕСТЬNULL(Т.#Параметр(31), НЕОПРЕДЕЛЕНО) &lt;> НЕОПРЕДЕЛЕНО
 			И
-		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",Пользователи,")        И СтрСодержит(",#Параметр(30),", ",Пользователи,"))
-		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",ВнешниеПользователи,") И СтрСодержит(",#Параметр(30),", ",ВнешниеПользователи,")) #Тогда
+		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,Пользователи,&quot;)        И СтрСодержит(&quot;,#Параметр(30),&quot;, &quot;,Пользователи,&quot;))
+		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,ВнешниеПользователи,&quot;) И СтрСодержит(&quot;,#Параметр(30),&quot;, &quot;,ВнешниеПользователи,&quot;)) #Тогда
 			НЕ
 			(
 			НЕ ИСТИНА В
@@ -3991,17 +3835,17 @@
 			ВЫБОР
 			КОГДА ИСТИНА В
 				(
-		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, ",#Параметр(30),") #Тогда
+		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, &quot;,#Параметр(30),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
 					  Значения.ГруппаДоступа   = ГруппыДоступа.Ссылка
 					И Значения.ЗначениеДоступа = Т.#Параметр(31)
-		#ИначеЕсли "Т.#Параметр(31)" = "Т.Ссылка" #Тогда
-			#Если СтрСодержит("#Параметр(30)", ",") #Тогда
+		#ИначеЕсли &quot;Т.#Параметр(31)&quot; = &quot;Т.Ссылка&quot; #Тогда
+			#Если СтрСодержит(&quot;#Параметр(30)&quot;, &quot;,&quot;) #Тогда
 				// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-				НеверныйВидДоступа: "#Параметр(30)" - "При проверке таблицы значения доступа можно указывать только один вид доступа"
-			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, ",#Параметр(30),") #Тогда
+				НеверныйВидДоступа: &quot;#Параметр(30)&quot; - &quot;При проверке таблицы значения доступа можно указывать только один вид доступа&quot;
+			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, &quot;,#Параметр(30),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
@@ -4048,13 +3892,13 @@
 #КонецЕсли
 
 //// Проверка значения поля группы параметров 15.
-#Если "#Параметр(32)" = "" И "#Параметр(33)" = "" #Тогда
+#Если &quot;#Параметр(32)&quot; = &quot;&quot; И &quot;#Параметр(33)&quot; = &quot;&quot; #Тогда
 	// Группа параметров не используется.
-#ИначеЕсли "#Параметр(32)" = "Условие" Или "#Параметр(32)" = "" #Тогда
-	// Когда имя вида доступа "Условие" (или ""), тогда вместо имени поля задано условие.
+#ИначеЕсли &quot;#Параметр(32)&quot; = &quot;Условие&quot; Или &quot;#Параметр(32)&quot; = &quot;&quot; #Тогда
+	// Когда имя вида доступа &quot;Условие&quot; (или &quot;&quot;), тогда вместо имени поля задано условие.
 	И ( #Параметр(33) )
-#ИначеЕсли "#Параметр(32)" = "ПравоЧтения" Или "#Параметр(32)" = "ПравоИзменения" #Тогда
-	И Т.#Параметр(33) &lt;&gt; НЕОПРЕДЕЛЕНО
+#ИначеЕсли &quot;#Параметр(32)&quot; = &quot;ПравоЧтения&quot; Или &quot;#Параметр(32)&quot; = &quot;ПравоИзменения&quot; #Тогда
+	И Т.#Параметр(33) &lt;> НЕОПРЕДЕЛЕНО
 	И ИСТИНА В
 	 (	// Проверка права пользователя на таблицу Значения, установленного в поле.
 		ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
@@ -4062,11 +3906,11 @@
 		ГДЕ
 			  ТаблицыГруппДоступаПроверкаПрава.ГруппаДоступа = ГруппыДоступа.Ссылка
 			И ТИПЗНАЧЕНИЯ(ТаблицыГруппДоступаПроверкаПрава.ТипТаблицы) = ТИПЗНАЧЕНИЯ(Т.#Параметр(33))
-		#Если Не "#Параметр(32)" = "ПравоЧтения" #Тогда
+		#Если Не &quot;#Параметр(32)&quot; = &quot;ПравоЧтения&quot; #Тогда
 			И ТаблицыГруппДоступаПроверкаПрава.Изменение
 		#КонецЕсли
 	 )
-#ИначеЕсли "#Параметр(32)" = "НастройкиПрав" #Тогда
+#ИначеЕсли &quot;#Параметр(32)&quot; = &quot;НастройкиПрав&quot; #Тогда
 	И
 	 (
 		ИСТИНА В // Проверка, что пользователю или какой-нибудь группе пользователя право разрешено
@@ -4077,10 +3921,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(33)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньРазрешенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -4100,10 +3944,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(33)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньЗапрещенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -4116,21 +3960,21 @@
 					И СоставыГруппПользователей.ГруппаПользователей = НастройкиПрав.Пользователь
 			)
 	 )
-#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, ",#Параметр(32),") #Тогда
+#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, &quot;,#Параметр(32),&quot;) #Тогда
 	// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-	#Если СтрСодержит("#Параметр(32)", ",") #Тогда
-		НеверныйВидДоступа: "#Параметр(32)" - "Список имен видов доступа не найден"
+	#Если СтрСодержит(&quot;#Параметр(32)&quot;, &quot;,&quot;) #Тогда
+		НеверныйВидДоступа: &quot;#Параметр(32)&quot; - &quot;Список имен видов доступа не найден&quot;
 	#Иначе
-		НеверныйВидДоступа: "#Параметр(32)" - "Имя вида доступа не найдено"
+		НеверныйВидДоступа: &quot;#Параметр(32)&quot; - &quot;Имя вида доступа не найдено&quot;
 	#КонецЕсли
-#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;&gt; "Все"
-         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(32),") #Тогда
+#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;> &quot;Все&quot;
+         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(32),&quot;) #Тогда
 	И
 	 (
-			ЕСТЬNULL(Т.#Параметр(33), НЕОПРЕДЕЛЕНО) &lt;&gt; НЕОПРЕДЕЛЕНО
+			ЕСТЬNULL(Т.#Параметр(33), НЕОПРЕДЕЛЕНО) &lt;> НЕОПРЕДЕЛЕНО
 			И
-		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",Пользователи,")        И СтрСодержит(",#Параметр(32),", ",Пользователи,"))
-		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",ВнешниеПользователи,") И СтрСодержит(",#Параметр(32),", ",ВнешниеПользователи,")) #Тогда
+		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,Пользователи,&quot;)        И СтрСодержит(&quot;,#Параметр(32),&quot;, &quot;,Пользователи,&quot;))
+		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,ВнешниеПользователи,&quot;) И СтрСодержит(&quot;,#Параметр(32),&quot;, &quot;,ВнешниеПользователи,&quot;)) #Тогда
 			НЕ
 			(
 			НЕ ИСТИНА В
@@ -4148,17 +3992,17 @@
 			ВЫБОР
 			КОГДА ИСТИНА В
 				(
-		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, ",#Параметр(32),") #Тогда
+		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, &quot;,#Параметр(32),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
 					  Значения.ГруппаДоступа   = ГруппыДоступа.Ссылка
 					И Значения.ЗначениеДоступа = Т.#Параметр(33)
-		#ИначеЕсли "Т.#Параметр(33)" = "Т.Ссылка" #Тогда
-			#Если СтрСодержит("#Параметр(32)", ",") #Тогда
+		#ИначеЕсли &quot;Т.#Параметр(33)&quot; = &quot;Т.Ссылка&quot; #Тогда
+			#Если СтрСодержит(&quot;#Параметр(32)&quot;, &quot;,&quot;) #Тогда
 				// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-				НеверныйВидДоступа: "#Параметр(32)" - "При проверке таблицы значения доступа можно указывать только один вид доступа"
-			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, ",#Параметр(32),") #Тогда
+				НеверныйВидДоступа: &quot;#Параметр(32)&quot; - &quot;При проверке таблицы значения доступа можно указывать только один вид доступа&quot;
+			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, &quot;,#Параметр(32),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
@@ -4205,13 +4049,13 @@
 #КонецЕсли
 
 //// Проверка значения поля группы параметров 16.
-#Если "#Параметр(34)" = "" И "#Параметр(35)" = "" #Тогда
+#Если &quot;#Параметр(34)&quot; = &quot;&quot; И &quot;#Параметр(35)&quot; = &quot;&quot; #Тогда
 	// Группа параметров не используется.
-#ИначеЕсли "#Параметр(34)" = "Условие" Или "#Параметр(34)" = "" #Тогда
-	// Когда имя вида доступа "Условие" (или ""), тогда вместо имени поля задано условие.
+#ИначеЕсли &quot;#Параметр(34)&quot; = &quot;Условие&quot; Или &quot;#Параметр(34)&quot; = &quot;&quot; #Тогда
+	// Когда имя вида доступа &quot;Условие&quot; (или &quot;&quot;), тогда вместо имени поля задано условие.
 	И ( #Параметр(35) )
-#ИначеЕсли "#Параметр(34)" = "ПравоЧтения" Или "#Параметр(34)" = "ПравоИзменения" #Тогда
-	И Т.#Параметр(35) &lt;&gt; НЕОПРЕДЕЛЕНО
+#ИначеЕсли &quot;#Параметр(34)&quot; = &quot;ПравоЧтения&quot; Или &quot;#Параметр(34)&quot; = &quot;ПравоИзменения&quot; #Тогда
+	И Т.#Параметр(35) &lt;> НЕОПРЕДЕЛЕНО
 	И ИСТИНА В
 	 (	// Проверка права пользователя на таблицу Значения, установленного в поле.
 		ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
@@ -4219,11 +4063,11 @@
 		ГДЕ
 			  ТаблицыГруппДоступаПроверкаПрава.ГруппаДоступа = ГруппыДоступа.Ссылка
 			И ТИПЗНАЧЕНИЯ(ТаблицыГруппДоступаПроверкаПрава.ТипТаблицы) = ТИПЗНАЧЕНИЯ(Т.#Параметр(35))
-		#Если Не "#Параметр(34)" = "ПравоЧтения" #Тогда
+		#Если Не &quot;#Параметр(34)&quot; = &quot;ПравоЧтения&quot; #Тогда
 			И ТаблицыГруппДоступаПроверкаПрава.Изменение
 		#КонецЕсли
 	 )
-#ИначеЕсли "#Параметр(34)" = "НастройкиПрав" #Тогда
+#ИначеЕсли &quot;#Параметр(34)&quot; = &quot;НастройкиПрав&quot; #Тогда
 	И
 	 (
 		ИСТИНА В // Проверка, что пользователю или какой-нибудь группе пользователя право разрешено
@@ -4234,10 +4078,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(35)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньРазрешенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -4257,10 +4101,10 @@
 				ПО
 					  НаследованиеНастроек.Объект = Т.#Параметр(35)
 					И НастройкиПрав.Объект  = НаследованиеНастроек.Родитель
-				#Если #ИмяТекущегоПраваДоступа = "Чтение" #Тогда
+				#Если #ИмяТекущегоПраваДоступа = &quot;Чтение&quot; #Тогда
 					И НаследованиеНастроек.УровеньИспользования &lt; НастройкиПрав.УровеньЗапрещенияЧтения
 				#Иначе
-				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, "|#Параметр(1);") #Тогда
+				  #Если СтрСодержит(&amp;ТаблицыСОтдельнымиНастройкамиПрав, &quot;|#Параметр(1);&quot;) #Тогда
 					И НастройкиПрав.Таблица = СвойстваТекущейТаблицы.Ссылка
 				  #Иначе
 					И НастройкиПрав.Таблица = ЗНАЧЕНИЕ(Справочник.ИдентификаторыОбъектовМетаданных.ПустаяСсылка)
@@ -4273,21 +4117,21 @@
 					И СоставыГруппПользователей.ГруппаПользователей = НастройкиПрав.Пользователь
 			)
 	 )
-#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, ",#Параметр(34),") #Тогда
+#ИначеЕсли Не СтрСодержит(&amp;ВсеВидыДоступаКромеСпециальных, &quot;,#Параметр(34),&quot;) #Тогда
 	// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-	#Если СтрСодержит("#Параметр(34)", ",") #Тогда
-		НеверныйВидДоступа: "#Параметр(34)" - "Список имен видов доступа не найден"
+	#Если СтрСодержит(&quot;#Параметр(34)&quot;, &quot;,&quot;) #Тогда
+		НеверныйВидДоступа: &quot;#Параметр(34)&quot; - &quot;Список имен видов доступа не найден&quot;
 	#Иначе
-		НеверныйВидДоступа: "#Параметр(34)" - "Имя вида доступа не найдено"
+		НеверныйВидДоступа: &quot;#Параметр(34)&quot; - &quot;Имя вида доступа не найдено&quot;
 	#КонецЕсли
-#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;&gt; "Все"
-         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",#Параметр(34),") #Тогда
+#ИначеЕсли &amp;ВидыДоступаСОтключеннымИспользованием &lt;> &quot;Все&quot;
+         И Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,#Параметр(34),&quot;) #Тогда
 	И
 	 (
-			ЕСТЬNULL(Т.#Параметр(35), НЕОПРЕДЕЛЕНО) &lt;&gt; НЕОПРЕДЕЛЕНО
+			ЕСТЬNULL(Т.#Параметр(35), НЕОПРЕДЕЛЕНО) &lt;> НЕОПРЕДЕЛЕНО
 			И
-		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",Пользователи,")        И СтрСодержит(",#Параметр(34),", ",Пользователи,"))
-		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, ",ВнешниеПользователи,") И СтрСодержит(",#Параметр(34),", ",ВнешниеПользователи,")) #Тогда
+		#Если (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,Пользователи,&quot;)        И СтрСодержит(&quot;,#Параметр(34),&quot;, &quot;,Пользователи,&quot;))
+		  Или (Не СтрСодержит(&amp;ВидыДоступаСОтключеннымИспользованием, &quot;,ВнешниеПользователи,&quot;) И СтрСодержит(&quot;,#Параметр(34),&quot;, &quot;,ВнешниеПользователи,&quot;)) #Тогда
 			НЕ
 			(
 			НЕ ИСТИНА В
@@ -4305,17 +4149,17 @@
 			ВЫБОР
 			КОГДА ИСТИНА В
 				(
-		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, ",#Параметр(34),") #Тогда
+		#Если СтрСодержит(&amp;ВидыДоступаБезГруппДляЗначенияДоступа, &quot;,#Параметр(34),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
 					  Значения.ГруппаДоступа   = ГруппыДоступа.Ссылка
 					И Значения.ЗначениеДоступа = Т.#Параметр(35)
-		#ИначеЕсли "Т.#Параметр(35)" = "Т.Ссылка" #Тогда
-			#Если СтрСодержит("#Параметр(34)", ",") #Тогда
+		#ИначеЕсли &quot;Т.#Параметр(35)&quot; = &quot;Т.Ссылка&quot; #Тогда
+			#Если СтрСодержит(&quot;#Параметр(34)&quot;, &quot;,&quot;) #Тогда
 				// Когда параметр задан неверно, вставляется строка, чтобы вызвать ошибку сборки ограничения доступа.
-				НеверныйВидДоступа: "#Параметр(34)" - "При проверке таблицы значения доступа можно указывать только один вид доступа"
-			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, ",#Параметр(34),") #Тогда
+				НеверныйВидДоступа: &quot;#Параметр(34)&quot; - &quot;При проверке таблицы значения доступа можно указывать только один вид доступа&quot;
+			#ИначеЕсли СтрСодержит(&amp;ВидыДоступаСОднойГруппойДляЗначенияДоступа, &quot;,#Параметр(34),&quot;) #Тогда
 				ВЫБРАТЬ ПЕРВЫЕ 1 ИСТИНА
 				ИЗ РегистрСведений.ЗначенияГруппДоступа КАК Значения
 				ГДЕ
@@ -4367,4 +4211,7 @@
 
 </condition>
 	</restrictionTemplate>
+	<setForNewObjects>false</setForNewObjects>
+	<setForAttributesByDefault>true</setForAttributesByDefault>
+	<independentRightsOfChildObjects>false</independentRightsOfChildObjects>
 </Rights>
