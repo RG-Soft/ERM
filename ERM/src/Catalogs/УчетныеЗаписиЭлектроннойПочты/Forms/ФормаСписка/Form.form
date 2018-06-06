@@ -12,10 +12,6 @@
       <key>ru</key>
       <value>Группа пользовательских настроек</value>
     </title>
-    <toolTip>
-      <key>ru</key>
-      <value>Группа пользовательских настроек</value>
-    </toolTip>
     <extendedTooltip>
       <name>ГруппаПользовательскихНастроекРасширеннаяПодсказка</name>
       <id>28</id>
@@ -51,7 +47,7 @@
         <common>true</common>
       </userVisible>
       <dataPath xsi:type="form:DataPath">
-        <segments>Items.Список.CurrentData.Ref</segments>
+        <segments>Items.Список.CurrentData.Ссылка</segments>
       </dataPath>
       <extendedTooltip>
         <name>ФормаСправочникУчетныеЗаписиЭлектроннойПочтыПроверитьУчетнуюЗаписьРасширеннаяПодсказка</name>
@@ -84,10 +80,6 @@
       <key>ru</key>
       <value>Командная панель</value>
     </title>
-    <toolTip>
-      <key>ru</key>
-      <value>Командная панель</value>
-    </toolTip>
     <extendedTooltip>
       <name>КоманднаяПанельРасширеннаяПодсказка</name>
       <id>30</id>
@@ -112,6 +104,10 @@
   <items xsi:type="form:Table">
     <name>Список</name>
     <id>1</id>
+    <title>
+      <key>ru</key>
+      <value>Список</value>
+    </title>
     <visible>true</visible>
     <enabled>true</enabled>
     <userVisible>
@@ -137,7 +133,7 @@
       </userVisible>
       <dataPath xsi:type="form:MultiLanguageDataPath">
         <paths xsi:type="form:DataPath">
-          <segments>Список.Description</segments>
+          <segments>Список.Наименование</segments>
         </paths>
       </dataPath>
       <defaultItem>true</defaultItem>
@@ -285,6 +281,54 @@
       </extInfo>
     </items>
     <items xsi:type="form:FormField">
+      <name>ВладелецУчетнойЗаписи</name>
+      <id>43</id>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <dataPath xsi:type="form:MultiLanguageDataPath">
+        <paths xsi:type="form:DataPath">
+          <segments>Список.ВладелецУчетнойЗаписи</segments>
+        </paths>
+      </dataPath>
+      <extendedTooltip>
+        <name>ВладелецУчетнойЗаписиРасширеннаяПодсказка</name>
+        <id>45</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <contextMenu>
+        <name>ВладелецУчетнойЗаписиКонтекстноеМеню</name>
+        <id>44</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <autoFill>true</autoFill>
+      </contextMenu>
+      <type>LabelField</type>
+      <editMode>Enter</editMode>
+      <showInHeader>true</showInHeader>
+      <headerHorizontalAlign>Left</headerHorizontalAlign>
+      <showInFooter>true</showInFooter>
+      <extInfo xsi:type="form:LabelFieldExtInfo">
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+      </extInfo>
+    </items>
+    <items xsi:type="form:FormField">
       <name>Ссылка</name>
       <id>24</id>
       <visible>true</visible>
@@ -292,7 +336,7 @@
       <userVisible/>
       <dataPath xsi:type="form:MultiLanguageDataPath">
         <paths xsi:type="form:DataPath">
-          <segments>Список.Ref</segments>
+          <segments>Список.Ссылка</segments>
         </paths>
       </dataPath>
       <extendedTooltip>
@@ -505,9 +549,6 @@
     <rowPictureDataPath xsi:type="form:DataPath">
       <segments>Список.DefaultPicture</segments>
     </rowPictureDataPath>
-    <searchStringLocation>None</searchStringLocation>
-    <viewStatusLocation>None</viewStatusLocation>
-    <searchControlLocation>None</searchControlLocation>
     <extInfo xsi:type="form:DynamicListTableExtInfo">
       <autoRefreshPeriod>60</autoRefreshPeriod>
       <period>
@@ -517,6 +558,146 @@
       <topLevelParent xsi:type="core:UndefinedValue"/>
       <showRoot>true</showRoot>
       <userSettingsGroup>ГруппаПользовательскихНастроек</userSettingsGroup>
+    </extInfo>
+  </items>
+  <items xsi:type="form:FormGroup">
+    <name>Отборы</name>
+    <id>49</id>
+    <items xsi:type="form:FormField">
+      <name>ПоказыватьПерсональныеУчетныеЗаписиПользователей</name>
+      <id>40</id>
+      <title>
+        <key>ru</key>
+        <value>Показывать персональные</value>
+      </title>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <dataPath xsi:type="form:MultiLanguageDataPath">
+        <paths xsi:type="form:DataPath">
+          <segments>ПоказыватьПерсональныеУчетныеЗаписиПользователей</segments>
+        </paths>
+      </dataPath>
+      <titleLocation>Right</titleLocation>
+      <handlers>
+        <event>OnChange</event>
+        <name>ПоказыватьПерсональныеУчетныеЗаписиПользователейПриИзменении</name>
+      </handlers>
+      <extendedTooltip>
+        <name>ПоказыватьПерсональныеУчетныеЗаписиПользователейРасширеннаяПодсказка</name>
+        <id>42</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <contextMenu>
+        <name>ПоказыватьПерсональныеУчетныеЗаписиПользователейКонтекстноеМеню</name>
+        <id>41</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <autoFill>true</autoFill>
+      </contextMenu>
+      <type>CheckBoxField</type>
+      <editMode>Enter</editMode>
+      <showInHeader>true</showInHeader>
+      <headerHorizontalAlign>Left</headerHorizontalAlign>
+      <showInFooter>true</showInFooter>
+      <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
+    </items>
+    <items xsi:type="form:FormField">
+      <name>ПоказыватьНедействительные</name>
+      <id>46</id>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <dataPath xsi:type="form:MultiLanguageDataPath">
+        <paths xsi:type="form:DataPath">
+          <segments>ПоказыватьНедействительные</segments>
+        </paths>
+      </dataPath>
+      <titleLocation>Right</titleLocation>
+      <handlers>
+        <event>OnChange</event>
+        <name>ПоказыватьНедействительныеПриИзменении</name>
+      </handlers>
+      <extendedTooltip>
+        <name>ПоказыватьНедействительныеРасширеннаяПодсказка</name>
+        <id>48</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <contextMenu>
+        <name>ПоказыватьНедействительныеКонтекстноеМеню</name>
+        <id>47</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <autoFill>true</autoFill>
+      </contextMenu>
+      <type>CheckBoxField</type>
+      <editMode>Enter</editMode>
+      <showInHeader>true</showInHeader>
+      <headerHorizontalAlign>Left</headerHorizontalAlign>
+      <showInFooter>true</showInFooter>
+      <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
+    </items>
+    <visible>true</visible>
+    <enabled>true</enabled>
+    <userVisible>
+      <common>true</common>
+    </userVisible>
+    <title>
+      <key>ru</key>
+      <value>Отборы</value>
+    </title>
+    <extendedTooltip>
+      <name>ОтборыРасширеннаяПодсказка</name>
+      <id>50</id>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <type>Label</type>
+      <autoMaxWidth>true</autoMaxWidth>
+      <autoMaxHeight>true</autoMaxHeight>
+      <extInfo xsi:type="form:LabelDecorationExtInfo">
+        <horizontalAlign>Left</horizontalAlign>
+      </extInfo>
+    </extendedTooltip>
+    <type>UsualGroup</type>
+    <extInfo xsi:type="form:UsualGroupExtInfo">
+      <group>HorizontalIfPossible</group>
+      <showLeftMargin>true</showLeftMargin>
+      <united>true</united>
+      <throughAlign>Auto</throughAlign>
+      <currentRowUse>DontUse</currentRowUse>
     </extInfo>
   </items>
   <autoCommandBar>
@@ -529,6 +710,10 @@
     </userVisible>
     <horizontalAlign>Left</horizontalAlign>
   </autoCommandBar>
+  <handlers>
+    <event>OnCreateAtServer</event>
+    <name>ПриСозданииНаСервере</name>
+  </handlers>
   <autoTitle>true</autoTitle>
   <autoUrl>true</autoUrl>
   <group>Vertical</group>
@@ -552,14 +737,91 @@
     <notDefaultUseAlwaysAttributes xsi:type="form:DataPath">
       <segments>Список.Ref</segments>
     </notDefaultUseAlwaysAttributes>
+    <notDefaultUseAlwaysAttributes xsi:type="form:DataPath">
+      <segments>Список.Ссылка</segments>
+    </notDefaultUseAlwaysAttributes>
     <main>true</main>
     <extInfo xsi:type="form:DynamicListExtInfo">
+      <queryText>ВЫБРАТЬ
+	СправочникУчетныеЗаписиЭлектроннойПочты.Ссылка КАК Ссылка,
+	СправочникУчетныеЗаписиЭлектроннойПочты.ПометкаУдаления КАК ПометкаУдаления,
+	СправочникУчетныеЗаписиЭлектроннойПочты.Наименование КАК Наименование,
+	СправочникУчетныеЗаписиЭлектроннойПочты.SMTPАутентификация КАК SMTPАутентификация,
+	СправочникУчетныеЗаписиЭлектроннойПочты.АдресЭлектроннойПочты КАК АдресЭлектроннойПочты,
+	СправочникУчетныеЗаписиЭлектроннойПочты.ВремяОжидания КАК ВремяОжидания,
+	СправочникУчетныеЗаписиЭлектроннойПочты.ИмяПользователя КАК ИмяПользователя,
+	СправочникУчетныеЗаписиЭлектроннойПочты.ИспользоватьБезопасныйВходНаСерверВходящейПочты КАК ИспользоватьБезопасныйВходНаСерверВходящейПочты,
+	СправочникУчетныеЗаписиЭлектроннойПочты.ИспользоватьБезопасныйВходНаСерверИсходящейПочты КАК ИспользоватьБезопасныйВходНаСерверИсходящейПочты,
+	СправочникУчетныеЗаписиЭлектроннойПочты.ИспользоватьДляОтправки КАК ИспользоватьДляОтправки,
+	СправочникУчетныеЗаписиЭлектроннойПочты.ИспользоватьДляПолучения КАК ИспользоватьДляПолучения,
+	СправочникУчетныеЗаписиЭлектроннойПочты.ИспользоватьЗащищенноеСоединениеДляВходящейПочты КАК ИспользоватьЗащищенноеСоединениеДляВходящейПочты,
+	СправочникУчетныеЗаписиЭлектроннойПочты.ИспользоватьЗащищенноеСоединениеДляИсходящейПочты КАК ИспользоватьЗащищенноеСоединениеДляИсходящейПочты,
+	СправочникУчетныеЗаписиЭлектроннойПочты.ОставлятьКопииСообщенийНаСервере КАК ОставлятьКопииСообщенийНаСервере,
+	СправочникУчетныеЗаписиЭлектроннойПочты.ПериодХраненияСообщенийНаСервере КАК ПериодХраненияСообщенийНаСервере,
+	СправочникУчетныеЗаписиЭлектроннойПочты.Пользователь КАК Пользователь,
+	СправочникУчетныеЗаписиЭлектроннойПочты.ПользовательSMTP КАК ПользовательSMTP,
+	СправочникУчетныеЗаписиЭлектроннойПочты.ПортСервераВходящейПочты КАК ПортСервераВходящейПочты,
+	СправочникУчетныеЗаписиЭлектроннойПочты.ПортСервераИсходящейПочты КАК ПортСервераИсходящейПочты,
+	СправочникУчетныеЗаписиЭлектроннойПочты.ПротоколВходящейПочты КАК ПротоколВходящейПочты,
+	СправочникУчетныеЗаписиЭлектроннойПочты.СерверВходящейПочты КАК СерверВходящейПочты,
+	СправочникУчетныеЗаписиЭлектроннойПочты.СерверИсходящейПочты КАК СерверИсходящейПочты,
+	СправочникУчетныеЗаписиЭлектроннойПочты.СпособPOP3Аутентификации КАК СпособPOP3Аутентификации,
+	СправочникУчетныеЗаписиЭлектроннойПочты.СпособSMTPАутентификации КАК СпособSMTPАутентификации,
+	СправочникУчетныеЗаписиЭлектроннойПочты.ТребуетсяВходНаСерверПередОтправкой КАК ТребуетсяВходНаСерверПередОтправкой,
+	СправочникУчетныеЗаписиЭлектроннойПочты.УдалитьВПредставлениеВключатьИмяПользователя КАК УдалитьВПредставлениеВключатьИмяПользователя,
+	СправочникУчетныеЗаписиЭлектроннойПочты.УдалитьОтветственныйЗаОбработкуПисем КАК УдалитьОтветственныйЗаОбработкуПисем,
+	СправочникУчетныеЗаписиЭлектроннойПочты.УдалитьПароль КАК УдалитьПароль,
+	СправочникУчетныеЗаписиЭлектроннойПочты.УдалитьПарольSMTP КАК УдалитьПарольSMTP,
+	СправочникУчетныеЗаписиЭлектроннойПочты.ОтправлятьСкрытыеКопииПисемНаЭтотАдрес КАК ОтправлятьСкрытыеКопииПисемНаЭтотАдрес,
+	СправочникУчетныеЗаписиЭлектроннойПочты.ВладелецУчетнойЗаписи КАК ВладелецУчетнойЗаписи,
+	СправочникУчетныеЗаписиЭлектроннойПочты.Предопределенный КАК Предопределенный,
+	СправочникУчетныеЗаписиЭлектроннойПочты.ИмяПредопределенныхДанных КАК ИмяПредопределенныхДанных,
+	ЕСТЬNULL(Пользователи.Недействителен, ЛОЖЬ) КАК ВладелецНедействителен
+ИЗ
+	Справочник.УчетныеЗаписиЭлектроннойПочты КАК СправочникУчетныеЗаписиЭлектроннойПочты
+		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Пользователи КАК Пользователи
+		ПО СправочникУчетныеЗаписиЭлектроннойПочты.ВладелецУчетнойЗаписи = Пользователи.Ссылка</queryText>
       <mainTable>Catalog.УчетныеЗаписиЭлектроннойПочты</mainTable>
       <dynamicDataRead>true</dynamicDataRead>
       <autoFillAvailableFields>true</autoFillAvailableFields>
+      <customQuery>true</customQuery>
       <autoSaveUserSettings>true</autoSaveUserSettings>
       <getInvisibleFieldPresentations>true</getInvisibleFieldPresentations>
     </extInfo>
+  </attributes>
+  <attributes>
+    <name>ПоказыватьПерсональныеУчетныеЗаписиПользователей</name>
+    <title>
+      <key>ru</key>
+      <value>Показывать персональные учетные записи пользователей</value>
+    </title>
+    <id>2</id>
+    <valueType>
+      <types>Boolean</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+  </attributes>
+  <attributes>
+    <name>ПоказыватьНедействительные</name>
+    <title>
+      <key>ru</key>
+      <value>Показывать недействительные</value>
+    </title>
+    <id>3</id>
+    <valueType>
+      <types>Boolean</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
   </attributes>
   <commandInterface>
     <navigationPanel/>

@@ -2,7 +2,9 @@
 <mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="8ce6cc1a-8570-4704-b9a3-44e815b2e753">
   <producedTypes>
     <objectType typeId="3a971112-d2dc-4de3-809f-725c959539ee" valueTypeId="fb5a710c-d9d6-49ba-aa61-f2c68f2c204a"/>
-    <refType typeId="7e5a68f1-de7c-4e6c-aae6-f03dd01bfda1" valueTypeId="ebcee7d4-d80b-49dc-8035-12cfc4a501ec"/>
+    <refType typeId="7e5a68f1-de7c-4e6c-aae6-f03dd01bfda1" valueTypeId="ebcee7d4-d80b-49dc-8035-12cfc4a501ec">
+      <emptyRef/>
+    </refType>
     <selectionType typeId="9a7fe1d2-4b13-421c-ad30-2a216d1a8d31" valueTypeId="ba897ef0-8d1a-4d41-8889-1473cefbc68e"/>
     <listType typeId="a6b19d86-0be2-4188-893b-d7da2f0e881a" valueTypeId="b928f202-ae50-48d3-964e-5e50f6ee2156"/>
     <managerType typeId="f3dddb8b-f1f6-4828-9c83-cf6fd975e2d6" valueTypeId="6819ec05-d478-49c1-9841-2a9346259663"/>
@@ -109,7 +111,7 @@
     <toolTip>
       <key>ru</key>
       <value>Краткое представление рассылки отчетов.
-Выводится пользователю при доставке по почте.</value>
+Может использоваться в теме или тексте письма при доставке по почте.</value>
     </toolTip>
     <fillValue xsi:type="core:UndefinedValue"/>
     <fullTextSearch>Use</fullTextSearch>
@@ -228,8 +230,7 @@
     </type>
     <toolTip>
       <key>ru</key>
-      <value>Если флажок установлен то при соединении по FTP сервер открывает порт и ожидает подключения клиента.
-Рекомендуется включать, когда клиент не может принять входящее TCP-соединение. Например, если входящие соединения блокируются сетевым экраном.</value>
+      <value>Если флажок установлен то при соединении по FTP сервер открывает порт и ожидает подключения клиента. Рекомендуется включать если клиент не может принять входящее TCP-соединение (например, если входящие соединения блокируются сетевым экраном).</value>
     </toolTip>
     <mask></mask>
     <minValue xsi:type="core:UndefinedValue"/>
@@ -299,7 +300,7 @@
     <name>Автор</name>
     <synonym>
       <key>ru</key>
-      <value>Автор</value>
+      <value>Ответственный</value>
     </synonym>
     <comment></comment>
     <type>
@@ -307,7 +308,7 @@
     </type>
     <toolTip>
       <key>ru</key>
-      <value>При выполнении по расписанию отчеты формируются с правами автора рассылки</value>
+      <value>При выполнении по расписанию отчеты формируются с правами ответственного за рассылку</value>
     </toolTip>
     <mask></mask>
     <minValue xsi:type="core:UndefinedValue"/>
@@ -573,7 +574,7 @@
     </synonym>
     <comment></comment>
     <type>
-      <types>String</types>
+      <types>CatalogRef.ПапкиФайлов</types>
       <stringQualifiers>
         <length>10</length>
       </stringQualifiers>
@@ -623,7 +624,7 @@
     </type>
     <toolTip>
       <key>ru</key>
-      <value>Если флажок установлен, то рассыла работает в режиме &quot;Свой отчет для каждого получателя&quot;.</value>
+      <value>Если флажок установлен, то рассылка работает в режиме &quot;Свой отчет для каждого получателя&quot;.</value>
     </toolTip>
     <mask></mask>
     <minValue xsi:type="core:UndefinedValue"/>
@@ -882,6 +883,27 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="5b379a72-8605-4e88-84cb-14272a3b8f5f">
+    <name>ТранслитерироватьИменаФайлов</name>
+    <synonym>
+      <key>ru</key>
+      <value>Транслитерировать имена файлов</value>
+    </synonym>
+    <comment></comment>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <toolTip>
+      <key>ru</key>
+      <value>Сохраненные файлы будут иметь имена, содержащие только латинские буквы и цифры, для возможности переноса между различными операционными системами. Например, файл &quot;Отчет.mxl&quot; будет сохранен с именем &quot;Otchet.mxl&quot;.</value>
+    </toolTip>
+    <mask></mask>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="150c9d05-4ccc-4cb7-879d-b1d9c3534343">
     <name>УдалитьFTPПароль</name>
     <synonym>
@@ -989,6 +1011,7 @@
       </synonym>
       <comment></comment>
       <type>
+        <types>CatalogRef.ДополнительныеОтчетыИОбработки</types>
         <types>CatalogRef.ВариантыОтчетов</types>
       </type>
       <toolTip>
@@ -1073,6 +1096,7 @@
       </synonym>
       <comment></comment>
       <type>
+        <types>CatalogRef.ДополнительныеОтчетыИОбработки</types>
         <types>CatalogRef.ВариантыОтчетов</types>
       </type>
       <toolTip>

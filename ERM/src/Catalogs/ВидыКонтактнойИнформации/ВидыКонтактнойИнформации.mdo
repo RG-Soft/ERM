@@ -2,7 +2,9 @@
 <mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="782cb93d-36e6-4923-b2b6-75caa3459cd6">
   <producedTypes>
     <objectType typeId="b6307745-ae1b-4b6d-830d-6b06fe7d75f5" valueTypeId="a944313b-8aea-4aab-bcdd-9759ea9da991"/>
-    <refType typeId="fc1d5c1f-385f-493f-a538-f80a12c7cb6f" valueTypeId="e6a9093d-d862-4150-82b8-612a27a8b0f8"/>
+    <refType typeId="fc1d5c1f-385f-493f-a538-f80a12c7cb6f" valueTypeId="e6a9093d-d862-4150-82b8-612a27a8b0f8">
+      <emptyRef/>
+    </refType>
     <selectionType typeId="11a6082e-0380-489c-a5c2-9313b9736327" valueTypeId="39d17cf4-829e-4fc4-8795-c31af643a086"/>
     <listType typeId="e1fe64ce-ba51-40ea-89bc-02ea5613b98c" valueTypeId="5ff7fb6a-b775-4bf7-8f9f-c5983a7303cf"/>
     <managerType typeId="335649db-6a3d-4f02-a562-9dd6cf408d98" valueTypeId="de5de393-095f-485a-9fd3-b74284f8ff44"/>
@@ -94,6 +96,7 @@
     <fillValue xsi:type="core:ReferenceValue">
       <value>Catalog.ВидыКонтактнойИнформации.EmptyRef</value>
     </fillValue>
+    <fillChecking>ShowError</fillChecking>
     <fullTextSearch>Use</fullTextSearch>
     <mask></mask>
     <minValue xsi:type="core:UndefinedValue"/>
@@ -255,63 +258,6 @@
         </code>
       </content>
     </items>
-    <items id="c34c4e9d-c7c5-42bb-8def-93ecfe7b1977">
-      <name>СправочникОрганизации</name>
-      <description>Контактная информация справочника &quot;Организации&quot;</description>
-      <code xsi:type="core:StringValue">
-        <value></value>
-      </code>
-      <isFolder>true</isFolder>
-      <content id="405f9f12-d546-435c-8768-4775d31cf689">
-        <name>ДругаяИнформацияОрганизации</name>
-        <description>Другое</description>
-        <code xsi:type="core:StringValue">
-          <value></value>
-        </code>
-      </content>
-      <content id="1e232d30-a13f-442d-ab7b-65c711d3ad75">
-        <name>ПочтовыйАдресОрганизации</name>
-        <description>Почтовый адрес</description>
-        <code xsi:type="core:StringValue">
-          <value></value>
-        </code>
-      </content>
-      <content id="b4ceb8fc-3a0c-42c1-bd37-2d52de36fb52">
-        <name>ТелефонОрганизации</name>
-        <description>Телефон</description>
-        <code xsi:type="core:StringValue">
-          <value></value>
-        </code>
-      </content>
-      <content id="a709fef2-4895-4ad2-9cf1-27b46f031549">
-        <name>ФаксОрганизации</name>
-        <description>Факс</description>
-        <code xsi:type="core:StringValue">
-          <value></value>
-        </code>
-      </content>
-      <content id="afa527f2-8b59-4c20-95ae-d0d5a08111ee">
-        <name>ФактАдресОрганизации</name>
-        <description>Фактический адрес</description>
-        <code xsi:type="core:StringValue">
-          <value></value>
-        </code>
-      </content>
-      <content id="89b1f358-52f0-402c-9540-d97e38aefeee">
-        <name>EmailОрганизации</name>
-        <description>Электронная почта</description>
-        <code xsi:type="core:StringValue">
-          <value></value>
-        </code>
-      </content>
-      <content id="6b0a2669-1bb5-4c9a-9466-54433ac0a955">
-        <name>ЮрАдресОрганизации</name>
-        <description>Юридический адрес</description>
-        <code xsi:type="core:StringValue">
-          <value></value>
-        </code>
-      </content>
-    </items>
     <items id="8cbaa30d-faab-45ad-880e-84f8b421f448">
       <name>СправочникПользователи</name>
       <description>Контактная информация справочника &quot;Пользователи&quot;</description>
@@ -341,10 +287,10 @@
   <defaultListForm>Catalog.ВидыКонтактнойИнформации.Form.ФормаСписка</defaultListForm>
   <defaultFolderChoiceForm>Catalog.ВидыКонтактнойИнформации.Form.ФормаВыбораГруппы</defaultFolderChoiceForm>
   <attributes uuid="0eea37cc-47f8-4819-85da-d4991f4e58ed">
-    <name>АдресТолькоРоссийский</name>
+    <name>ТолькоНациональныйАдрес</name>
     <synonym>
       <key>ru</key>
-      <value>Адрес только российский</value>
+      <value>Только национальный адрес</value>
     </synonym>
     <comment></comment>
     <type>
@@ -352,12 +298,38 @@
     </type>
     <toolTip>
       <key>ru</key>
-      <value>Допустимы только российские адреса</value>
+      <value>Допустимы только национальные адреса</value>
     </toolTip>
     <mask></mask>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>
     <fillValue xsi:type="core:BooleanValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="0f314b6b-5ed1-46ed-bdfd-cf53330c2783">
+    <name>ВидПоляДругое</name>
+    <synonym>
+      <key>ru</key>
+      <value>Вид поля другое</value>
+    </synonym>
+    <comment></comment>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>20</length>
+      </stringQualifiers>
+    </type>
+    <toolTip>
+      <key>ru</key>
+      <value>Внешний вид поля другое на форме</value>
+    </toolTip>
+    <mask></mask>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:StringValue">
+      <value>МногострочноеШирокое</value>
+    </fillValue>
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
@@ -472,30 +444,6 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="aa7ceeee-3b3c-49e2-95c2-bfb34e381aa3">
-    <name>Подсказка</name>
-    <synonym>
-      <key>ru</key>
-      <value>Подсказка</value>
-    </synonym>
-    <comment></comment>
-    <type>
-      <types>String</types>
-      <stringQualifiers/>
-    </type>
-    <toolTip>
-      <key>ru</key>
-      <value>Подсказка для вида контактной информации</value>
-    </toolTip>
-    <mask></mask>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:StringValue">
-      <value></value>
-    </fillValue>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
   <attributes uuid="313e0688-745a-4385-b040-7ef8317a0eb7">
     <name>ПроверятьКорректность</name>
     <synonym>
@@ -570,7 +518,7 @@
     </type>
     <toolTip>
       <key>ru</key>
-      <value>Редактировать контактную информацию только в диалоге (ручной ввод информации не возможен)</value>
+      <value>Редактировать контактную информацию только в диалоге (ручной ввод информации невозможен)</value>
     </toolTip>
     <mask></mask>
     <minValue xsi:type="core:UndefinedValue"/>
@@ -583,7 +531,7 @@
     <name>РеквизитДопУпорядочивания</name>
     <synonym>
       <key>ru</key>
-      <value>Реквизит доп упорядочивания</value>
+      <value>Порядок</value>
     </synonym>
     <comment></comment>
     <type>
@@ -672,6 +620,27 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
+  <attributes uuid="9395eb9d-6aff-4af5-a6f1-5c39014ba67b">
+    <name>УдалитьМногострочноеПоле</name>
+    <synonym>
+      <key>ru</key>
+      <value>(не используется) Многострочное поле</value>
+    </synonym>
+    <comment></comment>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <toolTip>
+      <key>ru</key>
+      <value>Выводит многострочное поле </value>
+    </toolTip>
+    <mask></mask>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
   <attributes uuid="8a13c899-1659-48cf-9aa2-07ca99547b7b">
     <name>УказыватьОКТМО</name>
     <synonym>
@@ -693,27 +662,6 @@
     <fullTextSearch>Use</fullTextSearch>
     <dataHistory>Use</dataHistory>
   </attributes>
-  <attributes uuid="9395eb9d-6aff-4af5-a6f1-5c39014ba67b">
-    <name>МногострочноеПоле</name>
-    <synonym>
-      <key>ru</key>
-      <value>Многострочное поле</value>
-    </synonym>
-    <comment></comment>
-    <type>
-      <types>Boolean</types>
-    </type>
-    <toolTip>
-      <key>ru</key>
-      <value>Выводит многострочное поле </value>
-    </toolTip>
-    <mask></mask>
-    <minValue xsi:type="core:UndefinedValue"/>
-    <maxValue xsi:type="core:UndefinedValue"/>
-    <fillValue xsi:type="core:UndefinedValue"/>
-    <fullTextSearch>Use</fullTextSearch>
-    <dataHistory>Use</dataHistory>
-  </attributes>
   <attributes uuid="eb3f959c-94a4-4e77-b9f9-e81954254079">
     <name>ХранитьИсториюИзменений</name>
     <synonym>
@@ -727,6 +675,27 @@
     <toolTip>
       <key>ru</key>
       <value>Сохранять историю изменения контактной информации</value>
+    </toolTip>
+    <mask></mask>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="71dfde27-3762-4dd0-9252-6e703ce1b101">
+    <name>МеждународныйФорматАдреса</name>
+    <synonym>
+      <key>ru</key>
+      <value>Международный формат адреса</value>
+    </synonym>
+    <comment></comment>
+    <type>
+      <types>Boolean</types>
+    </type>
+    <toolTip>
+      <key>ru</key>
+      <value>Адрес редактируется в международном формате на английском языке.</value>
     </toolTip>
     <mask></mask>
     <minValue xsi:type="core:UndefinedValue"/>
