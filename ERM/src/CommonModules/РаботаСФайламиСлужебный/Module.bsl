@@ -6117,7 +6117,10 @@
 КонецПроцедуры
 
 // Возвращает дату, преобразованную из формата RFC 1123 в тип Дата.
-Функция ДатаRFC1123(ДатаСтрокойHTTP)
+// { RGS TAlmazova 21.12.2017 19:04:25 - 
+//Функция ДатаRFC1123(ДатаСтрокойHTTP)
+Функция ДатаRFC1123(ДатаСтрокойHTTP) Экспорт
+// } RGS TAlmazova 21.12.2017 19:04:31 - 
 
 	ИменаМесяцев = "janfebmaraprmayjunjulaugsepoctnovdec";
 	// rfc1123-date = wkday "," SP date1 SP time SP "GMT".
