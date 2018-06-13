@@ -483,6 +483,18 @@
 	СтрокаТЗ.ИмяПоля = "INVOICE_AMOUNT";
 	СтрокаТЗ.ИмяКолонки = "Invoice Amount";
 	СтрокаТЗ.Обязательная = Истина;
+
+	// END_CUSTOMER_NUMBER
+	СтрокаТЗ = СтруктураКолонок.Добавить();
+	СтрокаТЗ.ИмяПоля = "END_CUSTOMER_NUMBER";
+	СтрокаТЗ.ИмяКолонки = "Customer Number (Global)";
+	СтрокаТЗ.Обязательная = Истина;
+
+	// END_CUSTOMER_NUMBER
+	СтрокаТЗ = СтруктураКолонок.Добавить();
+	СтрокаТЗ.ИмяПоля = "END_CUSTOMER_NAME";
+	СтрокаТЗ.ИмяКолонки = "Customer Name (Global)";
+	СтрокаТЗ.Обязательная = Истина;
 	
 КонецФункции
 
@@ -1463,6 +1475,8 @@
 		|	OracleSourceData.SHIP_SITE_ID КАК SHIP_SITE_ID,
 		|	OracleSourceData.DOC_ID КАК DOC_ID,
 		|	OracleSourceData.LINE_ID КАК LINE_ID,
+		|	OracleSourceData.END_CUSTOMER_NUMBER КАК END_CUSTOMER_NUMBER,
+		|	OracleSourceData.END_CUSTOMER_NAME КАК END_CUSTOMER_NAME,
 		|	OracleSourceData.DOC_TRANS_ID КАК DOC_TRANS_ID,
 		|	OracleSourceData.ID_ORIG КАК ID_ORIG,
 		|	ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 17, 4) + ""."" + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 22, 3) + ""."" + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 26, 4) + ""."" + ПОДСТРОКА(OracleSourceData.GL_ACCOUNT, 6, 3) КАК Account,
@@ -1498,7 +1512,18 @@
 		|					(ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|						ВТ_ДанныеФайла.CUSTOMER_NUMBER
 		|					ИЗ
-		|						ВТ_ДанныеФайла КАК ВТ_ДанныеФайла)) КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних
+		|						ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
+		|					ГДЕ
+		|						ВТ_ДанныеФайла.CUSTOMER_NUMBER <> """"
+		|
+		|					ОБЪЕДИНИТЬ
+		|
+		|					ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|						ВТ_ДанныеФайла.END_CUSTOMER_NUMBER
+		|					ИЗ
+		|						ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
+		|					ГДЕ 
+		|						ВТ_ДанныеФайла.END_CUSTOMER_NUMBER <> """")) КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних
 		|
 		|ИНДЕКСИРОВАТЬ ПО
 		|	Идентификатор
@@ -1618,6 +1643,7 @@
 		|	ВТ_ДанныеФайла.EXCHANGE_RATE КАК ExchangeRate,
 		|	ВТ_ДанныеФайла.GL_ACCOUNT КАК GL_Account,
 		|	ВТ_СоответствиеКлиентовCustomerNumber.ОбъектПриемника КАК Client,
+		|	ВТ_СоответствиеКлиентовCustomerNumberEnd.ОбъектПриемника КАК EndClient,
 		|	ВТ_ДанныеФайла.CONTRACT_NAME КАК Contract,
 		|	ВТ_ДанныеФайла.ENTERED КАК Amount,
 		|	ВТ_ДанныеФайла.ACCOUNTED КАК BaseAmount,
@@ -1681,6 +1707,8 @@
 		|		ПО ВТ_ДанныеФайла.CURRENCY_CODE = ВТ_СоответствиеCurrency.Идентификатор
 		|		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_СоответствиеКлиентовCustomerNumber КАК ВТ_СоответствиеКлиентовCustomerNumber
 		|		ПО ВТ_ДанныеФайла.CUSTOMER_NUMBER = ВТ_СоответствиеКлиентовCustomerNumber.Идентификатор
+		|		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_СоответствиеКлиентовCustomerNumber КАК ВТ_СоответствиеКлиентовCustomerNumberEnd
+		|		ПО ВТ_ДанныеФайла.END_CUSTOMER_NUMBER = ВТ_СоответствиеКлиентовCustomerNumberEnd.Идентификатор
 		|		ЛЕВОЕ СОЕДИНЕНИЕ Документ.ТранзакцияOracle КАК ТранзакцияOracle
 		|		ПО ВТ_ДанныеФайла.НомерТранзакции = ТранзакцияOracle.Номер
 		|			И (НЕ ТранзакцияOracle.ПометкаУдаления)
@@ -1702,6 +1730,9 @@
 		|	ИтоговаяБезКорректировок.ExchangeRate КАК ExchangeRate,
 		|	ИтоговаяБезКорректировок.GL_Account КАК GL_Account,
 		|	ИтоговаяБезКорректировок.Client КАК Client,
+		|	ЕСТЬNULL(ИтоговаяБезКорректировок.Client.Предопределенный,Ложь) КАК ClientПредопределенный,
+		|	ЕСТЬNULL(ИтоговаяБезКорректировок.Client.Intercompany,Ложь) КАК ClientIntercompany,
+		|	ИтоговаяБезКорректировок.EndClient КАК EndClient,
 		|	ИтоговаяБезКорректировок.Contract КАК Contract,
 		|	ИтоговаяБезКорректировок.Amount КАК Amount,
 		|	ИтоговаяБезКорректировок.BaseAmount КАК BaseAmount,
@@ -2941,6 +2972,16 @@
 		КонецЕсли;
 	КонецЕсли;
 	// } RGS TAlmazova 14.07.2017 13:52:45 - Если клиент не определился по cost_no, для JV проверять line_desc
+	
+	// { RGS TAlmazova 13.06.2018 17:37:36 S-E-0000795
+	Если (НЕ ЗначениеЗаполнено(ТранзакцияOracleОбъект.Client) ИЛИ ДанныеДляЗаполнения.ClientПредопределенный ИЛИ ДанныеДляЗаполнения.ClientIntercompany) 
+		И Source = Перечисления.ТипыСоответствий.OracleMI 
+		И ЗначениеЗаполнено(ДанныеДляЗаполнения.EndClient) Тогда
+			
+		ТранзакцияOracleОбъект.Client = ДанныеДляЗаполнения.EndClient;
+		
+	КонецЕсли;
+	// } RGS TAlmazova 13.06.2018 17:37:36 S-E-0000795
 	
 	Если НЕ ЗначениеЗаполнено(ТранзакцияOracleОбъект.Client) Тогда
 		// { RGS TAlmazova 03.10.2016 14:44:33 - поиск по OracleGlSourceType
