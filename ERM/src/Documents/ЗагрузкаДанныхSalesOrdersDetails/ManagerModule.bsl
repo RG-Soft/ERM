@@ -505,6 +505,13 @@
 			РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.FirstSubmissionDate, FirstSubmissionDate);
 			РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.InvoiceFlagDate, InvoiceFlagDate);
 		//КонецЕсли;
+		
+		Даты = Новый Соответствие();
+		Даты.Вставить("JobEndDate", JobEndDate);
+		Даты.Вставить("FTLSubmissionDate", FTLSubmissionDate);
+		Даты.Вставить("CreationDate", CreationDate);
+		Даты.Вставить("ApprovalDate", ApprovalDate);
+		Даты.Вставить("FirstSubmissionDate", FirstSubmissionDate);
 			
 		Если НЕ ЗначениеЗаполнено(Выборка.ВалютаСсылка) Тогда
 			ОтменитьТранзакцию();
@@ -536,6 +543,10 @@
 			СтрокаТЗ = ОбновленныеSO.Добавить();
 			СтрокаТЗ.SalesOrder = ТекОбъект.Ссылка;
 			
+		КонецЕсли;
+		
+		Если ЗначениеЗаполнено(Выборка.InvoiceСсылка) Тогда
+			РегистрыСведений.DIR.ЗаписатьДаты(Выборка.InvoiceСсылка, Даты);
 		КонецЕсли;
 		
 	КонецЦикла;
