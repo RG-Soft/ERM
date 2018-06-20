@@ -273,6 +273,28 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>SubSubSegment</dataPath>
+			<field>SubSubSegment</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>CashBatch</dataPath>
+			<field>CashBatch</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Location</dataPath>
+			<field>Location</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>FirstDateOfPayment</dataPath>
+			<field>FirstDateOfPayment</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>First date of payment</v8:content>
+				</v8:item>
+			</title>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	InvoicedDebtsОбороты.Source КАК Source,
@@ -283,13 +305,84 @@
 	InvoicedDebtsОбороты.Invoice КАК Invoice,
 	InvoicedDebtsОбороты.Currency КАК Currency,
 	InvoicedDebtsОбороты.LegalEntity КАК LegalEntity,
-	InvoicedDebtsОбороты.AmountОборот КАК AmountОборот
+	InvoicedDebtsОбороты.AmountОборот КАК AmountОборот,
+	ВЫБОР
+		КОГДА ИсточникиСЗаполнениемОплатИзОбмена.Source ЕСТЬ NULL
+			ТОГДА ЛОЖЬ
+		ИНАЧЕ ИСТИНА
+	КОНЕЦ КАК ЗаполнятьОплатыПоДаннымОбмена
 ПОМЕСТИТЬ ВТ_Инвойсы
 ИЗ
-	РегистрНакопления.InvoicedDebts.Обороты(,,,) КАК InvoicedDebtsОбороты ИНДЕКСИРОВАТЬ ПО Invoice
+	РегистрНакопления.InvoicedDebts.Обороты(,,,) КАК InvoicedDebtsОбороты
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИсточникиСЗаполнениемОплатИзОбмена КАК ИсточникиСЗаполнениемОплатИзОбмена
+		ПО InvoicedDebtsОбороты.Source = ИсточникиСЗаполнениемОплатИзОбмена.Source
+		И (InvoicedDebtsОбороты.Company = ИсточникиСЗаполнениемОплатИзОбмена.Company
+		ИЛИ ИсточникиСЗаполнениемОплатИзОбмена.Company = ЗНАЧЕНИЕ(Справочник.Организации.ПустаяСсылка))
+ИНДЕКСИРОВАТЬ ПО Invoice
 ;
 ////////////////////////////////////////////////////////////////////////////////
- ВЫБРАТЬ
+ ВЫБРАТЬ РАЗЛИЧНЫЕ
+	ВТ_Инвойсы.Source КАК Source,
+	ВТ_Инвойсы.Company КАК Company,
+	ВТ_Инвойсы.Invoice КАК Invoice
+ПОМЕСТИТЬ ВТ_ИнвойсыДляОплат
+ИЗ
+	ВТ_Инвойсы КАК ВТ_Инвойсы ИНДЕКСИРОВАТЬ ПО Source, Company, Invoice
+;
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	PaymentsОбороты.Invoice КАК Invoice,
+	МИНИМУМ(ВЫБОР
+		КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.ПроводкаDSS
+			ТОГДА PaymentsОбороты.Регистратор.DateLawson
+		КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
+		И ВЫРАЗИТЬ(PaymentsОбороты.Регистратор КАК Документ.КорректировкаТранзакции).ДокументОснование
+			ССЫЛКА Документ.ПроводкаDSS
+			ТОГДА ВЫРАЗИТЬ(ВЫРАЗИТЬ(PaymentsОбороты.Регистратор КАК Документ.КорректировкаТранзакции).ДокументОснование КАК
+				Документ.ПроводкаDSS).AccountingPeriod
+		КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
+			ТОГДА ВЫРАЗИТЬ(PaymentsОбороты.Регистратор КАК Документ.КорректировкаТранзакции).ДокументОснование.Дата
+		ИНАЧЕ PaymentsОбороты.Регистратор.Дата
+	КОНЕЦ) КАК PaymentDate
+ПОМЕСТИТЬ ВТ_ОплатыПоПроводкам
+ИЗ
+	РегистрНакопления.Payments.Обороты({(&amp;НачалоВремен)}, {(&amp;КонецВремен)}, Регистратор, (Source, Company, Invoic) В
+		(ВЫБРАТЬ РАЗЛИЧНЫЕ
+			ВТ_ИнвойсыДляОплат.Source,
+			ВТ_ИнвойсыДляОплат.Company,
+			ВТ_ИнвойсыДляОплат.Invoice
+		ИЗ
+			ВТ_ИнвойсыДляОплат КАК ВТ_ИнвойсыДляОплат
+				ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИсточникиСЗаполнениемОплатИзОбмена КАК ИсточникиСЗаполнениемОплатИзОбмена
+				ПО ВТ_ИнвойсыДляОплат.Source = ИсточникиСЗаполнениемОплатИзОбмена.Source
+				И (ВТ_ИнвойсыДляОплат.Company = ИсточникиСЗаполнениемОплатИзОбмена.Company
+				ИЛИ ВТ_ИнвойсыДляОплат.Company = ЗНАЧЕНИЕ(Справочник.Организации.ПустаяСсылка))
+		ГДЕ
+			ВТ_ИнвойсыДляОплат.Invoice ССЫЛКА Документ.Invoice
+			И ИсточникиСЗаполнениемОплатИзОбмена.Source ЕСТЬ NULL)) КАК PaymentsОбороты
+СГРУППИРОВАТЬ ПО
+	PaymentsОбороты.Invoice ИНДЕКСИРОВАТЬ ПО Invoice
+;
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	FiscalPayments.Invoice,
+	МИНИМУМ(FiscalPayments.PaymentDate) КАК PaymentDate
+ПОМЕСТИТЬ ВТ_ОплатыИзОбмена
+ИЗ
+	РегистрСведений.FiscalPayments КАК FiscalPayments
+		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.ИсточникиСЗаполнениемОплатИзОбмена КАК ИсточникиСЗаполнениемОплатИзОбмена
+		ПО FiscalPayments.Source = ИсточникиСЗаполнениемОплатИзОбмена.Source
+		И (FiscalPayments.Company = ИсточникиСЗаполнениемОплатИзОбмена.Company
+		ИЛИ ИсточникиСЗаполнениемОплатИзОбмена.Company = ЗНАЧЕНИЕ(Справочник.Организации.ПустаяСсылка))
+		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ИнвойсыДляОплат КАК ВТ_ИнвойсыДляОплат
+		ПО FiscalPayments.Source = ВТ_ИнвойсыДляОплат.Source
+		И FiscalPayments.Company = ВТ_ИнвойсыДляОплат.Company
+		И FiscalPayments.Invoice = ВТ_ИнвойсыДляОплат.Invoice
+СГРУППИРОВАТЬ ПО
+	FiscalPayments.Invoice
+;
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
 	ВТ_Инвойсы.Source КАК Source,
 	ВТ_Инвойсы.Company КАК Company,
 	ВТ_Инвойсы.Client КАК Client,
@@ -344,14 +437,23 @@
 		ИНАЧЕ ВТ_Инвойсы.Invoice.Amount
 	КОНЕЦ КАК USDAmount,
 	ВТ_Инвойсы.Invoice.DueDateFrom КАК DateFrom,
-	ВТ_Инвойсы.Invoice.DueDateTo КАК DateTo
+	ВТ_Инвойсы.Invoice.DueDateTo КАК DateTo,
+	ВЫБОР
+		КОГДА ВТ_Инвойсы.ЗаполнятьОплатыПоДаннымОбмена
+			ТОГДА ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1))
+		ИНАЧЕ ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1))
+	КОНЕЦ КАК FirstDateOfPayment
 ИЗ
 	ВТ_Инвойсы КАК ВТ_Инвойсы
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.DIR КАК DIR
 		ПО ВТ_Инвойсы.Invoice = DIR.Invoice
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;КонецПериода)},) КАК
 			ВнутренниеКурсыВалютСрезПоследних
-		ПО ВТ_Инвойсы.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта</query>
+		ПО ВТ_Инвойсы.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
+		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ОплатыПоПроводкам КАК ВТ_ОплатыПоПроводкам
+		ПО ВТ_Инвойсы.Invoice = ВТ_ОплатыПоПроводкам.Invoice
+		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ОплатыИзОбмена КАК ВТ_ОплатыИзОбмена
+		ПО ВТ_Инвойсы.Invoice = ВТ_ОплатыИзОбмена.Invoice</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>SumStages</dataPath>
@@ -650,6 +752,38 @@
 		</value>
 		<useRestriction>true</useRestriction>
 		<expression>Константы.rgsВалютаUSD.Получить()</expression>
+		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
+	</parameter>
+	<parameter>
+		<name>НачалоВремен</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Начало времен</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+		</valueType>
+		<useRestriction>true</useRestriction>
+		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
+	</parameter>
+	<parameter>
+		<name>КонецВремен</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Конец времен</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+		</valueType>
+		<useRestriction>true</useRestriction>
 		<valueListAllowed>false</valueListAllowed>
 		<availableAsField>true</availableAsField>
 		<denyIncompleteValues>false</denyIncompleteValues>
