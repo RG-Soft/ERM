@@ -295,6 +295,16 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>T2CStage3</dataPath>
+			<field>T2CStage3</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>T2 c stage3</v8:content>
+				</v8:item>
+			</title>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	InvoicedDebtsОбороты.Source КАК Source,
@@ -346,7 +356,7 @@
 	КОНЕЦ) КАК PaymentDate
 ПОМЕСТИТЬ ВТ_ОплатыПоПроводкам
 ИЗ
-	РегистрНакопления.Payments.Обороты({(&amp;НачалоВремен)}, {(&amp;КонецВремен)}, Регистратор, (Source, Company, Invoic) В
+	РегистрНакопления.Payments.Обороты({(&amp;НачалоВремен)}, {(&amp;КонецВремен)}, Регистратор, (Source, Company, Invoice) В
 		(ВЫБРАТЬ РАЗЛИЧНЫЕ
 			ВТ_ИнвойсыДляОплат.Source,
 			ВТ_ИнвойсыДляОплат.Company,
@@ -398,31 +408,68 @@
 	ЕСТЬNULL(DIR.ApprovalDate, ДАТАВРЕМЯ(1, 1, 1)) КАК ApprovalDate,
 	ЕСТЬNULL(DIR.FirstSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)) КАК FirstSubmissionDate,
 	ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)) КАК InvoiceFlagDate,
-	РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.JobEndDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.FTLSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)),
-		СЕКУНДА) / 86400 КАК Stage1,
-	РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.FTLSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.CreationDate, ДАТАВРЕМЯ(1, 1, 1)),
-		СЕКУНДА) / 86400 КАК Stage2,
-	РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.CreationDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.ApprovalDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА)
-		/ 86400 КАК Stage3,
-	РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.ApprovalDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.FirstSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)),
-		СЕКУНДА) / 86400 КАК Stage4,
-	РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.FirstSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)),
-		СЕКУНДА) / 86400 КАК Stage5,
+	ВЫБОР
+		КОГДА ЕСТЬNULL(DIR.JobEndDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+		ИЛИ ЕСТЬNULL(DIR.FTLSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+			ТОГДА 0
+		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.JobEndDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.FTLSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)),
+			СЕКУНДА) / 86400
+	КОНЕЦ КАК Stage1,
+	ВЫБОР
+		КОГДА ЕСТЬNULL(DIR.FTLSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+		ИЛИ ЕСТЬNULL(DIR.CreationDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+			ТОГДА 0
+		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.FTLSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.CreationDate, ДАТАВРЕМЯ(1, 1,
+			1)), СЕКУНДА) / 86400
+	КОНЕЦ КАК Stage2,
+	ВЫБОР
+		КОГДА ЕСТЬNULL(DIR.CreationDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+		ИЛИ ЕСТЬNULL(DIR.ApprovalDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+			ТОГДА 0
+		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.CreationDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.ApprovalDate, ДАТАВРЕМЯ(1, 1, 1)),
+			СЕКУНДА) / 86400
+	КОНЕЦ КАК Stage3,
+	ВЫБОР
+		КОГДА ЕСТЬNULL(DIR.ApprovalDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+		ИЛИ ЕСТЬNULL(DIR.FirstSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+			ТОГДА 0
+		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.ApprovalDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.FirstSubmissionDate, ДАТАВРЕМЯ(1, 1,
+			1)), СЕКУНДА) / 86400
+	КОНЕЦ КАК Stage4,
+	ВЫБОР
+		КОГДА ЕСТЬNULL(DIR.FirstSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+		ИЛИ ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+			ТОГДА 0
+		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.FirstSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1,
+			1, 1)), СЕКУНДА) / 86400
+	КОНЕЦ КАК Stage5,
 	ВЫБОР
 		КОГДА ВТ_Инвойсы.Invoice.ДатаВозвратаКС = ДАТАВРЕМЯ(1, 1, 1)
+		ИЛИ ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА 0
 		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)), ВТ_Инвойсы.Invoice.ДатаВозвратаКС, СЕКУНДА) /
 			86400
 	КОНЕЦ КАК Stage6,
-	РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.JobEndDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА)
-		/ 86400 КАК TotalDIR,
+	ВЫБОР
+		КОГДА ЕСТЬNULL(DIR.JobEndDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+		ИЛИ ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+			ТОГДА 0
+		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.JobEndDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)),
+			СЕКУНДА) / 86400
+	КОНЕЦ КАК TotalDIR,
 	ВЫБОР
 		КОГДА ВТ_Инвойсы.Invoice.TriggerDate = ДАТАВРЕМЯ(1, 1, 1)
+		ИЛИ ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА 0
 		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)), ВТ_Инвойсы.Invoice.TriggerDate, СЕКУНДА) /
 			86400
 	КОНЕЦ КАК T2CStage1,
-	РАЗНОСТЬДАТ(ВТ_Инвойсы.Invoice.TriggerDate, ВТ_Инвойсы.Invoice.DueDateTo, СЕКУНДА) / 86400 КАК T2CStage2,
+	ВЫБОР
+		КОГДА ВТ_Инвойсы.Invoice.TriggerDate = ДАТАВРЕМЯ(1, 1, 1)
+		ИЛИ ВТ_Инвойсы.Invoice.DueDateTo = ДАТАВРЕМЯ(1, 1, 1)
+			ТОГДА 0
+		ИНАЧЕ РАЗНОСТЬДАТ(ВТ_Инвойсы.Invoice.TriggerDate, ВТ_Инвойсы.Invoice.DueDateTo, СЕКУНДА) / 86400
+	КОНЕЦ КАК T2CStage2,
 	ВЫБОР
 		КОГДА ВТ_Инвойсы.Invoice.Contract = ЗНАЧЕНИЕ(Справочник.ДоговорыКонтрагентов.ПустаяСсылка)
 			ТОГДА ВТ_Инвойсы.Invoice.Agreement
@@ -442,7 +489,21 @@
 		КОГДА ВТ_Инвойсы.ЗаполнятьОплатыПоДаннымОбмена
 			ТОГДА ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1))
 		ИНАЧЕ ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1))
-	КОНЕЦ КАК FirstDateOfPayment
+	КОНЕЦ КАК FirstDateOfPayment,
+	ВЫБОР
+		КОГДА ВТ_Инвойсы.ЗаполнятьОплатыПоДаннымОбмена
+		И (ВТ_Инвойсы.Invoice.DueDateTo = ДАТАВРЕМЯ(1, 1, 1)
+		ИЛИ ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1))
+			ТОГДА 0
+		КОГДА ВТ_Инвойсы.ЗаполнятьОплатыПоДаннымОбмена
+			ТОГДА РАЗНОСТЬДАТ(ВТ_Инвойсы.Invoice.DueDateTo, ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)),
+				СЕКУНДА) / 86400
+		КОГДА ВТ_Инвойсы.Invoice.DueDateTo = ДАТАВРЕМЯ(1, 1, 1)
+		ИЛИ ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+			ТОГДА 0
+		ИНАЧЕ РАЗНОСТЬДАТ(ВТ_Инвойсы.Invoice.DueDateTo, ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)),
+			СЕКУНДА) / 86400
+	КОНЕЦ КАК T2CStage3
 ИЗ
 	ВТ_Инвойсы КАК ВТ_Инвойсы
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.DIR КАК DIR
@@ -655,6 +716,85 @@
 			<v8:item>
 				<v8:lang>ru</v8:lang>
 				<v8:content>Factor 1-5 stages + KS Sign</v8:content>
+			</v8:item>
+		</title>
+		<appearance>
+			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+				<dcscor:parameter>Format</dcscor:parameter>
+				<dcscor:value xsi:type="v8:LocalStringType">
+					<v8:item>
+						<v8:lang>ru</v8:lang>
+						<v8:content>ЧДЦ=2</v8:content>
+					</v8:item>
+				</dcscor:value>
+			</dcscor:item>
+		</appearance>
+		<valueType>
+		</valueType>
+	</calculatedField>
+	<calculatedField>
+		<dataPath>SumT2CStages</dataPath>
+		<expression>T2CStage1 + T2CStage2 + T2CStage3</expression>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Sum of 3 stages T2C</v8:content>
+			</v8:item>
+		</title>
+		<appearance>
+			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+				<dcscor:parameter>Format</dcscor:parameter>
+				<dcscor:value xsi:type="v8:LocalStringType">
+					<v8:item>
+						<v8:lang>ru</v8:lang>
+						<v8:content>ЧДЦ=2</v8:content>
+					</v8:item>
+				</dcscor:value>
+			</dcscor:item>
+		</appearance>
+		<valueType>
+		</valueType>
+	</calculatedField>
+	<calculatedField>
+		<dataPath>FactPaymentPeriod</dataPath>
+		<expression>ВЫБОР
+	КОГДА DateFrom = ДАТАВРЕМЯ(1,1,1) ИЛИ FirstDateOfPayment = ДАТАВРЕМЯ(1,1,1)
+		ТОГДА 0
+	ИНАЧЕ
+		РАЗНОСТЬДАТ(DateFrom, FirstDateOfPayment, "СЕКУНДА") / 86400
+КОНЕЦ</expression>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Fact payment period</v8:content>
+			</v8:item>
+		</title>
+		<appearance>
+			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+				<dcscor:parameter>Format</dcscor:parameter>
+				<dcscor:value xsi:type="v8:LocalStringType">
+					<v8:item>
+						<v8:lang>ru</v8:lang>
+						<v8:content>ЧДЦ=2</v8:content>
+					</v8:item>
+				</dcscor:value>
+			</dcscor:item>
+		</appearance>
+		<valueType>
+		</valueType>
+	</calculatedField>
+	<calculatedField>
+		<dataPath>TotalDIRKST2C</dataPath>
+		<expression>ВЫБОР
+	КОГДА TotalDIR + Stage6 = 0
+		ТОГДА 0
+	ИНАЧЕ
+		TotalDIR + TotalDIR + Stage6 + T2CStage1 + T2CStage2 + T2CStage3
+КОНЕЦ</expression>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Total DIR + Time to sign KS + T2C</v8:content>
 			</v8:item>
 		</title>
 		<appearance>
@@ -972,6 +1112,24 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Factor1</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Factor3</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Factor4</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Factor5</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Factor15</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Factor15andKS</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Invoice.Contract.Trigger</dcsset:field>
 					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 						<v8:item>
@@ -1006,6 +1164,60 @@
 							<v8:content>PT days to</v8:content>
 						</v8:item>
 					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>DateFrom</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>DateTo</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>FirstDateOfPayment</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Stage1</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Stage2</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Stage3</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Stage4</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Stage5</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Stage6</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>SumStages</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>TotalDIR</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>TotalDIRandKS</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>T2CStage1</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>T2CStage2</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>T2CStage3</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>SumT2CStages</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>FactPaymentPeriod</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>TotalDIRKST2C</dcsset:field>
 				</dcsset:item>
 			</dcsset:selection>
 			<dcsset:dataParameters>
