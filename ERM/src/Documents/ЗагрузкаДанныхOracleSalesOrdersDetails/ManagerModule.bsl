@@ -650,11 +650,13 @@
 			JobEndDate = Выборка.JobEndDate;
 		КонецЕсли;
 		
-		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.JobEndDate, JobEndDate);
-		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.FTLSubmissionDate, FTLSubmissionDate);
-		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.CreationDate, CreationDate);
-		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.ApprovalDate, ApprovalDate);
-		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.FirstSubmissionDate, FirstSubmissionDate);
+		//{ RGS Alm 21.06.2018 17:58:04 S-E-0000619
+		//РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.JobEndDate, JobEndDate);
+		//РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.FTLSubmissionDate, FTLSubmissionDate);
+		//РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.CreationDate, CreationDate);
+		//РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.ApprovalDate, ApprovalDate);
+		//РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.FirstSubmissionDate, FirstSubmissionDate);
+		// } RGS Alm 21.06.2018 17:58:04 S-E-0000619
 		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.InvoiceFlagDate, InvoiceFlagDate);
 		
 		Если НЕ ЗначениеЗаполнено(Выборка.СсылкаВалюта) Тогда
