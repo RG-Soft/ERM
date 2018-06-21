@@ -507,6 +507,7 @@
 		//КонецЕсли;
 		
 		Даты = Новый Соответствие();
+		Даты.Вставить("JobStartDate", Выборка.OrderJobStartDate);
 		Даты.Вставить("JobEndDate", JobEndDate);
 		Даты.Вставить("FTLSubmissionDate", FTLSubmissionDate);
 		Даты.Вставить("CreationDate", CreationDate);

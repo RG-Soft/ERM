@@ -92,7 +92,7 @@
 			<title xsi:type="v8:LocalStringType">
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>Stage6</v8:content>
+					<v8:content>(6 Stage of DIR) Time to sign KS</v8:content>
 				</v8:item>
 			</title>
 			<appearance>
@@ -113,7 +113,7 @@
 			<title xsi:type="v8:LocalStringType">
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>Stage3</v8:content>
+					<v8:content>3 Stage of DIR</v8:content>
 				</v8:item>
 			</title>
 			<appearance>
@@ -134,7 +134,7 @@
 			<title xsi:type="v8:LocalStringType">
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>Stage2</v8:content>
+					<v8:content>2 Stage of DIR</v8:content>
 				</v8:item>
 			</title>
 			<appearance>
@@ -155,7 +155,7 @@
 			<title xsi:type="v8:LocalStringType">
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>Stage5</v8:content>
+					<v8:content>5 Stage of DIR</v8:content>
 				</v8:item>
 			</title>
 			<appearance>
@@ -176,7 +176,7 @@
 			<title xsi:type="v8:LocalStringType">
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>Stage4</v8:content>
+					<v8:content>4 Stage of DIR</v8:content>
 				</v8:item>
 			</title>
 			<appearance>
@@ -197,7 +197,7 @@
 			<title xsi:type="v8:LocalStringType">
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>Stage1</v8:content>
+					<v8:content>1 Stage of DIR</v8:content>
 				</v8:item>
 			</title>
 			<appearance>
@@ -218,7 +218,7 @@
 			<title xsi:type="v8:LocalStringType">
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>Total DIR 5 St</v8:content>
+					<v8:content>Total DIR 5 St (JED-IFD)</v8:content>
 				</v8:item>
 			</title>
 			<appearance>
@@ -301,12 +301,23 @@
 			<title xsi:type="v8:LocalStringType">
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>T2 c stage3</v8:content>
+					<v8:content>3 Stage of T2C</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Период</dataPath>
+			<field>Период</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Month of invoice</v8:content>
 				</v8:item>
 			</title>
 		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
+	МАКСИМУМ(InvoicedDebtsОбороты.Период) КАК Период,
 	InvoicedDebtsОбороты.Source КАК Source,
 	InvoicedDebtsОбороты.Company КАК Company,
 	InvoicedDebtsОбороты.Client КАК Client,
@@ -315,7 +326,7 @@
 	InvoicedDebtsОбороты.Invoice КАК Invoice,
 	InvoicedDebtsОбороты.Currency КАК Currency,
 	InvoicedDebtsОбороты.LegalEntity КАК LegalEntity,
-	InvoicedDebtsОбороты.AmountОборот КАК AmountОборот,
+	СУММА(InvoicedDebtsОбороты.AmountОборот) КАК AmountОборот,
 	ВЫБОР
 		КОГДА ИсточникиСЗаполнениемОплатИзОбмена.Source ЕСТЬ NULL
 			ТОГДА ЛОЖЬ
@@ -323,12 +334,25 @@
 	КОНЕЦ КАК ЗаполнятьОплатыПоДаннымОбмена
 ПОМЕСТИТЬ ВТ_Инвойсы
 ИЗ
-	РегистрНакопления.InvoicedDebts.Обороты(,,,) КАК InvoicedDebtsОбороты
+	РегистрНакопления.InvoicedDebts.Обороты(,, Месяц,) КАК InvoicedDebtsОбороты
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИсточникиСЗаполнениемОплатИзОбмена КАК ИсточникиСЗаполнениемОплатИзОбмена
 		ПО InvoicedDebtsОбороты.Source = ИсточникиСЗаполнениемОплатИзОбмена.Source
 		И (InvoicedDebtsОбороты.Company = ИсточникиСЗаполнениемОплатИзОбмена.Company
 		ИЛИ ИсточникиСЗаполнениемОплатИзОбмена.Company = ЗНАЧЕНИЕ(Справочник.Организации.ПустаяСсылка))
-ИНДЕКСИРОВАТЬ ПО Invoice
+СГРУППИРОВАТЬ ПО
+	InvoicedDebtsОбороты.Source,
+	InvoicedDebtsОбороты.Company,
+	InvoicedDebtsОбороты.Client,
+	InvoicedDebtsОбороты.AU,
+	InvoicedDebtsОбороты.Account,
+	InvoicedDebtsОбороты.Invoice,
+	InvoicedDebtsОбороты.Currency,
+	InvoicedDebtsОбороты.LegalEntity,
+	ВЫБОР
+		КОГДА ИсточникиСЗаполнениемОплатИзОбмена.Source ЕСТЬ NULL
+			ТОГДА ЛОЖЬ
+		ИНАЧЕ ИСТИНА
+	КОНЕЦ ИНДЕКСИРОВАТЬ ПО Invoice
 ;
 ////////////////////////////////////////////////////////////////////////////////
  ВЫБРАТЬ РАЗЛИЧНЫЕ
@@ -503,7 +527,8 @@
 			ТОГДА 0
 		ИНАЧЕ РАЗНОСТЬДАТ(ВТ_Инвойсы.Invoice.DueDateTo, ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)),
 			СЕКУНДА) / 86400
-	КОНЕЦ КАК T2CStage3
+	КОНЕЦ КАК T2CStage3,
+	ВТ_Инвойсы.Период
 ИЗ
 	ВТ_Инвойсы КАК ВТ_Инвойсы
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.DIR КАК DIR
@@ -907,7 +932,7 @@
 		</title>
 		<valueType>
 		</valueType>
-		<useRestriction>true</useRestriction>
+		<useRestriction>false</useRestriction>
 		<valueListAllowed>false</valueListAllowed>
 		<availableAsField>true</availableAsField>
 		<denyIncompleteValues>false</denyIncompleteValues>
@@ -923,7 +948,7 @@
 		</title>
 		<valueType>
 		</valueType>
-		<useRestriction>true</useRestriction>
+		<useRestriction>false</useRestriction>
 		<valueListAllowed>false</valueListAllowed>
 		<availableAsField>true</availableAsField>
 		<denyIncompleteValues>false</denyIncompleteValues>
@@ -1031,6 +1056,9 @@
 					<dcsset:field>USDAmount</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>JobStartDate</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>JobEndDate</dcsset:field>
 					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 						<v8:item>
@@ -1112,7 +1140,13 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Период</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Factor1</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Factor2</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Factor3</dcsset:field>
