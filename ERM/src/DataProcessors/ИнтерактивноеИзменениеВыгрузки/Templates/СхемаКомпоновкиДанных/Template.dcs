@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <DataCompositionSchema xmlns="http://v8.1c.ru/8.1/data-composition-system/schema" xmlns:dcscom="http://v8.1c.ru/8.1/data-composition-system/common" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<dataSource>
 		<name>ОбщийИсточникДанных</name>
@@ -56,7 +56,8 @@
 	NULL 						КАК ОбъектРегистрацииТип,
 	&amp;ПричинаРегистрацииПоСсылке КАК ПричинаРегистрации
 {ГДЕ
-	(&amp;ПричинаРегистрацииПоСсылке) КАК ПричинаРегистрации}</query>
+	(&amp;ПричинаРегистрацииПоСсылке) КАК ПричинаРегистрации}
+ГДЕ Ложь</query>
 		</item>
 	</dataSet>
 	<dataSet xsi:type="DataSetObject">
@@ -81,10 +82,16 @@
 				</v8:item>
 			</title>
 			<useRestriction>
+				<field>false</field>
 				<condition>true</condition>
+				<group>false</group>
+				<order>false</order>
 			</useRestriction>
 			<attributeUseRestriction>
+				<field>false</field>
 				<condition>true</condition>
+				<group>false</group>
+				<order>false</order>
 			</attributeUseRestriction>
 		</field>
 		<field xsi:type="DataSetFieldField">
@@ -132,6 +139,7 @@
 				</v8:item>
 			</title>
 			<useRestriction>
+				<field>false</field>
 				<condition>true</condition>
 				<group>true</group>
 				<order>true</order>
@@ -141,6 +149,7 @@
 			<dataPath>Тип</dataPath>
 			<field>Тип</field>
 			<useRestriction>
+				<field>false</field>
 				<condition>true</condition>
 				<group>true</group>
 				<order>true</order>
@@ -169,12 +178,14 @@
 		<destinationDataSet>ТаблицаМетаданныхСоставаУзла</destinationDataSet>
 		<sourceExpression>ОбъектРегистрацииТип</sourceExpression>
 		<destinationExpression>Тип</destinationExpression>
+		<parameterListAllowed>false</parameterListAllowed>
 	</dataSetLink>
 	<dataSetLink>
 		<sourceDataSet>ТаблицаМетаданныхСоставаУзла</sourceDataSet>
 		<destinationDataSet>ОбщееКоличествоЭлементов</destinationDataSet>
 		<sourceExpression>Тип</sourceExpression>
 		<destinationExpression>Тип</destinationExpression>
+		<parameterListAllowed>false</parameterListAllowed>
 	</dataSetLink>
 	<calculatedField>
 		<dataPath>РегистрацияАвтоматически</dataPath>
@@ -186,6 +197,7 @@
 			</v8:item>
 		</title>
 		<useRestriction>
+			<field>false</field>
 			<condition>true</condition>
 			<group>true</group>
 			<order>true</order>
@@ -209,6 +221,7 @@
 			</v8:item>
 		</title>
 		<useRestriction>
+			<field>false</field>
 			<condition>true</condition>
 			<group>true</group>
 			<order>true</order>
@@ -232,6 +245,7 @@
 			</v8:item>
 		</title>
 		<useRestriction>
+			<field>false</field>
 			<condition>true</condition>
 			<group>true</group>
 			<order>true</order>
@@ -247,7 +261,7 @@
 	</calculatedField>
 	<calculatedField>
 		<dataPath>ВыгрузкаОбъектаВозможна</dataPath>
-		<expression>ОбменДаннымиСервер.ВыгрузкаСсылкиИзИнтерактивногоДополненияРазрешена(&amp;УзелИнформационнойБазы, ОбъектРегистрации)</expression>
+		<expression>НЕ ОбъектРегистрации ЕСТЬ NULL И ОбменДаннымиСервер.ВыгрузкаСсылкиИзИнтерактивногоДополненияРазрешена(&amp;УзелИнформационнойБазы, ОбъектРегистрации)</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -255,6 +269,7 @@
 			</v8:item>
 		</title>
 		<useRestriction>
+			<field>false</field>
 			<condition>true</condition>
 			<group>true</group>
 			<order>true</order>
@@ -265,7 +280,7 @@
 	</calculatedField>
 	<calculatedField>
 		<dataPath>КоличествоПоОбщимПравилам</dataPath>
-		<expression/>
+		<expression></expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -273,6 +288,7 @@
 			</v8:item>
 		</title>
 		<useRestriction>
+			<field>false</field>
 			<condition>true</condition>
 			<group>true</group>
 			<order>true</order>
@@ -288,7 +304,7 @@
 	</calculatedField>
 	<calculatedField>
 		<dataPath>НеБудетВыгружено</dataPath>
-		<expression/>
+		<expression></expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -296,6 +312,7 @@
 			</v8:item>
 		</title>
 		<useRestriction>
+			<field>false</field>
 			<condition>true</condition>
 			<group>true</group>
 			<order>true</order>
@@ -311,7 +328,7 @@
 	</calculatedField>
 	<calculatedField>
 		<dataPath>КоличествоДляВыгрузки</dataPath>
-		<expression/>
+		<expression></expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -319,6 +336,7 @@
 			</v8:item>
 		</title>
 		<useRestriction>
+			<field>false</field>
 			<condition>true</condition>
 			<group>true</group>
 			<order>true</order>
@@ -342,6 +360,7 @@
 			</v8:item>
 		</title>
 		<useRestriction>
+			<field>false</field>
 			<condition>true</condition>
 			<group>true</group>
 			<order>true</order>
@@ -427,11 +446,15 @@
 			</v8:item>
 		</title>
 		<valueType>
-			<v8:TypeSet xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:ExchangePlanRef</v8:TypeSet>
+			<v8:TypeSet xmlns:d3p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d3p1:ExchangePlanRef</v8:TypeSet>
 		</valueType>
-		<value xsi:nil="true"/>
+		<value xsi:nil="true">
+		</value>
 		<useRestriction>true</useRestriction>
+		<valueListAllowed>false</valueListAllowed>
 		<availableAsField>false</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>ПричинаРегистрацииАвтоматически</name>
@@ -444,13 +467,16 @@
 		<valueType>
 			<v8:Type>xs:string</v8:Type>
 			<v8:StringQualifiers>
-				<v8:Length>0</v8:Length>
+				<v8:Length>50</v8:Length>
 				<v8:AllowedLength>Variable</v8:AllowedLength>
 			</v8:StringQualifiers>
 		</valueType>
-		<value xsi:type="xs:string"/>
+		<value xsi:type="xs:string"></value>
 		<useRestriction>true</useRestriction>
+		<valueListAllowed>false</valueListAllowed>
 		<availableAsField>false</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>ПричинаРегистрацииДополнительно</name>
@@ -463,13 +489,16 @@
 		<valueType>
 			<v8:Type>xs:string</v8:Type>
 			<v8:StringQualifiers>
-				<v8:Length>0</v8:Length>
+				<v8:Length>50</v8:Length>
 				<v8:AllowedLength>Variable</v8:AllowedLength>
 			</v8:StringQualifiers>
 		</valueType>
-		<value xsi:type="xs:string"/>
+		<value xsi:type="xs:string"></value>
 		<useRestriction>true</useRestriction>
+		<valueListAllowed>false</valueListAllowed>
 		<availableAsField>false</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>ПричинаРегистрацииПоСсылке</name>
@@ -482,13 +511,16 @@
 		<valueType>
 			<v8:Type>xs:string</v8:Type>
 			<v8:StringQualifiers>
-				<v8:Length>0</v8:Length>
+				<v8:Length>50</v8:Length>
 				<v8:AllowedLength>Variable</v8:AllowedLength>
 			</v8:StringQualifiers>
 		</valueType>
-		<value xsi:type="xs:string"/>
+		<value xsi:type="xs:string"></value>
 		<useRestriction>true</useRestriction>
+		<valueListAllowed>false</valueListAllowed>
 		<availableAsField>false</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>ДатаФормирования</name>
@@ -506,7 +538,10 @@
 		</valueType>
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>true</useRestriction>
+		<valueListAllowed>false</valueListAllowed>
 		<availableAsField>false</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>ПредставлениеСписка</name>
@@ -523,9 +558,12 @@
 				<v8:AllowedLength>Variable</v8:AllowedLength>
 			</v8:StringQualifiers>
 		</valueType>
-		<value xsi:type="xs:string"/>
+		<value xsi:type="xs:string"></value>
 		<useRestriction>true</useRestriction>
+		<valueListAllowed>false</valueListAllowed>
 		<availableAsField>false</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>ТекстОбщихПараметровСинхронизации</name>
@@ -542,9 +580,12 @@
 				<v8:AllowedLength>Variable</v8:AllowedLength>
 			</v8:StringQualifiers>
 		</valueType>
-		<value xsi:type="xs:string"/>
+		<value xsi:type="xs:string"></value>
 		<useRestriction>true</useRestriction>
+		<valueListAllowed>false</valueListAllowed>
 		<availableAsField>false</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>ТекстДополнительныхПараметров</name>
@@ -561,9 +602,12 @@
 				<v8:AllowedLength>Variable</v8:AllowedLength>
 			</v8:StringQualifiers>
 		</valueType>
-		<value xsi:type="xs:string"/>
+		<value xsi:type="xs:string"></value>
 		<useRestriction>true</useRestriction>
+		<valueListAllowed>false</valueListAllowed>
 		<availableAsField>false</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>УпрощенныйРежим</name>
@@ -578,7 +622,10 @@
 		</valueType>
 		<value xsi:type="xs:boolean">false</value>
 		<useRestriction>true</useRestriction>
+		<valueListAllowed>false</valueListAllowed>
 		<availableAsField>false</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
 	</parameter>
 	<template>
 		<name>Макет1</name>
@@ -744,11 +791,11 @@
 				</dcsat:tableCell>
 			</dcsat:item>
 		</template>
-		<parameter xmlns:dcsat="http://v8.1c.ru/8.1/data-composition-system/area-template" xsi:type="dcsat:ExpressionAreaTemplateParameter">
+		<parameter xsi:type="dcsat:ExpressionAreaTemplateParameter" xmlns:dcsat="http://v8.1c.ru/8.1/data-composition-system/area-template">
 			<dcsat:name>ТекстОбщихПараметровСинхронизации</dcsat:name>
 			<dcsat:expression>&amp;ТекстОбщихПараметровСинхронизации</dcsat:expression>
 		</parameter>
-		<parameter xmlns:dcsat="http://v8.1c.ru/8.1/data-composition-system/area-template" xsi:type="dcsat:ExpressionAreaTemplateParameter">
+		<parameter xsi:type="dcsat:ExpressionAreaTemplateParameter" xmlns:dcsat="http://v8.1c.ru/8.1/data-composition-system/area-template">
 			<dcsat:name>ТекстДополнительныхПараметров</dcsat:name>
 			<dcsat:expression>&amp;ТекстДополнительныхПараметров</dcsat:expression>
 		</parameter>
@@ -786,11 +833,11 @@
 				<dcsat:tableCell/>
 			</dcsat:item>
 		</template>
-		<parameter xmlns:dcsat="http://v8.1c.ru/8.1/data-composition-system/area-template" xsi:type="dcsat:ExpressionAreaTemplateParameter">
+		<parameter xsi:type="dcsat:ExpressionAreaTemplateParameter" xmlns:dcsat="http://v8.1c.ru/8.1/data-composition-system/area-template">
 			<dcsat:name>УзелИнформационнойБазы</dcsat:name>
 			<dcsat:expression>&amp;УзелИнформационнойБазы</dcsat:expression>
 		</parameter>
-		<parameter xmlns:dcsat="http://v8.1c.ru/8.1/data-composition-system/area-template" xsi:type="dcsat:ExpressionAreaTemplateParameter">
+		<parameter xsi:type="dcsat:ExpressionAreaTemplateParameter" xmlns:dcsat="http://v8.1c.ru/8.1/data-composition-system/area-template">
 			<dcsat:name>ДатаФормирования</dcsat:name>
 			<dcsat:expression>&amp;ДатаФормирования</dcsat:expression>
 		</parameter>
@@ -959,11 +1006,11 @@
 				</dcsat:tableCell>
 			</dcsat:item>
 		</template>
-		<parameter xmlns:dcsat="http://v8.1c.ru/8.1/data-composition-system/area-template" xsi:type="dcsat:ExpressionAreaTemplateParameter">
+		<parameter xsi:type="dcsat:ExpressionAreaTemplateParameter" xmlns:dcsat="http://v8.1c.ru/8.1/data-composition-system/area-template">
 			<dcsat:name>ТекстОбщихПараметровСинхронизации</dcsat:name>
 			<dcsat:expression>&amp;ТекстОбщихПараметровСинхронизации</dcsat:expression>
 		</parameter>
-		<parameter xmlns:dcsat="http://v8.1c.ru/8.1/data-composition-system/area-template" xsi:type="dcsat:ExpressionAreaTemplateParameter">
+		<parameter xsi:type="dcsat:ExpressionAreaTemplateParameter" xmlns:dcsat="http://v8.1c.ru/8.1/data-composition-system/area-template">
 			<dcsat:name>ТекстДополнительныхПараметров</dcsat:name>
 			<dcsat:expression>&amp;ТекстДополнительныхПараметров</dcsat:expression>
 		</parameter>
@@ -1012,15 +1059,15 @@
 				<dcsat:tableCell/>
 			</dcsat:item>
 		</template>
-		<parameter xmlns:dcsat="http://v8.1c.ru/8.1/data-composition-system/area-template" xsi:type="dcsat:ExpressionAreaTemplateParameter">
+		<parameter xsi:type="dcsat:ExpressionAreaTemplateParameter" xmlns:dcsat="http://v8.1c.ru/8.1/data-composition-system/area-template">
 			<dcsat:name>УзелИнформационнойБазы</dcsat:name>
 			<dcsat:expression>&amp;УзелИнформационнойБазы</dcsat:expression>
 		</parameter>
-		<parameter xmlns:dcsat="http://v8.1c.ru/8.1/data-composition-system/area-template" xsi:type="dcsat:ExpressionAreaTemplateParameter">
+		<parameter xsi:type="dcsat:ExpressionAreaTemplateParameter" xmlns:dcsat="http://v8.1c.ru/8.1/data-composition-system/area-template">
 			<dcsat:name>ДатаФормирования</dcsat:name>
 			<dcsat:expression>&amp;ДатаФормирования</dcsat:expression>
 		</parameter>
-		<parameter xmlns:dcsat="http://v8.1c.ru/8.1/data-composition-system/area-template" xsi:type="dcsat:ExpressionAreaTemplateParameter">
+		<parameter xsi:type="dcsat:ExpressionAreaTemplateParameter" xmlns:dcsat="http://v8.1c.ru/8.1/data-composition-system/area-template">
 			<dcsat:name>ПредставлениеСписка</dcsat:name>
 			<dcsat:expression>&amp;ПредставлениеСписка</dcsat:expression>
 		</parameter>
@@ -1080,9 +1127,10 @@
 				<v8:content>Технические данные</v8:content>
 			</v8:item>
 		</dcsset:presentation>
-		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+		<dcsset:settings xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:chm="http://v8.1c.ru/8.2/data/chart" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
-				<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
+				<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+				</dcsset:item>
 			</dcsset:selection>
 			<dcsset:item xsi:type="dcsset:StructureItemGroup">
 				<dcsset:groupItems>
@@ -1190,9 +1238,10 @@
 				<v8:content>Пользовательские данные</v8:content>
 			</v8:item>
 		</dcsset:presentation>
-		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+		<dcsset:settings xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:chm="http://v8.1c.ru/8.2/data/chart" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
-				<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
+				<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+				</dcsset:item>
 			</dcsset:selection>
 			<dcsset:outputParameters>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
@@ -1212,7 +1261,8 @@
 			<dcsset:item xsi:type="dcsset:StructureItemGroup">
 				<dcsset:name>Шапка</dcsset:name>
 				<dcsset:order>
-					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
+					<dcsset:item xsi:type="dcsset:OrderItemAuto">
+					</dcsset:item>
 				</dcsset:order>
 				<dcsset:outputParameters>
 					<dcscor:item xsi:type="dcsset:SettingsParameterValue">
@@ -1264,7 +1314,7 @@
 						<dcsset:field>ПредставлениеСписка</dcsset:field>
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemFolder">
-						<dcsset:lwsTitle>
+						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>Выбрано</v8:content>
@@ -1272,7 +1322,7 @@
 						</dcsset:lwsTitle>
 						<dcsset:item xsi:type="dcsset:SelectedItemField">
 							<dcsset:field>КоличествоПоОбщимПравилам</dcsset:field>
-							<dcsset:lwsTitle>
+							<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 								<v8:item>
 									<v8:lang>ru</v8:lang>
 									<v8:content>По общим правилам</v8:content>
@@ -1281,7 +1331,7 @@
 						</dcsset:item>
 						<dcsset:item xsi:type="dcsset:SelectedItemField">
 							<dcsset:field>РегистрацияДополнительно</dcsset:field>
-							<dcsset:lwsTitle>
+							<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 								<v8:item>
 									<v8:lang>ru</v8:lang>
 									<v8:content>Дополнительно</v8:content>
@@ -1298,7 +1348,7 @@
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>КоличествоДляВыгрузки</dcsset:field>
-						<dcsset:lwsTitle>
+						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>Будет отправлено</v8:content>
@@ -1363,14 +1413,16 @@
 					<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 						<dcscor:use>false</dcscor:use>
 						<dcscor:parameter>Заголовок</dcscor:parameter>
-						<dcscor:value xsi:type="v8:LocalStringType"/>
+						<dcscor:value xsi:type="v8:LocalStringType">
+						</dcscor:value>
 					</dcscor:item>
 				</dcsset:outputParameters>
 			</dcsset:item>
 			<dcsset:item xsi:type="dcsset:StructureItemGroup">
 				<dcsset:name>Подвал</dcsset:name>
 				<dcsset:order>
-					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
+					<dcsset:item xsi:type="dcsset:OrderItemAuto">
+					</dcsset:item>
 				</dcsset:order>
 				<dcsset:outputParameters>
 					<dcscor:item xsi:type="dcsset:SettingsParameterValue">
@@ -1401,9 +1453,10 @@
 				<v8:content>Расшифровка по виду данных</v8:content>
 			</v8:item>
 		</dcsset:presentation>
-		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+		<dcsset:settings xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:chm="http://v8.1c.ru/8.2/data/chart" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
-				<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
+				<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+				</dcsset:item>
 			</dcsset:selection>
 			<dcsset:outputParameters>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
@@ -1423,7 +1476,8 @@
 			<dcsset:item xsi:type="dcsset:StructureItemGroup">
 				<dcsset:name>ШапкаВидаОбъекта</dcsset:name>
 				<dcsset:order>
-					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
+					<dcsset:item xsi:type="dcsset:OrderItemAuto">
+					</dcsset:item>
 				</dcsset:order>
 				<dcsset:outputParameters>
 					<dcscor:item xsi:type="dcsset:SettingsParameterValue">
@@ -1466,7 +1520,7 @@
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>ОбъектРегистрации</dcsset:field>
-						<dcsset:lwsTitle>
+						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>Данные</v8:content>
@@ -1477,7 +1531,7 @@
 						<dcsset:field>ВыгрузкаОбъектаВозможна</dcsset:field>
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemFolder">
-						<dcsset:lwsTitle>
+						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>Выбрано</v8:content>
@@ -1485,7 +1539,7 @@
 						</dcsset:lwsTitle>
 						<dcsset:item xsi:type="dcsset:SelectedItemField">
 							<dcsset:field>КоличествоПоОбщимПравилам</dcsset:field>
-							<dcsset:lwsTitle>
+							<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 								<v8:item>
 									<v8:lang>ru</v8:lang>
 									<v8:content>По общим правилам</v8:content>
@@ -1494,7 +1548,7 @@
 						</dcsset:item>
 						<dcsset:item xsi:type="dcsset:SelectedItemField">
 							<dcsset:field>РегистрацияДополнительно</dcsset:field>
-							<dcsset:lwsTitle>
+							<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 								<v8:item>
 									<v8:lang>ru</v8:lang>
 									<v8:content>Дополнительно</v8:content>
@@ -1505,7 +1559,7 @@
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>КоличествоДляВыгрузки</dcsset:field>
-						<dcsset:lwsTitle>
+						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>Будет отправлено</v8:content>
@@ -1570,14 +1624,16 @@
 					<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 						<dcscor:use>false</dcscor:use>
 						<dcscor:parameter>Заголовок</dcscor:parameter>
-						<dcscor:value xsi:type="v8:LocalStringType"/>
+						<dcscor:value xsi:type="v8:LocalStringType">
+						</dcscor:value>
 					</dcscor:item>
 				</dcsset:outputParameters>
 			</dcsset:item>
 			<dcsset:item xsi:type="dcsset:StructureItemGroup">
 				<dcsset:name>ПодвалВидаОбъекта</dcsset:name>
 				<dcsset:order>
-					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
+					<dcsset:item xsi:type="dcsset:OrderItemAuto">
+					</dcsset:item>
 				</dcsset:order>
 				<dcsset:outputParameters>
 					<dcscor:item xsi:type="dcsset:SettingsParameterValue">

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form:Form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:form="http://g5.1c.ru/v8/dt/form">
+<form:Form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:form="http://g5.1c.ru/v8/dt/form">
   <items xsi:type="form:FormField">
     <name>ФайлОбработкиИмя</name>
     <id>1</id>
@@ -49,15 +49,11 @@
         <event>StartChoice</event>
         <name>ФайлОбработкиИмяНачалоВыбора</name>
       </handlers>
-      <handlers>
-        <event>Clearing</event>
-        <name>ФайлОбработкиИмяОчистка</name>
-      </handlers>
+      <width>60</width>
       <autoMaxWidth>true</autoMaxWidth>
       <autoMaxHeight>true</autoMaxHeight>
       <wrap>true</wrap>
       <choiceButton>true</choiceButton>
-      <clearButton>true</clearButton>
       <chooseType>true</chooseType>
       <typeDomainEnabled>true</typeDomainEnabled>
     </extInfo>
@@ -75,7 +71,6 @@
         <segments>БезопасныйРежим</segments>
       </paths>
     </dataPath>
-    <titleLocation>Top</titleLocation>
     <extendedTooltip>
       <name>БезопасныйРежимРасширеннаяПодсказка</name>
       <id>6</id>
@@ -115,9 +110,10 @@
       <textEdit>true</textEdit>
     </extInfo>
   </items>
-  <items xsi:type="form:FormGroup">
-    <name>ГруппаКоманды</name>
-    <id>9</id>
+  <commandBarLocation>Bottom</commandBarLocation>
+  <autoCommandBar>
+    <name>ФормаКоманднаяПанель</name>
+    <id>-1</id>
     <items xsi:type="form:Button">
       <name>ПодключитьИОткрыть</name>
       <id>7</id>
@@ -176,7 +172,7 @@
         </extInfo>
       </extendedTooltip>
       <commandName>Form.StandardCommand.Close</commandName>
-      <representation>PictureAndText</representation>
+      <representation>Auto</representation>
       <autoMaxWidth>true</autoMaxWidth>
       <autoMaxHeight>true</autoMaxHeight>
       <placementArea>UserCmds</placementArea>
@@ -186,51 +182,25 @@
     <userVisible>
       <common>true</common>
     </userVisible>
-    <title>
-      <key>ru</key>
-      <value>Группа команды</value>
-    </title>
-    <toolTip>
-      <key>ru</key>
-      <value>Группа команды</value>
-    </toolTip>
-    <extendedTooltip>
-      <name>ГруппаКомандыРасширеннаяПодсказка</name>
-      <id>10</id>
-      <visible>true</visible>
-      <enabled>true</enabled>
-      <userVisible>
-        <common>true</common>
-      </userVisible>
-      <type>Label</type>
-      <autoMaxWidth>true</autoMaxWidth>
-      <autoMaxHeight>true</autoMaxHeight>
-      <extInfo xsi:type="form:LabelDecorationExtInfo">
-        <horizontalAlign>Left</horizontalAlign>
-      </extInfo>
-    </extendedTooltip>
-    <type>CommandBar</type>
-    <extInfo xsi:type="form:CommandBarExtInfo">
-      <horizontalAlign>Right</horizontalAlign>
-    </extInfo>
-  </items>
-  <commandBarLocation>None</commandBarLocation>
-  <autoCommandBar>
-    <name>ФормаКоманднаяПанель</name>
-    <id>-1</id>
-    <visible>true</visible>
-    <enabled>true</enabled>
-    <userVisible>
-      <common>true</common>
-    </userVisible>
-    <horizontalAlign>Left</horizontalAlign>
+    <horizontalAlign>Right</horizontalAlign>
     <autoFill>true</autoFill>
   </autoCommandBar>
+  <handlers>
+    <event>OnOpen</event>
+    <name>ПриОткрытии</name>
+  </handlers>
+  <handlers>
+    <event>OnCreateAtServer</event>
+    <name>ПриСозданииНаСервере</name>
+  </handlers>
   <handlers>
     <event>FillCheckProcessingAtServer</event>
     <name>ОбработкаПроверкиЗаполненияНаСервере</name>
   </handlers>
+  <excludedCommands>CustomizeForm</excludedCommands>
+  <excludedCommands>Help</excludedCommands>
   <windowOpeningMode>LockOwnerWindow</windowOpeningMode>
+  <autoSaveDataInSettings>Use</autoSaveDataInSettings>
   <autoTitle>true</autoTitle>
   <autoUrl>true</autoUrl>
   <group>Vertical</group>
@@ -240,24 +210,10 @@
   <showTitle>true</showTitle>
   <showCloseButton>true</showCloseButton>
   <attributes>
-    <name>Объект</name>
-    <id>1</id>
-    <valueType>
-      <types>DataProcessorObject.НастройкаРазрешенийНаИспользованиеВнешнихРесурсов</types>
-    </valueType>
-    <view>
-      <common>true</common>
-    </view>
-    <edit>
-      <common>true</common>
-    </edit>
-    <main>true</main>
-  </attributes>
-  <attributes>
     <name>ФайлОбработкиИмя</name>
     <title>
       <key>ru</key>
-      <value>Укажите файл внешнего отчета или обработки</value>
+      <value>Внешний отчет или обработка</value>
     </title>
     <id>2</id>
     <valueType>
@@ -270,6 +226,7 @@
     <edit>
       <common>true</common>
     </edit>
+    <fillChecking>ShowError</fillChecking>
   </attributes>
   <attributes>
     <name>ФайлОбработкиАдрес</name>
@@ -293,7 +250,7 @@
     <name>БезопасныйРежим</name>
     <title>
       <key>ru</key>
-      <value>Укажите безопасный режим, в котором будет выполняться подключение внешнего модуля</value>
+      <value>Безопасный режим для подключения</value>
     </title>
     <id>4</id>
     <valueType>
@@ -305,6 +262,9 @@
     <edit>
       <common>true</common>
     </edit>
+    <settingsSavedData xsi:type="form:DataPath">
+      <segments>БезопасныйРежим</segments>
+    </settingsSavedData>
   </attributes>
   <formCommands>
     <name>ПодключитьИОткрыть</name>
@@ -320,19 +280,16 @@
     <use>
       <common>true</common>
     </use>
-    <picture xsi:type="core:PictureRef">
-      <picture>StdPicture.DataProcessor</picture>
-    </picture>
     <action xsi:type="form:FormCommandHandlerContainer">
       <handler>
         <name>ПодключитьИОткрыть</name>
       </handler>
     </action>
     <representation>TextPicture</representation>
+    <currentRowUse>DontUse</currentRowUse>
   </formCommands>
   <commandInterface>
     <navigationPanel/>
     <commandBar/>
   </commandInterface>
-  <extInfo xsi:type="form:ObjectFormExtInfo"/>
 </form:Form>

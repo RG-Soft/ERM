@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <DataCompositionSchema xmlns="http://v8.1c.ru/8.1/data-composition-system/schema" xmlns:dcscom="http://v8.1c.ru/8.1/data-composition-system/common" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<dataSource>
 		<name>ИсточникДанных1</name>
@@ -285,8 +285,8 @@
 				</v8:item>
 			</title>
 			<valueType>
-				<v8:Type xmlns:d5p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d5p1:CatalogRef.ВнешниеПользователи</v8:Type>
-				<v8:Type xmlns:d5p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d5p1:CatalogRef.Пользователи</v8:Type>
+				<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:CatalogRef.ВнешниеПользователи</v8:Type>
+				<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:CatalogRef.Пользователи</v8:Type>
 			</valueType>
 		</field>
 		<field xsi:type="DataSetFieldField">
@@ -471,8 +471,8 @@
 				</v8:item>
 			</title>
 			<valueType>
-				<v8:Type xmlns:d5p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d5p1:CatalogRef.ВнешниеПользователи</v8:Type>
-				<v8:Type xmlns:d5p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d5p1:CatalogRef.Пользователи</v8:Type>
+				<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:CatalogRef.ВнешниеПользователи</v8:Type>
+				<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:CatalogRef.Пользователи</v8:Type>
 			</valueType>
 		</field>
 		<field xsi:type="DataSetFieldField">
@@ -517,12 +517,14 @@
 		<destinationDataSet>ПользователиИБ</destinationDataSet>
 		<sourceExpression>ИдентификаторПользователяИБ</sourceExpression>
 		<destinationExpression>УникальныйИдентификатор</destinationExpression>
+		<parameterListAllowed>false</parameterListAllowed>
 	</dataSetLink>
 	<dataSetLink>
 		<sourceDataSet>Пользователи</sourceDataSet>
 		<destinationDataSet>КонтактнаяИнформация</destinationDataSet>
 		<sourceExpression>Ссылка</sourceExpression>
 		<destinationExpression>Ссылка</destinationExpression>
+		<parameterListAllowed>false</parameterListAllowed>
 	</dataSetLink>
 	<parameter>
 		<name>ВнешниеПользователи</name>
@@ -537,7 +539,9 @@
 		</valueType>
 		<value xsi:type="xs:boolean">true</value>
 		<useRestriction>false</useRestriction>
+		<valueListAllowed>false</valueListAllowed>
 		<availableAsField>false</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
 		<use>Always</use>
 	</parameter>
 	<parameter>
@@ -553,7 +557,9 @@
 		</valueType>
 		<value xsi:type="xs:boolean">true</value>
 		<useRestriction>false</useRestriction>
+		<valueListAllowed>false</valueListAllowed>
 		<availableAsField>false</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
 		<use>Always</use>
 	</parameter>
 	<parameter>
@@ -567,9 +573,11 @@
 		<valueType>
 			<v8:Type>v8:UUID</v8:Type>
 		</valueType>
-		<value xsi:type="xs:string"/>
+		<value xsi:type="xs:string"></value>
 		<useRestriction>false</useRestriction>
+		<valueListAllowed>false</valueListAllowed>
 		<availableAsField>false</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
 		<use>Always</use>
 	</parameter>
 	<settingsVariant>
@@ -580,7 +588,7 @@
 				<v8:content>Сведения о пользователях и внешних пользователях</v8:content>
 			</v8:item>
 		</dcsset:presentation>
-		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+		<dcsset:settings xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:chm="http://v8.1c.ru/8.2/data/chart" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>СистемныеПоля.НомерПоПорядку</dcsset:field>
@@ -865,10 +873,12 @@
 			</dcsset:outputParameters>
 			<dcsset:item xsi:type="dcsset:StructureItemGroup">
 				<dcsset:order>
-					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
+					<dcsset:item xsi:type="dcsset:OrderItemAuto">
+					</dcsset:item>
 				</dcsset:order>
 				<dcsset:selection>
-					<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
+					<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+					</dcsset:item>
 				</dcsset:selection>
 			</dcsset:item>
 			<dcsset:itemsViewMode>Normal</dcsset:itemsViewMode>
@@ -882,7 +892,7 @@
 				<v8:content>Сведения о пользователях</v8:content>
 			</v8:item>
 		</dcsset:presentation>
-		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+		<dcsset:settings xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:chm="http://v8.1c.ru/8.2/data/chart" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>СистемныеПоля.НомерПоПорядку</dcsset:field>
@@ -978,7 +988,7 @@
 					<dcsset:presentation xsi:type="v8:LocalStringType">
 						<v8:item>
 							<v8:lang>ru</v8:lang>
-							<v8:content>Помеченые на удаление</v8:content>
+							<v8:content>Помеченные на удаление</v8:content>
 						</v8:item>
 					</dcsset:presentation>
 					<dcsset:viewMode>Normal</dcsset:viewMode>
@@ -1164,10 +1174,12 @@
 			</dcsset:outputParameters>
 			<dcsset:item xsi:type="dcsset:StructureItemGroup">
 				<dcsset:order>
-					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
+					<dcsset:item xsi:type="dcsset:OrderItemAuto">
+					</dcsset:item>
 				</dcsset:order>
 				<dcsset:selection>
-					<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
+					<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+					</dcsset:item>
 				</dcsset:selection>
 			</dcsset:item>
 			<dcsset:itemsViewMode>Normal</dcsset:itemsViewMode>
@@ -1181,7 +1193,7 @@
 				<v8:content>Сведения о внешних пользователях</v8:content>
 			</v8:item>
 		</dcsset:presentation>
-		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+		<dcsset:settings xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:chm="http://v8.1c.ru/8.2/data/chart" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>СистемныеПоля.НомерПоПорядку</dcsset:field>
@@ -1256,7 +1268,7 @@
 					<dcsset:presentation xsi:type="v8:LocalStringType">
 						<v8:item>
 							<v8:lang>ru</v8:lang>
-							<v8:content>Помеченые на удаление</v8:content>
+							<v8:content>Помеченные на удаление</v8:content>
 						</v8:item>
 					</dcsset:presentation>
 					<dcsset:viewMode>Normal</dcsset:viewMode>
@@ -1414,10 +1426,12 @@
 			</dcsset:outputParameters>
 			<dcsset:item xsi:type="dcsset:StructureItemGroup">
 				<dcsset:order>
-					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
+					<dcsset:item xsi:type="dcsset:OrderItemAuto">
+					</dcsset:item>
 				</dcsset:order>
 				<dcsset:selection>
-					<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
+					<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+					</dcsset:item>
 				</dcsset:selection>
 			</dcsset:item>
 			<dcsset:itemsViewMode>Normal</dcsset:itemsViewMode>
