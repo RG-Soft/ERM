@@ -635,7 +635,9 @@
 		|	И
 		|	НЕ InvoiceComments.Inactive
 		|	И InvoiceComments.Problem.User = &AutoUser
-		|	И InvoiceComments.Invoice = &Invoice";
+		|	И InvoiceComments.Invoice = &Invoice
+		|	И
+		|	НЕ InvoiceComments.ПроставленРегламентомАктуализацииСтатусовОплат";
 	
 	Запрос.УстановитьПараметр("AutoUser", rgsНастройкаКонфигурации.ЗначениеНастройки("AutoUser"));
 	Запрос.УстановитьПараметр("Invoice", Документ);
