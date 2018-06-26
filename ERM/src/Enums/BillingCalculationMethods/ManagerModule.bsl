@@ -519,7 +519,7 @@
 	
 КонецФункции
 
-Функция ПолучитьТекстЗапросаRevenue()
+Функция ПолучитьТекстЗапросаRevenue(Метод)
 	
 	ТекстЗапроса =
 	"ВЫБРАТЬ
@@ -538,40 +538,7 @@
 	|	RevenueОбороты.AU.Сегмент.БазовыйЭлемент КАК SubSubSegment,
 	|	RevenueОбороты.Currency КАК Currency,
 	|	RevenueОбороты.Company.БазовыйЭлемент КАК HFMCompany,
-	|	ЗНАЧЕНИЕ(Перечисление.BillingCalculationMethods.Revenue) КАК Method,
-	|	RevenueОбороты.AmountОборот КАК Amount,
-	|	RevenueОбороты.BaseAmountОборот КАК USDAmount
-	|ИЗ
-	|	РегистрНакопления.Revenue.Обороты(
-	|			&НачалоПериода,
-	|			&КонецПериода,
-	|			Месяц,
-	|			Source В (&Sources)) КАК RevenueОбороты";
-	
-	Возврат ТекстЗапроса;
-	
-КонецФункции
-
-Функция ПолучитьТекстЗапросаTradeRevenue()
-	
-	ТекстЗапроса =
-	"ВЫБРАТЬ
-	|	RevenueОбороты.Client,
-	|	RevenueОбороты.Company,
-	|	ВЫБОР
-	|		КОГДА RevenueОбороты.LegalEntity <> ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
-	|			ТОГДА RevenueОбороты.LegalEntity
-	|		ИНАЧЕ RevenueОбороты.Company.DefaultLegalEntity
-	|	КОНЕЦ,
-	|	RevenueОбороты.AU,
-	|	RevenueОбороты.Source,
-	|	RevenueОбороты.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
-	|	RevenueОбороты.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель КАК Segment,
-	|	RevenueОбороты.AU.Сегмент.БазовыйЭлемент.Родитель КАК SubSegment,
-	|	RevenueОбороты.AU.Сегмент.БазовыйЭлемент КАК SubSubSegment,
-	|	RevenueОбороты.Currency КАК Currency,
-	|	RevenueОбороты.Company.БазовыйЭлемент КАК HFMCompany,
-	|	ЗНАЧЕНИЕ(Перечисление.BillingCalculationMethods.TradeRevenue) КАК Method,
+	|	&Метод КАК Method,
 	|	RevenueОбороты.AmountОборот КАК Amount,
 	|	RevenueОбороты.BaseAmountОборот КАК USDAmount
 	|ИЗ
@@ -580,7 +547,15 @@
 	|			&КонецПериода,
 	|			Месяц,
 	|			Source В (&Sources)
-	|				И НЕ Account.БазовыйЭлемент.Intercompany) КАК RevenueОбороты";
+	|				&УсловиеИнтеркампани) КАК RevenueОбороты";
+	
+	Если Метод = Перечисления.BillingCalculationMethods.TradeRevenue Тогда
+		ТекстЗапроса = СтрЗаменить(ТекстЗапроса, "&Метод","ЗНАЧЕНИЕ(Перечисление.BillingCalculationMethods.TradeRevenue)");
+		ТекстЗапроса = СтрЗаменить(ТекстЗапроса, "&УсловиеИнтеркампани","И НЕ Account.БазовыйЭлемент.Intercompany");
+	ИначеЕсли Метод = Перечисления.BillingCalculationMethods.Revenue Тогда
+		ТекстЗапроса = СтрЗаменить(ТекстЗапроса, "&Метод","ЗНАЧЕНИЕ(Перечисление.BillingCalculationMethods.Revenue)");
+		ТекстЗапроса = СтрЗаменить(ТекстЗапроса, "&УсловиеИнтеркампани","");
+	КонецЕсли;
 	
 	Возврат ТекстЗапроса;
 	
@@ -592,10 +567,8 @@
 		Возврат ПолучитьТекстЗапросаTransactionClassification();
 	ИначеЕсли Метод = Перечисления.BillingCalculationMethods.ARandCollection Тогда
 		Возврат ПолучитьТекстЗапросаARandCollection();
-	ИначеЕсли Метод = Перечисления.BillingCalculationMethods.TradeRevenue Тогда
-		Возврат ПолучитьТекстЗапросаTradeRevenue();
-	ИначеЕсли Метод = Перечисления.BillingCalculationMethods.Revenue Тогда
-		Возврат ПолучитьТекстЗапросаRevenue();
+	ИначеЕсли Метод = Перечисления.BillingCalculationMethods.TradeRevenue ИЛИ Метод = Перечисления.BillingCalculationMethods.Revenue Тогда
+		Возврат ПолучитьТекстЗапросаRevenue(Метод);
 	Иначе
 		ВызватьИсключение СтрШаблон("Для метода '%1' не определен алгоритм получения данных.", Метод);
 	КонецЕсли;
