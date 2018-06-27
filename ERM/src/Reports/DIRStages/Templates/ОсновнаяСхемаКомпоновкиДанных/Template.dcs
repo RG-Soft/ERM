@@ -351,18 +351,18 @@
 		ПО (НАЧАЛОПЕРИОДА(InvoicedDebtsОбороты.Период, МЕСЯЦ) = ВнутренниеКурсыВалют.Период)
 		И InvoicedDebtsОбороты.Currency = ВнутренниеКурсыВалют.Валюта
 СГРУППИРОВАТЬ ПО
+	InvoicedDebtsОбороты.Source,
 	InvoicedDebtsОбороты.Company,
+	InvoicedDebtsОбороты.Client,
 	InvoicedDebtsОбороты.AU,
+	InvoicedDebtsОбороты.Account,
+	InvoicedDebtsОбороты.Invoice,
+	InvoicedDebtsОбороты.Currency,
 	ВЫБОР
 		КОГДА ИсточникиСЗаполнениемОплатИзОбмена.Source ЕСТЬ NULL
 			ТОГДА ЛОЖЬ
 		ИНАЧЕ ИСТИНА
 	КОНЕЦ,
-	InvoicedDebtsОбороты.Source,
-	InvoicedDebtsОбороты.Invoice,
-	InvoicedDebtsОбороты.Currency,
-	InvoicedDebtsОбороты.Client,
-	InvoicedDebtsОбороты.Account,
 	InvoicedDebtsОбороты.LegalEntity ИНДЕКСИРОВАТЬ ПО Invoice
 ;
 ////////////////////////////////////////////////////////////////////////////////
