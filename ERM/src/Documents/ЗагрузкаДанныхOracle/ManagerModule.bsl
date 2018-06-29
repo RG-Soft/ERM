@@ -4267,23 +4267,38 @@
 
 Процедура ДозаполнитьSalesOrderИзПроводки(SalesOrder, ТранзакцияOracleОбъект, ДанныеДляЗаполнения)
 	
+	ЕстьИзменения = Ложь;
 	РеквизитыSalesOrder = ОбщегоНазначения.ЗначенияРеквизитовОбъекта(SalesOrder, "Account,Amount,JobEndDate,CreationDate");
-	Если НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.Account) ИЛИ НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.Amount)
-		ИЛИ (ТранзакцияOracleОбъект.Source = Перечисления.ТипыСоответствий.OracleMI И 
-			(НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.JobEndDate) ИЛИ  НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.CreationDate))) Тогда
+	
+	Если НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.Account) ИЛИ НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.Amount) Тогда
 		SalesOrderОбъект = SalesOrder.ПолучитьОбъект();
+		ЕстьИзменения = Истина;
 		Если НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.Account) Тогда
 			SalesOrderОбъект.Account = ТранзакцияOracleОбъект.Account;
 		КонецЕсли;
 		Если НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.Amount) Тогда
 			SalesOrderОбъект.Amount = ТранзакцияOracleОбъект.Amount;
 		КонецЕсли;
-		Если ТранзакцияOracleОбъект.Source = Перечисления.ТипыСоответствий.OracleMI И НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.JobEndDate) Тогда
-			SalesOrderОбъект.JobEndDate = ДанныеДляЗаполнения.ShipDateActual;
-		КонецЕсли;
-		Если ТранзакцияOracleОбъект.Source = Перечисления.ТипыСоответствий.OracleMI И НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.CreationDate) Тогда
+	КонецЕсли;
+	
+	Если ТранзакцияOracleОбъект.Source = Перечисления.ТипыСоответствий.OracleMI Тогда
+		Если ЗначениеЗаполнено(ДанныеДляЗаполнения.CreationDate) И SalesOrder.CreationDate < ДанныеДляЗаполнения.CreationDate Тогда
+			Если НЕ ЕстьИзменения Тогда
+				ЕстьИзменения = Истина;
+				SalesOrderОбъект = SalesOrder.ПолучитьОбъект();
+			КонецЕсли;
 			SalesOrderОбъект.CreationDate = ДанныеДляЗаполнения.CreationDate;
 		КонецЕсли;
+		Если ЗначениеЗаполнено(ДанныеДляЗаполнения.ShipDateActual) И SalesOrder.JobEndDate < ДанныеДляЗаполнения.ShipDateActual Тогда
+			Если НЕ ЕстьИзменения Тогда
+				ЕстьИзменения = Истина;
+				SalesOrderОбъект = SalesOrder.ПолучитьОбъект();
+			КонецЕсли;
+			SalesOrderОбъект.JobEndDate = ДанныеДляЗаполнения.ShipDateActual;
+		КонецЕсли;
+	КонецЕсли;
+	
+	Если ЕстьИзменения Тогда
 		SalesOrderОбъект.ОбменДанными.Загрузка = Истина;
 		SalesOrderОбъект.Записать(РежимЗаписиДокумента.Запись);
 	КонецЕсли;
