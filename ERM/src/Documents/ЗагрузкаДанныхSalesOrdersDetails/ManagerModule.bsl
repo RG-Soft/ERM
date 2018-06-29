@@ -436,7 +436,7 @@
 					ОбъектInvoice.ОбменДанными.Загрузка = Истина;
 					ОбъектInvoice.Записать();
 					СтрокаТЗ = ОбновленныеInvoice.Добавить();
-					СтрокаТЗ.Invoice = Выборка.InvoiceСсылка;
+					СтрокаТЗ.Invoice = Выборка.InvoiceСсылкаB;
 				КонецЕсли;
 				
 			КонецЕсли;
@@ -465,8 +465,13 @@
 		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.AgreementStatus, Выборка.AgreementStatus);
 		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.AgreementType, Выборка.AgreementType);
 		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.Company, Выборка.ОрганизацияСсылка);
-		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.ArInvoice, Выборка.LawsonInvoice);
-		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.Invoice, Выборка.InvoiceСсылка);
+		Если ЗначениеЗаполнено(Выборка.InvoiceСсылка) Тогда
+			РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.Invoice, Выборка.InvoiceСсылка);
+			РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.ArInvoice, Выборка.LawsonInvoice);
+		ИначеЕсли ЗначениеЗаполнено(Выборка.InvoiceСсылкаB) Тогда
+			РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.Invoice, Выборка.InvoiceСсылкаB);
+			РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.ArInvoice, Выборка.LawsonInvoice + "B");
+		КонецЕсли;
 		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.SiebelOrderId, Выборка.OrderID);
 		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.ERPStatus, Выборка.LawsonStatus);
 		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.ExchangeRate, Выборка.ExchangeRate);
@@ -489,7 +494,11 @@
 		CreationDate = Неопределено;
 		ApprovalDate = Неопределено;
 		FirstSubmissionDate = Неопределено;
-		InvoiceFlagDate = Выборка.InvoiceFlagDate;
+		Если НЕ ЗначениеЗаполнено(ТекОбъект.InvoiceFlagDate) Тогда 
+			InvoiceFlagDate = Выборка.InvoiceFlagDate;
+		Иначе
+			InvoiceFlagDate = ПустаяДата;
+		КонецЕсли;
 		
 		Если Выборка.OrderFirstSubmissionDate = ПустаяДата Тогда
 			FirstSubmissionDate = InvoiceFlagDate;
@@ -523,14 +532,12 @@
 		
 		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.JobEndDate, JobEndDate);
 		
-		//Если НЕ СтруктураПараметров.ТипЗагрузкиUnbilled Тогда
-			РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.FTLSubmissionDate, FTLSubmissionDate);
-			РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.CreationDate, CreationDate);
-			РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.ApprovalDate, ApprovalDate);
-			РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.FirstSubmissionDate, FirstSubmissionDate);
-			РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.InvoiceFlagDate, InvoiceFlagDate);
-		//КонецЕсли;
-		
+		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.FTLSubmissionDate, FTLSubmissionDate);
+		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.CreationDate, CreationDate);
+		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.ApprovalDate, ApprovalDate);
+		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.FirstSubmissionDate, FirstSubmissionDate);
+		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.InvoiceFlagDate, InvoiceFlagDate);
+
 		Даты = Новый Соответствие();
 		Даты.Вставить("JobStartDate", Выборка.OrderJobStartDate);
 		Даты.Вставить("JobEndDate", JobEndDate);
@@ -538,7 +545,10 @@
 		Даты.Вставить("CreationDate", CreationDate);
 		Даты.Вставить("ApprovalDate", ApprovalDate);
 		Даты.Вставить("FirstSubmissionDate", FirstSubmissionDate);
-			
+		Если InvoiceFlagDate <> ПустаяДата Тогда
+			Даты.Вставить("InvoiceFlagDate", InvoiceFlagDate);
+		КонецЕсли;
+		
 		Если НЕ ЗначениеЗаполнено(Выборка.ВалютаСсылка) Тогда
 			ОтменитьТранзакцию();
 			ДанныеДляЗаполнения.Вставить("ОшибкаЗаполнения", Строка(ТекОбъект) + ": Failed to find currency!");
