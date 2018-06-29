@@ -191,6 +191,7 @@
 	|	SalesOrdersDetailsSourceData.FieldTicket,
 	|	SalesOrder.Ссылка КАК SalesOrderСсылка,
 	|	ДокументInvoice.Ссылка КАК InvoiceСсылка,
+	|	ДокументInvoiceB.Ссылка КАК InvoiceСсылкаB,
 	|	Организации.Ссылка КАК ОрганизацияСсылка,
 	|	SalesOrdersDetailsSourceData.YearMonthДата,
 	|	ВЫБОР
@@ -215,7 +216,12 @@
 	|		ПО SalesOrdersDetailsSourceData.LawsonInvoice = ДокументInvoice.Номер
 	|			И (НЕ ДокументInvoice.ПометкаУдаления)
 	|			И SalesOrdersDetailsSourceData.CompanyCode = ДокументInvoice.Company.Код
-	|			И (ДокументInvoice.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
+	|			И (ДокументInvoice.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))	
+	|		ЛЕВОЕ СОЕДИНЕНИЕ Документ.Invoice КАК ДокументInvoiceB
+	|		ПО SalesOrdersDetailsSourceData.LawsonInvoice + ""B"" = ДокументInvoiceB.Номер
+	|			И (НЕ ДокументInvoiceB.ПометкаУдаления)
+	|			И SalesOrdersDetailsSourceData.CompanyCode = ДокументInvoiceB.Company.Код
+	|			И (ДокументInvoiceB.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))	
 	|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
 	|		ПО SalesOrdersDetailsSourceData.CompanyCode = Организации.Код
 	|			И (НЕ Организации.ПометкаУдаления)
@@ -353,6 +359,7 @@
 	|	ВТ.FieldTicket,
 	|	ВТ.SalesOrderСсылка,
 	|	ВТ.InvoiceСсылка,
+	|	ВТ.InvoiceСсылкаB,
 	|	ВТ.ОрганизацияСсылка,
 	|	ВТ.YearMonthДата,
 	|	ВТ_ВалютыСПриемником.ОбъектПриемника КАК ВалютаСсылка,
@@ -399,25 +406,43 @@
 	
 	Пока Выборка.Следующий() Цикл
 		
-		Если Не ПустаяСтрока(Выборка.LawsonInvoice) И НЕ ЗначениеЗаполнено(Выборка.InvoiceСсылка) Тогда
+		Если Не ПустаяСтрока(Выборка.LawsonInvoice) И НЕ ЗначениеЗаполнено(Выборка.InvoiceСсылка) И НЕ ЗначениеЗаполнено(Выборка.InvoiceСсылкаB) Тогда
 			
 			СтрокаТЗ = НенайденныеInvoices.Добавить();
 			СтрокаТЗ.InvoiceNumber = Выборка.LawsonInvoice;
 			
-		ИначеЕсли ЗначениеЗаполнено(Выборка.InvoiceСсылка) И Не ПустаяСтрока(Выборка.ClientContract) И Выборка.ClientContract <> "N/A" Тогда
+		Иначе
 			
-			ОбъектInvoice = Выборка.InvoiceСсылка.ПолучитьОбъект();
-			РГСофтКлиентСервер.УстановитьЗначение(ОбъектInvoice.Agreement, Выборка.ClientContract);
+			Если ЗначениеЗаполнено(Выборка.InvoiceСсылка) И Не ПустаяСтрока(Выборка.ClientContract) И Выборка.ClientContract <> "N/A" Тогда
+				
+				ОбъектInvoice = Выборка.InvoiceСсылка.ПолучитьОбъект();
+				РГСофтКлиентСервер.УстановитьЗначение(ОбъектInvoice.Agreement, Выборка.ClientContract);
+				
+				Если ОбъектInvoice.Модифицированность() Тогда
+					ОбъектInvoice.ОбменДанными.Загрузка = Истина;
+					ОбъектInvoice.Записать();
+					СтрокаТЗ = ОбновленныеInvoice.Добавить();
+					СтрокаТЗ.Invoice = Выборка.InvoiceСсылка;
+				КонецЕсли;
+				
+			КонецЕсли;
 			
-			Если ОбъектInvoice.Модифицированность() Тогда
-				ОбъектInvoice.ОбменДанными.Загрузка = Истина;
-				ОбъектInvoice.Записать();
-				СтрокаТЗ = ОбновленныеInvoice.Добавить();
-				СтрокаТЗ.Invoice = Выборка.InvoiceСсылка;
+			Если ЗначениеЗаполнено(Выборка.InvoiceСсылкаB) И Не ПустаяСтрока(Выборка.ClientContract) И Выборка.ClientContract <> "N/A" Тогда
+				
+				ОбъектInvoice = Выборка.InvoiceСсылкаB.ПолучитьОбъект();
+				РГСофтКлиентСервер.УстановитьЗначение(ОбъектInvoice.Agreement, Выборка.ClientContract);
+				
+				Если ОбъектInvoice.Модифицированность() Тогда
+					ОбъектInvoice.ОбменДанными.Загрузка = Истина;
+					ОбъектInvoice.Записать();
+					СтрокаТЗ = ОбновленныеInvoice.Добавить();
+					СтрокаТЗ.Invoice = Выборка.InvoiceСсылка;
+				КонецЕсли;
+				
 			КонецЕсли;
 			
 		КонецЕсли;
-		
+				
 		Если Не ЗначениеЗаполнено(Выборка.SalesOrderСсылка) Тогда
 			Если Выборка.LawsonStatus = "Closed" 
 				ИЛИ Выборка.LawsonStatus = "Unreleased - Locked in Lawson"
@@ -548,6 +573,10 @@
 		
 		Если ЗначениеЗаполнено(Выборка.InvoiceСсылка) Тогда
 			РегистрыСведений.DIR.ЗаписатьДаты(Выборка.InvoiceСсылка, Даты);
+		КонецЕсли;
+
+		Если ЗначениеЗаполнено(Выборка.InvoiceСсылкаB) Тогда
+			РегистрыСведений.DIR.ЗаписатьДаты(Выборка.InvoiceСсылкаB, Даты);
 		КонецЕсли;
 		
 	КонецЦикла;
