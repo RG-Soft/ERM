@@ -46,7 +46,7 @@
 			ДвижениеCreditNote.Company = СтрокаТЧ.Company;
 			ДвижениеCreditNote.Source = Source;
 			ДвижениеCreditNote.Location = СтрокаТЧ.Location;
-			ДвижениеCreditNote.SubSubSegment = СтрокаТЧ.SubSubSegment;
+			//ДвижениеCreditNote.SubSubSegment = СтрокаТЧ.SubSubSegment;
 			ДвижениеCreditNote.Invoice = СтрокаТЧ.CreditNote;
 			ДвижениеCreditNote.Account = СтрокаТЧ.Account;
 			ДвижениеCreditNote.Currency = СтрокаТЧ.Currency;
@@ -60,7 +60,7 @@
 			ДвижениеInvoice.Company = Company;
 			ДвижениеInvoice.Source = Source;
 			ДвижениеInvoice.Location = Location;
-			ДвижениеInvoice.SubSubSegment = SubSubSegment;
+			//ДвижениеInvoice.SubSubSegment = SubSubSegment;
 			ДвижениеInvoice.Invoice = Invoice;
 			ДвижениеInvoice.Account = Account;
 			ДвижениеInvoice.Currency = Currency;

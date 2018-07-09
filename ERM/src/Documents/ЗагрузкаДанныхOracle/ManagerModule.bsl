@@ -1581,7 +1581,7 @@
 		|	КлючиРучныхКорректировок.Company КАК Company,
 		|	КлючиРучныхКорректировок.Client КАК Client,
 		|	КлючиРучныхКорректировок.Location КАК Location,
-		|	КлючиРучныхКорректировок.SubSubSegment КАК SubSubSegment,
+		//|	КлючиРучныхКорректировок.SubSubSegment КАК SubSubSegment,
 		|	КлючиРучныхКорректировок.Account КАК Account,
 		|	КлючиРучныхКорректировок.Currency КАК Currency,
 		|	КлючиРучныхКорректировок.РучнаяКорректировка КАК РучнаяКорректировка
@@ -1610,7 +1610,7 @@
 		|	КлючиBatchAllocation.Company КАК Company,
 		|	КлючиBatchAllocation.Client КАК Client,
 		|	КлючиBatchAllocation.Location КАК Location,
-		|	КлючиBatchAllocation.SubSubSegment КАК SubSubSegment,
+		//|	КлючиBatchAllocation.SubSubSegment КАК SubSubSegment,
 		|	КлючиBatchAllocation.Account КАК Account,
 		|	КлючиBatchAllocation.Currency КАК Currency,
 		|	КлючиBatchAllocation.BatchAllocation КАК BatchAllocation
@@ -2207,7 +2207,7 @@
 		|	КлючиРучныхКорректировок.Company,
 		|	КлючиРучныхКорректировок.Client,
 		|	КлючиРучныхКорректировок.Location,
-		|	КлючиРучныхКорректировок.SubSubSegment,
+		//|	КлючиРучныхКорректировок.SubSubSegment,
 		|	КлючиРучныхКорректировок.Account,
 		|	КлючиРучныхКорректировок.Currency,
 		|	КлючиРучныхКорректировок.РучнаяКорректировка
@@ -2283,7 +2283,7 @@
 		|	КлючиBatchAllocation.Company,
 		|	КлючиBatchAllocation.Client,
 		|	КлючиBatchAllocation.Location,
-		|	КлючиBatchAllocation.SubSubSegment,
+		//|	КлючиBatchAllocation.SubSubSegment,
 		|	КлючиBatchAllocation.Account,
 		|	КлючиBatchAllocation.Currency,
 		|	КлючиBatchAllocation.BatchAllocation
@@ -3348,7 +3348,7 @@
 				СтруктураПоискаBatch.Client = СтруктураКлиент.Клиент;
 				// } RGS Alm 14.06.2018 15:48:43 S-E-0000795
 				СтруктураПоискаBatch.Location = ТранзакцияOracleОбъект.Location;
-				СтруктураПоискаBatch.SubSubSegment = ТранзакцияOracleОбъект.SubSubSegment;
+				//СтруктураПоискаBatch.SubSubSegment = ТранзакцияOracleОбъект.SubSubSegment;
 				СтруктураПоискаBatch.Account = ТранзакцияOracleОбъект.Account;
 				СтруктураПоискаBatch.Currency = ТранзакцияOracleОбъект.Currency;
 				
@@ -3363,7 +3363,7 @@
 					НоваяСтрокаКэша.Client = СтруктураКлиент.Клиент;
 					// } RGS Alm 14.06.2018 16:55:19 S-E-0000795
 					НоваяСтрокаКэша.Location = ТранзакцияOracleОбъект.Location;
-					НоваяСтрокаКэша.SubSubSegment = ТранзакцияOracleОбъект.SubSubSegment;
+					//НоваяСтрокаКэша.SubSubSegment = ТранзакцияOracleОбъект.SubSubSegment;
 					НоваяСтрокаКэша.Account = ТранзакцияOracleОбъект.Account;
 					НоваяСтрокаКэша.Currency = ТранзакцияOracleОбъект.Currency;
 					НоваяСтрокаКэша.BatchAllocation = ТекBatchAllocation;
@@ -3420,7 +3420,7 @@
 		СтруктураПоискаРучнойКорректировки.Client = СтруктураКлиент.Клиент;
 		// } RGS Alm 14.06.2018 15:49:22 S-E-0000795
 		СтруктураПоискаРучнойКорректировки.Location = ТранзакцияOracleОбъект.Location;
-		СтруктураПоискаРучнойКорректировки.SubSubSegment = ТранзакцияOracleОбъект.SubSubSegment;
+		//СтруктураПоискаРучнойКорректировки.SubSubSegment = ТранзакцияOracleОбъект.SubSubSegment;
 		СтруктураПоискаРучнойКорректировки.Account = ТранзакцияOracleОбъект.Account;
 		СтруктураПоискаРучнойКорректировки.Currency = ТранзакцияOracleОбъект.Currency;
 		
@@ -3435,7 +3435,7 @@
 			НоваяСтрокаКэша.Client = СтруктураКлиент.Клиент;
 			// } RGS Alm 14.06.2018 15:50:13
 			НоваяСтрокаКэша.Location = ТранзакцияOracleОбъект.Location;
-			НоваяСтрокаКэша.SubSubSegment = ТранзакцияOracleОбъект.SubSubSegment;
+			//НоваяСтрокаКэша.SubSubSegment = ТранзакцияOracleОбъект.SubSubSegment;
 			НоваяСтрокаКэша.Account = ТранзакцияOracleОбъект.Account;
 			НоваяСтрокаКэша.Currency = ТранзакцияOracleОбъект.Currency;
 			НоваяСтрокаКэша.РучнаяКорректировка = ТекРучнаяКорректировка;
@@ -3734,7 +3734,7 @@
 			СтруктураПоискаBatch.Client = СтруктураКлиент.Клиент;
 			// } RGS Alm 14.06.2018 15:50:55 S-E-0000795
 			СтруктураПоискаBatch.Location = ТранзакцияOracleОбъект.Location;
-			СтруктураПоискаBatch.SubSubSegment = ТранзакцияOracleОбъект.SubSubSegment;
+			//СтруктураПоискаBatch.SubSubSegment = ТранзакцияOracleОбъект.SubSubSegment;
 			СтруктураПоискаBatch.Account = ТранзакцияOracleОбъект.Account;
 			СтруктураПоискаBatch.Currency = ТранзакцияOracleОбъект.Currency;
 			
@@ -3749,7 +3749,7 @@
 				НоваяСтрокаКэша.Client = СтруктураКлиент.Клиент;
 				// } RGS Alm 14.06.2018 15:52:50 S-E-0000795
 				НоваяСтрокаКэша.Location = ТранзакцияOracleОбъект.Location;
-				НоваяСтрокаКэша.SubSubSegment = ТранзакцияOracleОбъект.SubSubSegment;
+				//НоваяСтрокаКэша.SubSubSegment = ТранзакцияOracleОбъект.SubSubSegment;
 				НоваяСтрокаКэша.Account = ТранзакцияOracleОбъект.Account;
 				НоваяСтрокаКэша.Currency = ТранзакцияOracleОбъект.Currency;
 				НоваяСтрокаКэша.BatchAllocation = ТекBatchAllocation;
@@ -3836,7 +3836,7 @@
 		СтруктураПоискаРучнойКорректировки.Client = СтруктураКлиент.Клиент;
 		// } RGS Alm 14.06.2018 15:53:26 S-E-0000795
 		СтруктураПоискаРучнойКорректировки.Location = ТранзакцияOracleОбъект.Location;
-		СтруктураПоискаРучнойКорректировки.SubSubSegment = ТранзакцияOracleОбъект.SubSubSegment;
+		//СтруктураПоискаРучнойКорректировки.SubSubSegment = ТранзакцияOracleОбъект.SubSubSegment;
 		СтруктураПоискаРучнойКорректировки.Account = ТранзакцияOracleОбъект.Account;
 		СтруктураПоискаРучнойКорректировки.Currency = ТранзакцияOracleОбъект.Currency;
 		
@@ -3851,7 +3851,7 @@
 			НоваяСтрокаКэша.Client = СтруктураКлиент.Клиент;
 			// } RGS Alm 14.06.2018 15:53:52 S-E-0000795
 			НоваяСтрокаКэша.Location = ТранзакцияOracleОбъект.Location;
-			НоваяСтрокаКэша.SubSubSegment = ТранзакцияOracleОбъект.SubSubSegment;
+			//НоваяСтрокаКэша.SubSubSegment = ТранзакцияOracleОбъект.SubSubSegment;
 			НоваяСтрокаКэша.Account = ТранзакцияOracleОбъект.Account;
 			НоваяСтрокаКэша.Currency = ТранзакцияOracleОбъект.Currency;
 			НоваяСтрокаКэша.РучнаяКорректировка = ТекРучнаяКорректировка;

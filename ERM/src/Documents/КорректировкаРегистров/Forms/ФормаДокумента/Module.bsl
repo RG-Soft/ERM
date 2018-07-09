@@ -488,7 +488,7 @@
 		|	UnallocatedCash.Company КАК Company,
 		|	UnallocatedCash.Source КАК Source,
 		|	UnallocatedCash.Location КАК Location,
-		|	UnallocatedCash.SubSubSegment КАК SubSubSegment,
+		//|	UnallocatedCash.SubSubSegment КАК SubSubSegment,
 		|	UnallocatedCash.CashBatch КАК CashBatch,
 		|	UnallocatedCash.Account КАК Account,
 		|	UnallocatedCash.Currency КАК Currency,
@@ -523,7 +523,7 @@
 		Движение.Company = ВыборкаДетальныеЗаписи.Company;
 		Движение.Invoice = ПустойИнвойс;
 		Движение.CashBatch = ВыборкаДетальныеЗаписи.CashBatch;
-		Движение.SubSubSegment = ВыборкаДетальныеЗаписи.SubSubSegment;
+		//Движение.SubSubSegment = ВыборкаДетальныеЗаписи.SubSubSegment;
 		Движение.Location = ВыборкаДетальныеЗаписи.Location;
 		Движение.Currency = ВыборкаДетальныеЗаписи.Currency;
 		Движение.Amount = ВыборкаДетальныеЗаписи.Amount;
