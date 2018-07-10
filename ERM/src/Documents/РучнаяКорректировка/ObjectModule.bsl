@@ -4,7 +4,7 @@
 	
 	Если Не ЭтоНовый() Тогда
 		ДополнительныеСвойства.Вставить("СтарыеЗначенияКлючей", ОбщегоНазначения.ЗначенияРеквизитовОбъекта(Ссылка,
-			"Source, Company, Client, Location, SubSubSegment, AU, Account, Currency"));
+			"Source, Company, Client, Location, AU, Account, Currency"));
 			//"Source, Company, Location, SubSubSegment, AU, Account, Currency"));
 	КонецЕсли;
 	
@@ -18,7 +18,7 @@
 		Если СтарыеЗначенияКлючей.Source <> Source ИЛИ СтарыеЗначенияКлючей.Company <> Company
 			ИЛИ СтарыеЗначенияКлючей.Client <> Client 
 			ИЛИ СтарыеЗначенияКлючей.Location <> Location
-			ИЛИ СтарыеЗначенияКлючей.SubSubSegment <> SubSubSegment
+			//ИЛИ СтарыеЗначенияКлючей.SubSubSegment <> SubSubSegment
 			ИЛИ СтарыеЗначенияКлючей.AU <> AU ИЛИ СтарыеЗначенияКлючей.Account <> Account ИЛИ СтарыеЗначенияКлючей.Currency <> Currency Тогда
 			
 			НЗ = РегистрыСведений.КлючиРучныхКорректировок.СоздатьНаборЗаписей();
@@ -26,7 +26,7 @@
 			НЗ.Отбор.Company.Установить(СтарыеЗначенияКлючей.Company);
 			НЗ.Отбор.Client.Установить(СтарыеЗначенияКлючей.Client);
 			НЗ.Отбор.Location.Установить(СтарыеЗначенияКлючей.Location);
-			НЗ.Отбор.SubSubSegment.Установить(СтарыеЗначенияКлючей.SubSubSegment);
+			//НЗ.Отбор.SubSubSegment.Установить(СтарыеЗначенияКлючей.SubSubSegment);
 			НЗ.Отбор.AU.Установить(СтарыеЗначенияКлючей.AU);
 			НЗ.Отбор.Account.Установить(СтарыеЗначенияКлючей.Account);
 			НЗ.Отбор.Currency.Установить(СтарыеЗначенияКлючей.Currency);
@@ -36,7 +36,7 @@
 			НЗ.Отбор.Company.Установить(Company);
 			НЗ.Отбор.Client.Установить(Client);
 			НЗ.Отбор.Location.Установить(Location);
-			НЗ.Отбор.SubSubSegment.Установить(SubSubSegment);
+			//НЗ.Отбор.SubSubSegment.Установить(SubSubSegment);
 			НЗ.Отбор.AU.Установить(AU);
 			НЗ.Отбор.Account.Установить(Account);
 			НЗ.Отбор.Currency.Установить(Currency);
@@ -54,7 +54,7 @@
 		НЗ.Отбор.Company.Установить(Company);
 		НЗ.Отбор.Client.Установить(Client);
 		НЗ.Отбор.Location.Установить(Location);
-		НЗ.Отбор.SubSubSegment.Установить(SubSubSegment);
+		//НЗ.Отбор.SubSubSegment.Установить(SubSubSegment);
 		НЗ.Отбор.AU.Установить(AU);
 		НЗ.Отбор.Account.Установить(Account);
 		НЗ.Отбор.Currency.Установить(Currency);
@@ -74,7 +74,7 @@
 	НЗ.Отбор.Company.Установить(Company);
 	НЗ.Отбор.Client.Установить(Client);
 	НЗ.Отбор.Location.Установить(Location);
-	НЗ.Отбор.SubSubSegment.Установить(SubSubSegment);
+	//НЗ.Отбор.SubSubSegment.Установить(SubSubSegment);
 	НЗ.Отбор.AU.Установить(AU);
 	НЗ.Отбор.Account.Установить(Account);
 	НЗ.Отбор.Currency.Установить(Currency);

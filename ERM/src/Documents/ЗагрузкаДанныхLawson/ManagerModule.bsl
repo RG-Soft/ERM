@@ -1234,7 +1234,7 @@
 	//КэшОрганизаций.Индексы.Добавить("Код");
 	
 	КэшРучныхКоррерктировок = РезультатЗапроса[12].Выгрузить();
-	КэшРучныхКоррерктировок.Индексы.Добавить("Source, Company, Client, Location, SubSubSegment, AU, Account, Currency");
+	КэшРучныхКоррерктировок.Индексы.Добавить("Source, Company, Client, Location, AU, Account, Currency");
 	//КэшРучныхКоррерктировок.Индексы.Добавить("Source, Company, Location, SubSubSegment, AU, Account, Currency");
 	
 	КэшМемо = РезультатЗапроса[13].Выгрузить();
@@ -1769,7 +1769,7 @@
 	СтруктураПоискаBatch = Новый Структура("ARBatchNbr, Company, Prepayment");
 	//СтруктураПоискаBatchAllocation = Новый Структура("Source, Company, Client, Location, SubSubSegment, AU, Account, Currency");
 	СтруктураПоискаBatchAllocation = Новый Структура("ARBatchNbr, Company");
-	СтруктураПоискаРучнойКорректировки = Новый Структура("Source, Company, Client, Location, SubSubSegment, AU, Account, Currency");
+	СтруктураПоискаРучнойКорректировки = Новый Структура("Source, Company, Client, Location, AU, Account, Currency");
 	//СтруктураПоискаРучнойКорректировки = Новый Структура("Source, Company, Location, SubSubSegment, AU, Account, Currency");
 	
 	Если ПроводкаDSSОбъект.System = "BL" Тогда

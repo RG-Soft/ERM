@@ -369,7 +369,7 @@
 		|	КлючиРучныхКорректировок.Company,
 		|	КлючиРучныхКорректировок.Client,
 		|	КлючиРучныхКорректировок.Location,
-		|	КлючиРучныхКорректировок.SubSubSegment,
+		|	КлючиРучныхКорректировок.AU,
 		|	КлючиРучныхКорректировок.Account,
 		|	КлючиРучныхКорректировок.Currency,
 		|	КлючиРучныхКорректировок.РучнаяКорректировка
@@ -406,7 +406,7 @@
 		|	КлючиBatchAllocation.Company,
 		|	КлючиBatchAllocation.Client,
 		|	КлючиBatchAllocation.Location,
-		|	КлючиBatchAllocation.SubSubSegment,
+		|	КлючиBatchAllocation.AU,
 		|	КлючиBatchAllocation.Account,
 		|	КлючиBatchAllocation.Currency,
 		|	КлючиBatchAllocation.BatchAllocation
@@ -521,7 +521,7 @@
 	КонецЦикла;
 	
 	КэшРучныхКоррерктировок = РезультатЗапроса[3].Выгрузить();
-	КэшРучныхКоррерктировок.Индексы.Добавить("Source, Company, Client, Location, SubSubSegment, Account, Currency");
+	КэшРучныхКоррерктировок.Индексы.Добавить("Source, Company, Client, Location, AU, Account, Currency");
 	//КэшРучныхКоррерктировок.Индексы.Добавить("Source, Company, Location, SubSubSegment, Account, Currency");
 	
 	КэшИнвойсов = РезультатЗапроса[4].Выгрузить();
@@ -531,7 +531,7 @@
 	КэшCashBatch.Индексы.Добавить("PaymentNumber");
 	
 	КэшBatchAllocation = РезультатЗапроса[6].Выгрузить();
-	КэшBatchAllocation.Индексы.Добавить("Source, Company, Client, Location, SubSubSegment, Account, Currency");
+	КэшBatchAllocation.Индексы.Добавить("Source, Company, Client, Location, AU, Account, Currency");
 	
 	ТаблицаДаты = РезультатЗапроса[7].Выгрузить();
 	ТаблицаДаты.Индексы.Добавить("GeoMarket");
@@ -548,8 +548,8 @@
 	Отказ = Ложь;
 	ТекстСообщенияОбОшибках = "";
 	
-	СтруктураПоискаРучнойКорректировки = Новый Структура("Source, Company, Client, Location, SubSubSegment, Account, Currency");
-	СтруктураПоискаBatch = Новый Структура("Source, Company, Client, Location, SubSubSegment, Account, Currency");
+	СтруктураПоискаРучнойКорректировки = Новый Структура("Source, Company, Client, Location, AU, Account, Currency");
+	СтруктураПоискаBatch = Новый Структура("Source, Company, Client, Location, AU, Account, Currency");
 	
 	ARBalance = РегистрыСведений.ARBalance;
 	НаборЗаписей = ARBalance.СоздатьНаборЗаписей();
@@ -617,7 +617,7 @@
 			СтруктураПоискаРучнойКорректировки.Company = ВыборкаДетальныеЗаписи.Company;
 			СтруктураПоискаРучнойКорректировки.Client = ВыборкаДетальныеЗаписи.Client;
 			СтруктураПоискаРучнойКорректировки.Location = ВыборкаДетальныеЗаписи.Location;
-			СтруктураПоискаРучнойКорректировки.SubSubSegment = ВыборкаДетальныеЗаписи.SubSubSegment;
+			//СтруктураПоискаРучнойКорректировки.SubSubSegment = ВыборкаДетальныеЗаписи.SubSubSegment;
 			СтруктураПоискаРучнойКорректировки.Account = ВыборкаДетальныеЗаписи.Account;
 			СтруктураПоискаРучнойКорректировки.Currency = ВыборкаДетальныеЗаписи.Currency;
 			
@@ -629,7 +629,7 @@
 				СтрокаКэша.Company = ВыборкаДетальныеЗаписи.Company;
 				СтрокаКэша.Client = ВыборкаДетальныеЗаписи.Client;
 				СтрокаКэша.Location = ВыборкаДетальныеЗаписи.Location;
-				СтрокаКэша.SubSubSegment = ВыборкаДетальныеЗаписи.SubSubSegment;
+				//СтрокаКэша.SubSubSegment = ВыборкаДетальныеЗаписи.SubSubSegment;
 				СтрокаКэша.Account = ВыборкаДетальныеЗаписи.Account;
 				СтрокаКэша.Currency = ВыборкаДетальныеЗаписи.Currency;
 				СтрокаКэша.РучнаяКорректировка = ПолеИнвойс;
@@ -665,7 +665,7 @@
 		//КонецЕсли;
 		СтрокаОстатка.Company = ВыборкаДетальныеЗаписи.Company;
 		СтрокаОстатка.Source = ТипВнешнейСистемы;
-		СтрокаОстатка.SubSubSegment = ВыборкаДетальныеЗаписи.SubSubSegment;
+		//СтрокаОстатка.SubSubSegment = ВыборкаДетальныеЗаписи.SubSubSegment;
 		СтрокаОстатка.TransType = TransType;
 		СтрокаОстатка.Invoice = ПолеИнвойс;
 		СтрокаОстатка.Account = ВыборкаДетальныеЗаписи.Account;
@@ -704,7 +704,7 @@
 	НаборЗаписей.Отбор.Период.Установить(Период);
 	НаборЗаписей.Отбор.Source.Установить(ТипВнешнейСистемы);
 	
-	ТаблицаОстатков.Свернуть("Период, Client, Company, Source, Location, SubSubSegment, TransType, Invoice, Account, Currency, AU", "Amount");
+	ТаблицаОстатков.Свернуть("Период, Client, Company, Source, Location, TransType, Invoice, Account, Currency, AU", "Amount");
 	НаборЗаписей.Загрузить(ТаблицаОстатков);
 	НаборЗаписей.Записать(Истина);
 	

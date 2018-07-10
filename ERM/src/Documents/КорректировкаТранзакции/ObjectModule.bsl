@@ -29,7 +29,7 @@
 					РеквизитыТранзакции.Account = Account И
 					РеквизитыТранзакции.Company = Company И
 					РеквизитыТранзакции.Location = Location И
-					РеквизитыТранзакции.SubSubSegment = SubSubSegment И
+					//РеквизитыТранзакции.SubSubSegment = SubSubSegment И
 					РеквизитыТранзакции.Currency = Currency И
 					РеквизитыТранзакции.LegalEntity = LegalEntity И
 					РеквизитыТранзакции.AU = AU 

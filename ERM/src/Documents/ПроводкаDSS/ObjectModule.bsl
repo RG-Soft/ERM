@@ -25,8 +25,7 @@
 			|				И Company = &Company
 			|				И Currency = &Currency
 			|				И Location = &Location
-			|				И Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
-			|				И SubSubSegment = &SubSubSegment) КАК ManualTransactionsОстатки";
+			|				И Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)) КАК ManualTransactionsОстатки";
 		
 		Запрос.УстановитьПараметр("РучнаяКорректировка", РучнаяКорректировка);
 		Запрос.УстановитьПараметр("AccountLawson", AccountLawson);
@@ -34,7 +33,7 @@
 		Запрос.УстановитьПараметр("Company", Company);
 		Запрос.УстановитьПараметр("Currency", Currency);
 		Запрос.УстановитьПараметр("Location", Location);
-		Запрос.УстановитьПараметр("SubSubSegment", SubSubSegment);
+		//Запрос.УстановитьПараметр("SubSubSegment", SubSubSegment);
 		Запрос.УстановитьПараметр("ДатаТранзакции", Новый Граница(МоментВремени(), ВидГраницы.Исключая));
 		
 		РезультатЗапроса = Запрос.Выполнить();

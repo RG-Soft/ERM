@@ -1945,7 +1945,7 @@
 		СтрокаОстатка.Client = ?(ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.Client), ВыборкаДетальныеЗаписи.Client, Справочники.Контрагенты.Unreconciled);
 		СтрокаОстатка.Company = ВыборкаДетальныеЗаписи.Company;
 		СтрокаОстатка.Source = Перечисления.ТипыСоответствий.HOBs;
-		СтрокаОстатка.SubSubSegment = ВыборкаДетальныеЗаписи.SubSubSegment;
+		//СтрокаОстатка.SubSubSegment = ВыборкаДетальныеЗаписи.SubSubSegment;
 		СтрокаОстатка.TransType = TransType;
 		СтрокаОстатка.Invoice = ПолеИнвойс;
 		СтрокаОстатка.Account = ВыборкаДетальныеЗаписи.Account;
@@ -1957,7 +1957,7 @@
 	КонецЦикла;
 	
 	
-	ТаблицаОстатков.Свернуть("Период, Client, Company, Source, Location, SubSubSegment, TransType, Invoice, Account, Currency, AU, LegalEntity", "Amount");
+	ТаблицаОстатков.Свернуть("Период, Client, Company, Source, Location, TransType, Invoice, Account, Currency, AU, LegalEntity", "Amount");
 	
 	ПараметрыОтбора = Новый Структура("TransType","I");
 	Если ФильтрОрганизации Тогда
@@ -2091,7 +2091,7 @@
 		|	КлючиРучныхКорректировок.Company,
 		|	КлючиРучныхКорректировок.Client,
 		|	КлючиРучныхКорректировок.Location,
-		|	КлючиРучныхКорректировок.SubSubSegment,
+		//|	КлючиРучныхКорректировок.SubSubSegment,
 		|	КлючиРучныхКорректировок.AU,
 		|	КлючиРучныхКорректировок.Account,
 		|	КлючиРучныхКорректировок.Currency,
@@ -2222,7 +2222,7 @@
 	ЗафиксироватьТранзакцию();
 	
 	КэшРучныхКоррерктировок = РезультатЗапроса[2].Выгрузить();
-	КэшРучныхКоррерктировок.Индексы.Добавить("Company, Client, Location, SubSubSegment, AU, Account, Currency");
+	КэшРучныхКоррерктировок.Индексы.Добавить("Company, Client, Location, AU, Account, Currency");
 	//КэшРучныхКоррерктировок.Индексы.Добавить("Company, Location, SubSubSegment, AU, Account, Currency");
 	
 	ТаблицаДаты = РезультатЗапроса[3].Выгрузить();
@@ -2244,7 +2244,7 @@
 	
 	TransType = "JV";
 	
-	СтруктураПоискаРучнойКорректировки = Новый Структура("Company, Client, Location, SubSubSegment, AU, Account, Currency");
+	СтруктураПоискаРучнойКорректировки = Новый Структура("Company, Client, Location, AU, Account, Currency");
 	
 	// { RGS AGorlenko 28.07.2017 18:05:17 - 
 	КэшAU = Новый Соответствие;
@@ -2293,7 +2293,7 @@
 		СтруктураПоискаРучнойКорректировки.Company = ВыборкаДетальныеЗаписи.Company;
 		СтруктураПоискаРучнойКорректировки.Client = ВыборкаДетальныеЗаписи.Client;
 		СтруктураПоискаРучнойКорректировки.Location = ВыборкаДетальныеЗаписи.Location;
-		СтруктураПоискаРучнойКорректировки.SubSubSegment = ВыборкаДетальныеЗаписи.SubSubSegment;
+		//СтруктураПоискаРучнойКорректировки.SubSubSegment = ВыборкаДетальныеЗаписи.SubSubSegment;
 		СтруктураПоискаРучнойКорректировки.AU = AU;
 		СтруктураПоискаРучнойКорректировки.Account = ВыборкаДетальныеЗаписи.Account;
 		СтруктураПоискаРучнойКорректировки.Currency = ВыборкаДетальныеЗаписи.Currency;
@@ -2316,7 +2316,7 @@
 		КонецЕсли;
 		СтрокаОстатка.Company = ВыборкаДетальныеЗаписи.Company;
 		СтрокаОстатка.Source = Перечисления.ТипыСоответствий.HOBs;
-		СтрокаОстатка.SubSubSegment = ВыборкаДетальныеЗаписи.SubSubSegment;
+		//СтрокаОстатка.SubSubSegment = ВыборкаДетальныеЗаписи.SubSubSegment;
 		СтрокаОстатка.TransType = TransType;
 		СтрокаОстатка.Invoice = ПолеИнвойс;
 		СтрокаОстатка.Account = ВыборкаДетальныеЗаписи.Account;
@@ -2367,7 +2367,7 @@
 	////}}КОНСТРУКТОР_ЗАПРОСА_С_ОБРАБОТКОЙ_РЕЗУЛЬТАТА
 
 	
-	ТаблицаОстатков.Свернуть("Период, Client, Company, Source, Location, SubSubSegment, TransType, Invoice, Account, Currency, AU, LegalEntity", "Amount");
+	ТаблицаОстатков.Свернуть("Период, Client, Company, Source, Location, TransType, Invoice, Account, Currency, AU, LegalEntity", "Amount");
 	
 	Если ФильтрОрганизации Тогда
 		ПараметрыОтбора = Новый Структура("Company",Организация);
