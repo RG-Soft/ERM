@@ -125,6 +125,21 @@
 	СтрокаТЗ = СтруктураКолонок.Добавить();
 	СтрокаТЗ.ИмяПоля = "CustomerName";
 	СтрокаТЗ.ИмяКолонки = "CustomerDesc";
+
+	// CustomerName
+	СтрокаТЗ = СтруктураКолонок.Добавить();
+	СтрокаТЗ.ИмяПоля = "CustomerName";
+	СтрокаТЗ.ИмяКолонки = "CustomerDesc";
+	
+	// AUCode
+	СтрокаТЗ = СтруктураКолонок.Добавить();
+	СтрокаТЗ.ИмяПоля = "AUCode";
+	СтрокаТЗ.ИмяКолонки = "AcctUnit";
+
+	// CurrencyCode
+	СтрокаТЗ = СтруктураКолонок.Добавить();
+	СтрокаТЗ.ИмяПоля = "CurrencyCode";
+	СтрокаТЗ.ИмяКолонки = "CurrencyCode";
 	
 	// Date
 	СтрокаТЗ = СтруктураКолонок.Добавить();
@@ -187,6 +202,8 @@
 	|	XR242SourceData.InvoiceDate КАК InvoiceDate,
 	|	XR242SourceData.EndDate КАК EndDate,
 	|	XR242SourceData.InvoiceAmt КАК InvoiceAmt,
+	|	XR242SourceData.AUCode КАК AUCode,
+	|	XR242SourceData.CurrencyCode КАК CurrencyCode,
 	|	ЕСТЬNULL(Организации.Ссылка, ЗНАЧЕНИЕ(Справочник.Организации.ПустаяСсылка)) КАК Организация
 	|ПОМЕСТИТЬ ВТ_ИсходныеДанные
 	|ИЗ
