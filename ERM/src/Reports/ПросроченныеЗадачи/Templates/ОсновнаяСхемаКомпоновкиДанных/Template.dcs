@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <DataCompositionSchema xmlns="http://v8.1c.ru/8.1/data-composition-system/schema" xmlns:dcscom="http://v8.1c.ru/8.1/data-composition-system/common" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<dataSource>
 		<name>ИсточникДанных1</name>
@@ -67,6 +67,12 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>ПросроченоДней</dataPath>
 			<field>ПросроченоДней</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Просрочено дней</v8:content>
+				</v8:item>
+			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Автор</dataPath>
@@ -132,9 +138,12 @@
 		<value xsi:type="v8:StandardPeriod">
 			<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
 			<v8:startDate>0001-01-01T00:00:00</v8:startDate>
-			<v8:endDate>0001-01-01T00:00:00</v8:endDate>
-		</value>
+			<v8:endDate>0001-01-01T00:00:00</v8:endDate></value>
 		<useRestriction>false</useRestriction>
+		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>ДатаНачала</name>
@@ -153,6 +162,10 @@
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>true</useRestriction>
 		<expression>&amp;Период.ДатаНачала</expression>
+		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>ДатаОкончания</name>
@@ -171,6 +184,10 @@
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>true</useRestriction>
 		<expression>&amp;Период.ДатаОкончания</expression>
+		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>ЗадачиВыполненныеСНарушениемСроков</dcsset:name>
@@ -180,7 +197,7 @@
 				<v8:content>Задачи, выполненные с нарушением сроков</v8:content>
 			</v8:item>
 		</dcsset:presentation>
-		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+		<dcsset:settings xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:chm="http://v8.1c.ru/8.2/data/chart" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Исполнитель</dcsset:field>
@@ -214,7 +231,8 @@
 					<dcsset:left xsi:type="dcscor:Field">Исполнитель</dcsset:left>
 					<dcsset:comparisonType>InList</dcsset:comparisonType>
 					<dcsset:right xsi:type="v8:ValueListType">
-						<v8:valueType/>
+						<v8:valueType>
+						</v8:valueType>
 						<v8:lastId xsi:type="xs:decimal">-1</v8:lastId>
 					</dcsset:right>
 					<dcsset:viewMode>Normal</dcsset:viewMode>
@@ -226,8 +244,7 @@
 					<dcscor:use>false</dcscor:use>
 					<dcscor:parameter>Период</dcscor:parameter>
 					<dcscor:value xsi:type="v8:StandardPeriod">
-						<v8:variant xsi:type="v8:StandardPeriodVariant">ThisWeek</v8:variant>
-					</dcscor:value>
+						<v8:variant xsi:type="v8:StandardPeriodVariant">ThisWeek</v8:variant></dcscor:value>
 					<dcsset:userSettingID>7e89839d-4174-481d-9d4c-6efe5936168f</dcsset:userSettingID>
 				</dcscor:item>
 			</dcsset:dataParameters>
@@ -273,10 +290,12 @@
 						</dcsset:item>
 					</dcsset:groupItems>
 					<dcsset:order>
-						<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
+						<dcsset:item xsi:type="dcsset:OrderItemAuto">
+						</dcsset:item>
 					</dcsset:order>
 					<dcsset:selection>
-						<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
+						<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+						</dcsset:item>
 						<dcsset:item xsi:type="dcsset:SelectedItemField">
 							<dcsset:field>НеВСрок</dcsset:field>
 						</dcsset:item>
@@ -304,7 +323,8 @@
 							</dcsset:item>
 						</dcsset:order>
 						<dcsset:selection>
-							<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
+							<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+							</dcsset:item>
 							<dcsset:item xsi:type="dcsset:SelectedItemField">
 								<dcsset:use>false</dcsset:use>
 								<dcsset:field>НеВСрок</dcsset:field>

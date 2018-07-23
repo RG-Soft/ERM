@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form:Form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:form="http://g5.1c.ru/v8/dt/form">
   <items xsi:type="form:FormGroup">
-    <name>Группа</name>
+    <name>ГруппаКодНаименование</name>
     <id>103</id>
     <items xsi:type="form:FormField">
       <name>Наименование</name>
@@ -47,7 +47,6 @@
       <headerHorizontalAlign>Left</headerHorizontalAlign>
       <showInFooter>true</showInFooter>
       <extInfo xsi:type="form:InputFieldExtInfo">
-        <autoMaxWidth>true</autoMaxWidth>
         <autoMaxHeight>true</autoMaxHeight>
         <chooseType>true</chooseType>
         <typeDomainEnabled>true</typeDomainEnabled>
@@ -106,8 +105,12 @@
     <userVisible>
       <common>true</common>
     </userVisible>
+    <title>
+      <key>ru</key>
+      <value>Код наименование</value>
+    </title>
     <extendedTooltip>
-      <name>ГруппаExtendedTooltip</name>
+      <name>ГруппаКодНаименованиеРасширеннаяПодсказка</name>
       <id>128</id>
       <visible>true</visible>
       <enabled>true</enabled>
@@ -123,9 +126,11 @@
     </extendedTooltip>
     <type>UsualGroup</type>
     <extInfo xsi:type="form:UsualGroupExtInfo">
+      <group>HorizontalIfPossible</group>
       <showLeftMargin>true</showLeftMargin>
       <united>true</united>
       <throughAlign>Auto</throughAlign>
+      <currentRowUse>DontUse</currentRowUse>
     </extInfo>
   </items>
   <items xsi:type="form:FormGroup">
@@ -225,12 +230,6 @@
       <key>ru</key>
       <value>Обмен по расписанию</value>
     </title>
-    <toolTip>
-      <key>ru</key>
-      <value>Обмен по расписанию</value>
-    </toolTip>
-    <width>70</width>
-    <horizontalStretch>false</horizontalStretch>
     <extendedTooltip>
       <name>ОбменПоРасписаниюExtendedTooltip</name>
       <id>131</id>
@@ -248,9 +247,11 @@
     </extendedTooltip>
     <type>UsualGroup</type>
     <extInfo xsi:type="form:UsualGroupExtInfo">
+      <group>HorizontalIfPossible</group>
       <showLeftMargin>true</showLeftMargin>
       <united>true</united>
       <throughAlign>Auto</throughAlign>
+      <currentRowUse>DontUse</currentRowUse>
     </extInfo>
   </items>
   <items xsi:type="form:FormGroup">
@@ -259,6 +260,10 @@
     <items xsi:type="form:Table">
       <name>СоставРасписания</name>
       <id>5</id>
+      <title>
+        <key>ru</key>
+        <value>Состав расписания</value>
+      </title>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
@@ -422,6 +427,10 @@
           <headerHorizontalAlign>Left</headerHorizontalAlign>
           <showInFooter>true</showInFooter>
           <extInfo xsi:type="form:InputFieldExtInfo">
+            <handlers>
+              <event>ChoiceProcessing</event>
+              <name>НастройкиОбменаУзелИнформационнойБазыОбработкаВыбора</name>
+            </handlers>
             <autoMaxWidth>true</autoMaxWidth>
             <autoMaxHeight>true</autoMaxHeight>
             <wrap>true</wrap>
@@ -439,10 +448,6 @@
           <key>ru</key>
           <value>Колонки узла информационной базы</value>
         </title>
-        <toolTip>
-          <key>ru</key>
-          <value>Колонки узла информационной базы</value>
-        </toolTip>
         <extendedTooltip>
           <name>КолонкиУзлаИнформационнойБазыExtendedTooltip</name>
           <id>139</id>
@@ -792,7 +797,6 @@
       </contextMenu>
       <changeRowSet>true</changeRowSet>
       <changeRowOrder>true</changeRowOrder>
-      <width>100</width>
       <autoMaxWidth>true</autoMaxWidth>
       <autoMaxHeight>true</autoMaxHeight>
       <autoMaxRowsCount>true</autoMaxRowsCount>
@@ -810,9 +814,6 @@
       <initialListView>Auto</initialListView>
       <horizontalStretch>true</horizontalStretch>
       <verticalStretch>true</verticalStretch>
-      <searchStringLocation>None</searchStringLocation>
-      <viewStatusLocation>None</viewStatusLocation>
-      <searchControlLocation>None</searchControlLocation>
       <rowFilter xsi:type="core:UndefinedValue"/>
     </items>
     <visible>true</visible>
@@ -824,10 +825,6 @@
       <key>ru</key>
       <value>Состав настройки обмена</value>
     </title>
-    <toolTip>
-      <key>ru</key>
-      <value>Состав</value>
-    </toolTip>
     <extendedTooltip>
       <name>СоставExtendedTooltip</name>
       <id>134</id>
@@ -849,6 +846,7 @@
       <showLeftMargin>true</showLeftMargin>
       <united>true</united>
       <throughAlign>Auto</throughAlign>
+      <currentRowUse>DontUse</currentRowUse>
     </extInfo>
   </items>
   <items xsi:type="form:FormGroup">
@@ -902,7 +900,6 @@
           <event>StartChoice</event>
           <name>КомментарийНачалоВыбора</name>
         </handlers>
-        <autoMaxWidth>true</autoMaxWidth>
         <height>2</height>
         <autoMaxHeight>true</autoMaxHeight>
         <choiceButton>true</choiceButton>
@@ -920,10 +917,6 @@
       <key>ru</key>
       <value>Дополнительно</value>
     </title>
-    <toolTip>
-      <key>ru</key>
-      <value>Дополнительно</value>
-    </toolTip>
     <extendedTooltip>
       <name>ДополнительноExtendedTooltip</name>
       <id>145</id>
@@ -941,9 +934,11 @@
     </extendedTooltip>
     <type>UsualGroup</type>
     <extInfo xsi:type="form:UsualGroupExtInfo">
+      <group>HorizontalIfPossible</group>
       <showLeftMargin>true</showLeftMargin>
       <united>true</united>
       <throughAlign>Auto</throughAlign>
+      <currentRowUse>DontUse</currentRowUse>
     </extInfo>
   </items>
   <autoCommandBar>
@@ -1059,6 +1054,26 @@
       <common>true</common>
     </edit>
   </attributes>
+  <attributes>
+    <name>СписокУзловОбмена</name>
+    <title>
+      <key>ru</key>
+      <value>Список узлов обмена</value>
+    </title>
+    <id>3</id>
+    <valueType>
+      <types>ValueList</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+    <extInfo xsi:type="form:ValueListExtInfo">
+      <itemValueType/>
+    </extInfo>
+  </attributes>
   <formCommands>
     <name>НастроитьРасписаниеРегламентногоЗадания</name>
     <title>
@@ -1081,6 +1096,7 @@
         <name>НастроитьРасписаниеРегламентногоЗадания</name>
       </handler>
     </action>
+    <currentRowUse>DontUse</currentRowUse>
   </formCommands>
   <formCommands>
     <name>НастройкиТранспорта</name>
@@ -1105,6 +1121,7 @@
       </handler>
     </action>
     <representation>TextPicture</representation>
+    <currentRowUse>DontUse</currentRowUse>
   </formCommands>
   <formCommands>
     <name>ВыполнитьОбмен</name>
@@ -1129,6 +1146,7 @@
       </handler>
     </action>
     <representation>TextPicture</representation>
+    <currentRowUse>DontUse</currentRowUse>
   </formCommands>
   <formCommands>
     <name>ПерейтиВЖурналРегистрации</name>
@@ -1152,6 +1170,7 @@
         <name>ПерейтиВЖурналРегистрации</name>
       </handler>
     </action>
+    <currentRowUse>DontUse</currentRowUse>
   </formCommands>
   <commandInterface>
     <navigationPanel>

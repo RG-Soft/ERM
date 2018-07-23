@@ -2,7 +2,7 @@
 <form:Form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:form="http://g5.1c.ru/v8/dt/form">
   <title>
     <key>ru</key>
-    <value>Настройка основного рабочего каталога</value>
+    <value>Настройка рабочего каталога</value>
   </title>
   <items xsi:type="form:FormGroup">
     <name>ГруппаРасположение</name>
@@ -107,10 +107,10 @@
     <userVisible>
       <common>true</common>
     </userVisible>
-    <toolTip>
+    <title>
       <key>ru</key>
-      <value>Группа расположение</value>
-    </toolTip>
+      <value>Расположение</value>
+    </title>
     <extendedTooltip>
       <name>ГруппаРасположениеExtendedTooltip</name>
       <id>30</id>
@@ -128,6 +128,7 @@
     </extendedTooltip>
     <type>UsualGroup</type>
     <extInfo xsi:type="form:UsualGroupExtInfo">
+      <group>HorizontalIfPossible</group>
       <showLeftMargin>true</showLeftMargin>
       <united>true</united>
       <throughAlign>Auto</throughAlign>
@@ -197,60 +198,6 @@
     </extInfo>
   </items>
   <items xsi:type="form:FormField">
-    <name>ПодтверждатьПриУдаленииИзЛокальногоКэшаФайлов</name>
-    <id>24</id>
-    <title>
-      <key>ru</key>
-      <value>Подтверждать при удалении из основного рабочего каталога</value>
-    </title>
-    <visible>true</visible>
-    <enabled>true</enabled>
-    <userVisible>
-      <common>true</common>
-    </userVisible>
-    <dataPath xsi:type="form:MultiLanguageDataPath">
-      <paths xsi:type="form:DataPath">
-        <segments>ПодтверждатьПриУдаленииИзЛокальногоКэшаФайлов</segments>
-      </paths>
-    </dataPath>
-    <titleLocation>Right</titleLocation>
-    <handlers>
-      <event>OnChange</event>
-      <name>ПодтверждатьПриУдаленииИзЛокальногоКэшаФайловПриИзменении</name>
-    </handlers>
-    <extendedTooltip>
-      <name>ПодтверждатьПриУдаленииИзЛокальногоКэшаФайловExtendedTooltip</name>
-      <id>34</id>
-      <visible>true</visible>
-      <enabled>true</enabled>
-      <userVisible>
-        <common>true</common>
-      </userVisible>
-      <type>Label</type>
-      <autoMaxWidth>true</autoMaxWidth>
-      <autoMaxHeight>true</autoMaxHeight>
-      <extInfo xsi:type="form:LabelDecorationExtInfo">
-        <horizontalAlign>Left</horizontalAlign>
-      </extInfo>
-    </extendedTooltip>
-    <contextMenu>
-      <name>ПодтверждатьПриУдаленииИзЛокальногоКэшаФайловКонтекстноеМеню</name>
-      <id>25</id>
-      <visible>true</visible>
-      <enabled>true</enabled>
-      <userVisible>
-        <common>true</common>
-      </userVisible>
-      <autoFill>true</autoFill>
-    </contextMenu>
-    <type>CheckBoxField</type>
-    <editMode>Enter</editMode>
-    <showInHeader>true</showInHeader>
-    <headerHorizontalAlign>Left</headerHorizontalAlign>
-    <showInFooter>true</showInFooter>
-    <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
-  </items>
-  <items xsi:type="form:FormField">
     <name>УдалятьФайлИзЛокальногоКэшаФайловПриЗавершенииРедактирования</name>
     <id>16</id>
     <visible>true</visible>
@@ -301,28 +248,19 @@
     <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
   </items>
   <items xsi:type="form:FormGroup">
-    <name>СейчасВЛокальномКэшеФайлов</name>
-    <id>18</id>
-    <items xsi:type="form:FormField">
-      <name>КоличествоСуммарное</name>
-      <id>11</id>
-      <title>
-        <key>ru</key>
-        <value>Файлов</value>
-      </title>
+    <name>ГруппаПодтверждатьПриУдаленииИзЛокальногоКэшаФайлов</name>
+    <id>41</id>
+    <items xsi:type="form:Decoration">
+      <name>ДекорацияОтступЗависимыеОпции</name>
+      <id>43</id>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
         <common>true</common>
       </userVisible>
-      <dataPath xsi:type="form:MultiLanguageDataPath">
-        <paths xsi:type="form:DataPath">
-          <segments>КоличествоСуммарное</segments>
-        </paths>
-      </dataPath>
       <extendedTooltip>
-        <name>КоличествоСуммарноеExtendedTooltip</name>
-        <id>37</id>
+        <name>ДекорацияОтступЗависимыеОпцииРасширеннаяПодсказка</name>
+        <id>45</id>
         <visible>true</visible>
         <enabled>true</enabled>
         <userVisible>
@@ -336,8 +274,8 @@
         </extInfo>
       </extendedTooltip>
       <contextMenu>
-        <name>КоличествоСуммарноеКонтекстноеМеню</name>
-        <id>12</id>
+        <name>ДекорацияОтступЗависимыеОпцииКонтекстноеМеню</name>
+        <id>44</id>
         <visible>true</visible>
         <enabled>true</enabled>
         <userVisible>
@@ -345,30 +283,19 @@
         </userVisible>
         <autoFill>true</autoFill>
       </contextMenu>
-      <type>InputField</type>
-      <readOnly>true</readOnly>
-      <editMode>Enter</editMode>
-      <showInHeader>true</showInHeader>
-      <headerHorizontalAlign>Left</headerHorizontalAlign>
-      <showInFooter>true</showInFooter>
-      <footerHorizontalAlign>Left</footerHorizontalAlign>
-      <extInfo xsi:type="form:InputFieldExtInfo">
-        <autoMaxWidth>true</autoMaxWidth>
-        <autoMaxHeight>true</autoMaxHeight>
-        <chooseType>true</chooseType>
-        <typeDomainEnabled>true</typeDomainEnabled>
-        <textEdit>true</textEdit>
-        <borderColor xsi:type="core:ColorRef">
-          <color>Style.BorderColor</color>
-        </borderColor>
+      <type>Label</type>
+      <autoMaxWidth>true</autoMaxWidth>
+      <autoMaxHeight>true</autoMaxHeight>
+      <extInfo xsi:type="form:LabelDecorationExtInfo">
+        <horizontalAlign>Left</horizontalAlign>
       </extInfo>
     </items>
     <items xsi:type="form:FormField">
-      <name>РазмерФайловВРабочемКаталоге</name>
-      <id>9</id>
+      <name>ПодтверждатьПриУдаленииИзЛокальногоКэшаФайлов</name>
+      <id>24</id>
       <title>
         <key>ru</key>
-        <value>Общий объем (Мб)</value>
+        <value>Подтверждать при удалении из рабочего каталога</value>
       </title>
       <visible>true</visible>
       <enabled>true</enabled>
@@ -377,12 +304,17 @@
       </userVisible>
       <dataPath xsi:type="form:MultiLanguageDataPath">
         <paths xsi:type="form:DataPath">
-          <segments>РазмерФайловВРабочемКаталоге</segments>
+          <segments>ПодтверждатьПриУдаленииИзЛокальногоКэшаФайлов</segments>
         </paths>
       </dataPath>
+      <titleLocation>Right</titleLocation>
+      <handlers>
+        <event>OnChange</event>
+        <name>ПодтверждатьПриУдаленииИзЛокальногоКэшаФайловПриИзменении</name>
+      </handlers>
       <extendedTooltip>
-        <name>РазмерФайловВРабочемКаталогеExtendedTooltip</name>
-        <id>38</id>
+        <name>ПодтверждатьПриУдаленииИзЛокальногоКэшаФайловExtendedTooltip</name>
+        <id>34</id>
         <visible>true</visible>
         <enabled>true</enabled>
         <userVisible>
@@ -396,8 +328,8 @@
         </extInfo>
       </extendedTooltip>
       <contextMenu>
-        <name>РазмерФайловВРабочемКаталогеКонтекстноеМеню</name>
-        <id>10</id>
+        <name>ПодтверждатьПриУдаленииИзЛокальногоКэшаФайловКонтекстноеМеню</name>
+        <id>25</id>
         <visible>true</visible>
         <enabled>true</enabled>
         <userVisible>
@@ -405,23 +337,12 @@
         </userVisible>
         <autoFill>true</autoFill>
       </contextMenu>
-      <type>InputField</type>
-      <readOnly>true</readOnly>
+      <type>CheckBoxField</type>
       <editMode>Enter</editMode>
       <showInHeader>true</showInHeader>
       <headerHorizontalAlign>Left</headerHorizontalAlign>
       <showInFooter>true</showInFooter>
-      <footerHorizontalAlign>Left</footerHorizontalAlign>
-      <extInfo xsi:type="form:InputFieldExtInfo">
-        <autoMaxWidth>true</autoMaxWidth>
-        <autoMaxHeight>true</autoMaxHeight>
-        <chooseType>true</chooseType>
-        <typeDomainEnabled>true</typeDomainEnabled>
-        <textEdit>true</textEdit>
-        <borderColor xsi:type="core:ColorRef">
-          <color>Style.BorderColor</color>
-        </borderColor>
-      </extInfo>
+      <extInfo xsi:type="form:CheckBoxFieldExtInfo"/>
     </items>
     <visible>true</visible>
     <enabled>true</enabled>
@@ -430,15 +351,11 @@
     </userVisible>
     <title>
       <key>ru</key>
-      <value>Текущее состояние:</value>
+      <value>Подтверждать при удалении из локального кэша файлов</value>
     </title>
-    <toolTip>
-      <key>ru</key>
-      <value>Текущее состояние:</value>
-    </toolTip>
     <extendedTooltip>
-      <name>СейчасВЛокальномКэшеФайловExtendedTooltip</name>
-      <id>36</id>
+      <name>ГруппаПодтверждатьПриУдаленииИзЛокальногоКэшаФайловРасширеннаяПодсказка</name>
+      <id>42</id>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
@@ -453,92 +370,321 @@
     </extendedTooltip>
     <type>UsualGroup</type>
     <extInfo xsi:type="form:UsualGroupExtInfo">
+      <group>AlwaysHorizontal</group>
+      <showLeftMargin>true</showLeftMargin>
+      <united>true</united>
+      <throughAlign>Auto</throughAlign>
+      <currentRowUse>DontUse</currentRowUse>
+    </extInfo>
+  </items>
+  <items xsi:type="form:FormGroup">
+    <name>ГруппаТекущееСостояние</name>
+    <id>48</id>
+    <items xsi:type="form:FormGroup">
+      <name>ГруппаФайлов</name>
+      <id>46</id>
+      <items xsi:type="form:FormField">
+        <name>КоличествоСуммарное</name>
+        <id>11</id>
+        <title>
+          <key>ru</key>
+          <value>Файлов</value>
+        </title>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <dataPath xsi:type="form:MultiLanguageDataPath">
+          <paths xsi:type="form:DataPath">
+            <segments>КоличествоСуммарное</segments>
+          </paths>
+        </dataPath>
+        <extendedTooltip>
+          <name>КоличествоСуммарноеExtendedTooltip</name>
+          <id>37</id>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <type>Label</type>
+          <autoMaxWidth>true</autoMaxWidth>
+          <autoMaxHeight>true</autoMaxHeight>
+          <extInfo xsi:type="form:LabelDecorationExtInfo">
+            <horizontalAlign>Left</horizontalAlign>
+          </extInfo>
+        </extendedTooltip>
+        <contextMenu>
+          <name>КоличествоСуммарноеКонтекстноеМеню</name>
+          <id>12</id>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <autoFill>true</autoFill>
+        </contextMenu>
+        <type>InputField</type>
+        <readOnly>true</readOnly>
+        <editMode>Enter</editMode>
+        <showInHeader>true</showInHeader>
+        <headerHorizontalAlign>Left</headerHorizontalAlign>
+        <showInFooter>true</showInFooter>
+        <footerHorizontalAlign>Left</footerHorizontalAlign>
+        <extInfo xsi:type="form:InputFieldExtInfo">
+          <autoMaxWidth>true</autoMaxWidth>
+          <autoMaxHeight>true</autoMaxHeight>
+          <chooseType>true</chooseType>
+          <typeDomainEnabled>true</typeDomainEnabled>
+          <textEdit>true</textEdit>
+          <borderColor xsi:type="core:ColorRef">
+            <color>Style.BorderColor</color>
+          </borderColor>
+        </extInfo>
+      </items>
+      <items xsi:type="form:Button">
+        <name>СписокФайлов</name>
+        <id>14</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <skipOnInput>false</skipOnInput>
+        <extendedTooltip>
+          <name>СписокФайловExtendedTooltip</name>
+          <id>39</id>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <type>Label</type>
+          <autoMaxWidth>true</autoMaxWidth>
+          <autoMaxHeight>true</autoMaxHeight>
+          <extInfo xsi:type="form:LabelDecorationExtInfo">
+            <horizontalAlign>Left</horizontalAlign>
+          </extInfo>
+        </extendedTooltip>
+        <type>UsualButton</type>
+        <commandName>Form.Command.СписокФайлов</commandName>
+        <representation>Auto</representation>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <placementArea>UserCmds</placementArea>
+        <textColor xsi:type="core:ColorRef">
+          <color>Style.ButtonTextColor</color>
+        </textColor>
+        <backColor xsi:type="core:ColorRef">
+          <color>Style.ButtonBackColor</color>
+        </backColor>
+        <borderColor xsi:type="core:ColorRef">
+          <color>Style.BorderColor</color>
+        </borderColor>
+      </items>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <title>
+        <key>ru</key>
+        <value>Файлы</value>
+      </title>
+      <extendedTooltip>
+        <name>ГруппаФайловРасширеннаяПодсказка</name>
+        <id>47</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <type>UsualGroup</type>
+      <extInfo xsi:type="form:UsualGroupExtInfo">
+        <group>Vertical</group>
+        <showLeftMargin>true</showLeftMargin>
+        <united>true</united>
+        <throughAlign>Auto</throughAlign>
+        <currentRowUse>DontUse</currentRowUse>
+      </extInfo>
+    </items>
+    <items xsi:type="form:FormGroup">
+      <name>СейчасВЛокальномКэшеФайлов</name>
+      <id>18</id>
+      <items xsi:type="form:FormField">
+        <name>РазмерФайловВРабочемКаталоге</name>
+        <id>9</id>
+        <title>
+          <key>ru</key>
+          <value>Общий объем (Мб)</value>
+        </title>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <dataPath xsi:type="form:MultiLanguageDataPath">
+          <paths xsi:type="form:DataPath">
+            <segments>РазмерФайловВРабочемКаталоге</segments>
+          </paths>
+        </dataPath>
+        <extendedTooltip>
+          <name>РазмерФайловВРабочемКаталогеExtendedTooltip</name>
+          <id>38</id>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <type>Label</type>
+          <autoMaxWidth>true</autoMaxWidth>
+          <autoMaxHeight>true</autoMaxHeight>
+          <extInfo xsi:type="form:LabelDecorationExtInfo">
+            <horizontalAlign>Left</horizontalAlign>
+          </extInfo>
+        </extendedTooltip>
+        <contextMenu>
+          <name>РазмерФайловВРабочемКаталогеКонтекстноеМеню</name>
+          <id>10</id>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <autoFill>true</autoFill>
+        </contextMenu>
+        <type>InputField</type>
+        <readOnly>true</readOnly>
+        <editMode>Enter</editMode>
+        <showInHeader>true</showInHeader>
+        <headerHorizontalAlign>Left</headerHorizontalAlign>
+        <showInFooter>true</showInFooter>
+        <footerHorizontalAlign>Left</footerHorizontalAlign>
+        <extInfo xsi:type="form:InputFieldExtInfo">
+          <autoMaxWidth>true</autoMaxWidth>
+          <autoMaxHeight>true</autoMaxHeight>
+          <chooseType>true</chooseType>
+          <typeDomainEnabled>true</typeDomainEnabled>
+          <textEdit>true</textEdit>
+          <borderColor xsi:type="core:ColorRef">
+            <color>Style.BorderColor</color>
+          </borderColor>
+        </extInfo>
+      </items>
+      <items xsi:type="form:Button">
+        <name>ОчиститьРабочийКаталог</name>
+        <id>13</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <skipOnInput>false</skipOnInput>
+        <extendedTooltip>
+          <name>ОчиститьРабочийКаталогExtendedTooltip</name>
+          <id>40</id>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <type>Label</type>
+          <autoMaxWidth>true</autoMaxWidth>
+          <autoMaxHeight>true</autoMaxHeight>
+          <extInfo xsi:type="form:LabelDecorationExtInfo">
+            <horizontalAlign>Left</horizontalAlign>
+          </extInfo>
+        </extendedTooltip>
+        <type>UsualButton</type>
+        <commandName>Form.Command.ОчиститьЛокальныйКэшФайлов</commandName>
+        <representation>Auto</representation>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <placementArea>UserCmds</placementArea>
+        <textColor xsi:type="core:ColorRef">
+          <color>Style.ButtonTextColor</color>
+        </textColor>
+        <backColor xsi:type="core:ColorRef">
+          <color>Style.ButtonBackColor</color>
+        </backColor>
+        <borderColor xsi:type="core:ColorRef">
+          <color>Style.BorderColor</color>
+        </borderColor>
+      </items>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <title>
+        <key>ru</key>
+        <value>Общий объем</value>
+      </title>
+      <extendedTooltip>
+        <name>СейчасВЛокальномКэшеФайловExtendedTooltip</name>
+        <id>36</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <type>UsualGroup</type>
+      <extInfo xsi:type="form:UsualGroupExtInfo">
+        <group>Vertical</group>
+        <showLeftMargin>true</showLeftMargin>
+        <united>true</united>
+        <throughAlign>Auto</throughAlign>
+      </extInfo>
+    </items>
+    <visible>true</visible>
+    <enabled>true</enabled>
+    <userVisible>
+      <common>true</common>
+    </userVisible>
+    <title>
+      <key>ru</key>
+      <value>Текущее состояние:</value>
+    </title>
+    <extendedTooltip>
+      <name>ГруппаТекущееСостояниеРасширеннаяПодсказка</name>
+      <id>49</id>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <type>Label</type>
+      <autoMaxWidth>true</autoMaxWidth>
+      <autoMaxHeight>true</autoMaxHeight>
+      <extInfo xsi:type="form:LabelDecorationExtInfo">
+        <horizontalAlign>Left</horizontalAlign>
+      </extInfo>
+    </extendedTooltip>
+    <type>UsualGroup</type>
+    <extInfo xsi:type="form:UsualGroupExtInfo">
+      <group>AlwaysHorizontal</group>
       <representation>NormalSeparation</representation>
       <showLeftMargin>true</showLeftMargin>
       <united>true</united>
       <showTitle>true</showTitle>
       <throughAlign>Auto</throughAlign>
+      <currentRowUse>DontUse</currentRowUse>
     </extInfo>
-  </items>
-  <items xsi:type="form:Button">
-    <name>СписокФайлов</name>
-    <id>14</id>
-    <visible>true</visible>
-    <enabled>true</enabled>
-    <userVisible>
-      <common>true</common>
-    </userVisible>
-    <skipOnInput>false</skipOnInput>
-    <extendedTooltip>
-      <name>СписокФайловExtendedTooltip</name>
-      <id>39</id>
-      <visible>true</visible>
-      <enabled>true</enabled>
-      <userVisible>
-        <common>true</common>
-      </userVisible>
-      <type>Label</type>
-      <autoMaxWidth>true</autoMaxWidth>
-      <autoMaxHeight>true</autoMaxHeight>
-      <extInfo xsi:type="form:LabelDecorationExtInfo">
-        <horizontalAlign>Left</horizontalAlign>
-      </extInfo>
-    </extendedTooltip>
-    <type>UsualButton</type>
-    <commandName>Form.Command.СписокФайлов</commandName>
-    <representation>Auto</representation>
-    <autoMaxWidth>true</autoMaxWidth>
-    <autoMaxHeight>true</autoMaxHeight>
-    <placementArea>UserCmds</placementArea>
-    <textColor xsi:type="core:ColorRef">
-      <color>Style.ButtonTextColor</color>
-    </textColor>
-    <backColor xsi:type="core:ColorRef">
-      <color>Style.ButtonBackColor</color>
-    </backColor>
-    <borderColor xsi:type="core:ColorRef">
-      <color>Style.BorderColor</color>
-    </borderColor>
-  </items>
-  <items xsi:type="form:Button">
-    <name>ОчиститьРабочийКаталог</name>
-    <id>13</id>
-    <visible>true</visible>
-    <enabled>true</enabled>
-    <userVisible>
-      <common>true</common>
-    </userVisible>
-    <skipOnInput>false</skipOnInput>
-    <extendedTooltip>
-      <name>ОчиститьРабочийКаталогExtendedTooltip</name>
-      <id>40</id>
-      <visible>true</visible>
-      <enabled>true</enabled>
-      <userVisible>
-        <common>true</common>
-      </userVisible>
-      <type>Label</type>
-      <autoMaxWidth>true</autoMaxWidth>
-      <autoMaxHeight>true</autoMaxHeight>
-      <extInfo xsi:type="form:LabelDecorationExtInfo">
-        <horizontalAlign>Left</horizontalAlign>
-      </extInfo>
-    </extendedTooltip>
-    <type>UsualButton</type>
-    <commandName>Form.Command.ОчиститьЛокальныйКэшФайлов</commandName>
-    <representation>Auto</representation>
-    <autoMaxWidth>true</autoMaxWidth>
-    <autoMaxHeight>true</autoMaxHeight>
-    <placementArea>UserCmds</placementArea>
-    <textColor xsi:type="core:ColorRef">
-      <color>Style.ButtonTextColor</color>
-    </textColor>
-    <backColor xsi:type="core:ColorRef">
-      <color>Style.ButtonBackColor</color>
-    </backColor>
-    <borderColor xsi:type="core:ColorRef">
-      <color>Style.BorderColor</color>
-    </borderColor>
   </items>
   <commandBarLocation>Bottom</commandBarLocation>
   <autoCommandBar>
@@ -713,12 +859,12 @@
     <name>ОчиститьЛокальныйКэшФайлов</name>
     <title>
       <key>ru</key>
-      <value>Очистить основной рабочий каталог</value>
+      <value>Очистить рабочий каталог</value>
     </title>
     <id>3</id>
     <toolTip>
       <key>ru</key>
-      <value>Очистить основной рабочий каталог</value>
+      <value>Очистить рабочий каталог</value>
     </toolTip>
     <use>
       <common>true</common>

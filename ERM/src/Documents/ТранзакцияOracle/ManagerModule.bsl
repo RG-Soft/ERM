@@ -36,9 +36,9 @@
 	КонецЦикла;
 	
 	// { RGS Alm 14.06.2018 15:09:04 S-E-0000795
-	СтруктураКлиент = ПолучитьКлиента(ПараметрыПроведения.Реквизиты);
-	Если ПараметрыПроведения.Реквизиты.Client <> СтруктураКлиент.Клиент Тогда
-		ПараметрыПроведения.Реквизиты.Client = СтруктураКлиент.Клиент;
+	СтруктураКлиент = ПолучитьКлиента(ПараметрыПроведения.Реквизиты[0]);
+	Если ПараметрыПроведения.Реквизиты[0].Client <> СтруктураКлиент.Клиент Тогда
+		ПараметрыПроведения.Реквизиты[0].Client = СтруктураКлиент.Клиент;
 	КонецЕсли;
 	// } RGS Alm 14.06.2018 15:09:04 S-E-0000795
 	
@@ -53,37 +53,37 @@
 	
 	ТекстЗапроса =
 	"ВЫБРАТЬ
-	|	ТранзакцияOracle.Номер,
-	|	ТранзакцияOracle.Дата,
-	|	ТранзакцияOracle.GlSourceType,
-	|	ТранзакцияOracle.Company,
-	|	ТранзакцияOracle.Account,
-	|	ТранзакцияOracle.Location,
-	|	ТранзакцияOracle.SubSubSegment,
-	|	ТранзакцияOracle.Currency,
-	|	ТранзакцияOracle.ExchangeRate,
-	|	ТранзакцияOracle.GL_Account,
-	|	ТранзакцияOracle.Client,
-	|	ТранзакцияOracle.EndClient,
-	|	ТранзакцияOracle.Contract,
-	|	ТранзакцияOracle.DocType,
-	|	ТранзакцияOracle.Description,
-	|	ТранзакцияOracle.TransType,
-	|	ТранзакцияOracle.SONum,
-	|	ТранзакцияOracle.SODate,
-	|	ТранзакцияOracle.ShipDateActual,
-	|	ТранзакцияOracle.CreationDate,
-	|	ТранзакцияOracle.CreatedBy,
-	|	ТранзакцияOracle.DocID,
-	|	ТранзакцияOracle.LineID,
-	|	ТранзакцияOracle.Amount,
-	|	ТранзакцияOracle.BaseAmount,
-	|	ТранзакцияOracle.Source,
-	|	ТранзакцияOracle.AU,
+	|	ТранзакцияOracle.Номер КАК Номер,
+	|	ТранзакцияOracle.Дата КАК Дата,
+	|	ТранзакцияOracle.GlSourceType КАК GlSourceType,
+	|	ТранзакцияOracle.Company КАК Company,
+	|	ТранзакцияOracle.Account КАК Account,
+	|	ТранзакцияOracle.Location КАК Location,
+	|	ТранзакцияOracle.SubSubSegment КАК SubSubSegment,
+	|	ТранзакцияOracle.Currency КАК Currency,
+	|	ТранзакцияOracle.ExchangeRate КАК ExchangeRate,
+	|	ТранзакцияOracle.GL_Account КАК GL_Account,
+	|	ТранзакцияOracle.Client КАК Client,
+	|	ТранзакцияOracle.EndClient КАК EndClient,
+	|	ТранзакцияOracle.Contract КАК Contract,
+	|	ТранзакцияOracle.DocType КАК DocType,
+	|	ТранзакцияOracle.Description КАК Description,
+	|	ТранзакцияOracle.TransType КАК TransType,
+	|	ТранзакцияOracle.SONum КАК SONum,
+	|	ТранзакцияOracle.SODate КАК SODate,
+	|	ТранзакцияOracle.ShipDateActual КАК ShipDateActual,
+	|	ТранзакцияOracle.CreationDate КАК CreationDate,
+	|	ТранзакцияOracle.CreatedBy КАК CreatedBy,
+	|	ТранзакцияOracle.DocID КАК DocID,
+	|	ТранзакцияOracle.LineID КАК LineID,
+	|	ТранзакцияOracle.Amount КАК Amount,
+	|	ТранзакцияOracle.BaseAmount КАК BaseAmount,
+	|	ТранзакцияOracle.Source КАК Source,
+	|	ТранзакцияOracle.AU КАК AU,
 	|	ТранзакцияOracle.Account.БазовыйЭлемент КАК HFMAccount,
-	|	ТранзакцияOracle.LegalEntity,
-	|	ТранзакцияOracle.CustomerNumber,
-	|	ТранзакцияOracle.EndCustomerNumber
+	|	ТранзакцияOracle.LegalEntity КАК LegalEntity,
+	|	ТранзакцияOracle.CustomerNumber КАК CustomerNumber,
+	|	ТранзакцияOracle.EndCustomerNumber КАК EndCustomerNumber
 	|ИЗ
 	|	Документ.ТранзакцияOracle КАК ТранзакцияOracle
 	|ГДЕ
@@ -92,7 +92,7 @@
 	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|ВЫБРАТЬ
-	|	DSSСвязанныеДокументы.ТипСвязанногоОбъекта,
+	|	DSSСвязанныеДокументы.ТипСвязанногоОбъекта КАК ТипСвязанногоОбъекта,
 	|	DSSСвязанныеДокументы.СвязанныйОбъект КАК Ссылка
 	|ИЗ
 	|	РегистрСведений.DSSСвязанныеДокументы КАК DSSСвязанныеДокументы
@@ -170,7 +170,8 @@
 
 	Если Реквизиты.Source = Перечисления.ТипыСоответствий.OracleMI Тогда
 		СтруктураКлиент = ПолучитьКлиентаMI(Реквизиты);
-	ИначеЕсли Реквизиты.Source = Перечисления.ТипыСоответствий.OracleSmith Тогда
+	//ИначеЕсли Реквизиты.Source = Перечисления.ТипыСоответствий.OracleSmith Тогда - в Смитах Source - это FMS, "SO Accrual" и др, поэтому без проверки на источник отправляем в смит
+	Иначе
 		СтруктураКлиент = ПолучитьКлиентаSmith(Реквизиты);
 	КонецЕсли;
 	
@@ -179,6 +180,17 @@
 КонецФункции
 
 Функция ПолучитьКлиентаMI(Реквизиты)
+	
+	//Если НЕ ЗначениеЗаполнено(Реквизиты.Client) Тогда
+	//	Если Реквизиты.GlSourceType = Перечисления.OracleGlSourceType.JV  
+	//		ИЛИ Реквизиты.DocType = "CASH" И Реквизиты.TransType = "TRADE_UNID" Тогда
+	//		КлиентТранзакции = Справочники.Контрагенты.Unreconciled;
+	//	ИначеЕсли Реквизиты.CustomerNumber = "" Тогда
+	//		КлиентТранзакции = Справочники.Контрагенты.Undefined;
+	//	КонецЕсли;
+	//Иначе
+	//	КлиентТранзакции = Реквизиты.Client;
+	//КонецЕсли;
 	
 	Если НЕ ЗначениеЗаполнено(Реквизиты.Client) Тогда
 		

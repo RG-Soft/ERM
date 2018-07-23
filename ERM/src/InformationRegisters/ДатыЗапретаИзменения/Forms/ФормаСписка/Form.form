@@ -12,7 +12,6 @@
       <key>ru</key>
       <value>Группа пользовательских настроек</value>
     </title>
-    <verticalStretch>false</verticalStretch>
     <extendedTooltip>
       <name>ГруппаПользовательскихНастроекРасширеннаяПодсказка</name>
       <id>31</id>
@@ -35,6 +34,7 @@
       <showLeftMargin>true</showLeftMargin>
       <united>true</united>
       <throughAlign>Auto</throughAlign>
+      <currentRowUse>DontUse</currentRowUse>
     </extInfo>
   </items>
   <items xsi:type="form:FormGroup">
@@ -98,6 +98,36 @@
       <autoMaxHeight>true</autoMaxHeight>
       <placementArea>UserCmds</placementArea>
     </items>
+    <items xsi:type="form:Button">
+      <name>ФормаВключитьВозможностьРедактирования</name>
+      <id>43</id>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <extendedTooltip>
+        <name>ФормаВключитьВозможностьРедактированияРасширеннаяПодсказка</name>
+        <id>44</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <commandName>Form.Command.ВключитьВозможностьРедактирования</commandName>
+      <representation>Auto</representation>
+      <onlyInAllActions>true</onlyInAllActions>
+      <autoMaxWidth>true</autoMaxWidth>
+      <autoMaxHeight>true</autoMaxHeight>
+      <placementArea>UserCmds</placementArea>
+    </items>
     <visible>true</visible>
     <enabled>true</enabled>
     <userVisible>
@@ -131,6 +161,10 @@
   <items xsi:type="form:Table">
     <name>Список</name>
     <id>1</id>
+    <title>
+      <key>ru</key>
+      <value>Список</value>
+    </title>
     <visible>true</visible>
     <enabled>true</enabled>
     <userVisible>
@@ -141,8 +175,6 @@
     </dataPath>
     <defaultItem>true</defaultItem>
     <titleLocation>None</titleLocation>
-    <excludedCommands>Copy</excludedCommands>
-    <excludedCommands>Create</excludedCommands>
     <items xsi:type="form:FormField">
       <name>СписокПользователь</name>
       <id>8</id>
@@ -625,9 +657,6 @@
     <rowPictureDataPath xsi:type="form:DataPath">
       <segments>Список.DefaultPicture</segments>
     </rowPictureDataPath>
-    <searchStringLocation>None</searchStringLocation>
-    <viewStatusLocation>None</viewStatusLocation>
-    <searchControlLocation>None</searchControlLocation>
     <extInfo xsi:type="form:DynamicListTableExtInfo">
       <autoRefreshPeriod>60</autoRefreshPeriod>
       <period>
@@ -653,9 +682,6 @@
     <event>OnCreateAtServer</event>
     <name>ПриСозданииНаСервере</name>
   </handlers>
-  <excludedCommands>Copy</excludedCommands>
-  <excludedCommands>Create</excludedCommands>
-  <width>110</width>
   <autoTitle>true</autoTitle>
   <autoUrl>true</autoUrl>
   <group>Vertical</group>
@@ -693,19 +719,9 @@
     </notDefaultUseAlwaysAttributes>
     <main>true</main>
     <extInfo xsi:type="form:DynamicListExtInfo">
-      <queryText>ВЫБРАТЬ
-	ДатыЗапретаИзменения.Раздел,
-	ДатыЗапретаИзменения.Объект,
-	ДатыЗапретаИзменения.Пользователь,
-	ДатыЗапретаИзменения.ДатаЗапрета,
-	ДатыЗапретаИзменения.ОписаниеДатыЗапрета,
-	ДатыЗапретаИзменения.Комментарий
-ИЗ
-	РегистрСведений.ДатыЗапретаИзменения КАК ДатыЗапретаИзменения</queryText>
       <mainTable>InformationRegister.ДатыЗапретаИзменения</mainTable>
       <dynamicDataRead>true</dynamicDataRead>
       <autoFillAvailableFields>true</autoFillAvailableFields>
-      <customQuery>true</customQuery>
       <autoSaveUserSettings>true</autoSaveUserSettings>
       <getInvisibleFieldPresentations>true</getInvisibleFieldPresentations>
     </extInfo>
@@ -729,6 +745,7 @@
         <name>ДатыЗапретаИзмененияДанных</name>
       </handler>
     </action>
+    <currentRowUse>DontUse</currentRowUse>
   </formCommands>
   <formCommands>
     <name>ДатыЗапретаЗагрузкиДанных</name>
@@ -749,6 +766,28 @@
         <name>ДатыЗапретаЗагрузкиДанных</name>
       </handler>
     </action>
+    <currentRowUse>DontUse</currentRowUse>
+  </formCommands>
+  <formCommands>
+    <name>ВключитьВозможностьРедактирования</name>
+    <title>
+      <key>ru</key>
+      <value>Включить возможность редактирования</value>
+    </title>
+    <id>3</id>
+    <toolTip>
+      <key>ru</key>
+      <value>Включить возможность редактирования только для целей поиска неисправности (требуется углубленное понимание работы механизма)</value>
+    </toolTip>
+    <use>
+      <common>true</common>
+    </use>
+    <action xsi:type="form:FormCommandHandlerContainer">
+      <handler>
+        <name>ВключитьВозможностьРедактирования</name>
+      </handler>
+    </action>
+    <currentRowUse>DontUse</currentRowUse>
   </formCommands>
   <commandInterface>
     <navigationPanel/>

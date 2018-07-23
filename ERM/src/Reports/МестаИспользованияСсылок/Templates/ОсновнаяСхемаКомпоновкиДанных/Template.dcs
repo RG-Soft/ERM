@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <DataCompositionSchema xmlns="http://v8.1c.ru/8.1/data-composition-system/schema" xmlns:dcscom="http://v8.1c.ru/8.1/data-composition-system/common" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<dataSource>
 		<name>ИсточникДанных</name>
@@ -12,12 +12,9 @@
 			<title xsi:type="v8:LocalStringType">
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>Ссылка</v8:content>
+					<v8:content>Наименование</v8:content>
 				</v8:item>
 			</title>
-			<valueType>
-				<v8:TypeSet xmlns:d5p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d5p1:AnyRef</v8:TypeSet>
-			</valueType>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Данные</dataPath>
@@ -98,6 +95,7 @@
 			</v8:item>
 		</title>
 		<useRestriction>
+			<field>false</field>
 			<condition>true</condition>
 			<group>true</group>
 			<order>true</order>
@@ -119,11 +117,13 @@
 			</v8:item>
 		</title>
 		<valueType>
-			<v8:TypeSet xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:AnyRef</v8:TypeSet>
+			<v8:TypeSet xmlns:d3p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d3p1:AnyRef</v8:TypeSet>
 		</valueType>
 		<useRestriction>false</useRestriction>
 		<valueListAllowed>true</valueListAllowed>
+		<availableAsField>true</availableAsField>
 		<denyIncompleteValues>true</denyIncompleteValues>
+		<use>Auto</use>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
@@ -133,11 +133,12 @@
 				<v8:content>Места использования объектов программы</v8:content>
 			</v8:item>
 		</dcsset:presentation>
-		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+		<dcsset:settings xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:chm="http://v8.1c.ru/8.2/data/chart" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:dataParameters>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>НаборСсылок</dcscor:parameter>
-					<dcscor:value xsi:nil="true"/>
+					<dcscor:value xsi:nil="true">
+					</dcscor:value>
 					<dcsset:userSettingID>5bef22e4-9ca8-45bc-aaa6-29de7d91e343</dcsset:userSettingID>
 					<dcsset:userSettingPresentation xsi:type="v8:LocalStringType">
 						<v8:item>
@@ -154,7 +155,7 @@
 				</dcscor:item>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>Заголовок</dcscor:parameter>
-					<dcscor:value xsi:type="xs:string"/>
+					<dcscor:value xsi:type="xs:string"></dcscor:value>
 				</dcscor:item>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>ВыводитьПараметрыДанных</dcscor:parameter>
@@ -176,30 +177,16 @@
 					</dcsset:item>
 				</dcsset:groupItems>
 				<dcsset:order>
-					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
+					<dcsset:item xsi:type="dcsset:OrderItemAuto">
+					</dcsset:item>
 				</dcsset:order>
 				<dcsset:selection>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>Ссылка</dcsset:field>
-						<dcsset:lwsTitle>
-							<v8:item>
-								<v8:lang>ru</v8:lang>
-								<v8:content>Наименование</v8:content>
-							</v8:item>
-						</dcsset:lwsTitle>
-					</dcsset:item>
-					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>Ссылка.Код</dcsset:field>
-						<dcsset:lwsTitle>
-							<v8:item>
-								<v8:lang>ru</v8:lang>
-								<v8:content>Код</v8:content>
-							</v8:item>
-						</dcsset:lwsTitle>
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>КоличествоДанных</dcsset:field>
-						<dcsset:lwsTitle>
+						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>Вхождений</v8:content>
@@ -250,24 +237,16 @@
 						</dcsset:item>
 					</dcsset:filter>
 					<dcsset:order>
-						<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
+						<dcsset:item xsi:type="dcsset:OrderItemAuto">
+						</dcsset:item>
 					</dcsset:order>
 					<dcsset:selection>
 						<dcsset:item xsi:type="dcsset:SelectedItemField">
 							<dcsset:field>Данные</dcsset:field>
-							<dcsset:lwsTitle>
+							<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 								<v8:item>
 									<v8:lang>ru</v8:lang>
 									<v8:content>Места использования</v8:content>
-								</v8:item>
-							</dcsset:lwsTitle>
-						</dcsset:item>
-						<dcsset:item xsi:type="dcsset:SelectedItemField">
-							<dcsset:field>КоличествоДанных</dcsset:field>
-							<dcsset:lwsTitle>
-								<v8:item>
-									<v8:lang>ru</v8:lang>
-									<v8:content>Вхождений</v8:content>
 								</v8:item>
 							</dcsset:lwsTitle>
 						</dcsset:item>

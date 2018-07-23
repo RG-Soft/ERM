@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <DataCompositionSchema xmlns="http://v8.1c.ru/8.1/data-composition-system/schema" xmlns:dcscom="http://v8.1c.ru/8.1/data-composition-system/common" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<dataSource>
 		<name>ИсточникДанных1</name>
@@ -21,6 +21,12 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Исполнитель</dataPath>
 			<field>Исполнитель</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Исполнитель</v8:content>
+				</v8:item>
+			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>СрокИсполнения</dataPath>
@@ -80,34 +86,82 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>ВСрок</dataPath>
 			<field>ВСрок</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>В срок</v8:content>
+				</v8:item>
+			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Выполнено</dataPath>
 			<field>Выполнено</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Выполнено</v8:content>
+				</v8:item>
+			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Выполняются</dataPath>
 			<field>Выполняются</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Выполняются</v8:content>
+				</v8:item>
+			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>НеВСрок</dataPath>
 			<field>НеВСрок</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Не в срок</v8:content>
+				</v8:item>
+			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>НеВыполнено</dataPath>
 			<field>НеВыполнено</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Не выполнено</v8:content>
+				</v8:item>
+			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Просроченные</dataPath>
 			<field>Просроченные</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Просроченные</v8:content>
+				</v8:item>
+			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Описание</dataPath>
 			<field>Описание</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Описание</v8:content>
+				</v8:item>
+			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>КоличествоЗадач</dataPath>
 			<field>КоличествоЗадач</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Количество задач</v8:content>
+				</v8:item>
+			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Выполнена</dataPath>
@@ -124,10 +178,10 @@
 	ПОДСТРОКА(Задачи.Описание, 1, 250) КАК Описание,
 	Задачи.Автор,
 	ВЫБОР
-		КОГДА Задачи.Исполнитель ЕСТЬ НЕ NULL 
-				И Задачи.Исполнитель &lt;&gt; ЗНАЧЕНИЕ(Справочник.Пользователи.ПустаяСсылка)
-			ТОГДА Задачи.Исполнитель
-		ИНАЧЕ Задачи.РольИсполнителя
+		КОГДА Задачи.РольИсполнителя ЕСТЬ НЕ NULL И
+			Задачи.РольИсполнителя &lt;&gt; ЗНАЧЕНИЕ(Справочник.РолиИсполнителей.ПустаяСсылка)
+			ТОГДА Задачи.РольИсполнителя
+		ИНАЧЕ Задачи.Исполнитель
 	КОНЕЦ КАК Исполнитель,
 	Задачи.РольИсполнителя,
 	Задачи.Дата,
@@ -260,6 +314,10 @@
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>true</useRestriction>
 		<expression>&amp;Период.ДатаНачала</expression>
+		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>ДатаОкончания</name>
@@ -278,6 +336,10 @@
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>true</useRestriction>
 		<expression>&amp;Период.ДатаОкончания</expression>
+		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>КрайнийСрок</name>
@@ -295,6 +357,9 @@
 		</valueType>
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>false</useRestriction>
+		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
 		<use>Always</use>
 	</parameter>
 	<parameter>
@@ -311,9 +376,12 @@
 		<value xsi:type="v8:StandardPeriod">
 			<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
 			<v8:startDate>0001-01-01T00:00:00</v8:startDate>
-			<v8:endDate>0001-01-01T00:00:00</v8:endDate>
-		</value>
+			<v8:endDate>0001-01-01T00:00:00</v8:endDate></value>
 		<useRestriction>false</useRestriction>
+		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>ТекущиеЗадачи</dcsset:name>
@@ -323,7 +391,7 @@
 				<v8:content>Текущие задачи</v8:content>
 			</v8:item>
 		</dcsset:presentation>
-		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+		<dcsset:settings xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:chm="http://v8.1c.ru/8.2/data/chart" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:use>false</dcsset:use>
@@ -393,8 +461,7 @@
 					<dcsset:left xsi:type="dcscor:Field">СрокИсполнения</dcsset:left>
 					<dcsset:comparisonType>LessOrEqual</dcsset:comparisonType>
 					<dcsset:right xsi:type="v8:StandardBeginningDate">
-						<v8:variant xsi:type="v8:StandardBeginningDateVariant">BeginningOfThisDay</v8:variant>
-					</dcsset:right>
+						<v8:variant xsi:type="v8:StandardBeginningDateVariant">BeginningOfThisDay</v8:variant></dcsset:right>
 					<dcsset:viewMode>Normal</dcsset:viewMode>
 					<dcsset:userSettingID>6986aa91-f648-465d-88d8-1c7d7c7a7d84</dcsset:userSettingID>
 				</dcsset:item>
@@ -403,8 +470,7 @@
 					<dcsset:left xsi:type="dcscor:Field">ДатаИсполнения</dcsset:left>
 					<dcsset:comparisonType>GreaterOrEqual</dcsset:comparisonType>
 					<dcsset:right xsi:type="v8:StandardBeginningDate">
-						<v8:variant xsi:type="v8:StandardBeginningDateVariant">BeginningOfThisWeek</v8:variant>
-					</dcsset:right>
+						<v8:variant xsi:type="v8:StandardBeginningDateVariant">BeginningOfThisWeek</v8:variant></dcsset:right>
 					<dcsset:viewMode>Normal</dcsset:viewMode>
 					<dcsset:userSettingID>2b010cb4-de38-4d2b-ab7e-10c40c23f459</dcsset:userSettingID>
 				</dcsset:item>
@@ -419,7 +485,6 @@
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">Автор</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:right xsi:type="dcscor:DesignTimeValue">Справочник.Пользователи.ПустаяСсылка</dcsset:right>
 					<dcsset:viewMode>Normal</dcsset:viewMode>
 					<dcsset:userSettingID>5f599205-29c3-4667-88de-e895cb4e3131</dcsset:userSettingID>
 				</dcsset:item>
@@ -428,7 +493,8 @@
 					<dcsset:left xsi:type="dcscor:Field">Исполнитель</dcsset:left>
 					<dcsset:comparisonType>InList</dcsset:comparisonType>
 					<dcsset:right xsi:type="v8:ValueListType">
-						<v8:valueType/>
+						<v8:valueType>
+						</v8:valueType>
 						<v8:lastId xsi:type="xs:decimal">-1</v8:lastId>
 					</dcsset:right>
 					<dcsset:viewMode>Normal</dcsset:viewMode>
@@ -445,8 +511,7 @@
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>Период</dcscor:parameter>
 					<dcscor:value xsi:type="v8:StandardPeriod">
-						<v8:variant xsi:type="v8:StandardPeriodVariant">ThisWeek</v8:variant>
-					</dcscor:value>
+						<v8:variant xsi:type="v8:StandardPeriodVariant">ThisWeek</v8:variant></dcscor:value>
 					<dcsset:userSettingID>63d77e78-d7da-4534-8647-2714450f782d</dcsset:userSettingID>
 				</dcscor:item>
 			</dcsset:dataParameters>
@@ -477,9 +542,9 @@
 									<dcsset:left xsi:type="dcscor:Field">СрокИсполнения</dcsset:left>
 									<dcsset:comparisonType>Less</dcsset:comparisonType>
 									<dcsset:right xsi:type="v8:StandardBeginningDate">
-										<v8:variant xsi:type="v8:StandardBeginningDateVariant">BeginningOfNextDay</v8:variant>
-									</dcsset:right>
+										<v8:variant xsi:type="v8:StandardBeginningDateVariant">BeginningOfNextDay</v8:variant></dcsset:right>
 								</dcsset:item>
+								<dcsset:application>Items</dcsset:application>
 							</dcsset:item>
 							<dcsset:item xsi:type="dcsset:FilterItemGroup">
 								<dcsset:groupType>AndGroup</dcsset:groupType>
@@ -493,7 +558,9 @@
 									<dcsset:comparisonType>Less</dcsset:comparisonType>
 									<dcsset:right xsi:type="dcscor:Field">ДатаИсполнения</dcsset:right>
 								</dcsset:item>
+								<dcsset:application>Items</dcsset:application>
 							</dcsset:item>
+							<dcsset:application>Items</dcsset:application>
 						</dcsset:item>
 					</dcsset:filter>
 					<dcsset:appearance>
@@ -593,17 +660,21 @@
 					</dcsset:item>
 				</dcsset:groupItems>
 				<dcsset:order>
-					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
+					<dcsset:item xsi:type="dcsset:OrderItemAuto">
+					</dcsset:item>
 				</dcsset:order>
 				<dcsset:selection>
-					<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
+					<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+					</dcsset:item>
 				</dcsset:selection>
 				<dcsset:item xsi:type="dcsset:StructureItemGroup">
 					<dcsset:order>
-						<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
+						<dcsset:item xsi:type="dcsset:OrderItemAuto">
+						</dcsset:item>
 					</dcsset:order>
 					<dcsset:selection>
-						<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
+						<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+						</dcsset:item>
 						<dcsset:item xsi:type="dcsset:SelectedItemField">
 							<dcsset:use>false</dcsset:use>
 							<dcsset:field>Количество</dcsset:field>
@@ -621,14 +692,14 @@
 				<v8:content>Справка по исполнительской дисциплине</v8:content>
 			</v8:item>
 		</dcsset:presentation>
-		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+		<dcsset:settings xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:chm="http://v8.1c.ru/8.2/data/chart" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Исполнитель</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>КоличествоЗадач</dcsset:field>
-					<dcsset:lwsTitle>
+					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>Количество</v8:content>
@@ -636,7 +707,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemFolder">
-					<dcsset:lwsTitle>
+					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>Выполнено</v8:content>
@@ -644,7 +715,7 @@
 					</dcsset:lwsTitle>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>Выполнено</dcsset:field>
-						<dcsset:lwsTitle>
+						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>Всего</v8:content>
@@ -653,7 +724,7 @@
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>ВСрок</dcsset:field>
-						<dcsset:lwsTitle>
+						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>В срок</v8:content>
@@ -662,7 +733,7 @@
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>НеВСрок</dcsset:field>
-						<dcsset:lwsTitle>
+						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>Не в срок</v8:content>
@@ -672,7 +743,7 @@
 					<dcsset:placement>Auto</dcsset:placement>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemFolder">
-					<dcsset:lwsTitle>
+					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>Не выполнено</v8:content>
@@ -680,7 +751,7 @@
 					</dcsset:lwsTitle>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>НеВыполнено</dcsset:field>
-						<dcsset:lwsTitle>
+						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>Всего</v8:content>
@@ -690,7 +761,7 @@
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:use>false</dcsset:use>
 						<dcsset:field>Выполняются</dcsset:field>
-						<dcsset:lwsTitle>
+						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>Из них в срок</v8:content>
@@ -699,7 +770,7 @@
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>Просроченные</dcsset:field>
-						<dcsset:lwsTitle>
+						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>Просрочено</v8:content>
@@ -722,8 +793,7 @@
 					<dcsset:left xsi:type="dcscor:Field">Дата</dcsset:left>
 					<dcsset:comparisonType>GreaterOrEqual</dcsset:comparisonType>
 					<dcsset:right xsi:type="v8:StandardBeginningDate">
-						<v8:variant xsi:type="v8:StandardBeginningDateVariant">BeginningOfThisWeek</v8:variant>
-					</dcsset:right>
+						<v8:variant xsi:type="v8:StandardBeginningDateVariant">BeginningOfThisWeek</v8:variant></dcsset:right>
 					<dcsset:viewMode>Inaccessible</dcsset:viewMode>
 					<dcsset:userSettingID>1f540b31-fcf9-4a90-b831-6c8779ca3d75</dcsset:userSettingID>
 					<dcsset:userSettingPresentation xsi:type="v8:LocalStringType">
@@ -738,8 +808,7 @@
 					<dcsset:left xsi:type="dcscor:Field">Дата</dcsset:left>
 					<dcsset:comparisonType>LessOrEqual</dcsset:comparisonType>
 					<dcsset:right xsi:type="v8:StandardBeginningDate">
-						<v8:variant xsi:type="v8:StandardBeginningDateVariant">BeginningOfNextDay</v8:variant>
-					</dcsset:right>
+						<v8:variant xsi:type="v8:StandardBeginningDateVariant">BeginningOfNextDay</v8:variant></dcsset:right>
 					<dcsset:viewMode>Inaccessible</dcsset:viewMode>
 					<dcsset:userSettingID>f276458f-9ac1-4bcc-a677-8a8280dab87d</dcsset:userSettingID>
 					<dcsset:userSettingPresentation xsi:type="v8:LocalStringType">
@@ -754,7 +823,8 @@
 					<dcsset:left xsi:type="dcscor:Field">Исполнитель</dcsset:left>
 					<dcsset:comparisonType>InList</dcsset:comparisonType>
 					<dcsset:right xsi:type="v8:ValueListType">
-						<v8:valueType/>
+						<v8:valueType>
+						</v8:valueType>
 						<v8:lastId xsi:type="xs:decimal">-1</v8:lastId>
 					</dcsset:right>
 					<dcsset:viewMode>Normal</dcsset:viewMode>
@@ -765,16 +835,14 @@
 					<dcscor:use>false</dcscor:use>
 					<dcscor:parameter>КрайнийСрок</dcscor:parameter>
 					<dcscor:value xsi:type="v8:StandardBeginningDate">
-						<v8:variant xsi:type="v8:StandardBeginningDateVariant">BeginningOfNextWeek</v8:variant>
-					</dcscor:value>
+						<v8:variant xsi:type="v8:StandardBeginningDateVariant">BeginningOfNextWeek</v8:variant></dcscor:value>
 					<dcsset:viewMode>Normal</dcsset:viewMode>
 					<dcsset:userSettingID>be4549b8-e388-4873-be9c-0dd5fad8cde8</dcsset:userSettingID>
 				</dcscor:item>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>Период</dcscor:parameter>
 					<dcscor:value xsi:type="v8:StandardPeriod">
-						<v8:variant xsi:type="v8:StandardPeriodVariant">ThisWeek</v8:variant>
-					</dcscor:value>
+						<v8:variant xsi:type="v8:StandardPeriodVariant">ThisWeek</v8:variant></dcscor:value>
 					<dcsset:userSettingID>497875ae-0976-4c86-92ac-fad7e224c083</dcsset:userSettingID>
 				</dcscor:item>
 			</dcsset:dataParameters>
@@ -830,7 +898,8 @@
 						<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 							<dcscor:use>false</dcscor:use>
 							<dcscor:parameter>Текст</dcscor:parameter>
-							<dcscor:value xsi:type="v8:LocalStringType"/>
+							<dcscor:value xsi:type="v8:LocalStringType">
+							</dcscor:value>
 						</dcscor:item>
 					</dcsset:appearance>
 				</dcsset:item>
@@ -873,13 +942,15 @@
 					</dcsset:item>
 				</dcsset:groupItems>
 				<dcsset:order>
-					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
+					<dcsset:item xsi:type="dcsset:OrderItemAuto">
+					</dcsset:item>
 				</dcsset:order>
 				<dcsset:selection>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>СистемныеПоля.НомерПоПорядку</dcsset:field>
 					</dcsset:item>
-					<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
+					<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+					</dcsset:item>
 				</dcsset:selection>
 			</dcsset:item>
 		</dcsset:settings>

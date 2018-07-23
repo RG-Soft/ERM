@@ -12,7 +12,6 @@
       <key>ru</key>
       <value>Группа пользовательских настроек</value>
     </title>
-    <verticalStretch>false</verticalStretch>
     <extendedTooltip>
       <name>ГруппаПользовательскихНастроекРасширеннаяПодсказка</name>
       <id>41</id>
@@ -35,6 +34,7 @@
       <showLeftMargin>true</showLeftMargin>
       <united>true</united>
       <throughAlign>Auto</throughAlign>
+      <currentRowUse>DontUse</currentRowUse>
     </extInfo>
   </items>
   <items xsi:type="form:FormGroup">
@@ -169,10 +169,6 @@
         <key>ru</key>
         <value>Командная панель формы</value>
       </title>
-      <toolTip>
-        <key>ru</key>
-        <value>Командная панель формы</value>
-      </toolTip>
       <extendedTooltip>
         <name>КоманднаяПанельФормыExtendedTooltip</name>
         <id>26</id>
@@ -253,6 +249,10 @@
   <items xsi:type="form:Table">
     <name>Список</name>
     <id>1</id>
+    <title>
+      <key>ru</key>
+      <value>Список</value>
+    </title>
     <visible>true</visible>
     <enabled>true</enabled>
     <userVisible>
@@ -277,7 +277,7 @@
       </userVisible>
       <dataPath xsi:type="form:MultiLanguageDataPath">
         <paths xsi:type="form:DataPath">
-          <segments>Список.Наименование</segments>
+          <segments>Список.Description</segments>
         </paths>
       </dataPath>
       <defaultItem>true</defaultItem>
@@ -498,6 +498,10 @@
     <handlers>
       <event>Drag</event>
       <name>СписокПеретаскивание</name>
+    </handlers>
+    <handlers>
+      <event>BeforeRowChange</event>
+      <name>СписокПередНачаломИзменения</name>
     </handlers>
     <searchStringAddition>
       <visible>true</visible>
@@ -733,10 +737,6 @@
           <key>ru</key>
           <value>Контекстное меню списка</value>
         </title>
-        <toolTip>
-          <key>ru</key>
-          <value>Контекстное меню списка</value>
-        </toolTip>
         <extendedTooltip>
           <name>КонтекстноеМенюСпискаExtendedTooltip</name>
           <id>31</id>
@@ -786,10 +786,11 @@
     <rowPictureDataPath xsi:type="form:DataPath">
       <segments>Список.DefaultPicture</segments>
     </rowPictureDataPath>
-    <searchStringLocation>None</searchStringLocation>
-    <viewStatusLocation>None</viewStatusLocation>
-    <searchControlLocation>None</searchControlLocation>
     <extInfo xsi:type="form:DynamicListTableExtInfo">
+      <handlers>
+        <event>OnGetDataAtServer</event>
+        <name>СписокПриПолученииДанныхНаСервере</name>
+      </handlers>
       <autoRefreshPeriod>60</autoRefreshPeriod>
       <period>
         <startDate>0001-01-01T00:00:00</startDate>
@@ -801,16 +802,21 @@
     </extInfo>
   </items>
   <items xsi:type="form:FormField">
-    <name>Описание</name>
+    <name>Комментарий</name>
     <id>8</id>
     <visible>true</visible>
     <enabled>true</enabled>
     <userVisible>
       <common>true</common>
     </userVisible>
+    <dataPath xsi:type="form:MultiLanguageDataPath">
+      <paths xsi:type="form:DataPath">
+        <segments>Items.Список.CurrentData.Комментарий</segments>
+      </paths>
+    </dataPath>
     <titleLocation>Left</titleLocation>
     <extendedTooltip>
-      <name>ОписаниеExtendedTooltip</name>
+      <name>КомментарийРасширеннаяПодсказка</name>
       <id>36</id>
       <visible>true</visible>
       <enabled>true</enabled>
@@ -825,7 +831,7 @@
       </extInfo>
     </extendedTooltip>
     <contextMenu>
-      <name>ОписаниеКонтекстноеМеню</name>
+      <name>КомментарийКонтекстноеМеню</name>
       <id>9</id>
       <visible>true</visible>
       <enabled>true</enabled>
@@ -860,7 +866,6 @@
     <event>OnCreateAtServer</event>
     <name>ПриСозданииНаСервере</name>
   </handlers>
-  <width>80</width>
   <autoTitle>true</autoTitle>
   <autoUrl>true</autoUrl>
   <group>Vertical</group>
@@ -882,6 +887,9 @@
       <common>true</common>
     </edit>
     <notDefaultUseAlwaysAttributes xsi:type="form:DataPath">
+      <segments>Список.IsFolder</segments>
+    </notDefaultUseAlwaysAttributes>
+    <notDefaultUseAlwaysAttributes xsi:type="form:DataPath">
       <segments>Список.Ref</segments>
     </notDefaultUseAlwaysAttributes>
     <notDefaultUseAlwaysAttributes xsi:type="form:DataPath">
@@ -895,16 +903,10 @@
 	ГруппыДоступа.Предопределенный,
 	ГруппыДоступа.Родитель,
 	ГруппыДоступа.ЭтоГруппа,
-	ВЫБОР
-		КОГДА ТИПЗНАЧЕНИЯ(ГруппыДоступа.Пользователь) = ТИП(Справочник.Пользователи)
-			ТОГДА ГруппыДоступа.Наименование + &quot;: &quot; + ВЫРАЗИТЬ(ГруппыДоступа.Пользователь КАК Справочник.Пользователи).Наименование
-		КОГДА ТИПЗНАЧЕНИЯ(ГруппыДоступа.Пользователь) = ТИП(Справочник.ВнешниеПользователи)
-			ТОГДА ГруппыДоступа.Наименование + &quot;: &quot; + &amp;ОшибкаОбъектНеНайден
-		ИНАЧЕ ГруппыДоступа.Наименование
-	КОНЕЦ КАК Наименование,
+	ГруппыДоступа.Наименование,
 	ГруппыДоступа.Профиль,
 	ГруппыДоступа.Пользователь,
-	ГруппыДоступа.Описание,
+	ГруппыДоступа.Комментарий,
 	ГруппыДоступа.Ответственный
 ИЗ
 	Справочник.ГруппыДоступа КАК ГруппыДоступа

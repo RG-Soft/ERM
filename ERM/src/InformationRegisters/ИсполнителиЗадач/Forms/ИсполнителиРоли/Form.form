@@ -7,6 +7,10 @@
   <items xsi:type="form:Table">
     <name>Исполнители</name>
     <id>1</id>
+    <title>
+      <key>ru</key>
+      <value>Исполнители</value>
+    </title>
     <visible>true</visible>
     <enabled>true</enabled>
     <userVisible>
@@ -67,6 +71,10 @@
     <items xsi:type="form:FormField">
       <name>ОсновнойОбъектАдресации</name>
       <id>8</id>
+      <title>
+        <key>ru</key>
+        <value>Основной объект адресации</value>
+      </title>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible/>
@@ -168,6 +176,10 @@
       <horizontalAlign>Left</horizontalAlign>
       <autoFill>true</autoFill>
     </autoCommandBar>
+    <handlers>
+      <event>AfterDeleteRow</event>
+      <name>ИсполнителиПослеУдаления</name>
+    </handlers>
     <searchStringAddition>
       <visible>true</visible>
       <enabled>true</enabled>
@@ -330,9 +342,6 @@
     <horizontalStretch>true</horizontalStretch>
     <verticalStretch>true</verticalStretch>
     <enableStartDrag>true</enableStartDrag>
-    <searchStringLocation>None</searchStringLocation>
-    <viewStatusLocation>None</viewStatusLocation>
-    <searchControlLocation>None</searchControlLocation>
     <extInfo xsi:type="form:DynamicListTableExtInfo">
       <autoRefreshPeriod>60</autoRefreshPeriod>
       <period>
@@ -388,10 +397,14 @@
     <main>true</main>
     <extInfo xsi:type="form:DynamicListExtInfo">
       <queryText>ВЫБРАТЬ
-	РегистрСведенийИсполнителиЗадач.РольИсполнителя,
-	РегистрСведенийИсполнителиЗадач.Исполнитель,
-	РегистрСведенийИсполнителиЗадач.ОсновнойОбъектАдресации,
-	РегистрСведенийИсполнителиЗадач.ДополнительныйОбъектАдресации
+	РегистрСведенийИсполнителиЗадач.РольИсполнителя КАК РольИсполнителя,
+	РегистрСведенийИсполнителиЗадач.Исполнитель КАК Исполнитель,
+	ВЫБОР
+		КОГДА РегистрСведенийИсполнителиЗадач.ОсновнойОбъектАдресации = НЕОПРЕДЕЛЕНО
+			ТОГДА &amp;БезОбъектаАдресации
+		ИНАЧЕ РегистрСведенийИсполнителиЗадач.ОсновнойОбъектАдресации
+	КОНЕЦ КАК ОсновнойОбъектАдресации,
+	РегистрСведенийИсполнителиЗадач.ДополнительныйОбъектАдресации КАК ДополнительныйОбъектАдресации
 ИЗ
 	РегистрСведений.ИсполнителиЗадач КАК РегистрСведенийИсполнителиЗадач</queryText>
       <mainTable>InformationRegister.ИсполнителиЗадач</mainTable>

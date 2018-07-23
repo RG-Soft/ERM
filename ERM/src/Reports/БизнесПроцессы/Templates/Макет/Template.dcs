@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <DataCompositionSchema xmlns="http://v8.1c.ru/8.1/data-composition-system/schema" xmlns:dcscom="http://v8.1c.ru/8.1/data-composition-system/common" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<dataSource>
 		<name>ИсточникДанных1</name>
@@ -133,9 +133,12 @@
 		<value xsi:type="v8:StandardPeriod">
 			<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
 			<v8:startDate>0001-01-01T00:00:00</v8:startDate>
-			<v8:endDate>0001-01-01T00:00:00</v8:endDate>
-		</value>
+			<v8:endDate>0001-01-01T00:00:00</v8:endDate></value>
 		<useRestriction>false</useRestriction>
+		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>ПериодНачало</name>
@@ -154,6 +157,10 @@
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>true</useRestriction>
 		<expression>&amp;Период.ДатаНачала</expression>
+		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>ПериодОкончание</name>
@@ -172,6 +179,10 @@
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>true</useRestriction>
 		<expression>&amp;Период.ДатаОкончания</expression>
+		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>СписокБизнесПроцессов</dcsset:name>
@@ -181,7 +192,7 @@
 				<v8:content>Список бизнес-процессов</v8:content>
 			</v8:item>
 		</dcsset:presentation>
-		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+		<dcsset:settings xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:chm="http://v8.1c.ru/8.2/data/chart" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>СистемныеПоля.НомерПоПорядкуВГруппировке</dcsset:field>
@@ -214,6 +225,11 @@
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">ВидБизнесПроцесса</dcsset:left>
 					<dcsset:comparisonType>InList</dcsset:comparisonType>
+					<dcsset:right xsi:type="v8:ValueListType">
+						<v8:valueType>
+						</v8:valueType>
+						<v8:lastId xsi:type="xs:decimal">-1</v8:lastId>
+					</dcsset:right>
 					<dcsset:viewMode>Normal</dcsset:viewMode>
 					<dcsset:userSettingID>68c21fb2-0c55-4303-92c4-ecfcdf71607a</dcsset:userSettingID>
 				</dcsset:item>
@@ -222,7 +238,8 @@
 					<dcsset:left xsi:type="dcscor:Field">Автор</dcsset:left>
 					<dcsset:comparisonType>InList</dcsset:comparisonType>
 					<dcsset:right xsi:type="v8:ValueListType">
-						<v8:valueType/>
+						<v8:valueType>
+						</v8:valueType>
 						<v8:lastId xsi:type="xs:decimal">-1</v8:lastId>
 					</dcsset:right>
 					<dcsset:viewMode>Normal</dcsset:viewMode>
@@ -253,8 +270,7 @@
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>Период</dcscor:parameter>
 					<dcscor:value xsi:type="v8:StandardPeriod">
-						<v8:variant xsi:type="v8:StandardPeriodVariant">ThisMonth</v8:variant>
-					</dcscor:value>
+						<v8:variant xsi:type="v8:StandardPeriodVariant">ThisMonth</v8:variant></dcscor:value>
 					<dcsset:userSettingID>654e1469-dd6e-46e1-94a3-6b5e6eaa0722</dcsset:userSettingID>
 				</dcscor:item>
 			</dcsset:dataParameters>
@@ -354,17 +370,21 @@
 					</dcsset:item>
 				</dcsset:groupItems>
 				<dcsset:order>
-					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
+					<dcsset:item xsi:type="dcsset:OrderItemAuto">
+					</dcsset:item>
 				</dcsset:order>
 				<dcsset:selection>
-					<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
+					<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+					</dcsset:item>
 				</dcsset:selection>
 				<dcsset:item xsi:type="dcsset:StructureItemGroup">
 					<dcsset:order>
-						<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
+						<dcsset:item xsi:type="dcsset:OrderItemAuto">
+						</dcsset:item>
 					</dcsset:order>
 					<dcsset:selection>
-						<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
+						<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+						</dcsset:item>
 					</dcsset:selection>
 				</dcsset:item>
 			</dcsset:item>
@@ -378,7 +398,7 @@
 				<v8:content>Статистика по видам бизнес-процессов</v8:content>
 			</v8:item>
 		</dcsset:presentation>
-		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+		<dcsset:settings xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:chm="http://v8.1c.ru/8.2/data/chart" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Количество</dcsset:field>
@@ -397,7 +417,8 @@
 					<dcsset:left xsi:type="dcscor:Field">Автор</dcsset:left>
 					<dcsset:comparisonType>InList</dcsset:comparisonType>
 					<dcsset:right xsi:type="v8:ValueListType">
-						<v8:valueType/>
+						<v8:valueType>
+						</v8:valueType>
 						<v8:lastId xsi:type="xs:decimal">-1</v8:lastId>
 					</dcsset:right>
 					<dcsset:viewMode>Normal</dcsset:viewMode>
@@ -428,8 +449,7 @@
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>Период</dcscor:parameter>
 					<dcscor:value xsi:type="v8:StandardPeriod">
-						<v8:variant xsi:type="v8:StandardPeriodVariant">ThisMonth</v8:variant>
-					</dcscor:value>
+						<v8:variant xsi:type="v8:StandardPeriodVariant">ThisMonth</v8:variant></dcscor:value>
 					<dcsset:userSettingID>93407f28-3a8c-4a6c-847b-cebc19df5411</dcsset:userSettingID>
 				</dcscor:item>
 			</dcsset:dataParameters>
@@ -507,10 +527,12 @@
 						</dcsset:item>
 					</dcsset:groupItems>
 					<dcsset:order>
-						<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
+						<dcsset:item xsi:type="dcsset:OrderItemAuto">
+						</dcsset:item>
 					</dcsset:order>
 					<dcsset:selection>
-						<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
+						<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+						</dcsset:item>
 					</dcsset:selection>
 				</dcsset:point>
 				<dcsset:series>
@@ -524,10 +546,12 @@
 						</dcsset:item>
 					</dcsset:groupItems>
 					<dcsset:order>
-						<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
+						<dcsset:item xsi:type="dcsset:OrderItemAuto">
+						</dcsset:item>
 					</dcsset:order>
 					<dcsset:selection>
-						<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
+						<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+						</dcsset:item>
 					</dcsset:selection>
 					<dcsset:userSettingID>516adb45-eacf-4811-813b-a0adc3aea0b1</dcsset:userSettingID>
 					<dcsset:userSettingPresentation xsi:type="v8:LocalStringType">
@@ -538,7 +562,8 @@
 					</dcsset:userSettingPresentation>
 				</dcsset:series>
 				<dcsset:selection>
-					<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
+					<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+					</dcsset:item>
 				</dcsset:selection>
 			</dcsset:item>
 		</dcsset:settings>
