@@ -4,7 +4,7 @@
 	Billing13, Billing14, Billing15, Billing16, Billing17, Billing18, Billing19, Billing20,
 	Billing21, Billing22, Billing23, Billing24) Экспорт
 	
-	Если AR <= 0 Тогда
+	Если AR = Null Или AR <= 0 Тогда
 		Возврат 0;
 	КонецЕсли;
 	
