@@ -443,7 +443,8 @@
 	|	SubSegment.*,
 	|	SubSubSegment.*,
 	|	AU.*,
-	|	LegalEntity.*}
+	|	LegalEntity.*,
+	|	%ПоляAR%}
 	|
 	|СГРУППИРОВАТЬ ПО
 	|	ВложенныйЗапрос.Client,
