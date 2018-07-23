@@ -333,23 +333,24 @@
 		ИНАЧЕ ИСТИНА
 	КОНЕЦ КАК ЗаполнятьОплатыПоДаннымОбмена,
 	СУММА(ВЫБОР
-		КОГДА InvoicedDebtsОбороты.Currency &lt;&gt; &amp;USD
-		И ЕСТЬNULL(ВнутренниеКурсыВалют.Курс, 0) = 0
-			ТОГДА 0
-		КОГДА InvoicedDebtsОбороты.Currency &lt;&gt; &amp;USD
-			ТОГДА ВЫРАЗИТЬ(InvoicedDebtsОбороты.Invoice.Amount / ЕСТЬNULL(ВнутренниеКурсыВалют.Курс, 0) КАК ЧИСЛО(15, 2))
-		ИНАЧЕ InvoicedDebtsОбороты.Invoice.Amount
-	КОНЕЦ) КАК USDAmount
+			КОГДА InvoicedDebtsОбороты.Currency &lt;&gt; &amp;USD
+					И ЕСТЬNULL(ВнутренниеКурсыВалют.Курс, 0) = 0
+				ТОГДА 0
+			КОГДА InvoicedDebtsОбороты.Currency &lt;&gt; &amp;USD
+				ТОГДА ВЫРАЗИТЬ(InvoicedDebtsОбороты.Invoice.Amount / ЕСТЬNULL(ВнутренниеКурсыВалют.Курс, 0) КАК ЧИСЛО(15, 2))
+			ИНАЧЕ InvoicedDebtsОбороты.Invoice.Amount
+		КОНЕЦ) КАК USDAmount
 ПОМЕСТИТЬ ВТ_Инвойсы
 ИЗ
-	РегистрНакопления.InvoicedDebts.Обороты(,, Месяц,) КАК InvoicedDebtsОбороты
+	РегистрНакопления.InvoicedDebts.Обороты(, , Месяц, ) КАК InvoicedDebtsОбороты
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИсточникиСЗаполнениемОплатИзОбмена КАК ИсточникиСЗаполнениемОплатИзОбмена
 		ПО InvoicedDebtsОбороты.Source = ИсточникиСЗаполнениемОплатИзОбмена.Source
-		И (InvoicedDebtsОбороты.Company = ИсточникиСЗаполнениемОплатИзОбмена.Company
-		ИЛИ ИсточникиСЗаполнениемОплатИзОбмена.Company = ЗНАЧЕНИЕ(Справочник.Организации.ПустаяСсылка))
+			И (InvoicedDebtsОбороты.Company = ИсточникиСЗаполнениемОплатИзОбмена.Company
+				ИЛИ ИсточникиСЗаполнениемОплатИзОбмена.Company = ЗНАЧЕНИЕ(Справочник.Организации.ПустаяСсылка))
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют КАК ВнутренниеКурсыВалют
 		ПО (НАЧАЛОПЕРИОДА(InvoicedDebtsОбороты.Период, МЕСЯЦ) = ВнутренниеКурсыВалют.Период)
-		И InvoicedDebtsОбороты.Currency = ВнутренниеКурсыВалют.Валюта
+			И InvoicedDebtsОбороты.Currency = ВнутренниеКурсыВалют.Валюта
+
 СГРУППИРОВАТЬ ПО
 	InvoicedDebtsОбороты.Source,
 	InvoicedDebtsОбороты.Company,
@@ -363,53 +364,71 @@
 			ТОГДА ЛОЖЬ
 		ИНАЧЕ ИСТИНА
 	КОНЕЦ,
-	InvoicedDebtsОбороты.LegalEntity ИНДЕКСИРОВАТЬ ПО Invoice
+	InvoicedDebtsОбороты.LegalEntity
+
+ИНДЕКСИРОВАТЬ ПО
+	Invoice
 ;
+
 ////////////////////////////////////////////////////////////////////////////////
- ВЫБРАТЬ РАЗЛИЧНЫЕ
+ВЫБРАТЬ РАЗЛИЧНЫЕ
 	ВТ_Инвойсы.Source КАК Source,
 	ВТ_Инвойсы.Company КАК Company,
 	ВТ_Инвойсы.Invoice КАК Invoice
 ПОМЕСТИТЬ ВТ_ИнвойсыДляОплат
 ИЗ
-	ВТ_Инвойсы КАК ВТ_Инвойсы ИНДЕКСИРОВАТЬ ПО Source, Company, Invoice
+	ВТ_Инвойсы КАК ВТ_Инвойсы
+
+ИНДЕКСИРОВАТЬ ПО
+	Source,
+	Company,
+	Invoice
 ;
+
 ////////////////////////////////////////////////////////////////////////////////
- ВЫБРАТЬ
+ВЫБРАТЬ
 	PaymentsОбороты.Invoice КАК Invoice,
 	МИНИМУМ(ВЫБОР
-		КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.ПроводкаDSS
-			ТОГДА PaymentsОбороты.Регистратор.DateLawson
-		КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
-		И ВЫРАЗИТЬ(PaymentsОбороты.Регистратор КАК Документ.КорректировкаТранзакции).ДокументОснование
-			ССЫЛКА Документ.ПроводкаDSS
-			ТОГДА ВЫРАЗИТЬ(ВЫРАЗИТЬ(PaymentsОбороты.Регистратор КАК Документ.КорректировкаТранзакции).ДокументОснование КАК
-				Документ.ПроводкаDSS).AccountingPeriod
-		КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
-			ТОГДА ВЫРАЗИТЬ(PaymentsОбороты.Регистратор КАК Документ.КорректировкаТранзакции).ДокументОснование.Дата
-		ИНАЧЕ PaymentsОбороты.Регистратор.Дата
-	КОНЕЦ) КАК PaymentDate
+			КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.ПроводкаDSS
+				ТОГДА PaymentsОбороты.Регистратор.DateLawson
+			КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
+					И ВЫРАЗИТЬ(PaymentsОбороты.Регистратор КАК Документ.КорректировкаТранзакции).ДокументОснование ССЫЛКА Документ.ПроводкаDSS
+				ТОГДА ВЫРАЗИТЬ(ВЫРАЗИТЬ(PaymentsОбороты.Регистратор КАК Документ.КорректировкаТранзакции).ДокументОснование КАК Документ.ПроводкаDSS).AccountingPeriod
+			КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
+				ТОГДА ВЫРАЗИТЬ(PaymentsОбороты.Регистратор КАК Документ.КорректировкаТранзакции).ДокументОснование.Дата
+			ИНАЧЕ PaymentsОбороты.Регистратор.Дата
+		КОНЕЦ) КАК PaymentDate
 ПОМЕСТИТЬ ВТ_ОплатыПоПроводкам
 ИЗ
-	РегистрНакопления.Payments.Обороты({(&amp;НачалоВремен)}, {(&amp;КонецВремен)}, Регистратор, (Source, Company, Invoice) В
-		(ВЫБРАТЬ РАЗЛИЧНЫЕ
-			ВТ_ИнвойсыДляОплат.Source,
-			ВТ_ИнвойсыДляОплат.Company,
-			ВТ_ИнвойсыДляОплат.Invoice
-		ИЗ
-			ВТ_ИнвойсыДляОплат КАК ВТ_ИнвойсыДляОплат
-				ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИсточникиСЗаполнениемОплатИзОбмена КАК ИсточникиСЗаполнениемОплатИзОбмена
-				ПО ВТ_ИнвойсыДляОплат.Source = ИсточникиСЗаполнениемОплатИзОбмена.Source
-				И (ВТ_ИнвойсыДляОплат.Company = ИсточникиСЗаполнениемОплатИзОбмена.Company
-				ИЛИ ВТ_ИнвойсыДляОплат.Company = ЗНАЧЕНИЕ(Справочник.Организации.ПустаяСсылка))
-		ГДЕ
-			ВТ_ИнвойсыДляОплат.Invoice ССЫЛКА Документ.Invoice
-			И ИсточникиСЗаполнениемОплатИзОбмена.Source ЕСТЬ NULL)) КАК PaymentsОбороты
+	РегистрНакопления.Payments.Обороты(
+			{(&amp;НачалоВремен)},
+			{(&amp;КонецВремен)},
+			Регистратор,
+			(Source, Company, Invoice) В
+				(ВЫБРАТЬ РАЗЛИЧНЫЕ
+					ВТ_ИнвойсыДляОплат.Source,
+					ВТ_ИнвойсыДляОплат.Company,
+					ВТ_ИнвойсыДляОплат.Invoice
+				ИЗ
+					ВТ_ИнвойсыДляОплат КАК ВТ_ИнвойсыДляОплат
+						ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИсточникиСЗаполнениемОплатИзОбмена КАК ИсточникиСЗаполнениемОплатИзОбмена
+						ПО
+							ВТ_ИнвойсыДляОплат.Source = ИсточникиСЗаполнениемОплатИзОбмена.Source
+								И (ВТ_ИнвойсыДляОплат.Company = ИсточникиСЗаполнениемОплатИзОбмена.Company
+									ИЛИ ВТ_ИнвойсыДляОплат.Company = ЗНАЧЕНИЕ(Справочник.Организации.ПустаяСсылка))
+				ГДЕ
+					ВТ_ИнвойсыДляОплат.Invoice ССЫЛКА Документ.Invoice
+					И ИсточникиСЗаполнениемОплатИзОбмена.Source ЕСТЬ NULL)) КАК PaymentsОбороты
+
 СГРУППИРОВАТЬ ПО
-	PaymentsОбороты.Invoice ИНДЕКСИРОВАТЬ ПО Invoice
+	PaymentsОбороты.Invoice
+
+ИНДЕКСИРОВАТЬ ПО
+	Invoice
 ;
+
 ////////////////////////////////////////////////////////////////////////////////
- ВЫБРАТЬ
+ВЫБРАТЬ
 	FiscalPayments.Invoice КАК Invoice,
 	МИНИМУМ(FiscalPayments.PaymentDate) КАК PaymentDate
 ПОМЕСТИТЬ ВТ_ОплатыИзОбмена
@@ -417,17 +436,19 @@
 	РегистрСведений.FiscalPayments КАК FiscalPayments
 		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.ИсточникиСЗаполнениемОплатИзОбмена КАК ИсточникиСЗаполнениемОплатИзОбмена
 		ПО FiscalPayments.Source = ИсточникиСЗаполнениемОплатИзОбмена.Source
-		И (FiscalPayments.Company = ИсточникиСЗаполнениемОплатИзОбмена.Company
-		ИЛИ ИсточникиСЗаполнениемОплатИзОбмена.Company = ЗНАЧЕНИЕ(Справочник.Организации.ПустаяСсылка))
+			И (FiscalPayments.Company = ИсточникиСЗаполнениемОплатИзОбмена.Company
+				ИЛИ ИсточникиСЗаполнениемОплатИзОбмена.Company = ЗНАЧЕНИЕ(Справочник.Организации.ПустаяСсылка))
 		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ИнвойсыДляОплат КАК ВТ_ИнвойсыДляОплат
 		ПО FiscalPayments.Source = ВТ_ИнвойсыДляОплат.Source
-		И FiscalPayments.Company = ВТ_ИнвойсыДляОплат.Company
-		И FiscalPayments.Invoice = ВТ_ИнвойсыДляОплат.Invoice
+			И FiscalPayments.Company = ВТ_ИнвойсыДляОплат.Company
+			И FiscalPayments.Invoice = ВТ_ИнвойсыДляОплат.Invoice
+
 СГРУППИРОВАТЬ ПО
 	FiscalPayments.Invoice
 ;
+
 ////////////////////////////////////////////////////////////////////////////////
- ВЫБРАТЬ
+ВЫБРАТЬ
 	ВТ_Инвойсы.Source КАК Source,
 	ВТ_Инвойсы.Company КАК Company,
 	ВТ_Инвойсы.Client КАК Client,
@@ -445,64 +466,63 @@
 	ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)) КАК InvoiceFlagDate,
 	ВЫБОР
 		КОГДА ЕСТЬNULL(DIR.JobEndDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
-		ИЛИ ЕСТЬNULL(DIR.FTLSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+				ИЛИ ЕСТЬNULL(DIR.FTLSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА 0
-		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.JobEndDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.FTLSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)),
-			СЕКУНДА) / 86400
+		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.JobEndDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.FTLSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) / 86400
 	КОНЕЦ КАК Stage1,
 	ВЫБОР
 		КОГДА ЕСТЬNULL(DIR.FTLSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
-		ИЛИ ЕСТЬNULL(DIR.CreationDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+				ИЛИ ЕСТЬNULL(DIR.CreationDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА 0
-		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.FTLSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.CreationDate, ДАТАВРЕМЯ(1, 1,
-			1)), СЕКУНДА) / 86400
+		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.FTLSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.CreationDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) / 86400
 	КОНЕЦ КАК Stage2,
 	ВЫБОР
 		КОГДА ЕСТЬNULL(DIR.CreationDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
-		ИЛИ ЕСТЬNULL(DIR.ApprovalDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+				ИЛИ ЕСТЬNULL(DIR.ApprovalDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА 0
-		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.CreationDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.ApprovalDate, ДАТАВРЕМЯ(1, 1, 1)),
-			СЕКУНДА) / 86400
+		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.CreationDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.ApprovalDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) / 86400
 	КОНЕЦ КАК Stage3,
 	ВЫБОР
 		КОГДА ЕСТЬNULL(DIR.ApprovalDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
-		ИЛИ ЕСТЬNULL(DIR.FirstSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+				ИЛИ ЕСТЬNULL(DIR.FirstSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА 0
-		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.ApprovalDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.FirstSubmissionDate, ДАТАВРЕМЯ(1, 1,
-			1)), СЕКУНДА) / 86400
+		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.ApprovalDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.FirstSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) / 86400
 	КОНЕЦ КАК Stage4,
 	ВЫБОР
 		КОГДА ЕСТЬNULL(DIR.FirstSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
-		ИЛИ ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+				ИЛИ ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА 0
-		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.FirstSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1,
-			1, 1)), СЕКУНДА) / 86400
+		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.FirstSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) / 86400
 	КОНЕЦ КАК Stage5,
 	ВЫБОР
 		КОГДА ВТ_Инвойсы.Invoice.ДатаВозвратаКС = ДАТАВРЕМЯ(1, 1, 1)
-		ИЛИ ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+				ИЛИ ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА 0
-		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)), ВТ_Инвойсы.Invoice.ДатаВозвратаКС, СЕКУНДА) /
-			86400
+		КОГДА ВТ_Инвойсы.Invoice.ДатаВозвратаКС &lt; &amp;МинимальнаяДата
+			ТОГДА "Error"
+		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)), ВТ_Инвойсы.Invoice.ДатаВозвратаКС, СЕКУНДА) / 86400
 	КОНЕЦ КАК Stage6,
 	ВЫБОР
 		КОГДА ЕСТЬNULL(DIR.JobEndDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
-		ИЛИ ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+				ИЛИ ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА 0
-		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.JobEndDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)),
-			СЕКУНДА) / 86400
+		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.JobEndDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) / 86400
 	КОНЕЦ КАК TotalDIR,
 	ВЫБОР
 		КОГДА ВТ_Инвойсы.Invoice.TriggerDate = ДАТАВРЕМЯ(1, 1, 1)
-		ИЛИ ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+				ИЛИ ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА 0
-		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(ВТ_Инвойсы.Invoice.TriggerDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) /
-			86400
+		КОГДА ВТ_Инвойсы.Invoice.TriggerDate &lt; &amp;МинимальнаяДата
+			ТОГДА "Error"
+		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(ВТ_Инвойсы.Invoice.TriggerDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) / 86400
 	КОНЕЦ КАК T2CStage1,
 	ВЫБОР
 		КОГДА ВТ_Инвойсы.Invoice.TriggerDate = ДАТАВРЕМЯ(1, 1, 1)
-		ИЛИ ВТ_Инвойсы.Invoice.DueDateTo = ДАТАВРЕМЯ(1, 1, 1)
+				ИЛИ ВТ_Инвойсы.Invoice.DueDateTo = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА 0
+		КОГДА ВТ_Инвойсы.Invoice.TriggerDate &lt; &amp;МинимальнаяДата
+				ИЛИ ВТ_Инвойсы.Invoice.DueDateTo &lt; &amp;МинимальнаяДата
+			ТОГДА "Error"
 		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(ВТ_Инвойсы.Invoice.TriggerDate, ДАТАВРЕМЯ(1, 1, 1)), ВТ_Инвойсы.Invoice.DueDateTo, СЕКУНДА) / 86400
 	КОНЕЦ КАК T2CStage2,
 	ВЫБОР
@@ -520,17 +540,18 @@
 	КОНЕЦ КАК FirstDateOfPayment,
 	ВЫБОР
 		КОГДА ВТ_Инвойсы.ЗаполнятьОплатыПоДаннымОбмена
-		И (ВТ_Инвойсы.Invoice.DueDateTo = ДАТАВРЕМЯ(1, 1, 1)
-		ИЛИ ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1))
+				И (ВТ_Инвойсы.Invoice.DueDateTo = ДАТАВРЕМЯ(1, 1, 1)
+					ИЛИ ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1))
 			ТОГДА 0
+		КОГДА ВТ_Инвойсы.Invoice.DueDateTo &lt; &amp;МинимальнаяДата
+				И ВТ_Инвойсы.Invoice.DueDateTo &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
+			ТОГДА "Error"
 		КОГДА ВТ_Инвойсы.ЗаполнятьОплатыПоДаннымОбмена
-			ТОГДА РАЗНОСТЬДАТ(ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)),
-				ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) / 86400
+			ТОГДА РАЗНОСТЬДАТ(ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) / 86400
 		КОГДА ВТ_Инвойсы.Invoice.DueDateTo = ДАТАВРЕМЯ(1, 1, 1)
-		ИЛИ ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+				ИЛИ ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА 0
-		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)),
-			ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) / 86400
+		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) / 86400
 	КОНЕЦ КАК T2CStage3,
 	ВТ_Инвойсы.Период КАК Период
 ИЗ
@@ -567,7 +588,8 @@
 	</calculatedField>
 	<calculatedField>
 		<dataPath>TotalDIRandKS</dataPath>
-		<expression>TotalDIR + Stage6</expression>
+		<expression>ВЫБОР
+	КОГДА Stage6 = "Error" ТОГДА  "Error" ИНАЧЕ TotalDIR + Stage6 КОНЕЦ</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -733,11 +755,13 @@
 	<calculatedField>
 		<dataPath>Factor15andKS</dataPath>
 		<expression>ВЫБОР
+	КОГДА Stage6 = "Error"
+		ТОГДА "Error"
 	КОГДА TotalDIR + Stage6 = 0
 		ТОГДА TotalDIR * USDAmount
 	ИНАЧЕ
 		(TotalDIR + Stage6) * USDAmount
-	КОНЕЦ</expression>
+КОНЕЦ</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -760,7 +784,12 @@
 	</calculatedField>
 	<calculatedField>
 		<dataPath>SumT2CStages</dataPath>
-		<expression>T2CStage1 + T2CStage2 + T2CStage3</expression>
+		<expression>ВЫБОР
+	КОГДА T2CStage1 = "Error" ИЛИ T2CStage2 = "Error" ИЛИ T2CStage3 = "Error"
+		ТОГДА "Error"
+	ИНАЧЕ
+		T2CStage1 + T2CStage2 + T2CStage3
+КОНЕЦ</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -812,6 +841,8 @@
 	<calculatedField>
 		<dataPath>TotalDIRKST2C</dataPath>
 		<expression>ВЫБОР
+	КОГДА T2CStage1 = "Error" ИЛИ T2CStage2 = "Error" ИЛИ T2CStage3 = "Error" ИЛИ Stage6 = "Error"
+		ТОГДА "Error"
 	КОГДА TotalDIR + Stage6 = 0
 		ТОГДА 0
 	ИНАЧЕ
@@ -950,6 +981,27 @@
 		<valueType>
 		</valueType>
 		<useRestriction>true</useRestriction>
+		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
+	</parameter>
+	<parameter>
+		<name>МинимальнаяДата</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Минимальная дата</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>xs:dateTime</v8:Type>
+			<v8:DateQualifiers>
+				<v8:DateFractions>Date</v8:DateFractions>
+			</v8:DateQualifiers>
+		</valueType>
+		<useRestriction>true</useRestriction>
+		<expression>ДАТАВРЕМЯ(2005,01,01)</expression>
 		<valueListAllowed>false</valueListAllowed>
 		<availableAsField>true</availableAsField>
 		<denyIncompleteValues>false</denyIncompleteValues>
