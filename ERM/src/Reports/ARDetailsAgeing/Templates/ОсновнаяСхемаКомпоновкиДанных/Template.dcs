@@ -334,17 +334,32 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>DocumentFiscalInvoiceDate</dataPath>
+			<field>DocumentFiscalInvoiceDate</field>
+			<appearance>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>Format</dcscor:parameter>
+					<dcscor:value xsi:type="v8:LocalStringType">
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>ДФ=MM/dd/yy</v8:content>
+						</v8:item>
+					</dcscor:value>
+				</dcscor:item>
+			</appearance>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	UnbilledARОстатки.Client КАК Client,
-	UnbilledARОстатки.Company,
+	UnbilledARОстатки.Company КАК Company,
 	UnbilledARОстатки.Source КАК Source,
 	UnbilledARОстатки.AU.ПодразделениеОрганизации КАК Location,
 	UnbilledARОстатки.AU.Сегмент КАК SubSubSegment,
 	UnbilledARОстатки.SalesOrder КАК Document,
-	UnbilledARОстатки.Account,
-	UnbilledARОстатки.AU,
-	UnbilledARОстатки.Currency,
+	UnbilledARОстатки.Account КАК Account,
+	UnbilledARОстатки.AU КАК AU,
+	UnbilledARОстатки.Currency КАК Currency,
 	ВЫБОР
 		КОГДА UnbilledARОстатки.Account.БазовыйЭлемент.Код = "12001"
 			ТОГДА "Billed"
@@ -353,7 +368,7 @@
 	"A" КАК TransactionType,
 	UnbilledARОстатки.SalesOrder.Номер КАК НомерДокумента,
 	UnbilledARОстатки.SalesOrder.Дата КАК ДатаДокумента,
-	UnbilledARОстатки.AmountОстаток,
+	UnbilledARОстатки.AmountОстаток КАК AmountОстаток,
 	UnbilledARОстатки.SalesOrder.Amount КАК TransactionAmount,
 	UnbilledARОстатки.SalesOrder.Agreement КАК Agreement,
 	ВЫБОР
@@ -363,10 +378,8 @@
 	КОНЕЦ КАК LegalEntity
 ПОМЕСТИТЬ ВТ_Остатки
 ИЗ
-	РегистрНакопления.UnbilledAR.Остатки({(&amp;ПериодОстатков)}, ) КАК UnbilledARОстатки
-
+	РегистрНакопления.UnbilledAR.Остатки({(&amp;ПериодОстатков)},) КАК UnbilledARОстатки
 ОБЪЕДИНИТЬ ВСЕ
-
 ВЫБРАТЬ
 	BilledARОстатки.Client,
 	BilledARОстатки.Company,
@@ -394,10 +407,10 @@
 	ВЫБОР
 		КОГДА BilledARОстатки.Invoice ССЫЛКА Документ.Invoice
 			ТОГДА ВЫБОР
-					КОГДА BilledARОстатки.Invoice.Contract = ЗНАЧЕНИЕ(Справочник.ДоговорыКонтрагентов.ПустаяСсылка)
-						ТОГДА BilledARОстатки.Invoice.Agreement
-					ИНАЧЕ BilledARОстатки.Invoice.Contract.crmContractName
-				КОНЕЦ
+				КОГДА BilledARОстатки.Invoice.Contract = ЗНАЧЕНИЕ(Справочник.ДоговорыКонтрагентов.ПустаяСсылка)
+					ТОГДА BilledARОстатки.Invoice.Agreement
+				ИНАЧЕ BilledARОстатки.Invoice.Contract.crmContractName
+			КОНЕЦ
 		ИНАЧЕ ""
 	КОНЕЦ,
 	ВЫБОР
@@ -406,10 +419,8 @@
 		ИНАЧЕ BilledARОстатки.Company.DefaultLegalEntity
 	КОНЕЦ
 ИЗ
-	РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, ) КАК BilledARОстатки
-
+	РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)},) КАК BilledARОстатки
 ОБЪЕДИНИТЬ ВСЕ
-
 ВЫБРАТЬ
 	UnallocatedCashОстатки.Client,
 	UnallocatedCashОстатки.Company,
@@ -437,19 +448,19 @@
 		ИНАЧЕ UnallocatedCashОстатки.Company.DefaultLegalEntity
 	КОНЕЦ
 ИЗ
-	РегистрНакопления.UnallocatedCash.Остатки({(&amp;ПериодОстатков)}, ) КАК UnallocatedCashОстатки
+	РегистрНакопления.UnallocatedCash.Остатки({(&amp;ПериодОстатков)},) КАК UnallocatedCashОстатки
 ГДЕ
 	ВЫБОР
-			КОГДА НЕ UnallocatedCashОстатки.CashBatch.Ссылка ЕСТЬ NULL
-				ТОГДА НЕ UnallocatedCashОстатки.Account.КодЧислом = 209000
-							И НЕ UnallocatedCashОстатки.Account.КодЧислом = 2090001
-						ИЛИ UnallocatedCashОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
-						ИЛИ UnallocatedCashОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith)
-			ИНАЧЕ ИСТИНА
-		КОНЕЦ
-
+		КОГДА
+		НЕ UnallocatedCashОстатки.CashBatch.Ссылка ЕСТЬ NULL
+			ТОГДА НЕ UnallocatedCashОстатки.Account.КодЧислом = 209000
+			И
+			НЕ UnallocatedCashОстатки.Account.КодЧислом = 2090001
+			ИЛИ UnallocatedCashОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
+			ИЛИ UnallocatedCashОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith)
+		ИНАЧЕ ИСТИНА
+	КОНЕЦ
 ОБЪЕДИНИТЬ ВСЕ
-
 ВЫБРАТЬ
 	ManualTransactionsОстатки.Client,
 	ManualTransactionsОстатки.Company,
@@ -477,10 +488,8 @@
 		ИНАЧЕ ManualTransactionsОстатки.Company.DefaultLegalEntity
 	КОНЕЦ
 ИЗ
-	РегистрНакопления.ManualTransactions.Остатки({(&amp;ПериодОстатков)}, ) КАК ManualTransactionsОстатки
-
+	РегистрНакопления.ManualTransactions.Остатки({(&amp;ПериодОстатков)},) КАК ManualTransactionsОстатки
 ОБЪЕДИНИТЬ ВСЕ
-
 ВЫБРАТЬ
 	UnallocatedMemoОстатки.Client,
 	UnallocatedMemoОстатки.Company,
@@ -508,79 +517,78 @@
 		ИНАЧЕ UnallocatedMemoОстатки.Company.DefaultLegalEntity
 	КОНЕЦ
 ИЗ
-	РегистрНакопления.UnallocatedMemo.Остатки({(&amp;ПериодОстатков)}, ) КАК UnallocatedMemoОстатки
-
-ИНДЕКСИРОВАТЬ ПО
-	Source,
+	РегистрНакопления.UnallocatedMemo.Остатки({(&amp;ПериодОстатков)},) КАК UnallocatedMemoОстатки ИНДЕКСИРОВАТЬ ПО Source,
 	Client
 ;
-
 ////////////////////////////////////////////////////////////////////////////////
-ВЫБРАТЬ
-	ВТ_Остатки.Client,
-	ВТ_Остатки.Company,
-	ВТ_Остатки.Source,
-	ВТ_Остатки.Location,
-	ВТ_Остатки.SubSubSegment,
-	ВТ_Остатки.Document,
-	ВТ_Остатки.Account,
-	ВТ_Остатки.AU,
-	ВТ_Остатки.Currency,
-	ВТ_Остатки.BilledType,
-	ВТ_Остатки.TransactionType,
-	ВТ_Остатки.НомерДокумента,
-	ВТ_Остатки.ДатаДокумента,
+
+ ВЫБРАТЬ
+	ВТ_Остатки.Client КАК Client,
+	ВТ_Остатки.Company КАК Company,
+	ВТ_Остатки.Source КАК Source,
+	ВТ_Остатки.Location КАК Location,
+	ВТ_Остатки.SubSubSegment КАК SubSubSegment,
+	ВТ_Остатки.Document КАК Document,
+	ВТ_Остатки.Account КАК Account,
+	ВТ_Остатки.AU КАК AU,
+	ВТ_Остатки.Currency КАК Currency,
+	ВТ_Остатки.BilledType КАК BilledType,
+	ВТ_Остатки.TransactionType КАК TransactionType,
+	ВТ_Остатки.НомерДокумента КАК НомерДокумента,
+	ВТ_Остатки.ДатаДокумента КАК ДатаДокумента,
 	СУММА(ВТ_Остатки.AmountОстаток) КАК AmountОстаток,
 	СУММА(ВЫБОР
-			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
-					ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
-				ТОГДА 0
-			ИНАЧЕ ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс
-		КОНЕЦ) КАК BaseAmountОстаток,
+		КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
+		ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+			ТОГДА 0
+		ИНАЧЕ ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс
+	КОНЕЦ) КАК BaseAmountОстаток,
 	СУММА(ВЫБОР
-			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
-					ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
-				ТОГДА 0
-			ИНАЧЕ ВЫРАЗИТЬ(ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс / 1000 КАК ЧИСЛО(15, 3))
-		КОНЕЦ) КАК BaseAmountОстатокТыс,
+		КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
+		ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+			ТОГДА 0
+		ИНАЧЕ ВЫРАЗИТЬ(ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс / 1000 КАК ЧИСЛО(15, 3))
+	КОНЕЦ) КАК BaseAmountОстатокТыс,
 	СУММА(ВТ_Остатки.TransactionAmount) КАК TransactionAmount,
-	ВТ_Остатки.Agreement,
+	ВТ_Остатки.Agreement КАК Agreement,
 	ВТ_Остатки.Document.ClientID КАК CustomerID,
 	ВЫБОР
 		КОГДА ВТ_Остатки.Document ССЫЛКА Документ.Invoice
 			ТОГДА ВЫБОР
-					КОГДА ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
-							И ВТ_Остатки.Document.FiscalInvoiceNo &lt;&gt; ""
-						ТОГДА ВТ_Остатки.Document.FiscalInvoiceNo
-					ИНАЧЕ ВТ_Остатки.Document.DocNumber
-				КОНЕЦ
+				КОГДА ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
+				И ВТ_Остатки.Document.FiscalInvoiceNo &lt;&gt; ""
+					ТОГДА ВТ_Остатки.Document.FiscalInvoiceNo
+				ИНАЧЕ ВТ_Остатки.Document.DocNumber
+			КОНЕЦ
 		КОГДА ВТ_Остатки.Document ССЫЛКА Документ.РучнаяКорректировка
 			ТОГДА ""
 		ИНАЧЕ ВТ_Остатки.Document.Номер
 	КОНЕЦ КАК Doc_No,
 	СУММА(ВЫБОР
-			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
-					ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
-				ТОГДА 0
-			ИНАЧЕ ВТ_Остатки.TransactionAmount / ВнутренниеКурсыВалютСрезПоследних.Курс
-		КОНЕЦ) КАК TransactionAmountUSD,
+		КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
+		ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+			ТОГДА 0
+		ИНАЧЕ ВТ_Остатки.TransactionAmount / ВнутренниеКурсыВалютСрезПоследних.Курс
+	КОНЕЦ) КАК TransactionAmountUSD,
 	СУММА(ВЫБОР
-			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
-					ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
-				ТОГДА 0
-			КОГДА ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс &lt; 0
-				ТОГДА -ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс
-			ИНАЧЕ ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс
-		КОНЕЦ) КАК BaseAmountОстатокМодуль,
-	ВТ_Остатки.Document.FiscalInvoiceNo,
-	ВТ_Остатки.LegalEntity,
+		КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
+		ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+			ТОГДА 0
+		КОГДА ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс &lt; 0
+			ТОГДА -ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс
+		ИНАЧЕ ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс
+	КОНЕЦ) КАК BaseAmountОстатокМодуль,
+	ВТ_Остатки.Document.FiscalInvoiceNo КАК DocumentFiscalInvoiceNo,
+	ВТ_Остатки.Document.FiscalInvoiceDate КАК DocumentFiscalInvoiceDate,
+	ВТ_Остатки.LegalEntity КАК LegalEntity,
 	ВТ_Остатки.Location.БазовыйЭлемент.GeoMarket КАК LocationHFM,
 	ВТ_Остатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель КАК SegmentHFM,
-	ВТ_Остатки.Location.БазовыйЭлемент.GeoMarket.ManagementGeomarket,
+	ВТ_Остатки.Location.БазовыйЭлемент.GeoMarket.ManagementGeomarket КАК
+		LocationБазовыйЭлементGeoMarketManagementGeomarket,
 	SalesOrdersCommentsСрезПоследних.Problem.Reason КАК Reason,
 	InvoiceCommentsСрезПоследних.Problem.Status КАК Status,
 	InvoiceCommentsСрезПоследних.Problem.CustomerInputDetails КАК CustomerInputDetails,
-	ВЫРАЗИТЬ(SalesOrdersCommentsСрезПоследних.Problem.Details КАК СТРОКА(50)) КАК Details,
+	ВЫРАЗИТЬ(SalesOrdersCommentsСрезПоследних.Problem.Details КАК СТРОКА(250)) КАК Details,
 	ВЫБОР
 		КОГДА SalesOrdersCommentsСрезПоследних.Problem ЕСТЬ NULL
 			ТОГДА Collectors.Collector
@@ -588,19 +596,21 @@
 	КОНЕЦ КАК Responsible
 ИЗ
 	ВТ_Остатки КАК ВТ_Остатки
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ПериодОстатков)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ПериодОстатков)},) КАК
+			ВнутренниеКурсыВалютСрезПоследних
 		ПО ВТ_Остатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments.СрезПоследних({(&amp;ПериодКомментария)}, НЕ Inactive) КАК InvoiceCommentsСрезПоследних
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments.СрезПоследних({(&amp;ПериодКомментария)},
+		НЕ Inactive) КАК InvoiceCommentsСрезПоследних
 		ПО ВТ_Остатки.Document = InvoiceCommentsСрезПоследних.Invoice
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних({(&amp;ПериодКомментария)}, ) КАК SalesOrdersCommentsСрезПоследних
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних({(&amp;ПериодКомментария)},) КАК
+			SalesOrdersCommentsСрезПоследних
 		ПО ВТ_Остатки.Document = SalesOrdersCommentsСрезПоследних.SalesOrder
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.Collectors КАК Collectors
 		ПО ВТ_Остатки.Client = Collectors.Client
-			И (Collectors.ManagementGeomarket = ВТ_Остатки.Location.БазовыйЭлемент.GeoMarket.ManagementGeomarket
-				ИЛИ Collectors.ManagementGeomarket = ЗНАЧЕНИЕ(Справочник.ManagementGeography.ПустаяСсылка))
+		И (Collectors.ManagementGeomarket = ВТ_Остатки.Location.БазовыйЭлемент.GeoMarket.ManagementGeomarket
+		ИЛИ Collectors.ManagementGeomarket = ЗНАЧЕНИЕ(Справочник.ManagementGeography.ПустаяСсылка))
 ГДЕ
 	ПОДСТРОКА(ВТ_Остатки.Account.Код, 1, 6) &lt;&gt; "209000"
-
 СГРУППИРОВАТЬ ПО
 	ВТ_Остатки.LegalEntity,
 	ВТ_Остатки.Client,
@@ -618,6 +628,7 @@
 	ВТ_Остатки.ДатаДокумента,
 	ВТ_Остатки.Agreement,
 	ВТ_Остатки.Document.FiscalInvoiceNo,
+	ВТ_Остатки.Document.FiscalInvoiceDate,
 	ВТ_Остатки.Document.ClientID,
 	ВТ_Остатки.Location.БазовыйЭлемент.GeoMarket,
 	ВТ_Остатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель,
@@ -625,11 +636,11 @@
 	ВЫБОР
 		КОГДА ВТ_Остатки.Document ССЫЛКА Документ.Invoice
 			ТОГДА ВЫБОР
-					КОГДА ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
-							И ВТ_Остатки.Document.FiscalInvoiceNo &lt;&gt; ""
-						ТОГДА ВТ_Остатки.Document.FiscalInvoiceNo
-					ИНАЧЕ ВТ_Остатки.Document.DocNumber
-				КОНЕЦ
+				КОГДА ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
+				И ВТ_Остатки.Document.FiscalInvoiceNo &lt;&gt; ""
+					ТОГДА ВТ_Остатки.Document.FiscalInvoiceNo
+				ИНАЧЕ ВТ_Остатки.Document.DocNumber
+			КОНЕЦ
 		КОГДА ВТ_Остатки.Document ССЫЛКА Документ.РучнаяКорректировка
 			ТОГДА ""
 		ИНАЧЕ ВТ_Остатки.Document.Номер
@@ -637,18 +648,15 @@
 	SalesOrdersCommentsСрезПоследних.Problem.Reason,
 	InvoiceCommentsСрезПоследних.Problem.Status,
 	InvoiceCommentsСрезПоследних.Problem.CustomerInputDetails,
-	ВЫРАЗИТЬ(SalesOrdersCommentsСрезПоследних.Problem.Details КАК СТРОКА(50)),
+	ВЫРАЗИТЬ(SalesOrdersCommentsСрезПоследних.Problem.Details КАК СТРОКА(250)),
 	ВЫБОР
 		КОГДА SalesOrdersCommentsСрезПоследних.Problem ЕСТЬ NULL
 			ТОГДА Collectors.Collector
 		ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.ResponsiblesList
 	КОНЕЦ
-
 ИМЕЮЩИЕ
 	СУММА(ВТ_Остатки.AmountОстаток) &lt;&gt; 0
-
 ОБЪЕДИНИТЬ ВСЕ
-
 ВЫБРАТЬ
 	ЗНАЧЕНИЕ(Справочник.Контрагенты.Unreconciled),
 	NULL,
@@ -678,6 +686,7 @@
 	NULL,
 	NULL,
 	NULL,
+	NULL,
 	HFMAdjARОстатки.Location.GeoMarket,
 	HFMAdjARОстатки.Segment.Родитель.Родитель,
 	HFMAdjARОстатки.Location.GeoMarket.ManagementGeomarket,
@@ -687,7 +696,7 @@
 	NULL,
 	NULL
 ИЗ
-	РегистрНакопления.HFMAdjAR.Остатки({(&amp;ПериодОстатков)}, ) КАК HFMAdjARОстатки</query>
+	РегистрНакопления.HFMAdjAR.Остатки({(&amp;ПериодОстатков)},) КАК HFMAdjARОстатки</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>Ageing_1_30</dataPath>
@@ -907,22 +916,6 @@
 		<denyIncompleteValues>false</denyIncompleteValues>
 		<use>Auto</use>
 	</parameter>
-	<parameter>
-		<name>ПериодКомментария</name>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Период комментария</v8:content>
-			</v8:item>
-		</title>
-		<valueType>
-		</valueType>
-		<useRestriction>true</useRestriction>
-		<valueListAllowed>false</valueListAllowed>
-		<availableAsField>true</availableAsField>
-		<denyIncompleteValues>false</denyIncompleteValues>
-		<use>Auto</use>
-	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
 		<dcsset:presentation xsi:type="xs:string">Основной</dcsset:presentation>
@@ -1064,6 +1057,15 @@
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>Fiscal Invoice No. </v8:content>
+							</v8:item>
+						</dcsset:lwsTitle>
+					</dcsset:item>
+					<dcsset:item xsi:type="dcsset:SelectedItemField">
+						<dcsset:field>DocumentFiscalInvoiceDate</dcsset:field>
+						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+							<v8:item>
+								<v8:lang>ru</v8:lang>
+								<v8:content>Fiscal Invoice Date</v8:content>
 							</v8:item>
 						</dcsset:lwsTitle>
 					</dcsset:item>
