@@ -972,8 +972,18 @@
 	КОНЕЦ КАК InvoiceНомер,
 	ВТ_Остатки.Invoice.Номер КАК InvoiceНомерДокумента,
 	ВТ_Остатки.Invoice.Дата КАК InvoiceДата,
-	ВТ_Остатки.Invoice.FiscalInvoiceNo КАК InvoiceFiscalInvoiceNo,
-	ВТ_Остатки.Invoice.FiscalInvoiceDate КАК InvoiceFiscalInvoiceDate,
+	ВЫБОР
+		КОГДА ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Radius)
+				ИЛИ ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Geofit)
+			ТОГДА ВТ_Остатки.ПредставлениеДокумента
+		ИНАЧЕ ВТ_Остатки.Invoice.FiscalInvoiceNo
+	КОНЕЦ КАК InvoiceFiscalInvoiceNo,
+	ВЫБОР
+		КОГДА ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Radius)
+				ИЛИ ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Geofit)
+			ТОГДА ВТ_Остатки.Invoice.Дата
+		ИНАЧЕ ВТ_Остатки.Invoice.FiscalInvoiceDate
+	КОНЕЦ КАК InvoiceFiscalInvoiceDate,
 	СУММА(ВТ_Остатки.Invoice.Amount) КАК InvoiceAmount,
 	ВТ_Остатки.Invoice.Contract.Trigger КАК InvoiceContractTrigger,
 	ВТ_Остатки.Invoice.TriggerDate КАК InvoiceTriggerDate,
@@ -1103,8 +1113,18 @@
 	КОНЕЦ,
 	ВТ_Остатки.Invoice.Номер,
 	ВТ_Остатки.Invoice.Дата,
-	ВТ_Остатки.Invoice.FiscalInvoiceNo,
-	ВТ_Остатки.Invoice.FiscalInvoiceDate,
+	ВЫБОР
+		КОГДА ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Radius)
+				ИЛИ ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Geofit)
+			ТОГДА ВТ_Остатки.ПредставлениеДокумента
+		ИНАЧЕ ВТ_Остатки.Invoice.FiscalInvoiceNo
+	КОНЕЦ,
+	ВЫБОР
+		КОГДА ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Radius)
+				ИЛИ ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Geofit)
+			ТОГДА ВТ_Остатки.Invoice.Дата
+		ИНАЧЕ ВТ_Остатки.Invoice.FiscalInvoiceDate
+	КОНЕЦ,
 	ВТ_Остатки.Invoice.Contract.Trigger,
 	ВТ_Остатки.Invoice.TriggerDate,
 	ВТ_Остатки.Invoice.Contract.PTDaysFrom,

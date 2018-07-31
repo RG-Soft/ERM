@@ -496,7 +496,8 @@
 		|	РегистрСведений.InvoiceComments.СрезПоследних(
 		|			,
 		|			Invoice = &Invoice
-		|				И НЕ Inactive) КАК InvoiceCommentsСрезПоследних";
+		|				И НЕ Inactive
+		|				И НЕ ПроставленРегламентомАктуализацииСтатусовОплат) КАК InvoiceCommentsСрезПоследних";
 	// } RGS AGorlenko 31.01.2018 17:52:11 - ориентируемся на сумму взаиморасчетов
 	
 	Запрос.УстановитьПараметр("Invoice", Документ);
@@ -635,7 +636,9 @@
 		|	И
 		|	НЕ InvoiceComments.Inactive
 		|	И InvoiceComments.Problem.User = &AutoUser
-		|	И InvoiceComments.Invoice = &Invoice";
+		|	И InvoiceComments.Invoice = &Invoice
+		|	И
+		|	НЕ InvoiceComments.ПроставленРегламентомАктуализацииСтатусовОплат";
 	
 	Запрос.УстановитьПараметр("AutoUser", rgsНастройкаКонфигурации.ЗначениеНастройки("AutoUser"));
 	Запрос.УстановитьПараметр("Invoice", Документ);
