@@ -847,7 +847,7 @@
 		Если ВыборкаДанные.TransType = "I" Тогда
 			
 			//СтрокаКэша = КэшИнвойсов.Найти("RD-" + ВыборкаДанные.Invoice, "ArInvoice");
-			СтруктураПоискаInvoice.ArInvoice = ВыборкаДанные.Invoice;
+			СтруктураПоискаInvoice.ArInvoice = ВыборкаДанные.InvoiceNo;
 			СтруктураПоискаInvoice.Company = ВыборкаДанные.Company;
 			СтрокиКэша = КэшИнвойсов.НайтиСтроки(СтруктураПоискаInvoice);
 			Если СтрокиКэша.Количество() = 0 Тогда
@@ -873,7 +873,7 @@
 			
 		ИначеЕсли ВыборкаДанные.TransType = "P" Тогда
 			
-			СтруктураПоискаBatch.ARBatchNbr = ВыборкаДанные.Invoice;
+			СтруктураПоискаBatch.ARBatchNbr = ВыборкаДанные.InvoiceNo;
 			СтруктураПоискаBatch.Company = ВыборкаДанные.Company;
 			СтруктураПоискаBatch.Prepayment = ВыборкаДанные.Account = ПланыСчетов.Lawson.AdvancesFromCustomers;
 			
