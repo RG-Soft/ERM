@@ -147,7 +147,7 @@
 	|	КОЛИЧЕСТВО(РАЗЛИЧНЫЕ Invoice.Ссылка) КАК КоличестоИнвойсов,
 	|	OracleSalesOrdersDetailsSourceData.InvoiceAmount,
 	|	OracleSalesOrdersDetailsSourceData.CreatedBy,
-	|	МАКСИМУМ(Invoice.Ссылка) КАК СсылкаInvoice
+	|	МАКСИМУМ(Invoice.Ссылка) КАК СсылкаInvoice,
 	|	МАКСИМУМ(Invoice.Ссылка.Responsible) КАК InvoiceResponsible
 	|ИЗ
 	|	РегистрСведений.OracleSalesOrdersDetailsSourceData КАК OracleSalesOrdersDetailsSourceData
@@ -165,6 +165,7 @@
 	|	OracleSalesOrdersDetailsSourceData.НомерSO,
 	|	OracleSalesOrdersDetailsSourceData.CustomerNumber,
 	|	OracleSalesOrdersDetailsSourceData.JobEndDate,
+	|	OracleSalesOrdersDetailsSourceData.CreatedBy,
 	|	OracleSalesOrdersDetailsSourceData.InvoiceFlagDate,
 	|	OracleSalesOrdersDetailsSourceData.InvoiceAmount";
 	
