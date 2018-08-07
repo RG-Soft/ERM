@@ -4151,7 +4151,8 @@
 	// } RGS TAlmazova 10.08.2016 12:23:03 - запись только DocNumber
 	Если ТранзакцияOracleОбъект.Source = Перечисления.ТипыСоответствий.OracleMI Тогда
 		ДокОбъект.Дата = ТранзакцияOracleОбъект.InvDate;
-		ДокОбъект.Amount = ДанныеДляЗаполнения.InvoiceAmount
+		ДокОбъект.Amount = ДанныеДляЗаполнения.InvoiceAmount;
+		ДокОбъект.Responsible = ТранзакцияOracleОбъект.CreatedByName;
 	Иначе
 		ДокОбъект.Дата = ТекущаяДата();
 	КонецЕсли;
