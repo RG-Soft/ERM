@@ -315,6 +315,10 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Amount</dataPath>
+			<field>Amount</field>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	МАКСИМУМ(InvoicedDebtsОбороты.Период) КАК Период,
@@ -326,7 +330,7 @@
 	InvoicedDebtsОбороты.Invoice КАК Invoice,
 	InvoicedDebtsОбороты.Currency КАК Currency,
 	InvoicedDebtsОбороты.LegalEntity КАК LegalEntity,
-	СУММА(InvoicedDebtsОбороты.AmountОборот) КАК AmountОборот,
+	СУММА(InvoicedDebtsОбороты.AmountОборот) КАК Amount,
 	ВЫБОР
 		КОГДА ИсточникиСЗаполнениемОплатИзОбмена.Source ЕСТЬ NULL
 			ТОГДА ЛОЖЬ
@@ -337,8 +341,8 @@
 					И ЕСТЬNULL(ВнутренниеКурсыВалют.Курс, 0) = 0
 				ТОГДА 0
 			КОГДА InvoicedDebtsОбороты.Currency &lt;&gt; &amp;USD
-				ТОГДА ВЫРАЗИТЬ(InvoicedDebtsОбороты.Invoice.Amount / ЕСТЬNULL(ВнутренниеКурсыВалют.Курс, 0) КАК ЧИСЛО(15, 2))
-			ИНАЧЕ InvoicedDebtsОбороты.Invoice.Amount
+				ТОГДА ВЫРАЗИТЬ(InvoicedDebtsОбороты.AmountОборот / ЕСТЬNULL(ВнутренниеКурсыВалют.Курс, 0) КАК ЧИСЛО(15, 2))
+			ИНАЧЕ InvoicedDebtsОбороты.AmountОборот
 		КОНЕЦ) КАК USDAmount
 ПОМЕСТИТЬ ВТ_Инвойсы
 ИЗ
@@ -530,6 +534,7 @@
 			ТОГДА ВТ_Инвойсы.Invoice.Agreement
 		ИНАЧЕ ВТ_Инвойсы.Invoice.Contract
 	КОНЕЦ КАК Agreement,
+	ВТ_Инвойсы.Amount КАК Amount,
 	ВТ_Инвойсы.USDAmount КАК USDAmount,
 	ВТ_Инвойсы.Invoice.DueDateFrom КАК DateFrom,
 	ВТ_Инвойсы.Invoice.DueDateTo КАК DateTo,
@@ -561,7 +566,8 @@
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ОплатыПоПроводкам КАК ВТ_ОплатыПоПроводкам
 		ПО ВТ_Инвойсы.Invoice = ВТ_ОплатыПоПроводкам.Invoice
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ОплатыИзОбмена КАК ВТ_ОплатыИзОбмена
-		ПО ВТ_Инвойсы.Invoice = ВТ_ОплатыИзОбмена.Invoice</query>
+		ПО ВТ_Инвойсы.Invoice = ВТ_ОплатыИзОбмена.Invoice
+</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>SumStages</dataPath>
@@ -1010,7 +1016,7 @@
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
 		<dcsset:presentation xsi:type="xs:string">Основной</dcsset:presentation>
-		<dcsset:settings xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:chm="http://v8.1c.ru/8.2/data/chart" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+		<dcsset:settings xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Source</dcsset:field>
@@ -1097,7 +1103,7 @@
 					<dcsset:field>Currency</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.Amount</dcsset:field>
+					<dcsset:field>Amount</dcsset:field>
 					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 						<v8:item>
 							<v8:lang>ru</v8:lang>

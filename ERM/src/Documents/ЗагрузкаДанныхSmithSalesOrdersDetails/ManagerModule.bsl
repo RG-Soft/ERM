@@ -66,6 +66,21 @@
 	СтрокаТЗ = СтруктураКолонок.Добавить();
 	СтрокаТЗ.ИмяПоля = "InvoiceAmount";
 	СтрокаТЗ.ИмяКолонки = "grand_total";
+
+	// gl_dt
+	СтрокаТЗ = СтруктураКолонок.Добавить();
+	СтрокаТЗ.ИмяПоля = "InvoiceFlagDate";
+	СтрокаТЗ.ИмяКолонки = "gl_dt";
+
+	// Company_code
+	СтрокаТЗ = СтруктураКолонок.Добавить();
+	СтрокаТЗ.ИмяПоля = "CompanyCode";
+	СтрокаТЗ.ИмяКолонки = "Company_code";
+
+	// invoiced_by
+	СтрокаТЗ = СтруктураКолонок.Добавить();
+	СтрокаТЗ.ИмяПоля = "CreatedBy";
+	СтрокаТЗ.ИмяКолонки = "invoiced_by";
 	
 КонецПроцедуры
 
@@ -115,6 +130,7 @@
 	|		ЛЕВОЕ СОЕДИНЕНИЕ Документ.SalesOrder КАК SalesOrder
 	|		ПО OracleSalesOrdersDetailsSourceData.НомерSO = SalesOrder.Номер
 	|			И OracleSalesOrdersDetailsSourceData.CustomerNumber = SalesOrder.ClientID
+	|			И OracleSalesOrdersDetailsSourceData.CompanyCode = SalesOrder.Company.Код
 	|			И (НЕ SalesOrder.ПометкаУдаления)
 	|			И (SalesOrder.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith))
 	|ГДЕ
@@ -125,16 +141,20 @@
 	|ВЫБРАТЬ РАЗЛИЧНЫЕ
 	|	OracleSalesOrdersDetailsSourceData.НомерSO КАК НомерInvoice,
 	|	OracleSalesOrdersDetailsSourceData.Agreement,
-	//|	OracleSalesOrdersDetailsSourceData.JobEndDate,
+	|	OracleSalesOrdersDetailsSourceData.JobEndDate,
+	|	OracleSalesOrdersDetailsSourceData.InvoiceFlagDate,
 	|	OracleSalesOrdersDetailsSourceData.CustomerNumber,
 	|	КОЛИЧЕСТВО(РАЗЛИЧНЫЕ Invoice.Ссылка) КАК КоличестоИнвойсов,
 	|	OracleSalesOrdersDetailsSourceData.InvoiceAmount,
-	|	МАКСИМУМ(Invoice.Ссылка) КАК СсылкаInvoice
+	|	OracleSalesOrdersDetailsSourceData.CreatedBy,
+	|	МАКСИМУМ(Invoice.Ссылка) КАК СсылкаInvoice,
+	|	МАКСИМУМ(Invoice.Ссылка.Responsible) КАК InvoiceResponsible
 	|ИЗ
 	|	РегистрСведений.OracleSalesOrdersDetailsSourceData КАК OracleSalesOrdersDetailsSourceData
 	|		ЛЕВОЕ СОЕДИНЕНИЕ Документ.Invoice КАК Invoice
 	|		ПО OracleSalesOrdersDetailsSourceData.НомерSO = Invoice.DocNumber
 	|			И OracleSalesOrdersDetailsSourceData.CustomerNumber = Invoice.ClientID
+	|			И OracleSalesOrdersDetailsSourceData.CompanyCode = Invoice.Company.Код
 	|			И (НЕ Invoice.ПометкаУдаления)
 	|			И (Invoice.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith))
 	|ГДЕ
@@ -145,6 +165,8 @@
 	|	OracleSalesOrdersDetailsSourceData.НомерSO,
 	|	OracleSalesOrdersDetailsSourceData.CustomerNumber,
 	|	OracleSalesOrdersDetailsSourceData.JobEndDate,
+	|	OracleSalesOrdersDetailsSourceData.CreatedBy,
+	|	OracleSalesOrdersDetailsSourceData.InvoiceFlagDate,
 	|	OracleSalesOrdersDetailsSourceData.InvoiceAmount";
 	
 	Запрос.УстановитьПараметр("Ссылка", СтруктураПараметров.Ссылка);
@@ -164,6 +186,9 @@
 	
 	ОбновленныеInvoice = Новый ТаблицаЗначений;
 	ОбновленныеInvoice.Колонки.Добавить("Invoice", Новый ОписаниеТипов("ДокументСсылка.Invoice"));
+
+	ОбновленныеДатыDIR = Новый ТаблицаЗначений;
+	ОбновленныеДатыDIR.Колонки.Добавить("Invoice", Новый ОписаниеТипов("ДокументСсылка.Invoice"));
 	
 	НенайденныеInvoice = Новый ТаблицаЗначений;
 	НенайденныеInvoice.Колонки.Добавить("InvoiceNumber", Новый ОписаниеТипов("Строка", , , , Новый КвалификаторыСтроки(17)));
@@ -198,10 +223,20 @@
 			
 			РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.Agreement, ВыборкаInvoice.Agreement);
 			РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.Amount, ВыборкаInvoice.InvoiceAmount);
+			Если НЕ ЗначениеЗаполнено(ВыборкаInvoice.InvoiceResponsible) Тогда
+				ТекОбъект.Responsible = ВыборкаInvoice.CreatedBy;
+			КонецЕсли;
 			//РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.WellData, ВыборкаSO.WellData);
 			
 			//РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.JobEndDate, ВыборкаSO.JobEndDate);
 			
+			Даты = Новый Соответствие();
+			Даты.Вставить("InvoiceFlagDate", ВыборкаInvoice.InvoiceFlagDate);
+			Даты.Вставить("JobEndDate", ВыборкаInvoice.JobEndDate);
+			РегистрыСведений.DIR.ЗаписатьДаты(ВыборкаInvoice.СсылкаInvoice, Даты);
+			СтрокаТЗ = ОбновленныеДатыDIR.Добавить();
+			СтрокаТЗ.Invoice = ВыборкаInvoice.СсылкаInvoice;
+		
 			Если ТекОбъект.Модифицированность() Тогда
 				
 				Попытка
@@ -280,12 +315,14 @@
 	ОбновленныеSO.Свернуть("SalesOrder");
 	НенайденныеSO.Свернуть("SalesOrderNumber");
 	ОбновленныеInvoice.Свернуть("Invoice");
+	ОбновленныеДатыDIR.Свернуть("Invoice");
 	НенайденныеInvoice.Свернуть("InvoiceNumber");
 	ОшибкиИдентификацииИнвойсов.Свернуть("InvoiceNumber,ClientID");
 	
 	ДанныеДляЗаполнения.Вставить("ОбновленныеSO", ОбновленныеSO);
 	ДанныеДляЗаполнения.Вставить("НенайденныеSO", НенайденныеSO);
 	ДанныеДляЗаполнения.Вставить("ОбновленныеInvoice", ОбновленныеInvoice);
+	ДанныеДляЗаполнения.Вставить("ОбновленныеДатыDIR", ОбновленныеДатыDIR);
 	ДанныеДляЗаполнения.Вставить("НенайденныеInvoice", НенайденныеInvoice);
 	ДанныеДляЗаполнения.Вставить("ОшибкиИдентификацииИнвойсов", ОшибкиИдентификацииИнвойсов);
 	
