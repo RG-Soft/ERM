@@ -79,6 +79,7 @@
 	|	ТранзакцияHOB.CorAccount,
 	|	ТранзакцияHOB.Account.БазовыйЭлемент КАК HFMAccount,
 	|	ТранзакцияHOB.HOBReverseType,
+	|	ТранзакцияHOB.PostingDate,
 	|	ТранзакцияHOB.MNGC,
 	|	ТранзакцияHOB.EndClient
 	|ИЗ
