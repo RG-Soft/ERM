@@ -19,7 +19,7 @@
 		|			UnbilledARОстатки.Client КАК Client,
 		|			UnbilledARОстатки.Company КАК Company,
 		|			UnbilledARОстатки.Source КАК Source,
-		|			UnbilledARОстатки.AU.ПодразделениеОрганизац ии КАК Location,
+		|			UnbilledARОстатки.AU.ПодразделениеОрганизации КАК Location,
 		|			UnbilledARОстатки.AU.Сегмент КАК SubSubSegment,
 		|			UnbilledARОстатки.AU КАК AU,
 		|			UnbilledARОстатки.Currency КАК Currency,
