@@ -853,6 +853,10 @@
 	
 	ОбработанныеПроблемы = Новый Массив;
 	
+	// { RGS TAlmazova 20.08.2018 14:43:10 - S-E-0000923
+	КонецОтчетногоМесяца = НачалоМесяца(Период) - 1;
+	// } RGS TAlmazova 20.08.2018 14:43:42 - S-E-0000923
+	
 	Для Каждого Получатель из МассивПолучателей Цикл 
 		
 		//Если НЕ ЗначениеЗаполнено(Получатель) ИЛИ МассивПолучателейТестовыхСообщений.Найти(Получатель) = Неопределено Тогда
@@ -862,7 +866,7 @@
 		
 		СтруктураОтбора.Получатель = Получатель;
 		СуммаUSD = 0;
-		Тема = "List of unbilled invoices";
+		Тема = "List of unbilled invoices as of " + Формат(КонецОтчетногоМесяца, "Л=en_US; ДФ='MMMM yyyy'");
 		//ТекДата = Формат(ТекущаяДата(),"ДЛФ=DD");
 		ТелоHTML = "<HTML><HEAD>
 		|<META content=""text/html; charset=utf-8"" http-equiv=Content-Type><LINK rel=stylesheet type=text/css href=""v8help://service_book/service_style""><BASE href=""v8config://d349bc7e-06e3-4fc1-b24f-9709087cc83c/mdobject/id44c3769f-050d-4f0a-ae52-7c2a9e753714/038b5c85-fb1c-4082-9c4c-e69f8928bf3a"">
@@ -872,11 +876,89 @@
 		//|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Subject:  List of unbilled invoices.</P>
 		|<br>
 		|<P style=""FONT-SIZE: 15px; FONT-FAMILY: Arial, sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px"">Please be kindly informed that there are some unbilled items that have been assigned to you for resolution.</P>
+		|<BR>";
+		
+		
+		
+		ПолныеДанныеУведомления = ДанныеSalesOrders.Скопировать(СтруктураОтбора);
+		ОбщегоНазначенияКлиентСервер.ДополнитьМассив(ОбработанныеПроблемы, ПолныеДанныеУведомления.ВыгрузитьКолонку("Проблема"));
+		ПолныеДанныеУведомления.Колонки.Удалить("Получатель");
+		ПолныеДанныеУведомления.Колонки.Удалить("Проблема");
+		
+		// { RGS TAlmazova 20.08.2018 18:01:20 - S-E-0000923 добавление сводной таблицы
+		МассивMngmGeo = ПолныеДанныеУведомления.ВыгрузитьКолонку("ManagementGeomarket");
+		МассивMngmGeo = ОбщегоНазначенияКлиентСервер.СвернутьМассив(МассивMngmGeo);
+		ТелоHTMLСводнаяТаблица = "<BR>
+		|<TABLE style=""border-collapse: collapse;width:84.2%;border:solid black 1.5pt"">
+		|<TBODY>
+		|<TR align=""center"" style=""width:6.38%;background:#99CCFF;padding:1.5pt 1.5pt 1.5pt 1.5pt;font-size:10pt;font-family:Tahoma,sans-serif;color:white;"">
+		|<TD style=""padding: 5px; border: 2px solid #000;"">ManagementGeomarket</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000;"">Segment</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000;"">QTY</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000;"">USD Total</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000;"">1-30</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000;"">31-60</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000;"">61-90</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000;"">91-120</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000;"">121-180</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000;"">181+</TD>
+		|</TR>";
+		Для каждого MngmGeo Из МассивMngmGeo Цикл
+			
+			СтруктураОтбораMngmGeo = Новый Структура("ManagementGeomarket");
+			СтруктураОтбораMngmGeo.ManagementGeomarket = MngmGeo;
+			ДанныеMngmGeo = ПолныеДанныеУведомления.Скопировать(СтруктураОтбораMngmGeo, "ManagementGeomarket, Segment, AmountUSD, Ageing30, Ageing3160, Ageing6190, Ageing91120, Ageing121180, Ageing181, КоличествоSO");
+			ДанныеMngmGeo.Свернуть("ManagementGeomarket, Segment", "КоличествоSO, AmountUSD, Ageing30, Ageing3160, Ageing6190, Ageing91120, Ageing121180, Ageing181");
+			
+			Для Каждого СтрокаДанных из ДанныеMngmGeo Цикл
+					
+				СтрокаВТелоСообщения = "<TR>
+				|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.ManagementGeomarket), СтрокаДанных.ManagementGeomarket, " ") + "</TD>
+				|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Segment), СтрокаДанных.Segment, " ") + "</TD>
+				|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.КоличествоSO + "</TD>
+				|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.AmountUSD + "</TD>
+				|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Ageing30 + "</TD>
+				|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Ageing3160 + "</TD>
+				|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Ageing6190 + "</TD>
+				|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Ageing91120 + "</TD>
+				|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Ageing121180 + "</TD>
+				|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Ageing181 + "</TD>
+				|</TR>";
+				ТелоHTMLСводнаяТаблица = ТелоHTMLСводнаяТаблица + СтрокаВТелоСообщения;
+					
+			КонецЦикла;
+			
+			СтрокаВТелоСообщения = "<TR>
+			|<TD style=""padding: 5px; border: 2px solid #000;""><STRONG>" + MngmGeo + " Total" + "</STRONG></TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;""><STRONG>" + "" + "</STRONG></TD>
+			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;""><STRONG>" + ДанныеMngmGeo.Итог("КоличествоSO") + "</STRONG></TD>
+			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;""><STRONG>" + ДанныеMngmGeo.Итог("AmountUSD")+ "</STRONG></TD>
+			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;""><STRONG>" + ДанныеMngmGeo.Итог("Ageing30") + "</STRONG></TD>
+			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;""><STRONG>" + ДанныеMngmGeo.Итог("Ageing3160") + "</STRONG></TD>
+			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;""><STRONG>" + ДанныеMngmGeo.Итог("Ageing6190") + "</STRONG></TD>
+			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;""><STRONG>" + ДанныеMngmGeo.Итог("Ageing91120") + "</STRONG></TD>
+			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;""><STRONG>" + ДанныеMngmGeo.Итог("Ageing121180") + "</STRONG></TD>
+			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;""><STRONG>" + ДанныеMngmGeo.Итог("Ageing181") + "</STRONG></TD>
+			|</TR>";
+			ТелоHTMLСводнаяТаблица = ТелоHTMLСводнаяТаблица + СтрокаВТелоСообщения;
+			
+		КонецЦикла;
+		
+		ТелоHTML = ТелоHTML + ТелоHTMLСводнаяТаблица;
+		
+		// } RGS TAlmazova 20.08.2018 18:01:33 - S-E-0000923
+		//ДанныеДляТелаПисьма = ПолныеДанныеУведомления.Скопировать(, "GeoMarket, Segment, CustumerId, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Amount, Reason");
+		//ДанныеДляТелаПисьма.Свернуть("GeoMarket, Segment, CustumerId, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Reason", "Amount");
+		ДанныеДляТелаПисьма = ПолныеДанныеУведомления.Скопировать(, "ManagementGeomarket, Segment, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Amount, WellData, Reason, Ageing");
+		ДанныеДляТелаПисьма.Свернуть("ManagementGeomarket, Segment, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, WellData, Reason, Ageing", "Amount");
+		
+		ТелоHTML = ТелоHTML + "</TABLE>
+		|<BR>
 		|<BR>
 		|<TABLE style=""border-collapse: collapse;width:84.2%;border:solid black 1.5pt"">
 		|<TBODY>
 		|<TR align=""center"" style=""width:6.38%;background:#000099;padding:1.5pt 1.5pt 1.5pt 1.5pt;font-size:10pt;font-family:Tahoma,sans-serif;color:white;"">
-		|<TD style=""padding: 5px; border: 2px solid #000;"">Geomarket</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000;"">ManagementGeomarket</TD>
 		|<TD style=""padding: 5px; border: 2px solid #000;"">Segment</TD>
 		//|<TD style=""padding: 5px; border: 2px solid #000;"">Customer ID</TD>
 		|<TD style=""padding: 5px; border: 2px solid #000;"">Customer name</TD>
@@ -890,19 +972,10 @@
 		|<TD style=""padding: 5px; border: 2px solid #000;"">Ageing</TD>
 		|</TR>";
 		
-		ПолныеДанныеУведомления = ДанныеSalesOrders.Скопировать(СтруктураОтбора);
-		ОбщегоНазначенияКлиентСервер.ДополнитьМассив(ОбработанныеПроблемы, ПолныеДанныеУведомления.ВыгрузитьКолонку("Проблема"));
-		ПолныеДанныеУведомления.Колонки.Удалить("Получатель");
-		ПолныеДанныеУведомления.Колонки.Удалить("Проблема");
-		//ДанныеДляТелаПисьма = ПолныеДанныеУведомления.Скопировать(, "GeoMarket, Segment, CustumerId, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Amount, Reason");
-		//ДанныеДляТелаПисьма.Свернуть("GeoMarket, Segment, CustumerId, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Reason", "Amount");
-		ДанныеДляТелаПисьма = ПолныеДанныеУведомления.Скопировать(, "GeoMarket, Segment, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Amount, WellData, Reason, Ageing");
-		ДанныеДляТелаПисьма.Свернуть("GeoMarket, Segment, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, WellData, Reason, Ageing", "Amount");
-		
 		Для Каждого СтрокаДанных из ДанныеДляТелаПисьма Цикл
 				
 			СтрокаВТелоСообщения = "<TR>
-			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.GeoMarket), СтрокаДанных.GeoMarket, " ") + "</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.ManagementGeomarket), СтрокаДанных.ManagementGeomarket, " ") + "</TD>
 			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Segment), СтрокаДанных.Segment, " ") + "</TD>
 			//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.CustumerId), СтрокаДанных.CustumerId, " ") + "</TD>
 			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Client), СтрокаДанных.Client, " ") + "</TD>
@@ -924,6 +997,7 @@
 			//НаборЗаписей.Записать();
 				
 		КонецЦикла;
+		
 		
 		//ТелоHTML = ТелоHTML + "<tr style=""BACKGROUND-COLOR:#A4D3EE"">
 		//|<td colspan=""6"">Grand total</td>
@@ -1175,7 +1249,7 @@
 	                |
 	                |////////////////////////////////////////////////////////////////////////////////
 	                |ВЫБРАТЬ
-	                |	ВТ_SO.Проблема,
+	                |	ВТ_SO.Проблема КАК Проблема,
 	                |	МИНИМУМ(ВТ_SO.Приоритет) КАК Приоритет
 	                |ПОМЕСТИТЬ ВТ_Приоритет
 	                |ИЗ
@@ -1189,9 +1263,9 @@
 	                |
 	                |////////////////////////////////////////////////////////////////////////////////
 	                |ВЫБРАТЬ РАЗЛИЧНЫЕ
-	                |	ВТ_SO.SalesOrder,
-	                |	ВТ_SO.Получатель,
-	                |	ВТ_SO.Проблема
+	                |	ВТ_SO.SalesOrder КАК SalesOrder,
+	                |	ВТ_SO.Получатель КАК Получатель,
+	                |	ВТ_SO.Проблема КАК Проблема
 	                |ПОМЕСТИТЬ ВТ
 	                |ИЗ
 	                |	ВТ_SO КАК ВТ_SO
@@ -1202,9 +1276,10 @@
 	                |
 	                |////////////////////////////////////////////////////////////////////////////////
 	                |ВЫБРАТЬ
-	                |	ВТ.SalesOrder.Location.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
-	                |	ВТ.SalesOrder.Location.БазовыйЭлемент.GeoMarket КАК SubGeoMarket,
-	                |	ВТ.SalesOrder.SubSubSegment.БазовыйЭлемент.Родитель.Родитель КАК Segment,
+	                |	ВТ.SalesOrder.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
+	                |	ВТ.SalesOrder.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket КАК SubGeoMarket,
+	                |	ВТ.SalesOrder.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket КАК ManagementGeomarket,
+	                |	ВТ.SalesOrder.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель КАК Segment,
 	                |	UnbilledARОстатки.SalesOrder.ClientID КАК CustumerId,
 	                |	ВТ.SalesOrder.Client КАК Client,
 	                |	ВТ.SalesOrder.Currency КАК Currency,
@@ -1226,8 +1301,9 @@
 	                |			ТОГДА РАЗНОСТЬДАТ(ВТ.SalesOrder.JobEndDate, &ДатаДляСравнения, ДЕНЬ)
 	                |		ИНАЧЕ 0
 	                |	КОНЕЦ КАК Ageing,
-	                |	ВТ.Проблема,
+	                |	ВТ.Проблема КАК Проблема,
 	                |	ВТ.Проблема.Details КАК ProblemDetails
+	                |ПОМЕСТИТЬ ВТ_Итог
 	                |ИЗ
 	                |	ВТ КАК ВТ
 	                |		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних(&ДатаУведомления, ) КАК ВнутренниеКурсыВалютСрезПоследних
@@ -1239,7 +1315,71 @@
 	                |						ВТ.SalesOrder
 	                |					ИЗ
 	                |						ВТ КАК ВТ)) КАК UnbilledARОстатки
-	                |		ПО ВТ.SalesOrder = UnbilledARОстатки.SalesOrder";
+	                |		ПО ВТ.SalesOrder = UnbilledARОстатки.SalesOrder
+	                |;
+	                |
+	                |////////////////////////////////////////////////////////////////////////////////
+	                |ВЫБРАТЬ
+	                |	ВТ_Итог.GeoMarket КАК GeoMarket,
+	                |	ВТ_Итог.SubGeoMarket КАК SubGeoMarket,
+	                |	ВТ_Итог.ManagementGeomarket КАК ManagementGeomarket,
+	                |	ВТ_Итог.Segment КАК Segment,
+	                |	ВТ_Итог.CustumerId КАК CustumerId,
+	                |	ВТ_Итог.Client КАК Client,
+	                |	ВТ_Итог.Currency КАК Currency,
+	                |	ВТ_Итог.Amount КАК Amount,
+	                |	ВТ_Итог.AmountUSD КАК AmountUSD,
+	                |	ВТ_Итог.Получатель КАК Получатель,
+	                |	ВТ_Итог.InvoiceNumber КАК InvoiceNumber,
+	                |	ВТ_Итог.InvoiceDate КАК InvoiceDate,
+	                |	ВТ_Итог.Agreement КАК Agreement,
+	                |	ВТ_Итог.WellData КАК WellData,
+	                |	ВТ_Итог.Reason КАК Reason,
+	                |	ВТ_Итог.ExpectedDateForInvoice КАК ExpectedDateForInvoice,
+	                |	ВТ_Итог.EscalateTo КАК EscalateTo,
+	                |	ВТ_Итог.Responsible КАК Responsible,
+	                |	ВТ_Итог.ResponsibleList КАК ResponsibleList,
+	                |	ВТ_Итог.JobEndDate КАК JobEndDate,
+	                |	ВТ_Итог.Ageing КАК Ageing,
+	                |	ВТ_Итог.Проблема КАК Проблема,
+	                |	ВТ_Итог.ProblemDetails КАК ProblemDetails,
+	                |	ВЫБОР
+	                |		КОГДА ВТ_Итог.Ageing <= 30
+	                |			ТОГДА ВТ_Итог.AmountUSD
+	                |		ИНАЧЕ 0
+	                |	КОНЕЦ КАК Ageing30,
+	                |	ВЫБОР
+	                |		КОГДА ВТ_Итог.Ageing > 30
+	                |				И ВТ_Итог.Ageing <= 60
+	                |			ТОГДА ВТ_Итог.AmountUSD
+	                |		ИНАЧЕ 0
+	                |	КОНЕЦ КАК Ageing3160,
+	                |	ВЫБОР
+	                |		КОГДА ВТ_Итог.Ageing > 60
+	                |				И ВТ_Итог.Ageing <= 90
+	                |			ТОГДА ВТ_Итог.AmountUSD
+	                |		ИНАЧЕ 0
+	                |	КОНЕЦ КАК Ageing6190,
+	                |	ВЫБОР
+	                |		КОГДА ВТ_Итог.Ageing > 90
+	                |				И ВТ_Итог.Ageing <= 120
+	                |			ТОГДА ВТ_Итог.AmountUSD
+	                |		ИНАЧЕ 0
+	                |	КОНЕЦ КАК Ageing91120,
+	                |	ВЫБОР
+	                |		КОГДА ВТ_Итог.Ageing > 120
+	                |				И ВТ_Итог.Ageing <= 180
+	                |			ТОГДА ВТ_Итог.AmountUSD
+	                |		ИНАЧЕ 0
+	                |	КОНЕЦ КАК Ageing121180,
+	                |	ВЫБОР
+	                |		КОГДА ВТ_Итог.Ageing > 180
+	                |			ТОГДА ВТ_Итог.AmountUSD
+	                |		ИНАЧЕ 0
+	                |	КОНЕЦ КАК Ageing181,
+	                |	1 КАК КоличествоSO
+	                |ИЗ
+	                |	ВТ_Итог КАК ВТ_Итог";
 	
 	ПериодОстатков = ?(КонецМесяца(Период) = КонецДня(Период), КонецДня(Период) + 1, НачалоМесяца(Период));
 	Запрос.УстановитьПараметр("ДатаУведомления", Период);
@@ -1292,7 +1432,7 @@
 		
 		Для Каждого Элемент Из Таблица Цикл
 		
-			ОбластьМакетаСтрока.Параметры.GeoMarket = Элемент.GeoMarket;
+			ОбластьМакетаСтрока.Параметры.ManagementGeomarket = Элемент.ManagementGeomarket;
 			ОбластьМакетаСтрока.Параметры.SubGeoMarket = Элемент.SubGeoMarket;
 			ОбластьМакетаСтрока.Параметры.Segment = Элемент.Segment;
 			ОбластьМакетаСтрока.Параметры.CustumerId = Элемент.CustumerId;
@@ -1329,9 +1469,10 @@
 	
 	Запрос = Новый Запрос;
 	Запрос.Текст = "ВЫБРАТЬ
-	|	UnbilledARОстатки.Location.GeoMarket.Родитель КАК GeoMarket,
-	|	UnbilledARОстатки.Location.GeoMarket КАК SubGeoMarket,
-	|	UnbilledARОстатки.SubSubSegment.Родитель.Родитель КАК Segment,
+	|	UnbilledARОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
+	|	UnbilledARОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket КАК ManagementGeomarket,
+	|	UnbilledARОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket КАК SubGeoMarket,
+	|	UnbilledARОстатки.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель КАК Segment,
 	|	UnbilledARОстатки.Client КАК Client,
 	|	UnbilledARОстатки.SalesOrder.Invoice.Номер КАК InvoiceНомер,
 	|	UnbilledARОстатки.SalesOrder.Invoice.Дата КАК InvoiceДата,
