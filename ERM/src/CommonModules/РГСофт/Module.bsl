@@ -844,12 +844,12 @@
 	
 	ДанныеSalesOrders.Колонки.ExpectedDateForInvoice.Заголовок = "Expected date for Invoice";
 	
-	ДанныеSalesOrders.Индексы.Добавить("Получатель");
-	МассивПолучателей = ОбщегоНазначенияКлиентСервер.СвернутьМассив(ДанныеSalesOrders.ВыгрузитьКолонку("Получатель"));
+	ДанныеSalesOrders.Индексы.Добавить("ПолучательLDAP");
+	МассивПолучателей = ОбщегоНазначенияКлиентСервер.СвернутьМассив(ДанныеSalesOrders.ВыгрузитьКолонку("ПолучательLDAP"));
 	
 	МассивПолучателейТестовыхСообщений = РегистрыСведений.ПолучателиТестовыхНотификаций.ПолучитьСписокПолучателей();
 	
-	СтруктураОтбора = Новый Структура("Получатель");
+	СтруктураОтбора = Новый Структура("ПолучательLDAP");
 	
 	ОбработанныеПроблемы = Новый Массив;
 	
@@ -857,14 +857,19 @@
 	КонецОтчетногоМесяца = НачалоМесяца(Период) - 1;
 	// } RGS TAlmazova 20.08.2018 14:43:42 - S-E-0000923
 	
-	Для Каждого Получатель из МассивПолучателей Цикл 
+	Для Каждого ПолучательLDAP из МассивПолучателей Цикл 
 		
 		//Если НЕ ЗначениеЗаполнено(Получатель) ИЛИ МассивПолучателейТестовыхСообщений.Найти(Получатель) = Неопределено Тогда
-		Если НЕ ЗначениеЗаполнено(Получатель) Тогда
+		Если НЕ ЗначениеЗаполнено(ПолучательLDAP) Тогда
 			Продолжить
 		КонецЕсли;
 		
-		СтруктураОтбора.Получатель = Получатель;
+		ПолучательEmail = ОбщегоНазначения.ЗначениеРеквизитаОбъекта(ПолучательLDAP,"Mail");
+		Если НЕ ЗначениеЗаполнено(ПолучательEmail) Тогда
+			Продолжить
+		КонецЕсли;
+		
+		СтруктураОтбора.ПолучательLDAP = ПолучательLDAP;
 		СуммаUSD = 0;
 		Тема = "List of unbilled invoices as of " + Формат(КонецОтчетногоМесяца, "Л=en_US; ДФ='MMMM yyyy'");
 		//ТекДата = Формат(ТекущаяДата(),"ДЛФ=DD");
@@ -883,6 +888,7 @@
 		ПолныеДанныеУведомления = ДанныеSalesOrders.Скопировать(СтруктураОтбора);
 		ОбщегоНазначенияКлиентСервер.ДополнитьМассив(ОбработанныеПроблемы, ПолныеДанныеУведомления.ВыгрузитьКолонку("Проблема"));
 		ПолныеДанныеУведомления.Колонки.Удалить("Получатель");
+		ПолныеДанныеУведомления.Колонки.Удалить("ПолучательLDAP");
 		ПолныеДанныеУведомления.Колонки.Удалить("Проблема");
 		
 		// { RGS TAlmazova 20.08.2018 18:01:20 - S-E-0000923 добавление сводной таблицы
@@ -893,7 +899,7 @@
 		|<TBODY>
 		|<TR align=""center"" style=""width:6.38%;background:#99CCFF;padding:1.5pt 1.5pt 1.5pt 1.5pt;font-size:10pt;font-family:Tahoma,sans-serif;color:white;"">
 		|<TD style=""padding: 5px; border: 2px solid #000;"">ManagementGeomarket</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000;"">Segment</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000;"">Product Line</TD>
 		|<TD style=""padding: 5px; border: 2px solid #000;"">QTY</TD>
 		|<TD style=""padding: 5px; border: 2px solid #000;"">USD Total</TD>
 		|<TD style=""padding: 5px; border: 2px solid #000;"">1-30</TD>
@@ -903,6 +909,7 @@
 		|<TD style=""padding: 5px; border: 2px solid #000;"">121-180</TD>
 		|<TD style=""padding: 5px; border: 2px solid #000;"">181+</TD>
 		|</TR>";
+		
 		Для каждого MngmGeo Из МассивMngmGeo Цикл
 			
 			СтруктураОтбораMngmGeo = Новый Структура("ManagementGeomarket");
@@ -946,58 +953,63 @@
 		
 		ТелоHTML = ТелоHTML + ТелоHTMLСводнаяТаблица;
 		
-		// } RGS TAlmazova 20.08.2018 18:01:33 - S-E-0000923
-		//ДанныеДляТелаПисьма = ПолныеДанныеУведомления.Скопировать(, "GeoMarket, Segment, CustumerId, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Amount, Reason");
-		//ДанныеДляТелаПисьма.Свернуть("GeoMarket, Segment, CustumerId, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Reason", "Amount");
-		ДанныеДляТелаПисьма = ПолныеДанныеУведомления.Скопировать(, "ManagementGeomarket, Segment, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Amount, WellData, Reason, Ageing");
-		ДанныеДляТелаПисьма.Свернуть("ManagementGeomarket, Segment, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, WellData, Reason, Ageing", "Amount");
+		МинимальныйУровеньНотификацииПолучателя = ПолучитьМинимальныйУровеньНотификации(ПолучательLDAP);
 		
-		ТелоHTML = ТелоHTML + "</TABLE>
-		|<BR>
-		|<BR>
-		|<TABLE style=""border-collapse: collapse;width:84.2%;border:solid black 1.5pt"">
-		|<TBODY>
-		|<TR align=""center"" style=""width:6.38%;background:#000099;padding:1.5pt 1.5pt 1.5pt 1.5pt;font-size:10pt;font-family:Tahoma,sans-serif;color:white;"">
-		|<TD style=""padding: 5px; border: 2px solid #000;"">ManagementGeomarket</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000;"">Segment</TD>
-		//|<TD style=""padding: 5px; border: 2px solid #000;"">Customer ID</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000;"">Customer name</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000;"">Invoice Reference</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000;"">Job End Date</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000;"">Invoice transaction date</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000;"">Currency</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000;"">Amount</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000;"">Well number</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000;"">Reason</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000;"">Ageing</TD>
-		|</TR>";
+		Если МинимальныйУровеньНотификацииПолучателя <> Справочники.EscalationLevels.Level4 Тогда
 		
-		Для Каждого СтрокаДанных из ДанныеДляТелаПисьма Цикл
-				
-			СтрокаВТелоСообщения = "<TR>
-			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.ManagementGeomarket), СтрокаДанных.ManagementGeomarket, " ") + "</TD>
-			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Segment), СтрокаДанных.Segment, " ") + "</TD>
-			//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.CustumerId), СтрокаДанных.CustumerId, " ") + "</TD>
-			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Client), СтрокаДанных.Client, " ") + "</TD>
-			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.InvoiceNumber), СтрокаДанных.InvoiceNumber, " ") + "</TD>
-			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.JobEndDate), Формат(СтрокаДанных.JobEndDate, "ДФ=MM/dd/yyyy"), " ") + "</TD>
-			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.InvoiceDate), Формат(СтрокаДанных.InvoiceDate, "ДФ=MM/dd/yyyy"), " ") + "</TD>
-			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Currency), СтрокаДанных.Currency, " ") + "</TD>
-			|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Amount + "</TD>
-			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.WellData), СтрокаДанных.WellData, " ") + "</TD>
-			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Reason), СтрокаДанных.Reason, " ") + "</TD>
-			|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Ageing), СтрокаДанных.Ageing, " ") + "</TD>
-			|</TR>";
-			ТелоHTML = ТелоHTML + СтрокаВТелоСообщения;
-			//СуммаUSD = СуммаUSD + СтрокаДанных.AmountUSD;
+			// } RGS TAlmazova 20.08.2018 18:01:33 - S-E-0000923
+			//ДанныеДляТелаПисьма = ПолныеДанныеУведомления.Скопировать(, "GeoMarket, Segment, CustumerId, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Amount, Reason");
+			//ДанныеДляТелаПисьма.Свернуть("GeoMarket, Segment, CustumerId, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Reason", "Amount");
+			ДанныеДляТелаПисьма = ПолныеДанныеУведомления.Скопировать(, "ManagementGeomarket, Segment, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, Amount, WellData, Reason, Ageing");
+			ДанныеДляТелаПисьма.Свернуть("ManagementGeomarket, Segment, Client, InvoiceNumber, JobEndDate, InvoiceDate, Currency, WellData, Reason, Ageing", "Amount");
 			
-			//НаборЗаписей = РегистрыСведений.ОчередьУведомлений.СоздатьНаборЗаписей();
-			//НаборЗаписей.Отбор.Проблема.Установить(Проблема.Проблема);
-			//НаборЗаписей.Отбор.Уровень.Установить(Проблема.Уровень);
-			//НаборЗаписей.Записать();
+			ТелоHTML = ТелоHTML + "</TABLE>
+			|<BR>
+			|<BR>
+			|<TABLE style=""border-collapse: collapse;width:84.2%;border:solid black 1.5pt"">
+			|<TBODY>
+			|<TR align=""center"" style=""width:6.38%;background:#000099;padding:1.5pt 1.5pt 1.5pt 1.5pt;font-size:10pt;font-family:Tahoma,sans-serif;color:white;"">
+			|<TD style=""padding: 5px; border: 2px solid #000;"">ManagementGeomarket</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">Product Line</TD>
+			//|<TD style=""padding: 5px; border: 2px solid #000;"">Customer ID</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">Customer name</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">Invoice Reference</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">Job End Date</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">Invoice transaction date</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">Currency</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">Amount</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">Well number</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">Reason</TD>
+			|<TD style=""padding: 5px; border: 2px solid #000;"">Ageing</TD>
+			|</TR>";
+			
+			Для Каждого СтрокаДанных из ДанныеДляТелаПисьма Цикл
+					
+				СтрокаВТелоСообщения = "<TR>
+				|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.ManagementGeomarket), СтрокаДанных.ManagementGeomarket, " ") + "</TD>
+				|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Segment), СтрокаДанных.Segment, " ") + "</TD>
+				//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.CustumerId), СтрокаДанных.CustumerId, " ") + "</TD>
+				|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Client), СтрокаДанных.Client, " ") + "</TD>
+				|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.InvoiceNumber), СтрокаДанных.InvoiceNumber, " ") + "</TD>
+				|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.JobEndDate), Формат(СтрокаДанных.JobEndDate, "ДФ=MM/dd/yyyy"), " ") + "</TD>
+				|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.InvoiceDate), Формат(СтрокаДанных.InvoiceDate, "ДФ=MM/dd/yyyy"), " ") + "</TD>
+				|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Currency), СтрокаДанных.Currency, " ") + "</TD>
+				|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Amount + "</TD>
+				|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.WellData), СтрокаДанных.WellData, " ") + "</TD>
+				|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Reason), СтрокаДанных.Reason, " ") + "</TD>
+				|<TD style=""padding: 5px; border: 2px solid #000;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.Ageing), СтрокаДанных.Ageing, " ") + "</TD>
+				|</TR>";
+				ТелоHTML = ТелоHTML + СтрокаВТелоСообщения;
+				//СуммаUSD = СуммаUSD + СтрокаДанных.AmountUSD;
 				
-		КонецЦикла;
-		
+				//НаборЗаписей = РегистрыСведений.ОчередьУведомлений.СоздатьНаборЗаписей();
+				//НаборЗаписей.Отбор.Проблема.Установить(Проблема.Проблема);
+				//НаборЗаписей.Отбор.Уровень.Установить(Проблема.Уровень);
+				//НаборЗаписей.Записать();
+					
+			КонецЦикла;
+			
+		КонецЕсли;
 		
 		//ТелоHTML = ТелоHTML + "<tr style=""BACKGROUND-COLOR:#A4D3EE"">
 		//|<td colspan=""6"">Grand total</td>
@@ -1019,7 +1031,7 @@
 		|</HTML>";
 		ТелоHTML = СтрЗаменить(ТелоHTML, Символы.ПС, "");
 		Attach = ПолучитьAttachДляUnbilledNotification(ПолныеДанныеУведомления);
-		РГСофт.ЗарегистрироватьПочтовоеСообщение(Получатель, Тема, ТелоHTML, Attach, ТипТекстаПочтовогоСообщения.HTML);
+		РГСофт.ЗарегистрироватьПочтовоеСообщение(ПолучательEmail, Тема, ТелоHTML, Attach, ТипТекстаПочтовогоСообщения.HTML);
 		
 	КонецЦикла;
 	
@@ -1028,6 +1040,34 @@
 	ЗафиксироватьТранзакцию();
 	
 КонецПроцедуры
+
+Функция ПолучитьМинимальныйУровеньНотификации(Получатель)
+	
+	Запрос = Новый Запрос;
+	Запрос.Текст = 
+		"ВЫБРАТЬ РАЗЛИЧНЫЕ
+		|	ПолучателиУведомленийUnbilled.Уровень КАК Уровень
+		|ИЗ
+		|	РегистрСведений.ПолучателиУведомленийUnbilled КАК ПолучателиУведомленийUnbilled
+		|ГДЕ
+		|	ПолучателиУведомленийUnbilled.Получатель = &Получатель
+		|
+		|УПОРЯДОЧИТЬ ПО
+		|	Уровень";
+	
+	Запрос.УстановитьПараметр("Получатель", Получатель);
+	
+	РезультатЗапроса = Запрос.Выполнить();
+	
+	ВыборкаДетальныеЗаписи = РезультатЗапроса.Выбрать();
+	
+	Пока ВыборкаДетальныеЗаписи.Следующий() Цикл
+		 Возврат ВыборкаДетальныеЗаписи.Уровень;
+	КонецЦикла;
+	
+	Возврат Неопределено;
+	
+КонецФункции
 
 Процедура УдалитьОбработанныеЗаписиИзОчередиУведомленийUnbilled(Период, ОбработанныеПроблемы)
 	
@@ -1302,7 +1342,8 @@
 	                |		ИНАЧЕ 0
 	                |	КОНЕЦ КАК Ageing,
 	                |	ВТ.Проблема КАК Проблема,
-	                |	ВТ.Проблема.Details КАК ProblemDetails
+	                |	ВТ.Проблема.Details КАК ProblemDetails,
+	                |	ВТ.Получатель КАК ПолучательLDAP
 	                |ПОМЕСТИТЬ ВТ_Итог
 	                |ИЗ
 	                |	ВТ КАК ВТ
@@ -1377,7 +1418,8 @@
 	                |			ТОГДА ВТ_Итог.AmountUSD
 	                |		ИНАЧЕ 0
 	                |	КОНЕЦ КАК Ageing181,
-	                |	1 КАК КоличествоSO
+	                |	1 КАК КоличествоSO,
+	                |	ВТ_Итог.ПолучательLDAP КАК ПолучательLDAP
 	                |ИЗ
 	                |	ВТ_Итог КАК ВТ_Итог";
 	
