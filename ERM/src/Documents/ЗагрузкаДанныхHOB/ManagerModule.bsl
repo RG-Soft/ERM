@@ -2513,58 +2513,59 @@
 	Запрос = Новый Запрос;
 	Запрос.Текст = 
 		"ВЫБРАТЬ
-		|	HOBAccrualsSourceData.TrDate,
-		|	HOBAccrualsSourceData.TrNumber,
-		|	HOBAccrualsSourceData.Document,
-		|	HOBAccrualsSourceData.DocumentType,
-		|	HOBAccrualsSourceData.Account,
-		|	HOBAccrualsSourceData.Client,
-		|	HOBAccrualsSourceData.INN,
-		|	HOBAccrualsSourceData.SalesOrderAgreementCode,
-		|	HOBAccrualsSourceData.SalesOrderAgreement,
-		|	HOBAccrualsSourceData.SalesOrder,
-		|	HOBAccrualsSourceData.SalesOrderNumber,
-		|	HOBAccrualsSourceData.CompanyCode,
-		|	HOBAccrualsSourceData.CompanyDesc,
-		|	HOBAccrualsSourceData.Currency,
-		|	HOBAccrualsSourceData.LocationCode,
-		|	HOBAccrualsSourceData.LocationDesc,
-		|	HOBAccrualsSourceData.Amount,
-		|	HOBAccrualsSourceData.BaseAmount,
-		|	HOBAccrualsSourceData.JobEndDate,
-		|	HOBAccrualsSourceData.SalesOrderAmount,
-		|	HOBAccrualsSourceData.ERPStatus,
-		|	HOBAccrualsSourceData.SalesOrderCurrency,
-		|	HOBAccrualsSourceData.SalesOrderExchangeRate,
-		|	HOBAccrualsSourceData.SalesOrderApprovalDate,
-		|	HOBAccrualsSourceData.SalesOrderApprovedBy,
-		|	HOBAccrualsSourceData.AU,
-		|	HOBAccrualsSourceData.AUType,
-		|	HOBAccrualsSourceData.SubSubSegment,
-		|	HOBAccrualsSourceData.SalesOrderDate,
-		|	HOBAccrualsSourceData.Invoice,
-		|	HOBAccrualsSourceData.InvoiceDate,
-		|	HOBAccrualsSourceData.InvoiceNumber,
-		|	HOBAccrualsSourceData.InvoiceCurrency,
-		|	HOBAccrualsSourceData.InvoiceAmount,
-		|	HOBAccrualsSourceData.InvoiceBilled,
-		|	HOBAccrualsSourceData.InvoicePassedForApproval,
-		|	HOBAccrualsSourceData.InvoicePassedForPayment,
-		|	HOBAccrualsSourceData.InvoicePassedForApprovalDate,
-		|	HOBAccrualsSourceData.InvoicePassedForPaymentDate,
-		|	HOBAccrualsSourceData.ExpectedDateOfPayment,
-		|	HOBAccrualsSourceData.InvoiceAgreementCode,
-		|	HOBAccrualsSourceData.InvoiceAgreement,
-		|	HOBAccrualsSourceData.Reverse,
-		|	HOBAccrualsSourceData.DocumentID,
-		|	HOBAccrualsSourceData.SalesOrderID,
-		|	HOBAccrualsSourceData.InvoiceID,
-		|	HOBAccrualsSourceData.TrID,
-		|	HOBAccrualsSourceData.СтрокаФайла,
-		|	HOBAccrualsSourceData.LegalEntity,
-		|	HOBAccrualsSourceData.EndClient,
-		|	HOBAccrualsSourceData.EndClientINN,
-		|	HOBAccrualsSourceData.MNGC
+		|	HOBAccrualsSourceData.TrDate КАК TrDate,
+		|	HOBAccrualsSourceData.TrNumber КАК TrNumber,
+		|	HOBAccrualsSourceData.Document КАК Document,
+		|	HOBAccrualsSourceData.DocumentType КАК DocumentType,
+		|	HOBAccrualsSourceData.Account КАК Account,
+		|	HOBAccrualsSourceData.Client КАК Client,
+		|	HOBAccrualsSourceData.INN КАК INN,
+		|	HOBAccrualsSourceData.SalesOrderAgreementCode КАК SalesOrderAgreementCode,
+		|	HOBAccrualsSourceData.SalesOrderAgreement КАК SalesOrderAgreement,
+		|	HOBAccrualsSourceData.SalesOrder КАК SalesOrder,
+		|	HOBAccrualsSourceData.SalesOrderNumber КАК SalesOrderNumber,
+		|	HOBAccrualsSourceData.CompanyCode КАК CompanyCode,
+		|	HOBAccrualsSourceData.CompanyDesc КАК CompanyDesc,
+		|	HOBAccrualsSourceData.Currency КАК Currency,
+		|	HOBAccrualsSourceData.LocationCode КАК LocationCode,
+		|	HOBAccrualsSourceData.LocationDesc КАК LocationDesc,
+		|	HOBAccrualsSourceData.Amount КАК Amount,
+		|	HOBAccrualsSourceData.BaseAmount КАК BaseAmount,
+		|	HOBAccrualsSourceData.JobEndDate КАК JobEndDate,
+		|	HOBAccrualsSourceData.SalesOrderAmount КАК SalesOrderAmount,
+		|	HOBAccrualsSourceData.ERPStatus КАК ERPStatus,
+		|	HOBAccrualsSourceData.SalesOrderCurrency КАК SalesOrderCurrency,
+		|	HOBAccrualsSourceData.SalesOrderExchangeRate КАК SalesOrderExchangeRate,
+		|	HOBAccrualsSourceData.SalesOrderApprovalDate КАК SalesOrderApprovalDate,
+		|	HOBAccrualsSourceData.SalesOrderApprovedBy КАК SalesOrderApprovedBy,
+		|	HOBAccrualsSourceData.AU КАК AU,
+		|	HOBAccrualsSourceData.AUType КАК AUType,
+		|	HOBAccrualsSourceData.SubSubSegment КАК SubSubSegment,
+		|	HOBAccrualsSourceData.SalesOrderDate КАК SalesOrderDate,
+		|	HOBAccrualsSourceData.Invoice КАК Invoice,
+		|	HOBAccrualsSourceData.InvoiceDate КАК InvoiceDate,
+		|	HOBAccrualsSourceData.InvoiceNumber КАК InvoiceNumber,
+		|	HOBAccrualsSourceData.InvoiceCurrency КАК InvoiceCurrency,
+		|	HOBAccrualsSourceData.InvoiceAmount КАК InvoiceAmount,
+		|	HOBAccrualsSourceData.InvoiceBilled КАК InvoiceBilled,
+		|	HOBAccrualsSourceData.InvoicePassedForApproval КАК InvoicePassedForApproval,
+		|	HOBAccrualsSourceData.InvoicePassedForPayment КАК InvoicePassedForPayment,
+		|	HOBAccrualsSourceData.InvoicePassedForApprovalDate КАК InvoicePassedForApprovalDate,
+		|	HOBAccrualsSourceData.InvoicePassedForPaymentDate КАК InvoicePassedForPaymentDate,
+		|	HOBAccrualsSourceData.ExpectedDateOfPayment КАК ExpectedDateOfPayment,
+		|	HOBAccrualsSourceData.InvoiceAgreementCode КАК InvoiceAgreementCode,
+		|	HOBAccrualsSourceData.InvoiceAgreement КАК InvoiceAgreement,
+		|	HOBAccrualsSourceData.Reverse КАК Reverse,
+		|	HOBAccrualsSourceData.DocumentID КАК DocumentID,
+		|	HOBAccrualsSourceData.SalesOrderID КАК SalesOrderID,
+		|	HOBAccrualsSourceData.InvoiceID КАК InvoiceID,
+		|	HOBAccrualsSourceData.TrID КАК TrID,
+		|	HOBAccrualsSourceData.СтрокаФайла КАК СтрокаФайла,
+		|	HOBAccrualsSourceData.LegalEntity КАК LegalEntity,
+		|	HOBAccrualsSourceData.EndClient КАК EndClient,
+		|	HOBAccrualsSourceData.EndClientINN КАК EndClientINN,
+		|	HOBAccrualsSourceData.MNGC КАК MNGC,
+		|	HOBAccrualsSourceData.PostingDate КАК PostingDate
 		|ПОМЕСТИТЬ ВТ_ДанныеФайла
 		|ИЗ
 		|	РегистрСведений.HOBAccrualsSourceData КАК HOBAccrualsSourceData
@@ -2580,7 +2581,7 @@
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.Идентификатор КАК Идентификатор,
-		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника
+		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника КАК ОбъектПриемника
 		|ПОМЕСТИТЬ ВТ_СоответствиеКлиентовCustomerNumber
 		|ИЗ
 		|	РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(
@@ -2609,7 +2610,7 @@
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.Идентификатор КАК Идентификатор,
-		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника
+		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника КАК ОбъектПриемника
 		|ПОМЕСТИТЬ ВТ_СоответствиеCurrency
 		|ИЗ
 		|	РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(
@@ -2646,8 +2647,8 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
-		|	SO.DocID,
-		|	SO.Ссылка
+		|	SO.DocID КАК DocID,
+		|	SO.Ссылка КАК Ссылка
 		|ИЗ
 		|	Документ.SalesOrder КАК SO
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
@@ -2658,8 +2659,8 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
-		|	INV.DocID,
-		|	INV.Ссылка
+		|	INV.DocID КАК DocID,
+		|	INV.Ссылка КАК Ссылка
 		|ИЗ
 		|	Документ.Invoice КАК INV
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
@@ -2670,7 +2671,7 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
-		|	DataLoadingStages.GeoMarket,
+		|	DataLoadingStages.GeoMarket КАК GeoMarket,
 		|	DataLoadingStages.StartLoading КАК ДатаНачалаЗагрузки,
 		|	DataLoadingStages.ReconciledBalances КАК ДатаВыверенныхОстатков
 		|ИЗ
@@ -2689,53 +2690,55 @@
 		|	ВТ_СоответствиеCurrency.ОбъектПриемника КАК Currency,
 		|	ВТ_СоответствиеКлиентовCustomerNumber.ОбъектПриемника КАК Client,
 		|	ВТ_ДанныеФайла.SalesOrderAgreement КАК Contract,
-		|	ВТ_ДанныеФайла.Amount,
-		|	ВТ_ДанныеФайла.BaseAmount,
-		|	ВТ_ДанныеФайла.DocumentID,
-		|	ВТ_ДанныеФайла.TrNumber,
+		|	ВТ_ДанныеФайла.Amount КАК Amount,
+		|	ВТ_ДанныеФайла.BaseAmount КАК BaseAmount,
+		|	ВТ_ДанныеФайла.DocumentID КАК DocumentID,
+		|	ВТ_ДанныеФайла.TrNumber КАК TrNumber,
 		|	ВТ_ДанныеФайла.Document КАК DocumentPresentation,
-		|	ВТ_ДанныеФайла.TrID,
+		|	ВТ_ДанныеФайла.TrID КАК TrID,
 		|	ТранзакцияHOB.Ссылка КАК Транзакция,
-		|	ВТ_ДанныеФайла.SalesOrderID,
-		|	ВТ_ДанныеФайла.JobEndDate,
-		|	ВТ_ДанныеФайла.SalesOrderAmount,
-		|	ВТ_ДанныеФайла.ERPStatus,
+		|	ВТ_ДанныеФайла.SalesOrderID КАК SalesOrderID,
+		|	ВТ_ДанныеФайла.JobEndDate КАК JobEndDate,
+		|	ВТ_ДанныеФайла.SalesOrderAmount КАК SalesOrderAmount,
+		|	ВТ_ДанныеФайла.ERPStatus КАК ERPStatus,
 		|	ВТ_СоответствиеCurrency2.ОбъектПриемника КАК SalesOrderCurrency,
-		|	ВТ_ДанныеФайла.SalesOrderExchangeRate,
-		|	ВТ_ДанныеФайла.SalesOrderApprovalDate,
-		|	ВТ_ДанныеФайла.SalesOrderApprovedBy,
-		|	ВТ_ДанныеФайла.SalesOrder,
-		|	ВТ_ДанныеФайла.SalesOrderNumber,
-		|	ВТ_ДанныеФайла.SalesOrderDate,
+		|	ВТ_ДанныеФайла.SalesOrderExchangeRate КАК SalesOrderExchangeRate,
+		|	ВТ_ДанныеФайла.SalesOrderApprovalDate КАК SalesOrderApprovalDate,
+		|	ВТ_ДанныеФайла.SalesOrderApprovedBy КАК SalesOrderApprovedBy,
+		|	ВТ_ДанныеФайла.SalesOrder КАК SalesOrder,
+		|	ВТ_ДанныеФайла.SalesOrderNumber КАК SalesOrderNumber,
+		|	ВТ_ДанныеФайла.SalesOrderDate КАК SalesOrderDate,
 		|	ВТ_СоответствиеCurrency1.ОбъектПриемника КАК InvoiceCurrency,
-		|	ВТ_ДанныеФайла.InvoiceAmount,
-		|	ВТ_ДанныеФайла.InvoiceBilled,
-		|	ВТ_ДанныеФайла.InvoicePassedForApproval,
-		|	ВТ_ДанныеФайла.InvoicePassedForPayment,
-		|	ВТ_ДанныеФайла.InvoicePassedForApprovalDate,
-		|	ВТ_ДанныеФайла.InvoicePassedForPaymentDate,
-		|	ВТ_ДанныеФайла.ExpectedDateOfPayment,
-		|	ВТ_ДанныеФайла.InvoiceAgreementCode,
-		|	ВТ_ДанныеФайла.InvoiceAgreement,
-		|	ВТ_ДанныеФайла.Reverse,
+		|	ВТ_ДанныеФайла.InvoiceAmount КАК InvoiceAmount,
+		|	ВТ_ДанныеФайла.InvoiceBilled КАК InvoiceBilled,
+		|	ВТ_ДанныеФайла.InvoicePassedForApproval КАК InvoicePassedForApproval,
+		|	ВТ_ДанныеФайла.InvoicePassedForPayment КАК InvoicePassedForPayment,
+		|	ВТ_ДанныеФайла.InvoicePassedForApprovalDate КАК InvoicePassedForApprovalDate,
+		|	ВТ_ДанныеФайла.InvoicePassedForPaymentDate КАК InvoicePassedForPaymentDate,
+		|	ВТ_ДанныеФайла.ExpectedDateOfPayment КАК ExpectedDateOfPayment,
+		|	ВТ_ДанныеФайла.InvoiceAgreementCode КАК InvoiceAgreementCode,
+		|	ВТ_ДанныеФайла.InvoiceAgreement КАК InvoiceAgreement,
+		|	ВТ_ДанныеФайла.Reverse КАК Reverse,
 		|	ВТ_ДанныеФайла.LocationCode КАК CREW,
 		|	ВТ_ДанныеФайла.INN КАК CustomerNumber,
-		|	ВТ_ДанныеФайла.SalesOrderAgreementCode,
-		|	ВТ_ДанныеФайла.SalesOrderAgreement,
-		|	ВТ_ДанныеФайла.CompanyCode,
+		|	ВТ_ДанныеФайла.SalesOrderAgreementCode КАК SalesOrderAgreementCode,
+		|	ВТ_ДанныеФайла.SalesOrderAgreement КАК SalesOrderAgreement,
+		|	ВТ_ДанныеФайла.CompanyCode КАК CompanyCode,
 		|	ВТ_ДанныеФайла.AU КАК AUCode,
-		|	ВТ_ДанныеФайла.LocationCode,
+		|	ВТ_ДанныеФайла.LocationCode КАК LocationCode,
 		|	ВТ_ДанныеФайла.Account КАК AccountCode,
 		|	КостЦентры.Ссылка КАК AU,
-		|	ВТ_ДанныеФайла.InvoiceID,
-		|	ВТ_ДанныеФайла.InvoiceDate,
-		|	ВТ_ДанныеФайла.InvoiceNumber,
+		|	ВТ_ДанныеФайла.InvoiceID КАК InvoiceID,
+		|	ВТ_ДанныеФайла.InvoiceDate КАК InvoiceDate,
+		|	ВТ_ДанныеФайла.InvoiceNumber КАК InvoiceNumber,
 		|	КостЦентры.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarketHFM,
-		|	ВТ_ДанныеФайла.СтрокаФайла,
+		|	ВТ_ДанныеФайла.СтрокаФайла КАК СтрокаФайла,
 		|	LegalEntiites.Ссылка КАК LegalEntity,
 		|	ВТ_СоответствиеКлиентовCustomerNumber1.ОбъектПриемника КАК EndClient,
 		|	ПодразделенияОрганизаций.Ссылка КАК MNGC,
-		|	ВТ_ДанныеФайла.EndClientINN
+		|	ВТ_ДанныеФайла.EndClientINN КАК EndClientINN,
+		|	ВТ_ДанныеФайла.DocumentType КАК DocumentType,
+		|	ВТ_ДанныеФайла.PostingDate КАК PostingDate
 		|ИЗ
 		|	ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
@@ -2828,7 +2831,9 @@
 		|	LegalEntiites.Ссылка,
 		|	ВТ_СоответствиеКлиентовCustomerNumber1.ОбъектПриемника,
 		|	ПодразделенияОрганизаций1.Ссылка,
-		|	ВТ_ДанныеФайла.EndClientINN
+		|	ВТ_ДанныеФайла.EndClientINN,
+		|	ВТ_ДанныеФайла.DocumentType,
+		|	ВТ_ДанныеФайла.PostingDate
 		|ИЗ
 		|	ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
@@ -2982,7 +2987,9 @@
 			ТранзакцияHOBОбъект = Документы.ТранзакцияHOB.СоздатьДокумент();
 		КонецЕсли;
 		
-		ЗаполнитьТранзакцию(СтруктураПараметров, ТранзакцияHOBОбъект, ВыборкаДетальныеЗаписи, , ТаблицаИсключенийАналитики, Отказ, ТекстСообщенияОбОшибках, , КэшAU);
+		КэшПредставленийТипов = Новый Соответствие;
+		
+		ЗаполнитьТранзакцию(СтруктураПараметров, ТранзакцияHOBОбъект, ВыборкаДетальныеЗаписи, КэшПредставленийТипов, ТаблицаИсключенийАналитики, Отказ, ТекстСообщенияОбОшибках, , КэшAU);
 		
 		ТранзакцияHOBОбъект.Записать(РежимЗаписиДокумента.Запись);
 		
@@ -3166,30 +3173,31 @@
 	Запрос = Новый Запрос;
 	Запрос.Текст = 
 		"ВЫБРАТЬ
-		|	HOBJVSourceData.TrDate,
-		|	HOBJVSourceData.TrNumber,
-		|	HOBJVSourceData.Document,
-		|	HOBJVSourceData.DocumentType,
-		|	HOBJVSourceData.Account,
-		|	HOBJVSourceData.Client,
-		|	HOBJVSourceData.CompanyCode,
-		|	HOBJVSourceData.CompanyDesc,
-		|	HOBJVSourceData.Currency,
-		|	HOBJVSourceData.LocationCode,
-		|	HOBJVSourceData.LocationDesc,
-		|	HOBJVSourceData.Amount,
-		|	HOBJVSourceData.BaseAmount,
-		|	HOBJVSourceData.AU,
-		|	HOBJVSourceData.AUType,
-		|	HOBJVSourceData.SubSubSegment,
-		|	HOBJVSourceData.Reverse,
-		|	HOBJVSourceData.DocumentID,
-		|	HOBJVSourceData.TrID,
-		|	HOBJVSourceData.СтрокаФайла,
-		|	HOBJVSourceData.LegalEntity,
-		|	HOBJVSourceData.INN,
-		|	HOBJVSourceData.EndClientINN,
-		|	HOBJVSourceData.MNGC
+		|	HOBJVSourceData.TrDate КАК TrDate,
+		|	HOBJVSourceData.TrNumber КАК TrNumber,
+		|	HOBJVSourceData.Document КАК Document,
+		|	HOBJVSourceData.DocumentType КАК DocumentType,
+		|	HOBJVSourceData.Account КАК Account,
+		|	HOBJVSourceData.Client КАК Client,
+		|	HOBJVSourceData.CompanyCode КАК CompanyCode,
+		|	HOBJVSourceData.CompanyDesc КАК CompanyDesc,
+		|	HOBJVSourceData.Currency КАК Currency,
+		|	HOBJVSourceData.LocationCode КАК LocationCode,
+		|	HOBJVSourceData.LocationDesc КАК LocationDesc,
+		|	HOBJVSourceData.Amount КАК Amount,
+		|	HOBJVSourceData.BaseAmount КАК BaseAmount,
+		|	HOBJVSourceData.AU КАК AU,
+		|	HOBJVSourceData.AUType КАК AUType,
+		|	HOBJVSourceData.SubSubSegment КАК SubSubSegment,
+		|	HOBJVSourceData.Reverse КАК Reverse,
+		|	HOBJVSourceData.DocumentID КАК DocumentID,
+		|	HOBJVSourceData.TrID КАК TrID,
+		|	HOBJVSourceData.СтрокаФайла КАК СтрокаФайла,
+		|	HOBJVSourceData.LegalEntity КАК LegalEntity,
+		|	HOBJVSourceData.INN КАК INN,
+		|	HOBJVSourceData.EndClientINN КАК EndClientINN,
+		|	HOBJVSourceData.MNGC КАК MNGC,
+		|	HOBJVSourceData.PostingDate КАК PostingDate
 		|ПОМЕСТИТЬ ВТ_ДанныеФайла
 		|ИЗ
 		|	РегистрСведений.HOBJVSourceData КАК HOBJVSourceData
@@ -3200,7 +3208,7 @@
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.Идентификатор КАК Идентификатор,
-		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника
+		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника КАК ОбъектПриемника
 		|ПОМЕСТИТЬ ВТ_СоответствиеCurrency
 		|ИЗ
 		|	РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(
@@ -3220,7 +3228,7 @@
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.Идентификатор КАК Идентификатор,
-		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника
+		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника КАК ОбъектПриемника
 		|ПОМЕСТИТЬ ВТ_СоответствиеКлиентовCustomerNumber
 		|ИЗ
 		|	РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(
@@ -3248,14 +3256,14 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
-		|	КлючиРучныхКорректировок.Company,
-		|	КлючиРучныхКорректировок.Client,
-		|	КлючиРучныхКорректировок.Location,
-		|	КлючиРучныхКорректировок.SubSubSegment,
-		|	КлючиРучныхКорректировок.AU,
-		|	КлючиРучныхКорректировок.Account,
-		|	КлючиРучныхКорректировок.Currency,
-		|	КлючиРучныхКорректировок.РучнаяКорректировка
+		|	КлючиРучныхКорректировок.Company КАК Company,
+		|	КлючиРучныхКорректировок.Client КАК Client,
+		|	КлючиРучныхКорректировок.Location КАК Location,
+		|	КлючиРучныхКорректировок.SubSubSegment КАК SubSubSegment,
+		|	КлючиРучныхКорректировок.AU КАК AU,
+		|	КлючиРучныхКорректировок.Account КАК Account,
+		|	КлючиРучныхКорректировок.Currency КАК Currency,
+		|	КлючиРучныхКорректировок.РучнаяКорректировка КАК РучнаяКорректировка
 		|ИЗ
 		|	РегистрСведений.КлючиРучныхКорректировок КАК КлючиРучныхКорректировок
 		|ГДЕ
@@ -3264,7 +3272,7 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
-		|	DataLoadingStages.GeoMarket,
+		|	DataLoadingStages.GeoMarket КАК GeoMarket,
 		|	DataLoadingStages.StartLoading КАК ДатаНачалаЗагрузки,
 		|	DataLoadingStages.ReconciledBalances КАК ДатаВыверенныхОстатков
 		|ИЗ
@@ -3282,19 +3290,19 @@
 		|	КостЦентры.Сегмент КАК SubSubSegment,
 		|	ВТ_СоответствиеCurrency.ОбъектПриемника КАК Currency,
 		|	ВТ_СоответствиеКлиентовCustomerNumber.ОбъектПриемника КАК Client,
-		|	ВТ_ДанныеФайла.Amount,
-		|	ВТ_ДанныеФайла.BaseAmount,
-		|	ВТ_ДанныеФайла.DocumentID,
-		|	ВТ_ДанныеФайла.TrNumber,
+		|	ВТ_ДанныеФайла.Amount КАК Amount,
+		|	ВТ_ДанныеФайла.BaseAmount КАК BaseAmount,
+		|	ВТ_ДанныеФайла.DocumentID КАК DocumentID,
+		|	ВТ_ДанныеФайла.TrNumber КАК TrNumber,
 		|	ВТ_ДанныеФайла.Document КАК DocumentPresentation,
-		|	ВТ_ДанныеФайла.TrID,
+		|	ВТ_ДанныеФайла.TrID КАК TrID,
 		|	ТранзакцияHOB.Ссылка КАК Транзакция,
-		|	ВТ_ДанныеФайла.Reverse,
+		|	ВТ_ДанныеФайла.Reverse КАК Reverse,
 		|	ВТ_ДанныеФайла.LocationCode КАК CREW,
 		|	ВТ_ДанныеФайла.INN КАК CustomerNumber,
-		|	ВТ_ДанныеФайла.CompanyCode,
+		|	ВТ_ДанныеФайла.CompanyCode КАК CompanyCode,
 		|	ВТ_ДанныеФайла.AU КАК AUCode,
-		|	ВТ_ДанныеФайла.LocationCode,
+		|	ВТ_ДанныеФайла.LocationCode КАК LocationCode,
 		|	ВТ_ДанныеФайла.Account КАК AccountCode,
 		|	КостЦентры.Ссылка КАК AU,
 		|	КостЦентры.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarketHFM,
@@ -3302,7 +3310,8 @@
 		|	LegalEntiites.Ссылка КАК LegalEntity,
 		|	ВТ_СоответствиеКлиентовCustomerNumber1.ОбъектПриемника КАК EndClient,
 		|	ПодразделенияОрганизаций.Ссылка КАК MNGC,
-		|	ВТ_ДанныеФайла.EndClientINN КАК EndCustomerNumber
+		|	ВТ_ДанныеФайла.EndClientINN КАК EndCustomerNumber,
+		|	ВТ_ДанныеФайла.PostingDate КАК PostingDate
 		|ИЗ
 		|	ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
@@ -3364,7 +3373,8 @@
 		|	LegalEntiites.Ссылка,
 		|	ВТ_СоответствиеКлиентовCustomerNumber1.ОбъектПриемника,
 		|	ПодразделенияОрганизаций1.Ссылка,
-		|	ВТ_ДанныеФайла.EndClientINN
+		|	ВТ_ДанныеФайла.EndClientINN,
+		|	ВТ_ДанныеФайла.PostingDate
 		|ИЗ
 		|	ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
@@ -3726,52 +3736,53 @@
 	Запрос = Новый Запрос;
 	Запрос.Текст = 
 		"ВЫБРАТЬ
-		|	HOBReceivablesSourceData.TrDate,
-		|	HOBReceivablesSourceData.TrNumber,
-		|	HOBReceivablesSourceData.Document,
-		|	HOBReceivablesSourceData.DocumentType,
-		|	HOBReceivablesSourceData.Account,
-		|	HOBReceivablesSourceData.Client,
-		|	HOBReceivablesSourceData.INN,
-		|	HOBReceivablesSourceData.CompanyCode,
-		|	HOBReceivablesSourceData.CompanyDesc,
-		|	HOBReceivablesSourceData.Currency,
-		|	HOBReceivablesSourceData.LocationCode,
-		|	HOBReceivablesSourceData.LocationDesc,
-		|	HOBReceivablesSourceData.Amount,
-		|	HOBReceivablesSourceData.BaseAmount,
-		|	HOBReceivablesSourceData.AU,
-		|	HOBReceivablesSourceData.AUType,
-		|	HOBReceivablesSourceData.SubSubSegment,
-		|	HOBReceivablesSourceData.Reverse,
-		|	HOBReceivablesSourceData.DocumentID,
-		|	HOBReceivablesSourceData.InvoiceID,
-		|	HOBReceivablesSourceData.TrID,
-		|	HOBReceivablesSourceData.InvoiceCurrency,
-		|	HOBReceivablesSourceData.InvoiceType,
-		|	HOBReceivablesSourceData.Invoice,
-		|	HOBReceivablesSourceData.InvoiceNumber,
-		|	HOBReceivablesSourceData.InvoiceDate,
-		|	HOBReceivablesSourceData.InvoiceAmount,
-		|	HOBReceivablesSourceData.InvoiceAgreementCode,
-		|	HOBReceivablesSourceData.InvoiceAgreement,
-		|	HOBReceivablesSourceData.FiscalInvoiceNo,
-		|	HOBReceivablesSourceData.FiscalInvoiceDate,
-		|	HOBReceivablesSourceData.InvoiceBilled,
-		|	HOBReceivablesSourceData.InvoicePassedForApproval,
-		|	HOBReceivablesSourceData.InvoicePassedForPayment,
-		|	HOBReceivablesSourceData.InvoicePassedForApprovalDate,
-		|	HOBReceivablesSourceData.InvoicePassedForPaymentDate,
-		|	HOBReceivablesSourceData.ExpectedDateOfPayment,
-		|	HOBReceivablesSourceData.PaymentNumber,
-		|	HOBReceivablesSourceData.PaymentDate,
-		|	HOBReceivablesSourceData.СтрокаФайла,
-		|	HOBReceivablesSourceData.LegalEntity,
-		|	HOBReceivablesSourceData.CorAccount,
-		|	HOBReceivablesSourceData.ReverseDocument,
-		|	HOBReceivablesSourceData.ReverseDocumentType,
-		|	HOBReceivablesSourceData.EndClientINN,
-		|	HOBReceivablesSourceData.MNGC
+		|	HOBReceivablesSourceData.TrDate КАК TrDate,
+		|	HOBReceivablesSourceData.TrNumber КАК TrNumber,
+		|	HOBReceivablesSourceData.Document КАК Document,
+		|	HOBReceivablesSourceData.DocumentType КАК DocumentType,
+		|	HOBReceivablesSourceData.Account КАК Account,
+		|	HOBReceivablesSourceData.Client КАК Client,
+		|	HOBReceivablesSourceData.INN КАК INN,
+		|	HOBReceivablesSourceData.CompanyCode КАК CompanyCode,
+		|	HOBReceivablesSourceData.CompanyDesc КАК CompanyDesc,
+		|	HOBReceivablesSourceData.Currency КАК Currency,
+		|	HOBReceivablesSourceData.LocationCode КАК LocationCode,
+		|	HOBReceivablesSourceData.LocationDesc КАК LocationDesc,
+		|	HOBReceivablesSourceData.Amount КАК Amount,
+		|	HOBReceivablesSourceData.BaseAmount КАК BaseAmount,
+		|	HOBReceivablesSourceData.AU КАК AU,
+		|	HOBReceivablesSourceData.AUType КАК AUType,
+		|	HOBReceivablesSourceData.SubSubSegment КАК SubSubSegment,
+		|	HOBReceivablesSourceData.Reverse КАК Reverse,
+		|	HOBReceivablesSourceData.DocumentID КАК DocumentID,
+		|	HOBReceivablesSourceData.InvoiceID КАК InvoiceID,
+		|	HOBReceivablesSourceData.TrID КАК TrID,
+		|	HOBReceivablesSourceData.InvoiceCurrency КАК InvoiceCurrency,
+		|	HOBReceivablesSourceData.InvoiceType КАК InvoiceType,
+		|	HOBReceivablesSourceData.Invoice КАК Invoice,
+		|	HOBReceivablesSourceData.InvoiceNumber КАК InvoiceNumber,
+		|	HOBReceivablesSourceData.InvoiceDate КАК InvoiceDate,
+		|	HOBReceivablesSourceData.InvoiceAmount КАК InvoiceAmount,
+		|	HOBReceivablesSourceData.InvoiceAgreementCode КАК InvoiceAgreementCode,
+		|	HOBReceivablesSourceData.InvoiceAgreement КАК InvoiceAgreement,
+		|	HOBReceivablesSourceData.FiscalInvoiceNo КАК FiscalInvoiceNo,
+		|	HOBReceivablesSourceData.FiscalInvoiceDate КАК FiscalInvoiceDate,
+		|	HOBReceivablesSourceData.InvoiceBilled КАК InvoiceBilled,
+		|	HOBReceivablesSourceData.InvoicePassedForApproval КАК InvoicePassedForApproval,
+		|	HOBReceivablesSourceData.InvoicePassedForPayment КАК InvoicePassedForPayment,
+		|	HOBReceivablesSourceData.InvoicePassedForApprovalDate КАК InvoicePassedForApprovalDate,
+		|	HOBReceivablesSourceData.InvoicePassedForPaymentDate КАК InvoicePassedForPaymentDate,
+		|	HOBReceivablesSourceData.ExpectedDateOfPayment КАК ExpectedDateOfPayment,
+		|	HOBReceivablesSourceData.PaymentNumber КАК PaymentNumber,
+		|	HOBReceivablesSourceData.PaymentDate КАК PaymentDate,
+		|	HOBReceivablesSourceData.СтрокаФайла КАК СтрокаФайла,
+		|	HOBReceivablesSourceData.LegalEntity КАК LegalEntity,
+		|	HOBReceivablesSourceData.CorAccount КАК CorAccount,
+		|	HOBReceivablesSourceData.ReverseDocument КАК ReverseDocument,
+		|	HOBReceivablesSourceData.ReverseDocumentType КАК ReverseDocumentType,
+		|	HOBReceivablesSourceData.EndClientINN КАК EndClientINN,
+		|	HOBReceivablesSourceData.MNGC КАК MNGC,
+		|	HOBReceivablesSourceData.PostingDate КАК PostingDate
 		|ПОМЕСТИТЬ ВТ_ДанныеФайла
 		|ИЗ
 		|	РегистрСведений.HOBReceivablesSourceData КАК HOBReceivablesSourceData
@@ -3787,7 +3798,7 @@
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.Идентификатор КАК Идентификатор,
-		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника
+		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника КАК ОбъектПриемника
 		|ПОМЕСТИТЬ ВТ_СоответствиеКлиентовCustomerNumber
 		|ИЗ
 		|	РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(
@@ -3816,7 +3827,7 @@
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.Идентификатор КАК Идентификатор,
-		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника
+		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника КАК ОбъектПриемника
 		|ПОМЕСТИТЬ ВТ_СоответствиеCurrency
 		|ИЗ
 		|	РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(
@@ -3842,8 +3853,8 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
-		|	INV.DocID,
-		|	INV.Ссылка
+		|	INV.DocID КАК DocID,
+		|	INV.Ссылка КАК Ссылка
 		|ИЗ
 		|	Документ.Invoice КАК INV
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
@@ -3854,8 +3865,8 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
-		|	Cash.DocID,
-		|	Cash.Ссылка
+		|	Cash.DocID КАК DocID,
+		|	Cash.Ссылка КАК Ссылка
 		|ИЗ
 		|	Документ.CashBatch КАК Cash
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
@@ -3878,8 +3889,8 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
-		|	BatchAllocation.DocID,
-		|	BatchAllocation.Ссылка
+		|	BatchAllocation.DocID КАК DocID,
+		|	BatchAllocation.Ссылка КАК Ссылка
 		|ИЗ
 		|	Документ.BatchAllocation КАК BatchAllocation
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
@@ -3890,8 +3901,8 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
-		|	Memo.DocID,
-		|	Memo.Ссылка
+		|	Memo.DocID КАК DocID,
+		|	Memo.Ссылка КАК Ссылка
 		|ИЗ
 		|	Документ.Memo КАК Memo
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
@@ -3902,7 +3913,7 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
-		|	DataLoadingStages.GeoMarket,
+		|	DataLoadingStages.GeoMarket КАК GeoMarket,
 		|	DataLoadingStages.StartLoading КАК ДатаНачалаЗагрузки,
 		|	DataLoadingStages.ReconciledBalances КАК ДатаВыверенныхОстатков
 		|ИЗ
@@ -3920,49 +3931,50 @@
 		|	КостЦентры.Сегмент КАК SubSubSegment,
 		|	ВТ_СоответствиеCurrency.ОбъектПриемника КАК Currency,
 		|	ВТ_СоответствиеКлиентовCustomerNumber.ОбъектПриемника КАК Client,
-		|	ВТ_ДанныеФайла.Amount,
-		|	ВТ_ДанныеФайла.BaseAmount,
-		|	ВТ_ДанныеФайла.DocumentID,
-		|	ВТ_ДанныеФайла.TrNumber,
+		|	ВТ_ДанныеФайла.Amount КАК Amount,
+		|	ВТ_ДанныеФайла.BaseAmount КАК BaseAmount,
+		|	ВТ_ДанныеФайла.DocumentID КАК DocumentID,
+		|	ВТ_ДанныеФайла.TrNumber КАК TrNumber,
 		|	ВТ_ДанныеФайла.Document КАК DocumentPresentation,
-		|	ВТ_ДанныеФайла.TrID,
+		|	ВТ_ДанныеФайла.TrID КАК TrID,
 		|	ТранзакцияHOB.Ссылка КАК Транзакция,
-		|	ВТ_ДанныеФайла.Reverse,
+		|	ВТ_ДанныеФайла.Reverse КАК Reverse,
 		|	ВТ_ДанныеФайла.LocationCode КАК CREW,
 		|	ВТ_ДанныеФайла.INN КАК CustomerNumber,
-		|	ВТ_ДанныеФайла.CompanyCode,
+		|	ВТ_ДанныеФайла.CompanyCode КАК CompanyCode,
 		|	ВТ_ДанныеФайла.AU КАК AUCode,
-		|	ВТ_ДанныеФайла.LocationCode,
+		|	ВТ_ДанныеФайла.LocationCode КАК LocationCode,
 		|	ВТ_ДанныеФайла.Account КАК AccountCode,
 		|	КостЦентры.Ссылка КАК AU,
 		|	КостЦентры.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarketHFM,
 		|	ВТ_СоответствиеCurrency1.ОбъектПриемника КАК InvoiceCurrency,
-		|	ВТ_ДанныеФайла.DocumentType,
-		|	ВТ_ДанныеФайла.InvoiceType,
-		|	ВТ_ДанныеФайла.InvoiceID,
-		|	ВТ_ДанныеФайла.InvoiceNumber,
-		|	ВТ_ДанныеФайла.InvoiceDate,
-		|	ВТ_ДанныеФайла.InvoiceAmount,
-		|	ВТ_ДанныеФайла.InvoiceAgreementCode,
-		|	ВТ_ДанныеФайла.InvoiceAgreement,
-		|	ВТ_ДанныеФайла.FiscalInvoiceNo,
-		|	ВТ_ДанныеФайла.FiscalInvoiceDate,
-		|	ВТ_ДанныеФайла.InvoiceBilled,
-		|	ВТ_ДанныеФайла.InvoicePassedForApproval,
-		|	ВТ_ДанныеФайла.InvoicePassedForPayment,
-		|	ВТ_ДанныеФайла.InvoicePassedForApprovalDate,
-		|	ВТ_ДанныеФайла.InvoicePassedForPaymentDate,
-		|	ВТ_ДанныеФайла.ExpectedDateOfPayment,
-		|	ВТ_ДанныеФайла.PaymentNumber,
-		|	ВТ_ДанныеФайла.PaymentDate,
+		|	ВТ_ДанныеФайла.DocumentType КАК DocumentType,
+		|	ВТ_ДанныеФайла.InvoiceType КАК InvoiceType,
+		|	ВТ_ДанныеФайла.InvoiceID КАК InvoiceID,
+		|	ВТ_ДанныеФайла.InvoiceNumber КАК InvoiceNumber,
+		|	ВТ_ДанныеФайла.InvoiceDate КАК InvoiceDate,
+		|	ВТ_ДанныеФайла.InvoiceAmount КАК InvoiceAmount,
+		|	ВТ_ДанныеФайла.InvoiceAgreementCode КАК InvoiceAgreementCode,
+		|	ВТ_ДанныеФайла.InvoiceAgreement КАК InvoiceAgreement,
+		|	ВТ_ДанныеФайла.FiscalInvoiceNo КАК FiscalInvoiceNo,
+		|	ВТ_ДанныеФайла.FiscalInvoiceDate КАК FiscalInvoiceDate,
+		|	ВТ_ДанныеФайла.InvoiceBilled КАК InvoiceBilled,
+		|	ВТ_ДанныеФайла.InvoicePassedForApproval КАК InvoicePassedForApproval,
+		|	ВТ_ДанныеФайла.InvoicePassedForPayment КАК InvoicePassedForPayment,
+		|	ВТ_ДанныеФайла.InvoicePassedForApprovalDate КАК InvoicePassedForApprovalDate,
+		|	ВТ_ДанныеФайла.InvoicePassedForPaymentDate КАК InvoicePassedForPaymentDate,
+		|	ВТ_ДанныеФайла.ExpectedDateOfPayment КАК ExpectedDateOfPayment,
+		|	ВТ_ДанныеФайла.PaymentNumber КАК PaymentNumber,
+		|	ВТ_ДанныеФайла.PaymentDate КАК PaymentDate,
 		|	ВТ_ДанныеФайла.СтрокаФайла КАК СтрокаФайла,
 		|	LegalEntiites.Ссылка КАК LegalEntity,
-		|	ВТ_ДанныеФайла.CorAccount,
-		|	ВТ_ДанныеФайла.ReverseDocument,
-		|	ВТ_ДанныеФайла.ReverseDocumentType,
+		|	ВТ_ДанныеФайла.CorAccount КАК CorAccount,
+		|	ВТ_ДанныеФайла.ReverseDocument КАК ReverseDocument,
+		|	ВТ_ДанныеФайла.ReverseDocumentType КАК ReverseDocumentType,
 		|	ВТ_СоответствиеКлиентовCustomerNumber1.ОбъектПриемника КАК EndClient,
 		|	ПодразделенияОрганизаций.Ссылка КАК MNGC,
-		|	ВТ_ДанныеФайла.EndClientINN КАК EndCustomerNumber
+		|	ВТ_ДанныеФайла.EndClientINN КАК EndCustomerNumber,
+		|	ВТ_ДанныеФайла.PostingDate КАК PostingDate
 		|ИЗ
 		|	ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
@@ -4048,7 +4060,8 @@
 		|	ВТ_ДанныеФайла.ReverseDocumentType,
 		|	ВТ_СоответствиеКлиентовCustomerNumber1.ОбъектПриемника,
 		|	ПодразделенияОрганизаций1.Ссылка,
-		|	ВТ_ДанныеФайла.EndClientINN
+		|	ВТ_ДанныеФайла.EndClientINN,
+		|	ВТ_ДанныеФайла.PostingDate
 		|ИЗ
 		|	ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
@@ -4377,6 +4390,10 @@
 			КонецЕсли;
 			Отказ = Истина;
 		КонецЕсли;
+		
+	ИначеЕсли СтруктураПараметров.ТипТранзакций = Перечисления.HOBTransactionType.Accrual Тогда
+		
+		ТранзакцияHOBОбъект.HOBDocumentType = ПолучитьТипДокумента(ДанныеДляЗаполнения.DocumentType, КэшПредставленийТипов);
 		
 	КонецЕсли;
 	

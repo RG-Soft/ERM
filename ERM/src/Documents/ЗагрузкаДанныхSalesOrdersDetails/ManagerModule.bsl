@@ -548,9 +548,7 @@
 		Даты.Вставить("CreationDate", CreationDate);
 		Даты.Вставить("ApprovalDate", ApprovalDate);
 		Даты.Вставить("FirstSubmissionDate", FirstSubmissionDate);
-		Если InvoiceFlagDate <> ПустаяДата Тогда
-			Даты.Вставить("InvoiceFlagDate", InvoiceFlagDate);
-		КонецЕсли;
+		Даты.Вставить("InvoiceFlagDate", Выборка.InvoiceFlagDate);
 		
 		Если НЕ ЗначениеЗаполнено(Выборка.ВалютаСсылка) Тогда
 			ОтменитьТранзакцию();
