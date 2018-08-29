@@ -320,62 +320,12 @@
 			<field>Amount</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>MgmtGeomarket</dataPath>
-			<field>MgmtGeomarket</field>
+			<dataPath>InvoiceNo</dataPath>
+			<field>InvoiceNo</field>
 			<title xsi:type="v8:LocalStringType">
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>Mgmt geomarket</v8:content>
-				</v8:item>
-			</title>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>Segment</dataPath>
-			<field>Segment</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Segment</v8:content>
-				</v8:item>
-			</title>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>SubGeoMarket</dataPath>
-			<field>SubGeoMarket</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Sub geo market</v8:content>
-				</v8:item>
-			</title>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>SubSegment</dataPath>
-			<field>SubSegment</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Sub segment</v8:content>
-				</v8:item>
-			</title>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>GeoMarket</dataPath>
-			<field>GeoMarket</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Geo market</v8:content>
-				</v8:item>
-			</title>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>ParentClient</dataPath>
-			<field>ParentClient</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Parent client</v8:content>
+					<v8:content>Invoice no</v8:content>
 				</v8:item>
 			</title>
 		</field>
@@ -516,12 +466,6 @@
 	ВТ_Инвойсы.Source КАК Source,
 	ВТ_Инвойсы.Company КАК Company,
 	ВТ_Инвойсы.Client КАК Client,
-	ЕСТЬNULL(ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент, ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка)) КАК ParentClient,
-	ВТ_Инвойсы.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
-	ВТ_Инвойсы.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket КАК SubGeoMarket,
-	ВТ_Инвойсы.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket КАК MgmtGeomarket,
-	ВТ_Инвойсы.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель КАК Segment,
-	ВТ_Инвойсы.AU.Сегмент.БазовыйЭлемент.Родитель КАК SubSegment,
 	ВТ_Инвойсы.AU КАК AU,
 	ВТ_Инвойсы.Account КАК Account,
 	ВТ_Инвойсы.Invoice КАК Invoice,
@@ -565,10 +509,10 @@
 		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.FirstSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) / 86400
 	КОНЕЦ КАК Stage5,
 	ВЫБОР
-		КОГДА ВТ_Инвойсы.Invoice.ДатаВозвратаКС = ДАТАВРЕМЯ(1, 1, 1)
+		КОГДА ЕСТЬNULL(ВТ_Инвойсы.Invoice.ДатаВозвратаКС, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 				ИЛИ ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА 0
-		КОГДА ВТ_Инвойсы.Invoice.ДатаВозвратаКС &lt; &amp;МинимальнаяДата
+		КОГДА ЕСТЬNULL(ВТ_Инвойсы.Invoice.ДатаВозвратаКС, ДАТАВРЕМЯ(1, 1, 1)) &lt; &amp;МинимальнаяДата
 			ТОГДА "Error"
 		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)), ВТ_Инвойсы.Invoice.ДатаВозвратаКС, СЕКУНДА) / 86400
 	КОНЕЦ КАК Stage6,
@@ -579,19 +523,19 @@
 		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.JobEndDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) / 86400
 	КОНЕЦ КАК TotalDIR,
 	ВЫБОР
-		КОГДА ВТ_Инвойсы.Invoice.TriggerDate = ДАТАВРЕМЯ(1, 1, 1)
+		КОГДА ЕСТЬNULL(ВТ_Инвойсы.Invoice.TriggerDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 				ИЛИ ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА 0
-		КОГДА ВТ_Инвойсы.Invoice.TriggerDate &lt; &amp;МинимальнаяДата
+		КОГДА ЕСТЬNULL(ВТ_Инвойсы.Invoice.TriggerDate, ДАТАВРЕМЯ(1, 1, 1)) &lt; &amp;МинимальнаяДата
 			ТОГДА "Error"
 		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(ВТ_Инвойсы.Invoice.TriggerDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) / 86400
 	КОНЕЦ КАК T2CStage1,
 	ВЫБОР
-		КОГДА ВТ_Инвойсы.Invoice.TriggerDate = ДАТАВРЕМЯ(1, 1, 1)
-				ИЛИ ВТ_Инвойсы.Invoice.DueDateTo = ДАТАВРЕМЯ(1, 1, 1)
+		КОГДА ЕСТЬNULL(ВТ_Инвойсы.Invoice.TriggerDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+				ИЛИ ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА 0
-		КОГДА ВТ_Инвойсы.Invoice.TriggerDate &lt; &amp;МинимальнаяДата
-				ИЛИ ВТ_Инвойсы.Invoice.DueDateTo &lt; &amp;МинимальнаяДата
+		КОГДА ЕСТЬNULL(ВТ_Инвойсы.Invoice.TriggerDate, ДАТАВРЕМЯ(1, 1, 1)) &lt; &amp;МинимальнаяДата
+				ИЛИ ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)) &lt; &amp;МинимальнаяДата
 			ТОГДА "Error"
 		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(ВТ_Инвойсы.Invoice.TriggerDate, ДАТАВРЕМЯ(1, 1, 1)), ВТ_Инвойсы.Invoice.DueDateTo, СЕКУНДА) / 86400
 	КОНЕЦ КАК T2CStage2,
@@ -611,20 +555,25 @@
 	КОНЕЦ КАК FirstDateOfPayment,
 	ВЫБОР
 		КОГДА ВТ_Инвойсы.ЗаполнятьОплатыПоДаннымОбмена
-				И (ВТ_Инвойсы.Invoice.DueDateTo = ДАТАВРЕМЯ(1, 1, 1)
+				И (ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 					ИЛИ ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1))
 			ТОГДА 0
-		КОГДА ВТ_Инвойсы.Invoice.DueDateTo &lt; &amp;МинимальнаяДата
-				И ВТ_Инвойсы.Invoice.DueDateTo &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
+		КОГДА ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)) &lt; &amp;МинимальнаяДата
+				И ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)) &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА "Error"
 		КОГДА ВТ_Инвойсы.ЗаполнятьОплатыПоДаннымОбмена
 			ТОГДА РАЗНОСТЬДАТ(ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) / 86400
-		КОГДА ВТ_Инвойсы.Invoice.DueDateTo = ДАТАВРЕМЯ(1, 1, 1)
+		КОГДА ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 				ИЛИ ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА 0
 		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) / 86400
 	КОНЕЦ КАК T2CStage3,
-	ВТ_Инвойсы.Период КАК Период
+	ВТ_Инвойсы.Период КАК Период,
+	ВЫБОР
+		КОГДА ВТ_Инвойсы.Invoice ССЫЛКА Документ.Invoice
+			ТОГДА ВТ_Инвойсы.Invoice.DocNumber
+		ИНАЧЕ ВТ_Инвойсы.Invoice.Номер
+	КОНЕЦ КАК InvoiceNo
 ИЗ
 	ВТ_Инвойсы КАК ВТ_Инвойсы
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.DIR КАК DIR
@@ -632,10 +581,7 @@
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ОплатыПоПроводкам КАК ВТ_ОплатыПоПроводкам
 		ПО ВТ_Инвойсы.Invoice = ВТ_ОплатыПоПроводкам.Invoice
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ОплатыИзОбмена КАК ВТ_ОплатыИзОбмена
-		ПО ВТ_Инвойсы.Invoice = ВТ_ОплатыИзОбмена.Invoice
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИерархияКонтрагентов.СрезПоследних({(&amp;КонецПериода)},) КАК ИерархияКонтрагентовСрезПоследних
-		ПО ВТ_Инвойсы.Client = ИерархияКонтрагентовСрезПоследних.Контрагент
-</query>
+		ПО ВТ_Инвойсы.Invoice = ВТ_ОплатыИзОбмена.Invoice</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>SumStages</dataPath>
@@ -1419,7 +1365,7 @@
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
 					<dcsset:right xsi:nil="true">
 					</dcsset:right>
-					<dcsset:presentation>
+					<dcsset:presentation xsi:type="xs:string">
 					</dcsset:presentation>
 					<dcsset:userSettingID>9a7a2445-f3c2-4791-93ca-d43d8364093d</dcsset:userSettingID>
 				</dcsset:item>
@@ -1449,7 +1395,7 @@
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
 					<dcsset:right xsi:nil="true">
 					</dcsset:right>
-					<dcsset:presentation>
+					<dcsset:presentation xsi:type="xs:string">
 					</dcsset:presentation>
 					<dcsset:userSettingID>54865b7d-ca13-4b06-b629-5773241a943a</dcsset:userSettingID>
 					<dcsset:userSettingPresentation xsi:type="v8:LocalStringType">
@@ -1465,7 +1411,7 @@
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
 					<dcsset:right xsi:nil="true">
 					</dcsset:right>
-					<dcsset:presentation>
+					<dcsset:presentation xsi:type="xs:string">
 					</dcsset:presentation>
 					<dcsset:userSettingID>1b0d4b47-ad05-4b06-ac9c-4b6e7702e4e1</dcsset:userSettingID>
 				</dcsset:item>
@@ -1475,7 +1421,7 @@
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
 					<dcsset:right xsi:nil="true">
 					</dcsset:right>
-					<dcsset:presentation>
+					<dcsset:presentation xsi:type="xs:string">
 					</dcsset:presentation>
 					<dcsset:userSettingID>a042e5ba-c10e-40a7-9972-1278c9dc6a81</dcsset:userSettingID>
 				</dcsset:item>
@@ -1483,7 +1429,7 @@
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">ParentClient</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:presentation>
+					<dcsset:presentation xsi:type="xs:string">
 					</dcsset:presentation>
 					<dcsset:userSettingID>f1871f9d-6027-41f2-b28e-38bf82f8f15c</dcsset:userSettingID>
 				</dcsset:item>
