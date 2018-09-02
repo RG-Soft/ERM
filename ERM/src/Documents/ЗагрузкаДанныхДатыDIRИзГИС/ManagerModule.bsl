@@ -111,6 +111,12 @@
 	СтрокаТЗ.ИмяКолонки = "Document";
 	СтрокаТЗ.Обязательная = Истина;
 	
+	// JobStartDate
+	СтрокаТЗ = СтруктураКолонок.Добавить();
+	СтрокаТЗ.ИмяПоля = "JobStartDate";
+	СтрокаТЗ.ИмяКолонки = "JobStartDate";
+	СтрокаТЗ.Обязательная = Истина;
+	
 	// JobEndDate
 	СтрокаТЗ = СтруктураКолонок.Добавить();
 	СтрокаТЗ.ИмяПоля = "JobEndDate";
@@ -197,6 +203,7 @@
 	"ВЫБРАТЬ РАЗЛИЧНЫЕ
 	|	SalesOrder.Ссылка КАК СсылкаSalesOrder,
 	|	ДатыDIRИзГИСSourceData.Document КАК Document,
+	|	ДатыDIRИзГИСSourceData.JobStartDate КАК JobStartDate,
 	|	ДатыDIRИзГИСSourceData.JobEndDate КАК JobEndDate,
 	|	ДатыDIRИзГИСSourceData.FTLSubmissionDate КАК FTLSubmissionDate,
 	|	ДатыDIRИзГИСSourceData.CreationDate КАК CreationDate,
@@ -231,12 +238,14 @@
 		
 		ТекОбъект = ВыборкаSO.СсылкаSalesOrder.ПолучитьОбъект();
 		
+		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.JobStartDate, ВыборкаSO.JobStartDate);
 		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.JobEndDate, ВыборкаSO.JobEndDate);
 		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.FTLSubmissionDate, ВыборкаSO.FTLSubmissionDate);
 		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.CreationDate, ВыборкаSO.CreationDate);
 		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.ApprovalDate, ВыборкаSO.ApprovalDate);
 		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.FirstSubmissionDate, ВыборкаSO.FirstSubmissionDate);
 		РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.InvoiceFlagDate, ВыборкаSO.InvoiceFlagDate);
+		Даты.Вставить("JobStartDate", ВыборкаSO.JobStartDate);
 		Даты.Вставить("JobEndDate", ВыборкаSO.JobEndDate);
 		Даты.Вставить("FTLSubmissionDate", ВыборкаSO.FTLSubmissionDate);
 		Даты.Вставить("CreationDate", ВыборкаSO.CreationDate);
