@@ -368,7 +368,7 @@
 	
 	// Responsible AR
 	СтрокаТЗ = СтруктураКолонок.Добавить();
-	СтрокаТЗ.ИмяПоля = "ResponsibleAR";
+	СтрокаТЗ.ИмяПоля = "Responsible";
 	СтрокаТЗ.ИмяКолонки = "Responsible AR";
 	СтрокаТЗ.ТипКолонки = ТипСтрока;
 	СтрокаТЗ.Обязательная = Истина;
@@ -588,7 +588,7 @@
 	|	ТаблицаИсходныхДанных.PT_DaysTo,
 	|	ТаблицаИсходныхДанных.FirstDateOfPayment,
 	|	ТаблицаИсходныхДанных.Amount,
-	|	ТаблицаИсходныхДанных.ResponsibleAR
+	|	ТаблицаИсходныхДанных.Responsible
 	|ПОМЕСТИТЬ врТЗТаблицаДанных
 	|ИЗ
 	|	&ВнешняяТаблицаДанных КАК ТаблицаИсходныхДанных";
@@ -672,7 +672,7 @@
 	|	врТЗТаблицаДанных.PT_DaysFrom КАК PT_DaysFrom,
 	|	врТЗТаблицаДанных.PT_DaysTo КАК PT_DaysTo,
 	|	врТЗТаблицаДанных.FirstDateOfPayment КАК FirstDateOfPayment,
-	|	врТЗТаблицаДанных.ResponsibleAR КАК ResponsibleAR,
+	|	врТЗТаблицаДанных.Responsible КАК Responsible,
 	|	врТЗТаблицаДанных.Amount КАК Amount,
 	|	врТЗТаблицаДанных.CustomerNumber КАК CustomerNumber,
 	|	ВТ_СоответствиеКлиентовCustomerNumber.ОбъектПриемника КАК Client,
@@ -714,7 +714,7 @@
 	|	ВТ_Итоговая.PT_DaysFrom КАК PT_DaysFrom,
 	|	ВТ_Итоговая.PT_DaysTo КАК PT_DaysTo,
 	|	ВТ_Итоговая.FirstDateOfPayment КАК FirstDateOfPayment,
-	|	ВТ_Итоговая.ResponsibleAR КАК ResponsibleAR,
+	|	ВТ_Итоговая.Responsible КАК Responsible,
 	|	ВТ_Итоговая.Amount КАК Amount,
 	|	ВЫБОР
 	|		КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
