@@ -397,7 +397,16 @@
 	InvoicedDebtsОбороты.Client КАК Client,
 	InvoicedDebtsОбороты.AU КАК AU,
 	InvoicedDebtsОбороты.Account КАК Account,
-	InvoicedDebtsОбороты.Invoice КАК Invoice,
+	ВЫБОР
+		КОГДА InvoicedDebtsОбороты.Invoice ССЫЛКА Документ.Invoice
+			ТОГДА InvoicedDebtsОбороты.Invoice
+		ИНАЧЕ InvoicedDebtsОбороты.Invoice.Invoice
+	КОНЕЦ КАК Invoice,
+	ВЫБОР
+		КОГДА InvoicedDebtsОбороты.Invoice ССЫЛКА Документ.Invoice
+			ТОГДА InvoicedDebtsОбороты.Invoice.DocNumber
+		ИНАЧЕ InvoicedDebtsОбороты.Invoice.Номер
+	КОНЕЦ КАК InvoiceNo,
 	InvoicedDebtsОбороты.Currency КАК Currency,
 	InvoicedDebtsОбороты.LegalEntity КАК LegalEntity,
 	СУММА(InvoicedDebtsОбороты.AmountОборот) КАК Amount,
@@ -431,7 +440,16 @@
 	InvoicedDebtsОбороты.Client,
 	InvoicedDebtsОбороты.AU,
 	InvoicedDebtsОбороты.Account,
-	InvoicedDebtsОбороты.Invoice,
+	ВЫБОР
+		КОГДА InvoicedDebtsОбороты.Invoice ССЫЛКА Документ.Invoice
+			ТОГДА InvoicedDebtsОбороты.Invoice
+		ИНАЧЕ InvoicedDebtsОбороты.Invoice.Invoice
+	КОНЕЦ,
+	ВЫБОР
+		КОГДА InvoicedDebtsОбороты.Invoice ССЫЛКА Документ.Invoice
+			ТОГДА InvoicedDebtsОбороты.Invoice.DocNumber
+		ИНАЧЕ InvoicedDebtsОбороты.Invoice.Номер
+	КОНЕЦ,
 	InvoicedDebtsОбороты.Currency,
 	ВЫБОР
 		КОГДА ИсточникиСЗаполнениемОплатИзОбмена.Source ЕСТЬ NULL
@@ -534,11 +552,7 @@
 	ВТ_Инвойсы.AU.Сегмент.БазовыйЭлемент.Родитель КАК SubSegment,
 	ВТ_Инвойсы.AU КАК AU,
 	ВТ_Инвойсы.Account КАК Account,
-	ВЫБОР
-		КОГДА ВТ_Инвойсы.Invoice ССЫЛКА Документ.SalesOrder
-			ТОГДА ВТ_Инвойсы.Invoice.Invoice
-		ИНАЧЕ ВТ_Инвойсы.Invoice
-	КОНЕЦ КАК Invoice,
+	ВТ_Инвойсы.Invoice КАК Invoice,
 	ВТ_Инвойсы.Currency КАК Currency,
 	ВТ_Инвойсы.LegalEntity КАК LegalEntity,
 	ЕСТЬNULL(DIR.JobStartDate, ДАТАВРЕМЯ(1, 1, 1)) КАК JobStartDate,
@@ -639,11 +653,7 @@
 		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) / 86400
 	КОНЕЦ КАК T2CStage3,
 	ВТ_Инвойсы.Период КАК Период,
-	ВЫБОР
-		КОГДА ВТ_Инвойсы.Invoice ССЫЛКА Документ.Invoice
-			ТОГДА ВТ_Инвойсы.Invoice.DocNumber
-		ИНАЧЕ ВТ_Инвойсы.Invoice.Номер
-	КОНЕЦ КАК InvoiceNo
+	ВТ_Инвойсы.InvoiceNo КАК InvoiceNo
 ИЗ
 	ВТ_Инвойсы КАК ВТ_Инвойсы
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.DIR КАК DIR
@@ -652,9 +662,8 @@
 		ПО ВТ_Инвойсы.Invoice = ВТ_ОплатыПоПроводкам.Invoice
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ОплатыИзОбмена КАК ВТ_ОплатыИзОбмена
 		ПО ВТ_Инвойсы.Invoice = ВТ_ОплатыИзОбмена.Invoice
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИерархияКонтрагентов.СрезПоследних({(&amp;КонецПериода)},) КАК ИерархияКонтрагентовСрезПоследних
-		ПО ВТ_Инвойсы.Client = ИерархияКонтрагентовСрезПоследних.Контрагент
-</query>
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИерархияКонтрагентов.СрезПоследних({(&amp;КонецПериода)}, ) КАК ИерархияКонтрагентовСрезПоследних
+		ПО ВТ_Инвойсы.Client = ИерархияКонтрагентовСрезПоследних.Контрагент</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>SumStages</dataPath>
