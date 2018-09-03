@@ -534,7 +534,11 @@
 	ВТ_Инвойсы.AU.Сегмент.БазовыйЭлемент.Родитель КАК SubSegment,
 	ВТ_Инвойсы.AU КАК AU,
 	ВТ_Инвойсы.Account КАК Account,
-	ВТ_Инвойсы.Invoice КАК Invoice,
+	ВЫБОР
+		КОГДА ВТ_Инвойсы.Invoice ССЫЛКА Документ.SalesOrder
+			ТОГДА ВТ_Инвойсы.Invoice.Invoice
+		ИНАЧЕ ВТ_Инвойсы.Invoice
+	КОНЕЦ КАК Invoice,
 	ВТ_Инвойсы.Currency КАК Currency,
 	ВТ_Инвойсы.LegalEntity КАК LegalEntity,
 	ЕСТЬNULL(DIR.JobStartDate, ДАТАВРЕМЯ(1, 1, 1)) КАК JobStartDate,
@@ -1184,7 +1188,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.DocNumber</dcsset:field>
+					<dcsset:field>InvoiceNo</dcsset:field>
 					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 						<v8:item>
 							<v8:lang>ru</v8:lang>
