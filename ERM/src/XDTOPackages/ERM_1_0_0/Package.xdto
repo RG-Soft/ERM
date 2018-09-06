@@ -367,6 +367,7 @@
 		<enumeration xsi:type="xs:string">Canceled</enumeration>
 	</valueType>
 	<valueType xmlns:d2p1="http://www.1c.ru/SSL/Exchange/Message" name="СправочникСсылка.crmContracts" base="d2p1:Ref"/>
+	<valueType xmlns:d2p1="http://www.1c.ru/SSL/Exchange/Message" name="ДокументСсылка.Memo" base="d2p1:Ref"/>
 	<objectType name="Info">
 		<property name="Date" type="xs:date"/>
 		<property name="PostDocuments" type="xs:boolean"/>
@@ -437,7 +438,6 @@
 		<property name="LawsonCompanyCode" type="xs:integer" lowerBound="0"/>
 		<property name="ERMClientMappingID" type="xs:string" lowerBound="0"/>
 		<property xmlns:d3p1="http://rg-soft.ru/ERM/1.0" name="FiscalCurrency" type="d3p1:КлючевыеСвойстваВалюта" lowerBound="0"/>
-		<property name="CreationDate" type="xs:dateTime"/>
 	</objectType>
 	<objectType name="Документ.Invoice.FiscalPayments">
 		<property xmlns:d3p1="http://rg-soft.ru/ERM/1.0" name="Строка" type="d3p1:Документ.Invoice.FiscalPayments.Строка" upperBound="-1"/>
@@ -4055,5 +4055,23 @@
 		<property name="crmDFNName" type="xs:string" lowerBound="0"/>
 		<property name="crmClientID" type="xs:string" lowerBound="0"/>
 		<property name="crmClientName" type="xs:string" lowerBound="0"/>
+	</objectType>
+	<objectType name="Документ.Memo">
+		<property xmlns:d3p1="http://rg-soft.ru/ERM/1.0" name="Client" type="d3p1:СправочникСсылка.Контрагенты"/>
+		<property xmlns:d3p1="http://rg-soft.ru/ERM/1.0" name="Company" type="d3p1:СправочникСсылка.Организации"/>
+		<property xmlns:d3p1="http://rg-soft.ru/ERM/1.0" name="Currency" type="d3p1:СправочникСсылка.Валюты"/>
+		<property name="Amount" type="xs:double"/>
+		<property name="BaseAmount" type="xs:double"/>
+		<property name="Комментарий" type="xs:string"/>
+		<property xmlns:d3p1="http://rg-soft.ru/ERM/1.0" name="КлючевыеСвойства" type="d3p1:КлючевыеСвойстваMemo"/>
+	</objectType>
+	<objectType name="КлючевыеСвойстваMemo">
+		<property xmlns:d3p1="http://rg-soft.ru/ERM/1.0" name="Ссылка" type="d3p1:ДокументСсылка.Invoice" lowerBound="0"/>
+		<property xmlns:d3p1="http://rg-soft.ru/ERM/1.0" name="Номер" type="d3p1:ТипНомерДокумента" lowerBound="0"/>
+		<property name="Дата" type="xs:dateTime" lowerBound="0"/>
+		<property xmlns:d3p1="http://rg-soft.ru/ERM/1.0" name="Source" type="d3p1:Source"/>
+		<property name="DocID" type="xs:anySimpleType" lowerBound="0"/>
+		<property name="DocIDString" type="xs:string" lowerBound="0"/>
+		<property name="DocNumber" type="xs:string" lowerBound="0"/>
 	</objectType>
 </package>
