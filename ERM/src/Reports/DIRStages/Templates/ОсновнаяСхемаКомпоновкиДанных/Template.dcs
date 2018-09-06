@@ -422,7 +422,8 @@
 			КОГДА InvoicedDebtsОбороты.Currency &lt;&gt; &amp;USD
 				ТОГДА ВЫРАЗИТЬ(InvoicedDebtsОбороты.AmountОборот / ЕСТЬNULL(ВнутренниеКурсыВалют.Курс, 0) КАК ЧИСЛО(15, 2))
 			ИНАЧЕ InvoicedDebtsОбороты.AmountОборот
-		КОНЕЦ) КАК USDAmount
+		КОНЕЦ) КАК USDAmount,
+	InvoicedDebtsОбороты.Invoice КАК ОригинальныйИнвойс
 ПОМЕСТИТЬ ВТ_Инвойсы
 ИЗ
 	РегистрНакопления.InvoicedDebts.Обороты(, , Месяц, ) КАК InvoicedDebtsОбороты
@@ -456,7 +457,8 @@
 			ТОГДА ЛОЖЬ
 		ИНАЧЕ ИСТИНА
 	КОНЕЦ,
-	InvoicedDebtsОбороты.LegalEntity
+	InvoicedDebtsОбороты.LegalEntity,
+	InvoicedDebtsОбороты.Invoice
 
 ИНДЕКСИРОВАТЬ ПО
 	Invoice
@@ -657,7 +659,7 @@
 ИЗ
 	ВТ_Инвойсы КАК ВТ_Инвойсы
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.DIR КАК DIR
-		ПО ВТ_Инвойсы.Invoice = DIR.Invoice
+		ПО ВТ_Инвойсы.ОригинальныйИнвойс = DIR.Invoice
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ОплатыПоПроводкам КАК ВТ_ОплатыПоПроводкам
 		ПО ВТ_Инвойсы.Invoice = ВТ_ОплатыПоПроводкам.Invoice
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ОплатыИзОбмена КАК ВТ_ОплатыИзОбмена
@@ -1446,7 +1448,7 @@
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
 					<dcsset:right xsi:nil="true">
 					</dcsset:right>
-					<dcsset:presentation>
+					<dcsset:presentation xsi:type="xs:string">
 					</dcsset:presentation>
 					<dcsset:userSettingID>3522b735-157f-4233-8676-736f9f4926ea</dcsset:userSettingID>
 				</dcsset:item>
@@ -1456,7 +1458,7 @@
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
 					<dcsset:right xsi:nil="true">
 					</dcsset:right>
-					<dcsset:presentation>
+					<dcsset:presentation xsi:type="xs:string">
 					</dcsset:presentation>
 					<dcsset:userSettingID>bac91f10-5226-4244-ae8a-ffe1b6605248</dcsset:userSettingID>
 				</dcsset:item>
@@ -1466,7 +1468,7 @@
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
 					<dcsset:right xsi:nil="true">
 					</dcsset:right>
-					<dcsset:presentation>
+					<dcsset:presentation xsi:type="xs:string">
 					</dcsset:presentation>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
@@ -1475,7 +1477,7 @@
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
 					<dcsset:right xsi:nil="true">
 					</dcsset:right>
-					<dcsset:presentation>
+					<dcsset:presentation xsi:type="xs:string">
 					</dcsset:presentation>
 					<dcsset:userSettingID>9b6a98f2-0207-4a92-a09f-fe987ea92426</dcsset:userSettingID>
 				</dcsset:item>
@@ -1485,7 +1487,7 @@
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
 					<dcsset:right xsi:nil="true">
 					</dcsset:right>
-					<dcsset:presentation>
+					<dcsset:presentation xsi:type="xs:string">
 					</dcsset:presentation>
 					<dcsset:userSettingID>e280c21d-9b81-4f57-812a-25aad72d1b75</dcsset:userSettingID>
 				</dcsset:item>
@@ -1493,7 +1495,7 @@
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">ParentClient</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:presentation>
+					<dcsset:presentation xsi:type="xs:string">
 					</dcsset:presentation>
 					<dcsset:userSettingID>3a413dcc-6f24-4505-970b-8e56496c26c4</dcsset:userSettingID>
 				</dcsset:item>
@@ -1502,7 +1504,7 @@
 					<dcsset:left xsi:type="dcscor:Field">Amount</dcsset:left>
 					<dcsset:comparisonType>GreaterOrEqual</dcsset:comparisonType>
 					<dcsset:right xsi:type="xs:decimal">0</dcsset:right>
-					<dcsset:presentation>
+					<dcsset:presentation xsi:type="xs:string">
 					</dcsset:presentation>
 					<dcsset:userSettingID>7c3bbb04-e65a-4fc4-9aab-dccb230ed939</dcsset:userSettingID>
 				</dcsset:item>
