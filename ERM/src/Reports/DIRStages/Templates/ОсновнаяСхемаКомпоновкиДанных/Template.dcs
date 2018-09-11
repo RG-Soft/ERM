@@ -319,6 +319,76 @@
 			<dataPath>Amount</dataPath>
 			<field>Amount</field>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>InvoiceNo</dataPath>
+			<field>InvoiceNo</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Invoice no</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>MgmtGeomarket</dataPath>
+			<field>MgmtGeomarket</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Mgmt geomarket</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>ParentClient</dataPath>
+			<field>ParentClient</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Parent client</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Segment</dataPath>
+			<field>Segment</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Segment</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>SubGeoMarket</dataPath>
+			<field>SubGeoMarket</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Sub geo market</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>SubSegment</dataPath>
+			<field>SubSegment</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Sub segment</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>GeoMarket</dataPath>
+			<field>GeoMarket</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Geo market</v8:content>
+				</v8:item>
+			</title>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	МАКСИМУМ(InvoicedDebtsОбороты.Период) КАК Период,
@@ -327,7 +397,16 @@
 	InvoicedDebtsОбороты.Client КАК Client,
 	InvoicedDebtsОбороты.AU КАК AU,
 	InvoicedDebtsОбороты.Account КАК Account,
-	InvoicedDebtsОбороты.Invoice КАК Invoice,
+	ВЫБОР
+		КОГДА InvoicedDebtsОбороты.Invoice ССЫЛКА Документ.Invoice
+			ТОГДА InvoicedDebtsОбороты.Invoice
+		ИНАЧЕ InvoicedDebtsОбороты.Invoice.Invoice
+	КОНЕЦ КАК Invoice,
+	ВЫБОР
+		КОГДА InvoicedDebtsОбороты.Invoice ССЫЛКА Документ.Invoice
+			ТОГДА InvoicedDebtsОбороты.Invoice.DocNumber
+		ИНАЧЕ InvoicedDebtsОбороты.Invoice.Номер
+	КОНЕЦ КАК InvoiceNo,
 	InvoicedDebtsОбороты.Currency КАК Currency,
 	InvoicedDebtsОбороты.LegalEntity КАК LegalEntity,
 	СУММА(InvoicedDebtsОбороты.AmountОборот) КАК Amount,
@@ -343,7 +422,8 @@
 			КОГДА InvoicedDebtsОбороты.Currency &lt;&gt; &amp;USD
 				ТОГДА ВЫРАЗИТЬ(InvoicedDebtsОбороты.AmountОборот / ЕСТЬNULL(ВнутренниеКурсыВалют.Курс, 0) КАК ЧИСЛО(15, 2))
 			ИНАЧЕ InvoicedDebtsОбороты.AmountОборот
-		КОНЕЦ) КАК USDAmount
+		КОНЕЦ) КАК USDAmount,
+	InvoicedDebtsОбороты.Invoice КАК ОригинальныйИнвойс
 ПОМЕСТИТЬ ВТ_Инвойсы
 ИЗ
 	РегистрНакопления.InvoicedDebts.Обороты(, , Месяц, ) КАК InvoicedDebtsОбороты
@@ -361,14 +441,24 @@
 	InvoicedDebtsОбороты.Client,
 	InvoicedDebtsОбороты.AU,
 	InvoicedDebtsОбороты.Account,
-	InvoicedDebtsОбороты.Invoice,
+	ВЫБОР
+		КОГДА InvoicedDebtsОбороты.Invoice ССЫЛКА Документ.Invoice
+			ТОГДА InvoicedDebtsОбороты.Invoice
+		ИНАЧЕ InvoicedDebtsОбороты.Invoice.Invoice
+	КОНЕЦ,
+	ВЫБОР
+		КОГДА InvoicedDebtsОбороты.Invoice ССЫЛКА Документ.Invoice
+			ТОГДА InvoicedDebtsОбороты.Invoice.DocNumber
+		ИНАЧЕ InvoicedDebtsОбороты.Invoice.Номер
+	КОНЕЦ,
 	InvoicedDebtsОбороты.Currency,
 	ВЫБОР
 		КОГДА ИсточникиСЗаполнениемОплатИзОбмена.Source ЕСТЬ NULL
 			ТОГДА ЛОЖЬ
 		ИНАЧЕ ИСТИНА
 	КОНЕЦ,
-	InvoicedDebtsОбороты.LegalEntity
+	InvoicedDebtsОбороты.LegalEntity,
+	InvoicedDebtsОбороты.Invoice
 
 ИНДЕКСИРОВАТЬ ПО
 	Invoice
@@ -456,6 +546,12 @@
 	ВТ_Инвойсы.Source КАК Source,
 	ВТ_Инвойсы.Company КАК Company,
 	ВТ_Инвойсы.Client КАК Client,
+	ЕСТЬNULL(ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент, ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка)) КАК ParentClient,
+	ВТ_Инвойсы.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
+	ВТ_Инвойсы.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket КАК SubGeoMarket,
+	ВТ_Инвойсы.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket КАК MgmtGeomarket,
+	ВТ_Инвойсы.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель КАК Segment,
+	ВТ_Инвойсы.AU.Сегмент.БазовыйЭлемент.Родитель КАК SubSegment,
 	ВТ_Инвойсы.AU КАК AU,
 	ВТ_Инвойсы.Account КАК Account,
 	ВТ_Инвойсы.Invoice КАК Invoice,
@@ -499,10 +595,10 @@
 		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.FirstSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) / 86400
 	КОНЕЦ КАК Stage5,
 	ВЫБОР
-		КОГДА ВТ_Инвойсы.Invoice.ДатаВозвратаКС = ДАТАВРЕМЯ(1, 1, 1)
+		КОГДА ЕСТЬNULL(ВТ_Инвойсы.Invoice.ДатаВозвратаКС, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 				ИЛИ ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА 0
-		КОГДА ВТ_Инвойсы.Invoice.ДатаВозвратаКС &lt; &amp;МинимальнаяДата
+		КОГДА ЕСТЬNULL(ВТ_Инвойсы.Invoice.ДатаВозвратаКС, ДАТАВРЕМЯ(1, 1, 1)) &lt; &amp;МинимальнаяДата
 			ТОГДА "Error"
 		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)), ВТ_Инвойсы.Invoice.ДатаВозвратаКС, СЕКУНДА) / 86400
 	КОНЕЦ КАК Stage6,
@@ -513,19 +609,19 @@
 		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.JobEndDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) / 86400
 	КОНЕЦ КАК TotalDIR,
 	ВЫБОР
-		КОГДА ВТ_Инвойсы.Invoice.TriggerDate = ДАТАВРЕМЯ(1, 1, 1)
+		КОГДА ЕСТЬNULL(ВТ_Инвойсы.Invoice.TriggerDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 				ИЛИ ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА 0
-		КОГДА ВТ_Инвойсы.Invoice.TriggerDate &lt; &amp;МинимальнаяДата
+		КОГДА ЕСТЬNULL(ВТ_Инвойсы.Invoice.TriggerDate, ДАТАВРЕМЯ(1, 1, 1)) &lt; &amp;МинимальнаяДата
 			ТОГДА "Error"
 		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(ВТ_Инвойсы.Invoice.TriggerDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) / 86400
 	КОНЕЦ КАК T2CStage1,
 	ВЫБОР
-		КОГДА ВТ_Инвойсы.Invoice.TriggerDate = ДАТАВРЕМЯ(1, 1, 1)
-				ИЛИ ВТ_Инвойсы.Invoice.DueDateTo = ДАТАВРЕМЯ(1, 1, 1)
+		КОГДА ЕСТЬNULL(ВТ_Инвойсы.Invoice.TriggerDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+				ИЛИ ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА 0
-		КОГДА ВТ_Инвойсы.Invoice.TriggerDate &lt; &amp;МинимальнаяДата
-				ИЛИ ВТ_Инвойсы.Invoice.DueDateTo &lt; &amp;МинимальнаяДата
+		КОГДА ЕСТЬNULL(ВТ_Инвойсы.Invoice.TriggerDate, ДАТАВРЕМЯ(1, 1, 1)) &lt; &amp;МинимальнаяДата
+				ИЛИ ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)) &lt; &amp;МинимальнаяДата
 			ТОГДА "Error"
 		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(ВТ_Инвойсы.Invoice.TriggerDate, ДАТАВРЕМЯ(1, 1, 1)), ВТ_Инвойсы.Invoice.DueDateTo, СЕКУНДА) / 86400
 	КОНЕЦ КАК T2CStage2,
@@ -545,29 +641,31 @@
 	КОНЕЦ КАК FirstDateOfPayment,
 	ВЫБОР
 		КОГДА ВТ_Инвойсы.ЗаполнятьОплатыПоДаннымОбмена
-				И (ВТ_Инвойсы.Invoice.DueDateTo = ДАТАВРЕМЯ(1, 1, 1)
+				И (ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 					ИЛИ ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1))
 			ТОГДА 0
-		КОГДА ВТ_Инвойсы.Invoice.DueDateTo &lt; &amp;МинимальнаяДата
-				И ВТ_Инвойсы.Invoice.DueDateTo &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
+		КОГДА ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)) &lt; &amp;МинимальнаяДата
+				И ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)) &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА "Error"
 		КОГДА ВТ_Инвойсы.ЗаполнятьОплатыПоДаннымОбмена
 			ТОГДА РАЗНОСТЬДАТ(ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) / 86400
-		КОГДА ВТ_Инвойсы.Invoice.DueDateTo = ДАТАВРЕМЯ(1, 1, 1)
+		КОГДА ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 				ИЛИ ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА 0
 		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) / 86400
 	КОНЕЦ КАК T2CStage3,
-	ВТ_Инвойсы.Период КАК Период
+	ВТ_Инвойсы.Период КАК Период,
+	ВТ_Инвойсы.InvoiceNo КАК InvoiceNo
 ИЗ
 	ВТ_Инвойсы КАК ВТ_Инвойсы
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.DIR КАК DIR
-		ПО ВТ_Инвойсы.Invoice = DIR.Invoice
+		ПО ВТ_Инвойсы.ОригинальныйИнвойс = DIR.Invoice
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ОплатыПоПроводкам КАК ВТ_ОплатыПоПроводкам
 		ПО ВТ_Инвойсы.Invoice = ВТ_ОплатыПоПроводкам.Invoice
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ОплатыИзОбмена КАК ВТ_ОплатыИзОбмена
 		ПО ВТ_Инвойсы.Invoice = ВТ_ОплатыИзОбмена.Invoice
-</query>
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИерархияКонтрагентов.СрезПоследних({(&amp;КонецПериода)}, ) КАК ИерархияКонтрагентовСрезПоследних
+		ПО ВТ_Инвойсы.Client = ИерархияКонтрагентовСрезПоследних.Контрагент</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>SumStages</dataPath>
@@ -874,27 +972,19 @@
 		<valueType>
 		</valueType>
 	</calculatedField>
-	<parameter>
-		<name>Период</name>
+	<calculatedField>
+		<dataPath>BU</dataPath>
+		<expression>rgsКонсолидацияДанныхСервер.ОпределитьBU(GeoMarket, SubGeoMarket, MgmtGeomarket, Segment, SubSegment, Company, AU)</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
-				<v8:content>Period</v8:content>
+				<v8:content>BU</v8:content>
 			</v8:item>
 		</title>
 		<valueType>
-			<v8:Type>v8:StandardPeriod</v8:Type>
+			<v8:Type xmlns:d3p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d3p1:CatalogRef.BusinessUnits</v8:Type>
 		</valueType>
-		<value xsi:type="v8:StandardPeriod">
-			<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
-			<v8:startDate>0001-01-01T00:00:00</v8:startDate>
-			<v8:endDate>0001-01-01T00:00:00</v8:endDate></value>
-		<useRestriction>false</useRestriction>
-		<valueListAllowed>false</valueListAllowed>
-		<availableAsField>true</availableAsField>
-		<denyIncompleteValues>false</denyIncompleteValues>
-		<use>Auto</use>
-	</parameter>
+	</calculatedField>
 	<parameter>
 		<name>НачалоПериода</name>
 		<title xsi:type="v8:LocalStringType">
@@ -1013,6 +1103,24 @@
 		<denyIncompleteValues>false</denyIncompleteValues>
 		<use>Auto</use>
 	</parameter>
+	<parameter>
+		<name>Период</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Период</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>v8:StandardPeriod</v8:Type>
+		</valueType>
+		<useRestriction>false</useRestriction>
+		<expression></expression>
+		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
+	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
 		<dcsset:presentation xsi:type="xs:string">Основной</dcsset:presentation>
@@ -1020,6 +1128,9 @@
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Source</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>BU</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket</dcsset:field>
@@ -1070,6 +1181,15 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>ParentClient</dcsset:field>
+					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Parent client</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Client</dcsset:field>
 					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 						<v8:item>
@@ -1079,7 +1199,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.DocNumber</dcsset:field>
+					<dcsset:field>InvoiceNo</dcsset:field>
 					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -1093,6 +1213,15 @@
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>Fiscal Invoice number</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Invoice.Responsible</dcsset:field>
+					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Responsible AR</v8:content>
 						</v8:item>
 					</dcsset:lwsTitle>
 				</dcsset:item>
@@ -1313,14 +1442,78 @@
 					<dcsset:field>TotalDIRKST2C</dcsset:field>
 				</dcsset:item>
 			</dcsset:selection>
+			<dcsset:filter>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:left xsi:type="dcscor:Field">Source</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:right xsi:nil="true">
+					</dcsset:right>
+					<dcsset:presentation xsi:type="xs:string">
+					</dcsset:presentation>
+					<dcsset:userSettingID>3522b735-157f-4233-8676-736f9f4926ea</dcsset:userSettingID>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:use>false</dcsset:use>
+					<dcsset:left xsi:type="dcscor:Field">Segment</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:right xsi:nil="true">
+					</dcsset:right>
+					<dcsset:presentation xsi:type="xs:string">
+					</dcsset:presentation>
+					<dcsset:userSettingID>bac91f10-5226-4244-ae8a-ffe1b6605248</dcsset:userSettingID>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:use>false</dcsset:use>
+					<dcsset:left xsi:type="dcscor:Field">MgmtGeomarket</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:right xsi:nil="true">
+					</dcsset:right>
+					<dcsset:presentation xsi:type="xs:string">
+					</dcsset:presentation>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:use>false</dcsset:use>
+					<dcsset:left xsi:type="dcscor:Field">Client</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:right xsi:nil="true">
+					</dcsset:right>
+					<dcsset:presentation xsi:type="xs:string">
+					</dcsset:presentation>
+					<dcsset:userSettingID>9b6a98f2-0207-4a92-a09f-fe987ea92426</dcsset:userSettingID>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:use>false</dcsset:use>
+					<dcsset:left xsi:type="dcscor:Field">BU</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:right xsi:nil="true">
+					</dcsset:right>
+					<dcsset:presentation xsi:type="xs:string">
+					</dcsset:presentation>
+					<dcsset:userSettingID>e280c21d-9b81-4f57-812a-25aad72d1b75</dcsset:userSettingID>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:use>false</dcsset:use>
+					<dcsset:left xsi:type="dcscor:Field">ParentClient</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:presentation xsi:type="xs:string">
+					</dcsset:presentation>
+					<dcsset:userSettingID>3a413dcc-6f24-4505-970b-8e56496c26c4</dcsset:userSettingID>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:use>false</dcsset:use>
+					<dcsset:left xsi:type="dcscor:Field">Amount</dcsset:left>
+					<dcsset:comparisonType>GreaterOrEqual</dcsset:comparisonType>
+					<dcsset:right xsi:type="xs:decimal">0</dcsset:right>
+					<dcsset:presentation xsi:type="xs:string">
+					</dcsset:presentation>
+					<dcsset:userSettingID>7c3bbb04-e65a-4fc4-9aab-dccb230ed939</dcsset:userSettingID>
+				</dcsset:item>
+			</dcsset:filter>
 			<dcsset:dataParameters>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:use>false</dcscor:use>
 					<dcscor:parameter>Период</dcscor:parameter>
-					<dcscor:value xsi:type="v8:StandardPeriod">
-						<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
-						<v8:startDate>0001-01-01T00:00:00</v8:startDate>
-						<v8:endDate>0001-01-01T00:00:00</v8:endDate></dcscor:value>
-					<dcsset:userSettingID>c71919e6-38e5-4829-89ae-7bc71b6c0a97</dcsset:userSettingID>
+					<dcsset:userSettingID>58ef28ee-397d-4ba4-b1f3-0f4f8c3e4eef</dcsset:userSettingID>
 				</dcscor:item>
 			</dcsset:dataParameters>
 			<dcsset:outputParameters>
@@ -1331,6 +1524,14 @@
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>РасположениеРеквизитов</dcscor:parameter>
 					<dcscor:value xsi:type="dcsset:DataCompositionAttributesPlacement">Separately</dcscor:value>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>FilterOutput</dcscor:parameter>
+					<dcscor:value xsi:type="dcsset:DataCompositionTextOutputType">DontOutput</dcscor:value>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>DataParametersOutput</dcscor:parameter>
+					<dcscor:value xsi:type="dcsset:DataCompositionTextOutputType">DontOutput</dcscor:value>
 				</dcscor:item>
 			</dcsset:outputParameters>
 			<dcsset:item xsi:type="dcsset:StructureItemGroup">

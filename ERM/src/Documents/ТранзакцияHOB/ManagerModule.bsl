@@ -81,6 +81,7 @@
 	|	ТранзакцияHOB.HOBReverseType,
 	|	ТранзакцияHOB.PostingDate,
 	|	ТранзакцияHOB.MNGC,
+	|	Значение(Перечисление.ТипыСоответствий.HOBs) КАК Source,
 	|	ТранзакцияHOB.EndClient
 	|ИЗ
 	|	Документ.ТранзакцияHOB КАК ТранзакцияHOB
