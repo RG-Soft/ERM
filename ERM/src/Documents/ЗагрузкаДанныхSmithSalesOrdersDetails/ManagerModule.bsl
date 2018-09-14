@@ -230,12 +230,12 @@
 			
 			//РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.JobEndDate, ВыборкаSO.JobEndDate);
 			
-			Даты = Новый Соответствие();
-			Даты.Вставить("InvoiceFlagDate", ВыборкаInvoice.InvoiceFlagDate);
-			Даты.Вставить("JobEndDate", ВыборкаInvoice.JobEndDate);
-			РегистрыСведений.DIR.ЗаписатьДаты(ВыборкаInvoice.СсылкаInvoice, Даты);
-			СтрокаТЗ = ОбновленныеДатыDIR.Добавить();
-			СтрокаТЗ.Invoice = ВыборкаInvoice.СсылкаInvoice;
+			//Даты = Новый Соответствие();
+			//Даты.Вставить("InvoiceFlagDate", ВыборкаInvoice.InvoiceFlagDate);
+			//Даты.Вставить("JobEndDate", ВыборкаInvoice.JobEndDate);
+			//РегистрыСведений.DIR.ЗаписатьДаты(ВыборкаInvoice.СсылкаInvoice, Даты);
+			//СтрокаТЗ = ОбновленныеДатыDIR.Добавить();
+			//СтрокаТЗ.Invoice = ВыборкаInvoice.СсылкаInvoice;
 		
 			Если ТекОбъект.Модифицированность() Тогда
 				
