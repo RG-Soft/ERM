@@ -692,13 +692,17 @@
 	СтрокаТЗ.ИмяКолонки = "account_type";
 	СтрокаТЗ.Обязательная = Истина;
 	
-	
 	// line_desc
 	СтрокаТЗ = СтруктураКолонок.Добавить();
 	СтрокаТЗ.ИмяПоля = "line_desc";
 	СтрокаТЗ.ИмяКолонки = "line_desc";
 	СтрокаТЗ.Обязательная = Истина;
 
+	// posting_date
+	СтрокаТЗ = СтруктураКолонок.Добавить();
+	СтрокаТЗ.ИмяПоля = "posting_date";
+	СтрокаТЗ.ИмяКолонки = "posting_date";
+	СтрокаТЗ.Обязательная = Истина;
 	
 КонецФункции
 
@@ -2113,7 +2117,8 @@
 		|	OracleSmithSourceData.СтрокаФайла,
 		|	OracleSmithSourceData.source,
 		|	OracleSmithSourceData.category,
-		|	OracleSmithSourceData.cost_center + ""."" + OracleSmithSourceData.business_line КАК AU
+		|	OracleSmithSourceData.cost_center + ""."" + OracleSmithSourceData.business_line КАК AU,
+		|	OracleSmithSourceData.posting_date
 		|ПОМЕСТИТЬ ВТ_ДанныеФайла
 		|ИЗ
 		|	РегистрСведений.OracleSmithSourceData КАК OracleSmithSourceData
@@ -2356,7 +2361,8 @@
 		|	КОНЕЦ КАК source,
 		|	ВТ_ДанныеФайла.category,
 		|	КостЦентры.Ссылка КАК AU,
-		|	ВТ_ДанныеФайла.AU КАК КодAU
+		|	ВТ_ДанныеФайла.AU КАК КодAU,
+		|	ВТ_ДанныеФайла.posting_date КАК PostingDate
 		|ИЗ
 		|	ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
