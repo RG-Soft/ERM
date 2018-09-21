@@ -15,7 +15,14 @@
 		|	InvoiceДокумент.FiscalInvoiceDate,
 		|	InvoiceДокумент.Client.CRMID КАК CRMID,
 		|	InvoiceДокумент.Client,
+		|	InvoiceДокумент.Company,
 		|	InvoiceДокумент.Currency,
+		|	ВЫБОР
+		|		КОГДА InvoiceДокумент.Contract = ЗНАЧЕНИЕ(Справочник.ДоговорыКонтрагентов.ПустаяСсылка)
+		|		ИЛИ InvoiceДокумент.Contract.Ссылка ЕСТЬ NULL
+		|			ТОГДА InvoiceДокумент.Agreement
+		|		ИНАЧЕ InvoiceДокумент.Contract.crmContractName
+		|	КОНЕЦ КАК Agreement,
 		|	InvoiceДокумент.Amount,
 		|	ВЫРАЗИТЬ(InvoiceДокумент.Amount / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2)) КАК AmountUSD,
 		|	InvoiceCommentsСрезПоследних.Problem.Status КАК Status,
@@ -65,7 +72,6 @@
 		УдалитьФайлы(ИмяФайла);
 		
 	КонецЕсли;
-	
 	
 КонецПроцедуры
 	
