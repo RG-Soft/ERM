@@ -43,9 +43,9 @@
 	ТаблицаДанных = ПолучитьТаблицуДанныхПоЭкалированнымИнвойсам(МассивИнвойсовДляЭскалации);
 	
 	ТелоHTMLТаблицаДанных = "<BR>
-	|<TABLE style=""border-collapse: collapse;width:84.2%;border:solid black 1.5pt"">
+	|<TABLE style=""border-collapse: collapse;width:84.2%;border:solid black 1pt"">
 	|<TBODY>
-	|<TR align=""center"" style=""width:6.38%;background:#99CCFF;padding:1.5pt 1.5pt 1.5pt 1.5pt;font-size:10pt;font-family:Tahoma,sans-serif;color:white;"">
+	|<TR align=""center"" style=""width:6.38%;background:#004D99;padding:1.5pt 1.5pt 1.5pt 1.5pt;font-size:10pt;font-family:Tahoma,sans-serif;color:white;"">
 	|<TD style=""padding: 5px; border: 2px solid #000;"">InvNo</TD>
 	|<TD style=""padding: 5px; border: 2px solid #000;"">InvDate</TD>
 	|<TD style=""padding: 5px; border: 2px solid #000;"">FiscalInvoiceNo</TD>
