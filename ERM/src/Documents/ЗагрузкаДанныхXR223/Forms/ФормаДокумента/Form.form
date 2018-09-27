@@ -270,9 +270,19 @@
       <headerHorizontalAlign>Left</headerHorizontalAlign>
       <showInFooter>true</showInFooter>
       <extInfo xsi:type="form:InputFieldExtInfo">
+        <handlers>
+          <event>Opening</event>
+          <name>ИмяФайлаОткрытие</name>
+        </handlers>
+        <handlers>
+          <event>StartChoice</event>
+          <name>ИмяФайлаНачалоВыбора</name>
+        </handlers>
         <autoMaxWidth>true</autoMaxWidth>
         <autoMaxHeight>true</autoMaxHeight>
         <wrap>true</wrap>
+        <choiceButton>true</choiceButton>
+        <openButton>true</openButton>
         <chooseType>true</chooseType>
         <typeDomainEnabled>true</typeDomainEnabled>
         <textEdit>true</textEdit>
@@ -352,7 +362,7 @@
         </picture>
       </items>
       <items xsi:type="form:Button">
-        <name>ЗаполнитьДаты</name>
+        <name>ОбновитьДаты</name>
         <id>29</id>
         <visible>true</visible>
         <enabled>true</enabled>
@@ -360,7 +370,7 @@
           <common>true</common>
         </userVisible>
         <extendedTooltip>
-          <name>ЗаполнитьДатыРасширеннаяПодсказка</name>
+          <name>ОбновитьДатыРасширеннаяПодсказка</name>
           <id>30</id>
           <visible>true</visible>
           <enabled>true</enabled>
@@ -427,7 +437,7 @@
         <common>true</common>
       </userVisible>
       <dataPath xsi:type="form:DataPath">
-        <segments>Объект.ОбновленныеИнвойсы</segments>
+        <segments>Объект.ОбновленныеInvoice</segments>
       </dataPath>
       <titleLocation>None</titleLocation>
       <items xsi:type="form:FormField">
@@ -441,10 +451,10 @@
         <dataPath xsi:type="form:MultiLanguageDataPath">
           <activeLanguage>1</activeLanguage>
           <paths xsi:type="form:DataPath">
-            <segments>Объект.ОбновленныеИнвойсы.LineNumber</segments>
+            <segments>Объект.ОбновленныеInvoice.LineNumber</segments>
           </paths>
           <paths xsi:type="form:DataPath">
-            <segments>Объект.ОбновленныеИнвойсы.НомерСтроки</segments>
+            <segments>Объект.ОбновленныеInvoice.НомерСтроки</segments>
           </paths>
         </dataPath>
         <extendedTooltip>
@@ -497,10 +507,10 @@
         <dataPath xsi:type="form:MultiLanguageDataPath">
           <activeLanguage>1</activeLanguage>
           <paths xsi:type="form:DataPath">
-            <segments>Объект.ОбновленныеИнвойсы.Invoice</segments>
+            <segments>Объект.ОбновленныеInvoice.Invoice</segments>
           </paths>
           <paths xsi:type="form:DataPath">
-            <segments>Объект.ОбновленныеИнвойсы.Invoice</segments>
+            <segments>Объект.ОбновленныеInvoice.Invoice</segments>
           </paths>
         </dataPath>
         <extendedTooltip>
@@ -895,6 +905,10 @@
     <horizontalAlign>Left</horizontalAlign>
     <autoFill>true</autoFill>
   </autoCommandBar>
+  <handlers>
+    <event>OnCreateAtServer</event>
+    <name>ПриСозданииНаСервере</name>
+  </handlers>
   <autoTitle>true</autoTitle>
   <autoUrl>true</autoUrl>
   <group>Vertical</group>
@@ -907,7 +921,7 @@
     <name>Объект</name>
     <id>1</id>
     <valueType>
-      <types>DocumentObject.ЗагрузкаXR2223</types>
+      <types>DocumentObject.ЗагрузкаДанныхXR223</types>
     </valueType>
     <view>
       <common>true</common>
@@ -920,6 +934,193 @@
     </notDefaultUseAlwaysAttributes>
     <main>true</main>
     <savedData>true</savedData>
+  </attributes>
+  <attributes>
+    <name>АдресТаблицыДанныхВХранилище</name>
+    <title>
+      <key>ru</key>
+      <value>Адрес таблицы данных в хранилище</value>
+    </title>
+    <id>2</id>
+    <valueType>
+      <types>String</types>
+      <stringQualifiers/>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+  </attributes>
+  <attributes>
+    <name>АдресФайлаВХранилище</name>
+    <title>
+      <key>ru</key>
+      <value>Адрес файла в хранилище</value>
+    </title>
+    <id>3</id>
+    <valueType>
+      <types>String</types>
+      <stringQualifiers/>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+  </attributes>
+  <attributes>
+    <name>АдресХранилища</name>
+    <title>
+      <key>ru</key>
+      <value>Адрес хранилища</value>
+    </title>
+    <id>4</id>
+    <valueType>
+      <types>String</types>
+      <stringQualifiers/>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+  </attributes>
+  <attributes>
+    <name>ИдентификаторЗадания</name>
+    <title>
+      <key>ru</key>
+      <value>Идентификатор задания</value>
+    </title>
+    <id>5</id>
+    <valueType>
+      <types>UUID</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+  </attributes>
+  <attributes>
+    <name>ИменаКолонокВПервойСтроке</name>
+    <title>
+      <key>ru</key>
+      <value>Имена колонок в первой строке</value>
+    </title>
+    <id>6</id>
+    <valueType>
+      <types>Boolean</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+  </attributes>
+  <attributes>
+    <name>ПерваяСтрокаДанных</name>
+    <title>
+      <key>ru</key>
+      <value>Первая строка данных</value>
+    </title>
+    <id>7</id>
+    <valueType>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>7</precision>
+        <nonNegative>true</nonNegative>
+      </numberQualifiers>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+  </attributes>
+  <attributes>
+    <name>ПоследняяСтрокаДанных</name>
+    <title>
+      <key>ru</key>
+      <value>Последняя строка данных</value>
+    </title>
+    <id>8</id>
+    <valueType>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>7</precision>
+        <nonNegative>true</nonNegative>
+      </numberQualifiers>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+  </attributes>
+  <attributes>
+    <name>СтруктураКолонок</name>
+    <title>
+      <key>ru</key>
+      <value>Структура колонок</value>
+    </title>
+    <id>9</id>
+    <valueType>
+      <types>ValueTable</types>
+    </valueType>
+    <view>
+      <common>true</common>
+    </view>
+    <edit>
+      <common>true</common>
+    </edit>
+    <columns>
+      <name>ИмяКолонки</name>
+      <title>
+        <key>ru</key>
+        <value>Имя колонки</value>
+      </title>
+      <id>1</id>
+      <valueType>
+        <types>String</types>
+        <stringQualifiers>
+          <length>100</length>
+        </stringQualifiers>
+      </valueType>
+      <view>
+        <common>true</common>
+      </view>
+      <edit>
+        <common>true</common>
+      </edit>
+    </columns>
+    <columns>
+      <name>ИмяПоля</name>
+      <title>
+        <key>ru</key>
+        <value>Имя поля</value>
+      </title>
+      <id>3</id>
+      <valueType>
+        <types>String</types>
+        <stringQualifiers>
+          <length>100</length>
+        </stringQualifiers>
+      </valueType>
+      <view>
+        <common>true</common>
+      </view>
+      <edit>
+        <common>true</common>
+      </edit>
+    </columns>
   </attributes>
   <formCommands>
     <name>ПрочитатьФайл</name>
@@ -951,6 +1152,11 @@
     <use>
       <common>true</common>
     </use>
+    <action xsi:type="form:FormCommandHandlerContainer">
+      <handler>
+        <name>ОбновитьInvoices</name>
+      </handler>
+    </action>
     <currentRowUse>Auto</currentRowUse>
   </formCommands>
   <commandInterface>
@@ -958,6 +1164,18 @@
     <commandBar/>
   </commandInterface>
   <extInfo xsi:type="form:DocumentFormExtInfo">
+    <handlers>
+      <event>BeforeWriteAtServer</event>
+      <name>ПередЗаписьюНаСервере</name>
+    </handlers>
+    <handlers>
+      <event>AfterWriteAtServer</event>
+      <name>ПослеЗаписиНаСервере</name>
+    </handlers>
+    <handlers>
+      <event>OnReadAtServer</event>
+      <name>ПриЧтенииНаСервере</name>
+    </handlers>
     <repostOnWrite>true</repostOnWrite>
   </extInfo>
 </form:Form>
