@@ -4888,9 +4888,10 @@
 	
 	РеквизитыSalesOrder = ОбщегоНазначения.ЗначенияРеквизитовОбъекта(SalesOrder, "Client,Company,Currency,AU,Account,Location,SubSubSegment,ClientID,CREW,OriginalAnalytics,Amount");
 	
-	Если ЭтоПроводкаПоСчетуВыручки Тогда
+	Если ЭтоПроводкаПоСчетуВыручки И НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.ClientID) И НЕ ЗначениеЗаполнено(РеквизитыSalesOrder.Client) Тогда
 		SalesOrderОбъект = SalesOrder.ПолучитьОбъект();
 		SalesOrderОбъект.ClientID = ДанныеДляЗаполнения.CustomerNumber;
+		SalesOrderОбъект.Client = ДанныеДляЗаполнения.Client;
 		SalesOrderОбъект.ОбменДанными.Загрузка = Истина;
 		SalesOrderОбъект.Записать(РежимЗаписиДокумента.Запись);
 	Иначе
