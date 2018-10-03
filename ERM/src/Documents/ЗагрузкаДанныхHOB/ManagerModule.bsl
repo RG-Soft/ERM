@@ -4944,6 +4944,7 @@
 		ДокОбъект.Amount = ДанныеДляЗаполнения.InvoiceAmount;
 	КонецЕсли;
 	ДокОбъект.Currency = ТранзакцияHOBОбъект.Currency;
+	ДокОбъект.LegalEntity = ТранзакцияHOBОбъект.LegalEntity;
 	ДокОбъект.DocID = ТранзакцияHOBОбъект.InvoiceID;
 	ДокОбъект.Agreement = ДанныеДляЗаполнения.InvoiceAgreement;
 	ДокОбъект.AgreementCode = ДанныеДляЗаполнения.InvoiceAgreementCode;
