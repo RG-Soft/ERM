@@ -43,54 +43,54 @@
 	ТаблицаДанных = ПолучитьТаблицуДанныхПоЭкалированнымИнвойсам(МассивИнвойсовДляЭскалации);
 	
 	ТелоHTMLТаблицаДанных = "<BR>
-	|<TABLE style=""border-collapse: collapse;width:84.2%;border:solid black 1.5pt"">
+	|<TABLE style=""border-collapse: collapse;width:84.2%;border:solid black 1pt"">
 	|<TBODY>
-	|<TR align=""center"" style=""width:6.38%;background:#99CCFF;padding:1.5pt 1.5pt 1.5pt 1.5pt;font-size:10pt;font-family:Tahoma,sans-serif;color:white;"">
-	|<TD style=""padding: 5px; border: 2px solid #000;"">InvNo</TD>
-	|<TD style=""padding: 5px; border: 2px solid #000;"">InvDate</TD>
+	|<TR align=""center"" style=""width:6.38%;background:#004D99;padding:1.5pt 1.5pt 1.5pt 1.5pt;font-size:10pt;font-family:Tahoma,sans-serif;color:white;"">
+	//|<TD style=""padding: 5px; border: 2px solid #000;"">InvNo</TD>
+	//|<TD style=""padding: 5px; border: 2px solid #000;"">InvDate</TD>
+	|<TD style=""padding: 5px; border: 2px solid #000;"">Company</TD>
 	|<TD style=""padding: 5px; border: 2px solid #000;"">FiscalInvoiceNo</TD>
 	|<TD style=""padding: 5px; border: 2px solid #000;"">FiscalInvoiceDate</TD>
-	|<TD style=""padding: 5px; border: 2px solid #000;"">CRMID</TD>
-	|<TD style=""padding: 5px; border: 2px solid #000;"">Client</TD>
-	|<TD style=""padding: 5px; border: 2px solid #000;"">Company</TD>
-	|<TD style=""padding: 5px; border: 2px solid #000;"">Currency</TD>
-	|<TD style=""padding: 5px; border: 2px solid #000;"">Agreement</TD>
+	//|<TD style=""padding: 5px; border: 2px solid #000;"">CRMID</TD>
+	//|<TD style=""padding: 5px; border: 2px solid #000;"">Client</TD>
+	//|<TD style=""padding: 5px; border: 2px solid #000;"">Currency</TD>
 	|<TD style=""padding: 5px; border: 2px solid #000;"">Amount</TD>
-	|<TD style=""padding: 5px; border: 2px solid #000;"">AmountUSD</TD>
-	|<TD style=""padding: 5px; border: 2px solid #000;"">Status</TD>
-	|<TD style=""padding: 5px; border: 2px solid #000;"">ConfirmedBy</TD>
-	|<TD style=""padding: 5px; border: 2px solid #000;"">ForecastDate</TD>
-	|<TD style=""padding: 5px; border: 2px solid #000;"">InitialForecastDate</TD>
-	|<TD style=""padding: 5px; border: 2px solid #000;"">CustomerRepresentative</TD>
-	|<TD style=""padding: 5px; border: 2px solid #000;"">CustomerInputDetails</TD>
-	|<TD style=""padding: 5px; border: 2px solid #000;"">RemedialWorkPlan</TD>
-	|<TD style=""padding: 5px; border: 2px solid #000;"">RWDTargetDate</TD>
-	|<TD style=""padding: 5px; border: 2px solid #000;"">Comment</TD>
+	|<TD style=""padding: 5px; border: 2px solid #000;"">Agreement</TD>
+	//|<TD style=""padding: 5px; border: 2px solid #000;"">AmountUSD</TD>
+	//|<TD style=""padding: 5px; border: 2px solid #000;"">Status</TD>
+	//|<TD style=""padding: 5px; border: 2px solid #000;"">ConfirmedBy</TD>
+	//|<TD style=""padding: 5px; border: 2px solid #000;"">ForecastDate</TD>
+	//|<TD style=""padding: 5px; border: 2px solid #000;"">InitialForecastDate</TD>
+	//|<TD style=""padding: 5px; border: 2px solid #000;"">CustomerRepresentative</TD>
+	//|<TD style=""padding: 5px; border: 2px solid #000;"">CustomerInputDetails</TD>
+	//|<TD style=""padding: 5px; border: 2px solid #000;"">RemedialWorkPlan</TD>
+	//|<TD style=""padding: 5px; border: 2px solid #000;"">RWDTargetDate</TD>
+	//|<TD style=""padding: 5px; border: 2px solid #000;"">Comment</TD>
 	|</TR>";
 	
 	Для каждого СтрокаДанных Из ТаблицаДанных Цикл
 		
 		СтрокаВТелоСообщения = "<TR>
-		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.InvNo + "</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.InvDate + "</TD>
+		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.InvNo + "</TD>
+		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.InvDate + "</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Company + "</TD>
 		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.FiscalInvoiceNo + "</TD>
 		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.FiscalInvoiceDate + "</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.CRMID + "</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Client + "</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Company + "</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Currency + "</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Agreement + "</TD>
+		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.CRMID + "</TD>
+		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Client + "</TD>
+		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Currency + "</TD>
 		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Amount + "</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.AmountUSD + "</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Status + "</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.ConfirmedBy + "</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.ForecastDate + "</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.InitialForecastDate + "</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.CustomerRepresentative + "</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.CustomerInputDetails + "</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.RemedialWorkPlan + "</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.RWDTargetDate + "</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Comment + "</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Agreement + "</TD>
+		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.AmountUSD + "</TD>
+		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Status + "</TD>
+		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.ConfirmedBy + "</TD>
+		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.ForecastDate + "</TD>
+		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.InitialForecastDate + "</TD>
+		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.CustomerRepresentative + "</TD>
+		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.CustomerInputDetails + "</TD>
+		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.RemedialWorkPlan + "</TD>
+		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.RWDTargetDate + "</TD>
+		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Comment + "</TD>
 		|</TR>";
 		ТелоHTMLТаблицаДанных = ТелоHTMLТаблицаДанных + СтрокаВТелоСообщения;
 			

@@ -12,10 +12,14 @@
 			<role>
 				<dcscom:dimension>true</dcscom:dimension>
 			</role>
+			<appearance/>
+			<inputParameters/>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>SubSubSegment</dataPath>
 			<field>SubSubSegment</field>
+			<appearance/>
+			<inputParameters/>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>AU</dataPath>
@@ -23,6 +27,8 @@
 			<role>
 				<dcscom:dimension>true</dcscom:dimension>
 			</role>
+			<appearance/>
+			<inputParameters/>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Source</dataPath>
@@ -30,6 +36,8 @@
 			<role>
 				<dcscom:dimension>true</dcscom:dimension>
 			</role>
+			<appearance/>
+			<inputParameters/>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Currency</dataPath>
@@ -37,19 +45,27 @@
 			<role>
 				<dcscom:dimension>true</dcscom:dimension>
 			</role>
+			<appearance/>
+			<inputParameters/>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Invoice</dataPath>
 			<field>Invoice</field>
 			<presentationExpression>ПредставлениеДокумента</presentationExpression>
+			<appearance/>
+			<inputParameters/>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>BaseAmountОстаток</dataPath>
 			<field>BaseAmountОстаток</field>
+			<appearance/>
+			<inputParameters/>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>AmountОстаток</dataPath>
 			<field>AmountОстаток</field>
+			<appearance/>
+			<inputParameters/>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Account</dataPath>
@@ -57,6 +73,8 @@
 			<role>
 				<dcscom:dimension>true</dcscom:dimension>
 			</role>
+			<appearance/>
+			<inputParameters/>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Company</dataPath>
@@ -64,10 +82,14 @@
 			<role>
 				<dcscom:dimension>true</dcscom:dimension>
 			</role>
+			<appearance/>
+			<inputParameters/>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Location</dataPath>
 			<field>Location</field>
+			<appearance/>
+			<inputParameters/>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>ИдентификаторКлиента</dataPath>
@@ -110,7 +132,7 @@
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:use>false</dcscor:use>
 					<dcscor:parameter>ГоризонтальноеПоложение</dcscor:parameter>
-					<dcscor:value></dcscor:value>
+					<dcscor:value xsi:type="xs:string"></dcscor:value>
 				</dcscor:item>
 			</appearance>
 		</field>
@@ -594,6 +616,66 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>MgmtGeomarket</dataPath>
+			<field>MgmtGeomarket</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Mgmt geomarket</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>SegmentHFM</dataPath>
+			<field>SegmentHFM</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Segment HFM</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>LocationHFM</dataPath>
+			<field>LocationHFM</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Location HFM</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>CompanyHFM</dataPath>
+			<field>CompanyHFM</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Company HFM</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>SubSegment</dataPath>
+			<field>SubSegment</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Sub segment</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>GeoMarket</dataPath>
+			<field>GeoMarket</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Geo market</v8:content>
+				</v8:item>
+			</title>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	BilledARОстатки.Client КАК Client,
@@ -602,20 +684,22 @@
 	BilledARОстатки.AU.ПодразделениеОрганизации КАК Location,
 	BilledARОстатки.AU.Сегмент КАК SubSubSegment,
 	BilledARОстатки.Invoice КАК Invoice,
-	BilledARОстатки.Account,
+	BilledARОстатки.Account КАК Account,
 	BilledARОстатки.Currency КАК Currency,
 	BilledARОстатки.AU КАК AU,
-	BilledARОстатки.AmountОстаток,
+	BilledARОстатки.AmountОстаток КАК AmountОстаток,
 	ВЫБОР
 		КОГДА BilledARОстатки.Invoice ССЫЛКА Документ.Invoice
 			ТОГДА ВЫРАЗИТЬ(BilledARОстатки.Invoice КАК Документ.Invoice).DocNumber
 		ИНАЧЕ ВЫРАЗИТЬ(BilledARОстатки.Invoice КАК Документ.Memo).Номер
 	КОНЕЦ КАК ПредставлениеДокумента,
-	BilledARОстатки.LegalEntity
+	BilledARОстатки.LegalEntity КАК LegalEntity
 ПОМЕСТИТЬ ВТ_Остатки
 ИЗ
-	РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)},) КАК BilledARОстатки
+	РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, ) КАК BilledARОстатки
+
 ОБЪЕДИНИТЬ ВСЕ
+
 ВЫБРАТЬ
 	UnallocatedMemoОстатки.Client,
 	UnallocatedMemoОстатки.Company,
@@ -630,31 +714,43 @@
 	UnallocatedMemoОстатки.Memo.Номер,
 	UnallocatedMemoОстатки.LegalEntity
 ИЗ
-	РегистрНакопления.UnallocatedMemo.Остатки({(&amp;ПериодОстатков)},) КАК UnallocatedMemoОстатки ИНДЕКСИРОВАТЬ ПО Invoice,
-	Client, Company, Source, Location, SubSubSegment, Currency, AU
+	РегистрНакопления.UnallocatedMemo.Остатки({(&amp;ПериодОстатков)}, ) КАК UnallocatedMemoОстатки
+
+ИНДЕКСИРОВАТЬ ПО
+	Invoice,
+	Client,
+	Company,
+	Source,
+	Location,
+	SubSubSegment,
+	Currency,
+	AU
 ;
+
 ////////////////////////////////////////////////////////////////////////////////
- ВЫБРАТЬ
+ВЫБРАТЬ
 	BilledARОбороты.Client КАК Client,
 	BilledARОбороты.Company КАК Company,
 	BilledARОбороты.Source КАК Source,
 	BilledARОбороты.AU.ПодразделениеОрганизации КАК Location,
 	BilledARОбороты.AU.Сегмент КАК SubSubSegment,
 	BilledARОбороты.Invoice КАК Invoice,
-	BilledARОбороты.Account,
+	BilledARОбороты.Account КАК Account,
 	BilledARОбороты.Currency КАК Currency,
 	BilledARОбороты.AU КАК AU,
-	BilledARОбороты.AmountОборот,
+	BilledARОбороты.AmountОборот КАК AmountОборот,
 	ВЫБОР
 		КОГДА BilledARОбороты.Invoice ССЫЛКА Документ.Invoice
 			ТОГДА ВЫРАЗИТЬ(BilledARОбороты.Invoice КАК Документ.Invoice).DocNumber
 		ИНАЧЕ ВЫРАЗИТЬ(BilledARОбороты.Invoice КАК Документ.Memo).Номер
 	КОНЕЦ КАК ПредставлениеДокумента,
-	BilledARОбороты.LegalEntity
+	BilledARОбороты.LegalEntity КАК LegalEntity
 ПОМЕСТИТЬ ВТ_Обороты
 ИЗ
-	РегистрНакопления.BilledAR.Обороты({(&amp;ПериодОстатков)}, {(&amp;КонецДняФормированияОтчета)},,) КАК BilledARОбороты
+	РегистрНакопления.BilledAR.Обороты({(&amp;ПериодОстатков)}, {(&amp;КонецДняФормированияОтчета)}, , ) КАК BilledARОбороты
+
 ОБЪЕДИНИТЬ ВСЕ
+
 ВЫБРАТЬ
 	UnallocatedMemoОбороты.Client,
 	UnallocatedMemoОбороты.Company,
@@ -669,11 +765,21 @@
 	UnallocatedMemoОбороты.Memo.Номер,
 	UnallocatedMemoОбороты.LegalEntity
 ИЗ
-	РегистрНакопления.UnallocatedMemo.Обороты({(&amp;ПериодОстатков)}, {(&amp;КонецДняФормированияОтчета)},,) КАК
-		UnallocatedMemoОбороты ИНДЕКСИРОВАТЬ ПО Invoice, Client, Company, Source, Location, SubSubSegment, Currency, AU
+	РегистрНакопления.UnallocatedMemo.Обороты({(&amp;ПериодОстатков)}, {(&amp;КонецДняФормированияОтчета)}, , ) КАК UnallocatedMemoОбороты
+
+ИНДЕКСИРОВАТЬ ПО
+	Invoice,
+	Client,
+	Company,
+	Source,
+	Location,
+	SubSubSegment,
+	Currency,
+	AU
 ;
+
 ////////////////////////////////////////////////////////////////////////////////
- ВЫБРАТЬ
+ВЫБРАТЬ
 	PaymentsОбороты.Client КАК Client,
 	PaymentsОбороты.Company КАК Company,
 	PaymentsОбороты.Source КАК Source,
@@ -683,69 +789,83 @@
 	PaymentsОбороты.Currency КАК Currency,
 	PaymentsОбороты.AU КАК AU,
 	PaymentsОбороты.AmountОборот КАК AmountОборот,
-	PaymentsОбороты.LegalEntity
+	PaymentsОбороты.LegalEntity КАК LegalEntity
 ПОМЕСТИТЬ ВТ_ОплатыТекущегоПериода
 ИЗ
-	РегистрНакопления.Payments.Обороты({(&amp;ПериодОстатков)}, {(&amp;КонецДняФормированияОтчета)},, (Client, Company, Source,
-		Invoice, Currency, AU, LegalEntity) В
-		(ВЫБРАТЬ РАЗЛИЧНЫЕ
-			ВТ_Обороты.Client,
-			ВТ_Обороты.Company,
-			ВТ_Обороты.Source,
-			ВТ_Обороты.Invoice,
-			ВТ_Обороты.Currency,
-			ВТ_Обороты.AU,
-			ВТ_Обороты.LegalEntity
-		ИЗ
-			ВТ_Обороты КАК ВТ_Обороты
-		ГДЕ
-			ВТ_Обороты.Invoice ССЫЛКА Документ.Invoice)) КАК PaymentsОбороты ИНДЕКСИРОВАТЬ ПО Invoice, Client, Company, Source,
-	Location, SubSubSegment, Currency, AU
+	РегистрНакопления.Payments.Обороты(
+			{(&amp;ПериодОстатков)},
+			{(&amp;КонецДняФормированияОтчета)},
+			,
+			(Client, Company, Source, Invoice, Currency, AU, LegalEntity) В
+				(ВЫБРАТЬ РАЗЛИЧНЫЕ
+					ВТ_Обороты.Client,
+					ВТ_Обороты.Company,
+					ВТ_Обороты.Source,
+					ВТ_Обороты.Invoice,
+					ВТ_Обороты.Currency,
+					ВТ_Обороты.AU,
+					ВТ_Обороты.LegalEntity
+				ИЗ
+					ВТ_Обороты КАК ВТ_Обороты
+				ГДЕ
+					ВТ_Обороты.Invoice ССЫЛКА Документ.Invoice)) КАК PaymentsОбороты
+
+ИНДЕКСИРОВАТЬ ПО
+	Invoice,
+	Client,
+	Company,
+	Source,
+	Location,
+	SubSubSegment,
+	Currency,
+	AU
 ;
+
 ////////////////////////////////////////////////////////////////////////////////
- ВЫБРАТЬ
-	ВТ_Обороты.Client,
-	ВТ_Обороты.Company,
-	ВТ_Обороты.Source,
-	ВТ_Обороты.Location,
-	ВТ_Обороты.SubSubSegment,
-	ВТ_Обороты.Invoice,
-	ВТ_Обороты.Account,
-	ВТ_Обороты.Currency,
-	ВТ_Обороты.AU,
+ВЫБРАТЬ
+	ВТ_Обороты.Client КАК Client,
+	ВТ_Обороты.Company КАК Company,
+	ВТ_Обороты.Source КАК Source,
+	ВТ_Обороты.Location КАК Location,
+	ВТ_Обороты.SubSubSegment КАК SubSubSegment,
+	ВТ_Обороты.Invoice КАК Invoice,
+	ВТ_Обороты.Account КАК Account,
+	ВТ_Обороты.Currency КАК Currency,
+	ВТ_Обороты.AU КАК AU,
 	ВТ_Обороты.AmountОборот + ЕСТЬNULL(ВТ_Оплаты.AmountОборот, 0) КАК AmountОстаток,
-	ВТ_Обороты.ПредставлениеДокумента,
-	ВТ_Обороты.LegalEntity
+	ВТ_Обороты.ПредставлениеДокумента КАК ПредставлениеДокумента,
+	ВТ_Обороты.LegalEntity КАК LegalEntity
 ПОМЕСТИТЬ ВТ_ОборотыБезОплат
 ИЗ
 	ВТ_Обороты КАК ВТ_Обороты
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ОплатыТекущегоПериода КАК ВТ_Оплаты
 		ПО ВТ_Обороты.Client = ВТ_Оплаты.Client
-		И ВТ_Обороты.Company = ВТ_Оплаты.Company
-		И ВТ_Обороты.Source = ВТ_Оплаты.Source
-		И ВТ_Обороты.Location = ВТ_Оплаты.Location
-		И ВТ_Обороты.SubSubSegment = ВТ_Оплаты.SubSubSegment
-		И ВТ_Обороты.Invoice = ВТ_Оплаты.Invoice
-		И ВТ_Обороты.Currency = ВТ_Оплаты.Currency
-		И ВТ_Обороты.AU = ВТ_Оплаты.AU
-		И ВТ_Обороты.LegalEntity = ВТ_Оплаты.LegalEntity
+			И ВТ_Обороты.Company = ВТ_Оплаты.Company
+			И ВТ_Обороты.Source = ВТ_Оплаты.Source
+			И ВТ_Обороты.Location = ВТ_Оплаты.Location
+			И ВТ_Обороты.SubSubSegment = ВТ_Оплаты.SubSubSegment
+			И ВТ_Обороты.Invoice = ВТ_Оплаты.Invoice
+			И ВТ_Обороты.Currency = ВТ_Оплаты.Currency
+			И ВТ_Обороты.AU = ВТ_Оплаты.AU
+			И ВТ_Обороты.LegalEntity = ВТ_Оплаты.LegalEntity
 ГДЕ
 	ВТ_Обороты.AmountОборот + ЕСТЬNULL(ВТ_Оплаты.AmountОборот, 0) &lt;&gt; 0
 ;
+
 ////////////////////////////////////////////////////////////////////////////////
- ВЫБРАТЬ
+ВЫБРАТЬ
 	ВложенныйЗапрос.Client КАК Client,
-	ВложенныйЗапрос.Company,
+	ВложенныйЗапрос.Company КАК Company,
 	ВложенныйЗапрос.Source КАК Source,
-	ВложенныйЗапрос.Location,
-	ВложенныйЗапрос.SubSubSegment,
-	ВложенныйЗапрос.Invoice,
-	ВложенныйЗапрос.Account,
-	ВложенныйЗапрос.Currency,
-	ВложенныйЗапрос.AU,
+	ВложенныйЗапрос.Location КАК Location,
+	ВложенныйЗапрос.SubSubSegment КАК SubSubSegment,
+	ВложенныйЗапрос.Invoice КАК Invoice,
+	ВложенныйЗапрос.Account КАК Account,
+	ВложенныйЗапрос.Currency КАК Currency,
+	ВложенныйЗапрос.AU КАК AU,
 	СУММА(ВложенныйЗапрос.AmountОстаток) КАК AmountОстаток,
-	ВложенныйЗапрос.ПредставлениеДокумента,
-	ВложенныйЗапрос.LegalEntity,
+	ВложенныйЗапрос.ПредставлениеДокумента КАК ПредставлениеДокумента,
+	ВложенныйЗапрос.LegalEntity КАК LegalEntity,
 	ВЫБОР
 		КОГДА ИсточникиСЗаполнениемОплатИзОбмена.Source ЕСТЬ NULL
 			ТОГДА ЛОЖЬ
@@ -768,7 +888,9 @@
 		ВТ_Остатки.LegalEntity КАК LegalEntity
 	ИЗ
 		ВТ_Остатки КАК ВТ_Остатки
+	
 	ОБЪЕДИНИТЬ ВСЕ
+	
 	ВЫБРАТЬ
 		ВТ_ОборотыБезОплат.Client,
 		ВТ_ОборотыБезОплат.Company,
@@ -786,8 +908,9 @@
 		ВТ_ОборотыБезОплат КАК ВТ_ОборотыБезОплат) КАК ВложенныйЗапрос
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИсточникиСЗаполнениемОплатИзОбмена КАК ИсточникиСЗаполнениемОплатИзОбмена
 		ПО ВложенныйЗапрос.Source = ИсточникиСЗаполнениемОплатИзОбмена.Source
-		И (ВложенныйЗапрос.Company = ИсточникиСЗаполнениемОплатИзОбмена.Company
-		ИЛИ ИсточникиСЗаполнениемОплатИзОбмена.Company = ЗНАЧЕНИЕ(Справочник.Организации.ПустаяСсылка))
+			И (ВложенныйЗапрос.Company = ИсточникиСЗаполнениемОплатИзОбмена.Company
+				ИЛИ ИсточникиСЗаполнениемОплатИзОбмена.Company = ЗНАЧЕНИЕ(Справочник.Организации.ПустаяСсылка))
+
 СГРУППИРОВАТЬ ПО
 	ВложенныйЗапрос.Client,
 	ВложенныйЗапрос.Company,
@@ -804,10 +927,15 @@
 		КОГДА ИсточникиСЗаполнениемОплатИзОбмена.Source ЕСТЬ NULL
 			ТОГДА ЛОЖЬ
 		ИНАЧЕ ИСТИНА
-	КОНЕЦ ИНДЕКСИРОВАТЬ ПО Client, Source
+	КОНЕЦ
+
+ИНДЕКСИРОВАТЬ ПО
+	Client,
+	Source
 ;
+
 ////////////////////////////////////////////////////////////////////////////////
- ВЫБРАТЬ
+ВЫБРАТЬ
 	PaymentsОбороты.Client КАК Client,
 	PaymentsОбороты.Company КАК Company,
 	PaymentsОбороты.Source КАК Source,
@@ -818,39 +946,42 @@
 	PaymentsОбороты.AU КАК AU,
 	СУММА(PaymentsОбороты.AmountОборот) КАК Paid,
 	МАКСИМУМ(ВЫБОР
-		КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.ПроводкаDSS
-			ТОГДА PaymentsОбороты.Регистратор.DateLawson
-		КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
-		И ВЫРАЗИТЬ(PaymentsОбороты.Регистратор КАК Документ.КорректировкаТранзакции).ДокументОснование
-			ССЫЛКА Документ.ПроводкаDSS
-			ТОГДА ВЫРАЗИТЬ(ВЫРАЗИТЬ(PaymentsОбороты.Регистратор КАК Документ.КорректировкаТранзакции).ДокументОснование КАК
-				Документ.ПроводкаDSS).AccountingPeriod
-		КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
-			ТОГДА ВЫРАЗИТЬ(PaymentsОбороты.Регистратор КАК Документ.КорректировкаТранзакции).ДокументОснование.Дата
-		ИНАЧЕ PaymentsОбороты.Регистратор.Дата
-	КОНЕЦ) КАК PaymentDate,
-	PaymentsОбороты.LegalEntity
+			КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.ПроводкаDSS
+				ТОГДА PaymentsОбороты.Регистратор.DateLawson
+			КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
+					И ВЫРАЗИТЬ(PaymentsОбороты.Регистратор КАК Документ.КорректировкаТранзакции).ДокументОснование ССЫЛКА Документ.ПроводкаDSS
+				ТОГДА ВЫРАЗИТЬ(ВЫРАЗИТЬ(PaymentsОбороты.Регистратор КАК Документ.КорректировкаТранзакции).ДокументОснование КАК Документ.ПроводкаDSS).AccountingPeriod
+			КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
+				ТОГДА ВЫРАЗИТЬ(PaymentsОбороты.Регистратор КАК Документ.КорректировкаТранзакции).ДокументОснование.Дата
+			ИНАЧЕ PaymentsОбороты.Регистратор.Дата
+		КОНЕЦ) КАК PaymentDate,
+	PaymentsОбороты.LegalEntity КАК LegalEntity
 ПОМЕСТИТЬ ВТ_ОплатыПоПроводкам
 ИЗ
-	РегистрНакопления.Payments.Обороты({(&amp;ПериодОстатков)}, {(&amp;КонецДняФормированияОтчета)}, Регистратор, (Client,
-		Company, Source, Invoice, Currency, AU, LegalEntity) В
-		(ВЫБРАТЬ РАЗЛИЧНЫЕ
-			ВТ_ОстаткиБезОплатТекущегоПериода.Client,
-			ВТ_ОстаткиБезОплатТекущегоПериода.Company,
-			ВТ_ОстаткиБезОплатТекущегоПериода.Source,
-			ВТ_ОстаткиБезОплатТекущегоПериода.Invoice,
-			ВТ_ОстаткиБезОплатТекущегоПериода.Currency,
-			ВТ_ОстаткиБезОплатТекущегоПериода.AU,
-			ВТ_ОстаткиБезОплатТекущегоПериода.LegalEntity
-		ИЗ
-			ВТ_ОстаткиБезОплатТекущегоПериода КАК ВТ_ОстаткиБезОплатТекущегоПериода
-				ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИсточникиСЗаполнениемОплатИзОбмена КАК ИсточникиСЗаполнениемОплатИзОбмена
-				ПО ВТ_ОстаткиБезОплатТекущегоПериода.Source = ИсточникиСЗаполнениемОплатИзОбмена.Source
-				И (ВТ_ОстаткиБезОплатТекущегоПериода.Company = ИсточникиСЗаполнениемОплатИзОбмена.Company
-				ИЛИ ИсточникиСЗаполнениемОплатИзОбмена.Company = ЗНАЧЕНИЕ(Справочник.Организации.ПустаяСсылка))
-		ГДЕ
-			ВТ_ОстаткиБезОплатТекущегоПериода.Invoice ССЫЛКА Документ.Invoice
-			И ИсточникиСЗаполнениемОплатИзОбмена.Source ЕСТЬ NULL)) КАК PaymentsОбороты
+	РегистрНакопления.Payments.Обороты(
+			{(&amp;ПериодОстатков)},
+			{(&amp;КонецДняФормированияОтчета)},
+			Регистратор,
+			(Client, Company, Source, Invoice, Currency, AU, LegalEntity) В
+				(ВЫБРАТЬ РАЗЛИЧНЫЕ
+					ВТ_ОстаткиБезОплатТекущегоПериода.Client,
+					ВТ_ОстаткиБезОплатТекущегоПериода.Company,
+					ВТ_ОстаткиБезОплатТекущегоПериода.Source,
+					ВТ_ОстаткиБезОплатТекущегоПериода.Invoice,
+					ВТ_ОстаткиБезОплатТекущегоПериода.Currency,
+					ВТ_ОстаткиБезОплатТекущегоПериода.AU,
+					ВТ_ОстаткиБезОплатТекущегоПериода.LegalEntity
+				ИЗ
+					ВТ_ОстаткиБезОплатТекущегоПериода КАК ВТ_ОстаткиБезОплатТекущегоПериода
+						ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИсточникиСЗаполнениемОплатИзОбмена КАК ИсточникиСЗаполнениемОплатИзОбмена
+						ПО
+							ВТ_ОстаткиБезОплатТекущегоПериода.Source = ИсточникиСЗаполнениемОплатИзОбмена.Source
+								И (ВТ_ОстаткиБезОплатТекущегоПериода.Company = ИсточникиСЗаполнениемОплатИзОбмена.Company
+									ИЛИ ИсточникиСЗаполнениемОплатИзОбмена.Company = ЗНАЧЕНИЕ(Справочник.Организации.ПустаяСсылка))
+				ГДЕ
+					ВТ_ОстаткиБезОплатТекущегоПериода.Invoice ССЫЛКА Документ.Invoice
+					И ИсточникиСЗаполнениемОплатИзОбмена.Source ЕСТЬ NULL)) КАК PaymentsОбороты
+
 СГРУППИРОВАТЬ ПО
 	PaymentsОбороты.Client,
 	PaymentsОбороты.Company,
@@ -860,14 +991,25 @@
 	PaymentsОбороты.Invoice,
 	PaymentsОбороты.Currency,
 	PaymentsОбороты.AU,
-	PaymentsОбороты.LegalEntity ИНДЕКСИРОВАТЬ ПО Invoice, Client, Company, Source, Location, SubSubSegment, Currency, AU
+	PaymentsОбороты.LegalEntity
+
+ИНДЕКСИРОВАТЬ ПО
+	Invoice,
+	Client,
+	Company,
+	Source,
+	Location,
+	SubSubSegment,
+	Currency,
+	AU
 ;
+
 ////////////////////////////////////////////////////////////////////////////////
- ВЫБРАТЬ
-	FiscalPayments.Source,
-	FiscalPayments.Company,
-	FiscalPayments.Invoice,
-	FiscalPayments.Currency,
+ВЫБРАТЬ
+	FiscalPayments.Source КАК Source,
+	FiscalPayments.Company КАК Company,
+	FiscalPayments.Invoice КАК Invoice,
+	FiscalPayments.Currency КАК Currency,
 	СУММА(FiscalPayments.Amount) КАК Paid,
 	МАКСИМУМ(FiscalPayments.PaymentDate) КАК PaymentDate,
 	СУММА(FiscalPayments.SettlementAmount) КАК SettlementAmount
@@ -876,73 +1018,78 @@
 	РегистрСведений.FiscalPayments КАК FiscalPayments
 		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.ИсточникиСЗаполнениемОплатИзОбмена КАК ИсточникиСЗаполнениемОплатИзОбмена
 		ПО FiscalPayments.Source = ИсточникиСЗаполнениемОплатИзОбмена.Source
-		И (FiscalPayments.Company = ИсточникиСЗаполнениемОплатИзОбмена.Company
-		ИЛИ ИсточникиСЗаполнениемОплатИзОбмена.Company = ЗНАЧЕНИЕ(Справочник.Организации.ПустаяСсылка))
+			И (FiscalPayments.Company = ИсточникиСЗаполнениемОплатИзОбмена.Company
+				ИЛИ ИсточникиСЗаполнениемОплатИзОбмена.Company = ЗНАЧЕНИЕ(Справочник.Организации.ПустаяСсылка))
 ГДЕ
 	FiscalPayments.PaymentDate &gt;= &amp;ПериодОстатков
 	И FiscalPayments.PaymentDate &lt;= &amp;КонецДняФормированияОтчета
+
 СГРУППИРОВАТЬ ПО
 	FiscalPayments.Invoice,
 	FiscalPayments.Currency,
 	FiscalPayments.Source,
 	FiscalPayments.Company
 ;
+
 ////////////////////////////////////////////////////////////////////////////////
- ВЫБРАТЬ
+ВЫБРАТЬ
 	ИерархияКонтрагентовСрезПоследних.Контрагент КАК Контрагент,
-	ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент
+	ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент КАК ГоловнойКонтрагент
 ПОМЕСТИТЬ ВТ_ИерархияКлиентов
 ИЗ
-	РегистрСведений.ИерархияКонтрагентов.СрезПоследних(, Контрагент В
-		(ВЫБРАТЬ
-			ВТ_ОстаткиБезОплатТекущегоПериода.Client
-		ИЗ
-			ВТ_ОстаткиБезОплатТекущегоПериода КАК ВТ_ОстаткиБезОплатТекущегоПериода)) КАК ИерархияКонтрагентовСрезПоследних
-	ИНДЕКСИРОВАТЬ ПО Контрагент
+	РегистрСведений.ИерархияКонтрагентов.СрезПоследних(
+			,
+			Контрагент В
+				(ВЫБРАТЬ
+					ВТ_ОстаткиБезОплатТекущегоПериода.Client
+				ИЗ
+					ВТ_ОстаткиБезОплатТекущегоПериода КАК ВТ_ОстаткиБезОплатТекущегоПериода)) КАК ИерархияКонтрагентовСрезПоследних
+
+ИНДЕКСИРОВАТЬ ПО
+	Контрагент
 ;
+
 ////////////////////////////////////////////////////////////////////////////////
- ВЫБРАТЬ
-	ВТ_Остатки.Client,
-	ВТ_Остатки.Company,
-	ВТ_Остатки.Source,
-	ВТ_Остатки.Location,
-	ВТ_Остатки.SubSubSegment,
-	ВТ_Остатки.Account,
-	ВТ_Остатки.Currency,
-	ВТ_Остатки.AU,
+ВЫБРАТЬ
+	ВТ_Остатки.Client КАК Client,
+	ВТ_Остатки.Company КАК Company,
+	ВТ_Остатки.Source КАК Source,
+	ВТ_Остатки.Location КАК Location,
+	ВТ_Остатки.SubSubSegment КАК SubSubSegment,
+	ВТ_Остатки.Account КАК Account,
+	ВТ_Остатки.Currency КАК Currency,
+	ВТ_Остатки.AU КАК AU,
 	ВТ_Остатки.Invoice.ClientID КАК ИдентификаторКлиента,
 	СУММА(ВТ_Остатки.AmountОстаток) КАК AmountОстаток,
 	СУММА(ВЫБОР
-		КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
-		ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
-			ТОГДА 0
-		ИНАЧЕ ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс *
-			ВнутренниеКурсыВалютСрезПоследних.Кратность
-	КОНЕЦ) КАК BaseAmountОстаток,
-	ВТ_ИерархияКлиентов.ГоловнойКонтрагент,
+			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
+					ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+				ТОГДА 0
+			ИНАЧЕ ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность
+		КОНЕЦ) КАК BaseAmountОстаток,
+	ВТ_ИерархияКлиентов.ГоловнойКонтрагент КАК ГоловнойКонтрагент,
 	ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0) КАК Rate,
 	ВЫБОР
 		КОГДА ВТ_Остатки.Invoice.DueDateTo &lt;= &amp;Период
-		И InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
+				И InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
 			ТОГДА ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка)
 		ИНАЧЕ ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.Status, ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка))
 	КОНЕЦ КАК Status,
 	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.ConfirmedBy, "") КАК ConfirmedBy,
 	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.Comment, "") КАК Comment,
-	ВТ_Остатки.ПредставлениеДокумента,
+	ВТ_Остатки.ПредставлениеДокумента КАК ПредставлениеДокумента,
 	ВЫБОР
 		КОГДА InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
 			ТОГДА ВТ_Остатки.Invoice.DueDateTo
 		КОГДА (InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid)
-		ИЛИ InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.PartiallyPaid))
-		И ВТ_Остатки.ЗаполнятьОплатыПоДаннымОбмена
-		И ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) &gt;= &amp;ПериодОстатков
+				ИЛИ InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.PartiallyPaid))
+				И ВТ_Остатки.ЗаполнятьОплатыПоДаннымОбмена
+				И ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) &gt;= &amp;ПериодОстатков
 			ТОГДА ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1))
 		КОГДА (InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid)
-		ИЛИ InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.PartiallyPaid))
-		И
-		НЕ ВТ_Остатки.ЗаполнятьОплатыПоДаннымОбмена
-		И ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) &gt;= &amp;ПериодОстатков
+				ИЛИ InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.PartiallyPaid))
+				И НЕ ВТ_Остатки.ЗаполнятьОплатыПоДаннымОбмена
+				И ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) &gt;= &amp;ПериодОстатков
 			ТОГДА ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1))
 		ИНАЧЕ ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.ForecastDate, ДАТАВРЕМЯ(1, 1, 1))
 	КОНЕЦ КАК ForecastDate,
@@ -952,21 +1099,21 @@
 	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.SLBAssignedToList, "") КАК SLBAssignedTo,
 	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.RemedialWorkPlan, "") КАК RemedialWorkPlan,
 	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.RWDTargetDate, ДАТАВРЕМЯ(1, 1, 1)) КАК RWDTargetDate,
-	ВТ_Остатки.Invoice.ДатаВозвратаКС,
-	ВТ_Остатки.Invoice.ДатаОтправкиКС,
-	ВТ_Остатки.Invoice.СтатусВозвратаКС,
-	ВТ_Остатки.Invoice.КомментарийСтатусаВозвратаКС,
+	ВТ_Остатки.Invoice.ДатаВозвратаКС КАК InvoiceДатаВозвратаКС,
+	ВТ_Остатки.Invoice.ДатаОтправкиКС КАК InvoiceДатаОтправкиКС,
+	ВТ_Остатки.Invoice.СтатусВозвратаКС КАК InvoiceСтатусВозвратаКС,
+	ВТ_Остатки.Invoice.КомментарийСтатусаВозвратаКС КАК InvoiceКомментарийСтатусаВозвратаКС,
 	ЕСТЬNULL(Collectors.Collector, ЗНАЧЕНИЕ(Справочник.Пользователи.ПустаяСсылка)) КАК Collector,
 	ВЫБОР
 		КОГДА ВТ_Остатки.Invoice.Contract = ЗНАЧЕНИЕ(Справочник.ДоговорыКонтрагентов.ПустаяСсылка)
-		ИЛИ ВТ_Остатки.Invoice.Contract.Ссылка ЕСТЬ NULL
+				ИЛИ ВТ_Остатки.Invoice.Contract.Ссылка ЕСТЬ NULL
 			ТОГДА ВТ_Остатки.Invoice.Agreement
 		ИНАЧЕ ВТ_Остатки.Invoice.Contract.crmContractName
 	КОНЕЦ КАК Agreement,
 	ВЫБОР
 		КОГДА ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
-		И ВТ_Остатки.Invoice ССЫЛКА Документ.Invoice
-		И ВТ_Остатки.Invoice.FiscalInvoiceNo &lt;&gt; ""
+				И ВТ_Остатки.Invoice ССЫЛКА Документ.Invoice
+				И ВТ_Остатки.Invoice.FiscalInvoiceNo &lt;&gt; ""
 			ТОГДА ВТ_Остатки.Invoice.FiscalInvoiceNo
 		ИНАЧЕ ВТ_Остатки.ПредставлениеДокумента
 	КОНЕЦ КАК InvoiceНомер,
@@ -1003,30 +1150,24 @@
 		ИНАЧЕ ""
 	КОНЕЦ КАК TransType,
 	СУММА(ВЫБОР
-		КОГДА
-		НЕ ВТ_Остатки.ЗаполнятьОплатыПоДаннымОбмена
-			ТОГДА ЕСТЬNULL(ВТ_ОплатыПоПроводкам.Paid / ВнутренниеКурсыВалютСрезПоследнихОплатыПоПроводкам.Курс *
-				ВнутренниеКурсыВалютСрезПоследнихОплатыПоПроводкам.Кратность, 0)
-		ИНАЧЕ ЕСТЬNULL(ВТ_ОплатыИзОбмена.SettlementAmount / ВнутренниеКурсыВалютСрезПоследних.Курс *
-			ВнутренниеКурсыВалютСрезПоследних.Кратность, 0)
-	КОНЕЦ) КАК Paid,
+			КОГДА НЕ ВТ_Остатки.ЗаполнятьОплатыПоДаннымОбмена
+				ТОГДА ЕСТЬNULL(ВТ_ОплатыПоПроводкам.Paid / ВнутренниеКурсыВалютСрезПоследнихОплатыПоПроводкам.Курс * ВнутренниеКурсыВалютСрезПоследнихОплатыПоПроводкам.Кратность, 0)
+			ИНАЧЕ ЕСТЬNULL(ВТ_ОплатыИзОбмена.SettlementAmount / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность, 0)
+		КОНЕЦ) КАК Paid,
 	МАКСИМУМ(ВЫБОР
-		КОГДА
-		НЕ ВТ_Остатки.ЗаполнятьОплатыПоДаннымОбмена
-		И ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) &gt;= &amp;ПериодОстатков
-			ТОГДА ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1))
-		КОГДА
-		НЕ ВТ_Остатки.ЗаполнятьОплатыПоДаннымОбмена
-			ТОГДА ДАТАВРЕМЯ(1, 1, 1)
-		КОГДА ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) &gt;= &amp;ПериодОстатков
-			ТОГДА ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1))
-		ИНАЧЕ ДАТАВРЕМЯ(1, 1, 1)
-	КОНЕЦ) КАК PaymentDate,
+			КОГДА НЕ ВТ_Остатки.ЗаполнятьОплатыПоДаннымОбмена
+					И ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) &gt;= &amp;ПериодОстатков
+				ТОГДА ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1))
+			КОГДА НЕ ВТ_Остатки.ЗаполнятьОплатыПоДаннымОбмена
+				ТОГДА ДАТАВРЕМЯ(1, 1, 1)
+			КОГДА ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) &gt;= &amp;ПериодОстатков
+				ТОГДА ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1))
+			ИНАЧЕ ДАТАВРЕМЯ(1, 1, 1)
+		КОНЕЦ) КАК PaymentDate,
 	ВЫБОР
 		КОГДА ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.ForecastDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА ЛОЖЬ
-		КОГДА ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.Status,
-			ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка)) = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid)
+		КОГДА ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.Status, ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка)) = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid)
 			ТОГДА ЛОЖЬ
 		КОГДА РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.ForecastDate, &amp;ТекущаяДата, ДЕНЬ) &gt; 0
 			ТОГДА ИСТИНА
@@ -1043,51 +1184,47 @@
 		ИНАЧЕ ВТ_Остатки.Company.DefaultLegalEntity
 	КОНЕЦ КАК LegalEntity,
 	СУММА(ВЫБОР
-		КОГДА ВТ_Остатки.Currency &lt;&gt; &amp;USD
-		И ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0) = 0
-			ТОГДА 0
-		КОГДА ВТ_Остатки.Currency &lt;&gt; &amp;USD
-			ТОГДА ВТ_Остатки.AmountОстаток / ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0)
-		ИНАЧЕ ВТ_Остатки.AmountОстаток
-	КОНЕЦ) КАК USDAmount
+			КОГДА ВТ_Остатки.Currency &lt;&gt; &amp;USD
+					И ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0) = 0
+				ТОГДА 0
+			КОГДА ВТ_Остатки.Currency &lt;&gt; &amp;USD
+				ТОГДА ВТ_Остатки.AmountОстаток / ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0)
+			ИНАЧЕ ВТ_Остатки.AmountОстаток
+		КОНЕЦ) КАК USDAmount
 ПОМЕСТИТЬ ВТ_ДетальныеЗаписи
 ИЗ
 	ВТ_ОстаткиБезОплатТекущегоПериода КАК ВТ_Остатки
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ИерархияКлиентов КАК ВТ_ИерархияКлиентов
 		ПО ВТ_Остатки.Client = ВТ_ИерархияКлиентов.Контрагент
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)},) КАК
-			ВнутренниеКурсыВалютСрезПоследних
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
 		ПО ВТ_Остатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments.СрезПоследних({(&amp;КонецМесяцаФормированияОтчета)},
-		НЕ Inactive) КАК InvoiceCommentsСрезПоследних
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments.СрезПоследних({(&amp;КонецМесяцаФормированияОтчета)}, НЕ Inactive) КАК InvoiceCommentsСрезПоследних
 		ПО ВТ_Остатки.Invoice = InvoiceCommentsСрезПоследних.Invoice
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.Collectors КАК Collectors
 		ПО ВТ_Остатки.Client = Collectors.Client
-		И (Collectors.ManagementGeomarket = ВТ_Остатки.Location.БазовыйЭлемент.GeoMarket.ManagementGeomarket
-		ИЛИ Collectors.ManagementGeomarket = ЗНАЧЕНИЕ(Справочник.ManagementGeography.ПустаяСсылка))
+			И (Collectors.ManagementGeomarket = ВТ_Остатки.Location.БазовыйЭлемент.GeoMarket.ManagementGeomarket
+				ИЛИ Collectors.ManagementGeomarket = ЗНАЧЕНИЕ(Справочник.ManagementGeography.ПустаяСсылка))
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ОплатыИзОбмена КАК ВТ_ОплатыИзОбмена
-			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)},) КАК
-				ВнутренниеКурсыВалютСрезПоследнихОплатыИзОбмена
+			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)}, ) КАК ВнутренниеКурсыВалютСрезПоследнихОплатыИзОбмена
 			ПО ВТ_ОплатыИзОбмена.Currency = ВнутренниеКурсыВалютСрезПоследнихОплатыИзОбмена.Валюта
 		ПО ВТ_Остатки.Company = ВТ_ОплатыИзОбмена.Company
-		И ВТ_Остатки.Source = ВТ_ОплатыИзОбмена.Source
-		И ВТ_Остатки.Invoice = ВТ_ОплатыИзОбмена.Invoice
+			И ВТ_Остатки.Source = ВТ_ОплатыИзОбмена.Source
+			И ВТ_Остатки.Invoice = ВТ_ОплатыИзОбмена.Invoice
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ОплатыПоПроводкам КАК ВТ_ОплатыПоПроводкам
-			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)},) КАК
-				ВнутренниеКурсыВалютСрезПоследнихОплатыПоПроводкам
+			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)}, ) КАК ВнутренниеКурсыВалютСрезПоследнихОплатыПоПроводкам
 			ПО ВТ_ОплатыПоПроводкам.Currency = ВнутренниеКурсыВалютСрезПоследнихОплатыПоПроводкам.Валюта
 		ПО ВТ_Остатки.Client = ВТ_ОплатыПоПроводкам.Client
-		И ВТ_Остатки.Company = ВТ_ОплатыПоПроводкам.Company
-		И ВТ_Остатки.Source = ВТ_ОплатыПоПроводкам.Source
-		И ВТ_Остатки.Location = ВТ_ОплатыПоПроводкам.Location
-		И ВТ_Остатки.SubSubSegment = ВТ_ОплатыПоПроводкам.SubSubSegment
-		И ВТ_Остатки.Invoice = ВТ_ОплатыПоПроводкам.Invoice
-		И ВТ_Остатки.AU = ВТ_ОплатыПоПроводкам.AU
+			И ВТ_Остатки.Company = ВТ_ОплатыПоПроводкам.Company
+			И ВТ_Остатки.Source = ВТ_ОплатыПоПроводкам.Source
+			И ВТ_Остатки.Location = ВТ_ОплатыПоПроводкам.Location
+			И ВТ_Остатки.SubSubSegment = ВТ_ОплатыПоПроводкам.SubSubSegment
+			И ВТ_Остатки.Invoice = ВТ_ОплатыПоПроводкам.Invoice
+			И ВТ_Остатки.AU = ВТ_ОплатыПоПроводкам.AU
 ГДЕ
 	ВТ_Остатки.Client &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)
 	И ВТ_Остатки.Client &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.Unreconciled)
-	И
-	НЕ ВТ_Остатки.Client.Intercompany
+	И НЕ ВТ_Остатки.Client.Intercompany
+
 СГРУППИРОВАТЬ ПО
 	ВТ_ИерархияКлиентов.ГоловнойКонтрагент,
 	ВТ_Остатки.SubSubSegment,
@@ -1106,8 +1243,8 @@
 	ВТ_Остатки.Invoice.КомментарийСтатусаВозвратаКС,
 	ВЫБОР
 		КОГДА ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
-		И ВТ_Остатки.Invoice ССЫЛКА Документ.Invoice
-		И ВТ_Остатки.Invoice.FiscalInvoiceNo &lt;&gt; ""
+				И ВТ_Остатки.Invoice ССЫЛКА Документ.Invoice
+				И ВТ_Остатки.Invoice.FiscalInvoiceNo &lt;&gt; ""
 			ТОГДА ВТ_Остатки.Invoice.FiscalInvoiceNo
 		ИНАЧЕ ВТ_Остатки.ПредставлениеДокумента
 	КОНЕЦ,
@@ -1146,8 +1283,7 @@
 	ВЫБОР
 		КОГДА ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.ForecastDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА ЛОЖЬ
-		КОГДА ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.Status,
-			ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка)) = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid)
+		КОГДА ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.Status, ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка)) = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid)
 			ТОГДА ЛОЖЬ
 		КОГДА РАЗНОСТЬДАТ(InvoiceCommentsСрезПоследних.Problem.ForecastDate, &amp;ТекущаяДата, ДЕНЬ) &gt; 0
 			ТОГДА ИСТИНА
@@ -1160,13 +1296,13 @@
 	КОНЕЦ,
 	ВЫБОР
 		КОГДА ВТ_Остатки.Invoice.Contract = ЗНАЧЕНИЕ(Справочник.ДоговорыКонтрагентов.ПустаяСсылка)
-		ИЛИ ВТ_Остатки.Invoice.Contract.Ссылка ЕСТЬ NULL
+				ИЛИ ВТ_Остатки.Invoice.Contract.Ссылка ЕСТЬ NULL
 			ТОГДА ВТ_Остатки.Invoice.Agreement
 		ИНАЧЕ ВТ_Остатки.Invoice.Contract.crmContractName
 	КОНЕЦ,
 	ВЫБОР
 		КОГДА ВТ_Остатки.Invoice.DueDateTo &lt;= &amp;Период
-		И InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
+				И InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
 			ТОГДА ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка)
 		ИНАЧЕ ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.Status, ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка))
 	КОНЕЦ,
@@ -1176,15 +1312,14 @@
 		КОГДА InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoiceNotDue)
 			ТОГДА ВТ_Остатки.Invoice.DueDateTo
 		КОГДА (InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid)
-		ИЛИ InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.PartiallyPaid))
-		И ВТ_Остатки.ЗаполнятьОплатыПоДаннымОбмена
-		И ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) &gt;= &amp;ПериодОстатков
+				ИЛИ InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.PartiallyPaid))
+				И ВТ_Остатки.ЗаполнятьОплатыПоДаннымОбмена
+				И ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) &gt;= &amp;ПериодОстатков
 			ТОГДА ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1))
 		КОГДА (InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid)
-		ИЛИ InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.PartiallyPaid))
-		И
-		НЕ ВТ_Остатки.ЗаполнятьОплатыПоДаннымОбмена
-		И ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) &gt;= &amp;ПериодОстатков
+				ИЛИ InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.PartiallyPaid))
+				И НЕ ВТ_Остатки.ЗаполнятьОплатыПоДаннымОбмена
+				И ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) &gt;= &amp;ПериодОстатков
 			ТОГДА ЕСТЬNULL(ВТ_ОплатыПоПроводкам.PaymentDate, ДАТАВРЕМЯ(1, 1, 1))
 		ИНАЧЕ ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.ForecastDate, ДАТАВРЕМЯ(1, 1, 1))
 	КОНЕЦ,
@@ -1200,63 +1335,65 @@
 			ТОГДА ЛОЖЬ
 		ИНАЧЕ ИСТИНА
 	КОНЕЦ
+
 ИМЕЮЩИЕ
 	СУММА(ВТ_Остатки.AmountОстаток) &lt;&gt; 0
 ;
+
 ////////////////////////////////////////////////////////////////////////////////
- ВЫБРАТЬ
-	ВТ_ДетальныеЗаписи.Client,
-	ВТ_ДетальныеЗаписи.Company,
-	ВТ_ДетальныеЗаписи.Source,
-	ВТ_ДетальныеЗаписи.Location,
-	ВТ_ДетальныеЗаписи.SubSubSegment,
-	ВТ_ДетальныеЗаписи.Account,
-	ВТ_ДетальныеЗаписи.Currency,
-	ВТ_ДетальныеЗаписи.AU,
-	ВТ_ДетальныеЗаписи.ИдентификаторКлиента,
-	ВТ_ДетальныеЗаписи.AmountОстаток,
-	ВТ_ДетальныеЗаписи.BaseAmountОстаток,
-	ВТ_ДетальныеЗаписи.ГоловнойКонтрагент,
-	ВТ_ДетальныеЗаписи.Rate,
-	ВТ_ДетальныеЗаписи.Status,
-	ВТ_ДетальныеЗаписи.ConfirmedBy,
-	ВТ_ДетальныеЗаписи.Comment,
-	ВТ_ДетальныеЗаписи.ПредставлениеДокумента,
-	ВТ_ДетальныеЗаписи.ForecastDate,
-	ВТ_ДетальныеЗаписи.CustInputDate,
-	ВТ_ДетальныеЗаписи.CustomerRepresentative,
-	ВТ_ДетальныеЗаписи.CustomerInputDetails,
-	ВТ_ДетальныеЗаписи.SLBAssignedTo,
-	ВТ_ДетальныеЗаписи.RemedialWorkPlan,
-	ВТ_ДетальныеЗаписи.RWDTargetDate,
-	ВТ_ДетальныеЗаписи.InvoiceДатаВозвратаКС,
-	ВТ_ДетальныеЗаписи.InvoiceДатаОтправкиКС,
-	ВТ_ДетальныеЗаписи.InvoiceСтатусВозвратаКС,
-	ВТ_ДетальныеЗаписи.InvoiceКомментарийСтатусаВозвратаКС,
-	ВТ_ДетальныеЗаписи.Agreement,
-	ВТ_ДетальныеЗаписи.InvoiceНомер,
-	ВТ_ДетальныеЗаписи.InvoiceНомерДокумента,
-	ВТ_ДетальныеЗаписи.InvoiceДата,
-	ВТ_ДетальныеЗаписи.InvoiceFiscalInvoiceNo,
-	ВТ_ДетальныеЗаписи.InvoiceFiscalInvoiceDate,
-	ВТ_ДетальныеЗаписи.InvoiceAmount,
-	ВТ_ДетальныеЗаписи.InvoiceContractTrigger,
-	ВТ_ДетальныеЗаписи.InvoiceTriggerDate,
-	ВТ_ДетальныеЗаписи.InvoiceContractPTDaysFrom,
-	ВТ_ДетальныеЗаписи.InvoiceContractСрокОплаты,
-	ВТ_ДетальныеЗаписи.InvoiceDueDateFrom,
-	ВТ_ДетальныеЗаписи.InvoiceDueDateTo,
-	ВТ_ДетальныеЗаписи.InvoiceStatusOfDispute,
-	ВТ_ДетальныеЗаписи.InvoiceDisputeDistributedDate,
-	ВТ_ДетальныеЗаписи.InvoiceDisputeCollectableDate,
-	ВТ_ДетальныеЗаписи.InvoiceContractAmendmentName,
-	ВТ_ДетальныеЗаписи.TransType,
-	ВТ_ДетальныеЗаписи.Paid,
-	ВТ_ДетальныеЗаписи.PaymentDate,
-	ВТ_ДетальныеЗаписи.BrokenPromises,
-	ВТ_ДетальныеЗаписи.EscalationSent,
-	ВТ_ДетальныеЗаписи.LegalEntity,
-	ВТ_ДетальныеЗаписи.USDAmount,
+ВЫБРАТЬ
+	ВТ_ДетальныеЗаписи.Client КАК Client,
+	ВТ_ДетальныеЗаписи.Company КАК Company,
+	ВТ_ДетальныеЗаписи.Source КАК Source,
+	ВТ_ДетальныеЗаписи.Location КАК Location,
+	ВТ_ДетальныеЗаписи.SubSubSegment КАК SubSubSegment,
+	ВТ_ДетальныеЗаписи.Account КАК Account,
+	ВТ_ДетальныеЗаписи.Currency КАК Currency,
+	ВТ_ДетальныеЗаписи.AU КАК AU,
+	ВТ_ДетальныеЗаписи.ИдентификаторКлиента КАК ИдентификаторКлиента,
+	ВТ_ДетальныеЗаписи.AmountОстаток КАК AmountОстаток,
+	ВТ_ДетальныеЗаписи.BaseAmountОстаток КАК BaseAmountОстаток,
+	ВТ_ДетальныеЗаписи.ГоловнойКонтрагент КАК ГоловнойКонтрагент,
+	ВТ_ДетальныеЗаписи.Rate КАК Rate,
+	ВТ_ДетальныеЗаписи.Status КАК Status,
+	ВТ_ДетальныеЗаписи.ConfirmedBy КАК ConfirmedBy,
+	ВТ_ДетальныеЗаписи.Comment КАК Comment,
+	ВТ_ДетальныеЗаписи.ПредставлениеДокумента КАК ПредставлениеДокумента,
+	ВТ_ДетальныеЗаписи.ForecastDate КАК ForecastDate,
+	ВТ_ДетальныеЗаписи.CustInputDate КАК CustInputDate,
+	ВТ_ДетальныеЗаписи.CustomerRepresentative КАК CustomerRepresentative,
+	ВТ_ДетальныеЗаписи.CustomerInputDetails КАК CustomerInputDetails,
+	ВТ_ДетальныеЗаписи.SLBAssignedTo КАК SLBAssignedTo,
+	ВТ_ДетальныеЗаписи.RemedialWorkPlan КАК RemedialWorkPlan,
+	ВТ_ДетальныеЗаписи.RWDTargetDate КАК RWDTargetDate,
+	ВТ_ДетальныеЗаписи.InvoiceДатаВозвратаКС КАК InvoiceДатаВозвратаКС,
+	ВТ_ДетальныеЗаписи.InvoiceДатаОтправкиКС КАК InvoiceДатаОтправкиКС,
+	ВТ_ДетальныеЗаписи.InvoiceСтатусВозвратаКС КАК InvoiceСтатусВозвратаКС,
+	ВТ_ДетальныеЗаписи.InvoiceКомментарийСтатусаВозвратаКС КАК InvoiceКомментарийСтатусаВозвратаКС,
+	ВТ_ДетальныеЗаписи.Agreement КАК Agreement,
+	ВТ_ДетальныеЗаписи.InvoiceНомер КАК InvoiceНомер,
+	ВТ_ДетальныеЗаписи.InvoiceНомерДокумента КАК InvoiceНомерДокумента,
+	ВТ_ДетальныеЗаписи.InvoiceДата КАК InvoiceДата,
+	ВТ_ДетальныеЗаписи.InvoiceFiscalInvoiceNo КАК InvoiceFiscalInvoiceNo,
+	ВТ_ДетальныеЗаписи.InvoiceFiscalInvoiceDate КАК InvoiceFiscalInvoiceDate,
+	ВТ_ДетальныеЗаписи.InvoiceAmount КАК InvoiceAmount,
+	ВТ_ДетальныеЗаписи.InvoiceContractTrigger КАК InvoiceContractTrigger,
+	ВТ_ДетальныеЗаписи.InvoiceTriggerDate КАК InvoiceTriggerDate,
+	ВТ_ДетальныеЗаписи.InvoiceContractPTDaysFrom КАК InvoiceContractPTDaysFrom,
+	ВТ_ДетальныеЗаписи.InvoiceContractСрокОплаты КАК InvoiceContractСрокОплаты,
+	ВТ_ДетальныеЗаписи.InvoiceDueDateFrom КАК InvoiceDueDateFrom,
+	ВТ_ДетальныеЗаписи.InvoiceDueDateTo КАК InvoiceDueDateTo,
+	ВТ_ДетальныеЗаписи.InvoiceStatusOfDispute КАК InvoiceStatusOfDispute,
+	ВТ_ДетальныеЗаписи.InvoiceDisputeDistributedDate КАК InvoiceDisputeDistributedDate,
+	ВТ_ДетальныеЗаписи.InvoiceDisputeCollectableDate КАК InvoiceDisputeCollectableDate,
+	ВТ_ДетальныеЗаписи.InvoiceContractAmendmentName КАК InvoiceContractAmendmentName,
+	ВТ_ДетальныеЗаписи.TransType КАК TransType,
+	ВТ_ДетальныеЗаписи.Paid КАК Paid,
+	ВТ_ДетальныеЗаписи.PaymentDate КАК PaymentDate,
+	ВТ_ДетальныеЗаписи.BrokenPromises КАК BrokenPromises,
+	ВТ_ДетальныеЗаписи.EscalationSent КАК EscalationSent,
+	ВТ_ДетальныеЗаписи.LegalEntity КАК LegalEntity,
+	ВТ_ДетальныеЗаписи.USDAmount КАК USDAmount,
 	ВЫБОР
 		КОГДА ВТ_ДетальныеЗаписи.InvoiceDueDateFrom &lt;= &amp;КонецМесяцаФормированияОтчета
 			ТОГДА ВТ_ДетальныеЗаписи.USDAmount
@@ -1277,371 +1414,372 @@
 			ТОГДА ВТ_ДетальныеЗаписи.USDAmount
 		ИНАЧЕ 0
 	КОНЕЦ КАК NoFrcst,
-	ВТ_ДетальныеЗаписи.Collector
+	ВТ_ДетальныеЗаписи.Collector КАК Collector
 ПОМЕСТИТЬ ВТ_РассчитанныеРесурсыУровень1
 ИЗ
 	ВТ_ДетальныеЗаписи КАК ВТ_ДетальныеЗаписи
 ;
+
 ////////////////////////////////////////////////////////////////////////////////
- ВЫБРАТЬ
-	ВТ_РассчитанныеРесурсыУровень1.Client,
-	ВТ_РассчитанныеРесурсыУровень1.Company,
-	ВТ_РассчитанныеРесурсыУровень1.Source,
-	ВТ_РассчитанныеРесурсыУровень1.Location,
-	ВТ_РассчитанныеРесурсыУровень1.SubSubSegment,
-	ВТ_РассчитанныеРесурсыУровень1.Account,
-	ВТ_РассчитанныеРесурсыУровень1.Currency,
-	ВТ_РассчитанныеРесурсыУровень1.AU,
-	ВТ_РассчитанныеРесурсыУровень1.ИдентификаторКлиента,
-	ВТ_РассчитанныеРесурсыУровень1.AmountОстаток,
-	ВТ_РассчитанныеРесурсыУровень1.BaseAmountОстаток,
-	ВТ_РассчитанныеРесурсыУровень1.ГоловнойКонтрагент,
-	ВТ_РассчитанныеРесурсыУровень1.Rate,
-	ВТ_РассчитанныеРесурсыУровень1.Status,
-	ВТ_РассчитанныеРесурсыУровень1.ConfirmedBy,
-	ВТ_РассчитанныеРесурсыУровень1.Comment,
-	ВТ_РассчитанныеРесурсыУровень1.ПредставлениеДокумента,
-	ВТ_РассчитанныеРесурсыУровень1.ForecastDate,
-	ВТ_РассчитанныеРесурсыУровень1.CustInputDate,
-	ВТ_РассчитанныеРесурсыУровень1.CustomerRepresentative,
-	ВТ_РассчитанныеРесурсыУровень1.CustomerInputDetails,
-	ВТ_РассчитанныеРесурсыУровень1.SLBAssignedTo,
-	ВТ_РассчитанныеРесурсыУровень1.RemedialWorkPlan,
-	ВТ_РассчитанныеРесурсыУровень1.RWDTargetDate,
-	ВТ_РассчитанныеРесурсыУровень1.InvoiceДатаВозвратаКС,
-	ВТ_РассчитанныеРесурсыУровень1.InvoiceДатаОтправкиКС,
-	ВТ_РассчитанныеРесурсыУровень1.InvoiceСтатусВозвратаКС,
-	ВТ_РассчитанныеРесурсыУровень1.InvoiceКомментарийСтатусаВозвратаКС,
-	ВТ_РассчитанныеРесурсыУровень1.Agreement,
-	ВТ_РассчитанныеРесурсыУровень1.InvoiceНомер,
-	ВТ_РассчитанныеРесурсыУровень1.InvoiceНомерДокумента,
-	ВТ_РассчитанныеРесурсыУровень1.InvoiceДата,
-	ВТ_РассчитанныеРесурсыУровень1.InvoiceFiscalInvoiceNo,
-	ВТ_РассчитанныеРесурсыУровень1.InvoiceFiscalInvoiceDate,
-	ВТ_РассчитанныеРесурсыУровень1.InvoiceAmount,
-	ВТ_РассчитанныеРесурсыУровень1.InvoiceContractTrigger,
-	ВТ_РассчитанныеРесурсыУровень1.InvoiceTriggerDate,
-	ВТ_РассчитанныеРесурсыУровень1.InvoiceContractPTDaysFrom,
-	ВТ_РассчитанныеРесурсыУровень1.InvoiceContractСрокОплаты,
-	ВТ_РассчитанныеРесурсыУровень1.InvoiceDueDateFrom,
-	ВТ_РассчитанныеРесурсыУровень1.InvoiceDueDateTo,
-	ВТ_РассчитанныеРесурсыУровень1.InvoiceStatusOfDispute,
-	ВТ_РассчитанныеРесурсыУровень1.InvoiceDisputeDistributedDate,
-	ВТ_РассчитанныеРесурсыУровень1.InvoiceDisputeCollectableDate,
-	ВТ_РассчитанныеРесурсыУровень1.InvoiceContractAmendmentName,
-	ВТ_РассчитанныеРесурсыУровень1.TransType,
-	ВТ_РассчитанныеРесурсыУровень1.Paid,
-	ВТ_РассчитанныеРесурсыУровень1.PaymentDate,
-	ВТ_РассчитанныеРесурсыУровень1.BrokenPromises,
-	ВТ_РассчитанныеРесурсыУровень1.EscalationSent,
-	ВТ_РассчитанныеРесурсыУровень1.LegalEntity,
-	ВТ_РассчитанныеРесурсыУровень1.USDAmount,
-	ВТ_РассчитанныеРесурсыУровень1.DueFrom,
-	ВТ_РассчитанныеРесурсыУровень1.DueTo,
-	ВТ_РассчитанныеРесурсыУровень1.UnderLitigation,
-	ВТ_РассчитанныеРесурсыУровень1.NoFrcst,
+ВЫБРАТЬ
+	ВТ_РассчитанныеРесурсыУровень1.Client КАК Client,
+	ВТ_РассчитанныеРесурсыУровень1.Company КАК Company,
+	ВТ_РассчитанныеРесурсыУровень1.Source КАК Source,
+	ВТ_РассчитанныеРесурсыУровень1.Location КАК Location,
+	ВТ_РассчитанныеРесурсыУровень1.SubSubSegment КАК SubSubSegment,
+	ВТ_РассчитанныеРесурсыУровень1.Account КАК Account,
+	ВТ_РассчитанныеРесурсыУровень1.Currency КАК Currency,
+	ВТ_РассчитанныеРесурсыУровень1.AU КАК AU,
+	ВТ_РассчитанныеРесурсыУровень1.ИдентификаторКлиента КАК ИдентификаторКлиента,
+	ВТ_РассчитанныеРесурсыУровень1.AmountОстаток КАК AmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень1.BaseAmountОстаток КАК BaseAmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень1.ГоловнойКонтрагент КАК ГоловнойКонтрагент,
+	ВТ_РассчитанныеРесурсыУровень1.Rate КАК Rate,
+	ВТ_РассчитанныеРесурсыУровень1.Status КАК Status,
+	ВТ_РассчитанныеРесурсыУровень1.ConfirmedBy КАК ConfirmedBy,
+	ВТ_РассчитанныеРесурсыУровень1.Comment КАК Comment,
+	ВТ_РассчитанныеРесурсыУровень1.ПредставлениеДокумента КАК ПредставлениеДокумента,
+	ВТ_РассчитанныеРесурсыУровень1.ForecastDate КАК ForecastDate,
+	ВТ_РассчитанныеРесурсыУровень1.CustInputDate КАК CustInputDate,
+	ВТ_РассчитанныеРесурсыУровень1.CustomerRepresentative КАК CustomerRepresentative,
+	ВТ_РассчитанныеРесурсыУровень1.CustomerInputDetails КАК CustomerInputDetails,
+	ВТ_РассчитанныеРесурсыУровень1.SLBAssignedTo КАК SLBAssignedTo,
+	ВТ_РассчитанныеРесурсыУровень1.RemedialWorkPlan КАК RemedialWorkPlan,
+	ВТ_РассчитанныеРесурсыУровень1.RWDTargetDate КАК RWDTargetDate,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceДатаВозвратаКС КАК InvoiceДатаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceДатаОтправкиКС КАК InvoiceДатаОтправкиКС,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceСтатусВозвратаКС КАК InvoiceСтатусВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceКомментарийСтатусаВозвратаКС КАК InvoiceКомментарийСтатусаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень1.Agreement КАК Agreement,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceНомер КАК InvoiceНомер,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceНомерДокумента КАК InvoiceНомерДокумента,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceДата КАК InvoiceДата,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceFiscalInvoiceNo КАК InvoiceFiscalInvoiceNo,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceFiscalInvoiceDate КАК InvoiceFiscalInvoiceDate,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceAmount КАК InvoiceAmount,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceContractTrigger КАК InvoiceContractTrigger,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceTriggerDate КАК InvoiceTriggerDate,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceContractPTDaysFrom КАК InvoiceContractPTDaysFrom,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceContractСрокОплаты КАК InvoiceContractСрокОплаты,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceDueDateFrom КАК InvoiceDueDateFrom,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceDueDateTo КАК InvoiceDueDateTo,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceStatusOfDispute КАК InvoiceStatusOfDispute,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceDisputeDistributedDate КАК InvoiceDisputeDistributedDate,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceDisputeCollectableDate КАК InvoiceDisputeCollectableDate,
+	ВТ_РассчитанныеРесурсыУровень1.InvoiceContractAmendmentName КАК InvoiceContractAmendmentName,
+	ВТ_РассчитанныеРесурсыУровень1.TransType КАК TransType,
+	ВТ_РассчитанныеРесурсыУровень1.Paid КАК Paid,
+	ВТ_РассчитанныеРесурсыУровень1.PaymentDate КАК PaymentDate,
+	ВТ_РассчитанныеРесурсыУровень1.BrokenPromises КАК BrokenPromises,
+	ВТ_РассчитанныеРесурсыУровень1.EscalationSent КАК EscalationSent,
+	ВТ_РассчитанныеРесурсыУровень1.LegalEntity КАК LegalEntity,
+	ВТ_РассчитанныеРесурсыУровень1.USDAmount КАК USDAmount,
+	ВТ_РассчитанныеРесурсыУровень1.DueFrom КАК DueFrom,
+	ВТ_РассчитанныеРесурсыУровень1.DueTo КАК DueTo,
+	ВТ_РассчитанныеРесурсыУровень1.UnderLitigation КАК UnderLitigation,
+	ВТ_РассчитанныеРесурсыУровень1.NoFrcst КАК NoFrcst,
 	ВЫБОР
 		КОГДА ВТ_РассчитанныеРесурсыУровень1.ForecastDate &lt;= &amp;КонецМесяцаФормированияОтчета
-		И ВТ_РассчитанныеРесурсыУровень1.ForecastDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
+				И ВТ_РассчитанныеРесурсыУровень1.ForecastDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА ВТ_РассчитанныеРесурсыУровень1.USDAmount - ВТ_РассчитанныеРесурсыУровень1.Paid
 		ИНАЧЕ 0
 	КОНЕЦ КАК FcstCollect,
-	ВТ_РассчитанныеРесурсыУровень1.Collector
+	ВТ_РассчитанныеРесурсыУровень1.Collector КАК Collector
 ПОМЕСТИТЬ ВТ_РассчитанныеРесурсыУровень2
 ИЗ
 	ВТ_РассчитанныеРесурсыУровень1 КАК ВТ_РассчитанныеРесурсыУровень1
 ;
+
 ////////////////////////////////////////////////////////////////////////////////
- ВЫБРАТЬ
-	ВТ_РассчитанныеРесурсыУровень2.Client,
-	ВТ_РассчитанныеРесурсыУровень2.Company,
-	ВТ_РассчитанныеРесурсыУровень2.Source,
-	ВТ_РассчитанныеРесурсыУровень2.Location,
-	ВТ_РассчитанныеРесурсыУровень2.SubSubSegment,
-	ВТ_РассчитанныеРесурсыУровень2.Account,
-	ВТ_РассчитанныеРесурсыУровень2.Currency,
-	ВТ_РассчитанныеРесурсыУровень2.AU,
-	ВТ_РассчитанныеРесурсыУровень2.ИдентификаторКлиента,
-	ВТ_РассчитанныеРесурсыУровень2.AmountОстаток,
-	ВТ_РассчитанныеРесурсыУровень2.BaseAmountОстаток,
-	ВТ_РассчитанныеРесурсыУровень2.ГоловнойКонтрагент,
-	ВТ_РассчитанныеРесурсыУровень2.Rate,
-	ВТ_РассчитанныеРесурсыУровень2.Status,
-	ВТ_РассчитанныеРесурсыУровень2.ConfirmedBy,
-	ВТ_РассчитанныеРесурсыУровень2.Comment,
-	ВТ_РассчитанныеРесурсыУровень2.ПредставлениеДокумента,
-	ВТ_РассчитанныеРесурсыУровень2.ForecastDate,
-	ВТ_РассчитанныеРесурсыУровень2.CustInputDate,
-	ВТ_РассчитанныеРесурсыУровень2.CustomerRepresentative,
-	ВТ_РассчитанныеРесурсыУровень2.CustomerInputDetails,
-	ВТ_РассчитанныеРесурсыУровень2.SLBAssignedTo,
-	ВТ_РассчитанныеРесурсыУровень2.RemedialWorkPlan,
-	ВТ_РассчитанныеРесурсыУровень2.RWDTargetDate,
-	ВТ_РассчитанныеРесурсыУровень2.InvoiceДатаВозвратаКС,
-	ВТ_РассчитанныеРесурсыУровень2.InvoiceДатаОтправкиКС,
-	ВТ_РассчитанныеРесурсыУровень2.InvoiceСтатусВозвратаКС,
-	ВТ_РассчитанныеРесурсыУровень2.InvoiceКомментарийСтатусаВозвратаКС,
-	ВТ_РассчитанныеРесурсыУровень2.Agreement,
-	ВТ_РассчитанныеРесурсыУровень2.InvoiceНомер,
-	ВТ_РассчитанныеРесурсыУровень2.InvoiceНомерДокумента,
-	ВТ_РассчитанныеРесурсыУровень2.InvoiceДата,
-	ВТ_РассчитанныеРесурсыУровень2.InvoiceFiscalInvoiceNo,
-	ВТ_РассчитанныеРесурсыУровень2.InvoiceFiscalInvoiceDate,
-	ВТ_РассчитанныеРесурсыУровень2.InvoiceAmount,
-	ВТ_РассчитанныеРесурсыУровень2.InvoiceContractTrigger,
-	ВТ_РассчитанныеРесурсыУровень2.InvoiceTriggerDate,
-	ВТ_РассчитанныеРесурсыУровень2.InvoiceContractPTDaysFrom,
-	ВТ_РассчитанныеРесурсыУровень2.InvoiceContractСрокОплаты,
-	ВТ_РассчитанныеРесурсыУровень2.InvoiceDueDateFrom,
-	ВТ_РассчитанныеРесурсыУровень2.InvoiceDueDateTo,
-	ВТ_РассчитанныеРесурсыУровень2.InvoiceStatusOfDispute,
-	ВТ_РассчитанныеРесурсыУровень2.InvoiceDisputeDistributedDate,
-	ВТ_РассчитанныеРесурсыУровень2.InvoiceDisputeCollectableDate,
-	ВТ_РассчитанныеРесурсыУровень2.InvoiceContractAmendmentName,
-	ВТ_РассчитанныеРесурсыУровень2.TransType,
-	ВТ_РассчитанныеРесурсыУровень2.Paid,
-	ВТ_РассчитанныеРесурсыУровень2.PaymentDate,
-	ВТ_РассчитанныеРесурсыУровень2.BrokenPromises,
-	ВТ_РассчитанныеРесурсыУровень2.EscalationSent,
-	ВТ_РассчитанныеРесурсыУровень2.LegalEntity,
-	ВТ_РассчитанныеРесурсыУровень2.USDAmount,
-	ВТ_РассчитанныеРесурсыУровень2.DueFrom,
-	ВТ_РассчитанныеРесурсыУровень2.DueTo,
-	ВТ_РассчитанныеРесурсыУровень2.UnderLitigation,
-	ВТ_РассчитанныеРесурсыУровень2.NoFrcst,
-	ВТ_РассчитанныеРесурсыУровень2.FcstCollect,
+ВЫБРАТЬ
+	ВТ_РассчитанныеРесурсыУровень2.Client КАК Client,
+	ВТ_РассчитанныеРесурсыУровень2.Company КАК Company,
+	ВТ_РассчитанныеРесурсыУровень2.Source КАК Source,
+	ВТ_РассчитанныеРесурсыУровень2.Location КАК Location,
+	ВТ_РассчитанныеРесурсыУровень2.SubSubSegment КАК SubSubSegment,
+	ВТ_РассчитанныеРесурсыУровень2.Account КАК Account,
+	ВТ_РассчитанныеРесурсыУровень2.Currency КАК Currency,
+	ВТ_РассчитанныеРесурсыУровень2.AU КАК AU,
+	ВТ_РассчитанныеРесурсыУровень2.ИдентификаторКлиента КАК ИдентификаторКлиента,
+	ВТ_РассчитанныеРесурсыУровень2.AmountОстаток КАК AmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень2.BaseAmountОстаток КАК BaseAmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень2.ГоловнойКонтрагент КАК ГоловнойКонтрагент,
+	ВТ_РассчитанныеРесурсыУровень2.Rate КАК Rate,
+	ВТ_РассчитанныеРесурсыУровень2.Status КАК Status,
+	ВТ_РассчитанныеРесурсыУровень2.ConfirmedBy КАК ConfirmedBy,
+	ВТ_РассчитанныеРесурсыУровень2.Comment КАК Comment,
+	ВТ_РассчитанныеРесурсыУровень2.ПредставлениеДокумента КАК ПредставлениеДокумента,
+	ВТ_РассчитанныеРесурсыУровень2.ForecastDate КАК ForecastDate,
+	ВТ_РассчитанныеРесурсыУровень2.CustInputDate КАК CustInputDate,
+	ВТ_РассчитанныеРесурсыУровень2.CustomerRepresentative КАК CustomerRepresentative,
+	ВТ_РассчитанныеРесурсыУровень2.CustomerInputDetails КАК CustomerInputDetails,
+	ВТ_РассчитанныеРесурсыУровень2.SLBAssignedTo КАК SLBAssignedTo,
+	ВТ_РассчитанныеРесурсыУровень2.RemedialWorkPlan КАК RemedialWorkPlan,
+	ВТ_РассчитанныеРесурсыУровень2.RWDTargetDate КАК RWDTargetDate,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceДатаВозвратаКС КАК InvoiceДатаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceДатаОтправкиКС КАК InvoiceДатаОтправкиКС,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceСтатусВозвратаКС КАК InvoiceСтатусВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceКомментарийСтатусаВозвратаКС КАК InvoiceКомментарийСтатусаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень2.Agreement КАК Agreement,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceНомер КАК InvoiceНомер,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceНомерДокумента КАК InvoiceНомерДокумента,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceДата КАК InvoiceДата,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceFiscalInvoiceNo КАК InvoiceFiscalInvoiceNo,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceFiscalInvoiceDate КАК InvoiceFiscalInvoiceDate,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceAmount КАК InvoiceAmount,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceContractTrigger КАК InvoiceContractTrigger,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceTriggerDate КАК InvoiceTriggerDate,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceContractPTDaysFrom КАК InvoiceContractPTDaysFrom,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceContractСрокОплаты КАК InvoiceContractСрокОплаты,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceDueDateFrom КАК InvoiceDueDateFrom,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceDueDateTo КАК InvoiceDueDateTo,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceStatusOfDispute КАК InvoiceStatusOfDispute,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceDisputeDistributedDate КАК InvoiceDisputeDistributedDate,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceDisputeCollectableDate КАК InvoiceDisputeCollectableDate,
+	ВТ_РассчитанныеРесурсыУровень2.InvoiceContractAmendmentName КАК InvoiceContractAmendmentName,
+	ВТ_РассчитанныеРесурсыУровень2.TransType КАК TransType,
+	ВТ_РассчитанныеРесурсыУровень2.Paid КАК Paid,
+	ВТ_РассчитанныеРесурсыУровень2.PaymentDate КАК PaymentDate,
+	ВТ_РассчитанныеРесурсыУровень2.BrokenPromises КАК BrokenPromises,
+	ВТ_РассчитанныеРесурсыУровень2.EscalationSent КАК EscalationSent,
+	ВТ_РассчитанныеРесурсыУровень2.LegalEntity КАК LegalEntity,
+	ВТ_РассчитанныеРесурсыУровень2.USDAmount КАК USDAmount,
+	ВТ_РассчитанныеРесурсыУровень2.DueFrom КАК DueFrom,
+	ВТ_РассчитанныеРесурсыУровень2.DueTo КАК DueTo,
+	ВТ_РассчитанныеРесурсыУровень2.UnderLitigation КАК UnderLitigation,
+	ВТ_РассчитанныеРесурсыУровень2.NoFrcst КАК NoFrcst,
+	ВТ_РассчитанныеРесурсыУровень2.FcstCollect КАК FcstCollect,
 	ВЫБОР
-		КОГДА ВТ_РассчитанныеРесурсыУровень2.Status В (ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.PendingSLBDocumentation),
-			ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.Pricing), ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.TechnicalSQ),
-			ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.LostInHole))
-		И ВТ_РассчитанныеРесурсыУровень2.InvoiceDueDateFrom &lt;= &amp;КонецМесяцаФормированияОтчета
-			ТОГДА ВТ_РассчитанныеРесурсыУровень2.USDAmount - ВТ_РассчитанныеРесурсыУровень2.Paid -
-				ВТ_РассчитанныеРесурсыУровень2.FcstCollect
+		КОГДА ВТ_РассчитанныеРесурсыУровень2.Status В (ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.PendingSLBDocumentation), ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.Pricing), ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.TechnicalSQ), ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.LostInHole))
+				И ВТ_РассчитанныеРесурсыУровень2.InvoiceDueDateFrom &lt;= &amp;КонецМесяцаФормированияОтчета
+			ТОГДА ВТ_РассчитанныеРесурсыУровень2.USDAmount - ВТ_РассчитанныеРесурсыУровень2.Paid - ВТ_РассчитанныеРесурсыУровень2.FcstCollect
 		ИНАЧЕ 0
 	КОНЕЦ КАК OverdueDispute,
-	ВТ_РассчитанныеРесурсыУровень2.Collector
+	ВТ_РассчитанныеРесурсыУровень2.Collector КАК Collector
 ПОМЕСТИТЬ ВТ_РассчитанныеРесурсыУровень3
 ИЗ
 	ВТ_РассчитанныеРесурсыУровень2 КАК ВТ_РассчитанныеРесурсыУровень2
 ;
+
 ////////////////////////////////////////////////////////////////////////////////
- ВЫБРАТЬ
-	ВТ_РассчитанныеРесурсыУровень3.Client,
-	ВТ_РассчитанныеРесурсыУровень3.Company,
-	ВТ_РассчитанныеРесурсыУровень3.Source,
-	ВТ_РассчитанныеРесурсыУровень3.Location,
-	ВТ_РассчитанныеРесурсыУровень3.SubSubSegment,
-	ВТ_РассчитанныеРесурсыУровень3.Account,
-	ВТ_РассчитанныеРесурсыУровень3.Currency,
-	ВТ_РассчитанныеРесурсыУровень3.AU,
-	ВТ_РассчитанныеРесурсыУровень3.ИдентификаторКлиента,
-	ВТ_РассчитанныеРесурсыУровень3.AmountОстаток,
-	ВТ_РассчитанныеРесурсыУровень3.BaseAmountОстаток,
-	ВТ_РассчитанныеРесурсыУровень3.ГоловнойКонтрагент,
-	ВТ_РассчитанныеРесурсыУровень3.Rate,
-	ВТ_РассчитанныеРесурсыУровень3.Status,
-	ВТ_РассчитанныеРесурсыУровень3.ConfirmedBy,
-	ВТ_РассчитанныеРесурсыУровень3.Comment,
-	ВТ_РассчитанныеРесурсыУровень3.ПредставлениеДокумента,
-	ВТ_РассчитанныеРесурсыУровень3.ForecastDate,
-	ВТ_РассчитанныеРесурсыУровень3.CustInputDate,
-	ВТ_РассчитанныеРесурсыУровень3.CustomerRepresentative,
-	ВТ_РассчитанныеРесурсыУровень3.CustomerInputDetails,
-	ВТ_РассчитанныеРесурсыУровень3.SLBAssignedTo,
-	ВТ_РассчитанныеРесурсыУровень3.RemedialWorkPlan,
-	ВТ_РассчитанныеРесурсыУровень3.RWDTargetDate,
-	ВТ_РассчитанныеРесурсыУровень3.InvoiceДатаВозвратаКС,
-	ВТ_РассчитанныеРесурсыУровень3.InvoiceДатаОтправкиКС,
-	ВТ_РассчитанныеРесурсыУровень3.InvoiceСтатусВозвратаКС,
-	ВТ_РассчитанныеРесурсыУровень3.InvoiceКомментарийСтатусаВозвратаКС,
-	ВТ_РассчитанныеРесурсыУровень3.Agreement,
-	ВТ_РассчитанныеРесурсыУровень3.InvoiceНомер,
-	ВТ_РассчитанныеРесурсыУровень3.InvoiceНомерДокумента,
-	ВТ_РассчитанныеРесурсыУровень3.InvoiceДата,
-	ВТ_РассчитанныеРесурсыУровень3.InvoiceFiscalInvoiceNo,
-	ВТ_РассчитанныеРесурсыУровень3.InvoiceFiscalInvoiceDate,
-	ВТ_РассчитанныеРесурсыУровень3.InvoiceAmount,
-	ВТ_РассчитанныеРесурсыУровень3.InvoiceContractTrigger,
-	ВТ_РассчитанныеРесурсыУровень3.InvoiceTriggerDate,
-	ВТ_РассчитанныеРесурсыУровень3.InvoiceContractPTDaysFrom,
-	ВТ_РассчитанныеРесурсыУровень3.InvoiceContractСрокОплаты,
-	ВТ_РассчитанныеРесурсыУровень3.InvoiceDueDateFrom,
-	ВТ_РассчитанныеРесурсыУровень3.InvoiceDueDateTo,
-	ВТ_РассчитанныеРесурсыУровень3.InvoiceStatusOfDispute,
-	ВТ_РассчитанныеРесурсыУровень3.InvoiceDisputeDistributedDate,
-	ВТ_РассчитанныеРесурсыУровень3.InvoiceDisputeCollectableDate,
-	ВТ_РассчитанныеРесурсыУровень3.InvoiceContractAmendmentName,
-	ВТ_РассчитанныеРесурсыУровень3.TransType,
-	ВТ_РассчитанныеРесурсыУровень3.Paid,
-	ВТ_РассчитанныеРесурсыУровень3.PaymentDate,
-	ВТ_РассчитанныеРесурсыУровень3.BrokenPromises,
-	ВТ_РассчитанныеРесурсыУровень3.EscalationSent,
-	ВТ_РассчитанныеРесурсыУровень3.LegalEntity,
-	ВТ_РассчитанныеРесурсыУровень3.USDAmount,
-	ВТ_РассчитанныеРесурсыУровень3.DueFrom,
-	ВТ_РассчитанныеРесурсыУровень3.DueTo,
-	ВТ_РассчитанныеРесурсыУровень3.UnderLitigation,
-	ВТ_РассчитанныеРесурсыУровень3.NoFrcst,
-	ВТ_РассчитанныеРесурсыУровень3.FcstCollect,
-	ВТ_РассчитанныеРесурсыУровень3.OverdueDispute,
+ВЫБРАТЬ
+	ВТ_РассчитанныеРесурсыУровень3.Client КАК Client,
+	ВТ_РассчитанныеРесурсыУровень3.Company КАК Company,
+	ВТ_РассчитанныеРесурсыУровень3.Source КАК Source,
+	ВТ_РассчитанныеРесурсыУровень3.Location КАК Location,
+	ВТ_РассчитанныеРесурсыУровень3.SubSubSegment КАК SubSubSegment,
+	ВТ_РассчитанныеРесурсыУровень3.Account КАК Account,
+	ВТ_РассчитанныеРесурсыУровень3.Currency КАК Currency,
+	ВТ_РассчитанныеРесурсыУровень3.AU КАК AU,
+	ВТ_РассчитанныеРесурсыУровень3.ИдентификаторКлиента КАК ИдентификаторКлиента,
+	ВТ_РассчитанныеРесурсыУровень3.AmountОстаток КАК AmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень3.BaseAmountОстаток КАК BaseAmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень3.ГоловнойКонтрагент КАК ГоловнойКонтрагент,
+	ВТ_РассчитанныеРесурсыУровень3.Rate КАК Rate,
+	ВТ_РассчитанныеРесурсыУровень3.Status КАК Status,
+	ВТ_РассчитанныеРесурсыУровень3.ConfirmedBy КАК ConfirmedBy,
+	ВТ_РассчитанныеРесурсыУровень3.Comment КАК Comment,
+	ВТ_РассчитанныеРесурсыУровень3.ПредставлениеДокумента КАК ПредставлениеДокумента,
+	ВТ_РассчитанныеРесурсыУровень3.ForecastDate КАК ForecastDate,
+	ВТ_РассчитанныеРесурсыУровень3.CustInputDate КАК CustInputDate,
+	ВТ_РассчитанныеРесурсыУровень3.CustomerRepresentative КАК CustomerRepresentative,
+	ВТ_РассчитанныеРесурсыУровень3.CustomerInputDetails КАК CustomerInputDetails,
+	ВТ_РассчитанныеРесурсыУровень3.SLBAssignedTo КАК SLBAssignedTo,
+	ВТ_РассчитанныеРесурсыУровень3.RemedialWorkPlan КАК RemedialWorkPlan,
+	ВТ_РассчитанныеРесурсыУровень3.RWDTargetDate КАК RWDTargetDate,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceДатаВозвратаКС КАК InvoiceДатаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceДатаОтправкиКС КАК InvoiceДатаОтправкиКС,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceСтатусВозвратаКС КАК InvoiceСтатусВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceКомментарийСтатусаВозвратаКС КАК InvoiceКомментарийСтатусаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень3.Agreement КАК Agreement,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceНомер КАК InvoiceНомер,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceНомерДокумента КАК InvoiceНомерДокумента,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceДата КАК InvoiceДата,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceFiscalInvoiceNo КАК InvoiceFiscalInvoiceNo,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceFiscalInvoiceDate КАК InvoiceFiscalInvoiceDate,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceAmount КАК InvoiceAmount,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceContractTrigger КАК InvoiceContractTrigger,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceTriggerDate КАК InvoiceTriggerDate,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceContractPTDaysFrom КАК InvoiceContractPTDaysFrom,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceContractСрокОплаты КАК InvoiceContractСрокОплаты,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceDueDateFrom КАК InvoiceDueDateFrom,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceDueDateTo КАК InvoiceDueDateTo,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceStatusOfDispute КАК InvoiceStatusOfDispute,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceDisputeDistributedDate КАК InvoiceDisputeDistributedDate,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceDisputeCollectableDate КАК InvoiceDisputeCollectableDate,
+	ВТ_РассчитанныеРесурсыУровень3.InvoiceContractAmendmentName КАК InvoiceContractAmendmentName,
+	ВТ_РассчитанныеРесурсыУровень3.TransType КАК TransType,
+	ВТ_РассчитанныеРесурсыУровень3.Paid КАК Paid,
+	ВТ_РассчитанныеРесурсыУровень3.PaymentDate КАК PaymentDate,
+	ВТ_РассчитанныеРесурсыУровень3.BrokenPromises КАК BrokenPromises,
+	ВТ_РассчитанныеРесурсыУровень3.EscalationSent КАК EscalationSent,
+	ВТ_РассчитанныеРесурсыУровень3.LegalEntity КАК LegalEntity,
+	ВТ_РассчитанныеРесурсыУровень3.USDAmount КАК USDAmount,
+	ВТ_РассчитанныеРесурсыУровень3.DueFrom КАК DueFrom,
+	ВТ_РассчитанныеРесурсыУровень3.DueTo КАК DueTo,
+	ВТ_РассчитанныеРесурсыУровень3.UnderLitigation КАК UnderLitigation,
+	ВТ_РассчитанныеРесурсыУровень3.NoFrcst КАК NoFrcst,
+	ВТ_РассчитанныеРесурсыУровень3.FcstCollect КАК FcstCollect,
+	ВТ_РассчитанныеРесурсыУровень3.OverdueDispute КАК OverdueDispute,
 	ВЫБОР
 		КОГДА ВТ_РассчитанныеРесурсыУровень3.ForecastDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
-		И ВТ_РассчитанныеРесурсыУровень3.DueTo &gt; ВТ_РассчитанныеРесурсыУровень3.FcstCollect
-			ТОГДА ВТ_РассчитанныеРесурсыУровень3.USDAmount - ВТ_РассчитанныеРесурсыУровень3.FcstCollect -
-				ВТ_РассчитанныеРесурсыУровень3.Paid - ВТ_РассчитанныеРесурсыУровень3.UnderLitigation -
-				ВТ_РассчитанныеРесурсыУровень3.OverdueDispute
+				И ВТ_РассчитанныеРесурсыУровень3.DueTo &gt; ВТ_РассчитанныеРесурсыУровень3.FcstCollect
+			ТОГДА ВТ_РассчитанныеРесурсыУровень3.USDAmount - ВТ_РассчитанныеРесурсыУровень3.FcstCollect - ВТ_РассчитанныеРесурсыУровень3.Paid - ВТ_РассчитанныеРесурсыУровень3.UnderLitigation - ВТ_РассчитанныеРесурсыУровень3.OverdueDispute
 		ИНАЧЕ 0
 	КОНЕЦ КАК OverdueNoFcst,
-	ВТ_РассчитанныеРесурсыУровень3.Collector
+	ВТ_РассчитанныеРесурсыУровень3.Collector КАК Collector
 ПОМЕСТИТЬ ВТ_РассчитанныеРесурсыУровень4
 ИЗ
 	ВТ_РассчитанныеРесурсыУровень3 КАК ВТ_РассчитанныеРесурсыУровень3
 ;
+
 ////////////////////////////////////////////////////////////////////////////////
- ВЫБРАТЬ
-	ВТ_РассчитанныеРесурсыУровень4.Client,
-	ВТ_РассчитанныеРесурсыУровень4.Company,
-	ВТ_РассчитанныеРесурсыУровень4.Source,
-	ВТ_РассчитанныеРесурсыУровень4.Location,
-	ВТ_РассчитанныеРесурсыУровень4.SubSubSegment,
-	ВТ_РассчитанныеРесурсыУровень4.Account,
-	ВТ_РассчитанныеРесурсыУровень4.Currency,
-	ВТ_РассчитанныеРесурсыУровень4.AU,
-	ВТ_РассчитанныеРесурсыУровень4.ИдентификаторКлиента,
-	ВТ_РассчитанныеРесурсыУровень4.AmountОстаток,
-	ВТ_РассчитанныеРесурсыУровень4.BaseAmountОстаток,
-	ВТ_РассчитанныеРесурсыУровень4.ГоловнойКонтрагент,
-	ВТ_РассчитанныеРесурсыУровень4.Rate,
-	ВТ_РассчитанныеРесурсыУровень4.Status,
-	ВТ_РассчитанныеРесурсыУровень4.ConfirmedBy,
-	ВТ_РассчитанныеРесурсыУровень4.Comment,
-	ВТ_РассчитанныеРесурсыУровень4.ПредставлениеДокумента,
-	ВТ_РассчитанныеРесурсыУровень4.ForecastDate,
-	ВТ_РассчитанныеРесурсыУровень4.CustInputDate,
-	ВТ_РассчитанныеРесурсыУровень4.CustomerRepresentative,
-	ВТ_РассчитанныеРесурсыУровень4.CustomerInputDetails,
-	ВТ_РассчитанныеРесурсыУровень4.SLBAssignedTo,
-	ВТ_РассчитанныеРесурсыУровень4.RemedialWorkPlan,
-	ВТ_РассчитанныеРесурсыУровень4.RWDTargetDate,
-	ВТ_РассчитанныеРесурсыУровень4.InvoiceДатаВозвратаКС,
-	ВТ_РассчитанныеРесурсыУровень4.InvoiceДатаОтправкиКС,
-	ВТ_РассчитанныеРесурсыУровень4.InvoiceСтатусВозвратаКС,
-	ВТ_РассчитанныеРесурсыУровень4.InvoiceКомментарийСтатусаВозвратаКС,
-	ВТ_РассчитанныеРесурсыУровень4.Agreement,
-	ВТ_РассчитанныеРесурсыУровень4.InvoiceНомер,
-	ВТ_РассчитанныеРесурсыУровень4.InvoiceНомерДокумента,
-	ВТ_РассчитанныеРесурсыУровень4.InvoiceДата,
-	ВТ_РассчитанныеРесурсыУровень4.InvoiceFiscalInvoiceNo,
-	ВТ_РассчитанныеРесурсыУровень4.InvoiceFiscalInvoiceDate,
-	ВТ_РассчитанныеРесурсыУровень4.InvoiceAmount,
-	ВТ_РассчитанныеРесурсыУровень4.InvoiceContractTrigger,
-	ВТ_РассчитанныеРесурсыУровень4.InvoiceTriggerDate,
-	ВТ_РассчитанныеРесурсыУровень4.InvoiceContractPTDaysFrom,
-	ВТ_РассчитанныеРесурсыУровень4.InvoiceContractСрокОплаты,
-	ВТ_РассчитанныеРесурсыУровень4.InvoiceDueDateFrom,
-	ВТ_РассчитанныеРесурсыУровень4.InvoiceDueDateTo,
-	ВТ_РассчитанныеРесурсыУровень4.InvoiceStatusOfDispute,
-	ВТ_РассчитанныеРесурсыУровень4.InvoiceDisputeDistributedDate,
-	ВТ_РассчитанныеРесурсыУровень4.InvoiceDisputeCollectableDate,
-	ВТ_РассчитанныеРесурсыУровень4.InvoiceContractAmendmentName,
-	ВТ_РассчитанныеРесурсыУровень4.TransType,
-	ВТ_РассчитанныеРесурсыУровень4.Paid,
-	ВТ_РассчитанныеРесурсыУровень4.PaymentDate,
-	ВТ_РассчитанныеРесурсыУровень4.BrokenPromises,
-	ВТ_РассчитанныеРесурсыУровень4.EscalationSent,
-	ВТ_РассчитанныеРесурсыУровень4.LegalEntity,
-	ВТ_РассчитанныеРесурсыУровень4.USDAmount,
-	ВТ_РассчитанныеРесурсыУровень4.DueFrom,
-	ВТ_РассчитанныеРесурсыУровень4.DueTo,
-	ВТ_РассчитанныеРесурсыУровень4.UnderLitigation,
-	ВТ_РассчитанныеРесурсыУровень4.NoFrcst,
-	ВТ_РассчитанныеРесурсыУровень4.FcstCollect,
-	ВТ_РассчитанныеРесурсыУровень4.OverdueDispute,
-	ВТ_РассчитанныеРесурсыУровень4.OverdueNoFcst,
+ВЫБРАТЬ
+	ВТ_РассчитанныеРесурсыУровень4.Client КАК Client,
+	ВТ_РассчитанныеРесурсыУровень4.Company КАК Company,
+	ВТ_РассчитанныеРесурсыУровень4.Source КАК Source,
+	ВТ_РассчитанныеРесурсыУровень4.Location КАК Location,
+	ВТ_РассчитанныеРесурсыУровень4.SubSubSegment КАК SubSubSegment,
+	ВТ_РассчитанныеРесурсыУровень4.Account КАК Account,
+	ВТ_РассчитанныеРесурсыУровень4.Currency КАК Currency,
+	ВТ_РассчитанныеРесурсыУровень4.AU КАК AU,
+	ВТ_РассчитанныеРесурсыУровень4.ИдентификаторКлиента КАК ИдентификаторКлиента,
+	ВТ_РассчитанныеРесурсыУровень4.AmountОстаток КАК AmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень4.BaseAmountОстаток КАК BaseAmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень4.ГоловнойКонтрагент КАК ГоловнойКонтрагент,
+	ВТ_РассчитанныеРесурсыУровень4.Rate КАК Rate,
+	ВТ_РассчитанныеРесурсыУровень4.Status КАК Status,
+	ВТ_РассчитанныеРесурсыУровень4.ConfirmedBy КАК ConfirmedBy,
+	ВТ_РассчитанныеРесурсыУровень4.Comment КАК Comment,
+	ВТ_РассчитанныеРесурсыУровень4.ПредставлениеДокумента КАК ПредставлениеДокумента,
+	ВТ_РассчитанныеРесурсыУровень4.ForecastDate КАК ForecastDate,
+	ВТ_РассчитанныеРесурсыУровень4.CustInputDate КАК CustInputDate,
+	ВТ_РассчитанныеРесурсыУровень4.CustomerRepresentative КАК CustomerRepresentative,
+	ВТ_РассчитанныеРесурсыУровень4.CustomerInputDetails КАК CustomerInputDetails,
+	ВТ_РассчитанныеРесурсыУровень4.SLBAssignedTo КАК SLBAssignedTo,
+	ВТ_РассчитанныеРесурсыУровень4.RemedialWorkPlan КАК RemedialWorkPlan,
+	ВТ_РассчитанныеРесурсыУровень4.RWDTargetDate КАК RWDTargetDate,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceДатаВозвратаКС КАК InvoiceДатаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceДатаОтправкиКС КАК InvoiceДатаОтправкиКС,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceСтатусВозвратаКС КАК InvoiceСтатусВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceКомментарийСтатусаВозвратаКС КАК InvoiceКомментарийСтатусаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень4.Agreement КАК Agreement,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceНомер КАК InvoiceНомер,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceНомерДокумента КАК InvoiceНомерДокумента,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceДата КАК InvoiceДата,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceFiscalInvoiceNo КАК InvoiceFiscalInvoiceNo,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceFiscalInvoiceDate КАК InvoiceFiscalInvoiceDate,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceAmount КАК InvoiceAmount,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceContractTrigger КАК InvoiceContractTrigger,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceTriggerDate КАК InvoiceTriggerDate,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceContractPTDaysFrom КАК InvoiceContractPTDaysFrom,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceContractСрокОплаты КАК InvoiceContractСрокОплаты,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceDueDateFrom КАК InvoiceDueDateFrom,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceDueDateTo КАК InvoiceDueDateTo,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceStatusOfDispute КАК InvoiceStatusOfDispute,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceDisputeDistributedDate КАК InvoiceDisputeDistributedDate,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceDisputeCollectableDate КАК InvoiceDisputeCollectableDate,
+	ВТ_РассчитанныеРесурсыУровень4.InvoiceContractAmendmentName КАК InvoiceContractAmendmentName,
+	ВТ_РассчитанныеРесурсыУровень4.TransType КАК TransType,
+	ВТ_РассчитанныеРесурсыУровень4.Paid КАК Paid,
+	ВТ_РассчитанныеРесурсыУровень4.PaymentDate КАК PaymentDate,
+	ВТ_РассчитанныеРесурсыУровень4.BrokenPromises КАК BrokenPromises,
+	ВТ_РассчитанныеРесурсыУровень4.EscalationSent КАК EscalationSent,
+	ВТ_РассчитанныеРесурсыУровень4.LegalEntity КАК LegalEntity,
+	ВТ_РассчитанныеРесурсыУровень4.USDAmount КАК USDAmount,
+	ВТ_РассчитанныеРесурсыУровень4.DueFrom КАК DueFrom,
+	ВТ_РассчитанныеРесурсыУровень4.DueTo КАК DueTo,
+	ВТ_РассчитанныеРесурсыУровень4.UnderLitigation КАК UnderLitigation,
+	ВТ_РассчитанныеРесурсыУровень4.NoFrcst КАК NoFrcst,
+	ВТ_РассчитанныеРесурсыУровень4.FcstCollect КАК FcstCollect,
+	ВТ_РассчитанныеРесурсыУровень4.OverdueDispute КАК OverdueDispute,
+	ВТ_РассчитанныеРесурсыУровень4.OverdueNoFcst КАК OverdueNoFcst,
 	ВЫБОР
 		КОГДА ВТ_РассчитанныеРесурсыУровень4.ForecastDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
-		И ВТ_РассчитанныеРесурсыУровень4.DueFrom &gt; ВТ_РассчитанныеРесурсыУровень4.FcstCollect
-			ТОГДА ВТ_РассчитанныеРесурсыУровень4.USDAmount - ВТ_РассчитанныеРесурсыУровень4.FcstCollect -
-				ВТ_РассчитанныеРесурсыУровень4.OverdueNoFcst - ВТ_РассчитанныеРесурсыУровень4.Paid -
-				ВТ_РассчитанныеРесурсыУровень4.UnderLitigation - ВТ_РассчитанныеРесурсыУровень4.OverdueDispute
+				И ВТ_РассчитанныеРесурсыУровень4.DueFrom &gt; ВТ_РассчитанныеРесурсыУровень4.FcstCollect
+			ТОГДА ВТ_РассчитанныеРесурсыУровень4.USDAmount - ВТ_РассчитанныеРесурсыУровень4.FcstCollect - ВТ_РассчитанныеРесурсыУровень4.OverdueNoFcst - ВТ_РассчитанныеРесурсыУровень4.Paid - ВТ_РассчитанныеРесурсыУровень4.UnderLitigation - ВТ_РассчитанныеРесурсыУровень4.OverdueDispute
 		ИНАЧЕ 0
 	КОНЕЦ КАК InRangeNoColl,
-	ВТ_РассчитанныеРесурсыУровень4.Collector
+	ВТ_РассчитанныеРесурсыУровень4.Collector КАК Collector
 ПОМЕСТИТЬ ВТ_РассчитанныеРесурсыУровень5
 ИЗ
 	ВТ_РассчитанныеРесурсыУровень4 КАК ВТ_РассчитанныеРесурсыУровень4
 ;
+
 ////////////////////////////////////////////////////////////////////////////////
- ВЫБРАТЬ
-	ВТ_РассчитанныеРесурсыУровень5.Client,
-	ВТ_РассчитанныеРесурсыУровень5.Company,
-	ВТ_РассчитанныеРесурсыУровень5.Source,
-	ВТ_РассчитанныеРесурсыУровень5.Location,
-	ВТ_РассчитанныеРесурсыУровень5.SubSubSegment,
-	ВТ_РассчитанныеРесурсыУровень5.Account,
-	ВТ_РассчитанныеРесурсыУровень5.Currency,
-	ВТ_РассчитанныеРесурсыУровень5.AU,
-	ВТ_РассчитанныеРесурсыУровень5.ИдентификаторКлиента,
-	ВТ_РассчитанныеРесурсыУровень5.AmountОстаток,
-	ВТ_РассчитанныеРесурсыУровень5.BaseAmountОстаток,
-	ВТ_РассчитанныеРесурсыУровень5.ГоловнойКонтрагент,
-	ВТ_РассчитанныеРесурсыУровень5.Rate,
-	ВТ_РассчитанныеРесурсыУровень5.Status,
-	ВТ_РассчитанныеРесурсыУровень5.ConfirmedBy,
-	ВТ_РассчитанныеРесурсыУровень5.Comment,
-	ВТ_РассчитанныеРесурсыУровень5.ПредставлениеДокумента,
-	ВТ_РассчитанныеРесурсыУровень5.ForecastDate,
-	ВТ_РассчитанныеРесурсыУровень5.CustInputDate,
-	ВТ_РассчитанныеРесурсыУровень5.CustomerRepresentative,
-	ВТ_РассчитанныеРесурсыУровень5.CustomerInputDetails,
-	ВТ_РассчитанныеРесурсыУровень5.SLBAssignedTo,
-	ВТ_РассчитанныеРесурсыУровень5.RemedialWorkPlan,
-	ВТ_РассчитанныеРесурсыУровень5.RWDTargetDate,
-	ВТ_РассчитанныеРесурсыУровень5.InvoiceДатаВозвратаКС,
-	ВТ_РассчитанныеРесурсыУровень5.InvoiceДатаОтправкиКС,
-	ВТ_РассчитанныеРесурсыУровень5.InvoiceСтатусВозвратаКС,
-	ВТ_РассчитанныеРесурсыУровень5.InvoiceКомментарийСтатусаВозвратаКС,
-	ВТ_РассчитанныеРесурсыУровень5.Agreement,
-	ВТ_РассчитанныеРесурсыУровень5.InvoiceНомер,
-	ВТ_РассчитанныеРесурсыУровень5.InvoiceНомерДокумента,
-	ВТ_РассчитанныеРесурсыУровень5.InvoiceДата,
-	ВТ_РассчитанныеРесурсыУровень5.InvoiceFiscalInvoiceNo,
-	ВТ_РассчитанныеРесурсыУровень5.InvoiceFiscalInvoiceDate,
-	ВТ_РассчитанныеРесурсыУровень5.InvoiceAmount,
-	ВТ_РассчитанныеРесурсыУровень5.InvoiceContractTrigger,
-	ВТ_РассчитанныеРесурсыУровень5.InvoiceTriggerDate,
-	ВТ_РассчитанныеРесурсыУровень5.InvoiceContractPTDaysFrom,
-	ВТ_РассчитанныеРесурсыУровень5.InvoiceContractСрокОплаты,
-	ВТ_РассчитанныеРесурсыУровень5.InvoiceDueDateFrom,
-	ВТ_РассчитанныеРесурсыУровень5.InvoiceDueDateTo,
-	ВТ_РассчитанныеРесурсыУровень5.InvoiceStatusOfDispute,
-	ВТ_РассчитанныеРесурсыУровень5.InvoiceDisputeDistributedDate,
-	ВТ_РассчитанныеРесурсыУровень5.InvoiceDisputeCollectableDate,
-	ВТ_РассчитанныеРесурсыУровень5.InvoiceContractAmendmentName,
-	ВТ_РассчитанныеРесурсыУровень5.TransType,
-	ВТ_РассчитанныеРесурсыУровень5.Paid,
-	ВТ_РассчитанныеРесурсыУровень5.PaymentDate,
-	ВТ_РассчитанныеРесурсыУровень5.BrokenPromises,
-	ВТ_РассчитанныеРесурсыУровень5.EscalationSent,
-	ВТ_РассчитанныеРесурсыУровень5.LegalEntity,
-	ВТ_РассчитанныеРесурсыУровень5.USDAmount,
-	ВТ_РассчитанныеРесурсыУровень5.DueFrom,
-	ВТ_РассчитанныеРесурсыУровень5.DueTo,
-	ВТ_РассчитанныеРесурсыУровень5.UnderLitigation,
-	ВТ_РассчитанныеРесурсыУровень5.NoFrcst,
-	ВТ_РассчитанныеРесурсыУровень5.FcstCollect,
-	ВТ_РассчитанныеРесурсыУровень5.OverdueDispute,
-	ВТ_РассчитанныеРесурсыУровень5.OverdueNoFcst,
-	ВТ_РассчитанныеРесурсыУровень5.InRangeNoColl,
+ВЫБРАТЬ
+	ВТ_РассчитанныеРесурсыУровень5.Client КАК Client,
+	ВТ_РассчитанныеРесурсыУровень5.Company КАК Company,
+	ВТ_РассчитанныеРесурсыУровень5.Source КАК Source,
+	ВТ_РассчитанныеРесурсыУровень5.Location КАК Location,
+	ВТ_РассчитанныеРесурсыУровень5.SubSubSegment КАК SubSubSegment,
+	ВТ_РассчитанныеРесурсыУровень5.Account КАК Account,
+	ВТ_РассчитанныеРесурсыУровень5.Currency КАК Currency,
+	ВТ_РассчитанныеРесурсыУровень5.AU КАК AU,
+	ВТ_РассчитанныеРесурсыУровень5.ИдентификаторКлиента КАК ИдентификаторКлиента,
+	ВТ_РассчитанныеРесурсыУровень5.AmountОстаток КАК AmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень5.BaseAmountОстаток КАК BaseAmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень5.ГоловнойКонтрагент КАК ГоловнойКонтрагент,
+	ВТ_РассчитанныеРесурсыУровень5.Rate КАК Rate,
+	ВТ_РассчитанныеРесурсыУровень5.Status КАК Status,
+	ВТ_РассчитанныеРесурсыУровень5.ConfirmedBy КАК ConfirmedBy,
+	ВТ_РассчитанныеРесурсыУровень5.Comment КАК Comment,
+	ВТ_РассчитанныеРесурсыУровень5.ПредставлениеДокумента КАК ПредставлениеДокумента,
+	ВТ_РассчитанныеРесурсыУровень5.ForecastDate КАК ForecastDate,
+	ВТ_РассчитанныеРесурсыУровень5.CustInputDate КАК CustInputDate,
+	ВТ_РассчитанныеРесурсыУровень5.CustomerRepresentative КАК CustomerRepresentative,
+	ВТ_РассчитанныеРесурсыУровень5.CustomerInputDetails КАК CustomerInputDetails,
+	ВТ_РассчитанныеРесурсыУровень5.SLBAssignedTo КАК SLBAssignedTo,
+	ВТ_РассчитанныеРесурсыУровень5.RemedialWorkPlan КАК RemedialWorkPlan,
+	ВТ_РассчитанныеРесурсыУровень5.RWDTargetDate КАК RWDTargetDate,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceДатаВозвратаКС КАК InvoiceДатаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceДатаОтправкиКС КАК InvoiceДатаОтправкиКС,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceСтатусВозвратаКС КАК InvoiceСтатусВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceКомментарийСтатусаВозвратаКС КАК InvoiceКомментарийСтатусаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень5.Agreement КАК Agreement,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceНомер КАК InvoiceНомер,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceНомерДокумента КАК InvoiceНомерДокумента,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceДата КАК InvoiceДата,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceFiscalInvoiceNo КАК InvoiceFiscalInvoiceNo,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceFiscalInvoiceDate КАК InvoiceFiscalInvoiceDate,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceAmount КАК InvoiceAmount,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceContractTrigger КАК InvoiceContractTrigger,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceTriggerDate КАК InvoiceTriggerDate,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceContractPTDaysFrom КАК InvoiceContractPTDaysFrom,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceContractСрокОплаты КАК InvoiceContractСрокОплаты,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceDueDateFrom КАК InvoiceDueDateFrom,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceDueDateTo КАК InvoiceDueDateTo,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceStatusOfDispute КАК InvoiceStatusOfDispute,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceDisputeDistributedDate КАК InvoiceDisputeDistributedDate,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceDisputeCollectableDate КАК InvoiceDisputeCollectableDate,
+	ВТ_РассчитанныеРесурсыУровень5.InvoiceContractAmendmentName КАК InvoiceContractAmendmentName,
+	ВТ_РассчитанныеРесурсыУровень5.TransType КАК TransType,
+	ВТ_РассчитанныеРесурсыУровень5.Paid КАК Paid,
+	ВТ_РассчитанныеРесурсыУровень5.PaymentDate КАК PaymentDate,
+	ВТ_РассчитанныеРесурсыУровень5.BrokenPromises КАК BrokenPromises,
+	ВТ_РассчитанныеРесурсыУровень5.EscalationSent КАК EscalationSent,
+	ВТ_РассчитанныеРесурсыУровень5.LegalEntity КАК LegalEntity,
+	ВТ_РассчитанныеРесурсыУровень5.USDAmount КАК USDAmount,
+	ВТ_РассчитанныеРесурсыУровень5.DueFrom КАК DueFrom,
+	ВТ_РассчитанныеРесурсыУровень5.DueTo КАК DueTo,
+	ВТ_РассчитанныеРесурсыУровень5.UnderLitigation КАК UnderLitigation,
+	ВТ_РассчитанныеРесурсыУровень5.NoFrcst КАК NoFrcst,
+	ВТ_РассчитанныеРесурсыУровень5.FcstCollect КАК FcstCollect,
+	ВТ_РассчитанныеРесурсыУровень5.OverdueDispute КАК OverdueDispute,
+	ВТ_РассчитанныеРесурсыУровень5.OverdueNoFcst КАК OverdueNoFcst,
+	ВТ_РассчитанныеРесурсыУровень5.InRangeNoColl КАК InRangeNoColl,
 	ВЫБОР
 		КОГДА ВТ_РассчитанныеРесурсыУровень5.ForecastDate = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА 0
-		ИНАЧЕ ВТ_РассчитанныеРесурсыУровень5.USDAmount - ВТ_РассчитанныеРесурсыУровень5.Paid -
-			ВТ_РассчитанныеРесурсыУровень5.FcstCollect - ВТ_РассчитанныеРесурсыУровень5.InRangeNoColl -
-			ВТ_РассчитанныеРесурсыУровень5.OverdueDispute - ВТ_РассчитанныеРесурсыУровень5.OverdueNoFcst -
-			ВТ_РассчитанныеРесурсыУровень5.UnderLitigation
+		ИНАЧЕ ВТ_РассчитанныеРесурсыУровень5.USDAmount - ВТ_РассчитанныеРесурсыУровень5.Paid - ВТ_РассчитанныеРесурсыУровень5.FcstCollect - ВТ_РассчитанныеРесурсыУровень5.InRangeNoColl - ВТ_РассчитанныеРесурсыУровень5.OverdueDispute - ВТ_РассчитанныеРесурсыУровень5.OverdueNoFcst - ВТ_РассчитанныеРесурсыУровень5.UnderLitigation
 	КОНЕЦ КАК NotDue,
-	ВТ_РассчитанныеРесурсыУровень5.Collector
+	ВТ_РассчитанныеРесурсыУровень5.Collector КАК Collector,
+	ВТ_РассчитанныеРесурсыУровень5.Location.БазовыйЭлемент.GeoMarket КАК LocationHFM,
+	ВТ_РассчитанныеРесурсыУровень5.SubSubSegment.БазовыйЭлемент.Родитель.Родитель КАК SegmentHFM,
+	ВТ_РассчитанныеРесурсыУровень5.Location.БазовыйЭлемент.GeoMarket.ManagementGeomarket КАК MgmtGeomarket,
+	ВТ_РассчитанныеРесурсыУровень5.SubSubSegment.БазовыйЭлемент.Родитель КАК SubSegment,
+	ВТ_РассчитанныеРесурсыУровень5.Location.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
+	ВТ_РассчитанныеРесурсыУровень5.Company.БазовыйЭлемент КАК CompanyHFM
 ИЗ
 	ВТ_РассчитанныеРесурсыУровень5 КАК ВТ_РассчитанныеРесурсыУровень5</query>
 	</dataSet>
@@ -1654,6 +1792,18 @@
 				<v8:content>BaseAmountОстатокМодуль</v8:content>
 			</v8:item>
 		</title>
+	</calculatedField>
+	<calculatedField>
+		<dataPath>BU</dataPath>
+		<expression>rgsКонсолидацияДанныхСервер.ОпределитьBU(GeoMarket, LocationHFM, MgmtGeomarket, SegmentHFM, SubSegment, CompanyHFM, AU)	</expression>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>BU</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+		</valueType>
 	</calculatedField>
 	<parameter>
 		<name>Период</name>
@@ -1794,6 +1944,8 @@
 				<v8:DateFractions>Date</v8:DateFractions>
 			</v8:DateQualifiers>
 		</valueType>
+		<value xsi:nil="true">
+		</value>
 		<useRestriction>true</useRestriction>
 		<expression>ДОБАВИТЬКДАТЕ(КонецПериода(&amp;Период,"ДЕНЬ") , "СЕКУНДА", 1)</expression>
 		<valueListAllowed>false</valueListAllowed>
@@ -1809,7 +1961,7 @@
 				<v8:content>Основной</v8:content>
 			</v8:item>
 		</dcsset:presentation>
-		<dcsset:settings xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:chm="http://v8.1c.ru/8.2/data/chart" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+		<dcsset:settings xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Company.Наименование</dcsset:field>
@@ -1825,6 +1977,9 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Source</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>BU</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Location.БазовыйЭлемент.GeoMarket.ManagementGeomarket</dcsset:field>
@@ -2231,14 +2386,12 @@
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">Source</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>a775f9fe-a968-47fc-a695-0791acdd4a9f</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:left xsi:type="dcscor:Field">BaseAmountОстатокМодуль</dcsset:left>
 					<dcsset:comparisonType>GreaterOrEqual</dcsset:comparisonType>
 					<dcsset:right xsi:type="xs:decimal">1</dcsset:right>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>ae204ac2-e755-4e99-8612-94c63e0a17bf</dcsset:userSettingID>
 					<dcsset:userSettingPresentation xsi:type="v8:LocalStringType">
 						<v8:item>
@@ -2255,13 +2408,11 @@
 							<dcsset:left xsi:type="dcscor:Field">Invoice.Agreement</dcsset:left>
 							<dcsset:comparisonType>Equal</dcsset:comparisonType>
 							<dcsset:right xsi:type="xs:string">VAT Reclass</dcsset:right>
-							<dcsset:application>Items</dcsset:application>
 						</dcsset:item>
 						<dcsset:item xsi:type="dcsset:FilterItemComparison">
 							<dcsset:left xsi:type="dcscor:Field">Source</dcsset:left>
 							<dcsset:comparisonType>Equal</dcsset:comparisonType>
 							<dcsset:right xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.Radius</dcsset:right>
-							<dcsset:application>Items</dcsset:application>
 						</dcsset:item>
 						<dcsset:application>Items</dcsset:application>
 					</dcsset:item>
@@ -2289,8 +2440,7 @@
 							<dcsset:field>ПользовательскиеПоля.Поле3</dcsset:field>
 						</dcsset:item>
 					</dcsset:selection>
-					<dcsset:filter>
-					</dcsset:filter>
+					<dcsset:filter/>
 					<dcsset:appearance>
 						<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 							<dcscor:parameter>Формат</dcscor:parameter>
@@ -2302,13 +2452,6 @@
 							</dcscor:value>
 						</dcscor:item>
 					</dcsset:appearance>
-					<dcsset:useInGroup>Use</dcsset:useInGroup>
-					<dcsset:useInHierarchicalGroup>Use</dcsset:useInHierarchicalGroup>
-					<dcsset:useInOverall>Use</dcsset:useInOverall>
-					<dcsset:useInFieldsHeader>Use</dcsset:useInFieldsHeader>
-					<dcsset:useInHeader>Use</dcsset:useInHeader>
-					<dcsset:useInParameters>Use</dcsset:useInParameters>
-					<dcsset:useInFilter>Use</dcsset:useInFilter>
 				</dcsset:item>
 				<dcsset:item>
 					<dcsset:selection>
@@ -2316,8 +2459,7 @@
 							<dcsset:field>InvoiceДата</dcsset:field>
 						</dcsset:item>
 					</dcsset:selection>
-					<dcsset:filter>
-					</dcsset:filter>
+					<dcsset:filter/>
 					<dcsset:appearance>
 						<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 							<dcscor:parameter>Формат</dcscor:parameter>
@@ -2329,13 +2471,6 @@
 							</dcscor:value>
 						</dcscor:item>
 					</dcsset:appearance>
-					<dcsset:useInGroup>Use</dcsset:useInGroup>
-					<dcsset:useInHierarchicalGroup>Use</dcsset:useInHierarchicalGroup>
-					<dcsset:useInOverall>Use</dcsset:useInOverall>
-					<dcsset:useInFieldsHeader>Use</dcsset:useInFieldsHeader>
-					<dcsset:useInHeader>Use</dcsset:useInHeader>
-					<dcsset:useInParameters>Use</dcsset:useInParameters>
-					<dcsset:useInFilter>Use</dcsset:useInFilter>
 				</dcsset:item>
 			</dcsset:conditionalAppearance>
 			<dcsset:outputParameters>
