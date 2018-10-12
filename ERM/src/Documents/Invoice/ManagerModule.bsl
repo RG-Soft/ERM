@@ -709,7 +709,11 @@
 		|	ПРЕДСТАВЛЕНИЕ(Invoice.Source) КАК Source,
 		|	Invoice.Company.БазовыйЭлемент КАК Company,
 		|	Invoice.Client,
-		|	Invoice.Contract,
+		|	ВЫБОР
+		|		КОГДА Invoice.Contract.Ссылка ЕСТЬ NULL
+		|			ТОГДА NULL
+		|		ИНАЧЕ Invoice.Contract
+		|	КОНЕЦ КАК Contract,
 		|	Invoice.Currency,
 		|	Invoice.Amount,
 		|	Invoice.FiscalInvoiceNo,
