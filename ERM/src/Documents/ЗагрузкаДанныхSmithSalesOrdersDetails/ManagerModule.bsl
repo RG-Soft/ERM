@@ -120,10 +120,10 @@
 	"ВЫБРАТЬ РАЗЛИЧНЫЕ
 	|	OracleSalesOrdersDetailsSourceData.ДокументЗагрузки КАК ДокументЗагрузки,
 	|	OracleSalesOrdersDetailsSourceData.НомерSO КАК НомерSO,
-	|	OracleSalesOrdersDetailsSourceData.WellData,
-	|	OracleSalesOrdersDetailsSourceData.Agreement,
-	|	OracleSalesOrdersDetailsSourceData.JobEndDate,
-	|	OracleSalesOrdersDetailsSourceData.CustomerNumber,
+	|	OracleSalesOrdersDetailsSourceData.WellData КАК WellData,
+	|	OracleSalesOrdersDetailsSourceData.Agreement КАК Agreement,
+	|	OracleSalesOrdersDetailsSourceData.JobEndDate КАК JobEndDate,
+	|	OracleSalesOrdersDetailsSourceData.CustomerNumber КАК CustomerNumber,
 	|	SalesOrder.Ссылка КАК СсылкаSalesOrder
 	|ИЗ
 	|	РегистрСведений.OracleSalesOrdersDetailsSourceData КАК OracleSalesOrdersDetailsSourceData
@@ -140,23 +140,26 @@
 	|////////////////////////////////////////////////////////////////////////////////
 	|ВЫБРАТЬ РАЗЛИЧНЫЕ
 	|	OracleSalesOrdersDetailsSourceData.НомерSO КАК НомерInvoice,
-	|	OracleSalesOrdersDetailsSourceData.Agreement,
-	|	OracleSalesOrdersDetailsSourceData.JobEndDate,
-	|	OracleSalesOrdersDetailsSourceData.InvoiceFlagDate,
-	|	OracleSalesOrdersDetailsSourceData.CustomerNumber,
-	|	КОЛИЧЕСТВО(РАЗЛИЧНЫЕ Invoice.Ссылка) КАК КоличестоИнвойсов,
-	|	OracleSalesOrdersDetailsSourceData.InvoiceAmount,
-	|	OracleSalesOrdersDetailsSourceData.CreatedBy,
-	|	МАКСИМУМ(Invoice.Ссылка) КАК СсылкаInvoice,
-	|	МАКСИМУМ(Invoice.Ссылка.Responsible) КАК InvoiceResponsible
+	|	OracleSalesOrdersDetailsSourceData.Agreement КАК Agreement,
+	|	OracleSalesOrdersDetailsSourceData.JobEndDate КАК JobEndDate,
+	|	OracleSalesOrdersDetailsSourceData.InvoiceFlagDate КАК InvoiceFlagDate,
+	|	OracleSalesOrdersDetailsSourceData.CustomerNumber КАК CustomerNumber,
+	|	КОЛИЧЕСТВО(РАЗЛИЧНЫЕ ДокInvoice.Ссылка) КАК КоличестоИнвойсов,
+	|	OracleSalesOrdersDetailsSourceData.InvoiceAmount КАК InvoiceAmount,
+	|	OracleSalesOrdersDetailsSourceData.CreatedBy КАК CreatedBy,
+	|	МАКСИМУМ(ДокInvoice.Ссылка) КАК СсылкаInvoice,
+	|	МАКСИМУМ(ДокInvoice.Ссылка.Responsible) КАК InvoiceResponsible,
+	|	DIR.JobEndDate КАК DIR_JobEndDate
 	|ИЗ
 	|	РегистрСведений.OracleSalesOrdersDetailsSourceData КАК OracleSalesOrdersDetailsSourceData
-	|		ЛЕВОЕ СОЕДИНЕНИЕ Документ.Invoice КАК Invoice
-	|		ПО OracleSalesOrdersDetailsSourceData.НомерSO = Invoice.DocNumber
-	|			И OracleSalesOrdersDetailsSourceData.CustomerNumber = Invoice.ClientID
-	|			И OracleSalesOrdersDetailsSourceData.CompanyCode = Invoice.Company.Код
-	|			И (НЕ Invoice.ПометкаУдаления)
-	|			И (Invoice.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith))
+	|		ЛЕВОЕ СОЕДИНЕНИЕ Документ.Invoice КАК ДокInvoice
+	|			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.DIR КАК DIR
+	|			ПО ДокInvoice.Ссылка = DIR.Invoice
+	|		ПО OracleSalesOrdersDetailsSourceData.НомерSO = ДокInvoice.DocNumber
+	|			И OracleSalesOrdersDetailsSourceData.CustomerNumber = ДокInvoice.ClientID
+	|			И OracleSalesOrdersDetailsSourceData.CompanyCode = ДокInvoice.Company.Код
+	|			И (НЕ ДокInvoice.ПометкаУдаления)
+	|			И (ДокInvoice.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith))
 	|ГДЕ
 	|	OracleSalesOrdersDetailsSourceData.ДокументЗагрузки = &Ссылка
 	|
@@ -167,7 +170,8 @@
 	|	OracleSalesOrdersDetailsSourceData.JobEndDate,
 	|	OracleSalesOrdersDetailsSourceData.CreatedBy,
 	|	OracleSalesOrdersDetailsSourceData.InvoiceFlagDate,
-	|	OracleSalesOrdersDetailsSourceData.InvoiceAmount";
+	|	OracleSalesOrdersDetailsSourceData.InvoiceAmount,
+	|	DIR.JobEndDate";
 	
 	Запрос.УстановитьПараметр("Ссылка", СтруктураПараметров.Ссылка);
 	
@@ -230,12 +234,14 @@
 			
 			//РГСофтКлиентСервер.УстановитьЗначение(ТекОбъект.JobEndDate, ВыборкаSO.JobEndDate);
 			
-			//Даты = Новый Соответствие();
-			//Даты.Вставить("InvoiceFlagDate", ВыборкаInvoice.InvoiceFlagDate);
-			//Даты.Вставить("JobEndDate", ВыборкаInvoice.JobEndDate);
-			//РегистрыСведений.DIR.ЗаписатьДаты(ВыборкаInvoice.СсылкаInvoice, Даты);
-			//СтрокаТЗ = ОбновленныеДатыDIR.Добавить();
-			//СтрокаТЗ.Invoice = ВыборкаInvoice.СсылкаInvoice;
+			Если Не ЗначениеЗаполнено(ВыборкаInvoice.DIR_JobEndDate) Тогда
+				Даты = Новый Соответствие();
+				//Даты.Вставить("InvoiceFlagDate", ВыборкаInvoice.InvoiceFlagDate);
+				Даты.Вставить("JobEndDate", ВыборкаInvoice.JobEndDate);
+				РегистрыСведений.DIR.ЗаписатьДаты(ВыборкаInvoice.СсылкаInvoice, Даты);
+				СтрокаТЗ = ОбновленныеДатыDIR.Добавить();
+				СтрокаТЗ.Invoice = ВыборкаInvoice.СсылкаInvoice;
+			КонецЕсли;
 		
 			Если ТекОбъект.Модифицированность() Тогда
 				

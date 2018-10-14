@@ -434,6 +434,8 @@
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют КАК ВнутренниеКурсыВалют
 		ПО (НАЧАЛОПЕРИОДА(InvoicedDebtsОбороты.Период, МЕСЯЦ) = ВнутренниеКурсыВалют.Период)
 			И InvoicedDebtsОбороты.Currency = ВнутренниеКурсыВалют.Валюта
+ГДЕ
+	НЕ InvoicedDebtsОбороты.Client.Intercompany
 
 СГРУППИРОВАТЬ ПО
 	InvoicedDebtsОбороты.Source,
@@ -459,6 +461,9 @@
 	КОНЕЦ,
 	InvoicedDebtsОбороты.LegalEntity,
 	InvoicedDebtsОбороты.Invoice
+
+ИМЕЮЩИЕ
+	СУММА(InvoicedDebtsОбороты.AmountОборот) &lt;&gt; 0
 
 ИНДЕКСИРОВАТЬ ПО
 	Invoice
