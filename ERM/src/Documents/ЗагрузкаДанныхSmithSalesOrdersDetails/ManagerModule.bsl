@@ -149,7 +149,7 @@
 	|	OracleSalesOrdersDetailsSourceData.CreatedBy КАК CreatedBy,
 	|	МАКСИМУМ(ДокInvoice.Ссылка) КАК СсылкаInvoice,
 	|	МАКСИМУМ(ДокInvoice.Ссылка.Responsible) КАК InvoiceResponsible,
-	|	DIR.JobEndDate КАК DIR_JobEndDate
+	|	ЕСТЬNULL(DIR.JobEndDate, ДАТАВРЕМЯ(1, 1, 1)) КАК DIR_JobEndDate
 	|ИЗ
 	|	РегистрСведений.OracleSalesOrdersDetailsSourceData КАК OracleSalesOrdersDetailsSourceData
 	|		ЛЕВОЕ СОЕДИНЕНИЕ Документ.Invoice КАК ДокInvoice
