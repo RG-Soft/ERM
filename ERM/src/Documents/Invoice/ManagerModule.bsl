@@ -685,7 +685,9 @@
 	
 	ЗаполнитьОбъектPowerBI(ТекОбъект, Ссылка);
 	
-	PowerBIРегламенты.СформироватьЗаписиЖурналаДокуменовPowerBI(Ссылка, "Invoice",ПараметрыЛогирования, СтруктураРезультата);
+	Если Операция = Перечисления.ОперацииPowerBI.Create Тогда
+		PowerBIРегламенты.СформироватьЗаписиЖурналаДокуменовPowerBI(Ссылка, "Invoice", ПараметрыЛогирования, СтруктураРезультата);
+	КонецЕсли;
 	Если НЕ ЗначениеЗаполнено(СтруктураРезультата.Сообщение) Тогда
 		PowerBIРегламенты.ЗаписатьОбъектВоВнешнийИсточник(ТекОбъект, ПараметрыЛогирования, СтруктураРезультата);
 	КонецЕсли;
@@ -703,27 +705,28 @@
 	Запрос = Новый Запрос;
 	Запрос.Текст =
 		"ВЫБРАТЬ
-		|	Invoice.ПометкаУдаления,
-		|	Invoice.Номер,
-		|	Invoice.Дата,
+		|	Invoice.ПометкаУдаления КАК ПометкаУдаления,
+		|	Invoice.Номер КАК Номер,
+		|	Invoice.Дата КАК Дата,
 		|	ПРЕДСТАВЛЕНИЕ(Invoice.Source) КАК Source,
 		|	Invoice.Company.БазовыйЭлемент КАК Company,
-		|	Invoice.Client,
-		|	Invoice.Contract,
-		|	Invoice.Currency,
-		|	Invoice.Amount,
-		|	Invoice.FiscalInvoiceNo,
-		|	Invoice.FiscalInvoiceDate,
-		|	Invoice.FiscalCurrency,
-		|	Invoice.FiscalAmount,
-		|	Invoice.TriggerDate,
-		|	Invoice.DueDateFrom,
-		|	Invoice.DueDateTo,
-		|	Invoice.Agreement,
+		|	Invoice.Client КАК Client,
+		|	Invoice.Contract КАК Contract,
+		|	Invoice.Currency КАК Currency,
+		|	Invoice.Amount КАК Amount,
+		|	Invoice.FiscalInvoiceNo КАК FiscalInvoiceNo,
+		|	Invoice.FiscalInvoiceDate КАК FiscalInvoiceDate,
+		|	Invoice.FiscalCurrency КАК FiscalCurrency,
+		|	Invoice.FiscalAmount КАК FiscalAmount,
+		|	Invoice.TriggerDate КАК TriggerDate,
+		|	Invoice.DueDateFrom КАК DueDateFrom,
+		|	Invoice.DueDateTo КАК DueDateTo,
+		|	Invoice.Agreement КАК Agreement,
 		|	Invoice.ДатаВозвратаКС КАК DateReturnKS,
 		|	Invoice.ДатаОтправкиКС КАК DateSentKS,
 		|	Invoice.КомментарийСтатусаВозвратаКС КАК CommentTheStatusOfTheReturn,
-		|	Invoice.СтатусВозвратаКС КАК ReturnStatusKS
+		|	Invoice.СтатусВозвратаКС КАК ReturnStatusKS,
+		|	Invoice.DocNumber КАК DocNumber
 		|ИЗ
 		|	Документ.Invoice КАК Invoice
 		|ГДЕ
@@ -777,6 +780,7 @@
 	Объект.KSDepartureDate = ВыборкаДетальныеЗаписи.DateSentKS;
 	Объект.KSReturnStatus = ВыборкаДетальныеЗаписи.ReturnStatusKS;
 	Объект.KSCommentReturnStatus = ВыборкаДетальныеЗаписи.CommentTheStatusOfTheReturn;
+	Объект.DocNumber = ВыборкаДетальныеЗаписи.DocNumber;
 	
 КонецПроцедуры
 #КонецОбласти
