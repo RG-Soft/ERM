@@ -172,84 +172,88 @@
 	Запрос = Новый Запрос;
 	Запрос.Текст =
 		"ВЫБРАТЬ РАЗЛИЧНЫЕ
-		|	XR223SourceData.Invoice,
-		|	XR223SourceData.BatchNbr,
-		|	XR223SourceData.DepositDate,
-		|	XR223SourceData.TransactionType,
+		|	XR223SourceData.Invoice КАК Invoice,
+		|	XR223SourceData.BatchNbr КАК BatchNbr,
+		|	XR223SourceData.DepositDate КАК DepositDate,
+		|	XR223SourceData.TransactionType КАК TransactionType,
 		|	Организации.Ссылка КАК Company
 		|ПОМЕСТИТЬ ВТ_ДанныеФайла
 		|ИЗ
 		|	РегистрСведений.XR223SourceData КАК XR223SourceData
 		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
 		|		ПО XR223SourceData.Company = Организации.Код
-		|		И Организации.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
+		|			И (Организации.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
 		|ГДЕ
 		|	XR223SourceData.ДокументЗагрузки = &ДокументЗагрузки
 		|	И XR223SourceData.DepositDate <> """"
-		|	И XR223SourceData.TransactionType = ""I""
+		|	И (XR223SourceData.TransactionType = ""I""
+		|			ИЛИ XR223SourceData.TransactionType = ""D"")
 		|;
+		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
-		|	ВТ_ДанныеФайла.BatchNbr,
-		|	CashBatch.Company,
-		|	CashBatch.Prepayment,
+		|	ВТ_ДанныеФайла.BatchNbr КАК BatchNbr,
+		|	CashBatch.Company КАК Company,
+		|	CashBatch.Prepayment КАК Prepayment,
 		|	CashBatch.Ссылка КАК CashBatch
 		|ПОМЕСТИТЬ ВТ_CashBatch
 		|ИЗ
 		|	Документ.CashBatch КАК CashBatch
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
-		|		ПО CashBatch.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
-		|		И CashBatch.DocID = ВТ_ДанныеФайла.BatchNbr
-		|		И
-		|		НЕ CashBatch.ПометкаУдаления
+		|		ПО (CashBatch.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
+		|			И CashBatch.DocID = ВТ_ДанныеФайла.BatchNbr
+		|			И (НЕ CashBatch.ПометкаУдаления)
 		|;
+		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	КлючиИнвойсов.ArInvoice КАК ArInvoice,
-		|	КлючиИнвойсов.Company,
-		|	КлючиИнвойсов.Invoice
+		|	КлючиИнвойсов.Company КАК Company,
+		|	КлючиИнвойсов.Invoice КАК Invoice
 		|ПОМЕСТИТЬ ВТ_Инвойсы
 		|ИЗ
 		|	РегистрСведений.КлючиИнвойсов КАК КлючиИнвойсов
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
 		|		ПО КлючиИнвойсов.ArInvoice = ВТ_ДанныеФайла.Invoice
-		|		И КлючиИнвойсов.Company = ВТ_ДанныеФайла.Company
-		|		И КлючиИнвойсов.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
+		|			И КлючиИнвойсов.Company = ВТ_ДанныеФайла.Company
+		|			И (КлючиИнвойсов.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
 		|;
+		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	КлючиMemo.ArInvoice КАК ArInvoice,
-		|	КлючиMemo.Company,
-		|	КлючиMemo.Memo
+		|	КлючиMemo.Company КАК Company,
+		|	КлючиMemo.Memo КАК Memo
 		|ПОМЕСТИТЬ ВТ_Memo
 		|ИЗ
 		|	РегистрСведений.КлючиMemo КАК КлючиMemo
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
 		|		ПО КлючиMemo.ArInvoice = ВТ_ДанныеФайла.Invoice
-		|		И КлючиMemo.Company = ВТ_ДанныеФайла.Company
+		|			И КлючиMemo.Company = ВТ_ДанныеФайла.Company
 		|;
+		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
-		|	ВТ_ДанныеФайла.DepositDate,
-		|	ВТ_ДанныеФайла.TransactionType,
-		|	ВТ_Инвойсы.Invoice,
-		|	ВТ_CashBatch.CashBatch
+		|	ВТ_ДанныеФайла.DepositDate КАК DepositDate,
+		|	ВТ_ДанныеФайла.TransactionType КАК TransactionType,
+		|	ВТ_Инвойсы.Invoice КАК Invoice,
+		|	ВТ_CashBatch.CashBatch КАК CashBatch,
+		|	ВТ_Memo.Memo КАК Memo
 		|ИЗ
 		|	ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
 		|		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_CashBatch КАК ВТ_CashBatch
 		|		ПО ВТ_ДанныеФайла.BatchNbr = ВТ_CashBatch.BatchNbr
-		|		И ВТ_ДанныеФайла.Company = ВТ_CashBatch.Company
+		|			И ВТ_ДанныеФайла.Company = ВТ_CashBatch.Company
 		|		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_Инвойсы КАК ВТ_Инвойсы
 		|		ПО ВТ_ДанныеФайла.Invoice = ВТ_Инвойсы.ArInvoice
-		|		И ВТ_ДанныеФайла.Company = ВТ_Инвойсы.Company
+		|			И ВТ_ДанныеФайла.Company = ВТ_Инвойсы.Company
 		|		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_Memo КАК ВТ_Memo
 		|		ПО ВТ_ДанныеФайла.Invoice = ВТ_Memo.ArInvoice
-		|		И ВТ_ДанныеФайла.Company = ВТ_Memo.Company
+		|			И ВТ_ДанныеФайла.Company = ВТ_Memo.Company
 		|ГДЕ
 		|	НЕ ВТ_CashBatch.CashBatch.Ссылка ЕСТЬ NULL
 		|	И (НЕ ВТ_Инвойсы.Invoice.Ссылка ЕСТЬ NULL
-		|	ИЛИ
-		|	НЕ ВТ_Memo.Memo.Ссылка ЕСТЬ NULL)";
+		|			ИЛИ НЕ ВТ_Memo.Memo.Ссылка ЕСТЬ NULL)";
 	
 	Запрос.УстановитьПараметр("ДокументЗагрузки", СтруктураПараметров.Ссылка);
 	
@@ -272,6 +276,7 @@
 		НЗ.Очистить();
 		НЗ.Отбор.CashBatch.Установить(ВыборкаДетальныеЗаписи.CashBatch);
 		Если ВыборкаДетальныеЗаписи.TransactionType = "I" Тогда
+			
 			НЗ.Отбор.Invoice.Установить(ВыборкаДетальныеЗаписи.Invoice);
 			НоваяЗапись = НЗ.Добавить();
 			ЗаполнитьЗначенияСвойств(НоваяЗапись, ВыборкаДетальныеЗаписи);
@@ -280,7 +285,9 @@
 			
 			СтрокаТЗ = ОбновленныеInvoice.Добавить();
 			СтрокаТЗ.Invoice = ВыборкаДетальныеЗаписи.Invoice;
-		Иначе
+			
+		ИначеЕсли ВыборкаДетальныеЗаписи.TransactionType = "D" Тогда
+			
 			НЗ.Отбор.Invoice.Установить(ВыборкаДетальныеЗаписи.Memo);
 			НоваяЗапись = НЗ.Добавить();
 			ЗаполнитьЗначенияСвойств(НоваяЗапись, ВыборкаДетальныеЗаписи);
@@ -290,6 +297,7 @@
 			
 			СтрокаТЗ = ОбновленныеMemo.Добавить();
 			СтрокаТЗ.Memo = ВыборкаДетальныеЗаписи.Memo;
+			
 		КонецЕсли;
 
 	КонецЦикла;
