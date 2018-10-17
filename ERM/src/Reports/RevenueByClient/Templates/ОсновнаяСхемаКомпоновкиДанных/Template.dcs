@@ -247,15 +247,11 @@
 				</v8:item>
 			</title>
 		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>Контрагент</dataPath>
-			<field>Контрагент</field>
-		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	ВнутренниеКурсыВалют.Период КАК Период,
 	ВнутренниеКурсыВалют.Валюта КАК Валюта,
-	ВнутренниеКурсыВалют.Курс
+	ВнутренниеКурсыВалют.Курс КАК Курс
 ПОМЕСТИТЬ ВТ_КурсыВалют
 ИЗ
 	РегистрСведений.ВнутренниеКурсыВалют КАК ВнутренниеКурсыВалют
@@ -272,12 +268,12 @@
 ВЫБРАТЬ
 	ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент КАК ParentClient,
 	RevenueОбороты.Document.ClientID КАК ClientID,
-	RevenueОбороты.Client,
+	RevenueОбороты.Client КАК Client,
 	RevenueОбороты.Company.БазовыйЭлемент КАК Company,
-	RevenueОбороты.AU,
+	RevenueОбороты.AU КАК AU,
 	RevenueОбороты.Account.БазовыйЭлемент КАК Account,
-	RevenueОбороты.Document,
-	RevenueОбороты.Currency,
+	RevenueОбороты.Document КАК Document,
+	RevenueОбороты.Currency КАК Currency,
 	ВЫБОР
 		КОГДА RevenueОбороты.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
 			ТОГДА RevenueОбороты.LegalEntity
@@ -288,7 +284,7 @@
 	RevenueОбороты.Период КАК ПериодМесяц,
 	НАЧАЛОПЕРИОДА(RevenueОбороты.Период, КВАРТАЛ) КАК ПериодКвартал,
 	НАЧАЛОПЕРИОДА(RevenueОбороты.Период, ГОД) КАК ПериодГод,
-	ВТ_КурсыВалют.Курс,
+	ВТ_КурсыВалют.Курс КАК Курс,
 	ВЫБОР
 		КОГДА RevenueОбороты.Location = ЗНАЧЕНИЕ(Справочник.ПодразделенияОрганизаций.ПустаяСсылка)
 			ТОГДА RevenueОбороты.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель
@@ -302,21 +298,22 @@
 	RevenueОбороты.AU.Сегмент.БазовыйЭлемент КАК SubSubSegment,
 	RevenueОбороты.AU.Сегмент.БазовыйЭлемент.Родитель КАК SubSegment,
 	RevenueОбороты.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель КАК Segment,
-	RevenueОбороты.Source,
+	RevenueОбороты.Source КАК Source,
 	ВЫБОР
 		КОГДА RevenueОбороты.Location = ЗНАЧЕНИЕ(Справочник.ПодразделенияОрганизаций.ПустаяСсылка)
 			ТОГДА RevenueОбороты.AU.ПодразделениеОрганизации.БазовыйЭлемент
 		ИНАЧЕ RevenueОбороты.Location.БазовыйЭлемент
 	КОНЕЦ КАК Location,
-	RevenueОбороты.EndClient
+	RevenueОбороты.EndClient КАК EndClient
 ПОМЕСТИТЬ ВТ_Результат
 ИЗ
-	РегистрНакопления.Revenue.Обороты(,, Месяц,) КАК RevenueОбороты
+	РегистрНакопления.Revenue.Обороты(, , Месяц, ) КАК RevenueОбороты
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИерархияКонтрагентов.СрезПоследних КАК ИерархияКонтрагентовСрезПоследних
 		ПО RevenueОбороты.Client = ИерархияКонтрагентовСрезПоследних.Контрагент
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_КурсыВалют КАК ВТ_КурсыВалют
 		ПО RevenueОбороты.Currency = ВТ_КурсыВалют.Валюта
-		И НАЧАЛОПЕРИОДА(RevenueОбороты.Период, МЕСЯЦ) = ВТ_КурсыВалют.Период
+			И (НАЧАЛОПЕРИОДА(RevenueОбороты.Период, МЕСЯЦ) = ВТ_КурсыВалют.Период)
+
 СГРУППИРОВАТЬ ПО
 	ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент,
 	RevenueОбороты.Document.ClientID,
@@ -354,11 +351,6 @@
 			ТОГДА RevenueОбороты.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket
 		ИНАЧЕ RevenueОбороты.Location.БазовыйЭлемент.GeoMarket
 	КОНЕЦ,
-	ВЫБОР
-		КОГДА RevenueОбороты.Location = ЗНАЧЕНИЕ(Справочник.ПодразделенияОрганизаций.ПустаяСсылка)
-			ТОГДА RevenueОбороты.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket
-		ИНАЧЕ RevenueОбороты.Location.БазовыйЭлемент.GeoMarket
-	КОНЕЦ,
 	RevenueОбороты.EndClient
 
 ОБЪЕДИНИТЬ ВСЕ
@@ -369,7 +361,7 @@
 	ЗНАЧЕНИЕ(Справочник.Контрагенты.Unreconciled),
 	NULL,
 	NULL,
-	NULL,
+	HFMAdjRevenueОбороты.Account,
 	NULL,
 	&amp;USD,
 	NULL,
@@ -388,36 +380,37 @@
 	NULL,
 	NULL
 ИЗ
-	РегистрНакопления.HFMAdjRevenue.Обороты(&amp;НачалоПериода, &amp;КонецПериода, Месяц,) КАК HFMAdjRevenueОбороты
+	РегистрНакопления.HFMAdjRevenue.Обороты(&amp;НачалоПериода, &amp;КонецПериода, Месяц, ) КАК HFMAdjRevenueОбороты
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
 ВЫБРАТЬ
-	ВТ_Результат.ParentClient,
-	ВТ_Результат.ClientID,
-	ВТ_Результат.Client,
-	ВТ_Результат.Company,
-	ВТ_Результат.AU,
-	ВТ_Результат.Account,
-	ВТ_Результат.Currency,
-	ВТ_Результат.LegalEntity,
+	ВТ_Результат.ParentClient КАК ParentClient,
+	ВТ_Результат.ClientID КАК ClientID,
+	ВТ_Результат.Client КАК Client,
+	ВТ_Результат.Company КАК Company,
+	ВТ_Результат.AU КАК AU,
+	ВТ_Результат.Account КАК Account,
+	ВТ_Результат.Currency КАК Currency,
+	ВТ_Результат.LegalEntity КАК LegalEntity,
 	СУММА(ВТ_Результат.Amount) КАК Amount,
 	СУММА(ВТ_Результат.USDAmount) КАК USDAmount,
-	ВТ_Результат.ПериодМесяц,
-	ВТ_Результат.ПериодКвартал,
-	ВТ_Результат.ПериодГод,
-	ВТ_Результат.GeoMarket,
-	ВТ_Результат.SubGeoMarket,
-	ВТ_Результат.SubSubSegment,
-	ВТ_Результат.SubSegment,
-	ВТ_Результат.Segment,
-	ВТ_Результат.Source,
-	ВТ_Результат.Location,
+	ВТ_Результат.ПериодМесяц КАК ПериодМесяц,
+	ВТ_Результат.ПериодКвартал КАК ПериодКвартал,
+	ВТ_Результат.ПериодГод КАК ПериодГод,
+	ВТ_Результат.GeoMarket КАК GeoMarket,
+	ВТ_Результат.SubGeoMarket КАК SubGeoMarket,
+	ВТ_Результат.SubSubSegment КАК SubSubSegment,
+	ВТ_Результат.SubSegment КАК SubSegment,
+	ВТ_Результат.Segment КАК Segment,
+	ВТ_Результат.Source КАК Source,
+	ВТ_Результат.Location КАК Location,
 	ВТ_Результат.SubGeoMarket.ManagementGeomarket КАК MgmtGeomarket,
-	ВТ_Результат.Document,
-	ВТ_Результат.EndClient
+	ВТ_Результат.Document КАК Document,
+	ВТ_Результат.EndClient КАК EndClient
 ИЗ
 	ВТ_Результат КАК ВТ_Результат
+
 СГРУППИРОВАТЬ ПО
 	ВТ_Результат.Source,
 	ВТ_Результат.Segment,
@@ -440,6 +433,7 @@
 	ВТ_Результат.Document,
 	ВТ_Результат.SubGeoMarket.ManagementGeomarket,
 	ВТ_Результат.EndClient
+
 ИМЕЮЩИЕ
 	СУММА(ВТ_Результат.USDAmount) &lt;&gt; 0</query>
 	</dataSet>
