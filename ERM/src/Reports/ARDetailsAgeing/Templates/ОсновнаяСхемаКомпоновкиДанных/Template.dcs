@@ -385,10 +385,6 @@
 				</v8:item>
 			</title>
 		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>Валюта</dataPath>
-			<field>Валюта</field>
-		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	UnbilledARОстатки.Client КАК Client,
@@ -572,6 +568,47 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ВЫБРАТЬ
+	МАКСИМУМ(UnallocatedCashОбороты.Период) КАК Период,
+	UnallocatedCashОбороты.Client КАК Client,
+	UnallocatedCashОбороты.Company КАК Company,
+	UnallocatedCashОбороты.Source КАК Source,
+	UnallocatedCashОбороты.Account КАК Account,
+	UnallocatedCashОбороты.Currency КАК Currency,
+	UnallocatedCashОбороты.AU КАК AU,
+	UnallocatedCashОбороты.LegalEntity КАК LegalEntity
+ПОМЕСТИТЬ ВТ_ДатыДляCashBatchLawson
+ИЗ
+	РегистрНакопления.UnallocatedCash.Обороты(
+			&amp;Дата1980,
+			{(&amp;ПериодОстатков)},
+			Регистратор,
+			(Account, AU, Client, Company, Currency, Source) В
+				(ВЫБРАТЬ
+					ВТ_Остатки.Account,
+					ВТ_Остатки.AU,
+					ВТ_Остатки.Client,
+					ВТ_Остатки.Company,
+					ВТ_Остатки.Currency,
+					ВТ_Остатки.Source
+				ИЗ
+					ВТ_Остатки КАК ВТ_Остатки
+				ГДЕ
+					ВТ_Остатки.TransactionType = "Payment"
+					И ВТ_Остатки.Document = ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
+					И ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))) КАК UnallocatedCashОбороты
+
+СГРУППИРОВАТЬ ПО
+	UnallocatedCashОбороты.Account,
+	UnallocatedCashОбороты.Company,
+	UnallocatedCashОбороты.Currency,
+	UnallocatedCashОбороты.LegalEntity,
+	UnallocatedCashОбороты.Source,
+	UnallocatedCashОбороты.Client,
+	UnallocatedCashОбороты.AU
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
 	ВТ_Остатки.Client КАК Client,
 	ВТ_Остатки.Company КАК Company,
 	ВТ_Остатки.Source КАК Source,
@@ -584,7 +621,11 @@
 	ВТ_Остатки.BilledType КАК BilledType,
 	ВТ_Остатки.TransactionType КАК TransactionType,
 	ВТ_Остатки.НомерДокумента КАК НомерДокумента,
-	ВТ_Остатки.ДатаДокумента КАК ДатаДокумента,
+	ВЫБОР
+		КОГДА ВТ_Остатки.Document.Дата ЕСТЬ NULL
+			ТОГДА ВТ_ДатыДляCashBatchLawson.Период
+		ИНАЧЕ ВТ_Остатки.ДатаДокумента
+	КОНЕЦ КАК ДатаДокумента,
 	СУММА(ВТ_Остатки.AmountОстаток) КАК AmountОстаток,
 	СУММА(ВЫБОР
 			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
@@ -657,6 +698,16 @@
 		ПО ВТ_Остатки.Client = Collectors.Client
 			И (Collectors.ManagementGeomarket = ВТ_Остатки.Location.БазовыйЭлемент.GeoMarket.ManagementGeomarket
 				ИЛИ Collectors.ManagementGeomarket = ЗНАЧЕНИЕ(Справочник.ManagementGeography.ПустаяСсылка))
+		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ДатыДляCashBatchLawson КАК ВТ_ДатыДляCashBatchLawson
+		ПО ВТ_Остатки.Company = ВТ_ДатыДляCashBatchLawson.Company
+			И ВТ_Остатки.Client = ВТ_ДатыДляCashBatchLawson.Client
+			И ВТ_Остатки.Source = ВТ_ДатыДляCashBatchLawson.Source
+			И ВТ_Остатки.Account = ВТ_ДатыДляCashBatchLawson.Account
+			И ВТ_Остатки.AU = ВТ_ДатыДляCashBatchLawson.AU
+			И ВТ_Остатки.Currency = ВТ_ДатыДляCashBatchLawson.Currency
+			И (ВТ_Остатки.LegalEntity = ВТ_ДатыДляCashBatchLawson.LegalEntity
+				ИЛИ ВТ_ДатыДляCashBatchLawson.LegalEntity = ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка))
+			И (ВТ_Остатки.Document = ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка))
 ГДЕ
 	ПОДСТРОКА(ВТ_Остатки.Account.Код, 1, 6) &lt;&gt; "209000"
 
@@ -673,8 +724,6 @@
 	ВТ_Остатки.Currency,
 	ВТ_Остатки.BilledType,
 	ВТ_Остатки.TransactionType,
-	ВТ_Остатки.НомерДокумента,
-	ВТ_Остатки.ДатаДокумента,
 	ВТ_Остатки.Agreement,
 	ВТ_Остатки.Document.FiscalInvoiceNo,
 	ВТ_Остатки.Document.FiscalInvoiceDate,
@@ -704,7 +753,14 @@
 		ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.ResponsiblesList
 	КОНЕЦ,
 	ВТ_Остатки.SubSubSegment.БазовыйЭлемент.Родитель,
-	ВТ_Остатки.Location.БазовыйЭлемент.GeoMarket.Родитель
+	ВТ_Остатки.Location.БазовыйЭлемент.GeoMarket.Родитель,
+	ВТ_Остатки.Company.БазовыйЭлемент,
+	ВТ_Остатки.НомерДокумента,
+	ВЫБОР
+		КОГДА ВТ_Остатки.Document.Дата ЕСТЬ NULL
+			ТОГДА ВТ_ДатыДляCashBatchLawson.Период
+		ИНАЧЕ ВТ_Остатки.ДатаДокумента
+	КОНЕЦ
 
 ИМЕЮЩИЕ
 	СУММА(ВТ_Остатки.AmountОстаток) &lt;&gt; 0
@@ -980,6 +1036,47 @@
 		</value>
 		<useRestriction>false</useRestriction>
 		<expression>ДОБАВИТЬКДАТЕ(КонецПериода(&amp;Период,"ДЕНЬ") , "ГОД", 1)</expression>
+		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
+	</parameter>
+	<parameter>
+		<name>НачалоПериода</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Начало периода</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>xs:dateTime</v8:Type>
+			<v8:DateQualifiers>
+				<v8:DateFractions>DateTime</v8:DateFractions>
+			</v8:DateQualifiers>
+		</valueType>
+		<useRestriction>false</useRestriction>
+		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
+	</parameter>
+	<parameter>
+		<name>Дата1980</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Дата1980</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>xs:dateTime</v8:Type>
+			<v8:DateQualifiers>
+				<v8:DateFractions>DateTime</v8:DateFractions>
+			</v8:DateQualifiers>
+		</valueType>
+		<useRestriction>true</useRestriction>
+		<expression>ДАТАВРЕМЯ(1980,01,01)</expression>
 		<valueListAllowed>false</valueListAllowed>
 		<availableAsField>true</availableAsField>
 		<denyIncompleteValues>false</denyIncompleteValues>
