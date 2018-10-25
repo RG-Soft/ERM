@@ -278,7 +278,7 @@
 		ПроцессорВывода.УстановитьОбъект(ТЗ);
 		ПроцессорВывода.Вывести(ПроцессорКомпоновки);
 		
-		ТЗ.Свернуть("Source, CustomerID, Client, CompanyБазовыйЭлемент, LegalEntity, AU, AccountБазовыйЭлемент, Agreement, BU, TransactionType, Document, Currency", "AmountОстаток, BaseAmountОстаток");
+		ТЗ.Свернуть("Source, CustomerID, Client, CompanyБазовыйЭлемент, LegalEntity, AU, AccountБазовыйЭлемент, Agreement, BU, TransactionType, Document, Currency, ДатаДокумента", "AmountОстаток, BaseAmountОстаток");
 		
 		НЗ = ВнешниеИсточникиДанных.ERM_BI.Таблицы.dbo_AR_Details.СоздатьНаборЗаписей();
 		
@@ -332,6 +332,11 @@
 			Иначе
 				ЗаписьНабора.DocumentID = NULL;
 				ЗаписьНабора.DocumentType = NULL;
+			КонецЕсли;
+			Если НЕ ЗначениеЗаполнено(СтрокаТЗ.Document) И СтрокаТЗ.Source = Перечисления.ТипыСоответствий.Lawson Тогда
+				ЗаписьНабора.DocDate = СтрокаТЗ.ДатаДокумента;
+			Иначе
+				ЗаписьНабора.DocDate = NULL;
 			КонецЕсли;
 			
 			ЗаписьНабора.TransactionType = СтрокаТЗ.TransactionType;
