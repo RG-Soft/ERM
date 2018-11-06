@@ -395,7 +395,7 @@
 		ПроцессорВывода.УстановитьОбъект(ТЗ);
 		ПроцессорВывода.Вывести(ПроцессорКомпоновки);
 		
-		ТЗ.Свернуть("Source, CustomerID, Client, CompanyБазовыйЭлемент, LegalEntity, AU, BU, Invoice, Currency, Период, JobStartDate", "Amount, USDAmount");
+		ТЗ.Свернуть("Период,Source,AU,BU,Clien,CompanyБазовыйЭлемент,CreationDate,Currency,ApprovalDate,FTLSubmissionDate,FirstDateOfPayment,FirstSubmissionDate,Invoice,InvoiceClientID,InvoiceFlagDate,JobEndDate,JobStartDate,LegalEntity", "Amount, USDAmount");
 		
 //		НЗ = ВнешниеИсточникиДанных.ERM_BI.Таблицы.dbo_DIR_Details.СоздатьНаборЗаписей();
 //		
