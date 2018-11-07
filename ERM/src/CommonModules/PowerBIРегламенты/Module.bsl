@@ -407,7 +407,7 @@
 			ЗаписьНабора = НЗ.Добавить();
 			ЗаписьНабора.Period = ТекПериод;
 			ЗаписьНабора.Source = Строка(СтрокаТЗ.Source);
-			ЗаписьНабора.ClientNumber = СтрокаТЗ.CustomerID;
+			ЗаписьНабора.ClientNumber = СтрокаТЗ.InvoiceClientID;
 			Если ЗначениеЗаполнено(СтрокаТЗ.Client) Тогда
 				ЗаписьНабора.ClientID = СтрокаТЗ.Client.УникальныйИдентификатор();
 			Иначе
@@ -450,8 +450,16 @@
 			Иначе
 				ЗаписьНабора.DocumentID = NULL;
 			КонецЕсли;
-//			ЗаписьНабора.TransactionType = СтрокаТЗ.TransactionType;
-//			ЗаписьНабора.Agreement = СтрокаТЗ.Agreement;
+			
+			ЗаписьНабора.MonthOfInvoice = СтрокаТЗ.Период;
+			ЗаписьНабора.CreationDate = СтрокаТЗ.CreationDate;
+			ЗаписьНабора.ApprovalDate = СтрокаТЗ.ApprovalDate;
+			ЗаписьНабора.FTLSubmissionDate = СтрокаТЗ.FTLSubmissionDate;
+			ЗаписьНабора.FirstDateOfPayment = СтрокаТЗ.FirstDateOfPayment;
+			ЗаписьНабора.FirstSubmissionDate = СтрокаТЗ.FirstSubmissionDate;
+			ЗаписьНабора.InvoiceFlagDate = СтрокаТЗ.InvoiceFlagDate;
+			ЗаписьНабора.JobEndDate = СтрокаТЗ.JobEndDate;
+			ЗаписьНабора.JobStartDate = СтрокаТЗ.JobStartDate;
 			ЗаписьНабора.Amount = СтрокаТЗ.Amount;
 			ЗаписьНабора.AmountUSD = СтрокаТЗ.AmountUSD;
 						
