@@ -462,7 +462,7 @@
 			ЗаписьНабора.JobEndDate = СтрокаТЗ.JobEndDate;
 			ЗаписьНабора.JobStartDate = СтрокаТЗ.JobStartDate;
 			ЗаписьНабора.Amount = СтрокаТЗ.Amount;
-			ЗаписьНабора.AmountUSD = СтрокаТЗ.AmountUSD;
+			ЗаписьНабора.AmountUSD = СтрокаТЗ.USDAmount;
 						
 		КонецЦикла;
 		
