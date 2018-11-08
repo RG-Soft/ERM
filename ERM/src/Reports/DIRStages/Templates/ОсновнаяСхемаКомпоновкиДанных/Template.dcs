@@ -567,7 +567,13 @@
 	ВТ_Инвойсы.ОригинальныйИнвойс КАК ОригинальныйИнвойс,
 	ВТ_Инвойсы.Currency КАК Currency,
 	ВТ_Инвойсы.LegalEntity КАК LegalEntity,
-	ЕСТЬNULL(DIR.JobStartDate, ДАТАВРЕМЯ(1, 1, 1)) КАК JobStartDate,
+	ВЫБОР
+		КОГДА ЕСТЬNULL(DIR.JobStartDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+			ТОГДА ДАТАВРЕМЯ(1, 1, 1)
+		КОГДА ЕСТЬNULL(DIR.JobStartDate, ДАТАВРЕМЯ(1, 1, 1)) &lt; &amp;МинимальнаяДата
+			ТОГДА "Error"
+		ИНАЧЕ  ЕСТЬNULL(DIR.JobStartDate, ДАТАВРЕМЯ(1, 1, 1))
+	КОНЕЦ КАК JobStartDate,
 	ЕСТЬNULL(DIR.JobEndDate, ДАТАВРЕМЯ(1, 1, 1)) КАК JobEndDate,
 	ЕСТЬNULL(DIR.FTLSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)) КАК FTLSubmissionDate,
 	ЕСТЬNULL(DIR.CreationDate, ДАТАВРЕМЯ(1, 1, 1)) КАК CreationDate,

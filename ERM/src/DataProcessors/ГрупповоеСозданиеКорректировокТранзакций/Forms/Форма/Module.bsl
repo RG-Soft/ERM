@@ -109,6 +109,10 @@
 		|	ТранзакцияHOB.CustomerNumber КАК CustomerNumber,
 		|	"""" КАК CreatedByName,
 		|	"""" КАК Description,
+		|	ТранзакцияHOB.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель КАК Segment,
+		|	ТранзакцияHOB.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
+		|	ТранзакцияHOB.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket КАК SubGeoMarket,
+		|	ТранзакцияHOB.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket КАК ManagementGeo,
 		|	ТранзакцияHOB.AU КАК AU,
 		|	ТранзакцияHOB.LegalEntity КАК LegalEntity,
 		|	ТранзакцияHOB.Ссылка КАК Ссылка,
@@ -164,6 +168,14 @@
 		|			ИЛИ ТранзакцияHOB.AU = &AU)
 		|	И &УсловиеПоКлиенту
 		|	И КорректировкаТранзакции.Ссылка ЕСТЬ NULL
+		|	И (&Segment = ЗНАЧЕНИЕ(Справочник.HFM_Technology.ПустаяСсылка)
+		|			ИЛИ ТранзакцияHOB.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель = &Segment)
+		|	И (&GeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка)
+		|			ИЛИ ТранзакцияHOB.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель = &GeoMarket)
+		|	И (&SubGeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка)
+		|			ИЛИ ТранзакцияHOB.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket = &SubGeoMarket)
+		|	И (&ManagementGeomarket = ЗНАЧЕНИЕ(Справочник.ManagementGeography.ПустаяСсылка)
+		|			ИЛИ ТранзакцияHOB.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket = &ManagementGeomarket)
 		|
 		|УПОРЯДОЧИТЬ ПО
 		|	ТранзакцияHOB.Номер";
@@ -178,6 +190,10 @@
 	Запрос.УстановитьПараметр("Currency", Currency);
 	Запрос.УстановитьПараметр("Account", Account);
 	Запрос.УстановитьПараметр("LegalEntity", LegalEntity);
+	Запрос.УстановитьПараметр("Segment", Segment);
+	Запрос.УстановитьПараметр("GeoMarket", GeoMarket);
+	Запрос.УстановитьПараметр("SubGeoMarket", SubGeoMarket);
+	Запрос.УстановитьПараметр("ManagementGeomarket", ManagementGeomarket);
 	
 	Если ТипСчета = Перечисления.ТипСчета.AR Тогда
 		Запрос.Текст = СтрЗаменить(Запрос.Текст, "&УсловиеСчета", "И НЕ ТранзакцияHOB.Account.Код ПОДОБНО ""4%""");
@@ -188,7 +204,7 @@
 	КонецЕсли;
 	
 	Если IcoClients И PredefinedClients Тогда
-		Запрос.Текст = СтрЗаменить(Запрос.Текст, "&УсловиеПоКлиенту", "ТранзакцияHOB.Client.Предопределенный ИЛИ ТранзакцияHOB.Client.Intercompany");
+		Запрос.Текст = СтрЗаменить(Запрос.Текст, "&УсловиеПоКлиенту", "(ТранзакцияHOB.Client.Предопределенный ИЛИ ТранзакцияHOB.Client.Intercompany)");
 	ИначеЕсли IcoClients Тогда 
 		Запрос.Текст = СтрЗаменить(Запрос.Текст, "&УсловиеПоКлиенту", "ТранзакцияHOB.Client.Intercompany");
 	ИначеЕсли (PredefinedClients) Тогда
@@ -222,6 +238,10 @@
 		|	ПроводкаDSS_Doc.Description КАК Description,
 		|	ПроводкаDSS_Doc.CustomerNumber КАК CustomerNumber,
 		|	"""" КАК CreatedByName,
+		|	ПроводкаDSS_Doc.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель КАК Segment,
+		|	ПроводкаDSS_Doc.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
+		|	ПроводкаDSS_Doc.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket КАК SubGeoMarket,
+		|	ПроводкаDSS_Doc.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket КАК ManagementGeo,
 		|	ПроводкаDSS_Doc.AU КАК AU,
 		|	ПроводкаDSS_Doc.LegalEntity КАК LegalEntity,
 		|	ПроводкаDSS_Doc.AccountLawson КАК Account,
@@ -281,6 +301,14 @@
 		|			ИЛИ ПроводкаDSS_Doc.AU = &AU)
 		|	И &УсловиеПоКлиенту
 		|	И КорректировкаТранзакции.Ссылка ЕСТЬ NULL
+		|	И (&Segment = ЗНАЧЕНИЕ(Справочник.HFM_Technology.ПустаяСсылка)
+		|			ИЛИ ПроводкаDSS_Doc.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель = &Segment)
+		|	И (&GeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка)
+		|			ИЛИ ПроводкаDSS_Doc.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель = &GeoMarket)
+		|	И (&SubGeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка)
+		|			ИЛИ ПроводкаDSS_Doc.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket = &SubGeoMarket)
+		|	И (&ManagementGeomarket = ЗНАЧЕНИЕ(Справочник.ManagementGeography.ПустаяСсылка)
+		|			ИЛИ ПроводкаDSS_Doc.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket = &ManagementGeomarket)
 		|
 		|УПОРЯДОЧИТЬ ПО
 		|	ПроводкаDSS_Doc.Номер";
@@ -295,6 +323,10 @@
 	Запрос.УстановитьПараметр("Currency", Currency);
 	Запрос.УстановитьПараметр("Account", Account);
 	Запрос.УстановитьПараметр("LegalEntity", LegalEntity);
+	Запрос.УстановитьПараметр("Segment", Segment);
+	Запрос.УстановитьПараметр("GeoMarket", GeoMarket);
+	Запрос.УстановитьПараметр("SubGeoMarket", SubGeoMarket);
+	Запрос.УстановитьПараметр("ManagementGeomarket", ManagementGeomarket);
 	
 	Если ТипСчета = Перечисления.ТипСчета.AR Тогда
 		Запрос.Текст = СтрЗаменить(Запрос.Текст, "&УсловиеСчета", "И НЕ ПроводкаDSS_Doc.AccountLawson.Код ПОДОБНО ""4%""");
@@ -305,7 +337,7 @@
 	КонецЕсли;
 	
 	Если IcoClients И PredefinedClients Тогда
-		Запрос.Текст = СтрЗаменить(Запрос.Текст, "&УсловиеПоКлиенту", "ПроводкаDSS_Doc.КонтрагентLawson.Предопределенный ИЛИ ПроводкаDSS_Doc.КонтрагентLawson.Intercompany");
+		Запрос.Текст = СтрЗаменить(Запрос.Текст, "&УсловиеПоКлиенту", "(ПроводкаDSS_Doc.КонтрагентLawson.Предопределенный ИЛИ ПроводкаDSS_Doc.КонтрагентLawson.Intercompany)");
 	ИначеЕсли IcoClients Тогда 
 		Запрос.Текст = СтрЗаменить(Запрос.Текст, "&УсловиеПоКлиенту", "ПроводкаDSS_Doc.КонтрагентLawson.Intercompany");
 	ИначеЕсли (PredefinedClients) Тогда
@@ -345,6 +377,10 @@
 		|	ТранзакцияOracle.CustomerNumber КАК CustomerNumber,
 		|	ТранзакцияOracle.EndCustomerNumber КАК EndCustomerNumber,
 		|	ТранзакцияOracle.CreatedByName КАК CreatedByName,
+		|	ТранзакцияOracle.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель КАК Segment,
+		|	ТранзакцияOracle.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
+		|	ТранзакцияOracle.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket КАК SubGeoMarket,
+		|	ТранзакцияOracle.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket КАК ManagementGeo,
 		|	ТранзакцияOracle.AU КАК AU,
 		|	ТранзакцияOracle.LegalEntity КАК LegalEntity,
 		|	ТранзакцияOracle.Source КАК Source,
@@ -402,6 +438,14 @@
 		|	И &УсловиеПоКлиенту
 		|	И ТранзакцияOracle.Source = &Source
 		|	И КорректировкаТранзакции.Ссылка ЕСТЬ NULL
+		|	И (&Segment = ЗНАЧЕНИЕ(Справочник.HFM_Technology.ПустаяСсылка)
+		|			ИЛИ ТранзакцияOracle.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель = &Segment)
+		|	И (&GeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка)
+		|			ИЛИ ТранзакцияOracle.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель = &GeoMarket)
+		|	И (&SubGeoMarket = ЗНАЧЕНИЕ(Справочник.HFM_Geomarkets.ПустаяСсылка)
+		|			ИЛИ ТранзакцияOracle.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket = &SubGeoMarket)
+		|	И (&ManagementGeomarket = ЗНАЧЕНИЕ(Справочник.ManagementGeography.ПустаяСсылка)
+		|			ИЛИ ТранзакцияOracle.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket = &ManagementGeomarket)
 		|
 		|УПОРЯДОЧИТЬ ПО
 		|	ТранзакцияOracle.Номер";
@@ -416,6 +460,10 @@
 	Запрос.УстановитьПараметр("Currency", Currency);
 	Запрос.УстановитьПараметр("Account", Account);
 	Запрос.УстановитьПараметр("LegalEntity", LegalEntity);
+	Запрос.УстановитьПараметр("Segment", Segment);
+	Запрос.УстановитьПараметр("GeoMarket", GeoMarket);
+	Запрос.УстановитьПараметр("SubGeoMarket", SubGeoMarket);
+	Запрос.УстановитьПараметр("ManagementGeomarket", ManagementGeomarket);
 	
 	Если ТипСчета = Перечисления.ТипСчета.AR Тогда
 		Запрос.Текст = СтрЗаменить(Запрос.Текст, "&УсловиеСчета", "И НЕ ТранзакцияOracle.Account.Код ПОДОБНО ""4%""");

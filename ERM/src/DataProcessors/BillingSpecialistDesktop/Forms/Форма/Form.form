@@ -2379,18 +2379,20 @@
       </extInfo>
     </items>
     <items xsi:type="form:FormField">
-      <name>SalesOrderWellData</name>
+      <name>WellData</name>
       <id>295</id>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
         <common>true</common>
       </userVisible>
-      <dataPath xsi:type="form:DataPath">
-        <segments>SalesOrders.SalesOrder.WellData</segments>
+      <dataPath xsi:type="form:MultiLanguageDataPath">
+        <paths xsi:type="form:DataPath">
+          <segments>SalesOrders.WellData</segments>
+        </paths>
       </dataPath>
       <extendedTooltip>
-        <name>SalesOrderWellDataРасширеннаяПодсказка</name>
+        <name>WellDataРасширеннаяПодсказка</name>
         <id>297</id>
         <visible>true</visible>
         <enabled>true</enabled>
@@ -2405,7 +2407,7 @@
         </extInfo>
       </extendedTooltip>
       <contextMenu>
-        <name>SalesOrderWellDataКонтекстноеМеню</name>
+        <name>WellDataКонтекстноеМеню</name>
         <id>296</id>
         <visible>true</visible>
         <enabled>true</enabled>
@@ -2414,18 +2416,14 @@
         </userVisible>
         <autoFill>true</autoFill>
       </contextMenu>
-      <type>InputField</type>
+      <type>LabelField</type>
       <editMode>Enter</editMode>
       <showInHeader>true</showInHeader>
       <headerHorizontalAlign>Left</headerHorizontalAlign>
       <showInFooter>true</showInFooter>
-      <extInfo xsi:type="form:InputFieldExtInfo">
+      <extInfo xsi:type="form:LabelFieldExtInfo">
         <autoMaxWidth>true</autoMaxWidth>
         <autoMaxHeight>true</autoMaxHeight>
-        <wrap>true</wrap>
-        <chooseType>true</chooseType>
-        <typeDomainEnabled>true</typeDomainEnabled>
-        <textEdit>true</textEdit>
       </extInfo>
     </items>
     <autoCommandBar>
@@ -2629,7 +2627,6 @@
         </userVisible>
         <autoFill>true</autoFill>
       </contextMenu>
-      <source>SalesOrdersСтрокаПоиска</source>
       <extInfo xsi:type="form:SearchStringAdditionExtInfo">
         <autoMaxWidth>true</autoMaxWidth>
       </extInfo>
@@ -2668,7 +2665,6 @@
         <autoFill>true</autoFill>
       </contextMenu>
       <type>ViewStatusAddition</type>
-      <source>SalesOrdersСостояниеПросмотра</source>
       <extInfo xsi:type="form:ViewStatusAdditionExtInfo">
         <autoMaxWidth>true</autoMaxWidth>
         <horizontalLocation>Left</horizontalLocation>
@@ -2708,7 +2704,6 @@
         <autoFill>true</autoFill>
       </contextMenu>
       <type>SearchControlAddition</type>
-      <source>SalesOrdersУправлениеПоиском</source>
       <extInfo xsi:type="form:SearchControlAdditionExtInfo">
         <autoMaxWidth>true</autoMaxWidth>
       </extInfo>
@@ -2866,7 +2861,8 @@
 	ВложенныйЗапрос.LegalEntity КАК LegalEntity,
 	ВложенныйЗапрос.DateComment КАК DateComment,
 	ВЫРАЗИТЬ(ВложенныйЗапрос.ActionItem КАК СТРОКА(1024)) КАК ActionItem,
-	ВЫРАЗИТЬ(ВложенныйЗапрос.ProblemDetails КАК СТРОКА(1024)) КАК ProblemDetails
+	ВЫРАЗИТЬ(ВложенныйЗапрос.ProblemDetails КАК СТРОКА(1024)) КАК ProblemDetails,
+	ВложенныйЗапрос.WellData КАК WellData
 ИЗ
 	(ВЫБРАТЬ
 		UnbilledARОстатки.Client КАК Customer,
@@ -2880,7 +2876,7 @@
 		UnbilledARОстатки.AmountОстаток КАК RemainingAmount,
 		ВЫБОР
 			КОГДА SalesOrdersCommentsСрезПоследних.SalesOrder ЕСТЬ NULL
-			ИЛИ SalesOrdersCommentsСрезПоследних.Период &lt;= &amp;ДатаДляСравнения
+					ИЛИ SalesOrdersCommentsСрезПоследних.Период &lt;= &amp;ДатаДляСравнения
 				ТОГДА ИСТИНА
 			ИНАЧЕ ЛОЖЬ
 		КОНЕЦ КАК НетКомментария,
@@ -2929,23 +2925,21 @@
 		КОНЕЦ КАК Aging,
 		ВЫБОР
 			КОГДА UnbilledARОстатки.SalesOrder.JobEndDate &lt;> ДАТАВРЕМЯ(1, 1, 1, 0, 0, 0)
-			И РАЗНОСТЬДАТ(UnbilledARОстатки.SalesOrder.JobEndDate, &amp;ДатаДляСравнения, ДЕНЬ) >= 120
+					И РАЗНОСТЬДАТ(UnbilledARОстатки.SalesOrder.JobEndDate, &amp;ДатаДляСравнения, ДЕНЬ) >= 120
 				ТОГДА ВЫБОР
-					КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
-					ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
-						ТОГДА 0
-					КОГДА UnbilledARОстатки.Currency.Код = &quot;USD&quot;
-						ТОГДА UnbilledARОстатки.AmountОстаток
-					ИНАЧЕ ВЫРАЗИТЬ(UnbilledARОстатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс *
-						ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2))
-				КОНЕЦ
+						КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
+								ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+							ТОГДА 0
+						КОГДА UnbilledARОстатки.Currency.Код = &quot;USD&quot;
+							ТОГДА UnbilledARОстатки.AmountОстаток
+						ИНАЧЕ ВЫРАЗИТЬ(UnbilledARОстатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2))
+					КОНЕЦ
 		КОНЕЦ КАК AgedDeferral,
 		SalesOrderResponsiblesList.ResponsiblesList КАК ResponsibleAR,
 		UnbilledARОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
 		UnbilledARОстатки.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket КАК SubGeoMarket,
 		ВЫБОР
-			КОГДА ЕСТЬNULL(UnbilledARОстатки.SalesOrder.Основание,
-				ЗНАЧЕНИЕ(Документ.SalesOrder.ПустаяСсылка)) &lt;> ЗНАЧЕНИЕ(Документ.SalesOrder.ПустаяСсылка)
+			КОГДА ЕСТЬNULL(UnbilledARОстатки.SalesOrder.Основание, ЗНАЧЕНИЕ(Документ.SalesOrder.ПустаяСсылка)) &lt;> ЗНАЧЕНИЕ(Документ.SalesOrder.ПустаяСсылка)
 				ТОГДА UnbilledARОстатки.SalesOrder.Основание.Agreement
 			ИНАЧЕ UnbilledARОстатки.SalesOrder.Agreement
 		КОНЕЦ КАК Agreement,
@@ -2953,12 +2947,11 @@
 		ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0) КАК Rate,
 		ВЫБОР
 			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
-			ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+					ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
 				ТОГДА 0
 			КОГДА UnbilledARОстатки.Currency.Код = &quot;USD&quot;
 				ТОГДА UnbilledARОстатки.AmountОстаток
-			ИНАЧЕ ВЫРАЗИТЬ(UnbilledARОстатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс *
-				ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2))
+			ИНАЧЕ ВЫРАЗИТЬ(UnbilledARОстатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2))
 		КОНЕЦ КАК RemainingAmountUSD,
 		ВЫБОР
 			КОГДА UnbilledARОстатки.LegalEntity &lt;> ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
@@ -2974,17 +2967,17 @@
 			КОГДА ЕСТЬNULL(SalesOrdersCommentsСрезПоследних.Период, ДАТАВРЕМЯ(1, 1, 1)) &lt;= &amp;ДатаДляСравнения
 				ТОГДА NULL
 			ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.ActionItem
-		КОНЕЦ КАК ActionItem
+		КОНЕЦ КАК ActionItem,
+		UnbilledARОстатки.SalesOrder.WellData КАК WellData
 	ИЗ
-		РегистрНакопления.UnbilledAR.Остатки({(&amp;ПериодОстатков)}, SalesOrder ССЫЛКА Документ.SalesOrder
-		И ПОДСТРОКА(Account.Код, 1, 6) &lt;> &quot;209000&quot;
-		И Account.БазовыйЭлемент = &amp;HFMUnbilledAccount
-			{(AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК UnbilledARОстатки
-			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних({(&amp;ДатаКомментария)},) КАК
-				SalesOrdersCommentsСрезПоследних
+		РегистрНакопления.UnbilledAR.Остатки(
+				{(&amp;ПериодОстатков)},
+				SalesOrder ССЫЛКА Документ.SalesOrder
+					И ПОДСТРОКА(Account.Код, 1, 6) &lt;> &quot;209000&quot;
+					И Account.БазовыйЭлемент = &amp;HFMUnbilledAccount {(AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК UnbilledARОстатки
+			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних({(&amp;ДатаКомментария)}, ) КАК SalesOrdersCommentsСрезПоследних
 			ПО UnbilledARОстатки.SalesOrder = SalesOrdersCommentsСрезПоследних.SalesOrder
-			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)},) КАК
-				ВнутренниеКурсыВалютСрезПоследних
+			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
 			ПО UnbilledARОстатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
 			{ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrderResponsibles КАК SalesOrderResponsibles
 			ПО UnbilledARОстатки.SalesOrder = SalesOrderResponsibles.SalesOrder}
@@ -2996,9 +2989,9 @@
 		UnbilledARОстатки.Client.*,
 		SalesOrderResponsibles.ResponsibleAR.*,
 		UnbilledARОстатки.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель.* КАК Segment}
-
+	
 	ОБЪЕДИНИТЬ ВСЕ
-
+	
 	ВЫБРАТЬ
 		ManualTransactionsОстатки.Client,
 		ManualTransactionsОстатки.Company,
@@ -3011,7 +3004,7 @@
 		ManualTransactionsОстатки.AmountОстаток,
 		ВЫБОР
 			КОГДА SalesOrdersCommentsСрезПоследних.SalesOrder ЕСТЬ NULL
-			ИЛИ SalesOrdersCommentsСрезПоследних.Период &lt;= &amp;ДатаДляСравнения
+					ИЛИ SalesOrdersCommentsСрезПоследних.Период &lt;= &amp;ДатаДляСравнения
 				ТОГДА ИСТИНА
 			ИНАЧЕ ЛОЖЬ
 		КОНЕЦ,
@@ -3060,12 +3053,11 @@
 		ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0),
 		ВЫБОР
 			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
-			ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+					ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
 				ТОГДА 0
 			КОГДА ManualTransactionsОстатки.Currency.Код = &quot;USD&quot;
 				ТОГДА ManualTransactionsОстатки.AmountОстаток
-			ИНАЧЕ ВЫРАЗИТЬ(ManualTransactionsОстатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс *
-				ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2))
+			ИНАЧЕ ВЫРАЗИТЬ(ManualTransactionsОстатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2))
 		КОНЕЦ,
 		ВЫБОР
 			КОГДА ManualTransactionsОстатки.LegalEntity &lt;> ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
@@ -3081,23 +3073,20 @@
 			КОГДА ЕСТЬNULL(SalesOrdersCommentsСрезПоследних.Период, ДАТАВРЕМЯ(1, 1, 1)) &lt;= &amp;ДатаДляСравнения
 				ТОГДА NULL
 			ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.ActionItem
-		КОНЕЦ
+		КОНЕЦ,
+		&quot;&quot;
 	ИЗ
-		РегистрНакопления.ManualTransactions.Остатки({(&amp;ПериодОстатков)}, Account.БазовыйЭлемент = &amp;HFMUnbilledAccount
-			{(AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК
-			ManualTransactionsОстатки
-			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних({(&amp;ДатаКомментария)},) КАК
-				SalesOrdersCommentsСрезПоследних
+		РегистрНакопления.ManualTransactions.Остатки({(&amp;ПериодОстатков)}, Account.БазовыйЭлемент = &amp;HFMUnbilledAccount {(AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК ManualTransactionsОстатки
+			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних({(&amp;ДатаКомментария)}, ) КАК SalesOrdersCommentsСрезПоследних
 			ПО ManualTransactionsОстатки.РучнаяКорректировка = SalesOrdersCommentsСрезПоследних.SalesOrder
-			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)},) КАК
-				ВнутренниеКурсыВалютСрезПоследних
+			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
 			ПО ManualTransactionsОстатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
 	{ГДЕ
 		ManualTransactionsОстатки.Source.*,
 		ManualTransactionsОстатки.Company.*}
-
+	
 	ОБЪЕДИНИТЬ ВСЕ
-
+	
 	ВЫБРАТЬ
 		UnallocatedCashОстатки.Client,
 		UnallocatedCashОстатки.Company,
@@ -3110,7 +3099,7 @@
 		-UnallocatedCashОстатки.AmountОстаток,
 		ВЫБОР
 			КОГДА SalesOrdersCommentsСрезПоследних.SalesOrder ЕСТЬ NULL
-			ИЛИ SalesOrdersCommentsСрезПоследних.Период &lt;= &amp;ДатаДляСравнения
+					ИЛИ SalesOrdersCommentsСрезПоследних.Период &lt;= &amp;ДатаДляСравнения
 				ТОГДА ИСТИНА
 			ИНАЧЕ ЛОЖЬ
 		КОНЕЦ,
@@ -3159,12 +3148,11 @@
 		ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0),
 		ВЫБОР
 			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
-			ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+					ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
 				ТОГДА 0
 			КОГДА UnallocatedCashОстатки.Currency.Код = &quot;USD&quot;
 				ТОГДА -UnallocatedCashОстатки.AmountОстаток
-			ИНАЧЕ ВЫРАЗИТЬ(-UnallocatedCashОстатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс *
-				ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2))
+			ИНАЧЕ ВЫРАЗИТЬ(-UnallocatedCashОстатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2))
 		КОНЕЦ,
 		ВЫБОР
 			КОГДА UnallocatedCashОстатки.LegalEntity &lt;> ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
@@ -3180,20 +3168,18 @@
 			КОГДА ЕСТЬNULL(SalesOrdersCommentsСрезПоследних.Период, ДАТАВРЕМЯ(1, 1, 1)) &lt;= &amp;ДатаДляСравнения
 				ТОГДА NULL
 			ИНАЧЕ SalesOrdersCommentsСрезПоследних.Problem.ActionItem
-		КОНЕЦ
+		КОНЕЦ,
+		&quot;&quot;
 	ИЗ
-		РегистрНакопления.UnallocatedCash.Остатки({(&amp;ПериодОстатков)}, Account.БазовыйЭлемент = &amp;HFMUnbilledAccount
-			{(AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК
-			UnallocatedCashОстатки
-			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних({(&amp;ДатаКомментария)},) КАК
-				SalesOrdersCommentsСрезПоследних
+		РегистрНакопления.UnallocatedCash.Остатки({(&amp;ПериодОстатков)}, Account.БазовыйЭлемент = &amp;HFMUnbilledAccount {(AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК UnallocatedCashОстатки
+			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних({(&amp;ДатаКомментария)}, ) КАК SalesOrdersCommentsСрезПоследних
 			ПО UnallocatedCashОстатки.CashBatch = SalesOrdersCommentsСрезПоследних.SalesOrder
-			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)},) КАК
-				ВнутренниеКурсыВалютСрезПоследних
+			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
 			ПО UnallocatedCashОстатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
 	{ГДЕ
 		UnallocatedCashОстатки.Source.*,
 		UnallocatedCashОстатки.Company.*}) КАК ВложенныйЗапрос
+
 СГРУППИРОВАТЬ ПО
 	ВложенныйЗапрос.Customer,
 	ВложенныйЗапрос.Company,
@@ -3223,7 +3209,9 @@
 	ВложенныйЗапрос.LegalEntity,
 	ВложенныйЗапрос.DateComment,
 	ВЫРАЗИТЬ(ВложенныйЗапрос.ActionItem КАК СТРОКА(1024)),
-	ВЫРАЗИТЬ(ВложенныйЗапрос.ProblemDetails КАК СТРОКА(1024))
+	ВЫРАЗИТЬ(ВложенныйЗапрос.ProblemDetails КАК СТРОКА(1024)),
+	ВложенныйЗапрос.WellData
+
 ИМЕЮЩИЕ
 	СУММА(ВложенныйЗапрос.RemainingAmount) &lt;> 0</queryText>
       <autoFillAvailableFields>true</autoFillAvailableFields>
