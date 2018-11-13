@@ -1116,6 +1116,7 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
+		|	ManualTransactionsОстатки.Client,
 		|	ManualTransactionsОстатки.Company,
 		|	ManualTransactionsОстатки.Source,
 		|	ManualTransactionsОстатки.Location,
