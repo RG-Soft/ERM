@@ -97,7 +97,7 @@
 			</title>
 			<appearance>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:parameter>Format</dcscor:parameter>
+					<dcscor:parameter>Формат</dcscor:parameter>
 					<dcscor:value xsi:type="v8:LocalStringType">
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -118,7 +118,7 @@
 			</title>
 			<appearance>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:parameter>Format</dcscor:parameter>
+					<dcscor:parameter>Формат</dcscor:parameter>
 					<dcscor:value xsi:type="v8:LocalStringType">
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -139,7 +139,7 @@
 			</title>
 			<appearance>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:parameter>Format</dcscor:parameter>
+					<dcscor:parameter>Формат</dcscor:parameter>
 					<dcscor:value xsi:type="v8:LocalStringType">
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -160,7 +160,7 @@
 			</title>
 			<appearance>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:parameter>Format</dcscor:parameter>
+					<dcscor:parameter>Формат</dcscor:parameter>
 					<dcscor:value xsi:type="v8:LocalStringType">
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -181,7 +181,7 @@
 			</title>
 			<appearance>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:parameter>Format</dcscor:parameter>
+					<dcscor:parameter>Формат</dcscor:parameter>
 					<dcscor:value xsi:type="v8:LocalStringType">
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -202,7 +202,7 @@
 			</title>
 			<appearance>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:parameter>Format</dcscor:parameter>
+					<dcscor:parameter>Формат</dcscor:parameter>
 					<dcscor:value xsi:type="v8:LocalStringType">
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -223,7 +223,7 @@
 			</title>
 			<appearance>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:parameter>Format</dcscor:parameter>
+					<dcscor:parameter>Формат</dcscor:parameter>
 					<dcscor:value xsi:type="v8:LocalStringType">
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -394,14 +394,8 @@
 			<field>ОригинальныйИнвойс</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>CompanyHFM</dataPath>
-			<field>CompanyHFM</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Company HFM</v8:content>
-				</v8:item>
-			</title>
+			<dataPath>Контрагент</dataPath>
+			<field>Контрагент</field>
 		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
@@ -449,7 +443,8 @@
 		ПО (НАЧАЛОПЕРИОДА(InvoicedDebtsОбороты.Период, МЕСЯЦ) = ВнутренниеКурсыВалют.Период)
 			И InvoicedDebtsОбороты.Currency = ВнутренниеКурсыВалют.Валюта
 ГДЕ
-	НЕ InvoicedDebtsОбороты.Client.Intercompany ИЛИ InvoicedDebtsОбороты.Source = Значение(Перечисление.ТипыСоответствий.Lawson)
+	(НЕ InvoicedDebtsОбороты.Client.Intercompany
+			ИЛИ InvoicedDebtsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
 
 СГРУППИРОВАТЬ ПО
 	InvoicedDebtsОбороты.Source,
@@ -564,7 +559,6 @@
 ВЫБРАТЬ
 	ВТ_Инвойсы.Source КАК Source,
 	ВТ_Инвойсы.Company КАК Company,
-	ВТ_Инвойсы.Company.БазовыйЭлемент КАК CompanyHFM,
 	ВТ_Инвойсы.Client КАК Client,
 	ЕСТЬNULL(ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент, ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка)) КАК ParentClient,
 	ВТ_Инвойсы.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
@@ -583,7 +577,7 @@
 			ТОГДА ДАТАВРЕМЯ(1, 1, 1)
 		КОГДА ЕСТЬNULL(DIR.JobStartDate, ДАТАВРЕМЯ(1, 1, 1)) &lt; &amp;МинимальнаяДата
 			ТОГДА "Error"
-		ИНАЧЕ  ЕСТЬNULL(DIR.JobStartDate, ДАТАВРЕМЯ(1, 1, 1))
+		ИНАЧЕ ЕСТЬNULL(DIR.JobStartDate, ДАТАВРЕМЯ(1, 1, 1))
 	КОНЕЦ КАК JobStartDate,
 	ЕСТЬNULL(DIR.JobEndDate, ДАТАВРЕМЯ(1, 1, 1)) КАК JobEndDate,
 	ЕСТЬNULL(DIR.FTLSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)) КАК FTLSubmissionDate,
@@ -692,7 +686,22 @@
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ОплатыИзОбмена КАК ВТ_ОплатыИзОбмена
 		ПО ВТ_Инвойсы.Invoice = ВТ_ОплатыИзОбмена.Invoice
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИерархияКонтрагентов.СрезПоследних({(&amp;КонецПериода)}, ) КАК ИерархияКонтрагентовСрезПоследних
-		ПО ВТ_Инвойсы.Client = ИерархияКонтрагентовСрезПоследних.Контрагент</query>
+		ПО ВТ_Инвойсы.Client = ИерархияКонтрагентовСрезПоследних.Контрагент
+ГДЕ
+	(ВЫБОР
+				КОГДА ЕСТЬNULL(ВТ_Инвойсы.Invoice.ДатаВозвратаКС, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+						ИЛИ ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+					ТОГДА 0
+				КОГДА ЕСТЬNULL(ВТ_Инвойсы.Invoice.ДатаВозвратаКС, ДАТАВРЕМЯ(1, 1, 1)) &lt; &amp;МинимальнаяДата
+					ТОГДА 0
+				ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)), ВТ_Инвойсы.Invoice.ДатаВозвратаКС, СЕКУНДА) / 86400
+			КОНЕЦ &lt;&gt; 0
+			ИЛИ ВЫБОР
+				КОГДА ЕСТЬNULL(DIR.FirstSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+						ИЛИ ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
+					ТОГДА 0
+				ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.FirstSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) / 86400
+			КОНЕЦ &lt;&gt; 0)</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>SumStages</dataPath>
@@ -705,7 +714,7 @@
 		</title>
 		<appearance>
 			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-				<dcscor:parameter>Format</dcscor:parameter>
+				<dcscor:parameter>Формат</dcscor:parameter>
 				<dcscor:value xsi:type="v8:LocalStringType">
 					<v8:item>
 						<v8:lang>ru</v8:lang>
@@ -714,8 +723,6 @@
 				</dcscor:value>
 			</dcscor:item>
 		</appearance>
-		<valueType>
-		</valueType>
 	</calculatedField>
 	<calculatedField>
 		<dataPath>TotalDIRandKS</dataPath>
@@ -729,7 +736,7 @@
 		</title>
 		<appearance>
 			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-				<dcscor:parameter>Format</dcscor:parameter>
+				<dcscor:parameter>Формат</dcscor:parameter>
 				<dcscor:value xsi:type="v8:LocalStringType">
 					<v8:item>
 						<v8:lang>ru</v8:lang>
@@ -738,8 +745,6 @@
 				</dcscor:value>
 			</dcscor:item>
 		</appearance>
-		<valueType>
-		</valueType>
 	</calculatedField>
 	<calculatedField>
 		<dataPath>Factor1</dataPath>
@@ -752,7 +757,7 @@
 		</title>
 		<appearance>
 			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-				<dcscor:parameter>Format</dcscor:parameter>
+				<dcscor:parameter>Формат</dcscor:parameter>
 				<dcscor:value xsi:type="v8:LocalStringType">
 					<v8:item>
 						<v8:lang>ru</v8:lang>
@@ -761,8 +766,6 @@
 				</dcscor:value>
 			</dcscor:item>
 		</appearance>
-		<valueType>
-		</valueType>
 	</calculatedField>
 	<calculatedField>
 		<dataPath>Factor2</dataPath>
@@ -775,7 +778,7 @@
 		</title>
 		<appearance>
 			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-				<dcscor:parameter>Format</dcscor:parameter>
+				<dcscor:parameter>Формат</dcscor:parameter>
 				<dcscor:value xsi:type="v8:LocalStringType">
 					<v8:item>
 						<v8:lang>ru</v8:lang>
@@ -784,8 +787,6 @@
 				</dcscor:value>
 			</dcscor:item>
 		</appearance>
-		<valueType>
-		</valueType>
 	</calculatedField>
 	<calculatedField>
 		<dataPath>Factor3</dataPath>
@@ -798,7 +799,7 @@
 		</title>
 		<appearance>
 			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-				<dcscor:parameter>Format</dcscor:parameter>
+				<dcscor:parameter>Формат</dcscor:parameter>
 				<dcscor:value xsi:type="v8:LocalStringType">
 					<v8:item>
 						<v8:lang>ru</v8:lang>
@@ -807,8 +808,6 @@
 				</dcscor:value>
 			</dcscor:item>
 		</appearance>
-		<valueType>
-		</valueType>
 	</calculatedField>
 	<calculatedField>
 		<dataPath>Factor4</dataPath>
@@ -821,7 +820,7 @@
 		</title>
 		<appearance>
 			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-				<dcscor:parameter>Format</dcscor:parameter>
+				<dcscor:parameter>Формат</dcscor:parameter>
 				<dcscor:value xsi:type="v8:LocalStringType">
 					<v8:item>
 						<v8:lang>ru</v8:lang>
@@ -830,8 +829,6 @@
 				</dcscor:value>
 			</dcscor:item>
 		</appearance>
-		<valueType>
-		</valueType>
 	</calculatedField>
 	<calculatedField>
 		<dataPath>Factor5</dataPath>
@@ -848,7 +845,7 @@
 		</title>
 		<appearance>
 			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-				<dcscor:parameter>Format</dcscor:parameter>
+				<dcscor:parameter>Формат</dcscor:parameter>
 				<dcscor:value xsi:type="v8:LocalStringType">
 					<v8:item>
 						<v8:lang>ru</v8:lang>
@@ -857,8 +854,6 @@
 				</dcscor:value>
 			</dcscor:item>
 		</appearance>
-		<valueType>
-		</valueType>
 	</calculatedField>
 	<calculatedField>
 		<dataPath>Factor15</dataPath>
@@ -871,7 +866,7 @@
 		</title>
 		<appearance>
 			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-				<dcscor:parameter>Format</dcscor:parameter>
+				<dcscor:parameter>Формат</dcscor:parameter>
 				<dcscor:value xsi:type="v8:LocalStringType">
 					<v8:item>
 						<v8:lang>ru</v8:lang>
@@ -880,8 +875,6 @@
 				</dcscor:value>
 			</dcscor:item>
 		</appearance>
-		<valueType>
-		</valueType>
 	</calculatedField>
 	<calculatedField>
 		<dataPath>Factor15andKS</dataPath>
@@ -901,7 +894,7 @@
 		</title>
 		<appearance>
 			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-				<dcscor:parameter>Format</dcscor:parameter>
+				<dcscor:parameter>Формат</dcscor:parameter>
 				<dcscor:value xsi:type="v8:LocalStringType">
 					<v8:item>
 						<v8:lang>ru</v8:lang>
@@ -910,8 +903,6 @@
 				</dcscor:value>
 			</dcscor:item>
 		</appearance>
-		<valueType>
-		</valueType>
 	</calculatedField>
 	<calculatedField>
 		<dataPath>SumT2CStages</dataPath>
@@ -929,7 +920,7 @@
 		</title>
 		<appearance>
 			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-				<dcscor:parameter>Format</dcscor:parameter>
+				<dcscor:parameter>Формат</dcscor:parameter>
 				<dcscor:value xsi:type="v8:LocalStringType">
 					<v8:item>
 						<v8:lang>ru</v8:lang>
@@ -938,8 +929,6 @@
 				</dcscor:value>
 			</dcscor:item>
 		</appearance>
-		<valueType>
-		</valueType>
 	</calculatedField>
 	<calculatedField>
 		<dataPath>FactPaymentPeriod</dataPath>
@@ -957,7 +946,7 @@
 		</title>
 		<appearance>
 			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-				<dcscor:parameter>Format</dcscor:parameter>
+				<dcscor:parameter>Формат</dcscor:parameter>
 				<dcscor:value xsi:type="v8:LocalStringType">
 					<v8:item>
 						<v8:lang>ru</v8:lang>
@@ -966,8 +955,6 @@
 				</dcscor:value>
 			</dcscor:item>
 		</appearance>
-		<valueType>
-		</valueType>
 	</calculatedField>
 	<calculatedField>
 		<dataPath>TotalDIRKST2C</dataPath>
@@ -987,7 +974,7 @@
 		</title>
 		<appearance>
 			<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-				<dcscor:parameter>Format</dcscor:parameter>
+				<dcscor:parameter>Формат</dcscor:parameter>
 				<dcscor:value xsi:type="v8:LocalStringType">
 					<v8:item>
 						<v8:lang>ru</v8:lang>
@@ -996,12 +983,10 @@
 				</dcscor:value>
 			</dcscor:item>
 		</appearance>
-		<valueType>
-		</valueType>
 	</calculatedField>
 	<calculatedField>
 		<dataPath>BU</dataPath>
-		<expression>rgsКонсолидацияДанныхСервер.ОпределитьBU(GeoMarket, SubGeoMarket, MgmtGeomarket, Segment, SubSegment, CompanyHFM, AU)</expression>
+		<expression>rgsКонсолидацияДанныхСервер.ОпределитьBU(GeoMarket, SubGeoMarket, MgmtGeomarket, Segment, SubSegment, Company, AU)</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -1012,6 +997,14 @@
 			<v8:Type xmlns:d3p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d3p1:CatalogRef.BusinessUnits</v8:Type>
 		</valueType>
 	</calculatedField>
+	<totalField>
+		<dataPath>Stage5</dataPath>
+		<expression>Сумма(Stage5)</expression>
+	</totalField>
+	<totalField>
+		<dataPath>Stage6</dataPath>
+		<expression>Сумма(Stage6)</expression>
+	</totalField>
 	<parameter>
 		<name>НачалоПериода</name>
 		<title xsi:type="v8:LocalStringType">
@@ -1085,8 +1078,8 @@
 				<v8:content>Начало времен</v8:content>
 			</v8:item>
 		</title>
-		<valueType>
-		</valueType>
+		<value xsi:nil="true">
+		</value>
 		<useRestriction>true</useRestriction>
 		<valueListAllowed>false</valueListAllowed>
 		<availableAsField>true</availableAsField>
@@ -1101,8 +1094,8 @@
 				<v8:content>Конец времен</v8:content>
 			</v8:item>
 		</title>
-		<valueType>
-		</valueType>
+		<value xsi:nil="true">
+		</value>
 		<useRestriction>true</useRestriction>
 		<valueListAllowed>false</valueListAllowed>
 		<availableAsField>true</availableAsField>
@@ -1123,6 +1116,8 @@
 				<v8:DateFractions>Date</v8:DateFractions>
 			</v8:DateQualifiers>
 		</valueType>
+		<value xsi:nil="true">
+		</value>
 		<useRestriction>true</useRestriction>
 		<expression>ДАТАВРЕМЯ(2005,01,01)</expression>
 		<valueListAllowed>false</valueListAllowed>
@@ -1141,390 +1136,65 @@
 		<valueType>
 			<v8:Type>v8:StandardPeriod</v8:Type>
 		</valueType>
+		<value xsi:nil="true">
+		</value>
 		<useRestriction>false</useRestriction>
-		<expression></expression>
 		<valueListAllowed>false</valueListAllowed>
 		<availableAsField>true</availableAsField>
 		<denyIncompleteValues>false</denyIncompleteValues>
 		<use>Auto</use>
 	</parameter>
 	<settingsVariant>
-		<dcsset:name>Основной</dcsset:name>
-		<dcsset:presentation xsi:type="xs:string">Основной</dcsset:presentation>
+		<dcsset:name>DIR Dynamics By SEGM</dcsset:name>
+		<dcsset:presentation xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>DIR dynamics by SEGM</v8:content>
+			</v8:item>
+		</dcsset:presentation>
 		<dcsset:settings xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Source</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>BU</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Geo</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>SubGeo</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>AU.Сегмент.БазовыйЭлемент.Родитель.Родитель</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Seg</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>AU.Сегмент.БазовыйЭлемент.Родитель</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>SubSeg</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Company</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.ClientID</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>ERP Customer Code</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>ParentClient</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Parent client</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Client</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Customer</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>InvoiceNo</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Invoice No</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.FiscalInvoiceNo</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Fiscal Invoice number</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.Responsible</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Responsible AR</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Agreement</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Currency</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Amount</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Amount</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>USDAmount</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>JobStartDate</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>JobEndDate</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Order Job End Date</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>FTLSubmissionDate</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>FTL Submission Date</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>CreationDate</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Order Creation Date</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>ApprovalDate</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Order Approval Date</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>FirstSubmissionDate</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Order First Submission Date</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>InvoiceFlagDate</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Invoice Flag Date</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.FiscalInvoiceDate</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Invoice Date (Fiscal)</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.ДатаОтправкиКС</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>KS submission date</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.ДатаВозвратаКС</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>KS reception date</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Период</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Factor1</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Factor2</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Factor3</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Factor4</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Factor5</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Factor15</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Factor15andKS</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.Contract.Trigger</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Trigger</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.TriggerDate</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Trigger date</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.Contract.PTDaysFrom</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>PT days from</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.Contract.СрокОплаты</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>PT days to</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>DateFrom</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>DateTo</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>FirstDateOfPayment</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Stage1</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Stage2</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Stage3</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Stage4</dcsset:field>
-				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Stage5</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Stage6</dcsset:field>
 				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>SumStages</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>TotalDIR</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>TotalDIRandKS</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>T2CStage1</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>T2CStage2</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>T2CStage3</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>SumT2CStages</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>FactPaymentPeriod</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>TotalDIRKST2C</dcsset:field>
-				</dcsset:item>
 			</dcsset:selection>
 			<dcsset:filter>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:left xsi:type="dcscor:Field">Source</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:right xsi:nil="true">
-					</dcsset:right>
-					<dcsset:presentation xsi:type="xs:string">
-					</dcsset:presentation>
 					<dcsset:userSettingID>15759117-09dc-4689-8374-181e70968d7a</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">Segment</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:right xsi:nil="true">
-					</dcsset:right>
-					<dcsset:presentation xsi:type="xs:string">
-					</dcsset:presentation>
 					<dcsset:userSettingID>772fca7d-48b6-4be4-a0af-f5c3de80be34</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">MgmtGeomarket</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:right xsi:nil="true">
-					</dcsset:right>
-					<dcsset:presentation xsi:type="xs:string">
-					</dcsset:presentation>
 					<dcsset:userSettingID>06d31d4d-f6f1-4a99-93c7-ec0d5bbd61fa</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">Client</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:right xsi:nil="true">
-					</dcsset:right>
-					<dcsset:presentation xsi:type="xs:string">
-					</dcsset:presentation>
 					<dcsset:userSettingID>ffab3b30-6f4b-44be-ac71-0e5a22d94dda</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">BU</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:right xsi:nil="true">
-					</dcsset:right>
-					<dcsset:presentation xsi:type="xs:string">
-					</dcsset:presentation>
 					<dcsset:userSettingID>a706bf53-7b12-4cbb-82b7-afb368b9456a</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">ParentClient</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:presentation xsi:type="xs:string">
-					</dcsset:presentation>
 					<dcsset:userSettingID>127a7151-3427-4d17-9e65-5c6d9383f4f5</dcsset:userSettingID>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
@@ -1532,8 +1202,6 @@
 					<dcsset:left xsi:type="dcscor:Field">Amount</dcsset:left>
 					<dcsset:comparisonType>GreaterOrEqual</dcsset:comparisonType>
 					<dcsset:right xsi:type="xs:decimal">0</dcsset:right>
-					<dcsset:presentation xsi:type="xs:string">
-					</dcsset:presentation>
 					<dcsset:userSettingID>299d99e2-3f7f-428d-b532-66c727ce64e0</dcsset:userSettingID>
 				</dcsset:item>
 			</dcsset:filter>
@@ -1541,9 +1209,32 @@
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:use>false</dcscor:use>
 					<dcscor:parameter>Период</dcscor:parameter>
+					<dcscor:value xsi:nil="true">
+					</dcscor:value>
 					<dcsset:userSettingID>58ef28ee-397d-4ba4-b1f3-0f4f8c3e4eef</dcsset:userSettingID>
 				</dcscor:item>
 			</dcsset:dataParameters>
+			<dcsset:conditionalAppearance>
+				<dcsset:item>
+					<dcsset:selection>
+						<dcsset:item>
+							<dcsset:field>Период</dcsset:field>
+						</dcsset:item>
+					</dcsset:selection>
+					<dcsset:filter/>
+					<dcsset:appearance>
+						<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+							<dcscor:parameter>Формат</dcscor:parameter>
+							<dcscor:value xsi:type="v8:LocalStringType">
+								<v8:item>
+									<v8:lang>ru</v8:lang>
+									<v8:content>ДФ='MMMM yyyy'</v8:content>
+								</v8:item>
+							</dcscor:value>
+						</dcscor:item>
+					</dcsset:appearance>
+				</dcsset:item>
+			</dcsset:conditionalAppearance>
 			<dcsset:outputParameters>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>МакетОформления</dcscor:parameter>
@@ -1554,19 +1245,91 @@
 					<dcscor:value xsi:type="dcsset:DataCompositionAttributesPlacement">Separately</dcscor:value>
 				</dcscor:item>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:parameter>FilterOutput</dcscor:parameter>
+					<dcscor:parameter>ВыводитьПараметрыДанных</dcscor:parameter>
 					<dcscor:value xsi:type="dcsset:DataCompositionTextOutputType">DontOutput</dcscor:value>
 				</dcscor:item>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:parameter>DataParametersOutput</dcscor:parameter>
+					<dcscor:parameter>ВыводитьОтбор</dcscor:parameter>
 					<dcscor:value xsi:type="dcsset:DataCompositionTextOutputType">DontOutput</dcscor:value>
 				</dcscor:item>
 			</dcsset:outputParameters>
-			<dcsset:item xsi:type="dcsset:StructureItemGroup">
-				<dcsset:order>
-					<dcsset:item xsi:type="dcsset:OrderItemAuto">
+			<dcsset:item xsi:type="dcsset:StructureItemTable">
+				<dcsset:column>
+					<dcsset:groupItems>
+						<dcsset:item xsi:type="dcsset:GroupItemField">
+							<dcsset:field>Период</dcsset:field>
+							<dcsset:groupType>Items</dcsset:groupType>
+							<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
+							<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
+							<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
+						</dcsset:item>
+					</dcsset:groupItems>
+					<dcsset:order>
+						<dcsset:item xsi:type="dcsset:OrderItemAuto">
+						</dcsset:item>
+					</dcsset:order>
+					<dcsset:selection>
+						<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+						</dcsset:item>
+					</dcsset:selection>
+				</dcsset:column>
+				<dcsset:row>
+					<dcsset:groupItems>
+						<dcsset:item xsi:type="dcsset:GroupItemField">
+							<dcsset:field>MgmtGeomarket</dcsset:field>
+							<dcsset:groupType>Items</dcsset:groupType>
+							<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
+							<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
+							<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
+						</dcsset:item>
+					</dcsset:groupItems>
+					<dcsset:order>
+						<dcsset:item xsi:type="dcsset:OrderItemAuto">
+						</dcsset:item>
+					</dcsset:order>
+					<dcsset:selection>
+						<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+						</dcsset:item>
+					</dcsset:selection>
+					<dcsset:item>
+						<dcsset:groupItems>
+							<dcsset:item xsi:type="dcsset:GroupItemField">
+								<dcsset:field>Segment</dcsset:field>
+								<dcsset:groupType>Items</dcsset:groupType>
+								<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
+								<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
+								<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
+							</dcsset:item>
+						</dcsset:groupItems>
+						<dcsset:order>
+							<dcsset:item xsi:type="dcsset:OrderItemAuto">
+							</dcsset:item>
+						</dcsset:order>
+						<dcsset:selection>
+							<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+							</dcsset:item>
+						</dcsset:selection>
+						<dcsset:item>
+							<dcsset:groupItems>
+								<dcsset:item xsi:type="dcsset:GroupItemField">
+									<dcsset:field>Client</dcsset:field>
+									<dcsset:groupType>Items</dcsset:groupType>
+									<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
+									<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
+									<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
+								</dcsset:item>
+							</dcsset:groupItems>
+							<dcsset:order>
+								<dcsset:item xsi:type="dcsset:OrderItemAuto">
+								</dcsset:item>
+							</dcsset:order>
+							<dcsset:selection>
+								<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+								</dcsset:item>
+							</dcsset:selection>
+						</dcsset:item>
 					</dcsset:item>
-				</dcsset:order>
+				</dcsset:row>
 				<dcsset:selection>
 					<dcsset:item xsi:type="dcsset:SelectedItemAuto">
 					</dcsset:item>
@@ -1575,155 +1338,96 @@
 		</dcsset:settings>
 	</settingsVariant>
 	<settingsVariant>
-		<dcsset:name>PowerBI</dcsset:name>
+		<dcsset:name>DIR Dynamics By BU</dcsset:name>
 		<dcsset:presentation xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
-				<v8:content>PowerBI</v8:content>
+				<v8:content>DIR dynamics by BU</v8:content>
 			</v8:item>
 		</dcsset:presentation>
 		<dcsset:settings xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Source</dcsset:field>
+					<dcsset:field>Stage5</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>BU</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Company.БазовыйЭлемент</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>CompanyБазовыйЭлемент</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.ClientID</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>CustomerID</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Client</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Client</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Currency</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Amount</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Amount</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>USDAmount</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>JobStartDate</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>JobEndDate</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Order Job End Date</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>FTLSubmissionDate</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>FTL Submission Date</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>CreationDate</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Order Creation Date</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>ApprovalDate</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Order Approval Date</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>FirstSubmissionDate</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Order First Submission Date</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>InvoiceFlagDate</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Invoice Flag Date</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Период</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>FirstDateOfPayment</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>AU</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>LegalEntity</dcsset:field>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>ОригинальныйИнвойс</dcsset:field>
+					<dcsset:field>Stage6</dcsset:field>
 				</dcsset:item>
 			</dcsset:selection>
 			<dcsset:filter>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
-					<dcsset:left xsi:type="dcscor:Field">USDAmount</dcsset:left>
+					<dcsset:left xsi:type="dcscor:Field">Source</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:userSettingID>15759117-09dc-4689-8374-181e70968d7a</dcsset:userSettingID>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:use>false</dcsset:use>
+					<dcsset:left xsi:type="dcscor:Field">Segment</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:userSettingID>772fca7d-48b6-4be4-a0af-f5c3de80be34</dcsset:userSettingID>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:use>false</dcsset:use>
+					<dcsset:left xsi:type="dcscor:Field">MgmtGeomarket</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:userSettingID>06d31d4d-f6f1-4a99-93c7-ec0d5bbd61fa</dcsset:userSettingID>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:use>false</dcsset:use>
+					<dcsset:left xsi:type="dcscor:Field">Client</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:userSettingID>ffab3b30-6f4b-44be-ac71-0e5a22d94dda</dcsset:userSettingID>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:use>false</dcsset:use>
+					<dcsset:left xsi:type="dcscor:Field">BU</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:userSettingID>a706bf53-7b12-4cbb-82b7-afb368b9456a</dcsset:userSettingID>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:use>false</dcsset:use>
+					<dcsset:left xsi:type="dcscor:Field">ParentClient</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:userSettingID>127a7151-3427-4d17-9e65-5c6d9383f4f5</dcsset:userSettingID>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:use>false</dcsset:use>
+					<dcsset:left xsi:type="dcscor:Field">Amount</dcsset:left>
 					<dcsset:comparisonType>GreaterOrEqual</dcsset:comparisonType>
-					<dcsset:right xsi:type="xs:decimal">1</dcsset:right>
-					<dcsset:presentation xsi:type="xs:string">
-					</dcsset:presentation>
+					<dcsset:right xsi:type="xs:decimal">0</dcsset:right>
+					<dcsset:userSettingID>299d99e2-3f7f-428d-b532-66c727ce64e0</dcsset:userSettingID>
 				</dcsset:item>
 			</dcsset:filter>
 			<dcsset:dataParameters>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:use>false</dcscor:use>
 					<dcscor:parameter>Период</dcscor:parameter>
+					<dcscor:value xsi:nil="true">
+					</dcscor:value>
 					<dcsset:userSettingID>58ef28ee-397d-4ba4-b1f3-0f4f8c3e4eef</dcsset:userSettingID>
 				</dcscor:item>
 			</dcsset:dataParameters>
+			<dcsset:conditionalAppearance>
+				<dcsset:item>
+					<dcsset:selection>
+						<dcsset:item>
+							<dcsset:field>Период</dcsset:field>
+						</dcsset:item>
+					</dcsset:selection>
+					<dcsset:filter/>
+					<dcsset:appearance>
+						<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+							<dcscor:parameter>Формат</dcscor:parameter>
+							<dcscor:value xsi:type="v8:LocalStringType">
+								<v8:item>
+									<v8:lang>ru</v8:lang>
+									<v8:content>ДФ='MMMM yyyy'</v8:content>
+								</v8:item>
+							</dcscor:value>
+						</dcscor:item>
+					</dcsset:appearance>
+				</dcsset:item>
+			</dcsset:conditionalAppearance>
 			<dcsset:outputParameters>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>МакетОформления</dcscor:parameter>
@@ -1734,19 +1438,265 @@
 					<dcscor:value xsi:type="dcsset:DataCompositionAttributesPlacement">Separately</dcscor:value>
 				</dcscor:item>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:parameter>FilterOutput</dcscor:parameter>
+					<dcscor:parameter>ВыводитьПараметрыДанных</dcscor:parameter>
 					<dcscor:value xsi:type="dcsset:DataCompositionTextOutputType">DontOutput</dcscor:value>
 				</dcscor:item>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:parameter>DataParametersOutput</dcscor:parameter>
+					<dcscor:parameter>ВыводитьОтбор</dcscor:parameter>
 					<dcscor:value xsi:type="dcsset:DataCompositionTextOutputType">DontOutput</dcscor:value>
 				</dcscor:item>
 			</dcsset:outputParameters>
-			<dcsset:item xsi:type="dcsset:StructureItemGroup">
-				<dcsset:order>
-					<dcsset:item xsi:type="dcsset:OrderItemAuto">
+			<dcsset:item xsi:type="dcsset:StructureItemTable">
+				<dcsset:column>
+					<dcsset:groupItems>
+						<dcsset:item xsi:type="dcsset:GroupItemField">
+							<dcsset:field>Период</dcsset:field>
+							<dcsset:groupType>Items</dcsset:groupType>
+							<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
+							<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
+							<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
+						</dcsset:item>
+					</dcsset:groupItems>
+					<dcsset:order>
+						<dcsset:item xsi:type="dcsset:OrderItemAuto">
+						</dcsset:item>
+					</dcsset:order>
+					<dcsset:selection>
+						<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+						</dcsset:item>
+					</dcsset:selection>
+				</dcsset:column>
+				<dcsset:row>
+					<dcsset:groupItems>
+						<dcsset:item xsi:type="dcsset:GroupItemField">
+							<dcsset:field>MgmtGeomarket</dcsset:field>
+							<dcsset:groupType>Items</dcsset:groupType>
+							<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
+							<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
+							<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
+						</dcsset:item>
+					</dcsset:groupItems>
+					<dcsset:order>
+						<dcsset:item xsi:type="dcsset:OrderItemAuto">
+						</dcsset:item>
+					</dcsset:order>
+					<dcsset:selection>
+						<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+						</dcsset:item>
+					</dcsset:selection>
+					<dcsset:item>
+						<dcsset:groupItems>
+							<dcsset:item xsi:type="dcsset:GroupItemField">
+								<dcsset:field>BU</dcsset:field>
+								<dcsset:groupType>Items</dcsset:groupType>
+								<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
+								<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
+								<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
+							</dcsset:item>
+						</dcsset:groupItems>
+						<dcsset:order>
+							<dcsset:item xsi:type="dcsset:OrderItemAuto">
+							</dcsset:item>
+						</dcsset:order>
+						<dcsset:selection>
+							<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+							</dcsset:item>
+						</dcsset:selection>
+						<dcsset:item>
+							<dcsset:groupItems>
+								<dcsset:item xsi:type="dcsset:GroupItemField">
+									<dcsset:field>Client</dcsset:field>
+									<dcsset:groupType>Items</dcsset:groupType>
+									<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
+									<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
+									<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
+								</dcsset:item>
+							</dcsset:groupItems>
+							<dcsset:order>
+								<dcsset:item xsi:type="dcsset:OrderItemAuto">
+								</dcsset:item>
+							</dcsset:order>
+							<dcsset:selection>
+								<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+								</dcsset:item>
+							</dcsset:selection>
+						</dcsset:item>
 					</dcsset:item>
-				</dcsset:order>
+				</dcsset:row>
+				<dcsset:selection>
+					<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+					</dcsset:item>
+				</dcsset:selection>
+			</dcsset:item>
+		</dcsset:settings>
+	</settingsVariant>
+	<settingsVariant>
+		<dcsset:name>DIR Dynamics By Customer</dcsset:name>
+		<dcsset:presentation xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>DIR dynamics by Customer</v8:content>
+			</v8:item>
+		</dcsset:presentation>
+		<dcsset:settings xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+			<dcsset:selection>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Stage5</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Stage6</dcsset:field>
+				</dcsset:item>
+			</dcsset:selection>
+			<dcsset:filter>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:left xsi:type="dcscor:Field">Source</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:userSettingID>15759117-09dc-4689-8374-181e70968d7a</dcsset:userSettingID>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:use>false</dcsset:use>
+					<dcsset:left xsi:type="dcscor:Field">Segment</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:userSettingID>772fca7d-48b6-4be4-a0af-f5c3de80be34</dcsset:userSettingID>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:use>false</dcsset:use>
+					<dcsset:left xsi:type="dcscor:Field">MgmtGeomarket</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:userSettingID>06d31d4d-f6f1-4a99-93c7-ec0d5bbd61fa</dcsset:userSettingID>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:use>false</dcsset:use>
+					<dcsset:left xsi:type="dcscor:Field">Client</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:userSettingID>ffab3b30-6f4b-44be-ac71-0e5a22d94dda</dcsset:userSettingID>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:use>false</dcsset:use>
+					<dcsset:left xsi:type="dcscor:Field">BU</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:userSettingID>a706bf53-7b12-4cbb-82b7-afb368b9456a</dcsset:userSettingID>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:use>false</dcsset:use>
+					<dcsset:left xsi:type="dcscor:Field">ParentClient</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:userSettingID>127a7151-3427-4d17-9e65-5c6d9383f4f5</dcsset:userSettingID>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:use>false</dcsset:use>
+					<dcsset:left xsi:type="dcscor:Field">Amount</dcsset:left>
+					<dcsset:comparisonType>GreaterOrEqual</dcsset:comparisonType>
+					<dcsset:right xsi:type="xs:decimal">0</dcsset:right>
+					<dcsset:userSettingID>299d99e2-3f7f-428d-b532-66c727ce64e0</dcsset:userSettingID>
+				</dcsset:item>
+			</dcsset:filter>
+			<dcsset:dataParameters>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:use>false</dcscor:use>
+					<dcscor:parameter>Период</dcscor:parameter>
+					<dcscor:value xsi:nil="true">
+					</dcscor:value>
+					<dcsset:userSettingID>58ef28ee-397d-4ba4-b1f3-0f4f8c3e4eef</dcsset:userSettingID>
+				</dcscor:item>
+			</dcsset:dataParameters>
+			<dcsset:conditionalAppearance>
+				<dcsset:item>
+					<dcsset:selection>
+						<dcsset:item>
+							<dcsset:field>Период</dcsset:field>
+						</dcsset:item>
+					</dcsset:selection>
+					<dcsset:filter/>
+					<dcsset:appearance>
+						<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+							<dcscor:parameter>Формат</dcscor:parameter>
+							<dcscor:value xsi:type="v8:LocalStringType">
+								<v8:item>
+									<v8:lang>ru</v8:lang>
+									<v8:content>ДФ='MMMM yyyy'</v8:content>
+								</v8:item>
+							</dcscor:value>
+						</dcscor:item>
+					</dcsset:appearance>
+				</dcsset:item>
+			</dcsset:conditionalAppearance>
+			<dcsset:outputParameters>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>МакетОформления</dcscor:parameter>
+					<dcscor:value xsi:type="xs:string">Море</dcscor:value>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>РасположениеРеквизитов</dcscor:parameter>
+					<dcscor:value xsi:type="dcsset:DataCompositionAttributesPlacement">Separately</dcscor:value>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>ВыводитьПараметрыДанных</dcscor:parameter>
+					<dcscor:value xsi:type="dcsset:DataCompositionTextOutputType">DontOutput</dcscor:value>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>ВыводитьОтбор</dcscor:parameter>
+					<dcscor:value xsi:type="dcsset:DataCompositionTextOutputType">DontOutput</dcscor:value>
+				</dcscor:item>
+			</dcsset:outputParameters>
+			<dcsset:item xsi:type="dcsset:StructureItemTable">
+				<dcsset:column>
+					<dcsset:groupItems>
+						<dcsset:item xsi:type="dcsset:GroupItemField">
+							<dcsset:field>Период</dcsset:field>
+							<dcsset:groupType>Items</dcsset:groupType>
+							<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
+							<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
+							<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
+						</dcsset:item>
+					</dcsset:groupItems>
+					<dcsset:order>
+						<dcsset:item xsi:type="dcsset:OrderItemAuto">
+						</dcsset:item>
+					</dcsset:order>
+					<dcsset:selection>
+						<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+						</dcsset:item>
+					</dcsset:selection>
+				</dcsset:column>
+				<dcsset:row>
+					<dcsset:groupItems>
+						<dcsset:item xsi:type="dcsset:GroupItemField">
+							<dcsset:field>Client</dcsset:field>
+							<dcsset:groupType>Items</dcsset:groupType>
+							<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
+							<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
+							<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
+						</dcsset:item>
+					</dcsset:groupItems>
+					<dcsset:order>
+						<dcsset:item xsi:type="dcsset:OrderItemAuto">
+						</dcsset:item>
+					</dcsset:order>
+					<dcsset:selection>
+						<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+						</dcsset:item>
+					</dcsset:selection>
+					<dcsset:item>
+						<dcsset:groupItems>
+							<dcsset:item xsi:type="dcsset:GroupItemField">
+								<dcsset:field>BU</dcsset:field>
+								<dcsset:groupType>Items</dcsset:groupType>
+								<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
+								<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
+								<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
+							</dcsset:item>
+						</dcsset:groupItems>
+						<dcsset:order>
+							<dcsset:item xsi:type="dcsset:OrderItemAuto">
+							</dcsset:item>
+						</dcsset:order>
+						<dcsset:selection>
+							<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+							</dcsset:item>
+						</dcsset:selection>
+					</dcsset:item>
+				</dcsset:row>
 				<dcsset:selection>
 					<dcsset:item xsi:type="dcsset:SelectedItemAuto">
 					</dcsset:item>
