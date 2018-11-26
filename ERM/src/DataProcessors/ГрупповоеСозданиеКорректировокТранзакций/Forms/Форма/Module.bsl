@@ -180,6 +180,13 @@
 		|			ИЛИ ТранзакцияHOB.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket = &SubGeoMarket)
 		|	И (&ManagementGeomarket = ЗНАЧЕНИЕ(Справочник.ManagementGeography.ПустаяСсылка)
 		|			ИЛИ ТранзакцияHOB.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket = &ManagementGeomarket)
+		|	И (&ClientID_Document = """" 
+		|			ИЛИ ((DSSСвязанныеДокументыInv.СвязанныйОбъект.Ссылка Есть NULL ИЛИ DSSСвязанныеДокументыInv.СвязанныйОбъект.ClientID = &ClientID_Document)
+		|				И (DSSСвязанныеДокументыSO.СвязанныйОбъект.Ссылка Есть NULL ИЛИ DSSСвязанныеДокументыSO.СвязанныйОбъект.ClientID = &ClientID_Document)
+		|				И (DSSСвязанныеДокументыCB.СвязанныйОбъект.Ссылка Есть NULL ИЛИ DSSСвязанныеДокументыCB.СвязанныйОбъект.ClientID = &ClientID_Document)
+		|				И (DSSСвязанныеДокументыBA.СвязанныйОбъект.Ссылка Есть NULL ИЛИ DSSСвязанныеДокументыBA.СвязанныйОбъект.ClientID = &ClientID_Document)
+		|				И (DSSСвязанныеДокументыJV.СвязанныйОбъект.Ссылка Есть NULL ИЛИ DSSСвязанныеДокументыJV.СвязанныйОбъект.ClientID = &ClientID_Document)
+		|				И (DSSСвязанныеДокументыM.СвязанныйОбъект.Ссылка Есть NULL ИЛИ DSSСвязанныеДокументыM.СвязанныйОбъект.ClientID = &ClientID_Document)))
 		|
 		|УПОРЯДОЧИТЬ ПО
 		|	ТранзакцияHOB.Номер";
@@ -198,6 +205,7 @@
 	Запрос.УстановитьПараметр("GeoMarket", GeoMarket);
 	Запрос.УстановитьПараметр("SubGeoMarket", SubGeoMarket);
 	Запрос.УстановитьПараметр("ManagementGeomarket", ManagementGeomarket);
+	Запрос.УстановитьПараметр("ClientID_Document", ClientID_Document);
 	
 	Если ТипСчета = Перечисления.ТипСчета.AR Тогда
 		Запрос.Текст = СтрЗаменить(Запрос.Текст, "&УсловиеСчета", "И НЕ ТранзакцияHOB.Account.Код ПОДОБНО ""4%""");
@@ -314,6 +322,13 @@
 		|			ИЛИ ПроводкаDSS_Doc.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket = &SubGeoMarket)
 		|	И (&ManagementGeomarket = ЗНАЧЕНИЕ(Справочник.ManagementGeography.ПустаяСсылка)
 		|			ИЛИ ПроводкаDSS_Doc.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket = &ManagementGeomarket)
+		|	И (&ClientID_Document = """"
+		|			ИЛИ ((DSSСвязанныеДокументыInv.СвязанныйОбъект.Ссылка Есть NULL ИЛИ DSSСвязанныеДокументыInv.СвязанныйОбъект.ClientID = &ClientID_Document)
+		|				И (DSSСвязанныеДокументыSO.СвязанныйОбъект.Ссылка Есть NULL ИЛИ DSSСвязанныеДокументыSO.СвязанныйОбъект.ClientID = &ClientID_Document)
+		|				И (DSSСвязанныеДокументыCB.СвязанныйОбъект.Ссылка Есть NULL ИЛИ DSSСвязанныеДокументыCB.СвязанныйОбъект.ClientID = &ClientID_Document)
+		|				И (DSSСвязанныеДокументыBA.СвязанныйОбъект.Ссылка Есть NULL ИЛИ DSSСвязанныеДокументыBA.СвязанныйОбъект.ClientID = &ClientID_Document)
+		|				И (DSSСвязанныеДокументыJV.СвязанныйОбъект.Ссылка Есть NULL ИЛИ DSSСвязанныеДокументыJV.СвязанныйОбъект.ClientID = &ClientID_Document)
+		|				И (DSSСвязанныеДокументыM.СвязанныйОбъект.Ссылка Есть NULL ИЛИ DSSСвязанныеДокументыM.СвязанныйОбъект.ClientID = &ClientID_Document)))
 		|
 		|УПОРЯДОЧИТЬ ПО
 		|	ПроводкаDSS_Doc.Номер";
@@ -332,6 +347,7 @@
 	Запрос.УстановитьПараметр("GeoMarket", GeoMarket);
 	Запрос.УстановитьПараметр("SubGeoMarket", SubGeoMarket);
 	Запрос.УстановитьПараметр("ManagementGeomarket", ManagementGeomarket);
+	Запрос.УстановитьПараметр("ClientID_Document", ClientID_Document);
 	
 	Если ТипСчета = Перечисления.ТипСчета.AR Тогда
 		Запрос.Текст = СтрЗаменить(Запрос.Текст, "&УсловиеСчета", "И НЕ ПроводкаDSS_Doc.AccountLawson.Код ПОДОБНО ""4%""");
@@ -452,6 +468,13 @@
 		|			ИЛИ ТранзакцияOracle.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket = &SubGeoMarket)
 		|	И (&ManagementGeomarket = ЗНАЧЕНИЕ(Справочник.ManagementGeography.ПустаяСсылка)
 		|			ИЛИ ТранзакцияOracle.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket = &ManagementGeomarket)
+		|	И (&ClientID_Document = """"
+		|			ИЛИ ((DSSСвязанныеДокументыInv.СвязанныйОбъект.Ссылка Есть NULL ИЛИ DSSСвязанныеДокументыInv.СвязанныйОбъект.ClientID = &ClientID_Document)
+		|				И (DSSСвязанныеДокументыSO.СвязанныйОбъект.Ссылка Есть NULL ИЛИ DSSСвязанныеДокументыSO.СвязанныйОбъект.ClientID = &ClientID_Document)
+		|				И (DSSСвязанныеДокументыCB.СвязанныйОбъект.Ссылка Есть NULL ИЛИ DSSСвязанныеДокументыCB.СвязанныйОбъект.ClientID = &ClientID_Document)
+		|				И (DSSСвязанныеДокументыBA.СвязанныйОбъект.Ссылка Есть NULL ИЛИ DSSСвязанныеДокументыBA.СвязанныйОбъект.ClientID = &ClientID_Document)
+		|				И (DSSСвязанныеДокументыJV.СвязанныйОбъект.Ссылка Есть NULL ИЛИ DSSСвязанныеДокументыJV.СвязанныйОбъект.ClientID = &ClientID_Document)
+		|				И (DSSСвязанныеДокументыM.СвязанныйОбъект.Ссылка Есть NULL ИЛИ DSSСвязанныеДокументыM.СвязанныйОбъект.ClientID = &ClientID_Document)))
 		|
 		|УПОРЯДОЧИТЬ ПО
 		|	ТранзакцияOracle.Номер";
@@ -470,6 +493,7 @@
 	Запрос.УстановитьПараметр("GeoMarket", GeoMarket);
 	Запрос.УстановитьПараметр("SubGeoMarket", SubGeoMarket);
 	Запрос.УстановитьПараметр("ManagementGeomarket", ManagementGeomarket);
+	Запрос.УстановитьПараметр("ClientID_Document", ClientID_Document);
 	
 	Если ТипСчета = Перечисления.ТипСчета.AR Тогда
 		Запрос.Текст = СтрЗаменить(Запрос.Текст, "&УсловиеСчета", "И НЕ ТранзакцияOracle.Account.Код ПОДОБНО ""4%""");
