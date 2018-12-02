@@ -367,6 +367,7 @@
 		<enumeration xsi:type="xs:string">Canceled</enumeration>
 	</valueType>
 	<valueType xmlns:d2p1="http://www.1c.ru/SSL/Exchange/Message" name="СправочникСсылка.crmContracts" base="d2p1:Ref"/>
+	<valueType xmlns:d2p1="http://www.1c.ru/SSL/Exchange/Message" name="СправочникСсылка.СпособыРасчетаШтрафаПоЗадолженности" base="d2p1:Ref"/>
 	<objectType name="Info">
 		<property name="Date" type="xs:date"/>
 		<property name="PostDocuments" type="xs:boolean"/>
@@ -3738,6 +3739,8 @@
 		<property name="РасчетыВУсловныхЕдиницах" type="xs:boolean" lowerBound="0"/>
 		<property xmlns:d3p1="http://rg-soft.ru/ERM/1.0" name="ВидДоговора" type="d3p1:ВидыДоговоров"/>
 		<property xmlns:d3p1="http://rg-soft.ru/ERM/1.0" name="КодыCRMпоСегментам" type="d3p1:Справочник.Договоры.КодыCRMпоСегментам" lowerBound="0" upperBound="1"/>
+		<property xmlns:d3p1="http://rg-soft.ru/ERM/1.0" name="СпособРасчетаШтрафаПоЗадолженности" type="d3p1:КлючевыеСвойстваСпособыРасчетаШтрафаПоЗадолженности" lowerBound="0"/>
+		<property name="ПроцентЗадолженности" type="xs:double" lowerBound="0"/>
 	</objectType>
 	<objectType name="Справочник.ЕдиницыИзмерения">
 		<property xmlns:d3p1="http://rg-soft.ru/ERM/1.0" name="КлючевыеСвойства" type="d3p1:КлючевыеСвойстваЕдиницаИзмерения"/>
@@ -4054,5 +4057,14 @@
 		<property name="crmDFNName" type="xs:string" lowerBound="0"/>
 		<property name="crmClientID" type="xs:string" lowerBound="0"/>
 		<property name="crmClientName" type="xs:string" lowerBound="0"/>
+	</objectType>
+	<objectType name="Справочник.СпособыРасчетаШтрафаПоЗадолженности">
+		<property xmlns:d3p1="http://rg-soft.ru/ERM/1.0" name="КлючевыеСвойства" type="d3p1:КлючевыеСвойстваСпособыРасчетаШтрафаПоЗадолженности"/>
+		<property name="Наименование">
+			<typeDef xsi:type="ValueType" base="xs:string" variety="Atomic" maxLength="30"/>
+		</property>
+	</objectType>
+	<objectType name="КлючевыеСвойстваСпособыРасчетаШтрафаПоЗадолженности">
+		<property xmlns:d3p1="http://rg-soft.ru/ERM/1.0" name="Ссылка" type="d3p1:Справочник.СпособыРасчетаШтрафаПоЗадолженности" lowerBound="0"/>
 	</objectType>
 </package>
