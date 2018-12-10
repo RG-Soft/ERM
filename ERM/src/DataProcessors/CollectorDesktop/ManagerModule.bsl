@@ -6,7 +6,7 @@
 		Возврат;
 	КонецЕсли;
 	
-	ТаблицаДанных = ПолучитьТаблицуДанныхПоЭкалированнымИнвойсам(МассивИнвойсовДляЭскалации);
+	ТаблицаДанных = ПолучитьТаблицуДанныхПоЭкалированнымИнвойсам(МассивИнвойсовДляЭскалации, СтруктураПараметров);
 	
 	ТабДок = Новый ТабличныйДокумент;
 	
@@ -40,7 +40,7 @@
 		Возврат;
 	КонецЕсли;
 	
-	ТаблицаДанных = ПолучитьТаблицуДанныхПоЭкалированнымИнвойсам(МассивИнвойсовДляЭскалации);
+	ТаблицаДанных = ПолучитьТаблицуДанныхПоЭкалированнымИнвойсам(МассивИнвойсовДляЭскалации, СтруктураПараметров);
 	
 	ТелоHTMLТаблицаДанных = "<BR>
 	|<TABLE style=""border-collapse: collapse;width:84.2%;border:solid black 1pt"">
@@ -48,13 +48,14 @@
 	|<TR align=""center"" style=""width:6.38%;background:#004D99;padding:1.5pt 1.5pt 1.5pt 1.5pt;font-size:10pt;font-family:Tahoma,sans-serif;color:white;"">
 	//|<TD style=""padding: 5px; border: 2px solid #000;"">InvNo</TD>
 	//|<TD style=""padding: 5px; border: 2px solid #000;"">InvDate</TD>
-	|<TD style=""padding: 5px; border: 2px solid #000;"">Company</TD>
+	|<TD style=""padding: 5px; border: 2px solid #000;"">Company Name</TD>
 	|<TD style=""padding: 5px; border: 2px solid #000;"">FiscalInvoiceNo</TD>
 	|<TD style=""padding: 5px; border: 2px solid #000;"">FiscalInvoiceDate</TD>
 	//|<TD style=""padding: 5px; border: 2px solid #000;"">CRMID</TD>
 	//|<TD style=""padding: 5px; border: 2px solid #000;"">Client</TD>
-	//|<TD style=""padding: 5px; border: 2px solid #000;"">Currency</TD>
+	|<TD style=""padding: 5px; border: 2px solid #000;"">Currency</TD>
 	|<TD style=""padding: 5px; border: 2px solid #000;"">Amount</TD>
+	|<TD style=""padding: 5px; border: 2px solid #000;"">Remaining amount</TD>
 	|<TD style=""padding: 5px; border: 2px solid #000;"">Agreement</TD>
 	//|<TD style=""padding: 5px; border: 2px solid #000;"">AmountUSD</TD>
 	//|<TD style=""padding: 5px; border: 2px solid #000;"">Status</TD>
@@ -73,13 +74,14 @@
 		СтрокаВТелоСообщения = "<TR>
 		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.InvNo + "</TD>
 		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.InvDate + "</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Company + "</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.CompanyName + "</TD>
 		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.FiscalInvoiceNo + "</TD>
 		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.FiscalInvoiceDate + "</TD>
 		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.CRMID + "</TD>
 		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Client + "</TD>
-		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Currency + "</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Currency + "</TD>
 		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Amount + "</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.RemainingАmount + "</TD>
 		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Agreement + "</TD>
 		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.AmountUSD + "</TD>
 		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Status + "</TD>
@@ -100,26 +102,27 @@
 	
 КонецПроцедуры
 
-Функция ПолучитьТаблицуДанныхПоЭкалированнымИнвойсам(МассивИнвойсовДляЭскалации)
+Функция ПолучитьТаблицуДанныхПоЭкалированнымИнвойсам(МассивИнвойсовДляЭскалации, СтруктураПараметров)
 	
 	Запрос = Новый Запрос;
 	Запрос.Текст = 
 		"ВЫБРАТЬ
 		|	InvoiceДокумент.DocNumber КАК InvNo,
 		|	InvoiceДокумент.Дата КАК InvDate,
-		|	InvoiceДокумент.FiscalInvoiceNo,
-		|	InvoiceДокумент.FiscalInvoiceDate,
+		|	InvoiceДокумент.FiscalInvoiceNo КАК FiscalInvoiceNo,
+		|	InvoiceДокумент.FiscalInvoiceDate КАК FiscalInvoiceDate,
 		|	InvoiceДокумент.Client.CRMID КАК CRMID,
-		|	InvoiceДокумент.Client,
-		|	InvoiceДокумент.Company,
-		|	InvoiceДокумент.Currency,
+		|	InvoiceДокумент.Client КАК Client,
+		|	InvoiceДокумент.Company КАК Company,
+		|	InvoiceДокумент.Company.Наименование КАК CompanyName,
+		|	InvoiceДокумент.Currency КАК Currency,
 		|	ВЫБОР
 		|		КОГДА InvoiceДокумент.Contract = ЗНАЧЕНИЕ(Справочник.ДоговорыКонтрагентов.ПустаяСсылка)
-		|		ИЛИ InvoiceДокумент.Contract.Ссылка ЕСТЬ NULL
+		|				ИЛИ InvoiceДокумент.Contract.Ссылка ЕСТЬ NULL
 		|			ТОГДА InvoiceДокумент.Agreement
 		|		ИНАЧЕ InvoiceДокумент.Contract.crmContractName
 		|	КОНЕЦ КАК Agreement,
-		|	InvoiceДокумент.Amount,
+		|	InvoiceДокумент.Amount КАК Amount,
 		|	ВЫРАЗИТЬ(InvoiceДокумент.Amount / ВнутренниеКурсыВалютСрезПоследних.Курс * ВнутренниеКурсыВалютСрезПоследних.Кратность КАК ЧИСЛО(15, 2)) КАК AmountUSD,
 		|	InvoiceCommentsСрезПоследних.Problem.Status КАК Status,
 		|	InvoiceCommentsСрезПоследних.Problem.ConfirmedBy КАК ConfirmedBy,
@@ -129,7 +132,9 @@
 		|	InvoiceCommentsСрезПоследних.Problem.CustomerInputDetails КАК CustomerInputDetails,
 		|	InvoiceCommentsСрезПоследних.Problem.RemedialWorkPlan КАК RemedialWorkPlan,
 		|	InvoiceCommentsСрезПоследних.Problem.RWDTargetDate КАК RWDTargetDate,
-		|	InvoiceCommentsСрезПоследних.Problem.Comment КАК Comment
+		|	InvoiceCommentsСрезПоследних.Problem.Comment КАК Comment,
+		|	InvoiceДокумент.Ссылка КАК СсылкаInvoice
+		|ПОМЕСТИТЬ ВТ_ДанныеПоИнвойсу
 		|ИЗ
 		|	Документ.Invoice КАК InvoiceДокумент
 		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних КАК ВнутренниеКурсыВалютСрезПоследних
@@ -137,9 +142,40 @@
 		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceComments.СрезПоследних(, Invoice В (&МассивИнвойсов)) КАК InvoiceCommentsСрезПоследних
 		|		ПО InvoiceДокумент.Ссылка = InvoiceCommentsСрезПоследних.Invoice
 		|ГДЕ
-		|	InvoiceДокумент.Ссылка В(&МассивИнвойсов)";
+		|	InvoiceДокумент.Ссылка В(&МассивИнвойсов)
+		|;
+		|
+		|////////////////////////////////////////////////////////////////////////////////
+		|ВЫБРАТЬ
+		|	ВТ_ДанныеПоИнвойсу.InvNo КАК InvNo,
+		|	ВТ_ДанныеПоИнвойсу.InvDate КАК InvDate,
+		|	ВТ_ДанныеПоИнвойсу.FiscalInvoiceNo КАК FiscalInvoiceNo,
+		|	ВТ_ДанныеПоИнвойсу.FiscalInvoiceDate КАК FiscalInvoiceDate,
+		|	ВТ_ДанныеПоИнвойсу.CRMID КАК CRMID,
+		|	ВТ_ДанныеПоИнвойсу.Client КАК Client,
+		|	ВТ_ДанныеПоИнвойсу.Company КАК Company,
+		|	ВТ_ДанныеПоИнвойсу.CompanyName КАК CompanyName,
+		|	ВТ_ДанныеПоИнвойсу.Currency КАК Currency,
+		|	ВТ_ДанныеПоИнвойсу.Agreement КАК Agreement,
+		|	ВТ_ДанныеПоИнвойсу.Amount КАК Amount,
+		|	ВТ_ДанныеПоИнвойсу.AmountUSD КАК AmountUSD,
+		|	BilledARОстатки.AmountОстаток КАК RemainingАmount,
+		|	ВТ_ДанныеПоИнвойсу.Status КАК Status,
+		|	ВТ_ДанныеПоИнвойсу.ConfirmedBy КАК ConfirmedBy,
+		|	ВТ_ДанныеПоИнвойсу.ForecastDate КАК ForecastDate,
+		|	ВТ_ДанныеПоИнвойсу.InitialForecastDate КАК InitialForecastDate,
+		|	ВТ_ДанныеПоИнвойсу.CustomerRepresentative КАК CustomerRepresentative,
+		|	ВТ_ДанныеПоИнвойсу.CustomerInputDetails КАК CustomerInputDetails,
+		|	ВТ_ДанныеПоИнвойсу.RemedialWorkPlan КАК RemedialWorkPlan,
+		|	ВТ_ДанныеПоИнвойсу.RWDTargetDate КАК RWDTargetDate,
+		|	ВТ_ДанныеПоИнвойсу.Comment КАК Comment
+		|ИЗ
+		|	ВТ_ДанныеПоИнвойсу КАК ВТ_ДанныеПоИнвойсу
+		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрНакопления.BilledAR.Остатки(&ПериодОстатков, ) КАК BilledARОстатки
+		|		ПО ВТ_ДанныеПоИнвойсу.СсылкаInvoice = BilledARОстатки.Invoice";
 	
 	Запрос.УстановитьПараметр("МассивИнвойсов", МассивИнвойсовДляЭскалации);
+	Запрос.УстановитьПараметр("ПериодОстатков", СтруктураПараметров.Период);
 	
 	РезультатЗапроса = Запрос.Выполнить();
 	
