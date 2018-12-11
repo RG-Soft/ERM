@@ -301,16 +301,6 @@
 			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>Details</dataPath>
-			<field>Details</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Details</v8:content>
-				</v8:item>
-			</title>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>CustomerInputDetails</dataPath>
 			<field>CustomerInputDetails</field>
 			<title xsi:type="v8:LocalStringType">
@@ -640,7 +630,8 @@
 			ИНАЧЕ ВЫРАЗИТЬ(ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс / 1000 КАК ЧИСЛО(15, 3))
 		КОНЕЦ) КАК BaseAmountОстатокТыс,
 	СУММА(ВЫБОР
-			КОГДА (ВТ_Остатки.TransactionType = "A" ИЛИ ВТ_Остатки.TransactionType = "JV")
+			КОГДА (ВТ_Остатки.TransactionType = "A"
+					ИЛИ ВТ_Остатки.TransactionType = "JV")
 					И ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСОответствий.OracleMI)
 				ТОГДА ВТ_Остатки.AmountОстаток
 			ИНАЧЕ ВТ_Остатки.TransactionAmount
@@ -664,7 +655,8 @@
 					ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
 				ТОГДА 0
 			ИНАЧЕ ВЫБОР
-					КОГДА (ВТ_Остатки.TransactionType = "A" ИЛИ ВТ_Остатки.TransactionType = "JV")
+					КОГДА (ВТ_Остатки.TransactionType = "A"
+							ИЛИ ВТ_Остатки.TransactionType = "JV")
 							И ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСОответствий.OracleMI)
 						ТОГДА ВТ_Остатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс
 					ИНАЧЕ ВТ_Остатки.TransactionAmount / ВнутренниеКурсыВалютСрезПоследних.Курс
@@ -685,9 +677,12 @@
 	ВТ_Остатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель КАК SegmentHFM,
 	ВТ_Остатки.Location.БазовыйЭлемент.GeoMarket.ManagementGeomarket КАК MgmtGeomarket,
 	SalesOrdersCommentsСрезПоследних.Problem.Reason КАК Reason,
-	InvoiceCommentsСрезПоследних.Problem.Status КАК Status,
+	ВЫБОР
+		КОГДА ВТ_Остатки.BilledType = "Billed"
+			ТОГДА InvoiceCommentsСрезПоследних.Problem.Status
+		ИНАЧЕ ВЫРАЗИТЬ(SalesOrdersCommentsСрезПоследних.Problem.Details КАК СТРОКА(250))
+	КОНЕЦ КАК Status,
 	InvoiceCommentsСрезПоследних.Problem.CustomerInputDetails КАК CustomerInputDetails,
-	ВЫРАЗИТЬ(SalesOrdersCommentsСрезПоследних.Problem.Details КАК СТРОКА(250)) КАК Details,
 	ВЫБОР
 		КОГДА SalesOrdersCommentsСрезПоследних.Problem ЕСТЬ NULL
 			ТОГДА Collectors.Collector
@@ -754,9 +749,7 @@
 		ИНАЧЕ ВТ_Остатки.Document.Номер
 	КОНЕЦ,
 	SalesOrdersCommentsСрезПоследних.Problem.Reason,
-	InvoiceCommentsСрезПоследних.Problem.Status,
 	InvoiceCommentsСрезПоследних.Problem.CustomerInputDetails,
-	ВЫРАЗИТЬ(SalesOrdersCommentsСрезПоследних.Problem.Details КАК СТРОКА(250)),
 	ВЫБОР
 		КОГДА SalesOrdersCommentsСрезПоследних.Problem ЕСТЬ NULL
 			ТОГДА Collectors.Collector
@@ -770,6 +763,11 @@
 		КОГДА ВТ_Остатки.Document.Дата ЕСТЬ NULL
 			ТОГДА ВТ_ДатыДляCashBatchLawson.Период
 		ИНАЧЕ ВТ_Остатки.ДатаДокумента
+	КОНЕЦ,
+	ВЫБОР
+		КОГДА ВТ_Остатки.BilledType = "Billed"
+			ТОГДА InvoiceCommentsСрезПоследних.Problem.Status
+		ИНАЧЕ ВЫРАЗИТЬ(SalesOrdersCommentsСрезПоследних.Problem.Details КАК СТРОКА(250))
 	КОНЕЦ
 
 ИМЕЮЩИЕ
@@ -810,7 +808,6 @@
 	HFMAdjARОстатки.Location.GeoMarket,
 	HFMAdjARОстатки.Segment.Родитель.Родитель,
 	HFMAdjARОстатки.Location.GeoMarket.ManagementGeomarket,
-	NULL,
 	NULL,
 	NULL,
 	NULL,
@@ -1262,9 +1259,6 @@
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>Reason</dcsset:field>
-					</dcsset:item>
-					<dcsset:item xsi:type="dcsset:SelectedItemField">
-						<dcsset:field>Details</dcsset:field>
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>Status</dcsset:field>
