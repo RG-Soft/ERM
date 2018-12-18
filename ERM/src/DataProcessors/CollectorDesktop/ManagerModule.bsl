@@ -76,12 +76,12 @@
 		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.InvDate + "</TD>
 		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.CompanyName + "</TD>
 		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.FiscalInvoiceNo + "</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.FiscalInvoiceDate + "</TD>
+		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + ?(ЗначениеЗаполнено(СтрокаДанных.FiscalInvoiceDate), Формат(СтрокаДанных.FiscalInvoiceDate, "ДФ=MM/dd/yyyy"),"") + "</TD>
 		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.CRMID + "</TD>
 		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Client + "</TD>
 		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Currency + "</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Amount + "</TD>
-		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.RemainingАmount + "</TD>
+		|<TD style=""padding: 5px; text-align: right; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Amount + "</TD>
+		|<TD style=""padding: 5px; text-align: right; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.RemainingАmount + "</TD>
 		|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Agreement + "</TD>
 		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.AmountUSD + "</TD>
 		//|<TD style=""padding: 5px; border: 2px solid #000; white-space: nowrap;"">" + СтрокаДанных.Status + "</TD>
@@ -97,6 +97,8 @@
 		ТелоHTMLТаблицаДанных = ТелоHTMLТаблицаДанных + СтрокаВТелоСообщения;
 			
 	КонецЦикла;
+	
+	ТелоHTMLТаблицаДанных = ТелоHTMLТаблицаДанных + "</TABLE><BR>";
 	
 	СтруктураПараметров.Вставить("ТелоHTMLТаблицаДанных", ТелоHTMLТаблицаДанных);
 	
