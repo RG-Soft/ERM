@@ -393,7 +393,12 @@
 	КОНЕЦ КАК BilledType,
 	"A" КАК TransactionType,
 	UnbilledARОстатки.SalesOrder.Номер КАК НомерДокумента,
-	UnbilledARОстатки.SalesOrder.Дата КАК ДатаДокумента,
+	ВЫБОР
+		КОГДА UnbilledARОстатки.SalesOrder.Номер ПОДОБНО "ST%"
+				И UnbilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
+			ТОГДА UnbilledARОстатки.SalesOrder.JobEndDate
+		ИНАЧЕ UnbilledARОстатки.SalesOrder.Дата
+	КОНЕЦ КАК ДатаДокумента,
 	UnbilledARОстатки.AmountОстаток КАК AmountОстаток,
 	UnbilledARОстатки.SalesOrder.Amount КАК TransactionAmount,
 	UnbilledARОстатки.SalesOrder.Agreement КАК Agreement,
