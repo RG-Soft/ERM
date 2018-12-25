@@ -393,6 +393,16 @@
 			<dataPath>ОригинальныйИнвойс</dataPath>
 			<field>ОригинальныйИнвойс</field>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>CompanyHFM</dataPath>
+			<field>CompanyHFM</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Company HFM</v8:content>
+				</v8:item>
+			</title>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	МАКСИМУМ(InvoicedDebtsОбороты.Период) КАК Период,
@@ -554,6 +564,7 @@
 ВЫБРАТЬ
 	ВТ_Инвойсы.Source КАК Source,
 	ВТ_Инвойсы.Company КАК Company,
+	ВТ_Инвойсы.Company.БазовыйЭлемент КАК CompanyHFM,
 	ВТ_Инвойсы.Client КАК Client,
 	ЕСТЬNULL(ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент, ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка)) КАК ParentClient,
 	ВТ_Инвойсы.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
@@ -990,7 +1001,7 @@
 	</calculatedField>
 	<calculatedField>
 		<dataPath>BU</dataPath>
-		<expression>rgsКонсолидацияДанныхСервер.ОпределитьBU(GeoMarket, SubGeoMarket, MgmtGeomarket, Segment, SubSegment, Company, AU)</expression>
+		<expression>rgsКонсолидацияДанныхСервер.ОпределитьBU(GeoMarket, SubGeoMarket, MgmtGeomarket, Segment, SubSegment, CompanyHFM, AU)</expression>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
@@ -1464,7 +1475,7 @@
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
 					<dcsset:right xsi:nil="true">
 					</dcsset:right>
-					<dcsset:presentation>
+					<dcsset:presentation xsi:type="xs:string">
 					</dcsset:presentation>
 					<dcsset:userSettingID>15759117-09dc-4689-8374-181e70968d7a</dcsset:userSettingID>
 				</dcsset:item>
@@ -1474,7 +1485,7 @@
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
 					<dcsset:right xsi:nil="true">
 					</dcsset:right>
-					<dcsset:presentation>
+					<dcsset:presentation xsi:type="xs:string">
 					</dcsset:presentation>
 					<dcsset:userSettingID>772fca7d-48b6-4be4-a0af-f5c3de80be34</dcsset:userSettingID>
 				</dcsset:item>
@@ -1484,7 +1495,7 @@
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
 					<dcsset:right xsi:nil="true">
 					</dcsset:right>
-					<dcsset:presentation>
+					<dcsset:presentation xsi:type="xs:string">
 					</dcsset:presentation>
 					<dcsset:userSettingID>06d31d4d-f6f1-4a99-93c7-ec0d5bbd61fa</dcsset:userSettingID>
 				</dcsset:item>
@@ -1494,7 +1505,7 @@
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
 					<dcsset:right xsi:nil="true">
 					</dcsset:right>
-					<dcsset:presentation>
+					<dcsset:presentation xsi:type="xs:string">
 					</dcsset:presentation>
 					<dcsset:userSettingID>ffab3b30-6f4b-44be-ac71-0e5a22d94dda</dcsset:userSettingID>
 				</dcsset:item>
@@ -1504,7 +1515,7 @@
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
 					<dcsset:right xsi:nil="true">
 					</dcsset:right>
-					<dcsset:presentation>
+					<dcsset:presentation xsi:type="xs:string">
 					</dcsset:presentation>
 					<dcsset:userSettingID>a706bf53-7b12-4cbb-82b7-afb368b9456a</dcsset:userSettingID>
 				</dcsset:item>
@@ -1512,7 +1523,7 @@
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">ParentClient</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:presentation>
+					<dcsset:presentation xsi:type="xs:string">
 					</dcsset:presentation>
 					<dcsset:userSettingID>127a7151-3427-4d17-9e65-5c6d9383f4f5</dcsset:userSettingID>
 				</dcsset:item>
@@ -1521,7 +1532,7 @@
 					<dcsset:left xsi:type="dcscor:Field">Amount</dcsset:left>
 					<dcsset:comparisonType>GreaterOrEqual</dcsset:comparisonType>
 					<dcsset:right xsi:type="xs:decimal">0</dcsset:right>
-					<dcsset:presentation>
+					<dcsset:presentation xsi:type="xs:string">
 					</dcsset:presentation>
 					<dcsset:userSettingID>299d99e2-3f7f-428d-b532-66c727ce64e0</dcsset:userSettingID>
 				</dcsset:item>
@@ -1702,7 +1713,7 @@
 					<dcsset:left xsi:type="dcscor:Field">USDAmount</dcsset:left>
 					<dcsset:comparisonType>GreaterOrEqual</dcsset:comparisonType>
 					<dcsset:right xsi:type="xs:decimal">1</dcsset:right>
-					<dcsset:presentation>
+					<dcsset:presentation xsi:type="xs:string">
 					</dcsset:presentation>
 				</dcsset:item>
 			</dcsset:filter>
