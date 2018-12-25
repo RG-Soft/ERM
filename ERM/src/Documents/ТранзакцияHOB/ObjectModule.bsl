@@ -334,6 +334,7 @@
 	//НовоеДвижение.Location = Реквизиты.Location;
 	//НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 	НовоеДвижение.Client = Реквизиты.Client;
+	НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 	НовоеДвижение.SalesOrder = СвязанныеДокументы.SalesOrder;
 	НовоеДвижение.Account = Реквизиты.Account;
 	НовоеДвижение.AU = Реквизиты.AU;
@@ -363,6 +364,7 @@
 	//НовоеДвижение.Location = Реквизиты.Location;
 	//НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 	НовоеДвижение.Client = Реквизиты.Client;
+	НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 	НовоеДвижение.SalesOrder = СвязанныеДокументы.SalesOrder;
 	НовоеДвижение.Account = Реквизиты.Account;
 	НовоеДвижение.AU = Реквизиты.AU;
@@ -394,6 +396,7 @@
 	//НовоеДвижение.Location = Реквизиты.Location;
 	//НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 	НовоеДвижение.Client = Реквизиты.Client;
+	НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 	НовоеДвижение.РучнаяКорректировка = СвязанныеДокументы.РучнаяКорректировка;
 	НовоеДвижение.Account = Реквизиты.Account;
 	НовоеДвижение.AU = Реквизиты.AU;
@@ -424,6 +427,7 @@
 	//НовоеДвижение.Location = Реквизиты.Location;
 	//НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 	НовоеДвижение.Client = Реквизиты.Client;
+	НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 	НовоеДвижение.CashBatch = СвязанныеДокументы.CashBatch;
 	НовоеДвижение.Account = Реквизиты.Account;
 	НовоеДвижение.AU = Реквизиты.AU;
@@ -454,6 +458,7 @@
 	//НовоеДвижение.Location = Реквизиты.Location;
 	//НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 	НовоеДвижение.Client = Реквизиты.Client;
+	НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 	НовоеДвижение.CashBatch = СвязанныеДокументы.CashBatch;
 	НовоеДвижение.Account = Реквизиты.Account;
 	НовоеДвижение.AU = Реквизиты.AU;
@@ -484,6 +489,7 @@
 	//НовоеДвижение.Location = Реквизиты.Location;
 	//НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 	НовоеДвижение.Client = Реквизиты.Client;
+	НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 	НовоеДвижение.Invoice = СвязанныеДокументы.Invoice;
 	НовоеДвижение.Account = Реквизиты.Account;
 	НовоеДвижение.AU = Реквизиты.AU;
@@ -514,6 +520,7 @@
 	//НовоеДвижение.Location = Реквизиты.Location;
 	//НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 	НовоеДвижение.Client = Реквизиты.Client;
+	НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 	НовоеДвижение.Invoice = ?(ЗначениеЗаполнено(СвязанныеДокументы.Invoice), СвязанныеДокументы.Invoice, СвязанныеДокументы.Memo);
 	НовоеДвижение.Account = Реквизиты.Account;
 	НовоеДвижение.AU = Реквизиты.AU;
@@ -548,6 +555,7 @@
 	//НовоеДвижение.Location = Реквизиты.Location;
 	//НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 	НовоеДвижение.Client = Реквизиты.Client;
+	НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 	НовоеДвижение.Memo = СвязанныеДокументы.Memo;
 	НовоеДвижение.Account = Реквизиты.Account;
 	НовоеДвижение.AU = Реквизиты.AU;
@@ -579,6 +587,7 @@
 		//НовоеДвижение.Location = Реквизиты.Location;
 		//НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 		НовоеДвижение.Client = Реквизиты.Client;
+		НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 		НовоеДвижение.AU = Реквизиты.AU;
 		НовоеДвижение.Account = Реквизиты.Account;
 		Если ЗаписыватьТолькоБэч Тогда
@@ -620,6 +629,7 @@
 	НовоеДвижение.Source = Перечисления.ТипыСоответствий.HOBs;
 	НовоеДвижение.Company = Реквизиты.Company;
 	НовоеДвижение.Client = Реквизиты.Client;
+	НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 	
 	Если Реквизиты.TransactionType = Перечисления.HOBTransactionType.Accrual Тогда
 		НовоеДвижение.Document = СвязанныеДокументы.SalesOrder;
@@ -640,6 +650,7 @@
 	КонецЕсли;
 	Если ЗначениеЗаполнено(Реквизиты.EndClient) Тогда
 		НовоеДвижение.EndClient = Реквизиты.EndClient;
+		НовоеДвижение.EndClientID = Реквизиты.EndCustomerNumber;
 	КонецЕсли;
 	
 	НовоеДвижение.Amount = Сумма;
@@ -675,6 +686,7 @@
 	НовоеДвижение.Source = Реквизиты.Source;
 	НовоеДвижение.Company = Реквизиты.Company;
 	НовоеДвижение.Client = Реквизиты.Client;
+	НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 	
 	НовоеДвижение.Invoice = Документ;
 	

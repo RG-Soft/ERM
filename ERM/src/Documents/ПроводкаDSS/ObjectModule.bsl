@@ -317,6 +317,7 @@
 	НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 	//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
 	НовоеДвижение.Client = Реквизиты.Client;
+	НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 	НовоеДвижение.SalesOrder = СвязанныеДокументы.SalesOrder;
 	//НовоеДвижение.Account = Реквизиты.AccountLawson;
 	НовоеДвижение.Account = Реквизиты.Account;
@@ -349,6 +350,7 @@
 	НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 	//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
 	НовоеДвижение.Client = Реквизиты.Client;
+	НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 	НовоеДвижение.SalesOrder = СвязанныеДокументы.SalesOrder;
 	//НовоеДвижение.Account = Реквизиты.AccountLawson;
 	НовоеДвижение.Account = Реквизиты.Account;
@@ -383,6 +385,7 @@
 	НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 	//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
 	НовоеДвижение.Client = Реквизиты.Client;
+	НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 	НовоеДвижение.Invoice = ?(ЗначениеЗаполнено(СвязанныеДокументы.Invoice), СвязанныеДокументы.Invoice, СвязанныеДокументы.Memo);
 	//НовоеДвижение.Account = Реквизиты.AccountLawson;
 	НовоеДвижение.Account = Реквизиты.Account;
@@ -413,6 +416,7 @@
 	НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 	//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
 	НовоеДвижение.Client = Реквизиты.Client;
+	НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 	НовоеДвижение.Invoice = ?(ЗначениеЗаполнено(СвязанныеДокументы.Invoice), СвязанныеДокументы.Invoice, СвязанныеДокументы.Memo);
 	//НовоеДвижение.Account = Реквизиты.AccountLawson;
 	НовоеДвижение.Account = Реквизиты.Account;
@@ -528,6 +532,7 @@
 			НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 			//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
 			НовоеДвижение.Client = Реквизиты.Client;
+			НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 			НовоеДвижение.CashBatch = ВыборкаОстатков.CashBatch;
 			//НовоеДвижение.Account = Реквизиты.AccountLawson;
 			НовоеДвижение.Account = Реквизиты.Account;
@@ -555,6 +560,7 @@
 			НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 			//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
 			НовоеДвижение.Client = Реквизиты.Client;
+			НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 			НовоеДвижение.CashBatch = СвязанныеДокументы.CashBatch;
 			//НовоеДвижение.Account = Реквизиты.AccountLawson;
 			НовоеДвижение.Account = Реквизиты.Account;
@@ -579,6 +585,7 @@
 		НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 		//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
 		НовоеДвижение.Client = Реквизиты.Client;
+		НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 		НовоеДвижение.CashBatch = СвязанныеДокументы.CashBatch;
 		//НовоеДвижение.Account = Реквизиты.AccountLawson;
 		НовоеДвижение.Account = Реквизиты.Account;
@@ -657,6 +664,7 @@
 		НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 		//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
 		НовоеДвижение.Client = Реквизиты.Client;
+		НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 		НовоеДвижение.CashBatch = ВыборкаОстатков.CashBatch;
 		//НовоеДвижение.Account = Реквизиты.AccountLawson;
 		НовоеДвижение.Account = Реквизиты.Account;
@@ -698,6 +706,7 @@
 		НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 		//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
 		НовоеДвижение.Client = Реквизиты.Client;
+		НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 		НовоеДвижение.CashBatch = Документы.CashBatch.ПустаяСсылка();
 		//НовоеДвижение.Account = Реквизиты.AccountLawson;
 		НовоеДвижение.Account = Реквизиты.Account;
@@ -799,6 +808,7 @@
 		НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 		//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
 		НовоеДвижение.Client = Реквизиты.Client;
+		НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 		НовоеДвижение.CashBatch = документы.CashBatch.ПустаяСсылка();
 		//НовоеДвижение.Account = Реквизиты.AccountLawson;
 		НовоеДвижение.Account = Реквизиты.Account;
@@ -836,6 +846,7 @@
 		НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 		//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
 		НовоеДвижение.Client = Реквизиты.Client;
+		НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 		НовоеДвижение.CashBatch = CashBatch;
 		//НовоеДвижение.Account = Реквизиты.AccountLawson;
 		НовоеДвижение.Account = Реквизиты.Account;
@@ -872,6 +883,7 @@
 	НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 	//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
 	НовоеДвижение.Client = Реквизиты.Client;
+	НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 	НовоеДвижение.РучнаяКорректировка = СвязанныеДокументы.РучнаяКорректировка;
 	//НовоеДвижение.Account = Реквизиты.AccountLawson;
 	НовоеДвижение.Account = Реквизиты.Account;
@@ -904,6 +916,7 @@
 	НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 	//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
 	НовоеДвижение.Client = Реквизиты.Client;
+	НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 	НовоеДвижение.Memo = СвязанныеДокументы.Memo;
 	//НовоеДвижение.Account = Реквизиты.AccountLawson;
 	НовоеДвижение.Account = Реквизиты.Account;
@@ -933,6 +946,7 @@
 			НовоеДвижение.Location = Реквизиты.Location;
 			НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 			НовоеДвижение.Client = Реквизиты.Client;
+			НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 			НовоеДвижение.Account = Реквизиты.Account;
 			Если ЗаписыватьТолькоБэч Тогда
 				НовоеДвижение.Invoice = Документы.Invoice.ПустаяСсылка();
@@ -959,6 +973,7 @@
 					НовоеДвижение.Location = Реквизиты.Location;
 					НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 					НовоеДвижение.Client = Реквизиты.Client;
+					НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 					НовоеДвижение.Account = Реквизиты.Account;
 					Если ЗаписыватьТолькоБэч Тогда
 						НовоеДвижение.Invoice = Документы.Invoice.ПустаяСсылка();
@@ -979,6 +994,7 @@
 				НовоеДвижение.Location = Реквизиты.Location;
 				НовоеДвижение.SubSubSegment = Реквизиты.SubSubSegment;
 				НовоеДвижение.Client = Реквизиты.Client;
+				НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 				НовоеДвижение.Account = Реквизиты.Account;
 				НовоеДвижение.Invoice = ?(ЗначениеЗаполнено(СвязанныеДокументы.Invoice), СвязанныеДокументы.Invoice, СвязанныеДокументы.Memo);
 				Если ЗначениеЗаполнено(СвязанныеДокументы.CashBatch) Тогда
@@ -1038,6 +1054,7 @@
 	НовоеДвижение.Company = Реквизиты.Company;
 	//НовоеДвижение.Client = Реквизиты.КонтрагентLawson;
 	НовоеДвижение.Client = Реквизиты.Client;
+	НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 	
 	Если Реквизиты.System = "GL" Тогда
 		НовоеДвижение.Document = СвязанныеДокументы.РучнаяКорректировка;
@@ -1075,6 +1092,7 @@
 	НовоеДвижение.Source = Перечисления.ТипыСоответствий.Lawson;
 	НовоеДвижение.Company = Реквизиты.Company;
 	НовоеДвижение.Client = Реквизиты.Client;
+	НовоеДвижение.ClientID = Реквизиты.CustomerNumber;
 	
 	НовоеДвижение.Invoice = СвязанныеДокументы.Invoice;
 	
