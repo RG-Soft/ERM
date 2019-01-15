@@ -449,7 +449,8 @@
 		ПО (НАЧАЛОПЕРИОДА(InvoicedDebtsОбороты.Период, МЕСЯЦ) = ВнутренниеКурсыВалют.Период)
 			И InvoicedDebtsОбороты.Currency = ВнутренниеКурсыВалют.Валюта
 ГДЕ
-	НЕ InvoicedDebtsОбороты.Client.Intercompany ИЛИ InvoicedDebtsОбороты.Source = Значение(Перечисление.ТипыСоответствий.Lawson)
+	(НЕ InvoicedDebtsОбороты.Client.Intercompany
+			ИЛИ InvoicedDebtsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
 
 СГРУППИРОВАТЬ ПО
 	InvoicedDebtsОбороты.Source,
@@ -582,8 +583,9 @@
 		КОГДА ЕСТЬNULL(DIR.JobStartDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА ДАТАВРЕМЯ(1, 1, 1)
 		КОГДА ЕСТЬNULL(DIR.JobStartDate, ДАТАВРЕМЯ(1, 1, 1)) &lt; &amp;МинимальнаяДата
+				ИЛИ ЕСТЬNULL(DIR.JobStartDate, ДАТАВРЕМЯ(1, 1, 1)) &gt; &amp;МаксимальнаяДата
 			ТОГДА "Error"
-		ИНАЧЕ  ЕСТЬNULL(DIR.JobStartDate, ДАТАВРЕМЯ(1, 1, 1))
+		ИНАЧЕ ЕСТЬNULL(DIR.JobStartDate, ДАТАВРЕМЯ(1, 1, 1))
 	КОНЕЦ КАК JobStartDate,
 	ЕСТЬNULL(DIR.JobEndDate, ДАТАВРЕМЯ(1, 1, 1)) КАК JobEndDate,
 	ЕСТЬNULL(DIR.FTLSubmissionDate, ДАТАВРЕМЯ(1, 1, 1)) КАК FTLSubmissionDate,
@@ -626,6 +628,7 @@
 				ИЛИ ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА 0
 		КОГДА ЕСТЬNULL(ВТ_Инвойсы.Invoice.ДатаВозвратаКС, ДАТАВРЕМЯ(1, 1, 1)) &lt; &amp;МинимальнаяДата
+				ИЛИ ЕСТЬNULL(ВТ_Инвойсы.Invoice.ДатаВозвратаКС, ДАТАВРЕМЯ(1, 1, 1)) &gt; &amp;МаксимальнаяДата
 			ТОГДА "Error"
 		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)), ВТ_Инвойсы.Invoice.ДатаВозвратаКС, СЕКУНДА) / 86400
 	КОНЕЦ КАК Stage6,
@@ -640,6 +643,7 @@
 				ИЛИ ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА 0
 		КОГДА ЕСТЬNULL(ВТ_Инвойсы.Invoice.TriggerDate, ДАТАВРЕМЯ(1, 1, 1)) &lt; &amp;МинимальнаяДата
+				ИЛИ ЕСТЬNULL(ВТ_Инвойсы.Invoice.TriggerDate, ДАТАВРЕМЯ(1, 1, 1)) &gt; &amp;МаксимальнаяДата
 			ТОГДА "Error"
 		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(ВТ_Инвойсы.Invoice.TriggerDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) / 86400
 	КОНЕЦ КАК T2CStage1,
@@ -648,7 +652,9 @@
 				ИЛИ ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА 0
 		КОГДА ЕСТЬNULL(ВТ_Инвойсы.Invoice.TriggerDate, ДАТАВРЕМЯ(1, 1, 1)) &lt; &amp;МинимальнаяДата
+				ИЛИ ЕСТЬNULL(ВТ_Инвойсы.Invoice.TriggerDate, ДАТАВРЕМЯ(1, 1, 1)) &gt; &amp;МаксимальнаяДата
 				ИЛИ ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)) &lt; &amp;МинимальнаяДата
+				ИЛИ ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)) &gt; &amp;МаксимальнаяДата
 			ТОГДА "Error"
 		ИНАЧЕ РАЗНОСТЬДАТ(ЕСТЬNULL(ВТ_Инвойсы.Invoice.TriggerDate, ДАТАВРЕМЯ(1, 1, 1)), ВТ_Инвойсы.Invoice.DueDateTo, СЕКУНДА) / 86400
 	КОНЕЦ КАК T2CStage2,
@@ -671,8 +677,9 @@
 				И (ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1)
 					ИЛИ ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)) = ДАТАВРЕМЯ(1, 1, 1))
 			ТОГДА 0
-		КОГДА ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)) &lt; &amp;МинимальнаяДата
-				И ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)) &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
+		КОГДА (ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)) &lt; &amp;МинимальнаяДата
+				ИЛИ ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)) &gt; &amp;МаксимальнаяДата)
+					И ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)) &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
 			ТОГДА "Error"
 		КОГДА ВТ_Инвойсы.ЗаполнятьОплатыПоДаннымОбмена
 			ТОГДА РАЗНОСТЬДАТ(ЕСТЬNULL(ВТ_Инвойсы.Invoice.DueDateTo, ДАТАВРЕМЯ(1, 1, 1)), ЕСТЬNULL(ВТ_ОплатыИзОбмена.PaymentDate, ДАТАВРЕМЯ(1, 1, 1)), СЕКУНДА) / 86400
@@ -1143,6 +1150,23 @@
 		</valueType>
 		<useRestriction>false</useRestriction>
 		<expression></expression>
+		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
+	</parameter>
+	<parameter>
+		<name>МаксимальнаяДата</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Максимальная дата</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+		</valueType>
+		<useRestriction>true</useRestriction>
+		<expression>ДОБАВИТЬКДАТЕ(&amp;Период.ДатаОкончания,"Год",10)</expression>
 		<valueListAllowed>false</valueListAllowed>
 		<availableAsField>true</availableAsField>
 		<denyIncompleteValues>false</denyIncompleteValues>
