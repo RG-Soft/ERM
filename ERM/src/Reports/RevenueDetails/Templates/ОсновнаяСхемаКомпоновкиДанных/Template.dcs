@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <DataCompositionSchema xmlns="http://v8.1c.ru/8.1/data-composition-system/schema" xmlns:dcscom="http://v8.1c.ru/8.1/data-composition-system/common" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<dataSource>
 		<name>ИсточникДанных1</name>
@@ -242,6 +242,14 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>EndClient</dataPath>
+			<field>EndClient</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Location</dataPath>
+			<field>Location</field>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	ВнутренниеКурсыВалют.Период КАК Период,
@@ -343,6 +351,10 @@
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>true</useRestriction>
 		<expression>&amp;ПериодОтчета.ДатаНачала</expression>
+		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>КонецПериода</name>
@@ -361,6 +373,10 @@
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>true</useRestriction>
 		<expression>&amp;ПериодОтчета.ДатаОкончания</expression>
+		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>Период</name>
@@ -378,6 +394,10 @@
 		</valueType>
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>true</useRestriction>
+		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>ПериодОтчета</name>
@@ -393,9 +413,12 @@
 		<value xsi:type="v8:StandardPeriod">
 			<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
 			<v8:startDate>0001-01-01T00:00:00</v8:startDate>
-			<v8:endDate>0001-01-01T00:00:00</v8:endDate>
-		</value>
+			<v8:endDate>0001-01-01T00:00:00</v8:endDate></value>
 		<useRestriction>false</useRestriction>
+		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
@@ -405,7 +428,7 @@
 				<v8:content>Main</v8:content>
 			</v8:item>
 		</dcsset:presentation>
-		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+		<dcsset:settings xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>ПериодГод</dcsset:field>
@@ -463,8 +486,7 @@
 					<dcscor:value xsi:type="v8:StandardPeriod">
 						<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
 						<v8:startDate>0001-01-01T00:00:00</v8:startDate>
-						<v8:endDate>0001-01-01T00:00:00</v8:endDate>
-					</dcscor:value>
+						<v8:endDate>0001-01-01T00:00:00</v8:endDate></dcscor:value>
 					<dcsset:userSettingID>c324c94f-3087-44ef-824e-5bd60273e737</dcsset:userSettingID>
 				</dcscor:item>
 			</dcsset:dataParameters>
@@ -491,13 +513,23 @@
 					<dcscor:parameter>МакетОформления</dcscor:parameter>
 					<dcscor:value xsi:type="xs:string">Море</dcscor:value>
 				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>DataParametersOutput</dcscor:parameter>
+					<dcscor:value xsi:type="dcsset:DataCompositionTextOutputType">DontOutput</dcscor:value>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>FilterOutput</dcscor:parameter>
+					<dcscor:value xsi:type="dcsset:DataCompositionTextOutputType">DontOutput</dcscor:value>
+				</dcscor:item>
 			</dcsset:outputParameters>
 			<dcsset:item xsi:type="dcsset:StructureItemGroup">
 				<dcsset:order>
-					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
+					<dcsset:item xsi:type="dcsset:OrderItemAuto">
+					</dcsset:item>
 				</dcsset:order>
 				<dcsset:selection>
-					<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
+					<dcsset:item xsi:type="dcsset:SelectedItemAuto">
+					</dcsset:item>
 				</dcsset:selection>
 			</dcsset:item>
 		</dcsset:settings>
