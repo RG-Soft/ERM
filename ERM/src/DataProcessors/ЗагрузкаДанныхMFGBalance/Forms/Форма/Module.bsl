@@ -1066,6 +1066,7 @@
 	Запрос.Текст = 
 		"ВЫБРАТЬ
 		|	UnbilledARОстатки.Client,
+		|	UnbilledARОстатки.ClientID,
 		|	UnbilledARОстатки.Company,
 		|	UnbilledARОстатки.Source,
 		|	UnbilledARОстатки.Location,
@@ -1083,6 +1084,7 @@
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
 		|	BilledARОстатки.Client,
+		|	BilledARОстатки.ClientID,
 		|	BilledARОстатки.Company,
 		|	BilledARОстатки.Source,
 		|	BilledARОстатки.Location,
@@ -1100,6 +1102,7 @@
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
 		|	UnallocatedCashОстатки.Client,
+		|	UnallocatedCashОстатки.ClientID,
 		|	UnallocatedCashОстатки.Company,
 		|	UnallocatedCashОстатки.Source,
 		|	UnallocatedCashОстатки.Location,
@@ -1117,6 +1120,7 @@
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
 		|	ManualTransactionsОстатки.Client,
+		|	ManualTransactionsОстатки.ClientID,
 		|	ManualTransactionsОстатки.Company,
 		|	ManualTransactionsОстатки.Source,
 		|	ManualTransactionsОстатки.Location,

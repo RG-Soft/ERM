@@ -840,7 +840,7 @@
 	|	&Source КАК Source,
 	|	СУММА(врТЗТаблицаДанных.Amount) КАК Amount,
 	|	СУММА(врТЗТаблицаДанных.AmountUSD) КАК BaseAmount,
-	|	врТЗТаблицаДанных.CustomerNumber КАК CustomerNumber,
+	|	врТЗТаблицаДанных.CustomerNumber КАК ClientID,
 	|	ВТ_СоответствиеКлиентовCustomerNumber.ОбъектПриемника КАК Client,
 	|	ВТ_СоответствиеCurrency.ОбъектПриемника КАК Currency,
 	|	Организации.Ссылка КАК Company,
@@ -1012,7 +1012,7 @@
 		Если ВыборкаДанные.Client.Предопределенный Тогда
 			ClientID = "";
 		Иначе
-			ClientID = ВыборкаДанные.CustomerNumber;
+			ClientID = ВыборкаДанные.ClientID;
 		КонецЕсли;
 		
 		НайденнаяРучнаяКорректировка = КэшРучныхКорректировок.Найти(ClientID, "ClientID");
@@ -1034,6 +1034,7 @@
 		
 		Движение = Док.Движения.Revenue.Добавить();
 		ЗаполнитьЗначенияСвойств(Движение, ВыборкаДанные);
+		Движение.ClientID = ClientID;
 		Движение.Document = РучнаяКорректировка;
 		Движение.Период = Док.Дата;
 		
@@ -1063,6 +1064,7 @@
 		|	RevenueОбороты.Source КАК Source,
 		|	RevenueОбороты.Company КАК Company,
 		|	RevenueОбороты.Client КАК Client,
+		|	RevenueОбороты.ClientID КАК ClientID,
 		|	RevenueОбороты.AU КАК AU,
 		|	RevenueОбороты.Account КАК Account,
 		|	RevenueОбороты.Currency КАК Currency,

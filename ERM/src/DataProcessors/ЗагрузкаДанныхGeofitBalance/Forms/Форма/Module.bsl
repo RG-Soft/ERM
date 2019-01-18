@@ -773,7 +773,7 @@
 	|	врТЗТаблицаДанных.TransType,
 	|	врТЗТаблицаДанных.TransDate,
 	|	врТЗТаблицаДанных.RefField,
-	|	врТЗТаблицаДанных.Customer КАК CustomerNumber,
+	|	врТЗТаблицаДанных.Customer КАК ClientID,
 	|	ВЫБОР
 	|		КОГДА врТЗТаблицаДанных.TransType = ""A""
 	|				И врТЗТаблицаДанных.Invoice = """"
@@ -1087,6 +1087,7 @@
 	Запрос.Текст = 
 		"ВЫБРАТЬ
 		|	UnbilledARОстатки.Client,
+		|	UnbilledARОстатки.ClientID,
 		|	UnbilledARОстатки.Company,
 		|	UnbilledARОстатки.Source,
 		|	UnbilledARОстатки.Location,
@@ -1104,6 +1105,7 @@
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
 		|	BilledARОстатки.Client,
+		|	BilledARОстатки.ClientID,
 		|	BilledARОстатки.Company,
 		|	BilledARОстатки.Source,
 		|	BilledARОстатки.Location,
@@ -1121,6 +1123,7 @@
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
 		|	UnallocatedCashОстатки.Client,
+		|	UnallocatedCashОстатки.ClientID,
 		|	UnallocatedCashОстатки.Company,
 		|	UnallocatedCashОстатки.Source,
 		|	UnallocatedCashОстатки.Location,
@@ -1138,6 +1141,7 @@
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
 		|	ManualTransactionsОстатки.Client,
+		|	ManualTransactionsОстатки.ClientID,
 		|	ManualTransactionsОстатки.Company,
 		|	ManualTransactionsОстатки.Source,
 		|	ManualTransactionsОстатки.Location,
@@ -1273,7 +1277,7 @@
 	ДокОбъект.Amount = ДанныеДляЗаполнения.OrigAmt;
 	ДокОбъект.Agreement = ДанныеДляЗаполнения.RefField;
 	//ДокОбъект.Amount = ПроводкаDSSОбъект.TranAmount;
-	ДокОбъект.ClientID = ДанныеДляЗаполнения.CustomerNumber;
+	ДокОбъект.ClientID = ДанныеДляЗаполнения.ClientID;
 	ДокОбъект.Записать(РежимЗаписиДокумента.Запись);
 	
 	Возврат ДокОбъект.Ссылка;
@@ -1300,7 +1304,7 @@
 	ДокОбъект.Amount = ДанныеДляЗаполнения.OrigAmt;
 	ДокОбъект.OrderType = Перечисления.SalesOrederTypes.SalesOrder;
 	ДокОбъект.Agreement = ДанныеДляЗаполнения.RefField;
-	ДокОбъект.ClientID = ДанныеДляЗаполнения.CustomerNumber;
+	ДокОбъект.ClientID = ДанныеДляЗаполнения.ClientID;
 	ДокОбъект.Записать(РежимЗаписиДокумента.Запись);
 	
 	Возврат ДокОбъект.Ссылка;
@@ -1326,7 +1330,7 @@
 	ДокОбъект.Currency = ДанныеДляЗаполнения.Currency;
 	ДокОбъект.Prepayment = Prepayment;
 	ДокОбъект.Agreement = ДанныеДляЗаполнения.RefField;
-	ДокОбъект.ClientID = ДанныеДляЗаполнения.CustomerNumber;
+	ДокОбъект.ClientID = ДанныеДляЗаполнения.ClientID;
 	ДокОбъект.Записать(РежимЗаписиДокумента.Запись);
 	
 	Возврат ДокОбъект.Ссылка;
