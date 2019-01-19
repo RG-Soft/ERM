@@ -4,7 +4,7 @@
 	
 	// Анализирует WSСсылку и возвращает настроенный WSПрокси, полученной из этой WSСсылки
 	
-	URIПространстваИмен = "http://rg-soft.ru/ERM/1.0";
+	URIПространстваИмен = "http://rg-soft.ru/ERM/1.2";
 	ИмяСервиса = "MappingClients";
 	
 	Если WSСсылка = WSСсылки.MappingBillingClients Тогда
