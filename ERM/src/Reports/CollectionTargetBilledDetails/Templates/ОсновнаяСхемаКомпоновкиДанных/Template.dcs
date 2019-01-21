@@ -697,7 +697,8 @@
 			ТОГДА ВЫРАЗИТЬ(BilledARОстатки.Invoice КАК Документ.Invoice).DocNumber
 		ИНАЧЕ ВЫРАЗИТЬ(BilledARОстатки.Invoice КАК Документ.Memo).Номер
 	КОНЕЦ КАК ПредставлениеДокумента,
-	BilledARОстатки.LegalEntity КАК LegalEntity
+	BilledARОстатки.LegalEntity КАК LegalEntity,
+	BilledARОстатки.ClientID КАК ClientID
 ПОМЕСТИТЬ ВТ_Остатки
 ИЗ
 	РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, ) КАК BilledARОстатки
@@ -716,7 +717,8 @@
 	UnallocatedMemoОстатки.AU,
 	UnallocatedMemoОстатки.AmountОстаток,
 	UnallocatedMemoОстатки.Memo.Номер,
-	UnallocatedMemoОстатки.LegalEntity
+	UnallocatedMemoОстатки.LegalEntity,
+	UnallocatedMemoОстатки.ClientID
 ИЗ
 	РегистрНакопления.UnallocatedMemo.Остатки({(&amp;ПериодОстатков)}, ) КАК UnallocatedMemoОстатки
 
@@ -748,7 +750,8 @@
 			ТОГДА ВЫРАЗИТЬ(BilledARОбороты.Invoice КАК Документ.Invoice).DocNumber
 		ИНАЧЕ ВЫРАЗИТЬ(BilledARОбороты.Invoice КАК Документ.Memo).Номер
 	КОНЕЦ КАК ПредставлениеДокумента,
-	BilledARОбороты.LegalEntity КАК LegalEntity
+	BilledARОбороты.LegalEntity КАК LegalEntity,
+	BilledARОбороты.ClientID КАК ClientID
 ПОМЕСТИТЬ ВТ_Обороты
 ИЗ
 	РегистрНакопления.BilledAR.Обороты({(&amp;ПериодОстатков)}, {(&amp;КонецДняФормированияОтчета)}, , ) КАК BilledARОбороты
@@ -767,7 +770,8 @@
 	UnallocatedMemoОбороты.AU,
 	UnallocatedMemoОбороты.AmountОборот,
 	UnallocatedMemoОбороты.Memo.Номер,
-	UnallocatedMemoОбороты.LegalEntity
+	UnallocatedMemoОбороты.LegalEntity,
+	NULL
 ИЗ
 	РегистрНакопления.UnallocatedMemo.Обороты({(&amp;ПериодОстатков)}, {(&amp;КонецДняФормированияОтчета)}, , ) КАК UnallocatedMemoОбороты
 
@@ -793,7 +797,8 @@
 	PaymentsОбороты.Currency КАК Currency,
 	PaymentsОбороты.AU КАК AU,
 	PaymentsОбороты.AmountОборот КАК AmountОборот,
-	PaymentsОбороты.LegalEntity КАК LegalEntity
+	PaymentsОбороты.LegalEntity КАК LegalEntity,
+	PaymentsОбороты.ClientID КАК ClientID
 ПОМЕСТИТЬ ВТ_ОплатыТекущегоПериода
 ИЗ
 	РегистрНакопления.Payments.Обороты(
@@ -838,7 +843,8 @@
 	ВТ_Обороты.AU КАК AU,
 	ВТ_Обороты.AmountОборот + ЕСТЬNULL(ВТ_Оплаты.AmountОборот, 0) КАК AmountОстаток,
 	ВТ_Обороты.ПредставлениеДокумента КАК ПредставлениеДокумента,
-	ВТ_Обороты.LegalEntity КАК LegalEntity
+	ВТ_Обороты.LegalEntity КАК LegalEntity,
+	ВТ_Обороты.ClientID КАК ClientID
 ПОМЕСТИТЬ ВТ_ОборотыБезОплат
 ИЗ
 	ВТ_Обороты КАК ВТ_Обороты
@@ -874,7 +880,8 @@
 		КОГДА ИсточникиСЗаполнениемОплатИзОбмена.Source ЕСТЬ NULL
 			ТОГДА ЛОЖЬ
 		ИНАЧЕ ИСТИНА
-	КОНЕЦ КАК ЗаполнятьОплатыПоДаннымОбмена
+	КОНЕЦ КАК ЗаполнятьОплатыПоДаннымОбмена,
+	ВложенныйЗапрос.ClientID КАК ClientID
 ПОМЕСТИТЬ ВТ_ОстаткиБезОплатТекущегоПериода
 ИЗ
 	(ВЫБРАТЬ
@@ -889,7 +896,8 @@
 		ВТ_Остатки.AU КАК AU,
 		ВТ_Остатки.AmountОстаток КАК AmountОстаток,
 		ВТ_Остатки.ПредставлениеДокумента КАК ПредставлениеДокумента,
-		ВТ_Остатки.LegalEntity КАК LegalEntity
+		ВТ_Остатки.LegalEntity КАК LegalEntity,
+		ВТ_Остатки.ClientID КАК ClientID
 	ИЗ
 		ВТ_Остатки КАК ВТ_Остатки
 	
@@ -907,7 +915,8 @@
 		ВТ_ОборотыБезОплат.AU,
 		ВТ_ОборотыБезОплат.AmountОстаток,
 		ВТ_ОборотыБезОплат.ПредставлениеДокумента,
-		ВТ_ОборотыБезОплат.LegalEntity
+		ВТ_ОборотыБезОплат.LegalEntity,
+		ВТ_ОборотыБезОплат.ClientID
 	ИЗ
 		ВТ_ОборотыБезОплат КАК ВТ_ОборотыБезОплат) КАК ВложенныйЗапрос
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ИсточникиСЗаполнениемОплатИзОбмена КАК ИсточникиСЗаполнениемОплатИзОбмена
@@ -931,7 +940,8 @@
 		КОГДА ИсточникиСЗаполнениемОплатИзОбмена.Source ЕСТЬ NULL
 			ТОГДА ЛОЖЬ
 		ИНАЧЕ ИСТИНА
-	КОНЕЦ
+	КОНЕЦ,
+	ВложенныйЗапрос.ClientID
 
 ИНДЕКСИРОВАТЬ ПО
 	Client,
@@ -959,7 +969,8 @@
 				ТОГДА ВЫРАЗИТЬ(PaymentsОбороты.Регистратор КАК Документ.КорректировкаТранзакции).ДокументОснование.Дата
 			ИНАЧЕ PaymentsОбороты.Регистратор.Дата
 		КОНЕЦ) КАК PaymentDate,
-	PaymentsОбороты.LegalEntity КАК LegalEntity
+	PaymentsОбороты.LegalEntity КАК LegalEntity,
+	PaymentsОбороты.ClientID КАК ClientID
 ПОМЕСТИТЬ ВТ_ОплатыПоПроводкам
 ИЗ
 	РегистрНакопления.Payments.Обороты(
@@ -995,7 +1006,8 @@
 	PaymentsОбороты.Invoice,
 	PaymentsОбороты.Currency,
 	PaymentsОбороты.AU,
-	PaymentsОбороты.LegalEntity
+	PaymentsОбороты.LegalEntity,
+	PaymentsОбороты.ClientID
 
 ИНДЕКСИРОВАТЬ ПО
 	Invoice,
@@ -1063,7 +1075,6 @@
 	ВТ_Остатки.Account КАК Account,
 	ВТ_Остатки.Currency КАК Currency,
 	ВТ_Остатки.AU КАК AU,
-	ВТ_Остатки.Invoice.ClientID КАК ИдентификаторКлиента,
 	СУММА(ВТ_Остатки.AmountОстаток) КАК AmountОстаток,
 	СУММА(ВЫБОР
 			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
@@ -1195,7 +1206,8 @@
 				ТОГДА ВТ_Остатки.AmountОстаток / ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0)
 			ИНАЧЕ ВТ_Остатки.AmountОстаток
 		КОНЕЦ) КАК USDAmount,
-	ВТ_Остатки.Invoice КАК Invoice
+	ВТ_Остатки.Invoice КАК Invoice,
+	ВТ_Остатки.ClientID КАК ИдентификаторКлиента
 ПОМЕСТИТЬ ВТ_ДетальныеЗаписи
 ИЗ
 	ВТ_ОстаткиБезОплатТекущегоПериода КАК ВТ_Остатки
@@ -1340,7 +1352,8 @@
 			ТОГДА ЛОЖЬ
 		ИНАЧЕ ИСТИНА
 	КОНЕЦ,
-	ВТ_Остатки.Invoice
+	ВТ_Остатки.Invoice,
+	ВТ_Остатки.ClientID
 
 ИМЕЮЩИЕ
 	СУММА(ВТ_Остатки.AmountОстаток) &lt;&gt; 0
@@ -1793,8 +1806,7 @@
 	ВТ_РассчитанныеРесурсыУровень5.Location.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
 	ВТ_РассчитанныеРесурсыУровень5.Company.БазовыйЭлемент КАК CompanyHFM
 ИЗ
-	ВТ_РассчитанныеРесурсыУровень5 КАК ВТ_РассчитанныеРесурсыУровень5
-</query>
+	ВТ_РассчитанныеРесурсыУровень5 КАК ВТ_РассчитанныеРесурсыУровень5</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>BaseAmountОстатокМодуль</dataPath>
