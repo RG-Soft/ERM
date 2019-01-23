@@ -29,7 +29,7 @@
 	
 	Если ВидОперацииNoteAllocation = Перечисления.ВидыОперацийNoteAllocation.CreditNote Тогда
 		
-		Клиент = ОбщегоНазначения.ЗначениеРеквизитаОбъекта(Invoice, "Client");
+		ДанныеКлиента = ОбщегоНазначения.ЗначенияРеквизитовОбъекта(Invoice, "Client, ClientID");
 		
 		ДвиженияBilledAR = Движения.BilledAR;
 		
@@ -42,7 +42,8 @@
 			
 			ДвижениеCreditNote.Период = Дата;
 			ДвижениеCreditNote.ВидДвижения = ВидДвиженияНакопления.Расход;
-			ДвижениеCreditNote.Client = Клиент;
+			ДвижениеCreditNote.Client = ДанныеКлиента.Client;
+			ДвижениеCreditNote.ClientID = ДанныеКлиента.ClientID;
 			ДвижениеCreditNote.Company = СтрокаТЧ.Company;
 			ДвижениеCreditNote.Source = Source;
 			ДвижениеCreditNote.Location = СтрокаТЧ.Location;
@@ -56,7 +57,8 @@
 			
 			ДвижениеInvoice.Период = Дата;
 			ДвижениеInvoice.ВидДвижения = ВидДвиженияНакопления.Расход;
-			ДвижениеInvoice.Client = Клиент;
+			ДвижениеInvoice.Client = ДанныеКлиента.Client;
+			ДвижениеInvoice.ClientID = ДанныеКлиента.ClientID;
 			ДвижениеInvoice.Company = Company;
 			ДвижениеInvoice.Source = Source;
 			ДвижениеInvoice.Location = Location;
