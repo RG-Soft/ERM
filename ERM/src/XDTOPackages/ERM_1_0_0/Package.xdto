@@ -1,4 +1,4 @@
-<package xmlns="http://v8.1c.ru/8.1/xdto" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://rg-soft.ru/ERM/1.0">
+﻿<package xmlns="http://v8.1c.ru/8.1/xdto" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://rg-soft.ru/ERM/1.0">
 	<import namespace="http://www.1c.ru/SSL/Exchange/Message"/>
 	<valueType name="CreditRating" base="xs:string" variety="Atomic">
 		<enumeration>Banned</enumeration>
@@ -438,7 +438,7 @@
 		<property name="LawsonCompanyCode" type="xs:integer" lowerBound="0"/>
 		<property name="ERMClientMappingID" type="xs:string" lowerBound="0"/>
 		<property xmlns:d3p1="http://rg-soft.ru/ERM/1.0" name="FiscalCurrency" type="d3p1:КлючевыеСвойстваВалюта" lowerBound="0"/>
-		<property name="CreationDate" type="xs:dateTime"/>
+		<property name="CreationDate" type="xs:dateTime" lowerBound="0"/>
 	</objectType>
 	<objectType name="Документ.Invoice.FiscalPayments">
 		<property xmlns:d3p1="http://rg-soft.ru/ERM/1.0" name="Строка" type="d3p1:Документ.Invoice.FiscalPayments.Строка" upperBound="-1"/>
@@ -3426,7 +3426,7 @@
 			<typeDef xsi:type="ValueType" base="xs:string" variety="Atomic" minLength="1" maxLength="15"/>
 		</property>
 		<property name="ПоказательДаты" nillable="true">
-			<typeDef xmlns:d4p1="http://rg-soft.ru/ERM/1.0" xsi:type="ValueType" variety="Union" memberTypes="d4p1:ТипДатаФНС d4p1:ТипНоль"/>
+			<typeDef xsi:type="ValueType" variety="Union" memberTypes="{http://rg-soft.ru/ERM/1.0}ТипДатаФНС {http://rg-soft.ru/ERM/1.0}ТипНоль"/>
 		</property>
 		<property name="ПоказательТипа" nillable="true">
 			<typeDef xsi:type="ValueType" base="xs:string" variety="Atomic" minLength="1" maxLength="2"/>
