@@ -444,7 +444,7 @@
 		ПроцессорВывода.УстановитьОбъект(ТЗ);
 		ПроцессорВывода.Вывести(ПроцессорКомпоновки);
 		
-		ТЗ.Свернуть("Период,Source,AU,BU,Client,CompanyБазовыйЭлемент,CreationDate,Currency,ApprovalDate,FTLSubmissionDate,FirstDateOfPayment,FirstSubmissionDate,Invoice,ОригинальныйИнвойс,InvoiceClientID,InvoiceFlagDate,JobEndDate,JobStartDate,LegalEntity", "Amount, USDAmount");
+		ТЗ.Свернуть("Период,Source,AU,BU,Client,CompanyБазовыйЭлемент,CreationDate,Currency,ApprovalDate,FTLSubmissionDate,FirstDateOfPayment,FirstSubmissionDate,Invoice,ОригинальныйИнвойс,ClientID,InvoiceFlagDate,JobEndDate,JobStartDate,LegalEntity", "Amount, USDAmount");
 		
 		НЗ = ВнешниеИсточникиДанных.ERM_BI.Таблицы.dbo_DIR_Details.СоздатьНаборЗаписей();
 		
@@ -456,7 +456,7 @@
 			ЗаписьНабора = НЗ.Добавить();
 			ЗаписьНабора.Period = ТекПериод;
 			ЗаписьНабора.Source = Строка(СтрокаТЗ.Source);
-			ЗаписьНабора.ClientNumber = СтрокаТЗ.InvoiceClientID;
+			ЗаписьНабора.ClientNumber = СтрокаТЗ.ClientID;
 			Если ЗначениеЗаполнено(СтрокаТЗ.Client) Тогда
 				ЗаписьНабора.ClientID = СтрокаТЗ.Client.УникальныйИдентификатор();
 			Иначе
