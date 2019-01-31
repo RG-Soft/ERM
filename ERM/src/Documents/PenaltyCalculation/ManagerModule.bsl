@@ -369,7 +369,9 @@
 	СтрокаШтрафа.RemainingAmount = Баланс;
 	СтрокаШтрафа.RemainingAmountUSD = СтрокаШтрафа.RemainingAmount / ПолучитьКурсИзКэша(
 		КэшКурсов, Параметры.Currency, КонецМесяца(КонецПериодаРасчета));
-	СтрокаШтрафа.PenaltyAmount = СтрокаШтрафа.RemainingAmountUSD * СтрокаШтрафа.Percent / 100 * СтрокаШтрафа.OverDueDays;
+	СтрокаШтрафа.PenaltyAmount = СтрокаШтрафа.RemainingAmount * СтрокаШтрафа.Percent / 100 * СтрокаШтрафа.OverDueDays;
+	СтрокаШтрафа.PenaltyAmountUSD  = СтрокаШтрафа.PenaltyAmount / ПолучитьКурсИзКэша(
+		КэшКурсов, Параметры.Currency, КонецМесяца(КонецПериодаРасчета));
 	СтрокаШтрафа.IsProblem = ЕстьПроблема;
 	
 КонецПроцедуры
