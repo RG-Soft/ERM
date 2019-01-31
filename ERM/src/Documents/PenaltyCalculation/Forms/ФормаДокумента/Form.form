@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form:Form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:form="http://g5.1c.ru/v8/dt/form">
+<form:Form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:form="http://g5.1c.ru/v8/dt/form">
   <items xsi:type="form:FormGroup">
     <name>ГруппаШапка</name>
     <id>119</id>
@@ -402,8 +402,14 @@
           <userVisible>
             <common>true</common>
           </userVisible>
-          <dataPath xsi:type="form:DataPath">
-            <segments>Объект.Calculation.Client</segments>
+          <dataPath xsi:type="form:MultiLanguageDataPath">
+            <activeLanguage>1</activeLanguage>
+            <paths xsi:type="form:DataPath">
+              <segments>Объект.Calculation.Client</segments>
+            </paths>
+            <paths xsi:type="form:DataPath">
+              <segments>Объект.Calculation.Client</segments>
+            </paths>
           </dataPath>
           <extendedTooltip>
             <name>CalculationClientРасширеннаяПодсказка</name>
@@ -956,8 +962,14 @@
           <userVisible>
             <common>true</common>
           </userVisible>
-          <dataPath xsi:type="form:DataPath">
-            <segments>Объект.Calculation.PenaltyAmount</segments>
+          <dataPath xsi:type="form:MultiLanguageDataPath">
+            <activeLanguage>1</activeLanguage>
+            <paths xsi:type="form:DataPath">
+              <segments>Объект.Calculation.PenaltyAmount</segments>
+            </paths>
+            <paths xsi:type="form:DataPath">
+              <segments>Объект.Calculation.PenaltyAmount</segments>
+            </paths>
           </dataPath>
           <extendedTooltip>
             <name>CalculationPenaltyAmountРасширеннаяПодсказка</name>
@@ -1000,7 +1012,7 @@
         </items>
         <items xsi:type="form:FormField">
           <name>CalculationPenaltyAmountUSD</name>
-          <id>337</id>
+          <id>404</id>
           <visible>true</visible>
           <enabled>true</enabled>
           <userVisible>
@@ -1011,7 +1023,7 @@
           </dataPath>
           <extendedTooltip>
             <name>CalculationPenaltyAmountUSDРасширеннаяПодсказка</name>
-            <id>339</id>
+            <id>406</id>
             <visible>true</visible>
             <enabled>true</enabled>
             <userVisible>
@@ -1026,7 +1038,7 @@
           </extendedTooltip>
           <contextMenu>
             <name>CalculationPenaltyAmountUSDКонтекстноеМеню</name>
-            <id>338</id>
+            <id>405</id>
             <visible>true</visible>
             <enabled>true</enabled>
             <userVisible>
@@ -1714,39 +1726,13 @@
         </extInfo>
       </extendedTooltip>
       <commandName>Form.Command.Заполнить</commandName>
-      <representation>Auto</representation>
+      <representation>PictureAndText</representation>
       <autoMaxWidth>true</autoMaxWidth>
       <autoMaxHeight>true</autoMaxHeight>
       <placementArea>UserCmds</placementArea>
-    </items>
-    <items xsi:type="form:Button">
-      <name>ФормаОткрытьНастройки</name>
-      <id>275</id>
-      <enabled>true</enabled>
-      <userVisible>
-        <common>true</common>
-      </userVisible>
-      <extendedTooltip>
-        <name>ФормаОткрытьНастройкиРасширеннаяПодсказка</name>
-        <id>276</id>
-        <visible>true</visible>
-        <enabled>true</enabled>
-        <userVisible>
-          <common>true</common>
-        </userVisible>
-        <type>Label</type>
-        <autoMaxWidth>true</autoMaxWidth>
-        <autoMaxHeight>true</autoMaxHeight>
-        <extInfo xsi:type="form:LabelDecorationExtInfo">
-          <horizontalAlign>Left</horizontalAlign>
-        </extInfo>
-      </extendedTooltip>
-      <type>CommandBarHyperlink</type>
-      <commandName>Form.Command.ОткрытьНастройки</commandName>
-      <representation>Auto</representation>
-      <autoMaxWidth>true</autoMaxWidth>
-      <autoMaxHeight>true</autoMaxHeight>
-      <placementArea>UserCmds</placementArea>
+      <picture xsi:type="core:PictureRef">
+        <picture>StdPicture.GenerateReport</picture>
+      </picture>
     </items>
     <visible>true</visible>
     <enabled>true</enabled>
@@ -1836,27 +1822,20 @@
       </handler>
     </action>
   </formCommands>
-  <formCommands>
-    <name>ОткрытьНастройки</name>
-    <title>
-      <key>ru</key>
-      <value>Settings</value>
-    </title>
-    <id>2</id>
-    <use>
-      <common>true</common>
-    </use>
-    <action xsi:type="form:FormCommandHandlerContainer">
-      <handler>
-        <name>ОткрытьНастройки</name>
-      </handler>
-    </action>
-    <currentRowUse>DontUse</currentRowUse>
-  </formCommands>
   <commandInterface>
     <navigationPanel>
       <cmiFragmentRecord>
         <command>InformationRegister.Billing.StandardCommand.OpenByRecorder</command>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+      </cmiFragmentRecord>
+      <cmiFragmentRecord>
+        <command>InformationRegister.Penalties.StandardCommand.OpenByRecorder</command>
+        <commandParameter xsi:type="form:DataPath">
+          <segments>Объект.Ref</segments>
+        </commandParameter>
+        <group>FormNavigationPanelGoTo</group>
         <userVisible>
           <common>true</common>
         </userVisible>
