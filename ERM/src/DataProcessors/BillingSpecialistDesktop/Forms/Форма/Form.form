@@ -2882,7 +2882,12 @@
 		КОНЕЦ КАК НетКомментария,
 		UnbilledARОстатки.SalesOrder.Amount КАК SalesAmount,
 		UnbilledARОстатки.SalesOrder КАК SalesOrder,
-		UnbilledARОстатки.SalesOrder.Дата КАК SalesDate,
+		ВЫБОР
+			КОГДА UnbilledARОстатки.SalesOrder.Номер ПОДОБНО "ST%"
+					И UnbilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
+				ТОГДА UnbilledARОстатки.SalesOrder.JobEndDate
+			ИНАЧЕ UnbilledARОстатки.SalesOrder.Дата
+		КОНЕЦ КАК SalesDate,
 		ВЫБОР
 			КОГДА UnbilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
 				ТОГДА UnbilledARОстатки.SalesOrder.ArInvoice
