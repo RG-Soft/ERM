@@ -403,12 +403,17 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>ClientID</dataPath>
+			<field>ClientID</field>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	МАКСИМУМ(InvoicedDebtsОбороты.Период) КАК Период,
 	InvoicedDebtsОбороты.Source КАК Source,
 	InvoicedDebtsОбороты.Company КАК Company,
 	InvoicedDebtsОбороты.Client КАК Client,
+	InvoicedDebtsОбороты.ClientID КАК ClientID,
 	InvoicedDebtsОбороты.AU КАК AU,
 	InvoicedDebtsОбороты.Account КАК Account,
 	ВЫБОР
@@ -456,6 +461,7 @@
 	InvoicedDebtsОбороты.Source,
 	InvoicedDebtsОбороты.Company,
 	InvoicedDebtsОбороты.Client,
+	InvoicedDebtsОбороты.ClientID,
 	InvoicedDebtsОбороты.AU,
 	InvoicedDebtsОбороты.Account,
 	ВЫБОР
@@ -567,6 +573,7 @@
 	ВТ_Инвойсы.Company КАК Company,
 	ВТ_Инвойсы.Company.БазовыйЭлемент КАК CompanyHFM,
 	ВТ_Инвойсы.Client КАК Client,
+	ВТ_Инвойсы.ClientID КАК ClientID,
 	ЕСТЬNULL(ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент, ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка)) КАК ParentClient,
 	ВТ_Инвойсы.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
 	ВТ_Инвойсы.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket КАК SubGeoMarket,
@@ -1223,7 +1230,7 @@
 					<dcsset:field>Company</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.ClientID</dcsset:field>
+					<dcsset:field>ClientID</dcsset:field>
 					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 						<v8:item>
 							<v8:lang>ru</v8:lang>
@@ -1624,7 +1631,7 @@
 					</dcsset:lwsTitle>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Invoice.ClientID</dcsset:field>
+					<dcsset:field>ClientID</dcsset:field>
 					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 						<v8:item>
 							<v8:lang>ru</v8:lang>

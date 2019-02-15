@@ -375,9 +375,14 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>ClientID</dataPath>
+			<field>ClientID</field>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	UnbilledARОстатки.Client КАК Client,
+	UnbilledARОстатки.ClientID КАК ClientID,
 	UnbilledARОстатки.Company КАК Company,
 	UnbilledARОстатки.Source КАК Source,
 	UnbilledARОстатки.AU.ПодразделениеОрганизации КАК Location,
@@ -415,6 +420,7 @@
 
 ВЫБРАТЬ
 	BilledARОстатки.Client,
+	BilledARОстатки.ClientID КАК ClientID,
 	BilledARОстатки.Company,
 	BilledARОстатки.Source,
 	BilledARОстатки.AU.ПодразделениеОрганизации,
@@ -458,6 +464,7 @@
 
 ВЫБРАТЬ
 	UnallocatedCashОстатки.Client,
+	UnallocatedCashОстатки.ClientID КАК ClientID,
 	UnallocatedCashОстатки.Company,
 	UnallocatedCashОстатки.Source,
 	UnallocatedCashОстатки.AU.ПодразделениеОрганизации,
@@ -498,6 +505,7 @@
 
 ВЫБРАТЬ
 	ManualTransactionsОстатки.Client,
+	ManualTransactionsОстатки.ClientID КАК ClientID,
 	ManualTransactionsОстатки.Company,
 	ManualTransactionsОстатки.Source,
 	ManualTransactionsОстатки.AU.ПодразделениеОрганизации,
@@ -529,6 +537,7 @@
 
 ВЫБРАТЬ
 	UnallocatedMemoОстатки.Client,
+	UnallocatedMemoОстатки.ClientID КАК ClientID,
 	UnallocatedMemoОстатки.Company,
 	UnallocatedMemoОстатки.Source,
 	UnallocatedMemoОстатки.AU.ПодразделениеОрганизации,
@@ -642,7 +651,7 @@
 			ИНАЧЕ ВТ_Остатки.TransactionAmount
 		КОНЕЦ) КАК TransactionAmount,
 	ВТ_Остатки.Agreement КАК Agreement,
-	ВТ_Остатки.Document.ClientID КАК CustomerID,
+	ВТ_Остатки.ClientID КАК CustomerID,
 	ВЫБОР
 		КОГДА ВТ_Остатки.Document ССЫЛКА Документ.Invoice
 			ТОГДА ВЫБОР
@@ -737,7 +746,7 @@
 	ВТ_Остатки.Agreement,
 	ВТ_Остатки.Document.FiscalInvoiceNo,
 	ВТ_Остатки.Document.FiscalInvoiceDate,
-	ВТ_Остатки.Document.ClientID,
+	ВТ_Остатки.ClientID,
 	ВТ_Остатки.Location.БазовыйЭлемент.GeoMarket,
 	ВТ_Остатки.SubSubSegment.БазовыйЭлемент.Родитель.Родитель,
 	ВТ_Остатки.Location.БазовыйЭлемент.GeoMarket.ManagementGeomarket,
@@ -821,7 +830,8 @@
 	NULL,
 	NULL
 ИЗ
-	РегистрНакопления.HFMAdjAR.Остатки({(&amp;ПериодОстатков)}, ) КАК HFMAdjARОстатки</query>
+	РегистрНакопления.HFMAdjAR.Остатки({(&amp;ПериодОстатков)}, ) КАК HFMAdjARОстатки
+</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>Ageing_1_30</dataPath>
