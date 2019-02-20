@@ -68,6 +68,20 @@
 			<role>
 				<dcscom:dimension>true</dcscom:dimension>
 			</role>
+			<valueType>
+				<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:CatalogRef.Контрагенты</v8:Type>
+			</valueType>
+			<inputParameters>
+				<dcscor:item>
+					<dcscor:parameter>ПараметрыВыбора</dcscor:parameter>
+					<dcscor:value xsi:type="dcscor:ChoiceParameters">
+						<dcscor:item>
+							<dcscor:choiceParameter>Отбор.AccountType</dcscor:choiceParameter>
+							<dcscor:value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыКлиентов.BillingAccount</dcscor:value>
+						</dcscor:item>
+					</dcscor:value>
+				</dcscor:item>
+			</inputParameters>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>Company</dataPath>
@@ -143,6 +157,20 @@
 					<v8:content>Parent client</v8:content>
 				</v8:item>
 			</title>
+			<valueType>
+				<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:CatalogRef.Контрагенты</v8:Type>
+			</valueType>
+			<inputParameters>
+				<dcscor:item>
+					<dcscor:parameter>ПараметрыВыбора</dcscor:parameter>
+					<dcscor:value xsi:type="dcscor:ChoiceParameters">
+						<dcscor:item>
+							<dcscor:choiceParameter>Отбор.AccountType</dcscor:choiceParameter>
+							<dcscor:value xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыКлиентов.ParentAccount</dcscor:value>
+						</dcscor:item>
+					</dcscor:value>
+				</dcscor:item>
+			</inputParameters>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>CompanyHFM</dataPath>
@@ -173,6 +201,10 @@
 					<v8:content>Geo market</v8:content>
 				</v8:item>
 			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Контрагент</dataPath>
+			<field>Контрагент</field>
 		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
@@ -207,7 +239,7 @@
 ГДЕ
 	Penalties.Активность
 	И Penalties.Период &gt;= &amp;НачалоПериода
-	И Penalties.Период &lt;= &amp;КонецПериод</query>
+	И Penalties.Период &lt;= &amp;КонецПериода</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>BU</dataPath>
@@ -218,32 +250,23 @@
 				<v8:content>BU</v8:content>
 			</v8:item>
 		</title>
-		<valueType>
-		</valueType>
 	</calculatedField>
-	<parameter>
-		<name>КонецПериод</name>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Конец период</v8:content>
-			</v8:item>
-		</title>
-		<valueType>
-			<v8:Type>xs:dateTime</v8:Type>
-			<v8:DateQualifiers>
-				<v8:DateFractions>Date</v8:DateFractions>
-			</v8:DateQualifiers>
-		</valueType>
-		<value xsi:nil="true">
-		</value>
-		<useRestriction>true</useRestriction>
-		<expression>&amp;ПериодОтчета.ДатаОкончания</expression>
-		<valueListAllowed>false</valueListAllowed>
-		<availableAsField>true</availableAsField>
-		<denyIncompleteValues>false</denyIncompleteValues>
-		<use>Auto</use>
-	</parameter>
+	<totalField>
+		<dataPath>Amount</dataPath>
+		<expression>Сумма(Amount)</expression>
+	</totalField>
+	<totalField>
+		<dataPath>RemainingAmount</dataPath>
+		<expression>Сумма(RemainingAmount)</expression>
+	</totalField>
+	<totalField>
+		<dataPath>USDAmount</dataPath>
+		<expression>Сумма(USDAmount)</expression>
+	</totalField>
+	<totalField>
+		<dataPath>RemainingAmountUSD</dataPath>
+		<expression>СУММА(ВычислитьВыражениеСГруппировкойМассив("МАКСИМУМ(RemainingAmountUSD)","Invoice"))</expression>
+	</totalField>
 	<parameter>
 		<name>НачалоПериода</name>
 		<title xsi:type="v8:LocalStringType">
@@ -281,6 +304,49 @@
 		<value xsi:nil="true">
 		</value>
 		<useRestriction>false</useRestriction>
+		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
+	</parameter>
+	<parameter>
+		<name>Период</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Период</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>xs:dateTime</v8:Type>
+			<v8:DateQualifiers>
+				<v8:DateFractions>DateTime</v8:DateFractions>
+			</v8:DateQualifiers>
+		</valueType>
+		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
+		<useRestriction>false</useRestriction>
+		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
+	</parameter>
+	<parameter>
+		<name>КонецПериода</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Конец периода</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>xs:dateTime</v8:Type>
+			<v8:DateQualifiers>
+				<v8:DateFractions>DateTime</v8:DateFractions>
+			</v8:DateQualifiers>
+		</valueType>
+		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
+		<useRestriction>true</useRestriction>
+		<expression>&amp;ПериодОтчета.ДатаОкончания</expression>
 		<valueListAllowed>false</valueListAllowed>
 		<availableAsField>true</availableAsField>
 		<denyIncompleteValues>false</denyIncompleteValues>
@@ -414,11 +480,11 @@
 			</dcsset:dataParameters>
 			<dcsset:outputParameters>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:parameter>GroupFieldsPlacement</dcscor:parameter>
+					<dcscor:parameter>РасположениеПолейГруппировки</dcscor:parameter>
 					<dcscor:value xsi:type="dcsset:DataCompositionGroupFieldsPlacement">Separately</dcscor:value>
 				</dcscor:item>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:parameter>AttributePlacement</dcscor:parameter>
+					<dcscor:parameter>РасположениеРеквизитов</dcscor:parameter>
 					<dcscor:value xsi:type="dcsset:DataCompositionAttributesPlacement">Separately</dcscor:value>
 				</dcscor:item>
 			</dcsset:outputParameters>
