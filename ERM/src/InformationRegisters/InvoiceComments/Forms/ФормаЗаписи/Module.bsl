@@ -113,7 +113,8 @@
 &НаСервере
 Процедура ПередЗаписьюНаСервере(Отказ, ТекущийОбъект, ПараметрыЗаписи)
 	
-	СтруктураРеквизитовПроблемы = Новый Структура("Дата, Invoice, User, Status, ConfirmedBy, CustomerRepresentative, CustomerInputDetails, Comment, CustInputDate, ForecastDate, RemedialWorkPlan, RWDTargetDate, SLBAssignedTo");
+	СтруктураРеквизитовПроблемы = Новый Структура("Дата, Invoice, User, Status, ConfirmedBy, CustomerRepresentative, 
+		|CustomerInputDetails, Comment, CustInputDate, Potential, ForecastDate, RemedialWorkPlan, RWDTargetDate, SLBAssignedTo");
 	ЗаполнитьЗначенияСвойств(СтруктураРеквизитовПроблемы, ЭтотОбъект);
 	СтруктураРеквизитовПроблемы.Дата = ТекущийОбъект.Период;
 	СтруктураРеквизитовПроблемы.Invoice = ТекущийОбъект.Invoice;

@@ -812,6 +812,48 @@
 			<dataPath>ClientID</dataPath>
 			<field>ClientID</field>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>PotentialForecast</dataPath>
+			<field>PotentialForecast</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Potential forecast</v8:content>
+				</v8:item>
+			</title>
+			<appearance>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>Format</dcscor:parameter>
+					<dcscor:value xsi:type="v8:LocalStringType">
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>ЧДЦ=2; ЧН=</v8:content>
+						</v8:item>
+					</dcscor:value>
+				</dcscor:item>
+			</appearance>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>PotentialRisk</dataPath>
+			<field>PotentialRisk</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Potential risk</v8:content>
+				</v8:item>
+			</title>
+			<appearance>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>Format</dcscor:parameter>
+					<dcscor:value xsi:type="v8:LocalStringType">
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>ЧДЦ=2; ЧН=</v8:content>
+						</v8:item>
+					</dcscor:value>
+				</dcscor:item>
+			</appearance>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	BilledARОстатки.Client КАК Client,
@@ -947,10 +989,9 @@
 			{(&amp;ПериодОстатков)},
 			{(&amp;КонецДняФормированияОтчета)},
 			,
-			(Client, ClientID, Company, Source, Invoice, Currency, AU, LegalEntity) В
+			(Client, Company, Source, Invoice, Currency, AU, LegalEntity) В
 				(ВЫБРАТЬ РАЗЛИЧНЫЕ
 					ВТ_ОборотыУчитываяОплаченные.Client,
-					ВТ_ОборотыУчитываяОплаченные.ClientID,
 					ВТ_ОборотыУчитываяОплаченные.Company,
 					ВТ_ОборотыУчитываяОплаченные.Source,
 					ВТ_ОборотыУчитываяОплаченные.Invoice,
@@ -971,7 +1012,6 @@
 			И PaymentsОбороты.AU = ВТ_ОборотыУчитываяОплаченные.AU
 			И PaymentsОбороты.Currency = ВТ_ОборотыУчитываяОплаченные.Currency
 			И PaymentsОбороты.LegalEntity = ВТ_ОборотыУчитываяОплаченные.LegalEntity
-			И PaymentsОбороты.ClientID = ВТ_ОборотыУчитываяОплаченные.ClientID
 
 ИНДЕКСИРОВАТЬ ПО
 	Invoice,
@@ -1135,10 +1175,9 @@
 			{(&amp;ПериодОстатков)},
 			{(&amp;КонецДняФормированияОтчета)},
 			Регистратор,
-			(Client, ClientID, Company, Source, Invoice, Currency, AU, LegalEntity) В
+			(Client, Company, Source, Invoice, Currency, AU, LegalEntity) В
 				(ВЫБРАТЬ РАЗЛИЧНЫЕ
 					ВТ_ОстаткиБезОплатТекущегоПериода.Client,
-					ВТ_ОстаткиБезОплатТекущегоПериода.ClientID,
 					ВТ_ОстаткиБезОплатТекущегоПериода.Company,
 					ВТ_ОстаткиБезОплатТекущегоПериода.Source,
 					ВТ_ОстаткиБезОплатТекущегоПериода.Invoice,
@@ -1275,6 +1314,7 @@
 	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.SLBAssignedToList, "") КАК SLBAssignedTo,
 	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.RemedialWorkPlan, "") КАК RemedialWorkPlan,
 	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.RWDTargetDate, ДАТАВРЕМЯ(1, 1, 1)) КАК RWDTargetDate,
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.Potential, "") КАК Potential,
 	ВТ_Остатки.Invoice.ДатаВозвратаКС КАК InvoiceДатаВозвратаКС,
 	ВТ_Остатки.Invoice.ДатаОтправкиКС КАК InvoiceДатаОтправкиКС,
 	ВТ_Остатки.Invoice.СтатусВозвратаКС КАК InvoiceСтатусВозвратаКС,
@@ -1519,7 +1559,8 @@
 		ИНАЧЕ ИСТИНА
 	КОНЕЦ,
 	ВТ_Остатки.Invoice,
-	ВТ_Остатки.ClientID
+	ВТ_Остатки.ClientID,
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.Potential, "")
 
 ИМЕЮЩИЕ
 	(СУММА(ВТ_Остатки.AmountОстаток) &lt;&gt; 0
@@ -1554,13 +1595,19 @@
 	ВТ_ДетальныеЗаписи.ConfirmedBy КАК ConfirmedBy,
 	ВТ_ДетальныеЗаписи.Comment КАК Comment,
 	ВТ_ДетальныеЗаписи.ПредставлениеДокумента КАК ПредставлениеДокумента,
-	ВТ_ДетальныеЗаписи.ForecastDate КАК ForecastDate,
+	ВЫБОР
+		КОГДА ВТ_ДетальныеЗаписи.Status В (&amp;Statuses)
+				И ВТ_ДетальныеЗаписи.ForecastDate &lt;= &amp;КонецМесяцаФормированияОтчета
+			ТОГДА ДОБАВИТЬКДАТЕ(&amp;КонецМесяцаФормированияОтчета, МЕСЯЦ, 1)
+		ИНАЧЕ ВТ_ДетальныеЗаписи.ForecastDate
+	КОНЕЦ КАК ForecastDate,
 	ВТ_ДетальныеЗаписи.CustInputDate КАК CustInputDate,
 	ВТ_ДетальныеЗаписи.CustomerRepresentative КАК CustomerRepresentative,
 	ВТ_ДетальныеЗаписи.CustomerInputDetails КАК CustomerInputDetails,
 	ВТ_ДетальныеЗаписи.SLBAssignedTo КАК SLBAssignedTo,
 	ВТ_ДетальныеЗаписи.RemedialWorkPlan КАК RemedialWorkPlan,
 	ВТ_ДетальныеЗаписи.RWDTargetDate КАК RWDTargetDate,
+	ВТ_ДетальныеЗаписи.Potential КАК Potential,
 	ВТ_ДетальныеЗаписи.InvoiceДатаВозвратаКС КАК InvoiceДатаВозвратаКС,
 	ВТ_ДетальныеЗаписи.InvoiceДатаОтправкиКС КАК InvoiceДатаОтправкиКС,
 	ВТ_ДетальныеЗаписи.InvoiceСтатусВозвратаКС КАК InvoiceСтатусВозвратаКС,
@@ -1589,31 +1636,93 @@
 	ВТ_ДетальныеЗаписи.EscalationSent КАК EscalationSent,
 	ВТ_ДетальныеЗаписи.LegalEntity КАК LegalEntity,
 	ВТ_ДетальныеЗаписи.USDAmount КАК USDAmount,
+	ВТ_ДетальныеЗаписи.Collector КАК Collector,
+	ВТ_ДетальныеЗаписи.Invoice КАК Invoice
+ПОМЕСТИТЬ ВТ_РассчитанныеРесурсыУровень0
+ИЗ
+	ВТ_ДетальныеЗаписи КАК ВТ_ДетальныеЗаписи
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	ВТ_РассчитанныеРесурсыУровень0.Client КАК Client,
+	ВТ_РассчитанныеРесурсыУровень0.Company КАК Company,
+	ВТ_РассчитанныеРесурсыУровень0.Source КАК Source,
+	ВТ_РассчитанныеРесурсыУровень0.Location КАК Location,
+	ВТ_РассчитанныеРесурсыУровень0.SubSubSegment КАК SubSubSegment,
+	ВТ_РассчитанныеРесурсыУровень0.Account КАК Account,
+	ВТ_РассчитанныеРесурсыУровень0.Currency КАК Currency,
+	ВТ_РассчитанныеРесурсыУровень0.AU КАК AU,
+	ВТ_РассчитанныеРесурсыУровень0.ИдентификаторКлиента КАК ИдентификаторКлиента,
+	ВТ_РассчитанныеРесурсыУровень0.AmountОстаток КАК AmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень0.BaseAmountОстаток КАК BaseAmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень0.ГоловнойКонтрагент КАК ГоловнойКонтрагент,
+	ВТ_РассчитанныеРесурсыУровень0.Rate КАК Rate,
+	ВТ_РассчитанныеРесурсыУровень0.Status КАК Status,
+	ВТ_РассчитанныеРесурсыУровень0.ConfirmedBy КАК ConfirmedBy,
+	ВТ_РассчитанныеРесурсыУровень0.Comment КАК Comment,
+	ВТ_РассчитанныеРесурсыУровень0.ПредставлениеДокумента КАК ПредставлениеДокумента,
+	ВТ_РассчитанныеРесурсыУровень0.ForecastDate КАК ForecastDate,
+	ВТ_РассчитанныеРесурсыУровень0.CustInputDate КАК CustInputDate,
+	ВТ_РассчитанныеРесурсыУровень0.CustomerRepresentative КАК CustomerRepresentative,
+	ВТ_РассчитанныеРесурсыУровень0.CustomerInputDetails КАК CustomerInputDetails,
+	ВТ_РассчитанныеРесурсыУровень0.SLBAssignedTo КАК SLBAssignedTo,
+	ВТ_РассчитанныеРесурсыУровень0.RemedialWorkPlan КАК RemedialWorkPlan,
+	ВТ_РассчитанныеРесурсыУровень0.RWDTargetDate КАК RWDTargetDate,
+	ВТ_РассчитанныеРесурсыУровень0.Potential КАК Potential,
+	ВТ_РассчитанныеРесурсыУровень0.InvoiceДатаВозвратаКС КАК InvoiceДатаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень0.InvoiceДатаОтправкиКС КАК InvoiceДатаОтправкиКС,
+	ВТ_РассчитанныеРесурсыУровень0.InvoiceСтатусВозвратаКС КАК InvoiceСтатусВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень0.InvoiceКомментарийСтатусаВозвратаКС КАК InvoiceКомментарийСтатусаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень0.Agreement КАК Agreement,
+	ВТ_РассчитанныеРесурсыУровень0.InvoiceНомер КАК InvoiceНомер,
+	ВТ_РассчитанныеРесурсыУровень0.InvoiceНомерДокумента КАК InvoiceНомерДокумента,
+	ВТ_РассчитанныеРесурсыУровень0.InvoiceДата КАК InvoiceДата,
+	ВТ_РассчитанныеРесурсыУровень0.InvoiceFiscalInvoiceNo КАК InvoiceFiscalInvoiceNo,
+	ВТ_РассчитанныеРесурсыУровень0.InvoiceFiscalInvoiceDate КАК InvoiceFiscalInvoiceDate,
+	ВТ_РассчитанныеРесурсыУровень0.InvoiceAmount КАК InvoiceAmount,
+	ВТ_РассчитанныеРесурсыУровень0.InvoiceContractTrigger КАК InvoiceContractTrigger,
+	ВТ_РассчитанныеРесурсыУровень0.InvoiceTriggerDate КАК InvoiceTriggerDate,
+	ВТ_РассчитанныеРесурсыУровень0.InvoiceContractPTDaysFrom КАК InvoiceContractPTDaysFrom,
+	ВТ_РассчитанныеРесурсыУровень0.InvoiceContractСрокОплаты КАК InvoiceContractСрокОплаты,
+	ВТ_РассчитанныеРесурсыУровень0.InvoiceDueDateFrom КАК InvoiceDueDateFrom,
+	ВТ_РассчитанныеРесурсыУровень0.InvoiceDueDateTo КАК InvoiceDueDateTo,
+	ВТ_РассчитанныеРесурсыУровень0.InvoiceStatusOfDispute КАК InvoiceStatusOfDispute,
+	ВТ_РассчитанныеРесурсыУровень0.InvoiceDisputeDistributedDate КАК InvoiceDisputeDistributedDate,
+	ВТ_РассчитанныеРесурсыУровень0.InvoiceDisputeCollectableDate КАК InvoiceDisputeCollectableDate,
+	ВТ_РассчитанныеРесурсыУровень0.InvoiceContractAmendmentName КАК InvoiceContractAmendmentName,
+	ВТ_РассчитанныеРесурсыУровень0.TransType КАК TransType,
+	ВТ_РассчитанныеРесурсыУровень0.Paid КАК Paid,
+	ВТ_РассчитанныеРесурсыУровень0.PaymentDate КАК PaymentDate,
+	ВТ_РассчитанныеРесурсыУровень0.BrokenPromises КАК BrokenPromises,
+	ВТ_РассчитанныеРесурсыУровень0.EscalationSent КАК EscalationSent,
+	ВТ_РассчитанныеРесурсыУровень0.LegalEntity КАК LegalEntity,
+	ВТ_РассчитанныеРесурсыУровень0.USDAmount КАК USDAmount,
 	ВЫБОР
-		КОГДА ВТ_ДетальныеЗаписи.InvoiceDueDateFrom &lt;= &amp;КонецМесяцаФормированияОтчета
-			ТОГДА ВТ_ДетальныеЗаписи.USDAmount
+		КОГДА ВТ_РассчитанныеРесурсыУровень0.InvoiceDueDateFrom &lt;= &amp;КонецМесяцаФормированияОтчета
+			ТОГДА ВТ_РассчитанныеРесурсыУровень0.USDAmount
 		ИНАЧЕ 0
 	КОНЕЦ КАК DueFrom,
 	ВЫБОР
-		КОГДА ВТ_ДетальныеЗаписи.InvoiceDueDateTo &lt;= &amp;КонецМесяцаФормированияОтчета
-			ТОГДА ВТ_ДетальныеЗаписи.USDAmount
+		КОГДА ВТ_РассчитанныеРесурсыУровень0.InvoiceDueDateTo &lt;= &amp;КонецМесяцаФормированияОтчета
+			ТОГДА ВТ_РассчитанныеРесурсыУровень0.USDAmount
 		ИНАЧЕ 0
 	КОНЕЦ КАК DueTo,
 	ВЫБОР
-		КОГДА ВТ_ДетальныеЗаписи.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.CustomerIsInsolventOrBankrupt)
-			ТОГДА ВТ_ДетальныеЗаписи.USDAmount
+		КОГДА ВТ_РассчитанныеРесурсыУровень0.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.CustomerIsInsolventOrBankrupt)
+			ТОГДА ВТ_РассчитанныеРесурсыУровень0.USDAmount
 		ИНАЧЕ 0
 	КОНЕЦ КАК UnderLitigation,
 	ВЫБОР
-		КОГДА ВТ_ДетальныеЗаписи.ForecastDate = ДАТАВРЕМЯ(1, 1, 1)
-			ТОГДА ВТ_ДетальныеЗаписи.USDAmount
+		КОГДА ВТ_РассчитанныеРесурсыУровень0.ForecastDate = ДАТАВРЕМЯ(1, 1, 1)
+			ТОГДА ВТ_РассчитанныеРесурсыУровень0.USDAmount
 		ИНАЧЕ 0
 	КОНЕЦ КАК NoFrcst,
-	ВТ_ДетальныеЗаписи.Collector КАК Collector,
-	ВТ_ДетальныеЗаписи.Invoice КАК Invoice
+	ВТ_РассчитанныеРесурсыУровень0.Collector КАК Collector,
+	ВТ_РассчитанныеРесурсыУровень0.Invoice КАК Invoice
 ПОМЕСТИТЬ ВТ_РассчитанныеРесурсыУровень1
 ИЗ
-	ВТ_ДетальныеЗаписи КАК ВТ_ДетальныеЗаписи
+	ВТ_РассчитанныеРесурсыУровень0 КАК ВТ_РассчитанныеРесурсыУровень0
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1642,6 +1751,7 @@
 	ВТ_РассчитанныеРесурсыУровень1.SLBAssignedTo КАК SLBAssignedTo,
 	ВТ_РассчитанныеРесурсыУровень1.RemedialWorkPlan КАК RemedialWorkPlan,
 	ВТ_РассчитанныеРесурсыУровень1.RWDTargetDate КАК RWDTargetDate,
+	ВТ_РассчитанныеРесурсыУровень1.Potential КАК Potential,
 	ВТ_РассчитанныеРесурсыУровень1.InvoiceДатаВозвратаКС КАК InvoiceДатаВозвратаКС,
 	ВТ_РассчитанныеРесурсыУровень1.InvoiceДатаОтправкиКС КАК InvoiceДатаОтправкиКС,
 	ВТ_РассчитанныеРесурсыУровень1.InvoiceСтатусВозвратаКС КАК InvoiceСтатусВозвратаКС,
@@ -1713,6 +1823,7 @@
 	ВТ_РассчитанныеРесурсыУровень2.SLBAssignedTo КАК SLBAssignedTo,
 	ВТ_РассчитанныеРесурсыУровень2.RemedialWorkPlan КАК RemedialWorkPlan,
 	ВТ_РассчитанныеРесурсыУровень2.RWDTargetDate КАК RWDTargetDate,
+	ВТ_РассчитанныеРесурсыУровень2.Potential КАК Potential,
 	ВТ_РассчитанныеРесурсыУровень2.InvoiceДатаВозвратаКС КАК InvoiceДатаВозвратаКС,
 	ВТ_РассчитанныеРесурсыУровень2.InvoiceДатаОтправкиКС КАК InvoiceДатаОтправкиКС,
 	ВТ_РассчитанныеРесурсыУровень2.InvoiceСтатусВозвратаКС КАК InvoiceСтатусВозвратаКС,
@@ -1785,6 +1896,7 @@
 	ВТ_РассчитанныеРесурсыУровень3.SLBAssignedTo КАК SLBAssignedTo,
 	ВТ_РассчитанныеРесурсыУровень3.RemedialWorkPlan КАК RemedialWorkPlan,
 	ВТ_РассчитанныеРесурсыУровень3.RWDTargetDate КАК RWDTargetDate,
+	ВТ_РассчитанныеРесурсыУровень3.Potential КАК Potential,
 	ВТ_РассчитанныеРесурсыУровень3.InvoiceДатаВозвратаКС КАК InvoiceДатаВозвратаКС,
 	ВТ_РассчитанныеРесурсыУровень3.InvoiceДатаОтправкиКС КАК InvoiceДатаОтправкиКС,
 	ВТ_РассчитанныеРесурсыУровень3.InvoiceСтатусВозвратаКС КАК InvoiceСтатусВозвратаКС,
@@ -1858,6 +1970,7 @@
 	ВТ_РассчитанныеРесурсыУровень4.SLBAssignedTo КАК SLBAssignedTo,
 	ВТ_РассчитанныеРесурсыУровень4.RemedialWorkPlan КАК RemedialWorkPlan,
 	ВТ_РассчитанныеРесурсыУровень4.RWDTargetDate КАК RWDTargetDate,
+	ВТ_РассчитанныеРесурсыУровень4.Potential КАК Potential,
 	ВТ_РассчитанныеРесурсыУровень4.InvoiceДатаВозвратаКС КАК InvoiceДатаВозвратаКС,
 	ВТ_РассчитанныеРесурсыУровень4.InvoiceДатаОтправкиКС КАК InvoiceДатаОтправкиКС,
 	ВТ_РассчитанныеРесурсыУровень4.InvoiceСтатусВозвратаКС КАК InvoiceСтатусВозвратаКС,
@@ -1932,6 +2045,7 @@
 	ВТ_РассчитанныеРесурсыУровень5.SLBAssignedTo КАК SLBAssignedTo,
 	ВТ_РассчитанныеРесурсыУровень5.RemedialWorkPlan КАК RemedialWorkPlan,
 	ВТ_РассчитанныеРесурсыУровень5.RWDTargetDate КАК RWDTargetDate,
+	ВТ_РассчитанныеРесурсыУровень5.Potential КАК Potential,
 	ВТ_РассчитанныеРесурсыУровень5.InvoiceДатаВозвратаКС КАК InvoiceДатаВозвратаКС,
 	ВТ_РассчитанныеРесурсыУровень5.InvoiceДатаОтправкиКС КАК InvoiceДатаОтправкиКС,
 	ВТ_РассчитанныеРесурсыУровень5.InvoiceСтатусВозвратаКС КАК InvoiceСтатусВозвратаКС,
@@ -1981,10 +2095,94 @@
 	ВТ_РассчитанныеРесурсыУровень5.SubSubSegment.БазовыйЭлемент.Родитель КАК SubSegment,
 	ВТ_РассчитанныеРесурсыУровень5.Location.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
 	ВТ_РассчитанныеРесурсыУровень5.Company.БазовыйЭлемент КАК CompanyHFM
+ПОМЕСТИТЬ ВТ_РассчитанныеРесурсыУровень6
 ИЗ
 	ВТ_РассчитанныеРесурсыУровень5 КАК ВТ_РассчитанныеРесурсыУровень5
+;
 
-</query>
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	ВТ_РассчитанныеРесурсыУровень6.Client КАК Client,
+	ВТ_РассчитанныеРесурсыУровень6.Company КАК Company,
+	ВТ_РассчитанныеРесурсыУровень6.Source КАК Source,
+	ВТ_РассчитанныеРесурсыУровень6.Location КАК Location,
+	ВТ_РассчитанныеРесурсыУровень6.SubSubSegment КАК SubSubSegment,
+	ВТ_РассчитанныеРесурсыУровень6.Account КАК Account,
+	ВТ_РассчитанныеРесурсыУровень6.Currency КАК Currency,
+	ВТ_РассчитанныеРесурсыУровень6.AU КАК AU,
+	ВТ_РассчитанныеРесурсыУровень6.ИдентификаторКлиента КАК ИдентификаторКлиента,
+	ВТ_РассчитанныеРесурсыУровень6.AmountОстаток КАК AmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень6.BaseAmountОстаток КАК BaseAmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень6.ГоловнойКонтрагент КАК ГоловнойКонтрагент,
+	ВТ_РассчитанныеРесурсыУровень6.Rate КАК Rate,
+	ВТ_РассчитанныеРесурсыУровень6.Status КАК Status,
+	ВТ_РассчитанныеРесурсыУровень6.ConfirmedBy КАК ConfirmedBy,
+	ВТ_РассчитанныеРесурсыУровень6.Comment КАК Comment,
+	ВТ_РассчитанныеРесурсыУровень6.ПредставлениеДокумента КАК ПредставлениеДокумента,
+	ВТ_РассчитанныеРесурсыУровень6.ForecastDate КАК ForecastDate,
+	ВТ_РассчитанныеРесурсыУровень6.CustInputDate КАК CustInputDate,
+	ВТ_РассчитанныеРесурсыУровень6.CustomerRepresentative КАК CustomerRepresentative,
+	ВТ_РассчитанныеРесурсыУровень6.CustomerInputDetails КАК CustomerInputDetails,
+	ВТ_РассчитанныеРесурсыУровень6.SLBAssignedTo КАК SLBAssignedTo,
+	ВТ_РассчитанныеРесурсыУровень6.RemedialWorkPlan КАК RemedialWorkPlan,
+	ВТ_РассчитанныеРесурсыУровень6.RWDTargetDate КАК RWDTargetDate,
+	ВТ_РассчитанныеРесурсыУровень6.InvoiceДатаВозвратаКС КАК InvoiceДатаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень6.InvoiceДатаОтправкиКС КАК InvoiceДатаОтправкиКС,
+	ВТ_РассчитанныеРесурсыУровень6.InvoiceСтатусВозвратаКС КАК InvoiceСтатусВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень6.InvoiceКомментарийСтатусаВозвратаКС КАК InvoiceКомментарийСтатусаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень6.Agreement КАК Agreement,
+	ВТ_РассчитанныеРесурсыУровень6.InvoiceНомер КАК InvoiceНомер,
+	ВТ_РассчитанныеРесурсыУровень6.InvoiceНомерДокумента КАК InvoiceНомерДокумента,
+	ВТ_РассчитанныеРесурсыУровень6.InvoiceДата КАК InvoiceДата,
+	ВТ_РассчитанныеРесурсыУровень6.InvoiceFiscalInvoiceNo КАК InvoiceFiscalInvoiceNo,
+	ВТ_РассчитанныеРесурсыУровень6.InvoiceFiscalInvoiceDate КАК InvoiceFiscalInvoiceDate,
+	ВТ_РассчитанныеРесурсыУровень6.InvoiceAmount КАК InvoiceAmount,
+	ВТ_РассчитанныеРесурсыУровень6.InvoiceContractTrigger КАК InvoiceContractTrigger,
+	ВТ_РассчитанныеРесурсыУровень6.InvoiceTriggerDate КАК InvoiceTriggerDate,
+	ВТ_РассчитанныеРесурсыУровень6.InvoiceContractPTDaysFrom КАК InvoiceContractPTDaysFrom,
+	ВТ_РассчитанныеРесурсыУровень6.InvoiceContractСрокОплаты КАК InvoiceContractСрокОплаты,
+	ВТ_РассчитанныеРесурсыУровень6.InvoiceDueDateFrom КАК InvoiceDueDateFrom,
+	ВТ_РассчитанныеРесурсыУровень6.InvoiceDueDateTo КАК InvoiceDueDateTo,
+	ВТ_РассчитанныеРесурсыУровень6.InvoiceStatusOfDispute КАК InvoiceStatusOfDispute,
+	ВТ_РассчитанныеРесурсыУровень6.InvoiceDisputeDistributedDate КАК InvoiceDisputeDistributedDate,
+	ВТ_РассчитанныеРесурсыУровень6.InvoiceDisputeCollectableDate КАК InvoiceDisputeCollectableDate,
+	ВТ_РассчитанныеРесурсыУровень6.InvoiceContractAmendmentName КАК InvoiceContractAmendmentName,
+	ВТ_РассчитанныеРесурсыУровень6.TransType КАК TransType,
+	ВТ_РассчитанныеРесурсыУровень6.Paid КАК Paid,
+	ВТ_РассчитанныеРесурсыУровень6.PaymentDate КАК PaymentDate,
+	ВТ_РассчитанныеРесурсыУровень6.BrokenPromises КАК BrokenPromises,
+	ВТ_РассчитанныеРесурсыУровень6.EscalationSent КАК EscalationSent,
+	ВТ_РассчитанныеРесурсыУровень6.LegalEntity КАК LegalEntity,
+	ВТ_РассчитанныеРесурсыУровень6.USDAmount КАК USDAmount,
+	ВТ_РассчитанныеРесурсыУровень6.DueFrom КАК DueFrom,
+	ВТ_РассчитанныеРесурсыУровень6.DueTo КАК DueTo,
+	ВТ_РассчитанныеРесурсыУровень6.UnderLitigation КАК UnderLitigation,
+	ВТ_РассчитанныеРесурсыУровень6.NoFrcst КАК NoFrcst,
+	ВТ_РассчитанныеРесурсыУровень6.FcstCollect КАК FcstCollect,
+	ВТ_РассчитанныеРесурсыУровень6.OverdueDispute КАК OverdueDispute,
+	ВТ_РассчитанныеРесурсыУровень6.OverdueNoFcst КАК OverdueNoFcst,
+	ВТ_РассчитанныеРесурсыУровень6.InRangeNoColl КАК InRangeNoColl,
+	ВТ_РассчитанныеРесурсыУровень6.NotDue КАК NotDue,
+	ВТ_РассчитанныеРесурсыУровень6.Collector КАК Collector,
+	ВТ_РассчитанныеРесурсыУровень6.Invoice КАК Invoice,
+	ВТ_РассчитанныеРесурсыУровень6.LocationHFM КАК LocationHFM,
+	ВТ_РассчитанныеРесурсыУровень6.SegmentHFM КАК SegmentHFM,
+	ВТ_РассчитанныеРесурсыУровень6.MgmtGeomarket КАК MgmtGeomarket,
+	ВТ_РассчитанныеРесурсыУровень6.SubSegment КАК SubSegment,
+	ВТ_РассчитанныеРесурсыУровень6.GeoMarket КАК GeoMarket,
+	ВТ_РассчитанныеРесурсыУровень6.CompanyHFM КАК CompanyHFM,
+	ВЫБОР
+		КОГДА ВТ_РассчитанныеРесурсыУровень6.Potential = ЗНАЧЕНИЕ(Перечисление.InvoicePotential.PotentialForecast)
+			ТОГДА ВТ_РассчитанныеРесурсыУровень6.InRangeNoColl + ВТ_РассчитанныеРесурсыУровень6.OverdueDispute + ВТ_РассчитанныеРесурсыУровень6.OverdueNoFcst + ВТ_РассчитанныеРесурсыУровень6.NotDue + ВТ_РассчитанныеРесурсыУровень6.NoFrcst + ВТ_РассчитанныеРесурсыУровень6.UnderLitigation
+		ИНАЧЕ 0
+	КОНЕЦ КАК PotentialForecast,
+	ВЫБОР
+		КОГДА ВТ_РассчитанныеРесурсыУровень6.Potential = ЗНАЧЕНИЕ(Перечисление.InvoicePotential.PotentialRisk)
+			ТОГДА -ВТ_РассчитанныеРесурсыУровень6.FcstCollect
+		ИНАЧЕ 0
+	КОНЕЦ КАК PotentialRisk
+ИЗ
+	ВТ_РассчитанныеРесурсыУровень6 КАК ВТ_РассчитанныеРесурсыУровень6</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>BaseAmountОстатокМодуль</dataPath>
@@ -2152,6 +2350,22 @@
 		<useRestriction>true</useRestriction>
 		<expression>ДОБАВИТЬКДАТЕ(КонецПериода(&amp;Период,"ДЕНЬ") , "СЕКУНДА", 1)</expression>
 		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
+	</parameter>
+	<parameter>
+		<name>Statuses</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Statuses</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+		</valueType>
+		<useRestriction>true</useRestriction>
+		<valueListAllowed>true</valueListAllowed>
 		<availableAsField>true</availableAsField>
 		<denyIncompleteValues>false</denyIncompleteValues>
 		<use>Auto</use>
@@ -2459,6 +2673,12 @@
 							<v8:content>Confirmed By</v8:content>
 						</v8:item>
 					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>PotentialForecast</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>PotentialRisk</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>ForecastDate</dcsset:field>
