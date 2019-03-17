@@ -363,6 +363,14 @@
 		<expression>Сумма(RemainingAmount)</expression>
 		<group>Currency</group>
 	</totalField>
+	<totalField>
+		<dataPath>PaymentAmount</dataPath>
+		<expression>Сумма(PaymentAmount)</expression>
+	</totalField>
+	<totalField>
+		<dataPath>PaymentAmountUSD</dataPath>
+		<expression>СУММА(ВычислитьВыражениеСГруппировкойМассив("МАКСИМУМ(PaymentAmountUSD)","Invoice"))</expression>
+	</totalField>
 	<parameter>
 		<name>НачалоПериода</name>
 		<title xsi:type="v8:LocalStringType">
@@ -509,7 +517,7 @@
 					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
 						<v8:item>
 							<v8:lang>ru</v8:lang>
-							<v8:content>Penalty type</v8:content>
+							<v8:content>Contract penalty type</v8:content>
 						</v8:item>
 					</dcsset:lwsTitle>
 				</dcsset:item>
@@ -553,6 +561,12 @@
 					<dcsset:field>RemainingAmountUSD</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>PaymentAmount</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>PaymentAmountUSD</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>DueDate</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
@@ -560,6 +574,9 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>PenaltyDate</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>PenaltyType</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>USDAmount</dcsset:field>
