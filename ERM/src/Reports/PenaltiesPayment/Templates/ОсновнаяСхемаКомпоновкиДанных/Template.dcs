@@ -291,8 +291,16 @@
 	Penalties.Invoice КАК Invoice,
 	Penalties.Currency КАК Currency,
 	Penalties.PenaltyDate КАК PenaltyDate,
-	Penalties.Amount КАК Amount,
-	Penalties.USDAmount КАК USDAmount,
+	ВЫБОР
+		КОГДА Penalties.PenaltyType = ЗНАЧЕНИЕ(Перечисление.PenaltyTypes.Penalty)
+			ТОГДА -Penalties.Amount
+		ИНАЧЕ Penalties.Amount
+	КОНЕЦ КАК Amount,
+	ВЫБОР
+		КОГДА Penalties.PenaltyType = ЗНАЧЕНИЕ(Перечисление.PenaltyTypes.Penalty)
+			ТОГДА -Penalties.USDAmount
+		ИНАЧЕ Penalties.USDAmount
+	КОНЕЦ КАК USDAmount,
 	Penalties.DueDate КАК DueDate,
 	ВЫБОР
 		КОГДА Penalties.PenaltyType = ЗНАЧЕНИЕ(Перечисление.PenaltyTypes.Penalty)
@@ -325,7 +333,8 @@
 ГДЕ
 	Penalties.Активность
 	И Penalties.Период &gt;= &amp;НачалоПериода
-	И Penalties.Период &lt;= &amp;КонецПериода</query>
+	И Penalties.Период &lt;= &amp;КонецПериода
+</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>BU</dataPath>

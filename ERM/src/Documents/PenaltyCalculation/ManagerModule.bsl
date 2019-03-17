@@ -147,6 +147,8 @@
 	               |				ОплатыЗаПериодРасчета.Invoice
 	               |			ИЗ
 	               |				ВТ_ОплатыЗаПериодРасчета КАК ОплатыЗаПериодРасчета)
+	               |	И LawsonDepositDatesInv.DepositDate >= &НачалоПериодаРасчета
+	               |	И LawsonDepositDatesInv.DepositDate <= &КонецПериодаРасчета
 	               |
 	               |СГРУППИРОВАТЬ ПО
 	               |	LawsonDepositDatesInv.Invoice
@@ -495,7 +497,9 @@
 	               |				ОплатыЗаПериодРасчета.Invoice
 	               |			ИЗ
 	               |				ВТ_ОплатыЗаПериодРасчета КАК ОплатыЗаПериодРасчета)
-	               |
+	               |	И LawsonDepositDatesInv.DepositDate >= &НачалоПериодаРасчета
+	               |	И LawsonDepositDatesInv.DepositDate <= &КонецПериодаРасчета
+	               |	
 	               |СГРУППИРОВАТЬ ПО
 	               |	LawsonDepositDatesInv.Invoice
 	               |;
@@ -795,7 +799,9 @@
 	               |				ОплатыЗаПериодРасчета.Invoice
 	               |			ИЗ
 	               |				ВТ_ОплатыЗаПериодРасчета КАК ОплатыЗаПериодРасчета)
-	               |
+	               |	И LawsonDepositDatesInv.DepositDate >= &НачалоПериодаРасчета
+	               |	И LawsonDepositDatesInv.DepositDate <= &КонецПериодаРасчета
+	               |	
 	               |СГРУППИРОВАТЬ ПО
 	               |	LawsonDepositDatesInv.Invoice
 	               |;
