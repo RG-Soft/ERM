@@ -20,15 +20,42 @@
 	
 	Движения.Penalties.Записывать = Истина;
 	
-	ТЗ_Calculation = Calculation.Выгрузить();
+	ТЗ_CalculationPenalty = CalculationPenalty.Выгрузить();
+	ТЗ_CalculationBenefit = CalculationBenefit.Выгрузить();
+	ТЗ_CalculationOnTime = CalculationOnTime.Выгрузить();
 	
-	Для Каждого СтрокаТЧ Из ТЗ_Calculation Цикл
+	Для Каждого СтрокаТЧ Из ТЗ_CalculationPenalty Цикл
 		Если СтрокаТЧ.PenaltyAmount = 0 И СтрокаТЧ.PenaltyAmountUSD = 0 Тогда
 			Продолжить;
 		КонецЕсли;
 		СтрокаДвижения = Движения.Penalties.Добавить();
 		ЗаполнитьЗначенияСвойств(СтрокаДвижения, СтрокаТЧ);
 		СтрокаДвижения.Период = Дата;
+		СтрокаДвижения.PenaltyType = Перечисления.PenaltyTypes.Penalty;
+		СтрокаДвижения.Amount = СтрокаТЧ.PenaltyAmount;
+		СтрокаДвижения.USDAmount = СтрокаТЧ.PenaltyAmountUSD;
+	КонецЦикла;
+
+	Для Каждого СтрокаТЧ Из ТЗ_CalculationBenefit Цикл
+		Если СтрокаТЧ.PenaltyAmount = 0 И СтрокаТЧ.PenaltyAmountUSD = 0 Тогда
+			Продолжить;
+		КонецЕсли;
+		СтрокаДвижения = Движения.Penalties.Добавить();
+		ЗаполнитьЗначенияСвойств(СтрокаДвижения, СтрокаТЧ);
+		СтрокаДвижения.Период = Дата;
+		СтрокаДвижения.PenaltyType = Перечисления.PenaltyTypes.Benefit;
+		СтрокаДвижения.Amount = СтрокаТЧ.PenaltyAmount;
+		СтрокаДвижения.USDAmount = СтрокаТЧ.PenaltyAmountUSD;
+	КонецЦикла;
+
+	Для Каждого СтрокаТЧ Из ТЗ_CalculationOnTime Цикл
+//		Если СтрокаТЧ.PenaltyAmount = 0 И СтрокаТЧ.PenaltyAmountUSD = 0 Тогда
+//			Продолжить;
+//		КонецЕсли;
+		СтрокаДвижения = Движения.Penalties.Добавить();
+		ЗаполнитьЗначенияСвойств(СтрокаДвижения, СтрокаТЧ);
+		СтрокаДвижения.Период = Дата;
+		СтрокаДвижения.PenaltyType = Перечисления.PenaltyTypes.OnTime;
 		СтрокаДвижения.Amount = СтрокаТЧ.PenaltyAmount;
 		СтрокаДвижения.USDAmount = СтрокаТЧ.PenaltyAmountUSD;
 	КонецЦикла;
