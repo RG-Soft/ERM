@@ -11,21 +11,6 @@
 			<field>Amount</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>RemainingAmountUSD</dataPath>
-			<field>RemainingAmountUSD</field>
-			<appearance>
-				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:parameter>Формат</dcscor:parameter>
-					<dcscor:value xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>ЧЦ=15; ЧДЦ=2</v8:content>
-						</v8:item>
-					</dcscor:value>
-				</dcscor:item>
-			</appearance>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>ClientID</dataPath>
 			<field>ClientID</field>
 			<role>
@@ -75,21 +60,6 @@
 			<role>
 				<dcscom:dimension>true</dcscom:dimension>
 			</role>
-		</field>
-		<field xsi:type="DataSetFieldField">
-			<dataPath>RemainingAmount</dataPath>
-			<field>RemainingAmount</field>
-			<appearance>
-				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:parameter>Формат</dcscor:parameter>
-					<dcscor:value xsi:type="v8:LocalStringType">
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>ЧЦ=15; ЧДЦ=2</v8:content>
-						</v8:item>
-					</dcscor:value>
-				</dcscor:item>
-			</appearance>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>DueDate</dataPath>
@@ -240,19 +210,6 @@
 			<field>Период</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>PaymentAmount</dataPath>
-			<field>PaymentAmount</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Payment amount</v8:content>
-				</v8:item>
-			</title>
-			<role>
-				<dcscom:dimension>true</dcscom:dimension>
-			</role>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>PaymentAmountUSD</dataPath>
 			<field>PaymentAmountUSD</field>
 			<title xsi:type="v8:LocalStringType">
@@ -268,6 +225,45 @@
 		<field xsi:type="DataSetFieldField">
 			<dataPath>PenaltyType</dataPath>
 			<field>PenaltyType</field>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>RemainingAmountUSD</dataPath>
+			<field>RemainingAmountUSD</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Remaining amount USD</v8:content>
+				</v8:item>
+			</title>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>PaymentAmount</dataPath>
+			<field>PaymentAmount</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Payment amount</v8:content>
+				</v8:item>
+			</title>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>RemainingAmount</dataPath>
+			<field>RemainingAmount</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Remaining amount</v8:content>
+				</v8:item>
+			</title>
 			<role>
 				<dcscom:dimension>true</dcscom:dimension>
 			</role>
@@ -304,12 +300,12 @@
 	Penalties.DueDate КАК DueDate,
 	ВЫБОР
 		КОГДА Penalties.PenaltyType = ЗНАЧЕНИЕ(Перечисление.PenaltyTypes.Penalty)
-			ТОГДА Penalties.RemainingAmount
+			ТОГДА Penalties.BaseAmount
 		ИНАЧЕ 0
 	КОНЕЦ КАК RemainingAmount,
 	ВЫБОР
 		КОГДА Penalties.PenaltyType = ЗНАЧЕНИЕ(Перечисление.PenaltyTypes.Penalty)
-			ТОГДА Penalties.RemainingAmountUSD
+			ТОГДА Penalties.BaseAmountUSD
 		ИНАЧЕ 0
 	КОНЕЦ КАК RemainingAmountUSD,
 	Penalties.OverdueDays КАК OverdueDays,
@@ -319,12 +315,12 @@
 	ВЫБОР
 		КОГДА Penalties.PenaltyType = ЗНАЧЕНИЕ(Перечисление.PenaltyTypes.Penalty)
 			ТОГДА 0
-		ИНАЧЕ Penalties.RemainingAmount
+		ИНАЧЕ Penalties.BaseAmount
 	КОНЕЦ КАК PaymentAmount,
 	ВЫБОР
 		КОГДА Penalties.PenaltyType = ЗНАЧЕНИЕ(Перечисление.PenaltyTypes.Penalty)
 			ТОГДА 0
-		ИНАЧЕ Penalties.RemainingAmountUSD
+		ИНАЧЕ Penalties.BaseAmountUSD
 	КОНЕЦ КАК PaymentAmountUSD
 ИЗ
 	РегистрСведений.Penalties КАК Penalties

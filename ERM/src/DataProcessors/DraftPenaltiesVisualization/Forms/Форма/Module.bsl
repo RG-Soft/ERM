@@ -12,8 +12,8 @@
 		|	Penalties.Amount КАК Amount,
 		|	Penalties.USDAmount КАК USDAmount,
 		|	Penalties.DueDate КАК DueDate,
-		|	Penalties.RemainingAmount КАК RemainingAmount,
-		|	Penalties.RemainingAmountUSD КАК RemainingAmountUSD,
+		|	Penalties.BaseAmount КАК BaseAmount,
+		|	Penalties.BaseAmountUSD КАК BaseAmountUSD,
 		|	Penalties.OverdueDays КАК OverdueDays,
 		|	Penalties.Percent КАК Percent,
 		|	ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент КАК ParentClient
@@ -54,7 +54,7 @@
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
 		|	КОЛИЧЕСТВО(РАЗЛИЧНЫЕ ВТ_ИсходныеДанные.Invoice) КАК КоличествоInvoice,
-		|	СУММА(ВТ_ИсходныеДанные.RemainingAmountUSD) КАК RemainingAmountUSD
+		|	СУММА(ВТ_ИсходныеДанные.BaseAmountUSD) КАК BaseAmountUSD
 		|ИЗ
 		|	ВТ_ИсходныеДанные КАК ВТ_ИсходныеДанные
 		|ГДЕ
@@ -65,7 +65,7 @@
 		|ВЫБРАТЬ
 		|	ВТ_ИсходныеДанные.Invoice КАК Invoice,
 		|	СУММА(ВТ_ИсходныеДанные.USDAmount) КАК USDAmount,
-		|	МАКСИМУМ(ВТ_ИсходныеДанные.RemainingAmountUSD) КАК RemainingAmountUSD
+		|	МАКСИМУМ(ВТ_ИсходныеДанные.BaseAmountUSD) КАК BaseAmountUSD
 		|ПОМЕСТИТЬ ВТ_BenefitГруппировка
 		|ИЗ
 		|	ВТ_ИсходныеДанные КАК ВТ_ИсходныеДанные
@@ -80,7 +80,7 @@
 		|ВЫБРАТЬ
 		|	КОЛИЧЕСТВО(РАЗЛИЧНЫЕ ВТ_BenefitГруппировка.Invoice) КАК КоличествоInvoice,
 		|	СУММА(ВТ_BenefitГруппировка.USDAmount) КАК USDAmount,
-		|	СУММА(ВТ_BenefitГруппировка.RemainingAmountUSD) КАК RemainingAmountUSD
+		|	СУММА(ВТ_BenefitГруппировка.BaseAmountUSD) КАК BaseAmountUSD
 		|ИЗ
 		|	ВТ_BenefitГруппировка КАК ВТ_BenefitГруппировка
 		|;
@@ -89,7 +89,7 @@
 		|ВЫБРАТЬ
 		|	ВТ_ИсходныеДанные.Invoice КАК Invoice,
 		|	СУММА(ВТ_ИсходныеДанные.USDAmount) КАК USDAmount,
-		|	МАКСИМУМ(ВТ_ИсходныеДанные.RemainingAmountUSD) КАК RemainingAmountUSD
+		|	МАКСИМУМ(ВТ_ИсходныеДанные.BaseAmountUSD) КАК BaseAmountUSD
 		|ПОМЕСТИТЬ ВТ_PenaltyГруппировка
 		|ИЗ
 		|	ВТ_ИсходныеДанные КАК ВТ_ИсходныеДанные
@@ -104,7 +104,7 @@
 		|ВЫБРАТЬ
 		|	КОЛИЧЕСТВО(РАЗЛИЧНЫЕ ВТ_PenaltyГруппировка.Invoice) КАК КоличествоInvoice,
 		|	СУММА(ВТ_PenaltyГруппировка.USDAmount) КАК USDAmount,
-		|	СУММА(ВТ_PenaltyГруппировка.RemainingAmountUSD) КАК RemainingAmountUSD
+		|	СУММА(ВТ_PenaltyГруппировка.BaseAmountUSD) КАК BaseAmountUSD
 		|ИЗ
 		|	ВТ_PenaltyГруппировка КАК ВТ_PenaltyГруппировка";
 	
@@ -143,14 +143,14 @@
 	
 	Пока Выборка_PaidOnTime.Следующий() Цикл
 		InvoicePaidOnTime = Выборка_PaidOnTime.КоличествоInvoice;
-		InvoicePaidOnTimeValue = Выборка_PaidOnTime.RemainingAmountUSD;
+		InvoicePaidOnTimeValue = Выборка_PaidOnTime.BaseAmountUSD;
 	КонецЦикла;
 	
 	Выборка_Benefit = РезультатЗапроса[4].Выбрать();
 	
 	Пока Выборка_Benefit.Следующий() Цикл
 		InvoicePaidEarly = Выборка_Benefit.КоличествоInvoice;
-		InvoicePaidEarlyValue = Выборка_Benefit.RemainingAmountUSD;
+		InvoicePaidEarlyValue = Выборка_Benefit.BaseAmountUSD;
 		ValueOfEarlyPayments = Выборка_Benefit.USDAmount;
 	КонецЦикла;
 	
@@ -158,7 +158,7 @@
 	
 	Пока Выборка_Penalty.Следующий() Цикл
 		InvoicesPaidLate = Выборка_Penalty.КоличествоInvoice;
-		InvoicesPaidLateValue = Выборка_Penalty.RemainingAmountUSD;
+		InvoicesPaidLateValue = Выборка_Penalty.BaseAmountUSD;
 		Penatlies = Выборка_Penalty.USDAmount;
 	КонецЦикла;
 	
