@@ -16,7 +16,8 @@
 		|	Penalties.BaseAmountUSD КАК BaseAmountUSD,
 		|	Penalties.OverdueDays КАК OverdueDays,
 		|	Penalties.Percent КАК Percent,
-		|	ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент КАК ParentClient
+		|	ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент КАК ParentClient,
+		|	Penalties.PaymentDate КАК PaymentDate
 		|ПОМЕСТИТЬ ВТ_ИсходныеДанные
 		|ИЗ
 		|	РегистрСведений.Penalties КАК Penalties
@@ -42,9 +43,7 @@
 		|			ИНАЧЕ BilledARОстатки.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс
 		|		КОНЕЦ) КАК BaseAmountОстаток
 		|ИЗ
-		|	РегистрНакопления.BilledAR.Остатки(
-		|			&ПериодКонец,
-		|			) КАК BilledARОстатки
+		|	РегистрНакопления.BilledAR.Остатки(&ПериодКонец, ) КАК BilledARОстатки
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних(&ПериодКонец, ) КАК ВнутренниеКурсыВалютСрезПоследних
 		|		ПО BilledARОстатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
 		|ГДЕ
@@ -89,7 +88,8 @@
 		|ВЫБРАТЬ
 		|	ВТ_ИсходныеДанные.Invoice КАК Invoice,
 		|	СУММА(ВТ_ИсходныеДанные.USDAmount) КАК USDAmount,
-		|	МАКСИМУМ(ВТ_ИсходныеДанные.BaseAmountUSD) КАК BaseAmountUSD
+		|	МАКСИМУМ(ВТ_ИсходныеДанные.BaseAmountUSD) КАК BaseAmountUSD,
+		|	МАКСИМУМ(ВТ_ИсходныеДанные.PaymentDate) КАК PaymentDate
 		|ПОМЕСТИТЬ ВТ_PenaltyГруппировка
 		|ИЗ
 		|	ВТ_ИсходныеДанные КАК ВТ_ИсходныеДанные
@@ -106,10 +106,29 @@
 		|	СУММА(ВТ_PenaltyГруппировка.USDAmount) КАК USDAmount,
 		|	СУММА(ВТ_PenaltyГруппировка.BaseAmountUSD) КАК BaseAmountUSD
 		|ИЗ
-		|	ВТ_PenaltyГруппировка КАК ВТ_PenaltyГруппировка";
+		|	ВТ_PenaltyГруппировка КАК ВТ_PenaltyГруппировка
+		|ГДЕ
+		|	ВТ_PenaltyГруппировка.PaymentDate = ДАТАВРЕМЯ(1, 1, 1)
+		|ИМЕЮЩИЕ
+		|	КОЛИЧЕСТВО(РАЗЛИЧНЫЕ ВТ_PenaltyГруппировка.Invoice) > 0
+		|;
+		|
+		|////////////////////////////////////////////////////////////////////////////////
+		|ВЫБРАТЬ
+		|	КОЛИЧЕСТВО(РАЗЛИЧНЫЕ ВТ_PenaltyГруппировка.Invoice) КАК КоличествоInvoice,
+		|	СУММА(ВТ_PenaltyГруппировка.USDAmount) КАК USDAmount,
+		|	СУММА(ВТ_PenaltyГруппировка.BaseAmountUSD) КАК BaseAmountUSD
+		|ИЗ
+		|	ВТ_PenaltyГруппировка КАК ВТ_PenaltyГруппировка
+		|ГДЕ
+		|	ВТ_PenaltyГруппировка.PaymentDate <> ДАТАВРЕМЯ(1, 1, 1)
+		|ИМЕЮЩИЕ
+		|	КОЛИЧЕСТВО(РАЗЛИЧНЫЕ ВТ_PenaltyГруппировка.Invoice) > 0";
 	
 	Запрос.УстановитьПараметр("ПериодКонец", Период.ДатаОкончания);
 	Запрос.УстановитьПараметр("ПериодНачало", Период.ДатаНачала);
+	
+	
 	
 	Если ParentClient.Количество() > 0 Тогда
 		Запрос.Текст = СтрЗаменить(Запрос.Текст,"&УсловиеParentКлиент", "И ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент В (&ParentClient)");
@@ -154,19 +173,30 @@
 		ValueOfEarlyPayments = Выборка_Benefit.USDAmount;
 	КонецЦикла;
 	
-	Выборка_Penalty = РезультатЗапроса[6].Выбрать();
+	Выборка_Penalty_Overdue = РезультатЗапроса[6].Выбрать();
+	Penatlies_Overdue = 0;
 	
-	Пока Выборка_Penalty.Следующий() Цикл
-		InvoicesPaidLate = Выборка_Penalty.КоличествоInvoice;
-		InvoicesPaidLateValue = Выборка_Penalty.BaseAmountUSD;
-		Penatlies = Выборка_Penalty.USDAmount;
+	Пока Выборка_Penalty_Overdue.Следующий() Цикл
+		OverdueInvoice = Выборка_Penalty_Overdue.КоличествоInvoice;
+		OverdueInvoiceValue = Выборка_Penalty_Overdue.BaseAmountUSD;
+		Penatlies_Overdue = Выборка_Penalty_Overdue.USDAmount;
 	КонецЦикла;
+	
+	Выборка_Penalty_PaidLate = РезультатЗапроса[7].Выбрать();
+	Penatlies_PaidLate = 0;
+	
+	Пока Выборка_Penalty_PaidLate.Следующий() Цикл
+		InvoicesPaidLate = Выборка_Penalty_PaidLate.КоличествоInvoice;
+		InvoicesPaidLateValue = Выборка_Penalty_PaidLate.BaseAmountUSD;
+		Penatlies_PaidLate = Выборка_Penalty_PaidLate.USDAmount;
+	КонецЦикла;
+	
+	Penatlies = Penatlies_Overdue + Penatlies_PaidLate;
 	
 	NetLossGain = ValueOfEarlyPayments - Penatlies;
 	
 	InvoiceBilled = InvoicePaidEarly + InvoicesPaidLate + InvoicePaidOnTime + OverdueInvoice;
 	AmountBilled = InvoicePaidEarlyValue + InvoicesPaidLateValue + InvoicePaidOnTimeValue + OverdueInvoiceValue;
-	
 	
 КонецПроцедуры
 
