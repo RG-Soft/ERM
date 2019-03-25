@@ -49,16 +49,19 @@
 		ОбластьПоказатели.Параметры.Penatlies =  СтрокаТЗ.USDAmountPenaltyOverdue + СтрокаТЗ.USDAmountPenaltyPaidLate;
 		ОбластьПоказатели.Параметры.NetLossGain = СтрокаТЗ.USDAmountBenefit - ОбластьПоказатели.Параметры.Penatlies;
 		
+		ОбластьПоказатели.Параметры.OutstandingBilledAR = СтрокаТЗ.BaseAmountОстатокOutstanding;
+		ОбластьПоказатели.Параметры.OutstandingInvoice = СтрокаТЗ.КоличествоInvoiceOutstanding;
+		
 		ОбластьПоказатели.Параметры.InvoicesBilled = ОбластьПоказатели.Параметры.InvoicePaidEarly 
 			+ ОбластьПоказатели.Параметры.InvoicesPaidLate
 			+ ОбластьПоказатели.Параметры.InvoicePaidOnTime
-			+ ОбластьПоказатели.Параметры.OverdueInvoice;
+			+ ОбластьПоказатели.Параметры.OverdueInvoice
+			+ ОбластьПоказатели.Параметры.OutstandingInvoice;
 		ОбластьПоказатели.Параметры.AmountBilled = ОбластьПоказатели.Параметры.InvoicePaidEarlyValue 
 			+ ОбластьПоказатели.Параметры.InvoicesPaidLateValue
 			+ ОбластьПоказатели.Параметры.InvoicePaidOnTimeValue
-			+ ОбластьПоказатели.Параметры.OverdueInvoiceValue;
-		ОбластьПоказатели.Параметры.OutstandingBilledAR = СтрокаТЗ.BaseAmountОстатокOutstanding;
-		ОбластьПоказатели.Параметры.OutstandingInvoice = СтрокаТЗ.КоличествоInvoiceOutstanding;
+			+ ОбластьПоказатели.Параметры.OverdueInvoiceValue
+			+ ОбластьПоказатели.Параметры.OutstandingBilledAR;
 		
 		Результат.Вывести(ОбластьПоказатели);
 	
