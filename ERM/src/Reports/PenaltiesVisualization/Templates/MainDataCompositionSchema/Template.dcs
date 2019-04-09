@@ -390,12 +390,64 @@
 			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>Контрагент</dataPath>
-			<field>Контрагент</field>
+			<dataPath>OverdueDaysBenefit</dataPath>
+			<field>OverdueDaysBenefit</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Overdue days benefit</v8:content>
+				</v8:item>
+			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>Валюта</dataPath>
-			<field>Валюта</field>
+			<dataPath>OverdueDaysКоличествоСтрок</dataPath>
+			<field>OverdueDaysКоличествоСтрок</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Overdue days количество строк</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>OverdueDaysPaidLate</dataPath>
+			<field>OverdueDaysPaidLate</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Overdue days paid late</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>OverdueDays</dataPath>
+			<field>OverdueDays</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Overdue days</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>OverdueDaysКоличествоСтрокBenefit</dataPath>
+			<field>OverdueDaysКоличествоСтрокBenefit</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Overdue days количество строк benefit</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>OverdueDaysКоличествоСтрокPaidLate</dataPath>
+			<field>OverdueDaysКоличествоСтрокPaidLate</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Overdue days количество строк paid late</v8:content>
+				</v8:item>
+			</title>
 		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
@@ -530,7 +582,9 @@
 	ВТ_ИсходныеДанные.SegmentHFM КАК SegmentHFM,
 	ВТ_ИсходныеДанные.SubSegment КАК SubSegment,
 	ВТ_ИсходныеДанные.CompanyHFM КАК CompanyHFM,
-	ВТ_ИсходныеДанные.AU КАК AU
+	ВТ_ИсходныеДанные.AU КАК AU,
+	СУММА(ВТ_ИсходныеДанные.OverdueDays) КАК OverdueDays,
+	КОЛИЧЕСТВО(ВТ_ИсходныеДанные.OverdueDays) КАК OverdueDaysКоличествоСтрок
 ПОМЕСТИТЬ ВТ_BenefitГруппировка
 ИЗ
 	ВТ_ИсходныеДанные КАК ВТ_ИсходныеДанные
@@ -559,7 +613,9 @@
 	ВТ_BenefitГруппировка.SegmentHFM КАК SegmentHFM,
 	ВТ_BenefitГруппировка.SubSegment КАК SubSegment,
 	ВТ_BenefitГруппировка.CompanyHFM КАК CompanyHFM,
-	ВТ_BenefitГруппировка.AU КАК AU
+	ВТ_BenefitГруппировка.AU КАК AU,
+	СУММА(ВТ_BenefitГруппировка.OverdueDays) КАК OverdueDays,
+	СУММА(ВТ_BenefitГруппировка.OverdueDaysКоличествоСтрок) КАК OverdueDaysКоличествоСтрок
 ПОМЕСТИТЬ ВТ_Benefit
 ИЗ
 	ВТ_BenefitГруппировка КАК ВТ_BenefitГруппировка
@@ -586,7 +642,9 @@
 	ВТ_ИсходныеДанные.SegmentHFM КАК SegmentHFM,
 	ВТ_ИсходныеДанные.SubSegment КАК SubSegment,
 	ВТ_ИсходныеДанные.CompanyHFM КАК CompanyHFM,
-	ВТ_ИсходныеДанные.AU КАК AU
+	ВТ_ИсходныеДанные.AU КАК AU,
+	СУММА(ВТ_ИсходныеДанные.OverdueDays) КАК OverdueDays,
+	КОЛИЧЕСТВО(ВТ_ИсходныеДанные.OverdueDays) КАК OverdueDaysКоличествоСтрок
 ПОМЕСТИТЬ ВТ_PenaltyГруппировка
 ИЗ
 	ВТ_ИсходныеДанные КАК ВТ_ИсходныеДанные
@@ -615,7 +673,9 @@
 	ВТ_PenaltyГруппировка.SegmentHFM КАК SegmentHFM,
 	ВТ_PenaltyГруппировка.SubSegment КАК SubSegment,
 	ВТ_PenaltyГруппировка.CompanyHFM КАК CompanyHFM,
-	ВТ_PenaltyГруппировка.AU КАК AU
+	ВТ_PenaltyГруппировка.AU КАК AU,
+	СУММА(ВТ_PenaltyГруппировка.OverdueDays) КАК OverdueDays,
+	СУММА(ВТ_PenaltyГруппировка.OverdueDaysКоличествоСтрок) КАК OverdueDaysКоличествоСтрок
 ПОМЕСТИТЬ ВТ_PenaltyOverdue
 ИЗ
 	ВТ_PenaltyГруппировка КАК ВТ_PenaltyГруппировка
@@ -646,7 +706,9 @@
 	ВТ_PenaltyГруппировка.SegmentHFM КАК SegmentHFM,
 	ВТ_PenaltyГруппировка.SubSegment КАК SubSegment,
 	ВТ_PenaltyГруппировка.CompanyHFM КАК CompanyHFM,
-	ВТ_PenaltyГруппировка.AU КАК AU
+	ВТ_PenaltyГруппировка.AU КАК AU,
+	СУММА(ВТ_PenaltyГруппировка.OverdueDays) КАК OverdueDays,
+	СУММА(ВТ_PenaltyГруппировка.OverdueDaysКоличествоСтрок) КАК OverdueDaysКоличествоСтрок
 ПОМЕСТИТЬ ВТ_PaidLate
 ИЗ
 	ВТ_PenaltyГруппировка КАК ВТ_PenaltyГруппировка
@@ -688,7 +750,13 @@
 	ВложенныйЗапрос.SegmentHFM КАК SegmentHFM,
 	ВложенныйЗапрос.SubSegment КАК SubSegment,
 	ВложенныйЗапрос.CompanyHFM КАК CompanyHFM,
-	ВложенныйЗапрос.AU КАК AU
+	ВложенныйЗапрос.AU КАК AU,
+	СУММА(ВложенныйЗапрос.OverdueDays) КАК OverdueDays,
+	СУММА(ВложенныйЗапрос.OverdueDaysBenefit) КАК OverdueDaysBenefit,
+	СУММА(ВложенныйЗапрос.OverdueDaysPaidLate) КАК OverdueDaysPaidLate,
+	СУММА(ВложенныйЗапрос.OverdueDaysКоличествоСтрок) КАК OverdueDaysКоличествоСтрок,
+	СУММА(ВложенныйЗапрос.OverdueDaysКоличествоСтрокBenefit) КАК OverdueDaysКоличествоСтрокBenefit,
+	СУММА(ВложенныйЗапрос.OverdueDaysКоличествоСтрокPaidLate) КАК OverdueDaysКоличествоСтрокPaidLate
 ИЗ
 	(ВЫБРАТЬ
 		0 КАК КоличествоInvoiceBenefit,
@@ -711,7 +779,13 @@
 		ВТ_InvoiceOutstanding.SegmentHFM КАК SegmentHFM,
 		ВТ_InvoiceOutstanding.SubSegment КАК SubSegment,
 		ВТ_InvoiceOutstanding.CompanyHFM КАК CompanyHFM,
-		ВТ_InvoiceOutstanding.AU КАК AU
+		ВТ_InvoiceOutstanding.AU КАК AU,
+		0 КАК OverdueDays,
+		0 КАК OverdueDaysBenefit,
+		0 КАК OverdueDaysPaidLate,
+		0 КАК OverdueDaysКоличествоСтрок,
+		0 КАК OverdueDaysКоличествоСтрокBenefit,
+		0 КАК OverdueDaysКоличествоСтрокPaidLate
 	ИЗ
 		ВТ_InvoiceOutstanding КАК ВТ_InvoiceOutstanding
 	
@@ -738,7 +812,13 @@
 		ВТ_PenaltyOverdue.SegmentHFM,
 		ВТ_PenaltyOverdue.SubSegment,
 		ВТ_PenaltyOverdue.CompanyHFM,
-		ВТ_PenaltyOverdue.AU
+		ВТ_PenaltyOverdue.AU,
+		ВТ_PenaltyOverdue.OverdueDays,
+		0,
+		0,
+		ВТ_PenaltyOverdue.OverdueDaysКоличествоСтрок,
+		0,
+		0
 	ИЗ
 		ВТ_PenaltyOverdue КАК ВТ_PenaltyOverdue
 	
@@ -765,7 +845,13 @@
 		ВТ_PaidLate.SegmentHFM,
 		ВТ_PaidLate.SubSegment,
 		ВТ_PaidLate.CompanyHFM,
-		ВТ_PaidLate.AU
+		ВТ_PaidLate.AU,
+		0,
+		0,
+		ВТ_PaidLate.OverdueDays,
+		0,
+		0,
+		ВТ_PaidLate.OverdueDaysКоличествоСтрок
 	ИЗ
 		ВТ_PaidLate КАК ВТ_PaidLate
 	
@@ -792,7 +878,13 @@
 		ВТ_PaidOnTime.SegmentHFM,
 		ВТ_PaidOnTime.SubSegment,
 		ВТ_PaidOnTime.CompanyHFM,
-		ВТ_PaidOnTime.AU
+		ВТ_PaidOnTime.AU,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0
 	ИЗ
 		ВТ_PaidOnTime КАК ВТ_PaidOnTime
 	
@@ -819,7 +911,13 @@
 		ВТ_Benefit.SegmentHFM,
 		ВТ_Benefit.SubSegment,
 		ВТ_Benefit.CompanyHFM,
-		ВТ_Benefit.AU
+		ВТ_Benefit.AU,
+		0,
+		ВТ_Benefit.OverdueDays,
+		0,
+		0,
+		ВТ_Benefit.OverdueDaysКоличествоСтрок,
+		0
 	ИЗ
 		ВТ_Benefit КАК ВТ_Benefit) КАК ВложенныйЗапрос
 
@@ -982,6 +1080,24 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>КоличествоInvoicePenaltyPaidLate</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>OverdueDays</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>OverdueDaysBenefit</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>OverdueDaysPaidLate</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>OverdueDaysКоличествоСтрок</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>OverdueDaysКоличествоСтрокBenefit</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>OverdueDaysКоличествоСтрокPaidLate</dcsset:field>
 				</dcsset:item>
 			</dcsset:selection>
 			<dcsset:filter>
