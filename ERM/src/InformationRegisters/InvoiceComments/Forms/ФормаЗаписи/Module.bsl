@@ -16,6 +16,11 @@
 		Запрос.Текст = 
 			"ВЫБРАТЬ
 			|	InvoiceCommentsСрезПоследних.Problem.Status КАК Status,
+			|	InvoiceCommentsСрезПоследних.Problem.StatusOfDispute КАК StatusOfDispute,
+			|	InvoiceCommentsСрезПоследних.Problem.DisputeDistributedDate КАК DisputeDistributedDate,
+			|	InvoiceCommentsСрезПоследних.Problem.DateEntered КАК DateEntered, 
+			|	InvoiceCommentsСрезПоследних.Problem.DateIdentified КАК DateIdentified, 
+			|	InvoiceCommentsСрезПоследних.Problem.DisputCollectableDate КАК DisputCollectableDate, 
 			|	InvoiceCommentsСрезПоследних.Problem.ConfirmedBy КАК ConfirmedBy,
 			|	InvoiceCommentsСрезПоследних.Problem.ForecastDate КАК ForecastDate,
 			|	InvoiceCommentsСрезПоследних.Problem.CustInputDate КАК CustInputDate,
@@ -113,7 +118,9 @@
 &НаСервере
 Процедура ПередЗаписьюНаСервере(Отказ, ТекущийОбъект, ПараметрыЗаписи)
 	
-	СтруктураРеквизитовПроблемы = Новый Структура("Дата, Invoice, User, Status, ConfirmedBy, CustomerRepresentative, CustomerInputDetails, Comment, CustInputDate, ForecastDate, RemedialWorkPlan, RWDTargetDate, SLBAssignedTo");
+	СтруктураРеквизитовПроблемы = Новый Структура("Дата, Invoice, User, Status, StatusOfDispute, DisputeDistributedDate, 
+		|DateEntered, DateIdentified, DisputCollectableDate, ConfirmedBy, CustomerRepresentative, 
+		|CustomerInputDetails, Comment, CustInputDate, Potential, ForecastDate, RemedialWorkPlan, RWDTargetDate, SLBAssignedTo");
 	ЗаполнитьЗначенияСвойств(СтруктураРеквизитовПроблемы, ЭтотОбъект);
 	СтруктураРеквизитовПроблемы.Дата = ТекущийОбъект.Период;
 	СтруктураРеквизитовПроблемы.Invoice = ТекущийОбъект.Invoice;

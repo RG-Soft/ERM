@@ -73,7 +73,9 @@
 	
 	Для каждого ЭлементСписка Из СписокИнвойсов Цикл
 		
-		СтруктураРеквизитовПроблемы = Новый Структура("Дата, Invoice, User, Status, ConfirmedBy, CustomerRepresentative, CustomerInputDetails, Comment, CustInputDate, ForecastDate, RemedialWorkPlan, RWDTargetDate, SLBAssignedTo");
+		СтруктураРеквизитовПроблемы = Новый Структура("Дата, Invoice, User, Status, StatusOfDispute, DisputeDistributedDate, 
+		|DateEntered, DateIdentified, DisputCollectableDate, ConfirmedBy, CustomerRepresentative, CustomerInputDetails, 
+		|Comment, CustInputDate, Potential, ForecastDate, RemedialWorkPlan, RWDTargetDate, SLBAssignedTo");
 		ЗаполнитьЗначенияСвойств(СтруктураРеквизитовПроблемы, ЭтотОбъект);
 		СтруктураРеквизитовПроблемы.Дата = Период;
 		СтруктураРеквизитовПроблемы.Invoice = ЭлементСписка.Значение;
