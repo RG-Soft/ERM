@@ -175,32 +175,34 @@
 		|	ДоговорыКонтрагентов.ПометкаУдаления КАК DeletionMark,
 		|	ДоговорыКонтрагентов.Код КАК Code,
 		|	ДоговорыКонтрагентов.Наименование КАК Description,
-		|	ДоговорыКонтрагентов.Владелец,
+		|	ДоговорыКонтрагентов.Владелец КАК Владелец,
 		|	ДоговорыКонтрагентов.ВалютаВзаиморасчетов КАК Валюта,
 		|	ДоговорыКонтрагентов.Организация.БазовыйЭлемент КАК Организация,
 		|	ДоговорыКонтрагентов.Дата КАК Date,
 		|	ДоговорыКонтрагентов.Номер КАК Number,
-		|	ДоговорыКонтрагентов.PTType,
-		|	ДоговорыКонтрагентов.PTDaysFrom,
+		|	ДоговорыКонтрагентов.PTType КАК PTType,
+		|	ДоговорыКонтрагентов.PTDaysFrom КАК PTDaysFrom,
 		|	ДоговорыКонтрагентов.СрокОплаты КАК PTDaysTo,
-		|	ДоговорыКонтрагентов.PIC_ID,
-		|	ДоговорыКонтрагентов.ChecklistRequired,
+		|	ДоговорыКонтрагентов.PIC_ID КАК PIC_ID,
+		|	ДоговорыКонтрагентов.ChecklistRequired КАК ChecklistRequired,
 		|	ПРЕДСТАВЛЕНИЕ(ДоговорыКонтрагентов.Trigger) КАК TriggerDescription,
-		|	ДоговорыКонтрагентов.ContractID,
-		|	ДоговорыКонтрагентов.SourceID,
-		|	ДоговорыКонтрагентов.crmContractID,
-		|	ДоговорыКонтрагентов.crmCreatedBy,
-		|	ДоговорыКонтрагентов.crmCreatedDate,
-		|	ДоговорыКонтрагентов.crmEffectiveDate,
-		|	ДоговорыКонтрагентов.crmExpiryDate,
-		|	ДоговорыКонтрагентов.crmContractCurrency,
-		|	ДоговорыКонтрагентов.crmContractValueUSD,
-		|	ДоговорыКонтрагентов.crmContractName,
-		|	ДоговорыКонтрагентов.crmDFNName,
-		|	ДоговорыКонтрагентов.DocumentFlowPeriodFrom,
-		|	ДоговорыКонтрагентов.DocumentFlowPeriodTo,
-		|	ДоговорыКонтрагентов.Amendment,
-		|	ДоговорыКонтрагентов.AmendmentName
+		|	ДоговорыКонтрагентов.ContractID КАК ContractID,
+		|	ДоговорыКонтрагентов.SourceID КАК SourceID,
+		|	ДоговорыКонтрагентов.crmContractID КАК crmContractID,
+		|	ДоговорыКонтрагентов.crmCreatedBy КАК crmCreatedBy,
+		|	ДоговорыКонтрагентов.crmCreatedDate КАК crmCreatedDate,
+		|	ДоговорыКонтрагентов.crmEffectiveDate КАК crmEffectiveDate,
+		|	ДоговорыКонтрагентов.crmExpiryDate КАК crmExpiryDate,
+		|	ДоговорыКонтрагентов.crmContractCurrency КАК crmContractCurrency,
+		|	ДоговорыКонтрагентов.crmContractValueUSD КАК crmContractValueUSD,
+		|	ДоговорыКонтрагентов.crmContractName КАК crmContractName,
+		|	ДоговорыКонтрагентов.crmDFNName КАК crmDFNName,
+		|	ДоговорыКонтрагентов.DocumentFlowPeriodFrom КАК DocumentFlowPeriodFrom,
+		|	ДоговорыКонтрагентов.DocumentFlowPeriodTo КАК DocumentFlowPeriodTo,
+		|	ДоговорыКонтрагентов.Amendment КАК Amendment,
+		|	ДоговорыКонтрагентов.AmendmentName КАК AmendmentName,
+		|	ДоговорыКонтрагентов.СпособРасчетаШтрафаПоЗадолженности КАК СпособРасчетаШтрафаПоЗадолженности,
+		|	ДоговорыКонтрагентов.ПроцентЗадолженности КАК PenaltyPercent
 		|ИЗ
 		|	Справочник.ДоговорыКонтрагентов КАК ДоговорыКонтрагентов
 		|ГДЕ
@@ -228,6 +230,11 @@
 		Объект.CompanyID = Строка(ВыборкаДетальныеЗаписи.Организация.УникальныйИдентификатор());
 	Иначе
 		Объект.CompanyID = NULL;
+	КонецЕсли;
+	Если ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.СпособРасчетаШтрафаПоЗадолженности) Тогда
+		Объект.MethodOfCalculatingPenaltyID = Строка(ВыборкаДетальныеЗаписи.СпособРасчетаШтрафаПоЗадолженности.УникальныйИдентификатор());
+	Иначе
+		Объект.MethodOfCalculatingPenaltyID = NULL;
 	КонецЕсли;
 	
 КонецПроцедуры
