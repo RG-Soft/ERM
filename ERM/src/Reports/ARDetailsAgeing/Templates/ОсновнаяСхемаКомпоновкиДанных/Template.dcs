@@ -420,7 +420,7 @@
 
 ВЫБРАТЬ
 	BilledARОстатки.Client,
-	BilledARОстатки.ClientID КАК ClientID,
+	BilledARОстатки.ClientID,
 	BilledARОстатки.Company,
 	BilledARОстатки.Source,
 	BilledARОстатки.AU.ПодразделениеОрганизации,
@@ -464,7 +464,7 @@
 
 ВЫБРАТЬ
 	UnallocatedCashОстатки.Client,
-	UnallocatedCashОстатки.ClientID КАК ClientID,
+	UnallocatedCashОстатки.ClientID,
 	UnallocatedCashОстатки.Company,
 	UnallocatedCashОстатки.Source,
 	UnallocatedCashОстатки.AU.ПодразделениеОрганизации,
@@ -505,7 +505,7 @@
 
 ВЫБРАТЬ
 	ManualTransactionsОстатки.Client,
-	ManualTransactionsОстатки.ClientID КАК ClientID,
+	ManualTransactionsОстатки.ClientID,
 	ManualTransactionsОстатки.Company,
 	ManualTransactionsОстатки.Source,
 	ManualTransactionsОстатки.AU.ПодразделениеОрганизации,
@@ -537,7 +537,7 @@
 
 ВЫБРАТЬ
 	UnallocatedMemoОстатки.Client,
-	UnallocatedMemoОстатки.ClientID КАК ClientID,
+	UnallocatedMemoОстатки.ClientID,
 	UnallocatedMemoОстатки.Company,
 	UnallocatedMemoОстатки.Source,
 	UnallocatedMemoОстатки.AU.ПодразделениеОрганизации,
@@ -728,7 +728,7 @@
 				ИЛИ ВТ_ДатыДляCashBatchLawson.LegalEntity = ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка))
 			И (ВТ_Остатки.Document = ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка))
 ГДЕ
-	ПОДСТРОКА(ВТ_Остатки.Account.Код, 1, 6) &lt;&gt; "209000"
+	ПОДСТРОКА(ВТ_Остатки.Account.БазовыйЭлемент.Код, 1, 3) = "120"
 
 СГРУППИРОВАТЬ ПО
 	ВТ_Остатки.LegalEntity,
@@ -830,8 +830,7 @@
 	NULL,
 	NULL
 ИЗ
-	РегистрНакопления.HFMAdjAR.Остатки({(&amp;ПериодОстатков)}, ) КАК HFMAdjARОстатки
-</query>
+	РегистрНакопления.HFMAdjAR.Остатки({(&amp;ПериодОстатков)}, ) КАК HFMAdjARОстатки</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>Ageing_1_30</dataPath>
