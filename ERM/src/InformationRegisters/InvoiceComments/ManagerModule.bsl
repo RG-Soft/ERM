@@ -45,4 +45,35 @@
 	
 КонецФункции
 
+Функция ПолучитьПоследниеКомментарииПоИнвойсам(МассивИнвойсов) Экспорт
+	
+	Запрос = Новый Запрос;
+	Запрос.Текст =
+		"ВЫБРАТЬ
+		|	InvoiceCommentsСрезПоследних.Invoice,
+		|	InvoiceCommentsСрезПоследних.Problem.Status КАК Status,
+		|	InvoiceCommentsСрезПоследних.Problem.StatusOfDispute КАК StatusOfDispute,
+		|	InvoiceCommentsСрезПоследних.Problem.DisputeDistributedDate КАК DisputeDistributedDate,
+		|	InvoiceCommentsСрезПоследних.Problem.DisputCollectableDate КАК DisputCollectableDate,
+		|	InvoiceCommentsСрезПоследних.Problem.DateEntered КАК DateEntered,
+		|	InvoiceCommentsСрезПоследних.Problem.DateIdentified КАК DateIdentified,
+		|	InvoiceCommentsСрезПоследних.Problem.ConfirmedBy КАК ConfirmedBy,
+		|	InvoiceCommentsСрезПоследних.Problem.ForecastDate КАК ForecastDate,
+		|	InvoiceCommentsСрезПоследних.Problem.CustInputDate КАК CustInputDate,
+		|	InvoiceCommentsСрезПоследних.Problem.CustomerRepresentative КАК CustomerRepresentative,
+		|	InvoiceCommentsСрезПоследних.Problem.CustomerInputDetails КАК CustomerInputDetails,
+		|	InvoiceCommentsСрезПоследних.Problem.RemedialWorkPlan КАК RemedialWorkPlan,
+		|	InvoiceCommentsСрезПоследних.Problem.RWDTargetDate КАК RWDTargetDate,
+		|	InvoiceCommentsСрезПоследних.Problem.Comment КАК Comment
+		|ИЗ
+		|	РегистрСведений.InvoiceComments.СрезПоследних(, Invoice В (&МассивИнвойсов)) КАК InvoiceCommentsСрезПоследних";
+	
+	Запрос.УстановитьПараметр("МассивИнвойсов", МассивИнвойсов);
+	
+	РезультатЗапроса = Запрос.Выполнить();
+	
+	Возврат РезультатЗапроса;
+	
+КонецФункции
+
 #КонецЕсли

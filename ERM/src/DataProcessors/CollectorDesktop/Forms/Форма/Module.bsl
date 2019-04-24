@@ -592,13 +592,14 @@
 			СтрокаТЧ.Value = Строка(ДокументEMail.Ссылка.УникальныйИдентификатор());
 		КонецЕсли;
 		// присвоим Status of Dispute для инвойсов
-		Для каждого Инвойс Из ДополнительныеПараметры.МассивИнвойсовДляЭскалации Цикл
-			ИнвойсОбъект = Инвойс.ПолучитьОбъект();
-			ИнвойсОбъект.StatusOfDispute = Перечисления.StatusesOfDispute.Identified;
-			ИнвойсОбъект.DisputeDistributedDate = ТекущаяДата();
-			ИнвойсОбъект.ОбменДанными.Загрузка = Истина;
-			ИнвойсОбъект.Записать();
-		КонецЦикла;
+		//Перенос статуса из инвойса в коммент
+		//Для каждого Инвойс Из ДополнительныеПараметры.МассивИнвойсовДляЭскалации Цикл
+		//	ИнвойсОбъект = Инвойс.ПолучитьОбъект();
+		//	ИнвойсОбъект.StatusOfDispute = Перечисления.StatusesOfDispute.Identified;
+		//	ИнвойсОбъект.DisputeDistributedDate = ТекущаяДата();
+		//	ИнвойсОбъект.ОбменДанными.Загрузка = Истина;
+		//	ИнвойсОбъект.Записать();
+		//КонецЦикла;
 		РегистрыСведений.EmailsObjects.ЗарегистрироватьПредметыПисьма(ДокументEMail.Ссылка,
 			СозданныеКомментарии, Перечисления.ВариантОтправленияСообщения.Escalation);
 		РегистрыСведений.EmailsObjects.ЗарегистрироватьПредметыПисьма(ДокументEMail.Ссылка,
@@ -650,25 +651,12 @@
 	НЗ = РегистрыСведений.InvoiceComments.СоздатьНаборЗаписей();
 	НЗ_ОчередьУведомлений = РегистрыСведений.ОчередьУведомлений.СоздатьНаборЗаписей();
 	
-	Запрос = Новый Запрос;
-	Запрос.Текст = 
-		"ВЫБРАТЬ
-		|	InvoiceCommentsСрезПоследних.Invoice,
-		|	InvoiceCommentsСрезПоследних.Problem.Status КАК Status,
-		|	InvoiceCommentsСрезПоследних.Problem.ConfirmedBy КАК ConfirmedBy,
-		|	InvoiceCommentsСрезПоследних.Problem.ForecastDate КАК ForecastDate,
-		|	InvoiceCommentsСрезПоследних.Problem.CustInputDate КАК CustInputDate,
-		|	InvoiceCommentsСрезПоследних.Problem.CustomerRepresentative КАК CustomerRepresentative,
-		|	InvoiceCommentsСрезПоследних.Problem.CustomerInputDetails КАК CustomerInputDetails,
-		|	InvoiceCommentsСрезПоследних.Problem.RemedialWorkPlan КАК RemedialWorkPlan,
-		|	InvoiceCommentsСрезПоследних.Problem.RWDTargetDate КАК RWDTargetDate,
-		|	InvoiceCommentsСрезПоследних.Problem.Comment КАК Comment
-		|ИЗ
-		|	РегистрСведений.InvoiceComments.СрезПоследних(, Invoice В (&МассивИнвойсов)) КАК InvoiceCommentsСрезПоследних";
+	//Запрос = Новый Запрос;
+	//Запрос.Текст = ПолучитьТекстЗапросаПоследнихКомментовДляМассиваИнвойсов();
+	//
+	//Запрос.УстановитьПараметр("МассивИнвойсов", ДополнительныеПараметры.МассивИнвойсовДляЭскалации);
 	
-	Запрос.УстановитьПараметр("МассивИнвойсов", ДополнительныеПараметры.МассивИнвойсовДляЭскалации);
-	
-	РезультатЗапроса = Запрос.Выполнить();
+	РезультатЗапроса = РегистрыСведений.InvoiceComments.ПолучитьПоследниеКомментарииПоИнвойсам(ДополнительныеПараметры.МассивИнвойсовДляЭскалации);
 	
 	ВыборкаДетальныеЗаписи = РезультатЗапроса.Выбрать();
 	
@@ -682,12 +670,16 @@
 		ЗаписьРегистра = НЗ.Добавить();
 		ЗаписьРегистра.Период = ТекДата;
 		
-		СтруктураРеквизитовПроблемы = Новый Структура("Дата, Invoice, User, Status, ConfirmedBy, CustomerRepresentative,
-			|CustomerInputDetails, Comment, CustInputDate, ForecastDate, RemedialWorkPlan, RWDTargetDate, SLBAssignedTo");
+		//СтруктураРеквизитовПроблемы = Новый Структура("Дата, Invoice, User, Status, StatusOfDispute, DisputeDistributedDate, DisputCollectableDate,
+		//	|DateEntered, DateIdentified, ConfirmedBy, CustomerRepresentative, CustomerInputDetails,
+		//	|Comment, CustInputDate, ForecastDate, RemedialWorkPlan, RWDTargetDate, SLBAssignedTo");
+		СтруктураРеквизитовПроблемы = Документы.InvoiceProblem.ПолучитьСтруктуруРеквизитовПроблемы();
 		ЗаполнитьЗначенияСвойств(СтруктураРеквизитовПроблемы, ВыборкаДетальныеЗаписи);
 		СтруктураРеквизитовПроблемы.Дата = ТекДата;
 		СтруктураРеквизитовПроблемы.Invoice = ВыборкаДетальныеЗаписи.Invoice;
 		СтруктураРеквизитовПроблемы.Status = ДополнительныеПараметры.Dispute;
+		СтруктураРеквизитовПроблемы.StatusOfDispute = Перечисления.StatusesOfDispute.Identified;
+		СтруктураРеквизитовПроблемы.DisputeDistributedDate = Период;
 		СтруктураРеквизитовПроблемы.User = ТекущийПользователь;
 		СтруктураРеквизитовПроблемы.Comment = "";
 		СтруктураРеквизитовПроблемы.SLBAssignedTo = SLBAssignedTo;
@@ -716,11 +708,13 @@
 			ЗаписьРегистра = НЗ.Добавить();
 			ЗаписьРегистра.Период = Период;
 			
-			СтруктураРеквизитовПроблемы = Новый Структура("Дата, Invoice, User, Status, ConfirmedBy, CustomerRepresentative,
-				|CustomerInputDetails, Comment, CustInputDate, ForecastDate, RemedialWorkPlan, RWDTargetDate, SLBAssignedTo");
+			СтруктураРеквизитовПроблемы = Новый Структура("Дата, Invoice, User, Status, ConfirmedBy, CustomerRepresentative, StatusOfDispute, 
+				|DisputeDistributedDate, CustomerInputDetails, Comment, CustInputDate, ForecastDate, RemedialWorkPlan, RWDTargetDate, SLBAssignedTo");
 			СтруктураРеквизитовПроблемы.Дата = Период;
 			СтруктураРеквизитовПроблемы.Invoice = ТекИнвойс;
 			СтруктураРеквизитовПроблемы.Status = ДополнительныеПараметры.Dispute;
+			СтруктураРеквизитовПроблемы.StatusOfDispute = Перечисления.StatusesOfDispute.Identified;
+			СтруктураРеквизитовПроблемы.DisputeDistributedDate = Период;
 			СтруктураРеквизитовПроблемы.User = ТекущийПользователь;
 			СтруктураРеквизитовПроблемы.SLBAssignedTo = SLBAssignedTo;
 			СтруктураРеквизитовПроблемы.CustomerInputDetails = Формат(ТекДата, "ДФ=M.d.yyyy") + " - " + ПолучателиСтрокой;
