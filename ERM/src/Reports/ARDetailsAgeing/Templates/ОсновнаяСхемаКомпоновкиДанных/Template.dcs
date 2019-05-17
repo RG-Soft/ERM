@@ -728,7 +728,7 @@
 				ИЛИ ВТ_ДатыДляCashBatchLawson.LegalEntity = ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка))
 			И (ВТ_Остатки.Document = ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка))
 ГДЕ
-	ПОДСТРОКА(ВТ_Остатки.Account.БазовыйЭлемент.Код, 1, 3) = "120"
+	ВТ_Остатки.Account.БазовыйЭлемент В ИЕРАРХИИ(&amp;СчетAR)
 
 СГРУППИРОВАТЬ ПО
 	ВТ_Остатки.LegalEntity,
@@ -830,7 +830,8 @@
 	NULL,
 	NULL
 ИЗ
-	РегистрНакопления.HFMAdjAR.Остатки({(&amp;ПериодОстатков)}, ) КАК HFMAdjARОстатки</query>
+	РегистрНакопления.HFMAdjAR.Остатки({(&amp;ПериодОстатков)}, ) КАК HFMAdjARОстатки
+</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>Ageing_1_30</dataPath>
@@ -1099,6 +1100,24 @@
 		<useRestriction>true</useRestriction>
 		<expression>ДАТАВРЕМЯ(1980,01,01)</expression>
 		<valueListAllowed>false</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
+	</parameter>
+	<parameter>
+		<name>СчетAR</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Счет AR</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type xmlns:d3p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d3p1:ChartOfAccountsRef.HFM_GL_Accounts</v8:Type>
+		</valueType>
+		<useRestriction>true</useRestriction>
+		<expression>rgsНастройкаКонфигурацииПовтИсп.ПолучитьЗначениеНастройки("СчетARВерхнегоУровня")</expression>
+		<valueListAllowed>true</valueListAllowed>
 		<availableAsField>true</availableAsField>
 		<denyIncompleteValues>false</denyIncompleteValues>
 		<use>Auto</use>

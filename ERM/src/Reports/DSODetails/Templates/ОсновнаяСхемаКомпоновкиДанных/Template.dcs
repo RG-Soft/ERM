@@ -688,7 +688,7 @@
 		РегистрНакопления.UnbilledAR.Остатки(
 				{(&amp;ПериодОстатков)},
 				Source В (&amp;Sources)
-					И ПОДСТРОКА(Account.Код, 1, 6) &lt;&gt; "209000") КАК UnbilledARОстатки
+					И Account.БазовыйЭлемент В ИЕРАРХИИ(&amp;СчетAR)) КАК UnbilledARОстатки
 	
 	ОБЪЕДИНИТЬ ВСЕ
 	
@@ -710,7 +710,7 @@
 		РегистрНакопления.BilledAR.Остатки(
 				{(&amp;ПериодОстатков)},
 				Source В (&amp;Sources)
-					И ПОДСТРОКА(Account.Код, 1, 6) &lt;&gt; "209000") КАК BilledARОстатки
+					И Account.БазовыйЭлемент В ИЕРАРХИИ(&amp;СчетAR)) КАК BilledARОстатки
 	
 	ОБЪЕДИНИТЬ ВСЕ
 	
@@ -732,7 +732,7 @@
 		РегистрНакопления.UnallocatedCash.Остатки(
 				{(&amp;ПериодОстатков)},
 				Source В (&amp;Sources)
-					И ПОДСТРОКА(Account.Код, 1, 6) &lt;&gt; "209000") КАК UnallocatedCashОстатки
+					И Account.БазовыйЭлемент В ИЕРАРХИИ(&amp;СчетAR)) КАК UnallocatedCashОстатки
 	ГДЕ
 		ВЫБОР
 				КОГДА НЕ UnallocatedCashОстатки.CashBatch.Ссылка ЕСТЬ NULL
@@ -763,7 +763,7 @@
 		РегистрНакопления.ManualTransactions.Остатки(
 				{(&amp;ПериодОстатков)},
 				Source В (&amp;Sources)
-					И ПОДСТРОКА(Account.Код, 1, 6) &lt;&gt; "209000") КАК ManualTransactionsОстатки
+					И Account.БазовыйЭлемент В ИЕРАРХИИ(&amp;СчетAR)) КАК ManualTransactionsОстатки
 	
 	ОБЪЕДИНИТЬ ВСЕ
 	
@@ -785,7 +785,7 @@
 		РегистрНакопления.UnallocatedMemo.Остатки(
 				{(&amp;ПериодОстатков)},
 				Source В (&amp;Sources)
-					И ПОДСТРОКА(Account.Код, 1, 6) &lt;&gt; "209000") КАК UnallocatedMemoОстатки) КАК ВложенныйЗапросОстатки
+					И Account.БазовыйЭлемент В ИЕРАРХИИ(&amp;СчетAR)) КАК UnallocatedMemoОстатки) КАК ВложенныйЗапросОстатки
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ПериодОстатков)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
 		ПО ВложенныйЗапросОстатки.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
 
@@ -2359,7 +2359,8 @@
 	ВложенныйЗапрос.AU,
 	ВложенныйЗапрос.LegalEntity,
 	ЕСТЬNULL(ИерархияКонтрагентовСрезПоследних.ГоловнойКонтрагент, ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка)),
-	ИерархияКонтрагентовСрезПоследних.SalesAccount</query>
+	ИерархияКонтрагентовСрезПоследних.SalesAccount
+</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>BU</dataPath>
@@ -3159,6 +3160,24 @@
 		<value xsi:type="dcscor:DesignTimeValue">Перечисление.BillingCalculationMethods.TransactionClassification</value>
 		<value xsi:type="dcscor:DesignTimeValue">Перечисление.BillingCalculationMethods.ARandCollection</value>
 		<useRestriction>true</useRestriction>
+		<valueListAllowed>true</valueListAllowed>
+		<availableAsField>true</availableAsField>
+		<denyIncompleteValues>false</denyIncompleteValues>
+		<use>Auto</use>
+	</parameter>
+	<parameter>
+		<name>СчетAR</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Счет AR</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type xmlns:d3p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d3p1:ChartOfAccountsRef.HFM_GL_Accounts</v8:Type>
+		</valueType>
+		<useRestriction>true</useRestriction>
+		<expression>rgsНастройкаКонфигурацииПовтИсп.ПолучитьЗначениеНастройки("СчетARВерхнегоУровня")</expression>
 		<valueListAllowed>true</valueListAllowed>
 		<availableAsField>true</availableAsField>
 		<denyIncompleteValues>false</denyIncompleteValues>
