@@ -1200,6 +1200,7 @@
 		// } RGS TAlmazova 14.12.2017 12:40:45 - удаляем условие по Psob_id
 		|	И OracleSmithSourceData.source <> """"
 		|	И OracleSmithSourceData.category <> """"
+		|	И OracleSmithSourceData.category <> ""Non-Converting""
 		|	И OracleSmithSourceData.batch_name <> """"
 		|	И OracleSmithSourceData.je_name <> """"
 		|	И OracleSmithSourceData.company_code <> 0
@@ -2098,6 +2099,7 @@
 		// } RGS TAlmazova 14.12.2017 12:40:45 - удаляем условие по Psob_id
 		|	И OracleSmithSourceData.source <> """"
 		|	И OracleSmithSourceData.category <> """"
+		|	И OracleSmithSourceData.category <> ""Non-Converting""
 		|	И OracleSmithSourceData.batch_name <> """"
 		|	И OracleSmithSourceData.je_name <> """"
 		|	И OracleSmithSourceData.company_code <> 0
