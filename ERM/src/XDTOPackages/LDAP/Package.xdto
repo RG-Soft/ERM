@@ -1,0 +1,22 @@
+<package xmlns="http://v8.1c.ru/8.1/xdto" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://rg-soft.ru/LDAP/1.0">
+	<objectType name="user">
+		<property name="alias" type="xs:string" lowerBound="1"/>
+		<property name="displayName" type="xs:string"/>
+		<property name="department" type="xs:string" lowerBound="0"/>
+		<property name="mail" type="xs:string"/>
+		<property name="telephoneNumber" type="xs:string"/>
+		<property name="blocked" type="xs:boolean"/>
+		<property name="jobTitle" type="xs:string"/>
+		<property name="cn" type="xs:string"/>
+		<property name="managerDN" type="xs:string"/>
+		<property name="guid"/>
+		<property name="managerGuid" type="xs:string"/>
+	</objectType>
+	<objectType name="userAndDirectManager">
+		<property xmlns:d3p1="http://rg-soft.ru/LDAP/1.0" name="user" type="d3p1:user" lowerBound="0"/>
+		<property xmlns:d3p1="http://rg-soft.ru/LDAP/1.0" name="directManager" type="d3p1:user" lowerBound="0"/>
+	</objectType>
+	<objectType name="users">
+		<property xmlns:d3p1="http://rg-soft.ru/LDAP/1.0" name="user" type="d3p1:user" lowerBound="0" upperBound="-1"/>
+	</objectType>
+</package>
