@@ -821,61 +821,61 @@
 		|	DSSSourceData.SubSubSeg КАК SubSubSegment,
 		|	DSSSourceData.Geo КАК Geomarket,
 		|	DSSSourceData.SubGeo КАК SubGeomarket,
-		|	DSSSourceData.CustomerNumber,
-		|	DSSSourceData.Reference,
+		|	DSSSourceData.CustomerNumber КАК CustomerNumber,
+		|	DSSSourceData.Reference КАК Reference,
 		|	DSSSourceData.CurrencyCode КАК Currency,
-		|	DSSSourceData.AccountUnit,
-		|	DSSSourceData.System,
-		|	DSSSourceData.JeType,
-		|	DSSSourceData.Journal,
-		|	DSSSourceData.GltObjId,
-		|	DSSSourceData.Area,
-		|	DSSSourceData.Mgmtctry,
-		|	DSSSourceData.Company,
-		|	DSSSourceData.Location,
-		|	DSSSourceData.MgmtNIS_BLSummaryAcct,
-		|	DSSSourceData.SummaryAcct,
-		|	DSSSourceData.Account,
-		|	DSSSourceData.SubAccount,
-		|	DSSSourceData.FiscalYear,
-		|	DSSSourceData.Date,
-		|	DSSSourceData.AccountingPeriod,
-		|	DSSSourceData.UpdateDate,
-		|	DSSSourceData.SeqTrnsNbr,
-		|	DSSSourceData.PostingDate,
-		|	DSSSourceData.Description,
-		|	DSSSourceData.TranAmount,
-		|	DSSSourceData.BaseAmount,
-		|	DSSSourceData.OrigCompany,
-		|	DSSSourceData.Activity,
-		|	DSSSourceData.SourceCode,
-		|	DSSSourceData.LineNbr,
-		|	DSSSourceData.AutoRev,
-		|	DSSSourceData.Operator,
-		|	DSSSourceData.LegalFiscalFlag,
-		|	DSSSourceData.Vendor,
-		|	DSSSourceData.VendorVName,
-		|	DSSSourceData.ApInvoice,
-		|	DSSSourceData.TransNbr,
-		|	DSSSourceData.OrigOperatorId,
-		|	DSSSourceData.ProcessLevel,
-		|	DSSSourceData.CashCode,
-		|	DSSSourceData.PoNumber,
-		|	DSSSourceData.LineNbrIc,
-		|	DSSSourceData.PoCode,
-		|	DSSSourceData.ItemDescription,
-		|	DSSSourceData.ArInvoice,
-		|	DSSSourceData.TaxCode,
-		|	DSSSourceData.Item,
-		|	DSSSourceData.DocumentNbr,
-		|	DSSSourceData.ContractNumber,
-		|	DSSSourceData.AktOfAcceptance,
-		|	DSSSourceData.AktDate,
-		|	DSSSourceData.ApTransFormId,
-		|	DSSSourceData.Urn,
-		|	DSSSourceData.CustomerName,
-		|	DSSSourceData.ArBatchNbr,
-		|	DSSSourceData.CompanyName
+		|	DSSSourceData.AccountUnit КАК AccountUnit,
+		|	DSSSourceData.System КАК System,
+		|	DSSSourceData.JeType КАК JeType,
+		|	DSSSourceData.Journal КАК Journal,
+		|	DSSSourceData.GltObjId КАК GltObjId,
+		|	DSSSourceData.Area КАК Area,
+		|	DSSSourceData.Mgmtctry КАК Mgmtctry,
+		|	DSSSourceData.Company КАК Company,
+		|	DSSSourceData.Location КАК Location,
+		|	DSSSourceData.MgmtNIS_BLSummaryAcct КАК MgmtNIS_BLSummaryAcct,
+		|	DSSSourceData.SummaryAcct КАК SummaryAcct,
+		|	DSSSourceData.Account КАК Account,
+		|	DSSSourceData.SubAccount КАК SubAccount,
+		|	DSSSourceData.FiscalYear КАК FiscalYear,
+		|	DSSSourceData.Date КАК Date,
+		|	DSSSourceData.AccountingPeriod КАК AccountingPeriod,
+		|	DSSSourceData.UpdateDate КАК UpdateDate,
+		|	DSSSourceData.SeqTrnsNbr КАК SeqTrnsNbr,
+		|	DSSSourceData.PostingDate КАК PostingDate,
+		|	DSSSourceData.Description КАК Description,
+		|	DSSSourceData.TranAmount КАК TranAmount,
+		|	DSSSourceData.BaseAmount КАК BaseAmount,
+		|	DSSSourceData.OrigCompany КАК OrigCompany,
+		|	DSSSourceData.Activity КАК Activity,
+		|	DSSSourceData.SourceCode КАК SourceCode,
+		|	DSSSourceData.LineNbr КАК LineNbr,
+		|	DSSSourceData.AutoRev КАК AutoRev,
+		|	DSSSourceData.Operator КАК Operator,
+		|	DSSSourceData.LegalFiscalFlag КАК LegalFiscalFlag,
+		|	DSSSourceData.Vendor КАК Vendor,
+		|	DSSSourceData.VendorVName КАК VendorVName,
+		|	DSSSourceData.ApInvoice КАК ApInvoice,
+		|	DSSSourceData.TransNbr КАК TransNbr,
+		|	DSSSourceData.OrigOperatorId КАК OrigOperatorId,
+		|	DSSSourceData.ProcessLevel КАК ProcessLevel,
+		|	DSSSourceData.CashCode КАК CashCode,
+		|	DSSSourceData.PoNumber КАК PoNumber,
+		|	DSSSourceData.LineNbrIc КАК LineNbrIc,
+		|	DSSSourceData.PoCode КАК PoCode,
+		|	DSSSourceData.ItemDescription КАК ItemDescription,
+		|	DSSSourceData.ArInvoice КАК ArInvoice,
+		|	DSSSourceData.TaxCode КАК TaxCode,
+		|	DSSSourceData.Item КАК Item,
+		|	DSSSourceData.DocumentNbr КАК DocumentNbr,
+		|	DSSSourceData.ContractNumber КАК ContractNumber,
+		|	DSSSourceData.AktOfAcceptance КАК AktOfAcceptance,
+		|	DSSSourceData.AktDate КАК AktDate,
+		|	DSSSourceData.ApTransFormId КАК ApTransFormId,
+		|	DSSSourceData.Urn КАК Urn,
+		|	DSSSourceData.CustomerName КАК CustomerName,
+		|	DSSSourceData.ArBatchNbr КАК ArBatchNbr,
+		|	DSSSourceData.CompanyName КАК CompanyName
 		|ПОМЕСТИТЬ ВТ_ДанныеФайла
 		|ИЗ
 		|	РегистрСведений.DSSSourceData КАК DSSSourceData
@@ -886,7 +886,7 @@
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.Идентификатор КАК Идентификатор,
-		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника
+		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника КАК ОбъектПриемника
 		|ПОМЕСТИТЬ ВТ_СоответствиеКлиентовCustomerNumber
 		|ИЗ
 		|	РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(
@@ -906,7 +906,7 @@
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.Идентификатор КАК Идентификатор,
-		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника
+		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника КАК ОбъектПриемника
 		|ПОМЕСТИТЬ ВТ_СоответствиеКлиентовReference
 		|ИЗ
 		|	РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(
@@ -926,7 +926,7 @@
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.Идентификатор КАК Идентификатор,
-		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника
+		|	НастройкаСинхронизацииОбъектовСВнешнимиСистемамиСрезПоследних.ОбъектПриемника КАК ОбъектПриемника
 		|ПОМЕСТИТЬ ВТ_СоответствиеCurrency
 		|ИЗ
 		|	РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами.СрезПоследних(
@@ -962,8 +962,8 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
-		|	Lawson.КодЧислом,
-		|	Lawson.Ссылка
+		|	Lawson.КодЧислом КАК КодЧислом,
+		|	Lawson.Ссылка КАК Ссылка
 		|ИЗ
 		|	ПланСчетов.Lawson КАК Lawson
 		|ГДЕ
@@ -973,8 +973,8 @@
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
 		|	КлючиИнвойсов.ArInvoice КАК ArInvoice,
-		|	КлючиИнвойсов.Company,
-		|	КлючиИнвойсов.Invoice
+		|	КлючиИнвойсов.Company КАК Company,
+		|	КлючиИнвойсов.Invoice КАК Invoice
 		|ИЗ
 		|	РегистрСведений.КлючиИнвойсов КАК КлючиИнвойсов
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_КлючиПоискаInvoiceSalesOrders КАК ВТ_КлючиПоискаInvoiceSalesOrders
@@ -1000,9 +1000,9 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
-		|	КлючиSalesOrders.ArInvoice,
-		|	КлючиSalesOrders.Company,
-		|	КлючиSalesOrders.SalesOrder
+		|	КлючиSalesOrders.ArInvoice КАК ArInvoice,
+		|	КлючиSalesOrders.Company КАК Company,
+		|	КлючиSalesOrders.SalesOrder КАК SalesOrder
 		|ИЗ
 		|	РегистрСведений.КлючиSalesOrders КАК КлючиSalesOrders
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_КлючиПоискаInvoiceSalesOrders КАК ВТ_КлючиПоискаInvoiceSalesOrders
@@ -1024,9 +1024,9 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
-		|	ВТ_ДанныеФайла.ArBatchNbr,
-		|	CashBatch.Company,
-		|	CashBatch.Prepayment,
+		|	ВТ_ДанныеФайла.ArBatchNbr КАК ArBatchNbr,
+		|	CashBatch.Company КАК Company,
+		|	CashBatch.Prepayment КАК Prepayment,
 		|	CashBatch.Ссылка КАК CashBatch
 		|ИЗ
 		|	Документ.CashBatch КАК CashBatch
@@ -1038,8 +1038,8 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
-		|	ВТ_ДанныеФайла.ArBatchNbr,
-		|	BatchAllocation.Company,
+		|	ВТ_ДанныеФайла.ArBatchNbr КАК ArBatchNbr,
+		|	BatchAllocation.Company КАК Company,
 		|	BatchAllocation.Ссылка КАК BatchAllocation
 		|ИЗ
 		|	Документ.BatchAllocation КАК BatchAllocation
@@ -1051,8 +1051,8 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
-		|	ИсключенияПриЗагрузкеDSS.System,
-		|	ИсключенияПриЗагрузкеDSS.AU
+		|	ИсключенияПриЗагрузкеDSS.System КАК System,
+		|	ИсключенияПриЗагрузкеDSS.AU КАК AU
 		|ИЗ
 		|	РегистрСведений.ИсключенияПриЗагрузкеDSS КАК ИсключенияПриЗагрузкеDSS
 		|;
@@ -1074,15 +1074,15 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
-		|	КлючиРучныхКорректировок.Source,
-		|	КлючиРучныхКорректировок.Company,
-		|	КлючиРучныхКорректировок.Client,
-		|	КлючиРучныхКорректировок.Location,
-		|	КлючиРучныхКорректировок.SubSubSegment,
-		|	КлючиРучныхКорректировок.AU,
-		|	КлючиРучныхКорректировок.Account,
-		|	КлючиРучныхКорректировок.Currency,
-		|	КлючиРучныхКорректировок.РучнаяКорректировка
+		|	КлючиРучныхКорректировок.Source КАК Source,
+		|	КлючиРучныхКорректировок.Company КАК Company,
+		|	КлючиРучныхКорректировок.Client КАК Client,
+		|	КлючиРучныхКорректировок.Location КАК Location,
+		|	КлючиРучныхКорректировок.SubSubSegment КАК SubSubSegment,
+		|	КлючиРучныхКорректировок.AU КАК AU,
+		|	КлючиРучныхКорректировок.Account КАК Account,
+		|	КлючиРучныхКорректировок.Currency КАК Currency,
+		|	КлючиРучныхКорректировок.РучнаяКорректировка КАК РучнаяКорректировка
 		|ИЗ
 		|	РегистрСведений.КлючиРучныхКорректировок КАК КлючиРучныхКорректировок
 		|ГДЕ
@@ -1091,12 +1091,12 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
-		|	КлючиДетальныхРучныхКорректировок.Source,
-		|	КлючиДетальныхРучныхКорректировок.Company,
-		|	КлючиДетальныхРучныхКорректировок.Journal,
-		|	КлючиДетальныхРучныхКорректировок.LineNbr,
-		|	КлючиДетальныхРучныхКорректировок.Date,
-		|	КлючиДетальныхРучныхКорректировок.РучнаяКорректировка
+		|	КлючиДетальныхРучныхКорректировок.Source КАК Source,
+		|	КлючиДетальныхРучныхКорректировок.Company КАК Company,
+		|	КлючиДетальныхРучныхКорректировок.Journal КАК Journal,
+		|	КлючиДетальныхРучныхКорректировок.LineNbr КАК LineNbr,
+		|	КОНЕЦПЕРИОДА(КлючиДетальныхРучныхКорректировок.Date, МЕСЯЦ) КАК Date,
+		|	КлючиДетальныхРучныхКорректировок.РучнаяКорректировка КАК РучнаяКорректировка
 		|ИЗ
 		|	РегистрСведений.КлючиДетальныхРучныхКорректировок КАК КлючиДетальныхРучныхКорректировок
 		|ГДЕ
@@ -1105,10 +1105,10 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
-		|	КлючиMemo.ArInvoice,
-		|	КлючиMemo.Client,
-		|	ВТ_КлючиПоискаInvoiceSalesOrders.Company,
-		|	КлючиMemo.Memo
+		|	КлючиMemo.ArInvoice КАК ArInvoice,
+		|	КлючиMemo.Client КАК Client,
+		|	ВТ_КлючиПоискаInvoiceSalesOrders.Company КАК Company,
+		|	КлючиMemo.Memo КАК Memo
 		|ИЗ
 		|	РегистрСведений.КлючиMemo КАК КлючиMemo
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_КлючиПоискаInvoiceSalesOrders КАК ВТ_КлючиПоискаInvoiceSalesOrders
@@ -1118,7 +1118,7 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
-		|	DataLoadingStages.GeoMarket,
+		|	DataLoadingStages.GeoMarket КАК GeoMarket,
 		|	DataLoadingStages.StartLoading КАК ДатаНачалаЗагрузки,
 		|	DataLoadingStages.ReconciledBalances КАК ДатаВыверенныхОстатков
 		|ИЗ
@@ -1132,52 +1132,52 @@
 		|	ВТ_СоответствиеКлиентовCustomerNumber.ОбъектПриемника КАК ClientCustomerNumber,
 		|	ВТ_СоответствиеCurrency.ОбъектПриемника КАК Currency,
 		|	ВТ_СоответствиеКлиентовReference.ОбъектПриемника КАК ClientReference,
-		|	ВТ_ДанныеФайла.System,
-		|	ВТ_ДанныеФайла.SourceCode,
-		|	ВТ_ДанныеФайла.Account,
-		|	ВТ_ДанныеФайла.BaseAmount,
+		|	ВТ_ДанныеФайла.System КАК System,
+		|	ВТ_ДанныеФайла.SourceCode КАК SourceCode,
+		|	ВТ_ДанныеФайла.Account КАК Account,
+		|	ВТ_ДанныеФайла.BaseAmount КАК BaseAmount,
 		|	ВТ_ДанныеФайла.Date КАК Date,
-		|	ВТ_ДанныеФайла.Reference,
-		|	ВТ_ДанныеФайла.Description,
-		|	ВТ_ДанныеФайла.TranAmount,
-		|	ВТ_ДанныеФайла.PostingDate,
-		|	ВТ_ДанныеФайла.UpdateDate,
-		|	ВТ_ДанныеФайла.SeqTrnsNbr,
-		|	ВТ_ДанныеФайла.OrigCompany,
-		|	ВТ_ДанныеФайла.Activity,
-		|	ВТ_ДанныеФайла.JeType,
-		|	ВТ_ДанныеФайла.Journal,
-		|	ВТ_ДанныеФайла.LineNbr,
-		|	ВТ_ДанныеФайла.AutoRev,
-		|	ВТ_ДанныеФайла.Operator,
-		|	ВТ_ДанныеФайла.LegalFiscalFlag,
-		|	ВТ_ДанныеФайла.Vendor,
-		|	ВТ_ДанныеФайла.VendorVName,
-		|	ВТ_ДанныеФайла.ApInvoice,
-		|	ВТ_ДанныеФайла.TransNbr,
-		|	ВТ_ДанныеФайла.OrigOperatorId,
-		|	ВТ_ДанныеФайла.ProcessLevel,
-		|	ВТ_ДанныеФайла.CashCode,
-		|	ВТ_ДанныеФайла.PoNumber,
-		|	ВТ_ДанныеФайла.LineNbrIc,
-		|	ВТ_ДанныеФайла.PoCode,
-		|	ВТ_ДанныеФайла.ItemDescription,
-		|	ВТ_ДанныеФайла.CustomerNumber,
-		|	ВТ_ДанныеФайла.CustomerName,
-		|	ВТ_ДанныеФайла.ArInvoice,
-		|	ВТ_ДанныеФайла.TaxCode,
-		|	ВТ_ДанныеФайла.Item,
-		|	ВТ_ДанныеФайла.DocumentNbr,
-		|	ВТ_ДанныеФайла.ContractNumber,
-		|	ВТ_ДанныеФайла.AktOfAcceptance,
-		|	ВТ_ДанныеФайла.AktDate,
-		|	ВТ_ДанныеФайла.ApTransFormId,
-		|	ВТ_ДанныеФайла.Urn,
+		|	ВТ_ДанныеФайла.Reference КАК Reference,
+		|	ВТ_ДанныеФайла.Description КАК Description,
+		|	ВТ_ДанныеФайла.TranAmount КАК TranAmount,
+		|	ВТ_ДанныеФайла.PostingDate КАК PostingDate,
+		|	ВТ_ДанныеФайла.UpdateDate КАК UpdateDate,
+		|	ВТ_ДанныеФайла.SeqTrnsNbr КАК SeqTrnsNbr,
+		|	ВТ_ДанныеФайла.OrigCompany КАК OrigCompany,
+		|	ВТ_ДанныеФайла.Activity КАК Activity,
+		|	ВТ_ДанныеФайла.JeType КАК JeType,
+		|	ВТ_ДанныеФайла.Journal КАК Journal,
+		|	ВТ_ДанныеФайла.LineNbr КАК LineNbr,
+		|	ВТ_ДанныеФайла.AutoRev КАК AutoRev,
+		|	ВТ_ДанныеФайла.Operator КАК Operator,
+		|	ВТ_ДанныеФайла.LegalFiscalFlag КАК LegalFiscalFlag,
+		|	ВТ_ДанныеФайла.Vendor КАК Vendor,
+		|	ВТ_ДанныеФайла.VendorVName КАК VendorVName,
+		|	ВТ_ДанныеФайла.ApInvoice КАК ApInvoice,
+		|	ВТ_ДанныеФайла.TransNbr КАК TransNbr,
+		|	ВТ_ДанныеФайла.OrigOperatorId КАК OrigOperatorId,
+		|	ВТ_ДанныеФайла.ProcessLevel КАК ProcessLevel,
+		|	ВТ_ДанныеФайла.CashCode КАК CashCode,
+		|	ВТ_ДанныеФайла.PoNumber КАК PoNumber,
+		|	ВТ_ДанныеФайла.LineNbrIc КАК LineNbrIc,
+		|	ВТ_ДанныеФайла.PoCode КАК PoCode,
+		|	ВТ_ДанныеФайла.ItemDescription КАК ItemDescription,
+		|	ВТ_ДанныеФайла.CustomerNumber КАК CustomerNumber,
+		|	ВТ_ДанныеФайла.CustomerName КАК CustomerName,
+		|	ВТ_ДанныеФайла.ArInvoice КАК ArInvoice,
+		|	ВТ_ДанныеФайла.TaxCode КАК TaxCode,
+		|	ВТ_ДанныеФайла.Item КАК Item,
+		|	ВТ_ДанныеФайла.DocumentNbr КАК DocumentNbr,
+		|	ВТ_ДанныеФайла.ContractNumber КАК ContractNumber,
+		|	ВТ_ДанныеФайла.AktOfAcceptance КАК AktOfAcceptance,
+		|	ВТ_ДанныеФайла.AktDate КАК AktDate,
+		|	ВТ_ДанныеФайла.ApTransFormId КАК ApTransFormId,
+		|	ВТ_ДанныеФайла.Urn КАК Urn,
 		|	ЕСТЬNULL(ПроводкаDSS.Ссылка, НЕОПРЕДЕЛЕНО) КАК ПроводкаDSS,
 		|	ВТ_ДанныеФайла.GltObjId КАК GltObjId,
 		|	ВТ_ДанныеФайла.FiscalYear КАК FiscalYear,
 		|	ВТ_ДанныеФайла.AccountingPeriod КАК AccountingPeriod,
-		|	ВТ_ДанныеФайла.CompanyName,
+		|	ВТ_ДанныеФайла.CompanyName КАК CompanyName,
 		|	КостЦентры.ПодразделениеОрганизации КАК Location,
 		|	КостЦентры.Ссылка КАК AU,
 		|	КостЦентры.Сегмент КАК SubSubSegment,
@@ -1189,7 +1189,7 @@
 		|			ТОГДА 1
 		|		ИНАЧЕ 0
 		|	КОНЕЦ КАК Приоритет,
-		|	ВТ_ДанныеФайла.ArBatchNbr,
+		|	ВТ_ДанныеФайла.ArBatchNbr КАК ArBatchNbr,
 		|	ВТ_Организации.Организация КАК Company,
 		|	Lawson.Ссылка КАК AccountLawson
 		|ИЗ
@@ -1610,9 +1610,7 @@
 	
 	//заполним дату из Description, если возможно
 	ДатаИзDescription = ПолучитьДатуИзDescription(ПроводкаDSSОбъект.Description);
-	Если ДатаИзDescription <> Неопределено Тогда
-		ПроводкаDSSОбъект.DateFromDescription = ДатаИзDescription;
-	КонецЕсли;
+	ПроводкаDSSОбъект.DateFromDescription = ДатаИзDescription;
 	
 	ПреобразованиеСокрЛП(ПроводкаDSSОбъект);
 	
@@ -2217,7 +2215,7 @@
 			СтруктураПоискаДетальнойРучнойКоррерктировки.Company = ПроводкаDSSОбъект.Company;
 			СтруктураПоискаДетальнойРучнойКоррерктировки.Journal = ПроводкаDSSОбъект.JournalLawson;
 			СтруктураПоискаДетальнойРучнойКоррерктировки.LineNbr = ПроводкаDSSОбъект.LineNbrLawson;
-			СтруктураПоискаДетальнойРучнойКоррерктировки.Date = ?(ПроводкаDSSОбъект.DateFromDescription = Дата(1,1,1),ПроводкаDSSОбъект.AccountingPeriod,ПроводкаDSSОбъект.DateFromDescription);
+			СтруктураПоискаДетальнойРучнойКоррерктировки.Date = КонецМесяца(?(ПроводкаDSSОбъект.DateFromDescription = Дата(1,1,1),ПроводкаDSSОбъект.AccountingPeriod,ПроводкаDSSОбъект.DateFromDescription));
 			
 			СтрокиДетальнойРучнойКорректировки = КэшДетальныхРучныхКоррерктировок.НайтиСтроки(СтруктураПоискаДетальнойРучнойКоррерктировки);
 			Если СтрокиДетальнойРучнойКорректировки.Количество() = 0 Тогда
@@ -2227,7 +2225,7 @@
 				НоваяСтрокаКэша.Company = ПроводкаDSSОбъект.Company;
 				НоваяСтрокаКэша.Journal = ПроводкаDSSОбъект.JournalLawson;
 				НоваяСтрокаКэша.LineNbr = ПроводкаDSSОбъект.LineNbrLawson;
-				НоваяСтрокаКэша.Date = ?(ПроводкаDSSОбъект.DateFromDescription = Дата(1,1,1),ПроводкаDSSОбъект.AccountingPeriod,ПроводкаDSSОбъект.DateFromDescription);;
+				НоваяСтрокаКэша.Date = КонецМесяца(?(ПроводкаDSSОбъект.DateFromDescription = Дата(1,1,1),ПроводкаDSSОбъект.AccountingPeriod,ПроводкаDSSОбъект.DateFromDescription));
 				НоваяСтрокаКэша.РучнаяКорректировка = ТекРучнаяКорректировка;
 			Иначе
 				ДобавитьСвязанныйОбъект(ПроводкаDSSОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.РучнаяКорректировка, СтрокиДетальнойРучнойКорректировки[0].РучнаяКорректировка);
@@ -3081,18 +3079,17 @@
 	ЛевГод = Сред(Description, 3, 2);
 	ЛевМесяц = Лев(Description, 2);
 	ЛевДата = "20" + ЛевГод + ЛевМесяц + "01";
-	Если Дата(ЛевДата) <> Неопределено Тогда
-		Возврат ЛевДата;
-	Иначе
+	
+	ТипДата = Новый ОписаниеТипов("Дата");
+	ДатаИзDescription = ТипДата.ПривестиЗначение(ЛевДата);
+	Если Дата(ДатаИзDescription) = Дата(1,1,1) Тогда
 		ПравГод = Прав(Description, 2);
 		ПравМесяц = Лев(Прав(Description, 4),2);
 		ПравДата = "20" + ПравГод + ПравМесяц + "01";
-		Если Дата(ПравДата) <> Неопределено Тогда
-			Возврат ПравДата;
-		КонецЕсли;
+		ДатаИзDescription =  ТипДата.ПривестиЗначение(ПравДата);
 	КонецЕсли;
 	
-	Возврат Неопределено
+	Возврат ДатаИзDescription;
 	
 КонецФункции
 
