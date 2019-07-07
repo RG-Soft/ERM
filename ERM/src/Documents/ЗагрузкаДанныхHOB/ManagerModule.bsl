@@ -2736,7 +2736,7 @@
 		|	LegalEntiites.Ссылка КАК LegalEntity,
 		|	ВТ_СоответствиеКлиентовCustomerNumber1.ОбъектПриемника КАК EndClient,
 		|	ПодразделенияОрганизаций.Ссылка КАК MNGC,
-		|	ВТ_ДанныеФайла.EndClientINN КАК EndClientINN,
+		|	ВТ_ДанныеФайла.EndClientINN КАК EndCustomerNumber,
 		|	ВТ_ДанныеФайла.DocumentType КАК DocumentType,
 		|	ВТ_ДанныеФайла.PostingDate КАК PostingDate
 		|ИЗ

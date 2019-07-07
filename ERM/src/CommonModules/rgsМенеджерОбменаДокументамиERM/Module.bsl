@@ -422,7 +422,7 @@
 			
 			// { RGS TAlmazova 04.06.2019 17:10:00 - S-E-0001243
 			Запись.PaymentDate = Строка.PaymentDate;
-			Если Строка.Prepayment Тогда
+			Если ЗначениеЗаполнено(Строка.Prepayment) И Строка.Prepayment Тогда
 				Запись.PaymentDate = ОбщегоНазначения.ЗначениеРеквизитаОбъекта(СсылкаНаИнвойс,"Дата");
 			Иначе
 				Запись.PaymentDate = Строка.PaymentDate;
