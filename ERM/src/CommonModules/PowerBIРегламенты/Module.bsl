@@ -214,7 +214,7 @@
 	ПроцессорВывода.УстановитьОбъект(ТЗ);
 	ПроцессорВывода.Вывести(ПроцессорКомпоновки);
 	
-	ТЗ.Свернуть("ПериодМесяц, Source, ClientID, Client, Company, SubGeomarket, SubSubSegment, Account, BU, Currency, AU", "Amount, USDAmount");
+	ТЗ.Свернуть("ПериодМесяц, Source, ClientID, Client, Company, SubGeomarket, SubSegment, Account, BU, Currency, AU", "Amount, USDAmount");
 	
 	НЗ = ВнешниеИсточникиДанных.ERM_BI.Таблицы.dbo_Revenue.СоздатьНаборЗаписей();
 	
@@ -243,16 +243,16 @@
 			Иначе
 				ЗаписьНабора.CompanyID = NULL;
 			КонецЕсли;
-			//Если ЗначениеЗаполнено(СтрокаТЗ.SubGeomarket) Тогда
-			//	ЗаписьНабора.SubGeomarketID = СтрокаТЗ.SubGeomarket.УникальныйИдентификатор();
-			//Иначе
-			//	ЗаписьНабора.SubGeomarketID = NULL;
-			//КонецЕсли;
-			//Если ЗначениеЗаполнено(СтрокаТЗ.SubSubSegment) Тогда
-			//	ЗаписьНабора.SubSubSegmentID = СтрокаТЗ.SubSubSegment.УникальныйИдентификатор();
-			//Иначе
-			//	ЗаписьНабора.SubSubSegmentID = NULL;
-			//КонецЕсли;
+			Если ЗначениеЗаполнено(СтрокаТЗ.SubGeomarket) Тогда
+				ЗаписьНабора.GeomarketHFM_ID = СтрокаТЗ.SubGeomarket.УникальныйИдентификатор();
+			Иначе
+				ЗаписьНабора.GeomarketHFM_ID = NULL;
+			КонецЕсли;
+			Если ЗначениеЗаполнено(СтрокаТЗ.SubSegment) Тогда
+				ЗаписьНабора.SegmentHFM_ID = СтрокаТЗ.SubSegment.УникальныйИдентификатор();
+			Иначе
+				ЗаписьНабора.SegmentHFM_ID = NULL;
+			КонецЕсли;
 			Если ЗначениеЗаполнено(СтрокаТЗ.AU) Тогда
 				ЗаписьНабора.AU_ID = СтрокаТЗ.AU.УникальныйИдентификатор();
 			Иначе
