@@ -241,6 +241,84 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Валюта</dataPath>
+			<field>Валюта</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>GeoMarket</dataPath>
+			<field>GeoMarket</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Geo market</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>LocationHFM</dataPath>
+			<field>LocationHFM</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Location HFM</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>MgmtGeomarket</dataPath>
+			<field>MgmtGeomarket</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Mgmt geomarket</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>SegmentHFM</dataPath>
+			<field>SegmentHFM</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Segment HFM</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>SubSegment</dataPath>
+			<field>SubSegment</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Sub segment</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>CompanyHFM</dataPath>
+			<field>CompanyHFM</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Company HFM</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>ПериодМесяц</dataPath>
+			<field>ПериодМесяц</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Период месяц</v8:content>
+				</v8:item>
+			</title>
+			<role>
+				<dcscom:periodNumber>2</dcscom:periodNumber>
+				<dcscom:periodType>Main</dcscom:periodType>
+			</role>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	PaymentsОбороты.Company КАК Company,
@@ -252,10 +330,10 @@
 	PaymentsОбороты.Account КАК Account,
 	СУММА(PaymentsОбороты.AmountОборот) КАК AmountОборот,
 	МАКСИМУМ(ВЫБОР
-		КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
-			ТОГДА PaymentsОбороты.Регистратор.ДокументОснование.DocumentPresentation
-		ИНАЧЕ PaymentsОбороты.Регистратор.DocumentPresentation
-	КОНЕЦ) КАК DocumentPresentation,
+			КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
+				ТОГДА PaymentsОбороты.Регистратор.ДокументОснование.DocumentPresentation
+			ИНАЧЕ PaymentsОбороты.Регистратор.DocumentPresentation
+		КОНЕЦ) КАК DocumentPresentation,
 	ВЫБОР
 		КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
 			ТОГДА PaymentsОбороты.Регистратор.ДокументОснование.DocumentID
@@ -272,24 +350,32 @@
 	ВЫБОР
 		КОГДА PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
 			ТОГДА ВЫБОР
-				КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
-					ТОГДА PaymentsОбороты.Регистратор.ДокументОснование.HOBDocumentType
-				ИНАЧЕ PaymentsОбороты.Регистратор.HOBDocumentType
-			КОНЕЦ
+					КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
+						ТОГДА PaymentsОбороты.Регистратор.ДокументОснование.HOBDocumentType
+					ИНАЧЕ PaymentsОбороты.Регистратор.HOBDocumentType
+				КОНЕЦ
 		ИНАЧЕ NULL
-	КОНЕЦ КАК HOBDocumentType
+	КОНЕЦ КАК HOBDocumentType,
+	ВЫБОР
+		КОГДА PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
+			ТОГДА PaymentsОбороты.CashBatch.PaymentNumber
+		ИНАЧЕ ""
+	КОНЕЦ КАК CashBatchArBatchNbr
 ПОМЕСТИТЬ PaymentsГруппировка
 ИЗ
-	РегистрНакопления.Payments.Обороты({&amp;НачалоПериода}, {&amp;КонецПериода}, Регистратор,
-		(Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
-	И Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
-	И Invoice &lt;&gt; НЕОПРЕДЕЛЕНО
-	ИЛИ CashBatch &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка))
-	И Client &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)
-	И
-	НЕ Client.Intercompany) КАК PaymentsОбороты
+	РегистрНакопления.Payments.Обороты(
+			{(&amp;НачалоПериода)},
+			{(&amp;КонецПериода)},
+			Регистратор,
+			(Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
+					И Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
+					И Invoice &lt;&gt; НЕОПРЕДЕЛЕНО
+				ИЛИ CashBatch &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка))
+				И Client &lt;&gt; ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)
+				И НЕ Client.Intercompany) КАК PaymentsОбороты
 ГДЕ
 	ПОДСТРОКА(PaymentsОбороты.Account.Код, 1, 6) = "209000"
+
 СГРУППИРОВАТЬ ПО
 	PaymentsОбороты.AU,
 	PaymentsОбороты.Currency,
@@ -312,11 +398,16 @@
 	ВЫБОР
 		КОГДА PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
 			ТОГДА ВЫБОР
-				КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
-					ТОГДА PaymentsОбороты.Регистратор.ДокументОснование.HOBDocumentType
-				ИНАЧЕ PaymentsОбороты.Регистратор.HOBDocumentType
-			КОНЕЦ
+					КОГДА PaymentsОбороты.Регистратор ССЫЛКА Документ.КорректировкаТранзакции
+						ТОГДА PaymentsОбороты.Регистратор.ДокументОснование.HOBDocumentType
+					ИНАЧЕ PaymentsОбороты.Регистратор.HOBDocumentType
+				КОНЕЦ
 		ИНАЧЕ NULL
+	КОНЕЦ,
+	ВЫБОР
+		КОГДА PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
+			ТОГДА PaymentsОбороты.CashBatch.PaymentNumber
+		ИНАЧЕ ""
 	КОНЕЦ
 ;
 
@@ -337,36 +428,55 @@
 	КОНЕЦ КАК SubSubSegment,
 	СУММА(PaymentsГруппировка.AmountОборот) КАК Amount,
 	СУММА(ВЫБОР
-		КОГДА PaymentsГруппировка.Currency = &amp;USD
-			ТОГДА PaymentsГруппировка.AmountОборот
-		КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
-		ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
-			ТОГДА 0
-		ИНАЧЕ PaymentsГруппировка.AmountОборот / ВнутренниеКурсыВалютСрезПоследних.Курс
-	КОНЕЦ) КАК BaseAmount,
-	PaymentsГруппировка.ДатаТранзакции,
-	PaymentsГруппировка.CashBatchДата,
-	PaymentsГруппировка.DocumentPresentation,
-	PaymentsГруппировка.DocumentID,
-	PaymentsГруппировка.ClientID,
-	PaymentsГруппировка.CashBatchPaymentDate,
+			КОГДА PaymentsГруппировка.Currency = &amp;USD
+				ТОГДА PaymentsГруппировка.AmountОборот
+			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
+					ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+				ТОГДА 0
+			ИНАЧЕ PaymentsГруппировка.AmountОборот / ВнутренниеКурсыВалютСрезПоследних.Курс
+		КОНЕЦ) КАК BaseAmount,
+	PaymentsГруппировка.ДатаТранзакции КАК ДатаТранзакции,
+	PaymentsГруппировка.CashBatchДата КАК CashBatchДата,
+	PaymentsГруппировка.DocumentPresentation КАК DocumentPresentation,
+	PaymentsГруппировка.DocumentID КАК DocumentID,
+	PaymentsГруппировка.ClientID КАК ClientID,
+	PaymentsГруппировка.CashBatchPaymentDate КАК CashBatchPaymentDate,
 	"" КАК HOBDocumentTypes,
-	"" КАК Invoice,
+	PaymentsГруппировка.CashBatchArBatchNbr КАК Invoice,
 	"" КАК AgreementCode,
 	"" КАК FiscalInvoiceNo,
 	"" КАК FiscalInvoiceDate,
-	"Cash batch" КАК Type
+	"Cash batch" КАК Type,
+	PaymentsГруппировка.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
+	PaymentsГруппировка.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket КАК MgmtGeomarket,
+	PaymentsГруппировка.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket КАК LocationHFM,
+	ВЫБОР
+		КОГДА AnalyticsExceptions.SubSubSegment ЕСТЬ NULL
+			ТОГДА PaymentsГруппировка.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель
+		ИНАЧЕ AnalyticsExceptions.SubSubSegment.БазовыйЭлемент.Родитель.Родитель
+	КОНЕЦ КАК SegmentHFM,
+	ВЫБОР
+		КОГДА AnalyticsExceptions.SubSubSegment ЕСТЬ NULL
+			ТОГДА PaymentsГруппировка.AU.Сегмент.БазовыйЭлемент.Родитель
+		ИНАЧЕ AnalyticsExceptions.SubSubSegment.БазовыйЭлемент.Родитель
+	КОНЕЦ КАК SubSegment,
+	PaymentsГруппировка.Company.БазовыйЭлемент КАК CompanyHFM,
+	НАЧАЛОПЕРИОДА(PaymentsГруппировка.ДатаТранзакции, МЕСЯЦ) КАК ПериодМесяц
 ИЗ
 	PaymentsГруппировка КАК PaymentsГруппировка
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({&amp;КонецПериода},) КАК
-			ВнутренниеКурсыВалютСрезПоследних
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;КонецПериода)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
 		ПО PaymentsГруппировка.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.AnalyticsExceptions КАК AnalyticsExceptions
 		ПО PaymentsГруппировка.Source = AnalyticsExceptions.Source
-		И PaymentsГруппировка.Company = AnalyticsExceptions.Company
-		И PaymentsГруппировка.AU = AnalyticsExceptions.AU
+			И PaymentsГруппировка.Company = AnalyticsExceptions.Company
+			И PaymentsГруппировка.AU = AnalyticsExceptions.AU
 ГДЕ
-	PaymentsГруппировка.HOBDocumentType &lt;&gt; ЗНАЧЕНИЕ(Перечисление.HOBDocumentTypes.КорректировкаДолга)
+	ВЫБОР
+			КОГДА PaymentsГруппировка.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
+				ТОГДА PaymentsГруппировка.HOBDocumentType &lt;&gt; ЗНАЧЕНИЕ(Перечисление.HOBDocumentTypes.КорректировкаДолга)
+			ИНАЧЕ ИСТИНА
+		КОНЕЦ
+
 СГРУППИРОВАТЬ ПО
 	PaymentsГруппировка.Client,
 	PaymentsГруппировка.Company,
@@ -387,11 +497,27 @@
 	PaymentsГруппировка.DocumentID,
 	PaymentsГруппировка.ClientID,
 	PaymentsГруппировка.CashBatchPaymentDate,
-	"",
-	"Cash batch"
+	PaymentsГруппировка.CashBatchArBatchNbr,
+	ВЫБОР
+		КОГДА AnalyticsExceptions.SubSubSegment ЕСТЬ NULL
+			ТОГДА PaymentsГруппировка.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель
+		ИНАЧЕ AnalyticsExceptions.SubSubSegment.БазовыйЭлемент.Родитель.Родитель
+	КОНЕЦ,
+	ВЫБОР
+		КОГДА AnalyticsExceptions.SubSubSegment ЕСТЬ NULL
+			ТОГДА PaymentsГруппировка.AU.Сегмент.БазовыйЭлемент.Родитель
+		ИНАЧЕ AnalyticsExceptions.SubSubSegment.БазовыйЭлемент.Родитель
+	КОНЕЦ,
+	PaymentsГруппировка.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель,
+	PaymentsГруппировка.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket,
+	PaymentsГруппировка.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket,
+	PaymentsГруппировка.Company.БазовыйЭлемент
+
 ИМЕЮЩИЕ
 	СУММА(PaymentsГруппировка.AmountОборот) &lt;&gt; 0
+
 ОБЪЕДИНИТЬ ВСЕ
+
 ВЫБРАТЬ
 	PaymentsГруппировка.Client,
 	PaymentsГруппировка.Company,
@@ -408,13 +534,13 @@
 	КОНЕЦ,
 	СУММА(PaymentsГруппировка.AmountОборот),
 	СУММА(ВЫБОР
-		КОГДА PaymentsГруппировка.Currency = &amp;USD
-			ТОГДА PaymentsГруппировка.AmountОборот
-		КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
-		ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
-			ТОГДА 0
-		ИНАЧЕ PaymentsГруппировка.AmountОборот / ВнутренниеКурсыВалютСрезПоследних.Курс
-	КОНЕЦ),
+			КОГДА PaymentsГруппировка.Currency = &amp;USD
+				ТОГДА PaymentsГруппировка.AmountОборот
+			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
+					ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+				ТОГДА 0
+			ИНАЧЕ PaymentsГруппировка.AmountОборот / ВнутренниеКурсыВалютСрезПоследних.Курс
+		КОНЕЦ),
 	PaymentsГруппировка.ДатаТранзакции,
 	PaymentsГруппировка.CashBatchДата,
 	PaymentsГруппировка.DocumentPresentation,
@@ -426,18 +552,37 @@
 	"",
 	"",
 	"",
-	"Cash batch"
+	"Cash batch",
+	PaymentsГруппировка.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель,
+	PaymentsГруппировка.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket,
+	PaymentsГруппировка.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket,
+	ВЫБОР
+		КОГДА AnalyticsExceptions.SubSubSegment ЕСТЬ NULL
+			ТОГДА PaymentsГруппировка.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель
+		ИНАЧЕ AnalyticsExceptions.SubSubSegment.БазовыйЭлемент.Родитель.Родитель
+	КОНЕЦ,
+	ВЫБОР
+		КОГДА AnalyticsExceptions.SubSubSegment ЕСТЬ NULL
+			ТОГДА PaymentsГруппировка.AU.Сегмент.БазовыйЭлемент.Родитель
+		ИНАЧЕ AnalyticsExceptions.SubSubSegment.БазовыйЭлемент.Родитель
+	КОНЕЦ,
+	PaymentsГруппировка.Company.БазовыйЭлемент,
+	НАЧАЛОПЕРИОДА(PaymentsГруппировка.ДатаТранзакции, МЕСЯЦ)
 ИЗ
 	PaymentsГруппировка КАК PaymentsГруппировка
-		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({&amp;КонецПериода},) КАК
-			ВнутренниеКурсыВалютСрезПоследних
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;КонецПериода)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
 		ПО PaymentsГруппировка.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.AnalyticsExceptions КАК AnalyticsExceptions
 		ПО PaymentsГруппировка.Source = AnalyticsExceptions.Source
-		И PaymentsГруппировка.Company = AnalyticsExceptions.Company
-		И PaymentsГруппировка.AU = AnalyticsExceptions.AU
+			И PaymentsГруппировка.Company = AnalyticsExceptions.Company
+			И PaymentsГруппировка.AU = AnalyticsExceptions.AU
 ГДЕ
-	PaymentsГруппировка.HOBDocumentType = ЗНАЧЕНИЕ(Перечисление.HOBDocumentTypes.КорректировкаДолга)
+	ВЫБОР
+			КОГДА PaymentsГруппировка.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
+				ТОГДА PaymentsГруппировка.HOBDocumentType = ЗНАЧЕНИЕ(Перечисление.HOBDocumentTypes.КорректировкаДолга)
+			ИНАЧЕ ЛОЖЬ
+		КОНЕЦ
+
 СГРУППИРОВАТЬ ПО
 	PaymentsГруппировка.Client,
 	PaymentsГруппировка.Company,
@@ -457,11 +602,34 @@
 	PaymentsГруппировка.DocumentPresentation,
 	PaymentsГруппировка.DocumentID,
 	PaymentsГруппировка.ClientID,
-	"",
-	"Cash batch"
+	ВЫБОР
+		КОГДА AnalyticsExceptions.SubSubSegment ЕСТЬ NULL
+			ТОГДА PaymentsГруппировка.AU.Сегмент.БазовыйЭлемент.Родитель.Родитель
+		ИНАЧЕ AnalyticsExceptions.SubSubSegment.БазовыйЭлемент.Родитель.Родитель
+	КОНЕЦ,
+	ВЫБОР
+		КОГДА AnalyticsExceptions.SubSubSegment ЕСТЬ NULL
+			ТОГДА PaymentsГруппировка.AU.Сегмент.БазовыйЭлемент.Родитель
+		ИНАЧЕ AnalyticsExceptions.SubSubSegment.БазовыйЭлемент.Родитель
+	КОНЕЦ,
+	PaymentsГруппировка.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель,
+	PaymentsГруппировка.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket,
+	PaymentsГруппировка.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket,
+	PaymentsГруппировка.Company.БазовыйЭлемент
+
 ИМЕЮЩИЕ
 	СУММА(PaymentsГруппировка.AmountОборот) &lt;&gt; 0</query>
 	</dataSet>
+	<calculatedField>
+		<dataPath>BU</dataPath>
+		<expression>rgsКонсолидацияДанныхСервер.ОпределитьBU(GeoMarket, LocationHFM, MgmtGeomarket, SegmentHFM, SubSegment, CompanyHFM, AU)</expression>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>BU</v8:content>
+			</v8:item>
+		</title>
+	</calculatedField>
 	<parameter>
 		<name>НачалоПериода</name>
 		<title xsi:type="v8:LocalStringType">
@@ -479,10 +647,6 @@
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>true</useRestriction>
 		<expression>&amp;Период.ДатаНачала</expression>
-		<valueListAllowed>false</valueListAllowed>
-		<availableAsField>true</availableAsField>
-		<denyIncompleteValues>false</denyIncompleteValues>
-		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>КонецПериода</name>
@@ -501,10 +665,6 @@
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>true</useRestriction>
 		<expression>&amp;Период.ДатаОкончания</expression>
-		<valueListAllowed>false</valueListAllowed>
-		<availableAsField>true</availableAsField>
-		<denyIncompleteValues>false</denyIncompleteValues>
-		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>Период</name>
@@ -520,12 +680,9 @@
 		<value xsi:type="v8:StandardPeriod">
 			<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
 			<v8:startDate>0001-01-01T00:00:00</v8:startDate>
-			<v8:endDate>0001-01-01T00:00:00</v8:endDate></value>
+			<v8:endDate>0001-01-01T00:00:00</v8:endDate>
+		</value>
 		<useRestriction>false</useRestriction>
-		<valueListAllowed>false</valueListAllowed>
-		<availableAsField>true</availableAsField>
-		<denyIncompleteValues>false</denyIncompleteValues>
-		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>USD</name>
@@ -536,24 +693,22 @@
 			</v8:item>
 		</title>
 		<valueType>
-			<v8:Type xmlns:d3p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d3p1:CatalogRef.Валюты</v8:Type>
+			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:CatalogRef.Валюты</v8:Type>
 		</valueType>
-		<value xsi:nil="true">
-		</value>
+		<value xsi:nil="true"/>
 		<useRestriction>true</useRestriction>
-		<valueListAllowed>false</valueListAllowed>
-		<availableAsField>true</availableAsField>
-		<denyIncompleteValues>false</denyIncompleteValues>
-		<use>Auto</use>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
 		<dcsset:presentation xsi:type="xs:string">Основной</dcsset:presentation>
-		<dcsset:settings xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:chm="http://v8.1c.ru/8.2/data/chart" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>BU</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>Geo Market</v8:content>
@@ -562,7 +717,7 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Company.БазовыйЭлемент.Наименование</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>Legal entity</v8:content>
@@ -577,7 +732,7 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>ClientID</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>ClientID</v8:content>
@@ -586,7 +741,7 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Client.CRMID</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>CRM ID</v8:content>
@@ -595,7 +750,7 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Source</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>ERP</v8:content>
@@ -604,7 +759,7 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>SubSubSegment.БазовыйЭлемент.Родитель.Родитель.Родитель</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>Product Group</v8:content>
@@ -613,7 +768,7 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>SubSubSegment.БазовыйЭлемент.Родитель.Родитель</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>Segment</v8:content>
@@ -622,7 +777,7 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>SubSubSegment.БазовыйЭлемент.Родитель</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>SubSegment</v8:content>
@@ -631,7 +786,7 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>AU</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>Account Unit</v8:content>
@@ -661,7 +816,7 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>ДатаТранзакции</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>Date of collection</v8:content>
@@ -670,7 +825,7 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Amount</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>Collected amount</v8:content>
@@ -679,7 +834,7 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Курс</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>SLB rate</v8:content>
@@ -688,7 +843,7 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>BaseAmount</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>USD amount</v8:content>
@@ -697,7 +852,7 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>DocumentPresentation</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>Document Presentation</v8:content>
@@ -706,7 +861,7 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>CashBatchPaymentDate</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>Date Cash Batch</v8:content>
@@ -723,7 +878,6 @@
 					<dcsset:use>false</dcsset:use>
 					<dcsset:left xsi:type="dcscor:Field">Source</dcsset:left>
 					<dcsset:comparisonType>Equal</dcsset:comparisonType>
-					<dcsset:application>Items</dcsset:application>
 					<dcsset:userSettingID>1984ea6c-3b71-4bc4-990e-3a0442ec1301</dcsset:userSettingID>
 				</dcsset:item>
 			</dcsset:filter>
@@ -731,8 +885,7 @@
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:use>false</dcscor:use>
 					<dcscor:parameter>Период</dcscor:parameter>
-					<dcscor:value xsi:nil="true">
-					</dcscor:value>
+					<dcscor:value xsi:nil="true"/>
 					<dcsset:userSettingID>9d26ae4f-190c-474c-b32e-e266d3fb05ea</dcsset:userSettingID>
 				</dcscor:item>
 			</dcsset:dataParameters>
@@ -746,8 +899,7 @@
 							<dcsset:field>Invoice.FiscalInvoiceDate</dcsset:field>
 						</dcsset:item>
 					</dcsset:selection>
-					<dcsset:filter>
-					</dcsset:filter>
+					<dcsset:filter/>
 					<dcsset:appearance>
 						<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 							<dcscor:parameter>Формат</dcscor:parameter>
@@ -759,13 +911,6 @@
 							</dcscor:value>
 						</dcscor:item>
 					</dcsset:appearance>
-					<dcsset:useInGroup>Use</dcsset:useInGroup>
-					<dcsset:useInHierarchicalGroup>Use</dcsset:useInHierarchicalGroup>
-					<dcsset:useInOverall>Use</dcsset:useInOverall>
-					<dcsset:useInFieldsHeader>Use</dcsset:useInFieldsHeader>
-					<dcsset:useInHeader>Use</dcsset:useInHeader>
-					<dcsset:useInParameters>Use</dcsset:useInParameters>
-					<dcsset:useInFilter>Use</dcsset:useInFilter>
 				</dcsset:item>
 			</dcsset:conditionalAppearance>
 			<dcsset:outputParameters>
@@ -784,14 +929,79 @@
 			</dcsset:outputParameters>
 			<dcsset:item xsi:type="dcsset:StructureItemGroup">
 				<dcsset:order>
-					<dcsset:item xsi:type="dcsset:OrderItemAuto">
-					</dcsset:item>
+					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
 				</dcsset:order>
 				<dcsset:selection>
-					<dcsset:item xsi:type="dcsset:SelectedItemAuto">
-					</dcsset:item>
+					<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
 				</dcsset:selection>
 			</dcsset:item>
+		</dcsset:settings>
+	</settingsVariant>
+	<settingsVariant>
+		<dcsset:name>PowerBI</dcsset:name>
+		<dcsset:presentation xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Power BI</v8:content>
+			</v8:item>
+		</dcsset:presentation>
+		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+			<dcsset:selection>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>BU</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>CompanyHFM</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Company</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Client</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>ClientID</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Source</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>AU</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>HOBDocumentTypes</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Currency</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>ДатаТранзакции</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>DateCollection</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Amount</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Курс</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>BaseAmount</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Invoice</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>ПериодМесяц</dcsset:field>
+				</dcsset:item>
+			</dcsset:selection>
 		</dcsset:settings>
 	</settingsVariant>
 </DataCompositionSchema>
