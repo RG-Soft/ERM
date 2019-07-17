@@ -173,10 +173,6 @@
 			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>Валюта</dataPath>
-			<field>Валюта</field>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>GeoMarket</dataPath>
 			<field>GeoMarket</field>
 			<title xsi:type="v8:LocalStringType">
@@ -301,7 +297,7 @@
 			КОГДА PaymentsОбороты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
 				ТОГДА ПОДСТРОКА(PaymentsОбороты.Регистратор.CorAccount, 1, 6) &lt;&gt; "209000"
 						И ПОДСТРОКА(PaymentsОбороты.Account.Код, 1, 6) &lt;&gt; "209000"
-			ИНАЧЕ ИСТИНА
+			ИНАЧЕ ПОДСТРОКА(PaymentsОбороты.Account.Код, 1, 6) &lt;&gt; "209000"
 		КОНЕЦ
 
 СГРУППИРОВАТЬ ПО
@@ -340,14 +336,19 @@
 	PaymentsГруппировка.Currency КАК Currency,
 	ВЫБОР
 		КОГДА PaymentsГруппировка.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.Invoice.ПустаяСсылка)
-				И PaymentsГруппировка.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
-				И PaymentsГруппировка.Invoice &lt;&gt; НЕОПРЕДЕЛЕНО
+					И PaymentsГруппировка.Invoice &lt;&gt; ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
+					И PaymentsГруппировка.Invoice &lt;&gt; НЕОПРЕДЕЛЕНО
+				ИЛИ PaymentsГруппировка.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
 			ТОГДА PaymentsГруппировка.AmountОборот
 		ИНАЧЕ ЕСТЬNULL(UnallocatedCashОстатки.AmountОстаток, 0)
 	КОНЕЦ КАК Amount,
 	PaymentsГруппировка.Account КАК Account,
 	PaymentsГруппировка.AU КАК AU,
-	UnallocatedCashОстатки1.CashBatch КАК CashBatchПредыдущегоМесяца,
+	ВЫБОР
+		КОГДА PaymentsГруппировка.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
+			ТОГДА UnallocatedCashОстатки1.CashBatch
+		ИНАЧЕ ""
+	КОНЕЦ КАК CashBatchПредыдущегоМесяца,
 	ВЫБОР
 		КОГДА AnalyticsExceptions.SubSubSegment ЕСТЬ NULL
 			ТОГДА PaymentsГруппировка.AU.Сегмент
@@ -356,6 +357,7 @@
 	PaymentsГруппировка.HOBDocumentTypes КАК HOBDocumentTypes,
 	ВЫБОР
 		КОГДА UnallocatedCashОстатки1.CashBatch = ЗНАЧЕНИЕ(Документ.CashBatch.ПустаяСсылка)
+				ИЛИ НЕ PaymentsГруппировка.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
 			ТОГДА 0
 		ИНАЧЕ ЕСТЬNULL(UnallocatedCashОстатки1.AmountОстаток, 0)
 	КОНЕЦ КАК AmountCashBatchПредыдущегоМесяца,
@@ -375,108 +377,235 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ВЫБРАТЬ
+	Исходные.Company КАК Company,
 	Исходные.Client КАК Client,
 	Исходные.ClientID КАК ClientID,
-	Исходные.Company КАК Company,
 	Исходные.Source КАК Source,
+	Исходные.DateCollection КАК DateCollection,
+	Исходные.Invoice КАК Invoice,
 	Исходные.Currency КАК Currency,
+	Исходные.Amount КАК Amount,
+	Исходные.Account КАК Account,
+	Исходные.AU КАК AU,
+	Исходные.CashBatchПредыдущегоМесяца КАК CashBatchПредыдущегоМесяца,
+	Исходные.SubSubSegment КАК SubSubSegment,
+	Исходные.HOBDocumentTypes КАК HOBDocumentTypes,
+	Исходные.AmountCashBatchПредыдущегоМесяца КАК AmountCashBatchПредыдущегоМесяца,
+	Исходные.Период КАК Период
+ПОМЕСТИТЬ ИсходныеГруппировка
+ИЗ
+	Исходные КАК Исходные
+ГДЕ
+	(Исходные.Invoice ССЫЛКА Документ.Invoice
+			ИЛИ Исходные.Invoice ССЫЛКА Документ.Memo
+			ИЛИ Исходные.Source &lt;&gt; ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
+
+ОБЪЕДИНИТЬ ВСЕ
+
+ВЫБРАТЬ
+	Исходные.Company,
+	Исходные.Client,
+	Исходные.ClientID,
+	Исходные.Source,
+	Исходные.DateCollection,
+	МАКСИМУМ(Исходные.Invoice),
+	Исходные.Currency,
+	СУММА(Исходные.Amount),
+	Исходные.Account,
+	Исходные.AU,
+	Исходные.CashBatchПредыдущегоМесяца,
+	Исходные.SubSubSegment,
+	Исходные.HOBDocumentTypes,
+	Исходные.AmountCashBatchПредыдущегоМесяца,
+	Исходные.Период
+ИЗ
+	Исходные КАК Исходные
+ГДЕ
+	НЕ Исходные.Invoice ССЫЛКА Документ.Invoice
+	И НЕ Исходные.Invoice ССЫЛКА Документ.Memo
+	И Исходные.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
+
+СГРУППИРОВАТЬ ПО
+	Исходные.Company,
+	Исходные.Currency,
+	Исходные.Source,
+	Исходные.DateCollection,
+	Исходные.Client,
+	Исходные.ClientID,
+	Исходные.HOBDocumentTypes,
+	Исходные.CashBatchПредыдущегоМесяца,
+	Исходные.Account,
+	Исходные.AU,
+	Исходные.SubSubSegment,
+	Исходные.AmountCashBatchПредыдущегоМесяца,
+	Исходные.Период
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	LawsonDepositDatesInv.Invoice КАК Document,
+	МАКСИМУМ(LawsonDepositDatesInv.DepositDate) КАК DepositDate
+ПОМЕСТИТЬ ВТ_LawsonDepositDates
+ИЗ
+	РегистрСведений.LawsonDepositDates КАК LawsonDepositDatesInv
+ГДЕ
+	LawsonDepositDatesInv.Invoice В
+			(ВЫБРАТЬ
+				ИсходныеГруппировка.Invoice
+			ИЗ
+				ИсходныеГруппировка КАК ИсходныеГруппировка)
+
+СГРУППИРОВАТЬ ПО
+	LawsonDepositDatesInv.Invoice
+
+ОБЪЕДИНИТЬ ВСЕ
+
+ВЫБРАТЬ
+	LawsonDepositDatesCB.CashBatch,
+	МАКСИМУМ(LawsonDepositDatesCB.DepositDate)
+ИЗ
+	РегистрСведений.LawsonDepositDates КАК LawsonDepositDatesCB
+ГДЕ
+	LawsonDepositDatesCB.CashBatch В
+			(ВЫБРАТЬ
+				ИсходныеГруппировка.Invoice
+			ИЗ
+				ИсходныеГруппировка КАК ИсходныеГруппировка)
+
+СГРУППИРОВАТЬ ПО
+	LawsonDepositDatesCB.CashBatch
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	ИсходныеГруппировка.Client КАК Client,
+	ИсходныеГруппировка.ClientID КАК ClientID,
+	ИсходныеГруппировка.Company КАК Company,
+	ИсходныеГруппировка.Source КАК Source,
+	ИсходныеГруппировка.Currency КАК Currency,
 	СУММА(ВЫБОР
-			КОГДА Исходные.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
-				ТОГДА Исходные.Amount - Исходные.AmountCashBatchПредыдущегоМесяца
-			ИНАЧЕ Исходные.Amount
+			КОГДА ИсходныеГруппировка.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
+				ТОГДА ИсходныеГруппировка.Amount - ИсходныеГруппировка.AmountCashBatchПредыдущегоМесяца
+			ИНАЧЕ ИсходныеГруппировка.Amount
 		КОНЕЦ) КАК Amount,
 	ВнутренниеКурсыВалютСрезПоследних.Курс КАК Курс,
 	ВнутренниеКурсыВалютСрезПоследних.Кратность КАК Кратность,
 	СУММА(ВЫБОР
-			КОГДА Исходные.Currency = &amp;USD
+			КОГДА ИсходныеГруппировка.Currency = &amp;USD
 				ТОГДА ВЫБОР
-						КОГДА Исходные.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
-							ТОГДА Исходные.Amount - Исходные.AmountCashBatchПредыдущегоМесяца
-						ИНАЧЕ Исходные.Amount
+						КОГДА ИсходныеГруппировка.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
+							ТОГДА ИсходныеГруппировка.Amount - ИсходныеГруппировка.AmountCashBatchПредыдущегоМесяца
+						ИНАЧЕ ИсходныеГруппировка.Amount
 					КОНЕЦ
 			КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
 					ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
 				ТОГДА 0
 			ИНАЧЕ ВЫБОР
-					КОГДА Исходные.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
-						ТОГДА (Исходные.Amount - Исходные.AmountCashBatchПредыдущегоМесяца) / ВнутренниеКурсыВалютСрезПоследних.Курс
-					ИНАЧЕ Исходные.Amount / ВнутренниеКурсыВалютСрезПоследних.Курс
+					КОГДА ИсходныеГруппировка.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
+						ТОГДА (ИсходныеГруппировка.Amount - ИсходныеГруппировка.AmountCashBatchПредыдущегоМесяца) / ВнутренниеКурсыВалютСрезПоследних.Курс
+					ИНАЧЕ ИсходныеГруппировка.Amount / ВнутренниеКурсыВалютСрезПоследних.Курс
 				КОНЕЦ
 		КОНЕЦ) КАК BaseAmount,
 	ВЫБОР
-		КОГДА Исходные.Invoice ССЫЛКА Документ.Invoice
-			ТОГДА Исходные.Invoice.DocNumber
-		КОГДА Исходные.Invoice ССЫЛКА Документ.Memo
-			ТОГДА Исходные.Invoice.Номер
-		ИНАЧЕ Исходные.Invoice.PaymentNumber
+		КОГДА ИсходныеГруппировка.Invoice ССЫЛКА Документ.Invoice
+			ТОГДА ИсходныеГруппировка.Invoice.DocNumber
+		КОГДА ИсходныеГруппировка.Invoice ССЫЛКА Документ.Memo
+			ТОГДА ИсходныеГруппировка.Invoice.Номер
+		КОГДА ИсходныеГруппировка.Invoice ССЫЛКА Документ.CashBatch
+			ТОГДА ИсходныеГруппировка.Invoice.PaymentNumber
+		ИНАЧЕ ""
 	КОНЕЦ КАК InvoiceNum,
-	ТИПЗНАЧЕНИЯ(Исходные.Invoice) КАК Type,
-	Исходные.Invoice КАК Invoice,
-	Исходные.Account КАК Account,
-	МАКСИМУМ(Исходные.DateCollection) КАК DateCollection,
-	Исходные.AU КАК AU,
+	ТИПЗНАЧЕНИЯ(ИсходныеГруппировка.Invoice) КАК Type,
+	ИсходныеГруппировка.Invoice КАК Invoice,
+	ИсходныеГруппировка.Account КАК Account,
 	ВЫБОР
-		КОГДА Исходные.Invoice.FiscalInvoiceDate = ДАТАВРЕМЯ(1, 1, 1, 0, 0, 0)
-			ТОГДА Исходные.Invoice.Дата
-		ИНАЧЕ Исходные.Invoice.FiscalInvoiceDate
+		КОГДА ИсходныеГруппировка.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
+			ТОГДА ВТ_LawsonDepositDates.DepositDate
+		ИНАЧЕ ИсходныеГруппировка.DateCollection
+	КОНЕЦ КАК DateCollection,
+	ИсходныеГруппировка.AU КАК AU,
+	ВЫБОР
+		КОГДА ИсходныеГруппировка.Invoice.FiscalInvoiceDate = ДАТАВРЕМЯ(1, 1, 1, 0, 0, 0)
+			ТОГДА ИсходныеГруппировка.Invoice.Дата
+		ИНАЧЕ ИсходныеГруппировка.Invoice.FiscalInvoiceDate
 	КОНЕЦ КАК FiscalInvoiceDate,
-	Исходные.CashBatchПредыдущегоМесяца КАК CashBatchПредыдущегоМесяца,
-	Исходные.SubSubSegment КАК SubSubSegment,
-	Исходные.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket КАК LocationHFM,
-	Исходные.SubSubSegment.БазовыйЭлемент.Родитель.Родитель КАК SegmentHFM,
-	Исходные.SubSubSegment.БазовыйЭлемент.Родитель КАК SubSegment,
-	Исходные.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket КАК MgmtGeomarket,
-	Исходные.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
-	Исходные.Company.БазовыйЭлемент КАК CompanyHFM,
-	Исходные.HOBDocumentTypes КАК HOBDocumentTypes,
-	НАЧАЛОПЕРИОДА(Исходные.Период, МЕСЯЦ) КАК ПериодМесяц
+	ИсходныеГруппировка.CashBatchПредыдущегоМесяца КАК CashBatchПредыдущегоМесяца,
+	ИсходныеГруппировка.SubSubSegment КАК SubSubSegment,
+	ИсходныеГруппировка.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket КАК LocationHFM,
+	ИсходныеГруппировка.SubSubSegment.БазовыйЭлемент.Родитель.Родитель КАК SegmentHFM,
+	ИсходныеГруппировка.SubSubSegment.БазовыйЭлемент.Родитель КАК SubSegment,
+	ИсходныеГруппировка.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket КАК MgmtGeomarket,
+	ИсходныеГруппировка.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
+	ИсходныеГруппировка.Company.БазовыйЭлемент КАК CompanyHFM,
+	ИсходныеГруппировка.HOBDocumentTypes КАК HOBDocumentTypes,
+	НАЧАЛОПЕРИОДА(ИсходныеГруппировка.Период, МЕСЯЦ) КАК ПериодМесяц
 ИЗ
-	Исходные КАК Исходные
+	ИсходныеГруппировка КАК ИсходныеГруппировка
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;КонецПериода)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
-		ПО Исходные.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
+		ПО ИсходныеГруппировка.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
+		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_LawsonDepositDates КАК ВТ_LawsonDepositDates
+		ПО ИсходныеГруппировка.Invoice = ВТ_LawsonDepositDates.Document
+ГДЕ
+	(ВЫБОР
+					КОГДА ИсходныеГруппировка.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
+						ТОГДА ВТ_LawsonDepositDates.DepositDate
+					ИНАЧЕ ИсходныеГруппировка.DateCollection
+				КОНЕЦ &gt;= &amp;НачалоПериода
+				И ВЫБОР
+					КОГДА ИсходныеГруппировка.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
+						ТОГДА ВТ_LawsonDepositDates.DepositDate
+					ИНАЧЕ ИсходныеГруппировка.DateCollection
+				КОНЕЦ &lt;= &amp;КонецПериода
+			ИЛИ НЕ &amp;ИспользоватьОтборПоDateCollection)
 
 СГРУППИРОВАТЬ ПО
-	Исходные.Client,
-	Исходные.ClientID,
-	Исходные.Company,
-	Исходные.Source,
-	Исходные.Currency,
+	ИсходныеГруппировка.Client,
+	ИсходныеГруппировка.ClientID,
+	ИсходныеГруппировка.Company,
+	ИсходныеГруппировка.Source,
+	ИсходныеГруппировка.Currency,
 	ВнутренниеКурсыВалютСрезПоследних.Курс,
 	ВнутренниеКурсыВалютСрезПоследних.Кратность,
 	ВЫБОР
-		КОГДА Исходные.Invoice ССЫЛКА Документ.Invoice
-			ТОГДА Исходные.Invoice.DocNumber
-		КОГДА Исходные.Invoice ССЫЛКА Документ.Memo
-			ТОГДА Исходные.Invoice.Номер
-		ИНАЧЕ Исходные.Invoice.PaymentNumber
+		КОГДА ИсходныеГруппировка.Invoice ССЫЛКА Документ.Invoice
+			ТОГДА ИсходныеГруппировка.Invoice.DocNumber
+		КОГДА ИсходныеГруппировка.Invoice ССЫЛКА Документ.Memo
+			ТОГДА ИсходныеГруппировка.Invoice.Номер
+		КОГДА ИсходныеГруппировка.Invoice ССЫЛКА Документ.CashBatch
+			ТОГДА ИсходныеГруппировка.Invoice.PaymentNumber
+		ИНАЧЕ ""
 	КОНЕЦ,
-	ТИПЗНАЧЕНИЯ(Исходные.Invoice),
-	Исходные.Invoice,
-	Исходные.Account,
-	Исходные.AU,
+	ТИПЗНАЧЕНИЯ(ИсходныеГруппировка.Invoice),
+	ИсходныеГруппировка.Invoice,
+	ИсходныеГруппировка.Account,
+	ИсходныеГруппировка.AU,
 	ВЫБОР
-		КОГДА Исходные.Invoice.FiscalInvoiceDate = ДАТАВРЕМЯ(1, 1, 1, 0, 0, 0)
-			ТОГДА Исходные.Invoice.Дата
-		ИНАЧЕ Исходные.Invoice.FiscalInvoiceDate
+		КОГДА ИсходныеГруппировка.Invoice.FiscalInvoiceDate = ДАТАВРЕМЯ(1, 1, 1, 0, 0, 0)
+			ТОГДА ИсходныеГруппировка.Invoice.Дата
+		ИНАЧЕ ИсходныеГруппировка.Invoice.FiscalInvoiceDate
 	КОНЕЦ,
-	Исходные.CashBatchПредыдущегоМесяца,
-	Исходные.SubSubSegment,
-	Исходные.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket,
-	Исходные.SubSubSegment.БазовыйЭлемент.Родитель.Родитель,
-	Исходные.SubSubSegment.БазовыйЭлемент.Родитель,
-	Исходные.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket,
-	Исходные.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель,
-	Исходные.Company.БазовыйЭлемент,
-	Исходные.HOBDocumentTypes,
-	НАЧАЛОПЕРИОДА(Исходные.Период, МЕСЯЦ)
+	ИсходныеГруппировка.CashBatchПредыдущегоМесяца,
+	ИсходныеГруппировка.SubSubSegment,
+	ИсходныеГруппировка.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket,
+	ИсходныеГруппировка.SubSubSegment.БазовыйЭлемент.Родитель.Родитель,
+	ИсходныеГруппировка.SubSubSegment.БазовыйЭлемент.Родитель,
+	ИсходныеГруппировка.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket,
+	ИсходныеГруппировка.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель,
+	ИсходныеГруппировка.Company.БазовыйЭлемент,
+	ИсходныеГруппировка.HOBDocumentTypes,
+	ВЫБОР
+		КОГДА ИсходныеГруппировка.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
+			ТОГДА ВТ_LawsonDepositDates.DepositDate
+		ИНАЧЕ ИсходныеГруппировка.DateCollection
+	КОНЕЦ,
+	НАЧАЛОПЕРИОДА(ИсходныеГруппировка.Период, МЕСЯЦ)
 
 ИМЕЮЩИЕ
 	СУММА(ВЫБОР
-			КОГДА Исходные.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
-				ТОГДА Исходные.Amount - Исходные.AmountCashBatchПредыдущегоМесяца
-			ИНАЧЕ Исходные.Amount
-		КОНЕЦ) &lt;&gt; 0
-</query>
+			КОГДА ИсходныеГруппировка.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
+				ТОГДА ИсходныеГруппировка.Amount - ИсходныеГруппировка.AmountCashBatchПредыдущегоМесяца
+			ИНАЧЕ ИсходныеГруппировка.Amount
+		КОНЕЦ) &lt;&gt; 0</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>BU</dataPath>
@@ -574,6 +703,19 @@
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>true</useRestriction>
 		<expression>ДобавитьКДате(&amp;Период.ДатаНачала, "Секунда", -1)</expression>
+	</parameter>
+	<parameter>
+		<name>ИспользоватьОтборПоDateCollection</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Использовать отбор по date collection</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>xs:boolean</v8:Type>
+		</valueType>
+		<useRestriction>true</useRestriction>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
