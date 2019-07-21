@@ -891,7 +891,7 @@
 		ПроцессорВывода.УстановитьОбъект(ТЗ_ТекПериод);
 		ПроцессорВывода.Вывести(ПроцессорКомпоновки);
 		
-		ТЗ_ТекПериод.Свернуть("ПериодМесяц, Source, ClientID, Client, CompanyБазовыйЭлемент, BU, Currency, AU, Курс, HOBDocumentTypes, DateCollection, Invoice", "Amount, BaseAmount");
+		ТЗ_ТекПериод.Свернуть("ПериодМесяц, Source, ClientID, Client, CompanyHFM, BU, Currency, AU, Курс, HOBDocumentTypes, DateCollection, Invoice", "Amount, BaseAmount");
 		
 		НЗ = ВнешниеИсточникиДанных.ERM_BI.Таблицы.dbo_ConsolidatedCollection.СоздатьНаборЗаписей();
 		
@@ -913,8 +913,8 @@
 			Иначе
 				ЗаписьНабора.ClientID = NULL;
 			КонецЕсли;
-			Если ЗначениеЗаполнено(СтрокаТЗ.CompanyБазовыйЭлемент) Тогда
-				ЗаписьНабора.CompanyID = СтрокаТЗ.CompanyБазовыйЭлемент.УникальныйИдентификатор();
+			Если ЗначениеЗаполнено(СтрокаТЗ.CompanyHFM) Тогда
+				ЗаписьНабора.CompanyID = СтрокаТЗ.CompanyHFM.УникальныйИдентификатор();
 			Иначе
 				ЗаписьНабора.CompanyID = NULL;
 			КонецЕсли;
@@ -942,16 +942,17 @@
 			//	ЗаписьНабора.InvoiceID = СтрокаТЗ.Invoice.УникальныйИдентификатор();
 			//	ЗаписьНабора.InvoiceType = "CashBatch";
 			//Иначе
-			//	ЗаписьНабора.InvoiceID = NULL;
-			//	ЗаписьНабора.InvoiceType = NULL;
+			ЗаписьНабора.InvoiceID = NULL;
+			ЗаписьНабора.InvoiceType = NULL;
 			//КонецЕсли;
-			Если ЗначениеЗаполнено(СтрокаТЗ.CashBatchПредыдущегоМесяца) Тогда
-				ЗаписьНабора.CashBatchID = СтрокаТЗ.CashBatchПредыдущегоМесяца.УникальныйИдентификатор();
-				ЗаписьНабора.CashBatchType = ПолучитьТипДокумента(СтрокаТЗ.CashBatchПредыдущегоМесяца);
-			Иначе
-				ЗаписьНабора.CashBatchID = NULL;
-				ЗаписьНабора.CashBatchType = NULL;
-			КонецЕсли;
+			//Если ЗначениеЗаполнено(СтрокаТЗ.CashBatchПредыдущегоМесяца) Тогда
+			//	ЗаписьНабора.CashBatchID = СтрокаТЗ.CashBatchПредыдущегоМесяца.УникальныйИдентификатор();
+			//	ЗаписьНабора.CashBatchType = ПолучитьТипДокумента(СтрокаТЗ.CashBatchПредыдущегоМесяца);
+			//Иначе
+			ЗаписьНабора.CashBatchID = NULL;
+			ЗаписьНабора.CashBatchType = NULL;
+			//КонецЕсли;
+			ЗаписьНабора.CashBatchNumber = СтрокаТЗ.Invoice;
 			
 		КонецЦикла;
 		
