@@ -824,6 +824,7 @@
 			ЗаписьНабора.Rate = СтрокаТЗ.Курс;
 			ЗаписьНабора.DateCollection = СтрокаТЗ.DateCollection;
 			ЗаписьНабора.HOBDocumentType = СтрокаТЗ.HOBDocumentTypes;
+			ЗаписьНабора.CashBatchNumber = NULL;
 			Если ЗначениеЗаполнено(СтрокаТЗ.Invoice) Тогда
 				ЗаписьНабора.InvoiceID = СтрокаТЗ.Invoice.УникальныйИдентификатор();
 				ЗаписьНабора.InvoiceType = ПолучитьТипДокумента(СтрокаТЗ.Invoice);
