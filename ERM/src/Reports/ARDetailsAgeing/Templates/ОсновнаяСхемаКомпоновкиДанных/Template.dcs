@@ -400,7 +400,8 @@
 	UnbilledARОстатки.SalesOrder.Номер КАК НомерДокумента,
 	ВЫБОР
 		КОГДА UnbilledARОстатки.SalesOrder.Номер ПОДОБНО "ST%"
-				И UnbilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
+					И UnbilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI)
+				ИЛИ UnbilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
 			ТОГДА UnbilledARОстатки.SalesOrder.JobEndDate
 		ИНАЧЕ UnbilledARОстатки.SalesOrder.Дата
 	КОНЕЦ КАК ДатаДокумента,
@@ -661,7 +662,11 @@
 					ИНАЧЕ ВТ_Остатки.Document.DocNumber
 				КОНЕЦ
 		КОГДА ВТ_Остатки.Document ССЫЛКА Документ.РучнаяКорректировка
-			ТОГДА ""
+			ТОГДА ВЫБОР
+					КОГДА ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
+						ТОГДА ВТ_Остатки.Document.JournalLawson
+					ИНАЧЕ ""
+				КОНЕЦ
 		ИНАЧЕ ВТ_Остатки.Document.Номер
 	КОНЕЦ КАК Doc_No,
 	СУММА(ВЫБОР
@@ -759,7 +764,11 @@
 					ИНАЧЕ ВТ_Остатки.Document.DocNumber
 				КОНЕЦ
 		КОГДА ВТ_Остатки.Document ССЫЛКА Документ.РучнаяКорректировка
-			ТОГДА ""
+			ТОГДА ВЫБОР
+					КОГДА ВТ_Остатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
+						ТОГДА ВТ_Остатки.Document.JournalLawson
+					ИНАЧЕ ""
+				КОНЕЦ
 		ИНАЧЕ ВТ_Остатки.Document.Номер
 	КОНЕЦ,
 	SalesOrdersCommentsСрезПоследних.Problem.Reason,
@@ -966,10 +975,7 @@
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>true</useRestriction>
 		<expression>ДОБАВИТЬКДАТЕ(КонецПериода(&amp;Период,"ДЕНЬ") , "СЕКУНДА", 1)</expression>
-		<valueListAllowed>false</valueListAllowed>
 		<availableAsField>false</availableAsField>
-		<denyIncompleteValues>false</denyIncompleteValues>
-		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>КурсДляОтчета</name>
@@ -979,13 +985,8 @@
 				<v8:content>Курс для отчета</v8:content>
 			</v8:item>
 		</title>
-		<value xsi:nil="true">
-		</value>
+		<value xsi:nil="true"/>
 		<useRestriction>false</useRestriction>
-		<valueListAllowed>false</valueListAllowed>
-		<availableAsField>true</availableAsField>
-		<denyIncompleteValues>false</denyIncompleteValues>
-		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>Период</name>
@@ -1004,8 +1005,6 @@
 		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 		<useRestriction>false</useRestriction>
 		<expression>КонецПериода(&amp;Период,"ДЕНЬ")</expression>
-		<valueListAllowed>false</valueListAllowed>
-		<availableAsField>true</availableAsField>
 		<inputParameters>
 			<dcscor:item>
 				<dcscor:parameter>ФорматРедактирования</dcscor:parameter>
@@ -1017,8 +1016,6 @@
 				</dcscor:value>
 			</dcscor:item>
 		</inputParameters>
-		<denyIncompleteValues>false</denyIncompleteValues>
-		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>USD</name>
@@ -1029,16 +1026,11 @@
 			</v8:item>
 		</title>
 		<valueType>
-			<v8:Type xmlns:d3p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d3p1:CatalogRef.Валюты</v8:Type>
+			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:CatalogRef.Валюты</v8:Type>
 		</valueType>
-		<value xsi:nil="true">
-		</value>
+		<value xsi:nil="true"/>
 		<useRestriction>false</useRestriction>
 		<expression>Константы.rgsВалютаUSD.Получить()</expression>
-		<valueListAllowed>false</valueListAllowed>
-		<availableAsField>true</availableAsField>
-		<denyIncompleteValues>false</denyIncompleteValues>
-		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>ПериодКомментария</name>
@@ -1054,14 +1046,9 @@
 				<v8:DateFractions>Date</v8:DateFractions>
 			</v8:DateQualifiers>
 		</valueType>
-		<value xsi:nil="true">
-		</value>
+		<value xsi:nil="true"/>
 		<useRestriction>false</useRestriction>
 		<expression>ДОБАВИТЬКДАТЕ(КонецПериода(&amp;Период,"ДЕНЬ") , "ГОД", 1)</expression>
-		<valueListAllowed>false</valueListAllowed>
-		<availableAsField>true</availableAsField>
-		<denyIncompleteValues>false</denyIncompleteValues>
-		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>НачалоПериода</name>
@@ -1078,10 +1065,6 @@
 			</v8:DateQualifiers>
 		</valueType>
 		<useRestriction>false</useRestriction>
-		<valueListAllowed>false</valueListAllowed>
-		<availableAsField>true</availableAsField>
-		<denyIncompleteValues>false</denyIncompleteValues>
-		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>Дата1980</name>
@@ -1099,10 +1082,6 @@
 		</valueType>
 		<useRestriction>true</useRestriction>
 		<expression>ДАТАВРЕМЯ(1980,01,01)</expression>
-		<valueListAllowed>false</valueListAllowed>
-		<availableAsField>true</availableAsField>
-		<denyIncompleteValues>false</denyIncompleteValues>
-		<use>Auto</use>
 	</parameter>
 	<parameter>
 		<name>СчетAR</name>
@@ -1113,23 +1092,20 @@
 			</v8:item>
 		</title>
 		<valueType>
-			<v8:Type xmlns:d3p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d3p1:ChartOfAccountsRef.HFM_GL_Accounts</v8:Type>
+			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:ChartOfAccountsRef.HFM_GL_Accounts</v8:Type>
 		</valueType>
 		<useRestriction>true</useRestriction>
 		<expression>rgsНастройкаКонфигурацииПовтИсп.ПолучитьЗначениеНастройки("СчетARВерхнегоУровня")</expression>
 		<valueListAllowed>true</valueListAllowed>
-		<availableAsField>true</availableAsField>
-		<denyIncompleteValues>false</denyIncompleteValues>
-		<use>Auto</use>
 	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
 		<dcsset:presentation xsi:type="xs:string">Основной</dcsset:presentation>
-		<dcsset:settings xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:userFields>
 				<dcsset:item xsi:type="dcsset:UserFieldCase">
 					<dcsset:dataPath>ПользовательскиеПоля.Поле1</dcsset:dataPath>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>Billed Type</v8:content>
@@ -1151,7 +1127,7 @@
 								</dcsset:item>
 							</dcsset:filter>
 							<dcsset:value xsi:type="xs:string">Billed</dcsset:value>
-							<dcsset:lwsPresentationValue xsi:type="v8:LocalStringType">
+							<dcsset:lwsPresentationValue>
 								<v8:item>
 									<v8:lang>ru</v8:lang>
 									<v8:content>Billed</v8:content>
@@ -1173,7 +1149,7 @@
 								</dcsset:item>
 							</dcsset:filter>
 							<dcsset:value xsi:type="xs:string">Unbilled</dcsset:value>
-							<dcsset:lwsPresentationValue xsi:type="v8:LocalStringType">
+							<dcsset:lwsPresentationValue>
 								<v8:item>
 									<v8:lang>ru</v8:lang>
 									<v8:content>Unbilled</v8:content>
@@ -1185,7 +1161,7 @@
 			</dcsset:userFields>
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemFolder">
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content> </v8:content>
@@ -1199,7 +1175,7 @@
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>MgmtGeomarket</dcsset:field>
-						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+						<dcsset:lwsTitle>
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>Geo Market</v8:content>
@@ -1208,7 +1184,7 @@
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>LocationHFM</dcsset:field>
-						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+						<dcsset:lwsTitle>
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>Sub Geo Market</v8:content>
@@ -1217,7 +1193,7 @@
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>SegmentHFM</dcsset:field>
-						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+						<dcsset:lwsTitle>
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>Segment</v8:content>
@@ -1232,7 +1208,7 @@
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>CustomerID</dcsset:field>
-						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+						<dcsset:lwsTitle>
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>Customer ID</v8:content>
@@ -1253,7 +1229,7 @@
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>Doc_No</dcsset:field>
-						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+						<dcsset:lwsTitle>
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>Invoice No. / [Trans. ID]</v8:content>
@@ -1262,7 +1238,7 @@
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>DocumentFiscalInvoiceNo</dcsset:field>
-						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+						<dcsset:lwsTitle>
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>Fiscal Invoice No. </v8:content>
@@ -1271,7 +1247,7 @@
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>DocumentFiscalInvoiceDate</dcsset:field>
-						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+						<dcsset:lwsTitle>
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>Fiscal Invoice Date</v8:content>
@@ -1280,7 +1256,7 @@
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>ДатаДокумента</dcsset:field>
-						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+						<dcsset:lwsTitle>
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>Date</v8:content>
@@ -1305,7 +1281,7 @@
 					<dcsset:placement>Horizontally</dcsset:placement>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemFolder">
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>Invoice / Transaction Amount</v8:content>
@@ -1313,7 +1289,7 @@
 					</dcsset:lwsTitle>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>TransactionAmount</dcsset:field>
-						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+						<dcsset:lwsTitle>
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>[Orig Curr.]</v8:content>
@@ -1322,7 +1298,7 @@
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>TransactionAmountUSD</dcsset:field>
-						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+						<dcsset:lwsTitle>
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>USD Amount</v8:content>
@@ -1332,7 +1308,7 @@
 					<dcsset:placement>Horizontally</dcsset:placement>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemFolder">
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>Remaining Amount</v8:content>
@@ -1340,7 +1316,7 @@
 					</dcsset:lwsTitle>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>AmountОстаток</dcsset:field>
-						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+						<dcsset:lwsTitle>
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>[Orig Curr.]</v8:content>
@@ -1349,7 +1325,7 @@
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>BaseAmountОстаток</dcsset:field>
-						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+						<dcsset:lwsTitle>
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>USD Amount</v8:content>
@@ -1359,7 +1335,7 @@
 					<dcsset:placement>Horizontally</dcsset:placement>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemFolder">
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>   </v8:content>
@@ -1370,7 +1346,7 @@
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>BilledType</dcsset:field>
-						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+						<dcsset:lwsTitle>
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>Billed / Unbilled</v8:content>
@@ -1379,7 +1355,7 @@
 					</dcsset:item>
 					<dcsset:item xsi:type="dcsset:SelectedItemField">
 						<dcsset:field>BaseAmountОстатокТыс</dcsset:field>
-						<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+						<dcsset:lwsTitle>
 							<v8:item>
 								<v8:lang>ru</v8:lang>
 								<v8:content>Total, kUSD</v8:content>
@@ -1389,7 +1365,7 @@
 					<dcsset:placement>Horizontally</dcsset:placement>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemFolder">
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>Ageing, kUSD</v8:content>
@@ -1510,12 +1486,10 @@
 			</dcsset:outputParameters>
 			<dcsset:item xsi:type="dcsset:StructureItemGroup">
 				<dcsset:order>
-					<dcsset:item xsi:type="dcsset:OrderItemAuto">
-					</dcsset:item>
+					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
 				</dcsset:order>
 				<dcsset:selection>
-					<dcsset:item xsi:type="dcsset:SelectedItemAuto">
-					</dcsset:item>
+					<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
 				</dcsset:selection>
 			</dcsset:item>
 		</dcsset:settings>
@@ -1528,7 +1502,7 @@
 				<v8:content>Power BI</v8:content>
 			</v8:item>
 		</dcsset:presentation>
-		<dcsset:settings xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Source</dcsset:field>
@@ -1544,7 +1518,7 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Company.БазовыйЭлемент</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>Company</v8:content>
@@ -1559,7 +1533,7 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Account.БазовыйЭлемент</dcsset:field>
-					<dcsset:lwsTitle xsi:type="v8:LocalStringType">
+					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>Account</v8:content>
@@ -1596,12 +1570,10 @@
 			</dcsset:outputParameters>
 			<dcsset:item xsi:type="dcsset:StructureItemGroup">
 				<dcsset:order>
-					<dcsset:item xsi:type="dcsset:OrderItemAuto">
-					</dcsset:item>
+					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
 				</dcsset:order>
 				<dcsset:selection>
-					<dcsset:item xsi:type="dcsset:SelectedItemAuto">
-					</dcsset:item>
+					<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
 				</dcsset:selection>
 			</dcsset:item>
 		</dcsset:settings>
