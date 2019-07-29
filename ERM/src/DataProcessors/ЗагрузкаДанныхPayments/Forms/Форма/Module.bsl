@@ -1037,9 +1037,8 @@
 		|	PaymentsОбороты.Currency КАК Currency,
 		|	PaymentsОбороты.LegalEntity КАК LegalEntity,
 		|	-PaymentsОбороты.AmountОборот КАК Amount,
-		//|	-PaymentsОбороты.BaseAmountОборот КАК BaseAmount,
-		|	&КонецПериода КАК Период
-		//|	PaymentsОбороты.Document КАК Document
+		|	&КонецПериода КАК Период,
+		|	PaymentsОбороты.Invoice КАК Invoice
 		|ИЗ
 		|	РегистрНакопления.Payments.Обороты(&НачалоПериода, &КонецПериода, , Source = &Source) КАК PaymentsОбороты";
 	
