@@ -1868,7 +1868,7 @@
 		
 	ИначеЕсли ПроводкаDSSОбъект.System = "AR" Тогда
 		
-		Если ПроводкаDSSОбъект.SourceCode = "RL" ИЛИ ПроводкаDSSОбъект.SourceCode = "RY" Тогда
+		Если ПроводкаDSSОбъект.SourceCode = "RL" ИЛИ ПроводкаDSSОбъект.SourceCode = "RY" ИЛИ ПроводкаDSSОбъект.SourceCode = "ES" Тогда
 			
 			// Batch allocation
 			
@@ -1936,7 +1936,8 @@
 				//	ДобавитьСвязанныйОбъект(ПроводкаDSSОбъект, Перечисления.ТипыОбъектовСвязанныхСПроводкойDSS.CashBatch, СтрокиCashBatch[0].CashBatch);
 				//КонецЕсли;
 				
-			ИначеЕсли ПроводкаDSSОбъект.AccountLawson = ПланыСчетов.Lawson.TradeReceivables Тогда // 120101
+			ИначеЕсли ПроводкаDSSОбъект.AccountLawson = ПланыСчетов.Lawson.TradeReceivables // 120101
+				ИЛИ ПроводкаDSSОбъект.AccountLawson = ПланыСчетов.Lawson.OtherTradeReceivableBilled Тогда //120999
 				
 				// для начальных этапов работы инвойса и SO может не быть, но добавить надо
 				ЗаполнитьЗначенияСвойств(СтруктураПоискаInvoice, ПроводкаDSSОбъект);

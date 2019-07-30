@@ -164,11 +164,14 @@
 			
 		ИначеЕсли Реквизиты.System = "AR" Тогда
 			
-			Если Реквизиты.SourceCode = "RL" ИЛИ Реквизиты.SourceCode = "RY" Тогда
+			Если Реквизиты.SourceCode = "RL" ИЛИ Реквизиты.SourceCode = "RY" ИЛИ Реквизиты.SourceCode = "ES" Тогда
 				
 				// разнесение платежей. Закрытие unallocated cash и billed AR
 				//Если Реквизиты.AccountLawson = ПланыСчетов.Lawson.TradeReceivables Тогда // 120101
-				Если Реквизиты.Account = ПланыСчетов.Lawson.TradeReceivables Тогда // 120101
+				// { RGS TAlmazova 26.07.2019 10:07:54 - добавление 120999
+				//Если Реквизиты.Account = ПланыСчетов.Lawson.TradeReceivables Тогда // 120101
+				Если Реквизиты.Account = ПланыСчетов.Lawson.TradeReceivables ИЛИ Реквизиты.Account = ПланыСчетов.Lawson.OtherTradeReceivableBilled Тогда // 120101 и 120999
+				// } RGS TAlmazova 26.07.2019 10:08:01 - добавление 120999
 					ДокументРасчетов = ?(ЗначениеЗаполнено(ПараметрыПроведения.СвязанныеДокументы.Invoice), ПараметрыПроведения.СвязанныеДокументы.Invoice, ПараметрыПроведения.СвязанныеДокументы.Memo);
 					// { RGS TAlmazova 11.08.2016 16:41:21 - может не найти инвойс
 					//ВалютаИнвойса = ОбщегоНазначения.ЗначениеРеквизитаОбъекта(ДокументРасчетов, "Currency");
