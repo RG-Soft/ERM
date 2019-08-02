@@ -1283,6 +1283,56 @@
           </extInfo>
         </items>
         <items xsi:type="form:FormField">
+          <name>InvoicesClientID</name>
+          <id>467</id>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <dataPath xsi:type="form:DataPath">
+            <segments>Invoices.ClientID</segments>
+          </dataPath>
+          <extendedTooltip>
+            <name>InvoicesClientIDРасширеннаяПодсказка</name>
+            <id>469</id>
+            <visible>true</visible>
+            <enabled>true</enabled>
+            <userVisible>
+              <common>true</common>
+            </userVisible>
+            <type>Label</type>
+            <autoMaxWidth>true</autoMaxWidth>
+            <autoMaxHeight>true</autoMaxHeight>
+            <extInfo xsi:type="form:LabelDecorationExtInfo">
+              <horizontalAlign>Left</horizontalAlign>
+            </extInfo>
+          </extendedTooltip>
+          <contextMenu>
+            <name>InvoicesClientIDКонтекстноеМеню</name>
+            <id>468</id>
+            <visible>true</visible>
+            <enabled>true</enabled>
+            <userVisible>
+              <common>true</common>
+            </userVisible>
+            <autoFill>true</autoFill>
+          </contextMenu>
+          <type>InputField</type>
+          <editMode>Enter</editMode>
+          <showInHeader>true</showInHeader>
+          <headerHorizontalAlign>Left</headerHorizontalAlign>
+          <showInFooter>true</showInFooter>
+          <extInfo xsi:type="form:InputFieldExtInfo">
+            <autoMaxWidth>true</autoMaxWidth>
+            <autoMaxHeight>true</autoMaxHeight>
+            <wrap>true</wrap>
+            <chooseType>true</chooseType>
+            <typeDomainEnabled>true</typeDomainEnabled>
+            <textEdit>true</textEdit>
+          </extInfo>
+        </items>
+        <items xsi:type="form:FormField">
           <name>InvoicesInvNo</name>
           <id>14</id>
           <title>
@@ -6829,6 +6879,7 @@
 	ВложенныйЗапрос.FiscalInvDate КАК FiscalInvDate,
 	ВложенныйЗапрос.Contract КАК Contract,
 	ВложенныйЗапрос.Client КАК Client,
+	ВложенныйЗапрос.ClientID КАК ClientID,
 	ВложенныйЗапрос.Company КАК Company,
 	ВложенныйЗапрос.Source КАК Source,
 	ВложенныйЗапрос.Account КАК Account,
@@ -6885,6 +6936,7 @@
 		BilledARОстатки.AU КАК AU,
 		BilledARОстатки.AmountОстаток КАК RemainingAmount,
 		BilledARОстатки.Invoice.Amount КАК InvoiceAmount,
+		BilledARостатки.ClientID КАК ClientID,
 		ВЫБОР
 			КОГДА InvoiceCommentsСрезПоследних.Invoice ЕСТЬ NULL
 					ИЛИ InvoiceCommentsСрезПоследних.Problem.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.ПустаяСсылка)
@@ -6943,6 +6995,8 @@
 					ИЛИ Collectors.ManagementGeomarket = ЗНАЧЕНИЕ(Справочник.ManagementGeography.ПустаяСсылка))
 	ГДЕ
 		BilledARОстатки.Account.БазовыйЭлемент.Код = &quot;12001&quot;
+		И НЕ BilledARОстатки.Client = ЗНАЧЕНИЕ(Справочник.Контрагенты.NonTrade)
+		И НЕ (BilledARОстатки.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleMI) И BilledARОстатки.Invoice.FiscalInvoiceNo = &quot;=0&quot;)
 		И НЕ (BilledARОстатки.Account = Значение(ПланСчетов.Lawson.CustomerRecFactoredTrans) И BilledARОстатки.Source = Значение(Перечисление.ТипыСоответствий.Lawson))
 	{ГДЕ
 		BilledARОстатки.Source.*,
@@ -6991,7 +7045,8 @@
 	ВложенныйЗапрос.FiscalInvDateНачалоДня,
 	ВложенныйЗапрос.RWDDeadline,
 	ВложенныйЗапрос.LegalEntity,
-	ВложенныйЗапрос.Agreement
+	ВложенныйЗапрос.Agreement,
+	ВложенныйЗапрос.ClientID
 
 ИМЕЮЩИЕ
 	СУММА(ВложенныйЗапрос.RemainingAmount) &lt;> 0
@@ -7459,10 +7514,7 @@
     </title>
     <id>20</id>
     <valueType>
-      <types>Date</types>
-      <dateQualifiers>
-        <dateFractions>Date</dateFractions>
-      </dateQualifiers>
+      <types>StandardPeriod</types>
     </valueType>
     <view>
       <common>true</common>
@@ -7479,10 +7531,7 @@
     </title>
     <id>21</id>
     <valueType>
-      <types>Date</types>
-      <dateQualifiers>
-        <dateFractions>Date</dateFractions>
-      </dateQualifiers>
+      <types>StandardPeriod</types>
     </valueType>
     <view>
       <common>true</common>
@@ -7499,10 +7548,7 @@
     </title>
     <id>22</id>
     <valueType>
-      <types>Date</types>
-      <dateQualifiers>
-        <dateFractions>Date</dateFractions>
-      </dateQualifiers>
+      <types>StandardPeriod</types>
     </valueType>
     <view>
       <common>true</common>
