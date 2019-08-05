@@ -1997,10 +1997,10 @@
 	ВЫРАЗИТЬ(ВТ_РассчитанныеРесурсыУровень6.UnderLitigation КАК ЧИСЛО(15, 2)) КАК UnderLitigation,
 	ВЫРАЗИТЬ(ВТ_РассчитанныеРесурсыУровень6.NoFrcst КАК ЧИСЛО(15, 2)) КАК NoFrcst,
 	ВЫБОР
-		КОГДА &amp;ОбнулятьОстатки = ИСТИНА
+		КОГДА &amp;ОбнулятьForecastCollectBefore10 = ИСТИНА
 		И ВТ_РассчитанныеРесурсыУровень6.Status = ЗНАЧЕНИЕ(Перечисление.InvoiceStatus.InvoicePaid)
 		И
-		НЕ ВТ_РассчитанныеРесурсыУровень6.Paid ЕСТЬ NULL
+		НЕ ВТ_РассчитанныеРесурсыУровень6.Paid = 0
 		И ВТ_РассчитанныеРесурсыУровень6.FcstCollect МЕЖДУ -10 И 10
 			ТОГДА 0
 		ИНАЧЕ ВЫРАЗИТЬ(ВТ_РассчитанныеРесурсыУровень6.FcstCollect КАК ЧИСЛО(15, 2))
@@ -2218,11 +2218,11 @@
 		<valueListAllowed>true</valueListAllowed>
 	</parameter>
 	<parameter>
-		<name>ОбнулятьОстатки</name>
+		<name>ОбнулятьForecastCollectBefore10</name>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
-				<v8:content>Обнулять остатки</v8:content>
+				<v8:content>Zero -10/+10 USD forecast collect</v8:content>
 			</v8:item>
 		</title>
 		<valueType>
@@ -2749,12 +2749,12 @@
 					</dcsset:userSettingPresentation>
 				</dcscor:item>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:parameter>ОбнулятьОстатки</dcscor:parameter>
-					<dcsset:userSettingID>09c10868-a28b-499f-92c7-b22d8406fed7</dcsset:userSettingID>
+					<dcscor:parameter>ОбнулятьForecastCollectBefore10</dcscor:parameter>
+					<dcsset:userSettingID>58157de7-71e7-463c-ae28-159dbcd06a88</dcsset:userSettingID>
 					<dcsset:userSettingPresentation xsi:type="v8:LocalStringType">
 						<v8:item>
 							<v8:lang>ru</v8:lang>
-							<v8:content>Zero -10/+10 forecast collect</v8:content>
+							<v8:content>Zero -10/+10 USD forecast collect</v8:content>
 						</v8:item>
 					</dcsset:userSettingPresentation>
 				</dcscor:item>
