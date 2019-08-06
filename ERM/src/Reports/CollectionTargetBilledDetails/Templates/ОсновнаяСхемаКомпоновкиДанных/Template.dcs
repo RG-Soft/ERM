@@ -731,8 +731,8 @@
 	BilledARОбороты.Account КАК Account,
 	BilledARОбороты.Currency КАК Currency,
 	BilledARОбороты.AU КАК AU,
-	BilledARОбороты.AmountОборот КАК AmountОборот,
-	BilledARОбороты.AmountПриход КАК AmountПриход,
+	СУММА(BilledARОбороты.AmountОборот) КАК AmountОборот,
+	СУММА(BilledARОбороты.AmountПриход) КАК AmountПриход,
 	ВЫБОР
 		КОГДА BilledARОбороты.Invoice ССЫЛКА Документ.Invoice
 			ТОГДА ВЫРАЗИТЬ(BilledARОбороты.Invoice КАК Документ.Invoice).DocNumber
@@ -747,11 +747,33 @@
 	КОНЕЦ КАК НачисленИОплаченВТекущемПериоде
 ПОМЕСТИТЬ ВТ_ОборотыУчитываяОплаченные
 ИЗ
-	РегистрНакопления.BilledAR.Обороты({&amp;ПериодОстатков}, {&amp;КонецДняФормированияОтчета}, Запись, Account.БазовыйЭлемент
-		В ИЕРАРХИИ (&amp;СчетAR)) КАК BilledARОбороты
+	РегистрНакопления.BilledAR.Обороты({(&amp;ПериодОстатков)}, {(&amp;КонецДняФормированияОтчета)}, Запись, Account.БазовыйЭлемент В ИЕРАРХИИ (&amp;СчетAR)) КАК BilledARОбороты
 ГДЕ
-	BilledARОбороты.AmountОборот &lt;&gt; 0
-	ИЛИ BilledARОбороты.AmountПриход &lt;&gt; 0
+	(BilledARОбороты.AmountОборот &lt;&gt; 0
+			ИЛИ BilledARОбороты.AmountПриход &lt;&gt; 0)
+
+СГРУППИРОВАТЬ ПО
+	BilledARОбороты.Client,
+	BilledARОбороты.Company,
+	BilledARОбороты.Source,
+	BilledARОбороты.AU.ПодразделениеОрганизации,
+	BilledARОбороты.AU.Сегмент,
+	BilledARОбороты.Invoice,
+	BilledARОбороты.Account,
+	BilledARОбороты.Currency,
+	BilledARОбороты.AU,
+	ВЫБОР
+		КОГДА BilledARОбороты.Invoice ССЫЛКА Документ.Invoice
+			ТОГДА ВЫРАЗИТЬ(BilledARОбороты.Invoice КАК Документ.Invoice).DocNumber
+		ИНАЧЕ ВЫРАЗИТЬ(BilledARОбороты.Invoice КАК Документ.Memo).Номер
+	КОНЕЦ,
+	BilledARОбороты.LegalEntity,
+	BilledARОбороты.ClientID,
+	ВЫБОР
+		КОГДА BilledARОбороты.AmountОборот = 0
+			ТОГДА ИСТИНА
+		ИНАЧЕ ЛОЖЬ
+	КОНЕЦ
 
 ОБЪЕДИНИТЬ ВСЕ
 
