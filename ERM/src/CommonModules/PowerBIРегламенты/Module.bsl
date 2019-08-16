@@ -967,6 +967,42 @@
 	
 КонецПроцедуры
 
+Процедура PowerBIОтправкаSalesOrderResponsiblesList() Экспорт
+	
+	НачатьТранзакцию();
+	
+	НЗ = ВнешниеИсточникиДанных.ERM_BI.Таблицы.dbo_SalesOrderResponsiblesList.СоздатьНаборЗаписей();
+	
+	Запрос = Новый Запрос;
+	Запрос.Текст = 
+		"ВЫБРАТЬ
+		|	SalesOrderResponsiblesList.SalesOrder КАК SalesOrder,
+		|	SalesOrderResponsiblesList.ResponsiblesList КАК ResponsiblesList
+		|ИЗ
+		|	РегистрСведений.SalesOrderResponsiblesList КАК SalesOrderResponsiblesList
+		|ГДЕ
+		|	НЕ SalesOrderResponsiblesList.SalesOrder.ПометкаУдаления";
+		
+	РезультатЗапроса = Запрос.Выполнить();
+	
+	ВыборкаДетальныеЗаписи = РезультатЗапроса.Выбрать();
+	
+	НЗ.Очистить();
+	
+	Пока ВыборкаДетальныеЗаписи.Следующий() Цикл
+		
+		Запись = НЗ.Добавить();
+		Запись.SalesOrderID = Строка(ВыборкаДетальныеЗаписи.SalesOrder.УникальныйИдентификатор());
+		Запись.ResponsiblesList = ВыборкаДетальныеЗаписи.ResponsiblesList;
+		
+	КонецЦикла;
+	
+	НЗ.Записать(Истина);
+	
+	ЗафиксироватьТранзакцию();
+	
+КонецПроцедуры
+
 Функция ПолучитьТипДокумента(Документ) Экспорт
 	
 	Если ТипЗнч(Документ) = Тип("ДокументСсылка.Invoice") Тогда

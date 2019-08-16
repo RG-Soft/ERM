@@ -145,6 +145,11 @@
 	СтрокаТЗ = СтруктураКолонок.Добавить();
 	СтрокаТЗ.ИмяПоля = "PaymentType";
 	СтрокаТЗ.ИмяКолонки = "PaymentType";
+	
+	//OffsetCode
+	СтрокаТЗ = СтруктураКолонок.Добавить();
+	СтрокаТЗ.ИмяПоля = "OffsetCode";
+	СтрокаТЗ.ИмяКолонки = "OffsetCode";
 
 КонецПроцедуры
 
@@ -189,9 +194,14 @@
 		"ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	XR223SourceData.Invoice КАК Invoice,
 		|	XR223SourceData.BatchNbr КАК BatchNbr,
-		|	XR223SourceData.DepositDate КАК DepositDate,
+		|	ВЫБОР
+		|		КОГДА XR223SourceData.OffsetCode = ""PPRU""
+		|			ТОГДА XR223SourceData.GlDate
+		|		ИНАЧЕ XR223SourceData.DepositDate
+		|	КОНЕЦ КАК DepositDate,
 		|	XR223SourceData.TransactionType КАК TransactionType,
-		|	Организации.Ссылка КАК Company
+		|	Организации.Ссылка КАК Company,
+		|	XR223SourceData.OffsetCode КАК OffsetCode
 		|ПОМЕСТИТЬ ВТ_ДанныеФайла
 		|ИЗ
 		|	РегистрСведений.XR223SourceData КАК XR223SourceData
