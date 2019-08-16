@@ -70,28 +70,42 @@
 	КонецЕсли;
 	
 	МассивСтатусов = Новый Массив;
-	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.CustomerIsInsolventOrBankrupt);
-	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.PendingSLBDocumentation);
-	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.Pricing);
-	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.TechnicalSQ);
-	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.LostInHole);
-	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.PendingInvoiceApproval);
-	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.PendingPaymentAllocation);
-	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.ClientConfirmedPayment);
+	
+	МассивСтатусов = ЭтаФорма.ПодчиненныеЭлементы.Status.СписокВыбора.ВыгрузитьЗначения();
+	
+	//МассивСтатусов.Добавить(Перечисления.InvoiceStatus.CustomerIsInsolventOrBankrupt);
+	//МассивСтатусов.Добавить(Перечисления.InvoiceStatus.PendingSLBDocumentation);
+	//МассивСтатусов.Добавить(Перечисления.InvoiceStatus.Pricing);
+	//МассивСтатусов.Добавить(Перечисления.InvoiceStatus.TechnicalSQ);
+	//МассивСтатусов.Добавить(Перечисления.InvoiceStatus.LostInHole);
+	//МассивСтатусов.Добавить(Перечисления.InvoiceStatus.PendingInvoiceApproval);
+	//МассивСтатусов.Добавить(Перечисления.InvoiceStatus.PendingPaymentAllocation);
+	//МассивСтатусов.Добавить(Перечисления.InvoiceStatus.ClientConfirmedPayment);
 	Если НЕ АвтоматическоеЗаполнениеСтатуса Тогда
 		МассивСтатусов.Добавить(Перечисления.InvoiceStatus.InvoicePaid);
 	КонецЕсли;
-	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.EscalatedToSales);
+	//МассивСтатусов.Добавить(Перечисления.InvoiceStatus.EscalatedToSales);
 	Если НЕ АвтоматическоеЗаполнениеСтатуса Тогда
 		МассивСтатусов.Добавить(Перечисления.InvoiceStatus.InvoiceNotDue);
 	КонецЕсли;
-	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.CustomerIsUnavailable);
-	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.ClientHasLiquidityProblems);
-	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.BillingError);
-	МассивСтатусов.Добавить(Перечисления.InvoiceStatus.PartiallyPaid);
+	//МассивСтатусов.Добавить(Перечисления.InvoiceStatus.CustomerIsUnavailable);
+	//МассивСтатусов.Добавить(Перечисления.InvoiceStatus.ClientHasLiquidityProblems);
+	//МассивСтатусов.Добавить(Перечисления.InvoiceStatus.BillingError);
+	//МассивСтатусов.Добавить(Перечисления.InvoiceStatus.PartiallyPaid);
 	
 	ЭтаФорма.ПодчиненныеЭлементы.Status.СписокВыбора.ЗагрузитьЗначения(МассивСтатусов);
 	
+	Если Параметры.Свойство("RemainingAmount") И Параметры.Свойство("Currency") Тогда
+	
+		RemainingAmount = Параметры.RemainingAmount;
+		Элементы.RemainingAmountValue.Заголовок = Элементы.RemainingAmountValue.Заголовок + " " + Строка(RemainingAmount) + " " + Параметры.Currency;
+	
+	Иначе
+		
+		Элементы.RemainingAmountValue.Заголовок = " ";
+		
+	КонецЕсли;
+	StatusПриИзмененииНаСервере(Status);
 КонецПроцедуры
 
 &НаСервере
@@ -118,8 +132,8 @@
 &НаСервере
 Процедура ПередЗаписьюНаСервере(Отказ, ТекущийОбъект, ПараметрыЗаписи)
 	
-	СтруктураРеквизитовПроблемы = Новый Структура("Дата, Invoice, User, Status, StatusOfDispute, DisputeDistributedDate, 
-		|DateEntered, DateIdentified, DisputCollectableDate, ConfirmedBy, CustomerRepresentative, 
+	СтруктураРеквизитовПроблемы = Новый Структура("Дата, Invoice, User, Status, StatusOfDispute, StatusOfDebt, DebtAmount, DisputeDistributedDate, 
+		|DateEntered, DateIdentified, DisputCollectableDate, TriggerDate, ConfirmedBy, CustomerRepresentative, 
 		|CustomerInputDetails, Comment, CustInputDate, Potential, ForecastDate, RemedialWorkPlan, RWDTargetDate, SLBAssignedTo");
 	ЗаполнитьЗначенияСвойств(СтруктураРеквизитовПроблемы, ЭтотОбъект);
 	СтруктураРеквизитовПроблемы.Дата = ТекущийОбъект.Период;
@@ -132,3 +146,84 @@
 	КонецЕсли;
 	
 КонецПроцедуры
+
+&НаСервере
+Процедура StatusПриИзмененииНаСервере(ЗначениеCтатуса)
+	
+	Если ЗначениеCтатуса = Перечисления.InvoiceStatus.ClientConfirmedPayment Тогда
+	
+		УстановитьДоступностьПолейDebt(Истина, Истина);
+		
+	ИначеЕсли ЗначениеCтатуса = Перечисления.InvoiceStatus.PartiallyPaid  Тогда
+		
+		УстановитьДоступностьПолейDebt(Истина, Ложь);
+		
+	Иначе
+		
+		StatusOfDebt = Неопределено;
+		DebtAmount = 0;
+		УстановитьДоступностьПолейDebt(Ложь, Ложь);
+		
+	КонецЕсли;
+	
+КонецПроцедуры
+
+&НаКлиенте
+Процедура StatusПриИзменении(Элемент)
+	
+	StatusПриИзмененииНаСервере(Status);
+	
+КонецПроцедуры
+
+&НаСервере
+Процедура УстановитьДоступностьПолейDebt(ДоступностьСтатуса, ДоступностьЗадолженности)
+	
+	Элементы.StatusOfDebt.Доступность = ДоступностьСтатуса;
+	Элементы.DebtAmount.Доступность = ДоступностьЗадолженности;
+	Элементы.RemainingAmountValue.Доступность = ДоступностьЗадолженности;
+	
+КонецПроцедуры 
+
+&НаСервере
+Процедура StatusOfDebtПриИзмененииНаСервере()
+	
+	Если StatusOfDebt = Перечисления.InvoiceStatus.ПустаяСсылка() Тогда
+	
+		DebtAmount = 0;
+	
+	КонецЕсли; 
+	
+КонецПроцедуры
+
+&НаКлиенте
+Процедура StatusOfDebtПриИзменении(Элемент)
+	StatusOfDebtПриИзмененииНаСервере();
+КонецПроцедуры
+
+&НаСервере
+Процедура ОбнулитьDebtAmount()
+
+	Если RemainingAmount >= 0 Тогда
+	
+		ОбнулитьDebtAmount = ?(DebtAmount > RemainingAmount ИЛИ DebtAmount < 0, Истина, Ложь);
+		
+	Иначе 
+	
+		ОбнулитьDebtAmount = ?(DebtAmount < RemainingAmount ИЛИ DebtAmount > 0, Истина, Ложь);
+	
+	КонецЕсли;
+	
+	Если ОбнулитьDebtAmount Тогда
+	
+		DebtAmount = 0;
+		Сообщить("Incorrect debt amount!");
+	
+	КонецЕсли; 
+
+КонецПроцедуры
+ 
+&НаКлиенте
+Процедура DebtAmountПриИзменении(Элемент)
+	ОбнулитьDebtAmount();
+КонецПроцедуры
+
