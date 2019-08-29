@@ -371,13 +371,14 @@
 		|	РегистрСведений.XR223SourceData КАК XR223SourceData
 		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
 		|		ПО XR223SourceData.Company = Организации.Код
-		|		И Организации.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
+		|			И (Организации.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
 		|ГДЕ
 		|	XR223SourceData.ДокументЗагрузки = &ДокументЗагрузки
 		|	И XR223SourceData.TransactionType = ""C""
 		|	И (XR223SourceData.PaymentType = ""I""
-		|	ИЛИ XR223SourceData.PaymentType = ""D"")
+		|			ИЛИ XR223SourceData.PaymentType = ""D"")
 		|;
+		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	КлючиИнвойсов.ArInvoice КАК ArInvoice,
@@ -388,8 +389,8 @@
 		|	РегистрСведений.КлючиИнвойсов КАК КлючиИнвойсов
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
 		|		ПО КлючиИнвойсов.ArInvoice = ВТ_ДанныеФайла.CreditNoteNum
-		|		И КлючиИнвойсов.Company = ВТ_ДанныеФайла.Company
-		|		И КлючиИнвойсов.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
+		|			И КлючиИнвойсов.Company = ВТ_ДанныеФайла.Company
+		|			И (КлючиИнвойсов.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
 		|
 		|ОБЪЕДИНИТЬ ВСЕ
 		|
@@ -401,8 +402,9 @@
 		|	РегистрСведений.КлючиMemo КАК КлючиMemo
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
 		|		ПО КлючиMemo.ArInvoice = ВТ_ДанныеФайла.CreditNoteNum
-		|		И КлючиMemo.Company = ВТ_ДанныеФайла.Company
+		|			И КлючиMemo.Company = ВТ_ДанныеФайла.Company
 		|;
+		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	КлючиИнвойсов.ArInvoice КАК ArInvoice,
@@ -413,7 +415,7 @@
 		|	РегистрСведений.КлючиИнвойсов КАК КлючиИнвойсов
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
 		|		ПО КлючиИнвойсов.ArInvoice = ВТ_ДанныеФайла.InvoiceMemoNum
-		|		И КлючиИнвойсов.Company = ВТ_ДанныеФайла.Company
+		|			И КлючиИнвойсов.Company = ВТ_ДанныеФайла.Company
 		|
 		|ОБЪЕДИНИТЬ ВСЕ
 		|
@@ -425,8 +427,9 @@
 		|	РегистрСведений.КлючиMemo КАК КлючиMemo
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
 		|		ПО КлючиMemo.ArInvoice = ВТ_ДанныеФайла.InvoiceMemoNum
-		|		И КлючиMemo.Company = ВТ_ДанныеФайла.Company
+		|			И КлючиMemo.Company = ВТ_ДанныеФайла.Company
 		|;
+		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
 		|	ВТ_ДанныеФайла.GlDate КАК GlDate,
@@ -438,36 +441,39 @@
 		|	ВТ_ДанныеФайла КАК ВТ_ДанныеФайла
 		|		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_CreditNote КАК ВТ_CreditNote
 		|		ПО ВТ_ДанныеФайла.CreditNoteNum = ВТ_CreditNote.ArInvoice
-		|		И ВТ_ДанныеФайла.Company = ВТ_CreditNote.Company
+		|			И ВТ_ДанныеФайла.Company = ВТ_CreditNote.Company
 		|		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_InvoiceMemo КАК ВТ_InvoiceMemo
 		|		ПО ВТ_ДанныеФайла.InvoiceMemoNum = ВТ_InvoiceMemo.ArInvoice
-		|		И ВТ_ДанныеФайла.Company = ВТ_InvoiceMemo.Company
+		|			И ВТ_ДанныеФайла.Company = ВТ_InvoiceMemo.Company
 		|ГДЕ
 		|	НЕ ВТ_CreditNote.CreditNote.Ссылка ЕСТЬ NULL
-		|	И
-		|	НЕ ВТ_InvoiceMemo.InvoiceMemo.Ссылка ЕСТЬ NULL
+		|	И НЕ ВТ_InvoiceMemo.InvoiceMemo.Ссылка ЕСТЬ NULL
 		|;
+		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
 		|	ВТ_НайденныеДокументы.GlDate КАК GlDate,
 		|	ВТ_НайденныеДокументы.TransactionType КАК TransactionType,
 		|	ВТ_НайденныеДокументы.InvoiceMemo КАК InvoiceMemo,
 		|	ВТ_НайденныеДокументы.CreditNote КАК CreditNote,
-		|	BilledARОстатки.AmountОстаток КАК Amount,
-		|	BilledARОстатки.Client КАК Client,
-		|	BilledARОстатки.Company КАК Company,
-		|	BilledARОстатки.Source КАК Source,
-		|	BilledARОстатки.Account КАК Account,
-		|	BilledARОстатки.AU КАК AU,
-		|	BilledARОстатки.Currency КАК Currency,
-		|	BilledARОстатки.LegalEntity КАК LegalEntity,
-		|	BilledARОстатки.ClientID КАК ClientID,
-		|	""BilledAR"" КАК ИмяРегистра
+		|	BilledARОстаткиCreditNote.AmountОстаток КАК Amount,
+		|	BilledARОстаткиCreditNote.Client КАК Client,
+		|	BilledARОстаткиCreditNote.Company КАК Company,
+		|	BilledARОстаткиCreditNote.Source КАК Source,
+		|	BilledARОстаткиCreditNote.Account КАК Account,
+		|	BilledARОстаткиCreditNote.AU КАК AU,
+		|	BilledARОстаткиCreditNote.Currency КАК Currency,
+		|	BilledARОстаткиCreditNote.LegalEntity КАК LegalEntity,
+		|	BilledARОстаткиCreditNote.ClientID КАК ClientID,
+		|	""BilledAR"" КАК ИмяРегистра,
+		|	ЕСТЬNULL(BilledARОстаткиInvoiceMemo.AmountОстаток, 0) КАК AmountInvoiceMemo
 		|ПОМЕСТИТЬ ВТ_ДокументыСБалансами
 		|ИЗ
 		|	ВТ_НайденныеДокументы КАК ВТ_НайденныеДокументы
-		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрНакопления.BilledAR.Остатки(&ДатаОстатков,) КАК BilledARОстатки
-		|		ПО ВТ_НайденныеДокументы.CreditNote = BilledARОстатки.Invoice
+		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрНакопления.BilledAR.Остатки(&ДатаОстатков, ) КАК BilledARОстаткиCreditNote
+		|		ПО ВТ_НайденныеДокументы.CreditNote = BilledARОстаткиCreditNote.Invoice
+		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрНакопления.BilledAR.Остатки(&ДатаОстатков, ) КАК BilledARОстаткиInvoiceMemo
+		|		ПО ВТ_НайденныеДокументы.InvoiceMemo = BilledARОстаткиInvoiceMemo.Invoice
 		|
 		|ОБЪЕДИНИТЬ ВСЕ
 		|
@@ -476,21 +482,25 @@
 		|	ВТ_НайденныеДокументы.TransactionType,
 		|	ВТ_НайденныеДокументы.InvoiceMemo,
 		|	ВТ_НайденныеДокументы.CreditNote,
-		|	UnallocatedMemoОстатки.AmountОстаток,
-		|	UnallocatedMemoОстатки.Client,
-		|	UnallocatedMemoОстатки.Company,
-		|	UnallocatedMemoОстатки.Source,
-		|	UnallocatedMemoОстатки.Account,
-		|	UnallocatedMemoОстатки.AU,
-		|	UnallocatedMemoОстатки.Currency,
-		|	UnallocatedMemoОстатки.LegalEntity,
-		|	UnallocatedMemoОстатки.ClientID,
-		|	""UnallocatedMemo""
+		|	UnallocatedMemoОстаткиCreditNote.AmountОстаток,
+		|	UnallocatedMemoОстаткиCreditNote.Client,
+		|	UnallocatedMemoОстаткиCreditNote.Company,
+		|	UnallocatedMemoОстаткиCreditNote.Source,
+		|	UnallocatedMemoОстаткиCreditNote.Account,
+		|	UnallocatedMemoОстаткиCreditNote.AU,
+		|	UnallocatedMemoОстаткиCreditNote.Currency,
+		|	UnallocatedMemoОстаткиCreditNote.LegalEntity,
+		|	UnallocatedMemoОстаткиCreditNote.ClientID,
+		|	""UnallocatedMemo"",
+		|	ЕСТЬNULL(UnallocatedMemoОстаткиInvoiceMemo.AmountОстаток, 0)
 		|ИЗ
 		|	ВТ_НайденныеДокументы КАК ВТ_НайденныеДокументы
-		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрНакопления.UnallocatedMemo.Остатки(&ДатаОстатков,) КАК UnallocatedMemoОстатки
-		|		ПО ВТ_НайденныеДокументы.CreditNote = UnallocatedMemoОстатки.Memo
+		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрНакопления.UnallocatedMemo.Остатки(&ДатаОстатков, ) КАК UnallocatedMemoОстаткиCreditNote
+		|		ПО ВТ_НайденныеДокументы.CreditNote = UnallocatedMemoОстаткиCreditNote.Memo
+		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрНакопления.UnallocatedMemo.Остатки(&ДатаОстатков, ) КАК UnallocatedMemoОстаткиInvoiceMemo
+		|		ПО ВТ_НайденныеДокументы.InvoiceMemo = UnallocatedMemoОстаткиInvoiceMemo.Memo
 		|;
+		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
 		|	ВТ_ДокументыСБалансами.GlDate КАК GlDate,
@@ -506,10 +516,12 @@
 		|	ВТ_ДокументыСБалансами.Currency КАК Currency,
 		|	ВТ_ДокументыСБалансами.LegalEntity КАК LegalEntity,
 		|	ВТ_ДокументыСБалансами.ClientID КАК ClientID,
-		|	МИНИМУМ(ВТ_ДокументыСБалансами.ИмяРегистра) КАК ИмяРегистра
+		|	МИНИМУМ(ВТ_ДокументыСБалансами.ИмяРегистра) КАК ИмяРегистра,
+		|	СУММА(ВТ_ДокументыСБалансами.AmountInvoiceMemo) КАК AmountInvoiceMemo
 		|ПОМЕСТИТЬ ВТ_ДокументыСБалансамиГруппировка
 		|ИЗ
 		|	ВТ_ДокументыСБалансами КАК ВТ_ДокументыСБалансами
+		|
 		|СГРУППИРОВАТЬ ПО
 		|	ВТ_ДокументыСБалансами.GlDate,
 		|	ВТ_ДокументыСБалансами.TransactionType,
@@ -524,6 +536,7 @@
 		|	ВТ_ДокументыСБалансами.LegalEntity,
 		|	ВТ_ДокументыСБалансами.ClientID
 		|;
+		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	ВТ_ДокументыСБалансамиГруппировка.CreditNote КАК CreditNote,
@@ -531,11 +544,14 @@
 		|ПОМЕСТИТЬ ВТ_ДокументыСДублями
 		|ИЗ
 		|	ВТ_ДокументыСБалансамиГруппировка КАК ВТ_ДокументыСБалансамиГруппировка
+		|
 		|СГРУППИРОВАТЬ ПО
 		|	ВТ_ДокументыСБалансамиГруппировка.CreditNote
+		|
 		|ИМЕЮЩИЕ
 		|	КОЛИЧЕСТВО(ВТ_ДокументыСБалансамиГруппировка.InvoiceMemo) > 1
 		|;
+		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
 		|	ВТ_ДокументыСБалансамиГруппировка.GlDate КАК GlDate,
@@ -552,31 +568,35 @@
 		|	ВТ_ДокументыСБалансамиГруппировка.LegalEntity КАК LegalEntity,
 		|	ВТ_ДокументыСБалансамиГруппировка.ClientID КАК ClientID,
 		|	ВТ_ДокументыСБалансамиГруппировка.ИмяРегистра КАК ИмяРегистра,
-		|	Выбор
-		|		когда ВТ_ДокументыСБалансамиГруппировка.InvoiceMemo ССЫЛКА Документ.Invoice
-		|		И ВТ_ДокументыСБалансамиГруппировка.CreditNote ССЫЛКА Документ.Invoice
+		|	ВЫБОР
+		|		КОГДА ВТ_ДокументыСБалансамиГруппировка.InvoiceMemo ССЫЛКА Документ.Invoice
+		|				И ВТ_ДокументыСБалансамиГруппировка.CreditNote ССЫЛКА Документ.Invoice
 		|			ТОГДА ЗНАЧЕНИЕ(Перечисление.ВидыОперацийNoteAllocation.CreditNote)
-		|		когда ВТ_ДокументыСБалансамиГруппировка.InvoiceMemo ССЫЛКА Документ.Memo
-		|		И ВТ_ДокументыСБалансамиГруппировка.CreditNote ССЫЛКА Документ.Invoice
+		|		КОГДА ВТ_ДокументыСБалансамиГруппировка.InvoiceMemo ССЫЛКА Документ.Memo
+		|				И ВТ_ДокументыСБалансамиГруппировка.CreditNote ССЫЛКА Документ.Invoice
 		|			ТОГДА ЗНАЧЕНИЕ(Перечисление.ВидыОперацийNoteAllocation.CreditMemo)
-		|		когда ВТ_ДокументыСБалансамиГруппировка.InvoiceMemo ССЫЛКА Документ.Memo
-		|		И ВТ_ДокументыСБалансамиГруппировка.CreditNote ССЫЛКА Документ.Memo
+		|		КОГДА ВТ_ДокументыСБалансамиГруппировка.InvoiceMemo ССЫЛКА Документ.Memo
+		|				И ВТ_ДокументыСБалансамиГруппировка.CreditNote ССЫЛКА Документ.Memo
 		|			ТОГДА ЗНАЧЕНИЕ(Перечисление.ВидыОперацийNoteAllocation.DebitMemo)
-		|	конец КАК ВидОперацииNoteAllocation,
-		|	Выбор когда ВТ_ДокументыСБалансамиГруппировка.InvoiceMemo ССЫЛКА Документ.Invoice
-		|		И ВТ_ДокументыСБалансамиГруппировка.CreditNote ССЫЛКА Документ.Memo
+		|	КОНЕЦ КАК ВидОперацииNoteAllocation,
+		|	ВЫБОР
+		|		КОГДА ВТ_ДокументыСБалансамиГруппировка.InvoiceMemo ССЫЛКА Документ.Invoice
+		|				И ВТ_ДокументыСБалансамиГруппировка.CreditNote ССЫЛКА Документ.Memo
 		|			ТОГДА ""CreditNote with memo type and Invoice in Base document""
+		|		КОГДА ВТ_ДокументыСБалансамиГруппировка.AmountInvoiceMemo = 0
+		|			ТОГДА ""Invoice without balance""
 		|		ИНАЧЕ """"
-		|	Конец КАК СообщениеОбОшибке
+		|	КОНЕЦ КАК СообщениеОбОшибке
 		|ИЗ
 		|	ВТ_ДокументыСБалансамиГруппировка КАК ВТ_ДокументыСБалансамиГруппировка
 		|ГДЕ
 		|	НЕ ВТ_ДокументыСБалансамиГруппировка.CreditNote В
-		|		(ВЫБРАТЬ
-		|			ВТ_ДокументыСДублями.CreditNote
-		|		ИЗ
-		|			ВТ_ДокументыСДублями КАК ВТ_ДокументыСДублями)
+		|				(ВЫБРАТЬ
+		|					ВТ_ДокументыСДублями.CreditNote
+		|				ИЗ
+		|					ВТ_ДокументыСДублями КАК ВТ_ДокументыСДублями)
 		|;
+		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ
 		|	ВТ_ДокументыСДублями.CreditNote КАК Документ,
@@ -585,7 +605,7 @@
 		|	ВТ_ДокументыСДублями КАК ВТ_ДокументыСДублями";
 	
 	Запрос.УстановитьПараметр("ДокументЗагрузки", СтруктураПараметров.Ссылка);
-	Запрос.УстановитьПараметр("ДатаОстатков", ДатаОстатков);
+	Запрос.УстановитьПараметр("ДатаОстатков", Новый Граница(ДатаОстатков,ВидГраницы.Включая));
 	
 	МассивРезультатов = Запрос.ВыполнитьПакет();
 	
@@ -627,7 +647,8 @@
 			Попытка
 				ТекДок.Записать(РежимЗаписиДокумента.Проведение);
 			Исключение
-				ТекстОшибок = ТекстОшибок + ОписаниеОшибки() + Символы.ПС;
+				ТекстОшибок = "NoteAllocation are not made because the problem with the documents: " + ВыборкаДляNoteAllocation.InvoiceMemo + Символы.ПС +
+					ТекстОшибок + ОписаниеОшибки() + Символы.ПС;
 				ВызватьИсключение ТекстОшибок;
 				ОтменитьТранзакцию();
 			КонецПопытки;
@@ -649,6 +670,8 @@
 	ДанныеДляЗаполнения.Вставить("ПроблемныеДокументы", ПроблемныеДокументы);
 	ДанныеДляЗаполнения.Вставить("СозданныеNoteAllocations", СозданныеNoteAllocations);
 	ПоместитьВоВременноеХранилище(ДанныеДляЗаполнения, АдресХранилища);
+	
+	
 	
 	ЗафиксироватьТранзакцию();
 
