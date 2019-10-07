@@ -16,9 +16,10 @@
 	Список.Добавить(Перечисления.SalesOrderStatus.DisputeSLBInternalDelaysERPTimeCosureIsDifferent);
 	Список.Добавить(Перечисления.SalesOrderStatus.DisputeSLBInternalDelaysARDelay);
 	Список.Добавить(Перечисления.SalesOrderStatus.DisputeChemistryExtraConsumptionMI);
-	Список.Добавить(Перечисления.SalesOrderStatus.StatusUnknown);
-	Список.Добавить(Перечисления.SalesOrderStatus.InvoiceNotYetDueForBilling);
 	Список.Добавить(Перечисления.SalesOrderStatus.OngoingJob);
+	Список.Добавить(Перечисления.SalesOrderStatus.JECutOffDateDeferral);
+	Список.Добавить(Перечисления.SalesOrderStatus.JETechnicalErrorsInERP);
+	Список.Добавить(Перечисления.SalesOrderStatus.JEEliminationForNonLawsonSegments);
 	
 	ДанныеВыбора = Список;
 

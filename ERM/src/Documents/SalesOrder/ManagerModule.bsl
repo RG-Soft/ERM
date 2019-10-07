@@ -306,15 +306,17 @@
 	Запрос = Новый Запрос;
 	Запрос.Текст =
 		"ВЫБРАТЬ
-		|	SalesOrder.ПометкаУдаления,
-		|	SalesOrder.Номер,
-		|	SalesOrder.Дата,
+		|	SalesOrder.ПометкаУдаления КАК ПометкаУдаления,
+		|	SalesOrder.Номер КАК Номер,
+		|	SalesOrder.Дата КАК Дата,
 		|	ПРЕДСТАВЛЕНИЕ(SalesOrder.Source) КАК Source,
 		|	SalesOrder.Company.БазовыйЭлемент КАК Company,
-		|	SalesOrder.Client,
-		|	SalesOrder.Currency,
-		|	SalesOrder.Amount,
-		|	SalesOrder.Agreement
+		|	SalesOrder.Client КАК Client,
+		|	SalesOrder.Currency КАК Currency,
+		|	SalesOrder.Amount КАК Amount,
+		|	SalesOrder.Agreement КАК Agreement,
+		|	SalesOrder.JobEndDate КАК JobEndDate,
+		|	ПРЕДСТАВЛЕНИЕ(SalesOrder.Responsible) КАК Responsible
 		|ИЗ
 		|	Документ.SalesOrder КАК SalesOrder
 		|ГДЕ
@@ -347,7 +349,9 @@
 		Объект.CurrencyID = NULL;
 	КонецЕсли;
 	Объект.Agreement = ВыборкаДетальныеЗаписи.Agreement;
+	Объект.JobEndDate = ВыборкаДетальныеЗаписи.JobEndDate;
 	Объект.Amount = ВыборкаДетальныеЗаписи.Amount;
+	Объект.Responsible = ВыборкаДетальныеЗаписи.Responsible;
 	
 КонецПроцедуры
 #КонецОбласти

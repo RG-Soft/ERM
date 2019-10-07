@@ -777,7 +777,7 @@
 		ПроцессорВывода.УстановитьОбъект(ТЗ_ТекПериод);
 		ПроцессорВывода.Вывести(ПроцессорКомпоновки);
 		
-		ТЗ_ТекПериод.Свернуть("ПериодМесяц, Source, ClientID, Client, CompanyБазовыйЭлемент, BU, Currency, AU, Курс, HOBDocumentTypes, DateCollection, Invoice, CashBatchПредыдущегоМесяца", "Amount, BaseAmount");
+		ТЗ_ТекПериод.Свернуть("ПериодМесяц, Source, ClientID, Client, CompanyБазовыйЭлемент, BU, Currency, AU, Курс, HOBDocumentTypes, DateCollection, Invoice, CashBatchПредыдущегоМесяца, ClosedAdvance", "Amount, BaseAmount");
 		
 		НЗ = ВнешниеИсточникиДанных.ERM_BI.Таблицы.dbo_ConsolidatedCollection.СоздатьНаборЗаписей();
 		
@@ -791,7 +791,11 @@
 			
 			ЗаписьНабора = НЗ.Добавить();
 			ЗаписьНабора.Period = СтрокаТЗ.ПериодМесяц;
-			ЗаписьНабора.ReportType = "Postpayment";
+			Если СтрокаТЗ.ClosedAdvance Тогда
+				ЗаписьНабора.ReportType = "Advance";
+			Иначе
+				ЗаписьНабора.ReportType = "Postpayment";
+			КонецЕсли; 
 			ЗаписьНабора.Source = Строка(СтрокаТЗ.Source);
 			ЗаписьНабора.ClientNumber = СтрокаТЗ.ClientID;
 			Если ЗначениеЗаполнено(СтрокаТЗ.Client) Тогда
