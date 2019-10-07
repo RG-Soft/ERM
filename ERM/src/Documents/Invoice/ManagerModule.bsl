@@ -811,8 +811,9 @@
 		|	Invoice.ДатаОтправкиКС КАК DateSentKS,
 		|	Invoice.КомментарийСтатусаВозвратаКС КАК CommentTheStatusOfTheReturn,
 		|	Invoice.СтатусВозвратаКС КАК ReturnStatusKS,
-		|	Invoice.Responsible,
-		|	Invoice.DocNumber КАК DocNumber
+		|	Invoice.Responsible КАК Responsible,
+		|	Invoice.DocNumber КАК DocNumber,
+		|	Invoice.FTLResponsible КАК FTLResponsible
 		|ИЗ
 		|	Документ.Invoice КАК Invoice
 		|ГДЕ
@@ -868,6 +869,7 @@
 	Объект.KSCommentReturnStatus = ВыборкаДетальныеЗаписи.CommentTheStatusOfTheReturn;
 	Объект.DocNumber = ВыборкаДетальныеЗаписи.DocNumber;
 	Объект.Responsible = ВыборкаДетальныеЗаписи.Responsible;
+	Объект.FTLResponsible = ВыборкаДетальныеЗаписи.FTLResponsible;
 	
 КонецПроцедуры
 #КонецОбласти
