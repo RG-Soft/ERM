@@ -151,9 +151,6 @@
 					<v8:content>Cash batch предыдущего месяца</v8:content>
 				</v8:item>
 			</title>
-			<role>
-				<dcscom:dimension>true</dcscom:dimension>
-			</role>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>HOBDocumentTypes</dataPath>
@@ -171,6 +168,10 @@
 			<role>
 				<dcscom:dimension>true</dcscom:dimension>
 			</role>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Валюта</dataPath>
+			<field>Валюта</field>
 		</field>
 		<field xsi:type="DataSetFieldField">
 			<dataPath>GeoMarket</dataPath>
@@ -203,16 +204,6 @@
 			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
-			<dataPath>SubSegment</dataPath>
-			<field>SubSegment</field>
-			<title xsi:type="v8:LocalStringType">
-				<v8:item>
-					<v8:lang>ru</v8:lang>
-					<v8:content>Sub segment</v8:content>
-				</v8:item>
-			</title>
-		</field>
-		<field xsi:type="DataSetFieldField">
 			<dataPath>MgmtGeomarket</dataPath>
 			<field>MgmtGeomarket</field>
 			<title xsi:type="v8:LocalStringType">
@@ -233,6 +224,16 @@
 			</title>
 		</field>
 		<field xsi:type="DataSetFieldField">
+			<dataPath>SubSegment</dataPath>
+			<field>SubSegment</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Sub segment</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
 			<dataPath>ПериодМесяц</dataPath>
 			<field>ПериодМесяц</field>
 			<title xsi:type="v8:LocalStringType">
@@ -245,6 +246,16 @@
 				<dcscom:periodNumber>1</dcscom:periodNumber>
 				<dcscom:periodType>Main</dcscom:periodType>
 			</role>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>ClosedAdvance</dataPath>
+			<field>ClosedAdvance</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Closed advance</v8:content>
+				</v8:item>
+			</title>
 		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
@@ -534,13 +545,20 @@
 	ИсходныеГруппировка.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель КАК GeoMarket,
 	ИсходныеГруппировка.Company.БазовыйЭлемент КАК CompanyHFM,
 	ИсходныеГруппировка.HOBDocumentTypes КАК HOBDocumentTypes,
-	НАЧАЛОПЕРИОДА(ИсходныеГруппировка.Период, МЕСЯЦ) КАК ПериодМесяц
+	НАЧАЛОПЕРИОДА(ИсходныеГруппировка.Период, МЕСЯЦ) КАК ПериодМесяц,
+	ВЫБОР
+		КОГДА ИсходныеГруппировка.Source В (ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Radius), ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Geofit))
+			ТОГДА ЕСТЬNULL(InvoicePrepayments.Prepayment, ЛОЖЬ)
+		ИНАЧЕ ЛОЖЬ
+	КОНЕЦ КАК ClosedAdvance
 ИЗ
 	ИсходныеГруппировка КАК ИсходныеГруппировка
 		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;КонецПериода)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
 		ПО ИсходныеГруппировка.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
 		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_LawsonDepositDates КАК ВТ_LawsonDepositDates
 		ПО ИсходныеГруппировка.Invoice = ВТ_LawsonDepositDates.Document
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoicePrepayments КАК InvoicePrepayments
+		ПО ИсходныеГруппировка.Invoice = InvoicePrepayments.Invoice
 ГДЕ
 	(ВЫБОР
 					КОГДА ИсходныеГруппировка.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)
@@ -594,7 +612,12 @@
 			ТОГДА ВТ_LawsonDepositDates.DepositDate
 		ИНАЧЕ ИсходныеГруппировка.DateCollection
 	КОНЕЦ,
-	НАЧАЛОПЕРИОДА(ИсходныеГруппировка.Период, МЕСЯЦ)
+	НАЧАЛОПЕРИОДА(ИсходныеГруппировка.Период, МЕСЯЦ),
+	ВЫБОР
+		КОГДА ИсходныеГруппировка.Source В (ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Radius), ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Geofit))
+			ТОГДА ЕСТЬNULL(InvoicePrepayments.Prepayment, ЛОЖЬ)
+		ИНАЧЕ ЛОЖЬ
+	КОНЕЦ
 
 ИМЕЮЩИЕ
 	СУММА(ВЫБОР
@@ -711,6 +734,7 @@
 		<valueType>
 			<v8:Type>xs:boolean</v8:Type>
 		</valueType>
+		<value xsi:type="xs:boolean">false</value>
 		<useRestriction>true</useRestriction>
 	</parameter>
 	<settingsVariant>
@@ -898,6 +922,9 @@
 						</v8:item>
 					</dcsset:lwsTitle>
 				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>ClosedAdvance</dcsset:field>
+				</dcsset:item>
 			</dcsset:selection>
 			<dcsset:filter>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
@@ -1033,6 +1060,9 @@
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>ПериодМесяц</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>ClosedAdvance</dcsset:field>
 				</dcsset:item>
 			</dcsset:selection>
 			<dcsset:filter>
