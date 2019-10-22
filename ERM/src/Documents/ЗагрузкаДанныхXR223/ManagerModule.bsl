@@ -336,7 +336,7 @@
 			НЗ.Отбор.Invoice.Установить(ВыборкаДетальныеЗаписи.Invoice);
 			НоваяЗапись = НЗ.Добавить();
 			ЗаполнитьЗначенияСвойств(НоваяЗапись, ВыборкаДетальныеЗаписи);
-			НоваяЗапись.DepositDate = РГСофт.ПреобразоватьВДату(ВыборкаДетальныеЗаписи.DepositDate, "Date");
+			НоваяЗапись.DepositDate = ВыборкаДетальныеЗаписи.DepositDate;
 			НЗ.Записать();
 			
 			СтрокаТЗ = ОбновленныеInvoice.Добавить();
@@ -348,7 +348,7 @@
 			НоваяЗапись = НЗ.Добавить();
 			ЗаполнитьЗначенияСвойств(НоваяЗапись, ВыборкаДетальныеЗаписи);
 			НоваяЗапись.Invoice = ВыборкаДетальныеЗаписи.Memo;
-			НоваяЗапись.DepositDate = РГСофт.ПреобразоватьВДату(ВыборкаДетальныеЗаписи.DepositDate, "Date");
+			НоваяЗапись.DepositDate = ВыборкаДетальныеЗаписи.DepositDate;
 			НЗ.Записать();
 			
 			СтрокаТЗ = ОбновленныеMemo.Добавить();
@@ -510,11 +510,12 @@
 		|		КОГДА ВТ_НайденныеДокументы.PaymentType = ""D""
 		|				И ВТ_НайденныеДокументы.InvoiceMemo ССЫЛКА Документ.Invoice
 		|			ТОГДА ""Payment type D for Invoice""
-		|		КОГДА ЕСТЬNULL(BilledARОстатки.AmountОстаток, 0) = 0
+		|		КОГДА ЕСТЬNULL(BilledARОстатки.AmountОстаток, 0) + ЕСТЬNULL(UnallocatedMemoОстатки.AmountОстаток, 0) = 0
 		|			ТОГДА ""No balance of the invoice""
 		|		ИНАЧЕ """"
 		|	КОНЕЦ КАК СообщениеОбОшибке,
-		|	BilledARОстатки.AmountОстаток КАК AmountОстаток
+		|	BilledARОстатки.AmountОстаток КАК BilledARAmountОстаток,
+		|	UnallocatedMemoОстатки.AmountОстаток КАК UnallocatedMemoAmountОстаток
 		|ИЗ
 		|	ВТ_НайденныеДокументы КАК ВТ_НайденныеДокументы
 		|		ЛЕВОЕ СОЕДИНЕНИЕ Документ.NoteAllocation.CreditNotes КАК NoteAllocationCreditNotes
@@ -524,6 +525,8 @@
 		|			И (NoteAllocationCreditNotes.Ссылка.Проведен)
 		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрНакопления.BilledAR.Остатки(, Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)) КАК BilledARОстатки
 		|		ПО ВТ_НайденныеДокументы.CreditNote = BilledARОстатки.Invoice
+		|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрНакопления.UnallocatedMemo.Остатки(, Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson)) КАК UnallocatedMemoОстатки
+		|		ПО ВТ_НайденныеДокументы.CreditNote = UnallocatedMemoОстатки.Memo
 		|ГДЕ
 		|	NoteAllocationCreditNotes.Ссылка ЕСТЬ NULL";
 	

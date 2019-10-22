@@ -771,6 +771,106 @@
 				</v8:item>
 			</title>
 		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>HVDisputeWithoutComments</dataPath>
+			<field>HVDisputeWithoutComments</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>HVDispute without comments</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>DTR</dataPath>
+			<field>DTR</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>DTR</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>DTD</dataPath>
+			<field>DTD</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>DTD</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>DTC</dataPath>
+			<field>DTC</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>DTC</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>ZeroToThirty</dataPath>
+			<field>ZeroToThirty</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Zero to thirty</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>ThirtyOneToSixty</dataPath>
+			<field>ThirtyOneToSixty</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Thirty one to sixty</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>SixtyOneToNinety</dataPath>
+			<field>SixtyOneToNinety</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Sixty one to ninety</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>NinetyOneToOneHundredEighty</dataPath>
+			<field>NinetyOneToOneHundredEighty</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Ninety one to one hundred eighty</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>MoreThanOneHundredEightyOne</dataPath>
+			<field>MoreThanOneHundredEightyOne</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>More than one hundred eighty one</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Violation</dataPath>
+			<field>Violation</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Violation</v8:content>
+				</v8:item>
+			</title>
+		</field>
 		<dataSource>ИсточникДанных1</dataSource>
 		<query>ВЫБРАТЬ
 	BilledARОстатки.Client КАК Client,
@@ -792,7 +892,7 @@
 	BilledARОстатки.ClientID КАК ClientID
 ПОМЕСТИТЬ ВТ_Остатки
 ИЗ
-	РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, Account.БазовыйЭлемент В ИЕРАРХИИ (&amp;СчетAR)) КАК BilledARОстатки
+	РегистрНакопления.BilledAR.Остатки({(&amp;ПериодОстатков)}, Account.БазовыйЭлемент В ИЕРАРХИИ (&amp;HFMBilledAccount)) КАК BilledARОстатки
 
 ОБЪЕДИНИТЬ ВСЕ
 
@@ -811,7 +911,7 @@
 	UnallocatedMemoОстатки.LegalEntity,
 	UnallocatedMemoОстатки.ClientID
 ИЗ
-	РегистрНакопления.UnallocatedMemo.Остатки({(&amp;ПериодОстатков)}, Account.БазовыйЭлемент В ИЕРАРХИИ (&amp;СчетAR)) КАК UnallocatedMemoОстатки
+	РегистрНакопления.UnallocatedMemo.Остатки({(&amp;ПериодОстатков)}, Account.БазовыйЭлемент В ИЕРАРХИИ (&amp;HFMBilledAccount)) КАК UnallocatedMemoОстатки
 
 ИНДЕКСИРОВАТЬ ПО
 	Invoice,
@@ -851,7 +951,7 @@
 	КОНЕЦ КАК НачисленИОплаченВТекущемПериоде
 ПОМЕСТИТЬ ВТ_ОборотыУчитываяОплаченные
 ИЗ
-	РегистрНакопления.BilledAR.Обороты({(&amp;ПериодОстатков)}, {(&amp;КонецДняФормированияОтчета)}, Запись, Account.БазовыйЭлемент В ИЕРАРХИИ (&amp;СчетAR)) КАК BilledARОбороты
+	РегистрНакопления.BilledAR.Обороты({(&amp;ПериодОстатков)}, {(&amp;КонецДняФормированияОтчета)}, Запись, Account.БазовыйЭлемент В ИЕРАРХИИ (&amp;HFMBilledAccount)) КАК BilledARОбороты
 ГДЕ
 	(BilledARОбороты.AmountОборот &lt;&gt; 0
 			ИЛИ BilledARОбороты.AmountПриход &lt;&gt; 0)
@@ -898,7 +998,7 @@
 	UnallocatedMemoОбороты.ClientID,
 	ЛОЖЬ
 ИЗ
-	РегистрНакопления.UnallocatedMemo.Обороты({(&amp;ПериодОстатков)}, {(&amp;КонецДняФормированияОтчета)}, , Account.БазовыйЭлемент В ИЕРАРХИИ (&amp;СчетAR)) КАК UnallocatedMemoОбороты
+	РегистрНакопления.UnallocatedMemo.Обороты({(&amp;ПериодОстатков)}, {(&amp;КонецДняФормированияОтчета)}, , Account.БазовыйЭлемент В ИЕРАРХИИ (&amp;HFMBilledAccount)) КАК UnallocatedMemoОбороты
 
 ИНДЕКСИРОВАТЬ ПО
 	Invoice,
@@ -1312,10 +1412,10 @@
 	ВТ_Остатки.Invoice.DueDateFrom КАК InvoiceDueDateFrom,
 	ВТ_Остатки.Invoice.DueDateTo КАК InvoiceDueDateTo,
 	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.StatusOfDispute, "") КАК InvoiceStatusOfDispute,
-	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.DisputeDistributedDate, "") КАК InvoiceDisputeDistributedDate,
-	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.DisputCollectableDate, "") КАК InvoiceDisputeCollectableDate,
-	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.DateIdentified, "") КАК DateIdentified,
-	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.DateEntered, "") КАК DateEntered,
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.DisputeDistributedDate, ДАТАВРЕМЯ(1, 1, 1)) КАК InvoiceDisputeDistributedDate,
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.DisputCollectableDate, ДАТАВРЕМЯ(1, 1, 1)) КАК InvoiceDisputeCollectableDate,
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.DateIdentified, ДАТАВРЕМЯ(1, 1, 1)) КАК DateIdentified,
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.DateEntered, ДАТАВРЕМЯ(1, 1, 1)) КАК DateEntered,
 	ВТ_Остатки.Invoice.Contract.AmendmentName КАК InvoiceContractAmendmentName,
 	ВЫБОР
 		КОГДА ВТ_Остатки.Invoice ССЫЛКА Документ.Invoice
@@ -1434,10 +1534,10 @@
 	ВТ_Остатки.Invoice.DueDateFrom,
 	ВТ_Остатки.Invoice.DueDateTo,
 	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.StatusOfDispute, ""),
-	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.DisputeDistributedDate, ""),
-	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.DisputCollectableDate, ""),
-	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.DateIdentified, ""),
-	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.DateEntered, ""),
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.DisputeDistributedDate, ДАТАВРЕМЯ(1, 1, 1)),
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.DisputCollectableDate, ДАТАВРЕМЯ(1, 1, 1)),
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.DateIdentified, ДАТАВРЕМЯ(1, 1, 1)),
+	ЕСТЬNULL(InvoiceCommentsСрезПоследних.Problem.DateEntered, ДАТАВРЕМЯ(1, 1, 1)),
 	ВТ_Остатки.Invoice.Contract.AmendmentName,
 	ЕСТЬNULL(ВнутренниеКурсыВалютСрезПоследних.Курс, 0),
 	ВЫБОР
@@ -2285,6 +2385,16 @@
 	ВТ_РассчитанныеРесурсыУровень6.InvoiceStatusOfDispute КАК InvoiceStatusOfDispute,
 	ВТ_РассчитанныеРесурсыУровень6.InvoiceDisputeDistributedDate КАК InvoiceDisputeDistributedDate,
 	ВТ_РассчитанныеРесурсыУровень6.InvoiceDisputeCollectableDate КАК InvoiceDisputeCollectableDate,
+	ВЫБОР
+		КОГДА ВТ_РассчитанныеРесурсыУровень6.Rate &lt;&gt; 0
+				И (ВТ_РассчитанныеРесурсыУровень6.OverdueDispute + ВТ_РассчитанныеРесурсыУровень6.OverdueNoFcst + ВТ_РассчитанныеРесурсыУровень6.UnderLitigation) / ВТ_РассчитанныеРесурсыУровень6.Rate &gt;= 100000
+				И (ВТ_РассчитанныеРесурсыУровень6.CustomerInputDetails = ""
+					ИЛИ ВТ_РассчитанныеРесурсыУровень6.SLBAssignedTo = ""
+					ИЛИ ВТ_РассчитанныеРесурсыУровень6.RWDTargetDate = ДАТАВРЕМЯ(1, 1, 1)
+					ИЛИ ВТ_РассчитанныеРесурсыУровень6.InvoiceStatusOfDispute = ЗНАЧЕНИЕ(Перечисление.StatusesOfDispute.ПустаяСсылка))
+			ТОГДА (ВТ_РассчитанныеРесурсыУровень6.OverdueDispute + ВТ_РассчитанныеРесурсыУровень6.OverdueNoFcst + ВТ_РассчитанныеРесурсыУровень6.UnderLitigation) / ВТ_РассчитанныеРесурсыУровень6.Rate
+		ИНАЧЕ 0
+	КОНЕЦ КАК HVDisputeWithoutComments,
 	ВТ_РассчитанныеРесурсыУровень6.DateEntered КАК DateEntered,
 	ВТ_РассчитанныеРесурсыУровень6.DateIdentified КАК DateIdentified,
 	ВТ_РассчитанныеРесурсыУровень6.InvoiceContractAmendmentName КАК InvoiceContractAmendmentName,
@@ -2381,9 +2491,165 @@
 	КОНЕЦ КАК PotentialRisk,
 	ВТ_РассчитанныеРесурсыУровень6.StatusOfDebt КАК StatusOfDebt,
 	ВТ_РассчитанныеРесурсыУровень6.DebtAmount КАК DebtAmount,
-	ВТ_РассчитанныеРесурсыУровень6.Paid + ВТ_РассчитанныеРесурсыУровень6.FcstCollect + ВТ_РассчитанныеРесурсыУровень6.OverdueNoFcst + ВТ_РассчитанныеРесурсыУровень6.OverdueDispute + ВТ_РассчитанныеРесурсыУровень6.NoFrcst + ВТ_РассчитанныеРесурсыУровень6.InRangeNoColl + ВТ_РассчитанныеРесурсыУровень6.NotDue + ВТ_РассчитанныеРесурсыУровень6.UnderLitigation КАК ИндикаторОшибки
+	ВТ_РассчитанныеРесурсыУровень6.Paid + ВТ_РассчитанныеРесурсыУровень6.FcstCollect + ВТ_РассчитанныеРесурсыУровень6.OverdueNoFcst + ВТ_РассчитанныеРесурсыУровень6.OverdueDispute + ВТ_РассчитанныеРесурсыУровень6.NoFrcst + ВТ_РассчитанныеРесурсыУровень6.InRangeNoColl + ВТ_РассчитанныеРесурсыУровень6.NotDue + ВТ_РассчитанныеРесурсыУровень6.UnderLitigation КАК ИндикаторОшибки,
+	ВЫБОР
+		КОГДА ВТ_РассчитанныеРесурсыУровень6.Client.TCC = ИСТИНА
+				И ВТ_РассчитанныеРесурсыУровень6.InvoiceFiscalInvoiceDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
+				И (РАЗНОСТЬДАТ(ВТ_РассчитанныеРесурсыУровень6.InvoiceFiscalInvoiceDate, &amp;КонецДняФормированияОтчета, ДЕНЬ) МЕЖДУ 0 И 30)
+			ТОГДА ВЫРАЗИТЬ(ВТ_РассчитанныеРесурсыУровень6.USDAmount КАК ЧИСЛО(15, 2))
+		ИНАЧЕ 0
+	КОНЕЦ КАК ZeroToThirty,
+	ВЫБОР
+		КОГДА ВТ_РассчитанныеРесурсыУровень6.Client.TCC = ИСТИНА
+				И ВТ_РассчитанныеРесурсыУровень6.InvoiceFiscalInvoiceDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
+				И (РАЗНОСТЬДАТ(ВТ_РассчитанныеРесурсыУровень6.InvoiceFiscalInvoiceDate, &amp;КонецДняФормированияОтчета, ДЕНЬ) МЕЖДУ 31 И 60)
+			ТОГДА ВЫРАЗИТЬ(ВТ_РассчитанныеРесурсыУровень6.USDAmount КАК ЧИСЛО(15, 2))
+		ИНАЧЕ 0
+	КОНЕЦ КАК ThirtyOneToSixty,
+	ВЫБОР
+		КОГДА ВТ_РассчитанныеРесурсыУровень6.Client.TCC = ИСТИНА
+				И ВТ_РассчитанныеРесурсыУровень6.InvoiceFiscalInvoiceDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
+				И (РАЗНОСТЬДАТ(ВТ_РассчитанныеРесурсыУровень6.InvoiceFiscalInvoiceDate, &amp;КонецДняФормированияОтчета, ДЕНЬ) МЕЖДУ 61 И 90)
+			ТОГДА ВЫРАЗИТЬ(ВТ_РассчитанныеРесурсыУровень6.USDAmount КАК ЧИСЛО(15, 2))
+		ИНАЧЕ 0
+	КОНЕЦ КАК SixtyOneToNinety,
+	ВЫБОР
+		КОГДА ВТ_РассчитанныеРесурсыУровень6.Client.TCC = ИСТИНА
+				И ВТ_РассчитанныеРесурсыУровень6.InvoiceFiscalInvoiceDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
+				И (РАЗНОСТЬДАТ(ВТ_РассчитанныеРесурсыУровень6.InvoiceFiscalInvoiceDate, &amp;КонецДняФормированияОтчета, ДЕНЬ) МЕЖДУ 91 И 180)
+			ТОГДА ВЫРАЗИТЬ(ВТ_РассчитанныеРесурсыУровень6.USDAmount КАК ЧИСЛО(15, 2))
+		ИНАЧЕ 0
+	КОНЕЦ КАК NinetyOneToOneHundredEighty,
+	ВЫБОР
+		КОГДА ВТ_РассчитанныеРесурсыУровень6.Client.TCC = ИСТИНА
+				И ВТ_РассчитанныеРесурсыУровень6.InvoiceFiscalInvoiceDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
+				И РАЗНОСТЬДАТ(ВТ_РассчитанныеРесурсыУровень6.InvoiceFiscalInvoiceDate, &amp;КонецДняФормированияОтчета, ДЕНЬ) &gt;= 181
+			ТОГДА ВЫРАЗИТЬ(ВТ_РассчитанныеРесурсыУровень6.USDAmount КАК ЧИСЛО(15, 2))
+		ИНАЧЕ 0
+	КОНЕЦ КАК MoreThanOneHundredEightyOne,
+	ВЫБОР
+		КОГДА ВТ_РассчитанныеРесурсыУровень6.Client.TCC = ИСТИНА
+				И ВТ_РассчитанныеРесурсыУровень6.InvoiceDueDateTo &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
+				И ВТ_РассчитанныеРесурсыУровень6.InvoiceDueDateTo &lt; &amp;КонецДняФормированияОтчета
+			ТОГДА ИСТИНА
+		ИНАЧЕ ЛОЖЬ
+	КОНЕЦ КАК Violation
+ПОМЕСТИТЬ ВТ_РассчитанныеРесурсыУровень7
 ИЗ
-	ВТ_РассчитанныеРесурсыУровень6 КАК ВТ_РассчитанныеРесурсыУровень6</query>
+	ВТ_РассчитанныеРесурсыУровень6 КАК ВТ_РассчитанныеРесурсыУровень6
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	ВТ_РассчитанныеРесурсыУровень7.Client КАК Client,
+	ВТ_РассчитанныеРесурсыУровень7.Company КАК Company,
+	ВТ_РассчитанныеРесурсыУровень7.Source КАК Source,
+	ВТ_РассчитанныеРесурсыУровень7.Location КАК Location,
+	ВТ_РассчитанныеРесурсыУровень7.SubSubSegment КАК SubSubSegment,
+	ВТ_РассчитанныеРесурсыУровень7.Account КАК Account,
+	ВТ_РассчитанныеРесурсыУровень7.Currency КАК Currency,
+	ВТ_РассчитанныеРесурсыУровень7.AU КАК AU,
+	ВТ_РассчитанныеРесурсыУровень7.ИдентификаторКлиента КАК ИдентификаторКлиента,
+	ВТ_РассчитанныеРесурсыУровень7.AmountОстаток КАК AmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень7.BaseAmountОстаток КАК BaseAmountОстаток,
+	ВТ_РассчитанныеРесурсыУровень7.Corporate КАК Corporate,
+	ВТ_РассчитанныеРесурсыУровень7.Rate КАК Rate,
+	ВТ_РассчитанныеРесурсыУровень7.Status КАК Status,
+	ВТ_РассчитанныеРесурсыУровень7.ConfirmedBy КАК ConfirmedBy,
+	ВТ_РассчитанныеРесурсыУровень7.Comment КАК Comment,
+	ВТ_РассчитанныеРесурсыУровень7.ПредставлениеДокумента КАК ПредставлениеДокумента,
+	ВТ_РассчитанныеРесурсыУровень7.ForecastDate КАК ForecastDate,
+	ВТ_РассчитанныеРесурсыУровень7.CustInputDate КАК CustInputDate,
+	ВТ_РассчитанныеРесурсыУровень7.CustomerRepresentative КАК CustomerRepresentative,
+	ВТ_РассчитанныеРесурсыУровень7.CustomerInputDetails КАК CustomerInputDetails,
+	ВТ_РассчитанныеРесурсыУровень7.SLBAssignedTo КАК SLBAssignedTo,
+	ВТ_РассчитанныеРесурсыУровень7.RemedialWorkPlan КАК RemedialWorkPlan,
+	ВТ_РассчитанныеРесурсыУровень7.RWDTargetDate КАК RWDTargetDate,
+	ВТ_РассчитанныеРесурсыУровень7.InvoiceДатаВозвратаКС КАК InvoiceДатаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень7.InvoiceДатаОтправкиКС КАК InvoiceДатаОтправкиКС,
+	ВТ_РассчитанныеРесурсыУровень7.InvoiceСтатусВозвратаКС КАК InvoiceСтатусВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень7.InvoiceКомментарийСтатусаВозвратаКС КАК InvoiceКомментарийСтатусаВозвратаКС,
+	ВТ_РассчитанныеРесурсыУровень7.Agreement КАК Agreement,
+	ВТ_РассчитанныеРесурсыУровень7.InvoiceНомер КАК InvoiceНомер,
+	ВТ_РассчитанныеРесурсыУровень7.InvoiceНомерДокумента КАК InvoiceНомерДокумента,
+	ВТ_РассчитанныеРесурсыУровень7.InvoiceДата КАК InvoiceДата,
+	ВТ_РассчитанныеРесурсыУровень7.InvoiceFiscalInvoiceNo КАК InvoiceFiscalInvoiceNo,
+	ВТ_РассчитанныеРесурсыУровень7.InvoiceFiscalInvoiceDate КАК InvoiceFiscalInvoiceDate,
+	ВТ_РассчитанныеРесурсыУровень7.InvoiceAmount КАК InvoiceAmount,
+	ВТ_РассчитанныеРесурсыУровень7.InvoiceContractTrigger КАК InvoiceContractTrigger,
+	ВТ_РассчитанныеРесурсыУровень7.InvoiceTriggerDate КАК InvoiceTriggerDate,
+	ВТ_РассчитанныеРесурсыУровень7.InvoiceContractPTDaysFrom КАК InvoiceContractPTDaysFrom,
+	ВТ_РассчитанныеРесурсыУровень7.InvoiceContractСрокОплаты КАК InvoiceContractСрокОплаты,
+	ВТ_РассчитанныеРесурсыУровень7.InvoiceDueDateFrom КАК InvoiceDueDateFrom,
+	ВТ_РассчитанныеРесурсыУровень7.InvoiceDueDateTo КАК InvoiceDueDateTo,
+	ВТ_РассчитанныеРесурсыУровень7.InvoiceStatusOfDispute КАК InvoiceStatusOfDispute,
+	ВТ_РассчитанныеРесурсыУровень7.InvoiceDisputeDistributedDate КАК InvoiceDisputeDistributedDate,
+	ВТ_РассчитанныеРесурсыУровень7.InvoiceDisputeCollectableDate КАК InvoiceDisputeCollectableDate,
+	ВЫБОР
+		КОГДА ВТ_РассчитанныеРесурсыУровень7.DateIdentified &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
+				И ВТ_РассчитанныеРесурсыУровень7.OverdueDispute &lt;&gt; 0
+			ТОГДА ВЫБОР
+					КОГДА ВТ_РассчитанныеРесурсыУровень7.InvoiceDisputeDistributedDate = ДАТАВРЕМЯ(1, 1, 1)
+						ТОГДА РАЗНОСТЬДАТ(ВТ_РассчитанныеРесурсыУровень7.DateIdentified, &amp;Период, ДЕНЬ)
+					ИНАЧЕ РАЗНОСТЬДАТ(ВТ_РассчитанныеРесурсыУровень7.DateIdentified, ВТ_РассчитанныеРесурсыУровень7.InvoiceDisputeDistributedDate, ДЕНЬ)
+				КОНЕЦ
+		ИНАЧЕ 0
+	КОНЕЦ КАК DTD,
+	ВЫБОР
+		КОГДА ВТ_РассчитанныеРесурсыУровень7.OverdueDispute &lt;&gt; 0
+				И НЕ(ВТ_РассчитанныеРесурсыУровень7.InvoiceDisputeCollectableDate = ДАТАВРЕМЯ(1, 1, 1)
+						ИЛИ ВТ_РассчитанныеРесурсыУровень7.InvoiceDisputeDistributedDate = ДАТАВРЕМЯ(1, 1, 1))
+			ТОГДА РАЗНОСТЬДАТ(ВТ_РассчитанныеРесурсыУровень7.InvoiceDisputeDistributedDate, ВТ_РассчитанныеРесурсыУровень7.InvoiceDisputeCollectableDate, ДЕНЬ)
+		ИНАЧЕ 0
+	КОНЕЦ КАК DTR,
+	ВЫБОР
+		КОГДА ВТ_РассчитанныеРесурсыУровень7.PaymentDate = ДАТАВРЕМЯ(1, 1, 1)
+				ИЛИ ВТ_РассчитанныеРесурсыУровень7.InvoiceDisputeCollectableDate = ДАТАВРЕМЯ(1, 1, 1)
+			ТОГДА 0
+		ИНАЧЕ РАЗНОСТЬДАТ(ВТ_РассчитанныеРесурсыУровень7.InvoiceDisputeCollectableDate, ВТ_РассчитанныеРесурсыУровень7.PaymentDate, ДЕНЬ)
+	КОНЕЦ КАК DTC,
+	ВТ_РассчитанныеРесурсыУровень7.HVDisputeWithoutComments КАК HVDisputeWithoutComments,
+	ВТ_РассчитанныеРесурсыУровень7.DateEntered КАК DateEntered,
+	ВТ_РассчитанныеРесурсыУровень7.DateIdentified КАК DateIdentified,
+	ВТ_РассчитанныеРесурсыУровень7.InvoiceContractAmendmentName КАК InvoiceContractAmendmentName,
+	ВТ_РассчитанныеРесурсыУровень7.TransType КАК TransType,
+	ВТ_РассчитанныеРесурсыУровень7.Paid КАК Paid,
+	ВТ_РассчитанныеРесурсыУровень7.PaymentDate КАК PaymentDate,
+	ВТ_РассчитанныеРесурсыУровень7.BrokenPromises КАК BrokenPromises,
+	ВТ_РассчитанныеРесурсыУровень7.EscalationSent КАК EscalationSent,
+	ВТ_РассчитанныеРесурсыУровень7.LegalEntity КАК LegalEntity,
+	ВТ_РассчитанныеРесурсыУровень7.USDAmount КАК USDAmount,
+	ВТ_РассчитанныеРесурсыУровень7.DueFrom КАК DueFrom,
+	ВТ_РассчитанныеРесурсыУровень7.DueTo КАК DueTo,
+	ВТ_РассчитанныеРесурсыУровень7.UnderLitigation КАК UnderLitigation,
+	ВТ_РассчитанныеРесурсыУровень7.NoFrcst КАК NoFrcst,
+	ВТ_РассчитанныеРесурсыУровень7.FcstCollect КАК FcstCollect,
+	ВТ_РассчитанныеРесурсыУровень7.OverdueDispute КАК OverdueDispute,
+	ВТ_РассчитанныеРесурсыУровень7.OverdueNoFcst КАК OverdueNoFcst,
+	ВТ_РассчитанныеРесурсыУровень7.InRangeNoColl КАК InRangeNoColl,
+	ВТ_РассчитанныеРесурсыУровень7.NotDue КАК NotDue,
+	ВТ_РассчитанныеРесурсыУровень7.Collector КАК Collector,
+	ВТ_РассчитанныеРесурсыУровень7.Invoice КАК Invoice,
+	ВТ_РассчитанныеРесурсыУровень7.LocationHFM КАК LocationHFM,
+	ВТ_РассчитанныеРесурсыУровень7.SegmentHFM КАК SegmentHFM,
+	ВТ_РассчитанныеРесурсыУровень7.ProductGroup КАК ProductGroup,
+	ВТ_РассчитанныеРесурсыУровень7.MgmtGeomarket КАК MgmtGeomarket,
+	ВТ_РассчитанныеРесурсыУровень7.SubSegment КАК SubSegment,
+	ВТ_РассчитанныеРесурсыУровень7.GeoMarket КАК GeoMarket,
+	ВТ_РассчитанныеРесурсыУровень7.CompanyHFM КАК CompanyHFM,
+	ВТ_РассчитанныеРесурсыУровень7.PotentialForecast КАК PotentialForecast,
+	ВТ_РассчитанныеРесурсыУровень7.PotentialRisk КАК PotentialRisk,
+	ВТ_РассчитанныеРесурсыУровень7.StatusOfDebt КАК StatusOfDebt,
+	ВТ_РассчитанныеРесурсыУровень7.DebtAmount КАК DebtAmount,
+	ВТ_РассчитанныеРесурсыУровень7.ИндикаторОшибки КАК ИндикаторОшибки,
+	ВТ_РассчитанныеРесурсыУровень7.ZeroToThirty КАК ZeroToThirty,
+	ВТ_РассчитанныеРесурсыУровень7.ThirtyOneToSixty КАК ThirtyOneToSixty,
+	ВТ_РассчитанныеРесурсыУровень7.SixtyOneToNinety КАК SixtyOneToNinety,
+	ВТ_РассчитанныеРесурсыУровень7.NinetyOneToOneHundredEighty КАК NinetyOneToOneHundredEighty,
+	ВТ_РассчитанныеРесурсыУровень7.MoreThanOneHundredEightyOne КАК MoreThanOneHundredEightyOne,
+	ВТ_РассчитанныеРесурсыУровень7.Violation КАК Violation
+ИЗ
+	ВТ_РассчитанныеРесурсыУровень7 КАК ВТ_РассчитанныеРесурсыУровень7</query>
 	</dataSet>
 	<calculatedField>
 		<dataPath>BaseAmountОстатокМодуль</dataPath>
@@ -2415,6 +2681,16 @@
 			<v8:item>
 				<v8:lang>ru</v8:lang>
 				<v8:content>Overdue not forecasted</v8:content>
+			</v8:item>
+		</title>
+	</calculatedField>
+	<calculatedField>
+		<dataPath>FourteenDaysBeforeDateTo</dataPath>
+		<expression>Выбор Когда Не InvoiceDueDateTo Есть NULL Тогда ДОБАВИТЬКДАТЕ(InvoiceDueDateTo, "ДЕНЬ", -14) Иначе ДАТАВРЕМЯ(2050,02,02) Конец</expression>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Fourteen days before date to</v8:content>
 			</v8:item>
 		</title>
 	</calculatedField>
@@ -2636,22 +2912,6 @@
 		<use>Always</use>
 	</parameter>
 	<parameter>
-		<name>СчетAR</name>
-		<title xsi:type="v8:LocalStringType">
-			<v8:item>
-				<v8:lang>ru</v8:lang>
-				<v8:content>Счет AR</v8:content>
-			</v8:item>
-		</title>
-		<valueType>
-			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:ChartOfAccountsRef.HFM_GL_Accounts</v8:Type>
-		</valueType>
-		<value xsi:nil="true"/>
-		<useRestriction>true</useRestriction>
-		<expression>rgsНастройкаКонфигурацииПовтИсп.ПолучитьЗначениеНастройки("СчетARВерхнегоУровня")</expression>
-		<valueListAllowed>true</valueListAllowed>
-	</parameter>
-	<parameter>
 		<name>ОбнулятьForecastCollectBefore10</name>
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
@@ -2702,6 +2962,22 @@
 		<useRestriction>true</useRestriction>
 		<valueListAllowed>true</valueListAllowed>
 	</parameter>
+	<parameter>
+		<name>HFMBilledAccount</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>HFMBilled account</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type xmlns:d4p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d4p1:ChartOfAccountsRef.HFM_GL_Accounts</v8:Type>
+		</valueType>
+		<value xsi:nil="true"/>
+		<useRestriction>true</useRestriction>
+		<expression>rgsНастройкаКонфигурацииПовтИсп.ПолучитьЗначениеНастройки("СчетHFMBilled")</expression>
+		<valueListAllowed>true</valueListAllowed>
+	</parameter>
 	<settingsVariant>
 		<dcsset:name>Основной</dcsset:name>
 		<dcsset:presentation xsi:type="v8:LocalStringType">
@@ -2712,6 +2988,10 @@
 		</dcsset:presentation>
 		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
 			<dcsset:selection>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:use>false</dcsset:use>
+					<dcsset:field>Company</dcsset:field>
+				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>Company.Наименование</dcsset:field>
 					<dcsset:lwsTitle>
@@ -2731,11 +3011,20 @@
 					<dcsset:field>BU</dcsset:field>
 				</dcsset:item>
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>Location.БазовыйЭлемент.GeoMarket.ManagementGeomarket</dcsset:field>
+					<dcsset:field>MgmtGeomarket</dcsset:field>
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>Geo Market</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>SegmentHFM</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Segment</v8:content>
 						</v8:item>
 					</dcsset:lwsTitle>
 				</dcsset:item>
@@ -2745,15 +3034,6 @@
 						<v8:item>
 							<v8:lang>ru</v8:lang>
 							<v8:content>Sub Geo Market</v8:content>
-						</v8:item>
-					</dcsset:lwsTitle>
-				</dcsset:item>
-				<dcsset:item xsi:type="dcsset:SelectedItemField">
-					<dcsset:field>SubSubSegment.БазовыйЭлемент.Родитель.Родитель</dcsset:field>
-					<dcsset:lwsTitle>
-						<v8:item>
-							<v8:lang>ru</v8:lang>
-							<v8:content>Segment</v8:content>
 						</v8:item>
 					</dcsset:lwsTitle>
 				</dcsset:item>
@@ -3141,6 +3421,24 @@
 				<dcsset:item xsi:type="dcsset:SelectedItemField">
 					<dcsset:field>EscalationSent</dcsset:field>
 				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>DateEntered</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>DateIdentified</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>DTD</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>DTR</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>DTC</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>HVDisputeWithoutComments</dcsset:field>
+				</dcsset:item>
 			</dcsset:selection>
 			<dcsset:filter>
 				<dcsset:item xsi:type="dcsset:FilterItemComparison">
@@ -3285,6 +3583,10 @@
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>РасположениеРеквизитов</dcscor:parameter>
 					<dcscor:value xsi:type="dcsset:DataCompositionAttributesPlacement">Separately</dcscor:value>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>ВертикальноеРасположениеОбщихИтогов</dcscor:parameter>
+					<dcscor:value xsi:type="dcscor:DataCompositionTotalPlacement">Begin</dcscor:value>
 				</dcscor:item>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>ВыводитьПараметрыДанных</dcscor:parameter>
@@ -3639,6 +3941,1156 @@
 						<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
 					</dcsset:item>
 				</dcsset:groupItems>
+				<dcsset:order>
+					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
+				</dcsset:order>
+				<dcsset:selection>
+					<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
+				</dcsset:selection>
+			</dcsset:item>
+		</dcsset:settings>
+	</settingsVariant>
+	<settingsVariant>
+		<dcsset:name>Служебный</dcsset:name>
+		<dcsset:presentation xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Служебный</v8:content>
+			</v8:item>
+		</dcsset:presentation>
+		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+			<dcsset:selection>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Company</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Company.Наименование</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Company</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>LegalEntity</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Source</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>BU</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>MgmtGeomarket</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Geo Market</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>SegmentHFM</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Segment</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Location.БазовыйЭлемент.GeoMarket</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Sub Geo Market</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>ИдентификаторКлиента</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Customer ID</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Client.CRMID</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>CRM ID</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Client</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Corporate</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Corporate</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Collector</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Collector</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Account</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>AU</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>TransType</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceНомер</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Invoice No</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceДата</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Date</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceFiscalInvoiceNo</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Fiscal invoice number</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceFiscalInvoiceDate</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Fiscal invoice date</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Currency</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemFolder">
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Invoice / Transaction Amount</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+					<dcsset:item xsi:type="dcsset:SelectedItemField">
+						<dcsset:field>InvoiceAmount</dcsset:field>
+						<dcsset:lwsTitle>
+							<v8:item>
+								<v8:lang>ru</v8:lang>
+								<v8:content>Amount</v8:content>
+							</v8:item>
+						</dcsset:lwsTitle>
+					</dcsset:item>
+					<dcsset:placement>Horizontally</dcsset:placement>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemFolder">
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Remaining Amount</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+					<dcsset:item xsi:type="dcsset:SelectedItemField">
+						<dcsset:field>AmountОстаток</dcsset:field>
+						<dcsset:lwsTitle>
+							<v8:item>
+								<v8:lang>ru</v8:lang>
+								<v8:content>Amount</v8:content>
+							</v8:item>
+						</dcsset:lwsTitle>
+					</dcsset:item>
+					<dcsset:placement>Horizontally</dcsset:placement>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>USDAmount</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Rate</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Rate</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Agreement</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Agreement</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceContractAmendmentName</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Additional agreement/Work order</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceContractTrigger</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Trigger</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceДатаОтправкиКС</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>KS Departure date</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceДатаВозвратаКС</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>KS Return date</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceTriggerDate</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Trigger date</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceContractPTDaysFrom</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>PT From</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceContractСрокОплаты</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>PT To</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceDueDateFrom</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Date From</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceDueDateTo</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Date To</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>DueFrom</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>DueTo</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Status</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Status</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>ConfirmedBy</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Confirmed By</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>PotentialForecast</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>PotentialRisk</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>ForecastDate</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Forecast Date</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>PaymentDate</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Paid</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>FcstCollect</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InRangeNoColl</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>OverdueDispute</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>OverdueNoFcst</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>NotDue</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>NoFrcst</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>UnderLitigation</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Under Litigation</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>CustInputDate</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>CustomerRepresentative</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>CustomerInputDetails</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>SLBAssignedTo</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Assigned To</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>RemedialWorkPlan</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>RWDTargetDate</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>RWD Deadline</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceStatusOfDispute</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Status of dispute</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceDisputeDistributedDate</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Dispute Distributed date</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceDisputeCollectableDate</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Dispute Collectable date</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>DateEntered</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>DateIdentified</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceКомментарийСтатусаВозвратаКС</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>KS Comment return status</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceСтатусВозвратаКС</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>KS Return status</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>BrokenPromises</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>EscalationSent</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>DateEntered</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>DateIdentified</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>OverdueNotFcsted</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Comment</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>ProductGroup</dcsset:field>
+				</dcsset:item>
+			</dcsset:selection>
+			<dcsset:filter>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:use>false</dcsset:use>
+					<dcsset:left xsi:type="dcscor:Field">Source</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:userSettingID>a775f9fe-a968-47fc-a695-0791acdd4a9f</dcsset:userSettingID>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:left xsi:type="dcscor:Field">BaseAmountОстатокМодуль</dcsset:left>
+					<dcsset:comparisonType>GreaterOrEqual</dcsset:comparisonType>
+					<dcsset:right xsi:type="xs:decimal">1</dcsset:right>
+					<dcsset:userSettingID>ae204ac2-e755-4e99-8612-94c63e0a17bf</dcsset:userSettingID>
+					<dcsset:userSettingPresentation xsi:type="v8:LocalStringType">
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Remaining USD Amount</v8:content>
+						</v8:item>
+					</dcsset:userSettingPresentation>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemGroup">
+					<dcsset:groupType>NotGroup</dcsset:groupType>
+					<dcsset:item xsi:type="dcsset:FilterItemGroup">
+						<dcsset:groupType>AndGroup</dcsset:groupType>
+						<dcsset:item xsi:type="dcsset:FilterItemComparison">
+							<dcsset:left xsi:type="dcscor:Field">Invoice.Agreement</dcsset:left>
+							<dcsset:comparisonType>Equal</dcsset:comparisonType>
+							<dcsset:right xsi:type="xs:string">VAT Reclass</dcsset:right>
+						</dcsset:item>
+						<dcsset:item xsi:type="dcsset:FilterItemComparison">
+							<dcsset:left xsi:type="dcscor:Field">Source</dcsset:left>
+							<dcsset:comparisonType>Equal</dcsset:comparisonType>
+							<dcsset:right xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.Radius</dcsset:right>
+						</dcsset:item>
+					</dcsset:item>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemGroup">
+					<dcsset:groupType>NotGroup</dcsset:groupType>
+					<dcsset:item xsi:type="dcsset:FilterItemGroup">
+						<dcsset:groupType>AndGroup</dcsset:groupType>
+						<dcsset:item xsi:type="dcsset:FilterItemComparison">
+							<dcsset:left xsi:type="dcscor:Field">Source</dcsset:left>
+							<dcsset:comparisonType>Equal</dcsset:comparisonType>
+							<dcsset:right xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.Lawson</dcsset:right>
+						</dcsset:item>
+						<dcsset:item xsi:type="dcsset:FilterItemComparison">
+							<dcsset:left xsi:type="dcscor:Field">Account</dcsset:left>
+							<dcsset:comparisonType>Equal</dcsset:comparisonType>
+							<dcsset:right xsi:type="dcscor:DesignTimeValue">ПланСчетов.Lawson.CustomerRecFactoredTrans</dcsset:right>
+						</dcsset:item>
+					</dcsset:item>
+				</dcsset:item>
+			</dcsset:filter>
+			<dcsset:dataParameters>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>Период</dcscor:parameter>
+					<dcscor:value xsi:type="v8:StandardBeginningDate">
+						<v8:variant xsi:type="v8:StandardBeginningDateVariant">BeginningOfNextDay</v8:variant>
+					</dcscor:value>
+					<dcsset:userSettingID>6a13f980-6f34-4eea-91c0-a7e9314c4df5</dcsset:userSettingID>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:use>false</dcscor:use>
+					<dcscor:parameter>ОтображатьНачисленияВRemAmountДляBilledCurMonth</dcscor:parameter>
+					<dcscor:value xsi:type="xs:boolean">false</dcscor:value>
+					<dcsset:userSettingID>ec61421b-d645-4a43-8aa3-e212c24df3bb</dcsset:userSettingID>
+					<dcsset:userSettingPresentation xsi:type="v8:LocalStringType">
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Billed current month in Rem amount</v8:content>
+						</v8:item>
+					</dcsset:userSettingPresentation>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:use>false</dcscor:use>
+					<dcscor:parameter>СчетAR</dcscor:parameter>
+					<dcscor:value xsi:nil="true"/>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>ОбнулятьForecastCollectBefore10</dcscor:parameter>
+					<dcscor:value xsi:type="xs:boolean">false</dcscor:value>
+					<dcsset:userSettingID>16c049e0-9d3e-43b4-b20d-97e274e092f4</dcsset:userSettingID>
+					<dcsset:userSettingPresentation xsi:type="v8:LocalStringType">
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Zero -10/+10 USD values</v8:content>
+						</v8:item>
+					</dcsset:userSettingPresentation>
+				</dcscor:item>
+			</dcsset:dataParameters>
+			<dcsset:conditionalAppearance>
+				<dcsset:item>
+					<dcsset:selection>
+						<dcsset:item>
+							<dcsset:field>ПользовательскиеПоля.Поле1</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>ПользовательскиеПоля.Поле2</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>ПользовательскиеПоля.Поле3</dcsset:field>
+						</dcsset:item>
+					</dcsset:selection>
+					<dcsset:filter/>
+					<dcsset:appearance>
+						<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+							<dcscor:parameter>Формат</dcscor:parameter>
+							<dcscor:value xsi:type="v8:LocalStringType">
+								<v8:item>
+									<v8:lang>ru</v8:lang>
+									<v8:content>ЧДЦ=2; ДФ=ДФ=MM/dd/yyyy</v8:content>
+								</v8:item>
+							</dcscor:value>
+						</dcscor:item>
+					</dcsset:appearance>
+				</dcsset:item>
+				<dcsset:item>
+					<dcsset:selection>
+						<dcsset:item>
+							<dcsset:field>InvoiceДата</dcsset:field>
+						</dcsset:item>
+					</dcsset:selection>
+					<dcsset:filter/>
+					<dcsset:appearance>
+						<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+							<dcscor:parameter>Формат</dcscor:parameter>
+							<dcscor:value xsi:type="v8:LocalStringType">
+								<v8:item>
+									<v8:lang>ru</v8:lang>
+									<v8:content>ДФ=MM/dd/yyyy</v8:content>
+								</v8:item>
+							</dcscor:value>
+						</dcscor:item>
+					</dcsset:appearance>
+				</dcsset:item>
+			</dcsset:conditionalAppearance>
+			<dcsset:outputParameters>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>МакетОформления</dcscor:parameter>
+					<dcscor:value xsi:type="xs:string">Море</dcscor:value>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>РасположениеРеквизитов</dcscor:parameter>
+					<dcscor:value xsi:type="dcsset:DataCompositionAttributesPlacement">Separately</dcscor:value>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>ВертикальноеРасположениеОбщихИтогов</dcscor:parameter>
+					<dcscor:value xsi:type="dcscor:DataCompositionTotalPlacement">Begin</dcscor:value>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>ВыводитьПараметрыДанных</dcscor:parameter>
+					<dcscor:value xsi:type="dcsset:DataCompositionTextOutputType">DontOutput</dcscor:value>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>ВыводитьОтбор</dcscor:parameter>
+					<dcscor:value xsi:type="dcsset:DataCompositionTextOutputType">DontOutput</dcscor:value>
+				</dcscor:item>
+			</dcsset:outputParameters>
+			<dcsset:item xsi:type="dcsset:StructureItemGroup">
+				<dcsset:order>
+					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
+				</dcsset:order>
+				<dcsset:selection>
+					<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
+				</dcsset:selection>
+			</dcsset:item>
+		</dcsset:settings>
+	</settingsVariant>
+	<settingsVariant>
+		<dcsset:name>TCCClientsViolation</dcsset:name>
+		<dcsset:presentation xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>TCC Clients Violation</v8:content>
+			</v8:item>
+		</dcsset:presentation>
+		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+			<dcsset:selection>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Client.CRMID</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>CRM ID</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Client</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Corporate</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceНомер</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Invoice No</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceДата</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Date</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceFiscalInvoiceNo</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Fiscal Invoice No</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceFiscalInvoiceDate</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Fiscal Invoice Date</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Currency</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemFolder">
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Invoice / Transaction Amount</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+					<dcsset:item xsi:type="dcsset:SelectedItemField">
+						<dcsset:field>InvoiceAmount</dcsset:field>
+						<dcsset:lwsTitle>
+							<v8:item>
+								<v8:lang>ru</v8:lang>
+								<v8:content>Amount</v8:content>
+							</v8:item>
+						</dcsset:lwsTitle>
+					</dcsset:item>
+					<dcsset:placement>Horizontally</dcsset:placement>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemFolder">
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Remaining Amount</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+					<dcsset:item xsi:type="dcsset:SelectedItemField">
+						<dcsset:field>AmountОстаток</dcsset:field>
+						<dcsset:lwsTitle>
+							<v8:item>
+								<v8:lang>ru</v8:lang>
+								<v8:content>Amount</v8:content>
+							</v8:item>
+						</dcsset:lwsTitle>
+					</dcsset:item>
+					<dcsset:placement>Horizontally</dcsset:placement>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>USDAmount</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Rate</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Agreement</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceContractTrigger</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Trigger</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceTriggerDate</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Trigger date</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceContractPTDaysFrom</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>PT From</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceContractСрокОплаты</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>PT To</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceDueDateFrom</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Date From</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>InvoiceDueDateTo</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Date To</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>ZeroToThirty</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>0 - 30</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>ThirtyOneToSixty</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>31 - 60</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>SixtyOneToNinety</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>61 - 90</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>NinetyOneToOneHundredEighty</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>91 - 180</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>MoreThanOneHundredEightyOne</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>181 and more</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Violation</dcsset:field>
+				</dcsset:item>
+			</dcsset:selection>
+			<dcsset:filter>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:left xsi:type="dcscor:Field">Client.TCC</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:right xsi:type="xs:boolean">true</dcsset:right>
+					<dcsset:viewMode>Inaccessible</dcsset:viewMode>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:use>false</dcsset:use>
+					<dcsset:left xsi:type="dcscor:Field">Source</dcsset:left>
+					<dcsset:comparisonType>Equal</dcsset:comparisonType>
+					<dcsset:userSettingID>b1b2d5d2-0029-44d4-9687-a2e70e564215</dcsset:userSettingID>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemComparison">
+					<dcsset:left xsi:type="dcscor:Field">BaseAmountОстатокМодуль</dcsset:left>
+					<dcsset:comparisonType>GreaterOrEqual</dcsset:comparisonType>
+					<dcsset:right xsi:type="xs:decimal">1</dcsset:right>
+					<dcsset:userSettingID>ebaf327f-f62e-4a5b-9f12-e8303c032a3b</dcsset:userSettingID>
+					<dcsset:userSettingPresentation xsi:type="v8:LocalStringType">
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Remaining USD Amount</v8:content>
+						</v8:item>
+					</dcsset:userSettingPresentation>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemGroup">
+					<dcsset:groupType>NotGroup</dcsset:groupType>
+					<dcsset:item xsi:type="dcsset:FilterItemGroup">
+						<dcsset:groupType>AndGroup</dcsset:groupType>
+						<dcsset:item xsi:type="dcsset:FilterItemComparison">
+							<dcsset:left xsi:type="dcscor:Field">Invoice.Agreement</dcsset:left>
+							<dcsset:comparisonType>Equal</dcsset:comparisonType>
+							<dcsset:right xsi:type="xs:string">VAT Reclass</dcsset:right>
+						</dcsset:item>
+						<dcsset:item xsi:type="dcsset:FilterItemComparison">
+							<dcsset:left xsi:type="dcscor:Field">Source</dcsset:left>
+							<dcsset:comparisonType>Equal</dcsset:comparisonType>
+							<dcsset:right xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.Radius</dcsset:right>
+						</dcsset:item>
+					</dcsset:item>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:FilterItemGroup">
+					<dcsset:groupType>NotGroup</dcsset:groupType>
+					<dcsset:item xsi:type="dcsset:FilterItemGroup">
+						<dcsset:groupType>AndGroup</dcsset:groupType>
+						<dcsset:item xsi:type="dcsset:FilterItemComparison">
+							<dcsset:left xsi:type="dcscor:Field">Source</dcsset:left>
+							<dcsset:comparisonType>Equal</dcsset:comparisonType>
+							<dcsset:right xsi:type="dcscor:DesignTimeValue">Перечисление.ТипыСоответствий.Lawson</dcsset:right>
+						</dcsset:item>
+						<dcsset:item xsi:type="dcsset:FilterItemComparison">
+							<dcsset:left xsi:type="dcscor:Field">Account</dcsset:left>
+							<dcsset:comparisonType>Equal</dcsset:comparisonType>
+							<dcsset:right xsi:type="dcscor:DesignTimeValue">ПланСчетов.Lawson.CustomerRecFactoredTrans</dcsset:right>
+						</dcsset:item>
+					</dcsset:item>
+				</dcsset:item>
+			</dcsset:filter>
+			<dcsset:dataParameters>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>Период</dcscor:parameter>
+					<dcscor:value xsi:type="v8:StandardBeginningDate">
+						<v8:variant xsi:type="v8:StandardBeginningDateVariant">BeginningOfNextDay</v8:variant>
+					</dcscor:value>
+					<dcsset:userSettingID>7760cd5c-6b96-49e0-bded-d865acbf2db5</dcsset:userSettingID>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:use>false</dcscor:use>
+					<dcscor:parameter>ОтображатьНачисленияВRemAmountДляBilledCurMonth</dcscor:parameter>
+					<dcscor:value xsi:type="xs:boolean">false</dcscor:value>
+					<dcsset:userSettingID>2f7425f0-d5ac-4c6f-85f7-04c7cb19e2db</dcsset:userSettingID>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>ОбнулятьForecastCollectBefore10</dcscor:parameter>
+					<dcscor:value xsi:type="xs:boolean">false</dcscor:value>
+					<dcsset:userSettingID>c734cfa7-035e-4ab9-8676-863d9201d51e</dcsset:userSettingID>
+				</dcscor:item>
+			</dcsset:dataParameters>
+			<dcsset:conditionalAppearance>
+				<dcsset:item>
+					<dcsset:selection>
+						<dcsset:item>
+							<dcsset:field>Client.CRMID</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>Client</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>Corporate</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>InvoiceНомер</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>InvoiceДата</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>InvoiceFiscalInvoiceDate</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>InvoiceFiscalInvoiceNo</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>Currency</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>InvoiceAmount</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>AmountОстаток</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>USDAmount</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>Rate</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>Agreement</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>InvoiceContractTrigger</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>InvoiceTriggerDate</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>InvoiceContractPTDaysFrom</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>InvoiceContractСрокОплаты</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>InvoiceDueDateFrom</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>InvoiceDueDateTo</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>ZeroToThirty</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>ThirtyOneToSixty</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>SixtyOneToNinety</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>NinetyOneToOneHundredEighty</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>MoreThanOneHundredEightyOne</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>Violation</dcsset:field>
+						</dcsset:item>
+					</dcsset:selection>
+					<dcsset:filter>
+						<dcsset:item xsi:type="dcsset:FilterItemComparison">
+							<dcsset:left xsi:type="dcscor:Field">ПараметрыДанных.Период</dcsset:left>
+							<dcsset:comparisonType>GreaterOrEqual</dcsset:comparisonType>
+							<dcsset:right xsi:type="dcscor:Field">FourteenDaysBeforeDateTo</dcsset:right>
+						</dcsset:item>
+						<dcsset:item xsi:type="dcsset:FilterItemComparison">
+							<dcsset:left xsi:type="dcscor:Field">ПараметрыДанных.Период</dcsset:left>
+							<dcsset:comparisonType>LessOrEqual</dcsset:comparisonType>
+							<dcsset:right xsi:type="dcscor:Field">InvoiceDueDateTo</dcsset:right>
+						</dcsset:item>
+					</dcsset:filter>
+					<dcsset:appearance>
+						<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+							<dcscor:parameter>ЦветФона</dcscor:parameter>
+							<dcscor:value xsi:type="v8ui:Color">#FFB961</dcscor:value>
+						</dcscor:item>
+					</dcsset:appearance>
+					<dcsset:useInHierarchicalGroup>DontUse</dcsset:useInHierarchicalGroup>
+					<dcsset:useInOverall>DontUse</dcsset:useInOverall>
+					<dcsset:useInFieldsHeader>DontUse</dcsset:useInFieldsHeader>
+					<dcsset:useInHeader>DontUse</dcsset:useInHeader>
+					<dcsset:useInParameters>DontUse</dcsset:useInParameters>
+					<dcsset:useInFilter>DontUse</dcsset:useInFilter>
+				</dcsset:item>
+				<dcsset:item>
+					<dcsset:selection>
+						<dcsset:item>
+							<dcsset:field>Client.CRMID</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>Client</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>Corporate</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>InvoiceНомер</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>InvoiceДата</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>InvoiceFiscalInvoiceDate</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>InvoiceFiscalInvoiceNo</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>Currency</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>InvoiceAmount</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>AmountОстаток</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>USDAmount</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>Rate</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>Agreement</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>InvoiceContractTrigger</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>InvoiceTriggerDate</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>InvoiceContractPTDaysFrom</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>InvoiceContractСрокОплаты</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>InvoiceDueDateFrom</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>InvoiceDueDateTo</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>ZeroToThirty</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>ThirtyOneToSixty</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>SixtyOneToNinety</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>NinetyOneToOneHundredEighty</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>MoreThanOneHundredEightyOne</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>Violation</dcsset:field>
+						</dcsset:item>
+					</dcsset:selection>
+					<dcsset:filter>
+						<dcsset:item xsi:type="dcsset:FilterItemComparison">
+							<dcsset:left xsi:type="dcscor:Field">InvoiceDueDateTo</dcsset:left>
+							<dcsset:comparisonType>Less</dcsset:comparisonType>
+							<dcsset:right xsi:type="dcscor:Field">ПараметрыДанных.Период</dcsset:right>
+						</dcsset:item>
+						<dcsset:item xsi:type="dcsset:FilterItemComparison">
+							<dcsset:left xsi:type="dcscor:Field">InvoiceDueDateTo</dcsset:left>
+							<dcsset:comparisonType>Filled</dcsset:comparisonType>
+						</dcsset:item>
+					</dcsset:filter>
+					<dcsset:appearance>
+						<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+							<dcscor:parameter>ЦветФона</dcscor:parameter>
+							<dcscor:value xsi:type="v8ui:Color">web:LightSalmon</dcscor:value>
+						</dcscor:item>
+					</dcsset:appearance>
+					<dcsset:useInHierarchicalGroup>DontUse</dcsset:useInHierarchicalGroup>
+					<dcsset:useInOverall>DontUse</dcsset:useInOverall>
+					<dcsset:useInFieldsHeader>DontUse</dcsset:useInFieldsHeader>
+					<dcsset:useInHeader>DontUse</dcsset:useInHeader>
+					<dcsset:useInParameters>DontUse</dcsset:useInParameters>
+					<dcsset:useInFilter>DontUse</dcsset:useInFilter>
+				</dcsset:item>
+			</dcsset:conditionalAppearance>
+			<dcsset:outputParameters>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>МакетОформления</dcscor:parameter>
+					<dcscor:value xsi:type="xs:string">Море</dcscor:value>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>РасположениеРеквизитов</dcscor:parameter>
+					<dcscor:value xsi:type="dcsset:DataCompositionAttributesPlacement">Separately</dcscor:value>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>ВыводитьПараметрыДанных</dcscor:parameter>
+					<dcscor:value xsi:type="dcsset:DataCompositionTextOutputType">DontOutput</dcscor:value>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>ВыводитьОтбор</dcscor:parameter>
+					<dcscor:value xsi:type="dcsset:DataCompositionTextOutputType">DontOutput</dcscor:value>
+				</dcscor:item>
+			</dcsset:outputParameters>
+			<dcsset:item xsi:type="dcsset:StructureItemGroup">
 				<dcsset:order>
 					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
 				</dcsset:order>

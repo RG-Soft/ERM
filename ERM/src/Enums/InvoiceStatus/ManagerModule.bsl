@@ -20,8 +20,8 @@
 	Список.Добавить(Перечисления.InvoiceStatus.BudgetIssue);
 	Список.Добавить(Перечисления.InvoiceStatus.BillingError);
 	Список.Добавить(Перечисления.InvoiceStatus.ClientConfirmedPayment);
-	Список.Добавить(Перечисления.InvoiceStatus.InvoicePaid);
-	Список.Добавить(Перечисления.InvoiceStatus.PartiallyPaid);
+	//Список.Добавить(Перечисления.InvoiceStatus.InvoicePaid);
+	//Список.Добавить(Перечисления.InvoiceStatus.PartiallyPaid);
 	Список.Добавить(Перечисления.InvoiceStatus.PendingPaymentAllocation);
 	Список.Добавить(Перечисления.InvoiceStatus.InvoiceOnApproval);
 	
