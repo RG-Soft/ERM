@@ -244,6 +244,7 @@
 		|	И XR223SourceData.DepositDate <> """"
 		|	И (XR223SourceData.TransactionType = ""I""
 		|			ИЛИ XR223SourceData.TransactionType = ""D"")
+		|	И XR223SourceData.PaymentType = ""P""
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
