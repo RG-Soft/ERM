@@ -13,43 +13,139 @@
 	
 	rgsЗагрузкаИзExcel.ВыгрузитьЭксельВТаблицуДанныхПоИменамКолонок(ПутьКФайлу, ТаблицаДанных, ДанныеДляЗаполнения, АдресХранилища, СтруктураПараметров);
 	
-	МассивЗагружаемыхСчетов = Новый СписокЗначений;
-	МассивЗагружаемыхСчетов.Добавить("12001");
-	МассивЗагружаемыхСчетов.Добавить("12002А");
-	МассивЗагружаемыхСчетов.Добавить("12201");
-	МассивЗагружаемыхСчетов.Добавить("12202А");
-	МассивЗагружаемыхСчетов.Добавить("21999");
+	МассивЗагружаемых102Счетов = Новый СписокЗначений;
+	МассивЗагружаемых102Счетов.Добавить("12001");
+	МассивЗагружаемых102Счетов.Добавить("12002A");
+	МассивЗагружаемых102Счетов.Добавить("12201");
+	МассивЗагружаемых102Счетов.Добавить("12202A");
+	МассивЗагружаемых102Счетов.Добавить("21999");
 	
-	Построитель = Новый ПостроительЗапроса;
-	Построитель.ИсточникДанных = Новый ОписаниеИсточникаДанных(ТаблицаДанных);
+	ТекстЗапроса = "
+	|ВЫБРАТЬ
+	|	ТЗ.Account КАК Account,
+	|	ТЗ.AccountDesc КАК AccountDesc,
+	|	ТЗ.AccountingPeriod КАК AccountingPeriod,
+	|	ВЫБОР
+	|		КОГДА ТЗ.AccountUnit ПОДОБНО ""_""
+	|			ТОГДА ""000000"" + ТЗ.AccountUnit
+	|		КОГДА ТЗ.AccountUnit ПОДОБНО ""__""
+	|			ТОГДА ""00000"" + ТЗ.AccountUnit
+	|		КОГДА ТЗ.AccountUnit ПОДОБНО ""___""
+	|			ТОГДА ""0000"" + ТЗ.AccountUnit
+	|		КОГДА ТЗ.AccountUnit ПОДОБНО ""____""
+	|			ТОГДА ""000"" + ТЗ.AccountUnit
+	|		КОГДА ТЗ.AccountUnit ПОДОБНО ""_____""
+	|			ТОГДА ""00"" + ТЗ.AccountUnit
+	|		КОГДА ТЗ.AccountUnit ПОДОБНО ""______""
+	|			ТОГДА ""0"" + ТЗ.AccountUnit
+	|		КОГДА ТЗ.AccountUnit ПОДОБНО ""_______""
+	|			ТОГДА ТЗ.AccountUnit
+	|	КОНЕЦ КАК AccountUnit,
+	|	ТЗ.AcctUnitDesc КАК AcctUnitDesc,
+	|	ТЗ.Activity КАК Activity,
+	|	ТЗ.AktDate КАК AktDate,
+	|	ТЗ.AktOfAcceptance КАК AktOfAcceptance,
+	|	ТЗ.ApInvoice КАК ApInvoice,
+	|	ТЗ.ApTransFormId КАК ApTransFormId,
+	|	ТЗ.ArBatchNbr КАК ArBatchNbr,
+	|	ТЗ.Area КАК Area,
+	|	ТЗ.AreaDesc КАК AreaDesc,
+	|	ТЗ.ArInvoice КАК ArInvoice,
+	|	ТЗ.Asset КАК Asset,
+	|	ТЗ.AssetCode КАК AssetCode,
+	|	ТЗ.AstSerialNbr КАК AstSerialNbr,
+	|	ТЗ.AutoRev КАК AutoRev,
+	|	ТЗ.BaseAmount КАК BaseAmount,
+	|	ТЗ.BusSeg КАК BusSeg,
+	|	ТЗ.CashCode КАК CashCode,
+	|	ТЗ.Company КАК Company,
+	|	ТЗ.CompanyName КАК CompanyName,
+	|	ТЗ.ContractNumber КАК ContractNumber,
+	|	ТЗ.CurrencyCode КАК CurrencyCode,
+	|	ТЗ.CustomerName КАК CustomerName,
+	|	ТЗ.CustomerNumber КАК CustomerNumber,
+	|	ТЗ.Date КАК Date,
+	|	ТЗ.Description КАК Description,
+	|	ТЗ.DocumentNbr КАК DocumentNbr,
+	|	ТЗ.FiscalYear КАК FiscalYear,
+	|	ТЗ.Geo КАК Geo,
+	|	ТЗ.GeoDesc КАК GeoDesc,
+	|	ТЗ.GltObjId КАК GltObjId,
+	|	ТЗ.Item КАК Item,
+	|	ТЗ.ItemDescription КАК ItemDescription,
+	|	ТЗ.JeType КАК JeType,
+	|	ВЫБОР
+	|		КОГДА ТЗ.Journal ПОДОБНО ""_""
+	|			ТОГДА ""0000000"" + ТЗ.Journal
+	|		КОГДА ТЗ.Journal ПОДОБНО ""__""
+	|			ТОГДА ""000000"" + ТЗ.Journal
+	|		КОГДА ТЗ.Journal ПОДОБНО ""___""
+	|			ТОГДА ""00000"" + ТЗ.Journal
+	|		КОГДА ТЗ.Journal ПОДОБНО ""____""
+	|			ТОГДА ""0000"" + ТЗ.Journal
+	|		КОГДА ТЗ.Journal ПОДОБНО ""_____""
+	|			ТОГДА ""000"" + ТЗ.Journal
+	|		КОГДА ТЗ.Journal ПОДОБНО ""______""
+	|			ТОГДА ""00"" + ТЗ.Journal
+	|		КОГДА ТЗ.Journal ПОДОБНО ""_______""
+	|			ТОГДА ""0"" + ТЗ.Journal
+	|		КОГДА ТЗ.Journal ПОДОБНО ""________""
+	|			ТОГДА ТЗ.Journal
+	|	КОНЕЦ КАК Journal,
+	|	ТЗ.LegalFiscalFlag КАК LegalFiscalFlag,
+	|	ТЗ.LineNbr КАК LineNbr,
+	|	ТЗ.LineNbrIc КАК LineNbrIc,
+	|	ТЗ.Location КАК Location,
+	|	ТЗ.LocationDesc КАК LocationDesc,
+	|	ТЗ.Mgmtctry КАК Mgmtctry,
+	|	ТЗ.MgmtctryDesc КАК MgmtctryDesc,
+	|	ТЗ.Operator КАК Operator,
+	|	ТЗ.OrigCompany КАК OrigCompany,
+	|	ТЗ.OrigOperatorId КАК OrigOperatorId,
+	|	ТЗ.PoCode КАК PoCode,
+	|	ТЗ.PoNumber КАК PoNumber,
+	|	ТЗ.PostingDate КАК PostingDate,
+	|	ТЗ.ProcessLevel КАК ProcessLevel,
+	|	ТЗ.Reference КАК Reference,
+	|	ТЗ.SegDesc КАК SegDesc,
+	|	ТЗ.SeqTrnsNbr КАК SeqTrnsNbr,
+	|	ТЗ.SourceCode КАК SourceCode,
+	|	ТЗ.SubAccount КАК SubAccount,
+	|	ТЗ.SubGeo КАК SubGeo,
+	|	ТЗ.SubgeoDesc КАК SubgeoDesc,
+	|	ТЗ.SubSeg КАК SubSeg,
+	|	ТЗ.SubsegDesc КАК SubsegDesc,
+	|	ТЗ.SubSubSeg КАК SubSubSeg,
+	|	ТЗ.SubsubsegDesc КАК SubsubsegDesc,
+	|	ТЗ.SummaryAcct КАК SummaryAcct,
+	|	ТЗ.SummaryAcctDesc КАК SummaryAcctDesc,
+	|	ТЗ.System КАК System,
+	|	ТЗ.TaxCode КАК TaxCode,
+	|	ТЗ.TranAmount КАК TranAmount,
+	|	ТЗ.TransNbr КАК TransNbr,
+	|	ТЗ.UpdateDate КАК UpdateDate,
+	|	ТЗ.Urn КАК Urn,
+	|	ТЗ.Vendor КАК Vendor,
+	|	ТЗ.VendorVName КАК VendorVName,
+	|	ТЗ.СтрокаФайла КАК СтрокаФайла
+	|ПОМЕСТИТЬ ВТ
+	|ИЗ
+	|	&ТЗ КАК ТЗ
+	|ГДЕ
+	|	ТЗ.SummaryAcct В (&Список102Счетов)
+	|	ИЛИ ТЗ.SummaryAcct ПОДОБНО ""4*""
+	|;
+	|ВЫБРАТЬ *
+	|ИЗ ВТ КАК ВТ";
 	
-	ОтборПоСчету = Построитель.Отбор.Добавить("SummaryAcct");
-	ОтборПоСчету.ВидСравнения = ВидСравнения.ВСписке;
-	ОтборПоСчету.Значение = МассивЗагружаемыхСчетов;
-	ОтборПоСчету.Использование = Истина;
+	Запрос = Новый Запрос;
+	Запрос.Текст = ТекстЗапроса;
 	
-	//Построитель.Текст = СтрЗаменить(Построитель.Текст, "ГДЕ", ", " + Символы.ПС + );
+	Запрос.УстановитьПараметр("ТЗ", ТаблицаДанных);
+	Запрос.УстановитьПараметр("Список102Счетов", МассивЗагружаемых102Счетов);
+	ТаблицаДанныхСОтборомПоСчету = Запрос.Выполнить().Выгрузить();
 	
-	Построитель.Выполнить();
-	ТаблицаДанныхСОтборомПоСчету = Построитель.Результат.Выгрузить();
 	
-	Для Каждого СтрокаТаблицы Из ТаблицаДанныхСОтборомПоСчету Цикл
-		
-		КоличествоЗнаковAU = СтрДлина(СтрокаТаблицы.AccountUnit);
-	
-		Если КоличествоЗнаковAU < 7 Тогда
-		
-			Пока КоличествоЗнаковAU < 7 Цикл
-				
-				СтрокаТаблицы.AccountUnit = "0" + СтрокаТаблицы.AccountUnit;
-				
-				КоличествоЗнаковAU = КоличествоЗнаковAU + 1;
-				
-			КонецЦикла; 
-				
-		КонецЕсли;
-			
-	КонецЦикла;
 	//ФайлДанных = СтруктураПараметров.ИсточникДанных.Получить();
 	//
 	//ИмяКаталога = КаталогВременныхФайлов() + Строка(Новый УникальныйИдентификатор());
