@@ -38,8 +38,7 @@
 	|			ТОГДА ""00"" + ТЗ.AccountUnit
 	|		КОГДА ТЗ.AccountUnit ПОДОБНО ""______""
 	|			ТОГДА ""0"" + ТЗ.AccountUnit
-	|		КОГДА ТЗ.AccountUnit ПОДОБНО ""_______""
-	|			ТОГДА ТЗ.AccountUnit
+	|		ИНАЧЕ ТЗ.AccountUnit
 	|	КОНЕЦ КАК AccountUnit,
 	|	ТЗ.AcctUnitDesc КАК AcctUnitDesc,
 	|	ТЗ.Activity КАК Activity,
@@ -89,8 +88,7 @@
 	|			ТОГДА ""00"" + ТЗ.Journal
 	|		КОГДА ТЗ.Journal ПОДОБНО ""_______""
 	|			ТОГДА ""0"" + ТЗ.Journal
-	|		КОГДА ТЗ.Journal ПОДОБНО ""________""
-	|			ТОГДА ТЗ.Journal
+	|		ИНАЧЕ ТЗ.Journal
 	|	КОНЕЦ КАК Journal,
 	|	ТЗ.LegalFiscalFlag КАК LegalFiscalFlag,
 	|	ТЗ.LineNbr КАК LineNbr,
