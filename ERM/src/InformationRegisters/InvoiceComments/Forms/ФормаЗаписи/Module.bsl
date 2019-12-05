@@ -95,21 +95,25 @@
 	
 	ЭтаФорма.ПодчиненныеЭлементы.Status.СписокВыбора.ЗагрузитьЗначения(МассивСтатусов);
 	
-	Если Параметры.СтруктураДанныхТекущейСтроки.Свойство("RemainingAmount") И Параметры.СтруктураДанныхТекущейСтроки.Свойство("Currency") Тогда
+	Если Параметры.Свойство("СтруктураДанныхТекущейСтроки") Тогда
 	
-		RemainingAmount = Параметры.СтруктураДанныхТекущейСтроки.RemainingAmount;
-		Элементы.RemainingAmountValue.Заголовок = Элементы.RemainingAmountValue.Заголовок + " " + Строка(RemainingAmount) + " " + Параметры.СтруктураДанныхТекущейСтроки.Currency;
-	
-	Иначе
+		Если Параметры.СтруктураДанныхТекущейСтроки.Свойство("RemainingAmount") И Параметры.СтруктураДанныхТекущейСтроки.Свойство("Currency") Тогда
 		
-		Элементы.RemainingAmountValue.Заголовок = " ";
+			RemainingAmount = Параметры.СтруктураДанныхТекущейСтроки.RemainingAmount;
+			Элементы.RemainingAmountValue.Заголовок = Элементы.RemainingAmountValue.Заголовок + " " + Строка(RemainingAmount) + " " + Параметры.СтруктураДанныхТекущейСтроки.Currency;
 		
-	КонецЕсли;
-	
-	ЗаполнитьЗначенияСвойств(ЭтаФорма, Параметры.СтруктураДанныхТекущейСтроки);
+		Иначе
+			
+			Элементы.RemainingAmountValue.Заголовок = " ";
+			
+		КонецЕсли;
+		
+		ЗаполнитьЗначенияСвойств(ЭтаФорма, Параметры.СтруктураДанныхТекущейСтроки);
 	
 	//FiscalInvNo = Параметры.СтруктураДанныхТекущейСтроки.FiscalInvoiceNo;
-	Контракт = Параметры.СтруктураДанныхТекущейСтроки.Invoice.Contract;
+		Контракт = Параметры.СтруктураДанныхТекущейСтроки.Invoice.Contract;
+		
+	КонецЕсли;
 
 	Если ЗначениеЗаполнено(Контракт) Тогда
 	
@@ -147,7 +151,7 @@
 Процедура ПередЗаписьюНаСервере(Отказ, ТекущийОбъект, ПараметрыЗаписи)
 	
 	СтруктураРеквизитовПроблемы = Новый Структура("Дата, Invoice, User, Status, StatusOfDispute, StatusOfDebt, DebtAmount, DisputeDistributedDate, 
-		|DateEntered, DateIdentified, DisputCollectableDate, TriggerDate, ConfirmedBy, CustomerRepresentative, 
+		|DateEntered, DateIdentified, DisputCollectableDate, TriggerDate, ConfirmedBy, CustomerRepresentative, FactualCommentDate, 
 		|CustomerInputDetails, Comment, CustInputDate, Potential, ForecastDate, RemedialWorkPlan, RWDTargetDate, SLBAssignedTo");
 	ЗаполнитьЗначенияСвойств(СтруктураРеквизитовПроблемы, ЭтотОбъект);
 	СтруктураРеквизитовПроблемы.Дата = ТекущийОбъект.Период;
