@@ -107,6 +107,8 @@
 	//} RGS AArsentev 16.02.2017 12:14:25
 	
 	СчетВыручкиHFM = rgsНастройкаКонфигурации.ЗначениеНастройки("СчетВыручкиВерхнегоУровня");
+	СчетHFMBilled = rgsНастройкаКонфигурацииПовтИсп.ПолучитьЗначениеНастройки("СчетHFMBilled");
+	СчетHFMAdvance = rgsНастройкаКонфигурацииПовтИсп.ПолучитьЗначениеНастройки("СчетHFMAdvance");
 	
 	//{ RGS TAlmazova 21.05.2018 12:14:25
 	СуммыДляПроводки = Документы.ПроводкаDSS.ПолучитьСуммыДляПроводки(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, СчетВыручкиHFM, ВалютаUSD, Отказ);	
@@ -243,7 +245,9 @@
 					КонецЕсли;
 					// } RGS TAlmazova 01.08.2017 18:00:17 - изменение алгоритма при различных валютах транзакции и инвойса
 				//ИначеЕсли Реквизиты.AccountLawson = ПланыСчетов.Lawson.ReceivedNotApplied ИЛИ Реквизиты.AccountLawson = ПланыСчетов.Lawson.AdvancesFromCustomers Тогда // 120102 или 209000
-				ИначеЕсли Реквизиты.Account = ПланыСчетов.Lawson.ReceivedNotApplied ИЛИ Реквизиты.Account = ПланыСчетов.Lawson.AdvancesFromCustomers Тогда // 120102 или 209000
+				//ИначеЕсли Реквизиты.Account = ПланыСчетов.Lawson.ReceivedNotApplied ИЛИ Реквизиты.Account = ПланыСчетов.Lawson.AdvancesFromCustomers Тогда // 120102 или 209000
+				//ИначеЕсли Реквизиты.HFMAccount = СчетHFMBilled ИЛИ Реквизиты.HFMAccount = СчетHFMAdvance Тогда // 12001 или 20900
+				ИначеЕсли Реквизиты.AccountLawson = ПланыСчетов.Lawson.ReceivedNotApplied ИЛИ Реквизиты.HFMAccount = СчетHFMAdvance Тогда // 12001 или 20900
 					Если Реквизиты.SourceCode = "RY" Тогда // разворот вешаем на последнюю оплату
 						ВыполнитьСписаниеUnallocatedCashРазворот(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, Движения, СуммыДляПроводки.Amount, СуммыДляПроводки.BaseAmount, Отказ);
 					Иначе
@@ -259,7 +263,9 @@
 				// { RGS TAlmazova 04.06.2018 17:00:33 - добавление счета 120202
 				////Если Реквизиты.AccountLawson = ПланыСчетов.Lawson.ReceivedNotApplied  ИЛИ Реквизиты.AccountLawson = ПланыСчетов.Lawson.AdvancesFromCustomers Тогда //120102 или 209000
 				//Если Реквизиты.Account = ПланыСчетов.Lawson.ReceivedNotApplied  ИЛИ Реквизиты.Account = ПланыСчетов.Lawson.AdvancesFromCustomers Тогда //120102 или 209000
-				Если Реквизиты.Account = ПланыСчетов.Lawson.ReceivedNotApplied  ИЛИ Реквизиты.Account = ПланыСчетов.Lawson.AdvancesFromCustomers ИЛИ Реквизиты.Account = ПланыСчетов.Lawson.UnidentifiedCashReceipts Тогда //120102 или 209000 или 120202
+				//Если Реквизиты.Account = ПланыСчетов.Lawson.ReceivedNotApplied  ИЛИ Реквизиты.Account = ПланыСчетов.Lawson.AdvancesFromCustomers ИЛИ Реквизиты.Account = ПланыСчетов.Lawson.UnidentifiedCashReceipts Тогда //120102 или 209000 или 120202
+				//Если Реквизиты.HFMAccount = СчетHFMBilled ИЛИ Реквизиты.HFMAccount = СчетHFMAdvance Тогда
+				Если Реквизиты.Account = ПланыСчетов.Lawson.ReceivedNotApplied  ИЛИ Реквизиты.HFMAccount = СчетHFMAdvance ИЛИ Реквизиты.Account = ПланыСчетов.Lawson.UnidentifiedCashReceipts Тогда
 				// } RGS TAlmazova 04.06.2018 17:00:43 - добавление счета 120202
 					// поступление денег от клииента. Приход в Unallocated cash. Или корректировка платежа. Корректировка unallocated cash в привязке к CashBatch
 					ВыполнитьНачислениеUnallocatedCash(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, Движения, -СуммыДляПроводки.Amount, -СуммыДляПроводки.BaseAmount, Отказ);
