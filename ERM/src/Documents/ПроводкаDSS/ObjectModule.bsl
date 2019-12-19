@@ -252,7 +252,7 @@
 				//ИначеЕсли Реквизиты.AccountLawson = ПланыСчетов.Lawson.ReceivedNotApplied ИЛИ Реквизиты.AccountLawson = ПланыСчетов.Lawson.AdvancesFromCustomers Тогда // 120102 или 209000
 				//ИначеЕсли Реквизиты.Account = ПланыСчетов.Lawson.ReceivedNotApplied ИЛИ Реквизиты.Account = ПланыСчетов.Lawson.AdvancesFromCustomers Тогда // 120102 или 209000
 				//ИначеЕсли Реквизиты.HFMAccount = СчетHFMBilled ИЛИ Реквизиты.HFMAccount = СчетHFMAdvance Тогда // 12001 или 20900
-				ИначеЕсли Реквизиты.AccountLawson = ПланыСчетов.Lawson.ReceivedNotApplied ИЛИ Реквизиты.HFMAccount = СчетHFMAdvance Тогда // 12001 или 20900
+				ИначеЕсли Реквизиты.Account = ПланыСчетов.Lawson.ReceivedNotApplied ИЛИ Реквизиты.HFMAccount = СчетHFMAdvance Тогда // 12001 или 20900
 					Если Реквизиты.SourceCode = "RY" Тогда // разворот вешаем на последнюю оплату
 						ВыполнитьСписаниеUnallocatedCashРазворот(Реквизиты, ПараметрыПроведения.СвязанныеДокументы, Движения, СуммыДляПроводки.Amount, СуммыДляПроводки.BaseAmount, Отказ);
 					Иначе
