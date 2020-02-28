@@ -1404,8 +1404,10 @@
       <userVisible>
         <common>true</common>
       </userVisible>
-      <dataPath xsi:type="form:DataPath">
-        <segments>Список.EndClient</segments>
+      <dataPath xsi:type="form:MultiLanguageDataPath">
+        <paths xsi:type="form:DataPath">
+          <segments>Список.EndClient</segments>
+        </paths>
       </dataPath>
       <extendedTooltip>
         <name>EndClientРасширеннаяПодсказка</name>
@@ -1454,8 +1456,10 @@
       <userVisible>
         <common>true</common>
       </userVisible>
-      <dataPath xsi:type="form:DataPath">
-        <segments>Список.EndCustomerNumber</segments>
+      <dataPath xsi:type="form:MultiLanguageDataPath">
+        <paths xsi:type="form:DataPath">
+          <segments>Список.EndCustomerNumber</segments>
+        </paths>
       </dataPath>
       <extendedTooltip>
         <name>EndCustomerNumberРасширеннаяПодсказка</name>
@@ -1540,7 +1544,6 @@
         </userVisible>
         <autoFill>true</autoFill>
       </contextMenu>
-      <source>СписокСтрокаПоиска</source>
       <extInfo xsi:type="form:SearchStringAdditionExtInfo">
         <autoMaxWidth>true</autoMaxWidth>
       </extInfo>
@@ -1579,7 +1582,6 @@
         <autoFill>true</autoFill>
       </contextMenu>
       <type>ViewStatusAddition</type>
-      <source>СписокСостояниеПросмотра</source>
       <extInfo xsi:type="form:ViewStatusAdditionExtInfo">
         <autoMaxWidth>true</autoMaxWidth>
         <horizontalLocation>Left</horizontalLocation>
@@ -1619,7 +1621,6 @@
         <autoFill>true</autoFill>
       </contextMenu>
       <type>SearchControlAddition</type>
-      <source>СписокУправлениеПоиском</source>
       <extInfo xsi:type="form:SearchControlAdditionExtInfo">
         <autoMaxWidth>true</autoMaxWidth>
       </extInfo>
@@ -1719,68 +1720,68 @@
     </edit>
     <main>true</main>
     <extInfo xsi:type="form:DynamicListExtInfo">
-      <queryText>ВЫБРАТЬ&#xD;
-	ДокументТранзакцияHOB.Ссылка,&#xD;
-	ДокументТранзакцияHOB.ПометкаУдаления,&#xD;
-	ДокументТранзакцияHOB.Номер,&#xD;
-	ДокументТранзакцияHOB.Дата,&#xD;
-	ДокументТранзакцияHOB.Проведен,&#xD;
-	ДокументТранзакцияHOB.TransactionType,&#xD;
-	ДокументТранзакцияHOB.Company,&#xD;
-	ДокументТранзакцияHOB.Account,&#xD;
-	ДокументТранзакцияHOB.Location,&#xD;
-	ДокументТранзакцияHOB.SubSubSegment,&#xD;
-	ДокументТранзакцияHOB.Currency,&#xD;
-	ДокументТранзакцияHOB.ExchangeRate,&#xD;
-	ДокументТранзакцияHOB.Client,&#xD;
-	ДокументТранзакцияHOB.Contract,&#xD;
-	ДокументТранзакцияHOB.Amount,&#xD;
-	ДокументТранзакцияHOB.BaseAmount,&#xD;
-	ДокументТранзакцияHOB.Ответственный,&#xD;
-	ДокументТранзакцияHOB.DocumentID,&#xD;
-	ДокументТранзакцияHOB.DocumentPresentation,&#xD;
-	ДокументТранзакцияHOB.TrNumber,&#xD;
-	ДокументТранзакцияHOB.TrID,&#xD;
-	ДокументТранзакцияHOB.SalesOrderID,&#xD;
-	ДокументТранзакцияHOB.InvoiceID,&#xD;
-	ДокументТранзакцияHOB.CREW,&#xD;
-	ДокументТранзакцияHOB.Reverse,&#xD;
-	ДокументТранзакцияHOB.AU,&#xD;
-	ДокументТранзакцияHOB.HOBDocumentType,&#xD;
-	ДокументТранзакцияHOB.HOBInvoiceType,&#xD;
-	ДокументТранзакцияHOB.LegalEntity,&#xD;
-	ДокументТранзакцияHOB.CustomerNumber,&#xD;
-	ДокументТранзакцияHOB.МоментВремени,&#xD;
-	ВЫБОР&#xD;
-		КОГДА&#xD;
-		НЕ КорректировкаТранзакции.Ссылка ЕСТЬ NULL&#xD;
-			ТОГДА Истина&#xD;
-		ИНАЧЕ Ложь&#xD;
-	КОНЕЦ КАК НаличиеКорректировки,&#xD;
-	ВЫБОР&#xD;
-		КОГДА&#xD;
-		НЕ КорректировкаТранзакции.Ссылка ЕСТЬ NULL&#xD;
-			ТОГДА ВЫБОР&#xD;
-				КОГДА ДокументТранзакцияHOB.ПометкаУдаления = ИСТИНА&#xD;
-					ТОГДА 10&#xD;
-				КОГДА ДокументТранзакцияHOB.Проведен = ЛОЖЬ&#xD;
-					ТОГДА 9&#xD;
-				ИНАЧЕ 8&#xD;
-			КОНЕЦ&#xD;
-		ИНАЧЕ ВЫБОР&#xD;
-			КОГДА ДокументТранзакцияHOB.ПометкаУдаления = ИСТИНА&#xD;
-				ТОГДА 2&#xD;
-			КОГДА ДокументТранзакцияHOB.Проведен = ИСТИНА&#xD;
-				ТОГДА 1&#xD;
-			ИНАЧЕ 0&#xD;
-		КОНЕЦ&#xD;
-	КОНЕЦ КАК СостояниеДокумента,&#xD;
-	ДокументТранзакцияHOB.EndCustomerNumber,&#xD;
-	ДокументТранзакцияHOB.EndClient&#xD;
-ИЗ&#xD;
-	Документ.ТранзакцияHOB КАК ДокументТранзакцияHOB&#xD;
-		ЛЕВОЕ СОЕДИНЕНИЕ Документ.КорректировкаТранзакции КАК КорректировкаТранзакции&#xD;
-		ПО (КорректировкаТранзакции.ДокументОснование = ДокументТранзакцияHOB.Ссылка)&#xD;
+      <queryText>ВЫБРАТЬ
+	ДокументТранзакцияHOB.Ссылка,
+	ДокументТранзакцияHOB.ПометкаУдаления,
+	ДокументТранзакцияHOB.Номер,
+	ДокументТранзакцияHOB.Дата,
+	ДокументТранзакцияHOB.Проведен,
+	ДокументТранзакцияHOB.TransactionType,
+	ДокументТранзакцияHOB.Company,
+	ДокументТранзакцияHOB.Account,
+	ДокументТранзакцияHOB.Location,
+	ДокументТранзакцияHOB.SubSubSegment,
+	ДокументТранзакцияHOB.Currency,
+	ДокументТранзакцияHOB.ExchangeRate,
+	ДокументТранзакцияHOB.Client,
+	ДокументТранзакцияHOB.Contract,
+	ДокументТранзакцияHOB.Amount,
+	ДокументТранзакцияHOB.BaseAmount,
+	ДокументТранзакцияHOB.Ответственный,
+	ДокументТранзакцияHOB.DocumentID,
+	ДокументТранзакцияHOB.DocumentPresentation,
+	ДокументТранзакцияHOB.TrNumber,
+	ДокументТранзакцияHOB.TrID,
+	ДокументТранзакцияHOB.SalesOrderID,
+	ДокументТранзакцияHOB.InvoiceID,
+	ДокументТранзакцияHOB.CREW,
+	ДокументТранзакцияHOB.Reverse,
+	ДокументТранзакцияHOB.AU,
+	ДокументТранзакцияHOB.HOBDocumentType,
+	ДокументТранзакцияHOB.HOBInvoiceType,
+	ДокументТранзакцияHOB.LegalEntity,
+	ДокументТранзакцияHOB.CustomerNumber,
+	ДокументТранзакцияHOB.МоментВремени,
+	ВЫБОР
+		КОГДА
+		НЕ КорректировкаТранзакции.Ссылка ЕСТЬ NULL
+			ТОГДА Истина
+		ИНАЧЕ Ложь
+	КОНЕЦ КАК НаличиеКорректировки,
+	ВЫБОР
+		КОГДА
+		НЕ КорректировкаТранзакции.Ссылка ЕСТЬ NULL
+			ТОГДА ВЫБОР
+				КОГДА ДокументТранзакцияHOB.ПометкаУдаления = ИСТИНА
+					ТОГДА 10
+				КОГДА ДокументТранзакцияHOB.Проведен = ЛОЖЬ
+					ТОГДА 9
+				ИНАЧЕ 8
+			КОНЕЦ
+		ИНАЧЕ ВЫБОР
+			КОГДА ДокументТранзакцияHOB.ПометкаУдаления = ИСТИНА
+				ТОГДА 2
+			КОГДА ДокументТранзакцияHOB.Проведен = ИСТИНА
+				ТОГДА 1
+			ИНАЧЕ 0
+		КОНЕЦ
+	КОНЕЦ КАК СостояниеДокумента,
+	ДокументТранзакцияHOB.EndCustomerNumber,
+	ДокументТранзакцияHOB.EndClient
+ИЗ
+	Документ.ТранзакцияHOB КАК ДокументТранзакцияHOB
+		ЛЕВОЕ СОЕДИНЕНИЕ Документ.КорректировкаТранзакции КАК КорректировкаТранзакции
+		ПО (КорректировкаТранзакции.ДокументОснование = ДокументТранзакцияHOB.Ссылка)
 		И (НЕ КорректировкаТранзакции.ПометкаУдаления)</queryText>
       <mainTable>Document.ТранзакцияHOB</mainTable>
       <dynamicDataRead>true</dynamicDataRead>

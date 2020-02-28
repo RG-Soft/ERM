@@ -5,7 +5,8 @@
 	ДанныеДляЗаполнения = Новый Структура();
 	ТекстОшибки = "";
 	
-	ФайлДанных = СтруктураПараметров.ИсточникДанных.Получить();
+	//ФайлДанных = СтруктураПараметров.ИсточникДанных.Получить();
+	ФайлДанных = РаботаСФайлами.ДвоичныеДанныеФайла(СтруктураПараметров.ИсточникДанных);
 	
 	ИмяКаталога = КаталогВременныхФайлов() + Строка(Новый УникальныйИдентификатор());
 	СоздатьКаталог(ИмяКаталога);
@@ -150,50 +151,50 @@
 	Запрос.Текст =
 	"ВЫБРАТЬ
 	|	SalesOrdersDetailsSourceData.YearMonth КАК YearMonth,
-	|	SalesOrdersDetailsSourceData.BillingAccount,
-	|	SalesOrdersDetailsSourceData.BillingAccountID,
-	|	SalesOrdersDetailsSourceData.LawsonCustomerCode,
-	|	SalesOrdersDetailsSourceData.Agreement,
-	|	SalesOrdersDetailsSourceData.AgreementName,
-	|	SalesOrdersDetailsSourceData.AgreementStatus,
-	|	SalesOrdersDetailsSourceData.AgreementType,
-	|	SalesOrdersDetailsSourceData.EffectiveDate,
-	|	SalesOrdersDetailsSourceData.ExpirationDate,
-	|	SalesOrdersDetailsSourceData.CompanyCode,
-	|	SalesOrdersDetailsSourceData.OrderID,
-	|	SalesOrdersDetailsSourceData.НомерSO,
-	|	SalesOrdersDetailsSourceData.LawsonInvoice,
-	|	SalesOrdersDetailsSourceData.CustomerRepresentative,
-	|	SalesOrdersDetailsSourceData.ApprovedBy,
-	|	SalesOrdersDetailsSourceData.CreatedBy,
-	|	SalesOrdersDetailsSourceData.ExchangeRate,
-	|	SalesOrdersDetailsSourceData.OrderCurrency,
-	|	SalesOrdersDetailsSourceData.CreditMemoReason,
-	|	SalesOrdersDetailsSourceData.DualCurrencyStatus,
-	|	SalesOrdersDetailsSourceData.EvidenceOfDelivery,
-	|	SalesOrdersDetailsSourceData.FTLCreatedBy,
-	|	SalesOrdersDetailsSourceData.FTLApproverID,
-	|	SalesOrdersDetailsSourceData.LawsonStatus,
-	|	SalesOrdersDetailsSourceData.OrderCurrencyAmount,
-	|	SalesOrdersDetailsSourceData.OrderUSDAmount,
-	|	SalesOrdersDetailsSourceData.OrderJobEndDate,
-	|	SalesOrdersDetailsSourceData.OrderCreationDate,
-	|	SalesOrdersDetailsSourceData.OrderJobStartDate,
-	|	SalesOrdersDetailsSourceData.FieldTicketCreationDate,
-	|	SalesOrdersDetailsSourceData.FTLApprovalDate,
-	|	SalesOrdersDetailsSourceData.FTLSubmissionDate,
-	|	SalesOrdersDetailsSourceData.OrderFirstSubmissionDate,
-	|	SalesOrdersDetailsSourceData.RequestToApproveDate,
-	|	SalesOrdersDetailsSourceData.OrderApprovalDate,
-	|	SalesOrdersDetailsSourceData.AccrueFlagDate,
-	|	SalesOrdersDetailsSourceData.InvoiceFlagDate,
-	|	SalesOrdersDetailsSourceData.LastUpdatedDate,
-	|	SalesOrdersDetailsSourceData.FieldTicket,
+	|	SalesOrdersDetailsSourceData.BillingAccount КАК BillingAccount,
+	|	SalesOrdersDetailsSourceData.BillingAccountID КАК BillingAccountID,
+	|	SalesOrdersDetailsSourceData.LawsonCustomerCode КАК LawsonCustomerCode,
+	|	SalesOrdersDetailsSourceData.Agreement КАК Agreement,
+	|	SalesOrdersDetailsSourceData.AgreementName КАК AgreementName,
+	|	SalesOrdersDetailsSourceData.AgreementStatus КАК AgreementStatus,
+	|	SalesOrdersDetailsSourceData.AgreementType КАК AgreementType,
+	|	SalesOrdersDetailsSourceData.EffectiveDate КАК EffectiveDate,
+	|	SalesOrdersDetailsSourceData.ExpirationDate КАК ExpirationDate,
+	|	SalesOrdersDetailsSourceData.CompanyCode КАК CompanyCode,
+	|	SalesOrdersDetailsSourceData.OrderID КАК OrderID,
+	|	SalesOrdersDetailsSourceData.НомерSO КАК НомерSO,
+	|	SalesOrdersDetailsSourceData.LawsonInvoice КАК LawsonInvoice,
+	|	SalesOrdersDetailsSourceData.CustomerRepresentative КАК CustomerRepresentative,
+	|	SalesOrdersDetailsSourceData.ApprovedBy КАК ApprovedBy,
+	|	SalesOrdersDetailsSourceData.CreatedBy КАК CreatedBy,
+	|	SalesOrdersDetailsSourceData.ExchangeRate КАК ExchangeRate,
+	|	SalesOrdersDetailsSourceData.OrderCurrency КАК OrderCurrency,
+	|	SalesOrdersDetailsSourceData.CreditMemoReason КАК CreditMemoReason,
+	|	SalesOrdersDetailsSourceData.DualCurrencyStatus КАК DualCurrencyStatus,
+	|	SalesOrdersDetailsSourceData.EvidenceOfDelivery КАК EvidenceOfDelivery,
+	|	SalesOrdersDetailsSourceData.FTLCreatedBy КАК FTLCreatedBy,
+	|	SalesOrdersDetailsSourceData.FTLApproverID КАК FTLApproverID,
+	|	SalesOrdersDetailsSourceData.LawsonStatus КАК LawsonStatus,
+	|	SalesOrdersDetailsSourceData.OrderCurrencyAmount КАК OrderCurrencyAmount,
+	|	SalesOrdersDetailsSourceData.OrderUSDAmount КАК OrderUSDAmount,
+	|	SalesOrdersDetailsSourceData.OrderJobEndDate КАК OrderJobEndDate,
+	|	SalesOrdersDetailsSourceData.OrderCreationDate КАК OrderCreationDate,
+	|	SalesOrdersDetailsSourceData.OrderJobStartDate КАК OrderJobStartDate,
+	|	SalesOrdersDetailsSourceData.FieldTicketCreationDate КАК FieldTicketCreationDate,
+	|	SalesOrdersDetailsSourceData.FTLApprovalDate КАК FTLApprovalDate,
+	|	SalesOrdersDetailsSourceData.FTLSubmissionDate КАК FTLSubmissionDate,
+	|	SalesOrdersDetailsSourceData.OrderFirstSubmissionDate КАК OrderFirstSubmissionDate,
+	|	SalesOrdersDetailsSourceData.RequestToApproveDate КАК RequestToApproveDate,
+	|	SalesOrdersDetailsSourceData.OrderApprovalDate КАК OrderApprovalDate,
+	|	SalesOrdersDetailsSourceData.AccrueFlagDate КАК AccrueFlagDate,
+	|	SalesOrdersDetailsSourceData.InvoiceFlagDate КАК InvoiceFlagDate,
+	|	SalesOrdersDetailsSourceData.LastUpdatedDate КАК LastUpdatedDate,
+	|	SalesOrdersDetailsSourceData.FieldTicket КАК FieldTicket,
 	|	SalesOrder.Ссылка КАК SalesOrderСсылка,
 	|	ДокументInvoice.Ссылка КАК InvoiceСсылка,
 	|	ДокументInvoiceB.Ссылка КАК InvoiceСсылкаB,
 	|	Организации.Ссылка КАК ОрганизацияСсылка,
-	|	SalesOrdersDetailsSourceData.YearMonthДата,
+	|	SalesOrdersDetailsSourceData.YearMonthДата КАК YearMonthДата,
 	|	ВЫБОР
 	|		КОГДА SalesOrdersDetailsSourceData.WellName = ""N/A""
 	|			ТОГДА """"
@@ -204,167 +205,164 @@
 	|			ТОГДА """"
 	|		ИНАЧЕ SalesOrdersDetailsSourceData.FieldName
 	|	КОНЕЦ КАК FieldName,
-	|	SalesOrdersDetailsSourceData.ClientContract
+	|	SalesOrdersDetailsSourceData.ClientContract КАК ClientContract
 	|ПОМЕСТИТЬ ВТ
 	|ИЗ
 	|	РегистрСведений.SalesOrdersDetailsSourceData КАК SalesOrdersDetailsSourceData
 	|		ЛЕВОЕ СОЕДИНЕНИЕ Документ.SalesOrder КАК SalesOrder
 	|		ПО SalesOrdersDetailsSourceData.НомерSO = SalesOrder.Номер
-	|		И (НЕ SalesOrder.ПометкаУдаления)
-	|		И SalesOrdersDetailsSourceData.CompanyCode = SalesOrder.Company.Код
+	|			И (НЕ SalesOrder.ПометкаУдаления)
+	|			И SalesOrdersDetailsSourceData.CompanyCode = SalesOrder.Company.Код
 	|		ЛЕВОЕ СОЕДИНЕНИЕ Документ.Invoice КАК ДокументInvoice
 	|		ПО SalesOrdersDetailsSourceData.LawsonInvoice = ДокументInvoice.Номер
-	|		И (НЕ ДокументInvoice.ПометкаУдаления)
-	|		И SalesOrdersDetailsSourceData.CompanyCode = ДокументInvoice.Company.Код
-	|		И (ДокументInvoice.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
+	|			И (НЕ ДокументInvoice.ПометкаУдаления)
+	|			И SalesOrdersDetailsSourceData.CompanyCode = ДокументInvoice.Company.Код
+	|			И (ДокументInvoice.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
 	|		ЛЕВОЕ СОЕДИНЕНИЕ Документ.Invoice КАК ДокументInvoiceB
-	|		ПО SalesOrdersDetailsSourceData.LawsonInvoice + ""B"" = ДокументInvoiceB.Номер
-	|		И (НЕ ДокументInvoiceB.ПометкаУдаления)
-	|		И SalesOrdersDetailsSourceData.CompanyCode = ДокументInvoiceB.Company.Код
-	|		И (ДокументInvoiceB.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
+	|		ПО (SalesOrdersDetailsSourceData.LawsonInvoice + ""B"" = ДокументInvoiceB.Номер)
+	|			И (НЕ ДокументInvoiceB.ПометкаУдаления)
+	|			И SalesOrdersDetailsSourceData.CompanyCode = ДокументInvoiceB.Company.Код
+	|			И (ДокументInvoiceB.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
 	|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
 	|		ПО SalesOrdersDetailsSourceData.CompanyCode = Организации.Код
-	|		И (НЕ Организации.ПометкаУдаления)
-	|		И (Организации.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
+	|			И (НЕ Организации.ПометкаУдаления)
+	|			И (Организации.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
 	|ГДЕ
 	|	SalesOrdersDetailsSourceData.ДокументЗагрузки = &Ссылка
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|ВЫБРАТЬ РАЗЛИЧНЫЕ
-	|	ВТ.YearMonthДата,
-	|	ВТ.OrderCurrency
+	|	ВТ.YearMonthДата КАК YearMonthДата,
+	|	ВТ.OrderCurrency КАК OrderCurrency
 	|ПОМЕСТИТЬ ВТ_Валюта
 	|ИЗ
 	|	ВТ КАК ВТ
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|ВЫБРАТЬ РАЗЛИЧНЫЕ
-	|	ВТ.YearMonthДата,
-	|	ВТ.LawsonCustomerCode
+	|	ВТ.YearMonthДата КАК YearMonthДата,
+	|	ВТ.LawsonCustomerCode КАК LawsonCustomerCode
 	|ПОМЕСТИТЬ ВТ_Клиенты
 	|ИЗ
 	|	ВТ КАК ВТ
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|ВЫБРАТЬ
-	|	ВТ_Валюта.YearMonthДата,
-	|	ВТ_Валюта.OrderCurrency,
+	|	ВТ_Валюта.YearMonthДата КАК YearMonthДата,
+	|	ВТ_Валюта.OrderCurrency КАК OrderCurrency,
 	|	МАКСИМУМ(НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Период) КАК Период
 	|ПОМЕСТИТЬ ВТ_ВалютаМаксимальныеДаты
 	|ИЗ
 	|	ВТ_Валюта КАК ВТ_Валюта
-	|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами КАК
-	|			НастройкаСинхронизацииОбъектовСВнешнимиСистемами
+	|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемами
 	|		ПО ВТ_Валюта.OrderCurrency = НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Идентификатор
-	|		И
-	|			(НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Currency))
-	|		И ВТ_Валюта.YearMonthДата >= НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Период
-	|		И
-	|			(НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
+	|			И (НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Currency))
+	|			И ВТ_Валюта.YearMonthДата >= НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Период
+	|			И (НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
+	|
 	|СГРУППИРОВАТЬ ПО
 	|	ВТ_Валюта.YearMonthДата,
 	|	ВТ_Валюта.OrderCurrency
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|ВЫБРАТЬ
-	|	ВТ_ВалютаМаксимальныеДаты.YearMonthДата,
-	|	ВТ_ВалютаМаксимальныеДаты.OrderCurrency,
-	|	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ОбъектПриемника
+	|	ВТ_ВалютаМаксимальныеДаты.YearMonthДата КАК YearMonthДата,
+	|	ВТ_ВалютаМаксимальныеДаты.OrderCurrency КАК OrderCurrency,
+	|	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ОбъектПриемника КАК ОбъектПриемника
 	|ПОМЕСТИТЬ ВТ_ВалютыСПриемником
 	|ИЗ
 	|	ВТ_ВалютаМаксимальныеДаты КАК ВТ_ВалютаМаксимальныеДаты
-	|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами КАК
-	|			НастройкаСинхронизацииОбъектовСВнешнимиСистемами
+	|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемами
 	|		ПО ВТ_ВалютаМаксимальныеДаты.Период = НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Период
-	|		И ВТ_ВалютаМаксимальныеДаты.OrderCurrency = НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Идентификатор
-	|		И
-	|			(НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
-	|		И
-	|			(НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Currency))
+	|			И ВТ_ВалютаМаксимальныеДаты.OrderCurrency = НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Идентификатор
+	|			И (НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
+	|			И (НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Currency))
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|ВЫБРАТЬ
-	|	ВТ_Клиенты.YearMonthДата,
-	|	ВТ_Клиенты.LawsonCustomerCode,
+	|	ВТ_Клиенты.YearMonthДата КАК YearMonthДата,
+	|	ВТ_Клиенты.LawsonCustomerCode КАК LawsonCustomerCode,
 	|	МАКСИМУМ(НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Период) КАК Период
 	|ПОМЕСТИТЬ ВТ_КлиентыПоследниеДаты
 	|ИЗ
 	|	ВТ_Клиенты КАК ВТ_Клиенты
-	|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами КАК
-	|			НастройкаСинхронизацииОбъектовСВнешнимиСистемами
+	|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемами
 	|		ПО ВТ_Клиенты.LawsonCustomerCode = НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Идентификатор
-	|		И
-	|			(НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
-	|		И
-	|			(НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Client))
+	|			И (НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
+	|			И (НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Client))
+	|
 	|СГРУППИРОВАТЬ ПО
 	|	ВТ_Клиенты.YearMonthДата,
 	|	ВТ_Клиенты.LawsonCustomerCode
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|ВЫБРАТЬ
-	|	ВТ_КлиентыПоследниеДаты.YearMonthДата,
-	|	ВТ_КлиентыПоследниеДаты.LawsonCustomerCode,
-	|	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ОбъектПриемника
+	|	ВТ_КлиентыПоследниеДаты.YearMonthДата КАК YearMonthДата,
+	|	ВТ_КлиентыПоследниеДаты.LawsonCustomerCode КАК LawsonCustomerCode,
+	|	НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ОбъектПриемника КАК ОбъектПриемника
 	|ПОМЕСТИТЬ ВТ_КлиентыСПриемником
 	|ИЗ
 	|	ВТ_КлиентыПоследниеДаты КАК ВТ_КлиентыПоследниеДаты
-	|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами КАК
-	|			НастройкаСинхронизацииОбъектовСВнешнимиСистемами
+	|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ РегистрСведений.НастройкаСинхронизацииОбъектовСВнешнимиСистемами КАК НастройкаСинхронизацииОбъектовСВнешнимиСистемами
 	|		ПО ВТ_КлиентыПоследниеДаты.Период = НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Период
-	|		И ВТ_КлиентыПоследниеДаты.LawsonCustomerCode = НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Идентификатор
-	|		И
-	|			(НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
-	|		И
-	|			(НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Client))
+	|			И ВТ_КлиентыПоследниеДаты.LawsonCustomerCode = НастройкаСинхронизацииОбъектовСВнешнимиСистемами.Идентификатор
+	|			И (НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипСоответствия = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.Lawson))
+	|			И (НастройкаСинхронизацииОбъектовСВнешнимиСистемами.ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Client))
 	|;
+	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|ВЫБРАТЬ
-	|	ВТ.YearMonth,
-	|	ВТ.BillingAccount,
-	|	ВТ.BillingAccountID,
-	|	ВТ.LawsonCustomerCode,
-	|	ВТ.Agreement,
-	|	ВТ.AgreementName,
-	|	ВТ.AgreementStatus,
-	|	ВТ.AgreementType,
-	|	ВТ.EffectiveDate,
-	|	ВТ.ExpirationDate,
-	|	ВТ.CompanyCode,
-	|	ВТ.OrderID,
-	|	ВТ.НомерSO,
-	|	ВТ.LawsonInvoice,
-	|	ВТ.CustomerRepresentative,
-	|	ВТ.ApprovedBy,
-	|	ВТ.CreatedBy,
-	|	ВТ.ExchangeRate,
-	|	ВТ.OrderCurrency,
-	|	ВТ.CreditMemoReason,
-	|	ВТ.DualCurrencyStatus,
-	|	ВТ.EvidenceOfDelivery,
-	|	ВТ.FTLCreatedBy,
-	|	ВТ.FTLApproverID,
-	|	ВТ.LawsonStatus,
-	|	ВТ.OrderCurrencyAmount,
-	|	ВТ.OrderUSDAmount,
-	|	ВТ.OrderJobEndDate,
-	|	ВТ.OrderCreationDate,
-	|	ВТ.OrderJobStartDate,
-	|	ВТ.FieldTicketCreationDate,
-	|	ВТ.FTLApprovalDate,
-	|	ВТ.FTLSubmissionDate,
-	|	ВТ.OrderFirstSubmissionDate,
-	|	ВТ.RequestToApproveDate,
-	|	ВТ.OrderApprovalDate,
-	|	ВТ.AccrueFlagDate,
-	|	ВТ.InvoiceFlagDate,
-	|	ВТ.LastUpdatedDate,
-	|	ВТ.FieldTicket,
-	|	ВТ.SalesOrderСсылка,
-	|	ВТ.InvoiceСсылка,
-	|	ВТ.InvoiceСсылкаB,
-	|	ВТ.ОрганизацияСсылка,
-	|	ВТ.YearMonthДата,
+	|	ВТ.YearMonth КАК YearMonth,
+	|	ВТ.BillingAccount КАК BillingAccount,
+	|	ВТ.BillingAccountID КАК BillingAccountID,
+	|	ВТ.LawsonCustomerCode КАК LawsonCustomerCode,
+	|	ВТ.Agreement КАК Agreement,
+	|	ВТ.AgreementName КАК AgreementName,
+	|	ВТ.AgreementStatus КАК AgreementStatus,
+	|	ВТ.AgreementType КАК AgreementType,
+	|	ВТ.EffectiveDate КАК EffectiveDate,
+	|	ВТ.ExpirationDate КАК ExpirationDate,
+	|	ВТ.CompanyCode КАК CompanyCode,
+	|	ВТ.OrderID КАК OrderID,
+	|	ВТ.НомерSO КАК НомерSO,
+	|	ВТ.LawsonInvoice КАК LawsonInvoice,
+	|	ВТ.CustomerRepresentative КАК CustomerRepresentative,
+	|	ВТ.ApprovedBy КАК ApprovedBy,
+	|	ВТ.CreatedBy КАК CreatedBy,
+	|	ВТ.ExchangeRate КАК ExchangeRate,
+	|	ВТ.OrderCurrency КАК OrderCurrency,
+	|	ВТ.CreditMemoReason КАК CreditMemoReason,
+	|	ВТ.DualCurrencyStatus КАК DualCurrencyStatus,
+	|	ВТ.EvidenceOfDelivery КАК EvidenceOfDelivery,
+	|	ВТ.FTLCreatedBy КАК FTLCreatedBy,
+	|	ВТ.FTLApproverID КАК FTLApproverID,
+	|	ВТ.LawsonStatus КАК LawsonStatus,
+	|	ВТ.OrderCurrencyAmount КАК OrderCurrencyAmount,
+	|	ВТ.OrderUSDAmount КАК OrderUSDAmount,
+	|	ВТ.OrderJobEndDate КАК OrderJobEndDate,
+	|	ВТ.OrderCreationDate КАК OrderCreationDate,
+	|	ВТ.OrderJobStartDate КАК OrderJobStartDate,
+	|	ВТ.FieldTicketCreationDate КАК FieldTicketCreationDate,
+	|	ВТ.FTLApprovalDate КАК FTLApprovalDate,
+	|	ВТ.FTLSubmissionDate КАК FTLSubmissionDate,
+	|	ВТ.OrderFirstSubmissionDate КАК OrderFirstSubmissionDate,
+	|	ВТ.RequestToApproveDate КАК RequestToApproveDate,
+	|	ВТ.OrderApprovalDate КАК OrderApprovalDate,
+	|	ВТ.AccrueFlagDate КАК AccrueFlagDate,
+	|	ВТ.InvoiceFlagDate КАК InvoiceFlagDate,
+	|	ВТ.LastUpdatedDate КАК LastUpdatedDate,
+	|	ВТ.FieldTicket КАК FieldTicket,
+	|	ВТ.SalesOrderСсылка КАК SalesOrderСсылка,
+	|	ВТ.InvoiceСсылка КАК InvoiceСсылка,
+	|	ВТ.InvoiceСсылкаB КАК InvoiceСсылкаB,
+	|	ВТ.ОрганизацияСсылка КАК ОрганизацияСсылка,
+	|	ВТ.YearMonthДата КАК YearMonthДата,
 	|	ВТ_ВалютыСПриемником.ОбъектПриемника КАК ВалютаСсылка,
 	|	ВТ_КлиентыСПриемником.ОбъектПриемника КАК КлиентСсылка,
 	|	ВЫБОР
@@ -372,19 +370,19 @@
 	|			ТОГДА ВТ.WellName + "" ""
 	|		ИНАЧЕ """"
 	|	КОНЕЦ + ВТ.FieldName КАК WellData,
-	|	ВТ.ClientContract,
-	|	ЕстьNULL(DIR.JobEndDate, ДАТАВРЕМЯ(1,1,1)) КАК Invoice_JED,
-	|	ЕстьNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1,1,1)) КАК Invoice_IFD,
-	|	ЕстьNULL(DIR_B.JobEndDate, ДАТАВРЕМЯ(1,1,1)) КАК InvoiceB_JED,
-	|	ЕстьNULL(DIR_B.InvoiceFlagDate, ДАТАВРЕМЯ(1,1,1)) КАК InvoiceB_IFD
+	|	ВТ.ClientContract КАК ClientContract,
+	|	ЕСТЬNULL(DIR.JobEndDate, ДАТАВРЕМЯ(1, 1, 1)) КАК Invoice_JED,
+	|	ЕСТЬNULL(DIR.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)) КАК Invoice_IFD,
+	|	ЕСТЬNULL(DIR_B.JobEndDate, ДАТАВРЕМЯ(1, 1, 1)) КАК InvoiceB_JED,
+	|	ЕСТЬNULL(DIR_B.InvoiceFlagDate, ДАТАВРЕМЯ(1, 1, 1)) КАК InvoiceB_IFD
 	|ИЗ
 	|	ВТ КАК ВТ
 	|		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_ВалютыСПриемником КАК ВТ_ВалютыСПриемником
 	|		ПО ВТ.YearMonthДата = ВТ_ВалютыСПриемником.YearMonthДата
-	|		И ВТ.OrderCurrency = ВТ_ВалютыСПриемником.OrderCurrency
+	|			И ВТ.OrderCurrency = ВТ_ВалютыСПриемником.OrderCurrency
 	|		ЛЕВОЕ СОЕДИНЕНИЕ ВТ_КлиентыСПриемником КАК ВТ_КлиентыСПриемником
 	|		ПО ВТ.YearMonthДата = ВТ_КлиентыСПриемником.YearMonthДата
-	|		И ВТ.LawsonCustomerCode = ВТ_КлиентыСПриемником.LawsonCustomerCode
+	|			И ВТ.LawsonCustomerCode = ВТ_КлиентыСПриемником.LawsonCustomerCode
 	|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.DIR КАК DIR
 	|		ПО ВТ.InvoiceСсылка = DIR.Invoice
 	|		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.DIR КАК DIR_B
@@ -614,8 +612,12 @@
 			
 		КонецЕсли;
 		
+		//ДатыDIR = Новый Соответствие();
+		
 		Если ЗначениеЗаполнено(Выборка.InvoiceСсылка) Тогда
-			
+			//Если Выборка.ПериодДействия = ПустаяДата Тогда
+			//	ДатыDIR.Вставить("ПериодДействия",НачалоМесяца(Выборка.InvoiceДата))	
+			//КонецЕсли;
 			Если Выборка.Invoice_JED = ПустаяДата Тогда
 				Даты.Вставить("JobEndDate", JobEndDate);
 			КонецЕсли;
@@ -630,7 +632,9 @@
 		КонецЕсли;
 
 		Если ЗначениеЗаполнено(Выборка.InvoiceСсылкаB) Тогда
-			
+			//Если Выборка.ПериодДействияB = ПустаяДата Тогда
+			//	ДатыDIR.Вставить("ПериодДействия",НачалоМесяца(Выборка.InvoiceBДата))	
+			//КонецЕсли;
 			Если Выборка.InvoiceB_JED = ПустаяДата Тогда
 				Даты.Вставить("JobEndDate", JobEndDate);
 			КонецЕсли;

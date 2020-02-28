@@ -106,7 +106,8 @@
 		|			И ПолучателиУведомленийUnbilled.Идентификатор1 = ИдентификаторыДляНотификацийSO.Идентификатор1
 		|			И (ПолучателиУведомленийUnbilled.Идентификатор2 = НЕОПРЕДЕЛЕНО
 		|				ИЛИ ПолучателиУведомленийUnbilled.Идентификатор2 = """"
-		|				ИЛИ ПолучателиУведомленийUnbilled.Идентификатор2 = ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка))
+		|				ИЛИ ПолучателиУведомленийUnbilled.Идентификатор2 = ЗНАЧЕНИЕ(Справочник.Контрагенты.ПустаяСсылка)
+		|				ИЛИ ПолучателиУведомленийUnbilled.Идентификатор2 = ЗНАЧЕНИЕ(Справочник.ПодразделенияОрганизаций.ПустаяСсылка))
 		|			И (ИдентификаторыДляНотификацийSO.SalesOrder = &SalesOrder)
 		|			И (ПолучателиУведомленийUnbilled.Уровень = &Уровень)";
 	
@@ -316,7 +317,11 @@
 		|	SalesOrder.Amount КАК Amount,
 		|	SalesOrder.Agreement КАК Agreement,
 		|	SalesOrder.JobEndDate КАК JobEndDate,
-		|	ПРЕДСТАВЛЕНИЕ(SalesOrder.Responsible) КАК Responsible
+		|	ПРЕДСТАВЛЕНИЕ(SalesOrder.Responsible) КАК Responsible,
+		|	SalesOrder.FieldTicket КАК FieldTicket,
+		|	SalesOrder.FTLCreatedBy КАК FTLCreatedBy,
+		|	SalesOrder.FTLApproverID КАК FTLApproverID,
+		|	SalesOrder.Invoice КАК Invoice
 		|ИЗ
 		|	Документ.SalesOrder КАК SalesOrder
 		|ГДЕ
@@ -348,7 +353,15 @@
 	Иначе
 		Объект.CurrencyID = NULL;
 	КонецЕсли;
+	Если ЗначениеЗаполнено(ВыборкаДетальныеЗаписи.Invoice) Тогда
+		Объект.InvoiceID = Строка(ВыборкаДетальныеЗаписи.Invoice.УникальныйИдентификатор());
+	Иначе
+		Объект.InvoiceID = NULL;
+	КонецЕсли;
 	Объект.Agreement = ВыборкаДетальныеЗаписи.Agreement;
+	Объект.FieldTicket = ВыборкаДетальныеЗаписи.FieldTicket;
+	Объект.FTLCreatedBy = ВыборкаДетальныеЗаписи.FTLCreatedBy;
+	Объект.FTLApproverID = ВыборкаДетальныеЗаписи.FTLApproverID;
 	Объект.JobEndDate = ВыборкаДетальныеЗаписи.JobEndDate;
 	Объект.Amount = ВыборкаДетальныеЗаписи.Amount;
 	Объект.Responsible = ВыборкаДетальныеЗаписи.Responsible;
