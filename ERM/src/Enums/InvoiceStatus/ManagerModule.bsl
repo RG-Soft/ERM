@@ -46,7 +46,7 @@
 	Список.Добавить(Перечисления.InvoiceStatus.TechnicalSQ);
 	Список.Добавить(Перечисления.InvoiceStatus.LostInHole);
 	Список.Добавить(Перечисления.InvoiceStatus.BudgetIssue);
-	Список.Добавить(Перечисления.InvoiceStatus.BillingError);
+	//Список.Добавить(Перечисления.InvoiceStatus.BillingError);
 	Список.Добавить(Перечисления.InvoiceStatus.InvoiceOnApproval);
 	
 	Возврат Список;

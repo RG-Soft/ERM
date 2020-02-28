@@ -1743,8 +1743,10 @@
       <userVisible>
         <common>true</common>
       </userVisible>
-      <dataPath xsi:type="form:DataPath">
-        <segments>Список.EndClient</segments>
+      <dataPath xsi:type="form:MultiLanguageDataPath">
+        <paths xsi:type="form:DataPath">
+          <segments>Список.EndClient</segments>
+        </paths>
       </dataPath>
       <extendedTooltip>
         <name>EndClientРасширеннаяПодсказка</name>
@@ -1793,8 +1795,10 @@
       <userVisible>
         <common>true</common>
       </userVisible>
-      <dataPath xsi:type="form:DataPath">
-        <segments>Список.EndCustomerNumber</segments>
+      <dataPath xsi:type="form:MultiLanguageDataPath">
+        <paths xsi:type="form:DataPath">
+          <segments>Список.EndCustomerNumber</segments>
+        </paths>
       </dataPath>
       <extendedTooltip>
         <name>EndCustomerNumberРасширеннаяПодсказка</name>
@@ -1879,7 +1883,6 @@
         </userVisible>
         <autoFill>true</autoFill>
       </contextMenu>
-      <source>СписокСтрокаПоиска</source>
       <extInfo xsi:type="form:SearchStringAdditionExtInfo">
         <autoMaxWidth>true</autoMaxWidth>
       </extInfo>
@@ -1918,7 +1921,6 @@
         <autoFill>true</autoFill>
       </contextMenu>
       <type>ViewStatusAddition</type>
-      <source>СписокСостояниеПросмотра</source>
       <extInfo xsi:type="form:ViewStatusAdditionExtInfo">
         <autoMaxWidth>true</autoMaxWidth>
         <horizontalLocation>Left</horizontalLocation>
@@ -1958,7 +1960,6 @@
         <autoFill>true</autoFill>
       </contextMenu>
       <type>SearchControlAddition</type>
-      <source>СписокУправлениеПоиском</source>
       <extInfo xsi:type="form:SearchControlAdditionExtInfo">
         <autoMaxWidth>true</autoMaxWidth>
       </extInfo>
@@ -2061,75 +2062,75 @@
     </edit>
     <main>true</main>
     <extInfo xsi:type="form:DynamicListExtInfo">
-      <queryText>ВЫБРАТЬ&#xD;
-	ДокументТранзакцияOracle.Ссылка,&#xD;
-	ДокументТранзакцияOracle.ПометкаУдаления,&#xD;
-	ДокументТранзакцияOracle.Номер,&#xD;
-	ДокументТранзакцияOracle.Дата,&#xD;
-	ДокументТранзакцияOracle.Проведен,&#xD;
-	ДокументТранзакцияOracle.Account,&#xD;
-	ДокументТранзакцияOracle.Amount,&#xD;
-	ДокументТранзакцияOracle.BaseAmount,&#xD;
-	ДокументТранзакцияOracle.Client,&#xD;
-	ДокументТранзакцияOracle.Company,&#xD;
-	ДокументТранзакцияOracle.Contract,&#xD;
-	ДокументТранзакцияOracle.CreatedBy,&#xD;
-	ДокументТранзакцияOracle.CreationDate,&#xD;
-	ДокументТранзакцияOracle.Currency,&#xD;
-	ДокументТранзакцияOracle.Description,&#xD;
-	ДокументТранзакцияOracle.DocID,&#xD;
-	ДокументТранзакцияOracle.DocNumber,&#xD;
-	ДокументТранзакцияOracle.DocNumber2,&#xD;
-	ДокументТранзакцияOracle.DocTransID,&#xD;
-	ДокументТранзакцияOracle.DocType,&#xD;
-	ДокументТранзакцияOracle.ExchangeRate,&#xD;
-	ДокументТранзакцияOracle.GL_Account,&#xD;
-	ДокументТранзакцияOracle.GlSourceType,&#xD;
-	ДокументТранзакцияOracle.InvDate,&#xD;
-	ДокументТранзакцияOracle.LineID,&#xD;
-	ДокументТранзакцияOracle.Location,&#xD;
-	ДокументТранзакцияOracle.OriginalTrxNumber,&#xD;
-	ДокументТранзакцияOracle.ShipDateActual,&#xD;
-	ДокументТранзакцияOracle.SODate,&#xD;
-	ДокументТранзакцияOracle.SONum,&#xD;
-	ДокументТранзакцияOracle.Source,&#xD;
-	ДокументТранзакцияOracle.SubSubSegment,&#xD;
-	ДокументТранзакцияOracle.TransType,&#xD;
-	ДокументТранзакцияOracle.Ответственный,&#xD;
-	ДокументТранзакцияOracle.LegalEntity,&#xD;
-	ДокументТранзакцияOracle.CustomerNumber,&#xD;
-	ДокументТранзакцияOracle.AU,&#xD;
-	ДокументТранзакцияOracle.МоментВремени,&#xD;
-	ВЫБОР&#xD;
-		КОГДА&#xD;
-		НЕ КорректировкаТранзакции.Ссылка ЕСТЬ NULL&#xD;
-			ТОГДА Истина&#xD;
-		ИНАЧЕ Ложь&#xD;
-	КОНЕЦ КАК НаличиеКорректировки,&#xD;
-	ВЫБОР&#xD;
-		КОГДА&#xD;
-		НЕ КорректировкаТранзакции.Ссылка ЕСТЬ NULL&#xD;
-			ТОГДА ВЫБОР&#xD;
-				КОГДА ДокументТранзакцияOracle.ПометкаУдаления = ИСТИНА&#xD;
-					ТОГДА 10&#xD;
-				КОГДА ДокументТранзакцияOracle.Проведен = ЛОЖЬ&#xD;
-					ТОГДА 9&#xD;
-				ИНАЧЕ 8&#xD;
-			КОНЕЦ&#xD;
-		ИНАЧЕ ВЫБОР&#xD;
-			КОГДА ДокументТранзакцияOracle.ПометкаУдаления = ИСТИНА&#xD;
-				ТОГДА 2&#xD;
-			КОГДА ДокументТранзакцияOracle.Проведен = ИСТИНА&#xD;
-				ТОГДА 1&#xD;
-			ИНАЧЕ 0&#xD;
-		КОНЕЦ&#xD;
-	КОНЕЦ КАК СостояниеДокумента,&#xD;
-	ДокументТранзакцияOracle.EndClient,&#xD;
-	ДокументТранзакцияOracle.EndCustomerNumber&#xD;
-ИЗ&#xD;
-	Документ.ТранзакцияOracle КАК ДокументТранзакцияOracle&#xD;
-		ЛЕВОЕ СОЕДИНЕНИЕ Документ.КорректировкаТранзакции КАК КорректировкаТранзакции&#xD;
-		ПО (КорректировкаТранзакции.ДокументОснование = ДокументТранзакцияOracle.Ссылка)&#xD;
+      <queryText>ВЫБРАТЬ
+	ДокументТранзакцияOracle.Ссылка,
+	ДокументТранзакцияOracle.ПометкаУдаления,
+	ДокументТранзакцияOracle.Номер,
+	ДокументТранзакцияOracle.Дата,
+	ДокументТранзакцияOracle.Проведен,
+	ДокументТранзакцияOracle.Account,
+	ДокументТранзакцияOracle.Amount,
+	ДокументТранзакцияOracle.BaseAmount,
+	ДокументТранзакцияOracle.Client,
+	ДокументТранзакцияOracle.Company,
+	ДокументТранзакцияOracle.Contract,
+	ДокументТранзакцияOracle.CreatedBy,
+	ДокументТранзакцияOracle.CreationDate,
+	ДокументТранзакцияOracle.Currency,
+	ДокументТранзакцияOracle.Description,
+	ДокументТранзакцияOracle.DocID,
+	ДокументТранзакцияOracle.DocNumber,
+	ДокументТранзакцияOracle.DocNumber2,
+	ДокументТранзакцияOracle.DocTransID,
+	ДокументТранзакцияOracle.DocType,
+	ДокументТранзакцияOracle.ExchangeRate,
+	ДокументТранзакцияOracle.GL_Account,
+	ДокументТранзакцияOracle.GlSourceType,
+	ДокументТранзакцияOracle.InvDate,
+	ДокументТранзакцияOracle.LineID,
+	ДокументТранзакцияOracle.Location,
+	ДокументТранзакцияOracle.OriginalTrxNumber,
+	ДокументТранзакцияOracle.ShipDateActual,
+	ДокументТранзакцияOracle.SODate,
+	ДокументТранзакцияOracle.SONum,
+	ДокументТранзакцияOracle.Source,
+	ДокументТранзакцияOracle.SubSubSegment,
+	ДокументТранзакцияOracle.TransType,
+	ДокументТранзакцияOracle.Ответственный,
+	ДокументТранзакцияOracle.LegalEntity,
+	ДокументТранзакцияOracle.CustomerNumber,
+	ДокументТранзакцияOracle.AU,
+	ДокументТранзакцияOracle.МоментВремени,
+	ВЫБОР
+		КОГДА
+		НЕ КорректировкаТранзакции.Ссылка ЕСТЬ NULL
+			ТОГДА Истина
+		ИНАЧЕ Ложь
+	КОНЕЦ КАК НаличиеКорректировки,
+	ВЫБОР
+		КОГДА
+		НЕ КорректировкаТранзакции.Ссылка ЕСТЬ NULL
+			ТОГДА ВЫБОР
+				КОГДА ДокументТранзакцияOracle.ПометкаУдаления = ИСТИНА
+					ТОГДА 10
+				КОГДА ДокументТранзакцияOracle.Проведен = ЛОЖЬ
+					ТОГДА 9
+				ИНАЧЕ 8
+			КОНЕЦ
+		ИНАЧЕ ВЫБОР
+			КОГДА ДокументТранзакцияOracle.ПометкаУдаления = ИСТИНА
+				ТОГДА 2
+			КОГДА ДокументТранзакцияOracle.Проведен = ИСТИНА
+				ТОГДА 1
+			ИНАЧЕ 0
+		КОНЕЦ
+	КОНЕЦ КАК СостояниеДокумента,
+	ДокументТранзакцияOracle.EndClient,
+	ДокументТранзакцияOracle.EndCustomerNumber
+ИЗ
+	Документ.ТранзакцияOracle КАК ДокументТранзакцияOracle
+		ЛЕВОЕ СОЕДИНЕНИЕ Документ.КорректировкаТранзакции КАК КорректировкаТранзакции
+		ПО (КорректировкаТранзакции.ДокументОснование = ДокументТранзакцияOracle.Ссылка)
 		И (НЕ КорректировкаТранзакции.ПометкаУдаления)</queryText>
       <mainTable>Document.ТранзакцияOracle</mainTable>
       <dynamicDataRead>true</dynamicDataRead>

@@ -7,7 +7,8 @@
 	ТаблицаДанных = ИнициализироватьТаблицуДанных(СтруктураКолонок);
 	ТекстОшибки = "";
 	
-	ФайлДанных = СтруктураПараметров.ИсточникДанных.Получить();
+	//ФайлДанных = СтруктураПараметров.ИсточникДанных.Получить();
+	ФайлДанных = РаботаСФайлами.ДвоичныеДанныеФайла(СтруктураПараметров.ИсточникДанных);
 	
 	ИмяКаталога = КаталогВременныхФайлов() + Строка(Новый УникальныйИдентификатор());
 	СоздатьКаталог(ИмяКаталога);
@@ -1500,33 +1501,36 @@
 	Запрос = Новый Запрос;
 	Запрос.Текст = 
 		"ВЫБРАТЬ
-		|	HOBJVSourceData.TrDate,
-		|	HOBJVSourceData.TrNumber,
-		|	HOBJVSourceData.Document,
-		|	HOBJVSourceData.DocumentType,
-		|	HOBJVSourceData.Account,
-		|	HOBJVSourceData.Client,
-		|	HOBJVSourceData.INN,
-		|	HOBJVSourceData.CompanyCode,
-		|	HOBJVSourceData.CompanyDesc,
-		|	HOBJVSourceData.Currency,
-		|	HOBJVSourceData.LocationCode,
-		|	HOBJVSourceData.LocationDesc,
-		|	HOBJVSourceData.Amount,
-		|	HOBJVSourceData.BaseAmount,
-		|	HOBJVSourceData.AU,
-		|	HOBJVSourceData.AUType,
-		|	HOBJVSourceData.SubSubSegment,
-		|	HOBJVSourceData.Reverse,
-		|	HOBJVSourceData.DocumentID,
-		|	HOBJVSourceData.TrID,
-		|	HOBJVSourceData.LegalEntity,
-		|	HOBJVSourceData.MNGC
+		|	HOBJVSourceData.TrDate КАК TrDate,
+		|	HOBJVSourceData.TrNumber КАК TrNumber,
+		|	HOBJVSourceData.Document КАК Document,
+		|	HOBJVSourceData.DocumentType КАК DocumentType,
+		|	HOBJVSourceData.Account КАК Account,
+		|	HOBJVSourceData.Client КАК Client,
+		|	HOBJVSourceData.INN КАК INN,
+		|	HOBJVSourceData.CompanyCode КАК CompanyCode,
+		|	HOBJVSourceData.CompanyDesc КАК CompanyDesc,
+		|	HOBJVSourceData.Currency КАК Currency,
+		|	HOBJVSourceData.LocationCode КАК LocationCode,
+		|	HOBJVSourceData.LocationDesc КАК LocationDesc,
+		|	HOBJVSourceData.Amount КАК Amount,
+		|	HOBJVSourceData.BaseAmount КАК BaseAmount,
+		|	HOBJVSourceData.AU КАК AU,
+		|	HOBJVSourceData.AUType КАК AUType,
+		|	HOBJVSourceData.SubSubSegment КАК SubSubSegment,
+		|	HOBJVSourceData.Reverse КАК Reverse,
+		|	HOBJVSourceData.DocumentID КАК DocumentID,
+		|	HOBJVSourceData.TrID КАК TrID,
+		|	HOBJVSourceData.LegalEntity КАК LegalEntity,
+		|	HOBJVSourceData.MNGC КАК MNGC
 		|ПОМЕСТИТЬ ВТ_HOBJVSourceData
 		|ИЗ
 		|	РегистрСведений.HOBJVSourceData КАК HOBJVSourceData
 		|ГДЕ
 		|	HOBJVSourceData.ДокументЗагрузки = &ДокументЗагрузки
+		|	И НЕ(HOBJVSourceData.Document = ""Операция международная МПГ00000150 от 01.02.2020 00:00:00""
+		|				ИЛИ (HOBJVSourceData.Document = ""Операция международная МПГ00000122 от 01.02.2020 19:03:58""
+		|					И HOBJVSourceData.INN = ""0816015241""))
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
@@ -1722,7 +1726,6 @@
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	КостЦентры.Сегмент КАК Ссылка,
-		//|	ЕСТЬNULL(HFM_Technology.Ссылка, ЗНАЧЕНИЕ(Справочник.HFM_Technology.ПустаяСсылка)) КАК БазовыйЭлемент,
 		|	КостЦентры.Сегмент.Код КАК Код
 		|ИЗ
 		|	ВТ_HOBJVSourceData КАК ВТ_HOBJVSourceData
@@ -1740,7 +1743,6 @@
 		|
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	Сегменты.Ссылка,
-		//|	ЕСТЬNULL(HFM_Technology.Ссылка, ЗНАЧЕНИЕ(Справочник.HFM_Technology.ПустаяСсылка)),
 		|	Сегменты.Код
 		|ИЗ
 		|	ВТ_HOBJVSourceData КАК ВТ_HOBJVSourceData
@@ -1763,7 +1765,6 @@
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	КостЦентры.ПодразделениеОрганизации.Ссылка КАК Ссылка,
 		|	КостЦентры.ПодразделениеОрганизации.Код КАК Код
-		//|	ЕСТЬNULL(HFM_Locations.Ссылка, ЗНАЧЕНИЕ(Справочник.HFM_Locations.ПустаяСсылка)) КАК LocationПоSubGeomarket
 		|ИЗ
 		|	ВТ_HOBJVSourceData КАК ВТ_HOBJVSourceData
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.КостЦентры КАК КостЦентры
@@ -1781,7 +1782,6 @@
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	ПодразделенияОрганизаций.Ссылка,
 		|	ПодразделенияОрганизаций.Код
-		//|	ЕСТЬNULL(HFM_Locations.Ссылка, ЗНАЧЕНИЕ(Справочник.HFM_Locations.ПустаяСсылка))
 		|ИЗ
 		|	ВТ_HOBJVSourceData КАК ВТ_HOBJVSourceData
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.ПодразделенияОрганизаций КАК ПодразделенияОрганизаций
@@ -1803,7 +1803,6 @@
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	ПодразделенияОрганизаций.Ссылка,
 		|	ПодразделенияОрганизаций.Код
-		//|	ЕСТЬNULL(HFM_Locations.Ссылка, ЗНАЧЕНИЕ(Справочник.HFM_Locations.ПустаяСсылка))
 		|ИЗ
 		|	ВТ_HOBJVSourceData КАК ВТ_HOBJVSourceData
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.ПодразделенияОрганизаций КАК ПодразделенияОрганизаций
@@ -1819,8 +1818,8 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
-		|	Lawson.Ссылка,
-		|	Lawson.Код
+		|	Lawson.Ссылка КАК Ссылка,
+		|	Lawson.Код КАК Код
 		|ИЗ
 		|	ВТ_HOBJVSourceData КАК ВТ_HOBJVSourceData
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ПланСчетов.Lawson КАК Lawson
@@ -1832,8 +1831,8 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
-		|	Организации.Ссылка,
-		|	Организации.Код
+		|	Организации.Ссылка КАК Ссылка,
+		|	Организации.Код КАК Код
 		|ИЗ
 		|	ВТ_HOBJVSourceData КАК ВТ_HOBJVSourceData
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
@@ -1956,47 +1955,48 @@
 	Запрос = Новый Запрос;
 	Запрос.Текст = 
 		"ВЫБРАТЬ
-		|	HOBReceivablesSourceData.TrDate,
-		|	HOBReceivablesSourceData.TrNumber,
-		|	HOBReceivablesSourceData.Document,
-		|	HOBReceivablesSourceData.DocumentType,
-		|	HOBReceivablesSourceData.Account,
-		|	HOBReceivablesSourceData.Client,
-		|	HOBReceivablesSourceData.INN,
-		|	HOBReceivablesSourceData.CompanyCode,
-		|	HOBReceivablesSourceData.CompanyDesc,
-		|	HOBReceivablesSourceData.Currency,
-		|	HOBReceivablesSourceData.LocationCode,
-		|	HOBReceivablesSourceData.LocationDesc,
-		|	HOBReceivablesSourceData.Amount,
-		|	HOBReceivablesSourceData.BaseAmount,
-		|	HOBReceivablesSourceData.AU,
-		|	HOBReceivablesSourceData.AUType,
-		|	HOBReceivablesSourceData.SubSubSegment,
-		|	HOBReceivablesSourceData.Invoice,
-		|	HOBReceivablesSourceData.InvoiceDate,
-		|	HOBReceivablesSourceData.InvoiceNumber,
-		|	HOBReceivablesSourceData.InvoiceCurrency,
-		|	HOBReceivablesSourceData.InvoiceAmount,
-		|	HOBReceivablesSourceData.InvoiceBilled,
-		|	HOBReceivablesSourceData.InvoicePassedForApproval,
-		|	HOBReceivablesSourceData.InvoicePassedForPayment,
-		|	HOBReceivablesSourceData.InvoicePassedForApprovalDate,
-		|	HOBReceivablesSourceData.InvoicePassedForPaymentDate,
-		|	HOBReceivablesSourceData.ExpectedDateOfPayment,
-		|	HOBReceivablesSourceData.InvoiceAgreementCode,
-		|	HOBReceivablesSourceData.InvoiceAgreement,
-		|	HOBReceivablesSourceData.Reverse,
-		|	HOBReceivablesSourceData.DocumentID,
-		|	HOBReceivablesSourceData.InvoiceID,
-		|	HOBReceivablesSourceData.TrID,
-		|	HOBReceivablesSourceData.LegalEntity,
-		|	HOBReceivablesSourceData.MNGC
+		|	HOBReceivablesSourceData.TrDate КАК TrDate,
+		|	HOBReceivablesSourceData.TrNumber КАК TrNumber,
+		|	HOBReceivablesSourceData.Document КАК Document,
+		|	HOBReceivablesSourceData.DocumentType КАК DocumentType,
+		|	HOBReceivablesSourceData.Account КАК Account,
+		|	HOBReceivablesSourceData.Client КАК Client,
+		|	HOBReceivablesSourceData.INN КАК INN,
+		|	HOBReceivablesSourceData.CompanyCode КАК CompanyCode,
+		|	HOBReceivablesSourceData.CompanyDesc КАК CompanyDesc,
+		|	HOBReceivablesSourceData.Currency КАК Currency,
+		|	HOBReceivablesSourceData.LocationCode КАК LocationCode,
+		|	HOBReceivablesSourceData.LocationDesc КАК LocationDesc,
+		|	HOBReceivablesSourceData.Amount КАК Amount,
+		|	HOBReceivablesSourceData.BaseAmount КАК BaseAmount,
+		|	HOBReceivablesSourceData.AU КАК AU,
+		|	HOBReceivablesSourceData.AUType КАК AUType,
+		|	HOBReceivablesSourceData.SubSubSegment КАК SubSubSegment,
+		|	HOBReceivablesSourceData.Invoice КАК Invoice,
+		|	HOBReceivablesSourceData.InvoiceDate КАК InvoiceDate,
+		|	HOBReceivablesSourceData.InvoiceNumber КАК InvoiceNumber,
+		|	HOBReceivablesSourceData.InvoiceCurrency КАК InvoiceCurrency,
+		|	HOBReceivablesSourceData.InvoiceAmount КАК InvoiceAmount,
+		|	HOBReceivablesSourceData.InvoiceBilled КАК InvoiceBilled,
+		|	HOBReceivablesSourceData.InvoicePassedForApproval КАК InvoicePassedForApproval,
+		|	HOBReceivablesSourceData.InvoicePassedForPayment КАК InvoicePassedForPayment,
+		|	HOBReceivablesSourceData.InvoicePassedForApprovalDate КАК InvoicePassedForApprovalDate,
+		|	HOBReceivablesSourceData.InvoicePassedForPaymentDate КАК InvoicePassedForPaymentDate,
+		|	HOBReceivablesSourceData.ExpectedDateOfPayment КАК ExpectedDateOfPayment,
+		|	HOBReceivablesSourceData.InvoiceAgreementCode КАК InvoiceAgreementCode,
+		|	HOBReceivablesSourceData.InvoiceAgreement КАК InvoiceAgreement,
+		|	HOBReceivablesSourceData.Reverse КАК Reverse,
+		|	HOBReceivablesSourceData.DocumentID КАК DocumentID,
+		|	HOBReceivablesSourceData.InvoiceID КАК InvoiceID,
+		|	HOBReceivablesSourceData.TrID КАК TrID,
+		|	HOBReceivablesSourceData.LegalEntity КАК LegalEntity,
+		|	HOBReceivablesSourceData.MNGC КАК MNGC
 		|ПОМЕСТИТЬ ВТ_HOBReceivablesSourceData
 		|ИЗ
 		|	РегистрСведений.HOBReceivablesSourceData КАК HOBReceivablesSourceData
 		|ГДЕ
 		|	HOBReceivablesSourceData.ДокументЗагрузки = &ДокументЗагрузки
+		|	И НЕ HOBReceivablesSourceData.Document = ""Операция международная МПГ00000150 от 01.02.2020 00:00:00""
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
@@ -2015,7 +2015,7 @@
 		|					И ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Currency)) КАК НастройкаСинхронизацииCurrency
 		|		ПО ВТ_HOBReceivablesSourceData.Currency = НастройкаСинхронизацииCurrency.Идентификатор
 		|ГДЕ
-		|	НастройкаСинхронизацииCurrency.ОбъектПриемника ЕСТЬ NULL 
+		|	НастройкаСинхронизацииCurrency.ОбъектПриемника ЕСТЬ NULL
 		|
 		|ОБЪЕДИНИТЬ
 		|
@@ -2034,7 +2034,7 @@
 		|					И ТипОбъектаВнешнейСистемы = ЗНАЧЕНИЕ(Перечисление.ТипыОбъектовВнешнихСистем.Currency)) КАК НастройкаСинхронизацииCurrency
 		|		ПО ВТ_HOBReceivablesSourceData.InvoiceCurrency = НастройкаСинхронизацииCurrency.Идентификатор
 		|ГДЕ
-		|	НастройкаСинхронизацииCurrency.ОбъектПриемника ЕСТЬ NULL 
+		|	НастройкаСинхронизацииCurrency.ОбъектПриемника ЕСТЬ NULL
 		|	И ВТ_HOBReceivablesSourceData.InvoiceCurrency <> """"
 		|
 		|ОБЪЕДИНИТЬ
@@ -2052,7 +2052,7 @@
 		|		ПО (НЕ Lawson.ПометкаУдаления)
 		|			И ВТ_HOBReceivablesSourceData.Account = Lawson.Код
 		|ГДЕ
-		|	Lawson.Ссылка ЕСТЬ NULL 
+		|	Lawson.Ссылка ЕСТЬ NULL
 		|
 		|ОБЪЕДИНИТЬ
 		|
@@ -2070,7 +2070,7 @@
 		|			И (Организации.Source = &ТипВнешнейСистемы)
 		|			И ВТ_HOBReceivablesSourceData.CompanyCode = Организации.Код
 		|ГДЕ
-		|	Организации.Ссылка ЕСТЬ NULL 
+		|	Организации.Ссылка ЕСТЬ NULL
 		|
 		|ОБЪЕДИНИТЬ
 		|
@@ -2111,7 +2111,7 @@
 		|					И Сегменты.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.OracleSmith))
 		|ГДЕ
 		|	ВТ_HOBReceivablesSourceData.AUType <> ""Lawson""
-		|	И Сегменты.Ссылка ЕСТЬ NULL 
+		|	И Сегменты.Ссылка ЕСТЬ NULL
 		|
 		|ОБЪЕДИНИТЬ
 		|
@@ -2166,7 +2166,7 @@
 		|	ВТ_HOBReceivablesSourceData КАК ВТ_HOBReceivablesSourceData
 		|		ЛЕВОЕ СОЕДИНЕНИЕ Справочник.ПодразделенияОрганизаций КАК ПодразделенияОрганизаций
 		|		ПО (НЕ ПодразделенияОрганизаций.ПометкаУдаления)
-		|			И ПодразделенияОрганизаций.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
+		|			И (ПодразделенияОрганизаций.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs))
 		|			И ВТ_HOBReceivablesSourceData.MNGC = ПодразделенияОрганизаций.Код
 		|ГДЕ
 		|	ВТ_HOBReceivablesSourceData.MNGC <> """"
@@ -2188,7 +2188,7 @@
 		|			И ВТ_HOBReceivablesSourceData.AU = КостЦентры.Код
 		|			И (ВТ_HOBReceivablesSourceData.AUType = ""Lawson"")
 		|ГДЕ
-		|	КостЦентры.Ссылка ЕСТЬ NULL 
+		|	КостЦентры.Ссылка ЕСТЬ NULL
 		|	И ВТ_HOBReceivablesSourceData.AUType = ""Lawson""
 		|
 		|ОБЪЕДИНИТЬ
@@ -2207,13 +2207,12 @@
 		|			И (НЕ LegalEntiites.ПометкаУдаления)
 		|			И (LegalEntiites.Source = &ТипВнешнейСистемы)
 		|ГДЕ
-		|	LegalEntiites.Ссылка ЕСТЬ NULL 
+		|	LegalEntiites.Ссылка ЕСТЬ NULL
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	КостЦентры.Сегмент КАК Ссылка,
-		//|	ЕСТЬNULL(HFM_Technology.Ссылка, ЗНАЧЕНИЕ(Справочник.HFM_Technology.ПустаяСсылка)) КАК БазовыйЭлемент,
 		|	КостЦентры.Сегмент.Код КАК Код
 		|ИЗ
 		|	ВТ_HOBReceivablesSourceData КАК ВТ_HOBReceivablesSourceData
@@ -2231,7 +2230,6 @@
 		|
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	Сегменты.Ссылка,
-		//|	ЕСТЬNULL(HFM_Technology.Ссылка, ЗНАЧЕНИЕ(Справочник.HFM_Technology.ПустаяСсылка)),
 		|	Сегменты.Код
 		|ИЗ
 		|	ВТ_HOBReceivablesSourceData КАК ВТ_HOBReceivablesSourceData
@@ -2254,7 +2252,6 @@
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	КостЦентры.ПодразделениеОрганизации.Ссылка КАК Ссылка,
 		|	КостЦентры.ПодразделениеОрганизации.Код КАК Код
-		//|	ЕСТЬNULL(HFM_Locations.Ссылка, ЗНАЧЕНИЕ(Справочник.HFM_Locations.ПустаяСсылка)) КАК LocationПоSubGeomarket
 		|ИЗ
 		|	ВТ_HOBReceivablesSourceData КАК ВТ_HOBReceivablesSourceData
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.КостЦентры КАК КостЦентры
@@ -2272,7 +2269,6 @@
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
 		|	ПодразделенияОрганизаций.Ссылка,
 		|	ПодразделенияОрганизаций.Код
-		//|	ЕСТЬNULL(HFM_Locations.Ссылка, ЗНАЧЕНИЕ(Справочник.HFM_Locations.ПустаяСсылка))
 		|ИЗ
 		|	ВТ_HOBReceivablesSourceData КАК ВТ_HOBReceivablesSourceData
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.ПодразделенияОрганизаций КАК ПодразделенияОрганизаций
@@ -2292,14 +2288,13 @@
 		|ОБЪЕДИНИТЬ
 		|
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
-		|	ПодразделенияОрганизаций.Ссылка КАК Ссылка,
-		|	ПодразделенияОрганизаций.Код КАК Код
-		//|	ЕСТЬNULL(HFM_Locations.Ссылка, ЗНАЧЕНИЕ(Справочник.HFM_Locations.ПустаяСсылка)) КАК LocationПоSubGeomarket
+		|	ПодразделенияОрганизаций.Ссылка,
+		|	ПодразделенияОрганизаций.Код
 		|ИЗ
 		|	ВТ_HOBReceivablesSourceData КАК ВТ_HOBReceivablesSourceData
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.ПодразделенияОрганизаций КАК ПодразделенияОрганизаций
 		|		ПО (НЕ ПодразделенияОрганизаций.ПометкаУдаления)
-		|			И ПодразделенияОрганизаций.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs)
+		|			И (ПодразделенияОрганизаций.Source = ЗНАЧЕНИЕ(Перечисление.ТипыСоответствий.HOBs))
 		|			И ВТ_HOBReceivablesSourceData.MNGC = ПодразделенияОрганизаций.Код
 		|ГДЕ
 		|	ПодразделенияОрганизаций.БазовыйЭлемент = ЗНАЧЕНИЕ(Справочник.HFM_Locations.ПустаяСсылка)
@@ -2307,8 +2302,8 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
-		|	Lawson.Ссылка,
-		|	Lawson.Код
+		|	Lawson.Ссылка КАК Ссылка,
+		|	Lawson.Код КАК Код
 		|ИЗ
 		|	ВТ_HOBReceivablesSourceData КАК ВТ_HOBReceivablesSourceData
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ ПланСчетов.Lawson КАК Lawson
@@ -2320,8 +2315,8 @@
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|ВЫБРАТЬ РАЗЛИЧНЫЕ
-		|	Организации.Ссылка,
-		|	Организации.Код
+		|	Организации.Ссылка КАК Ссылка,
+		|	Организации.Код КАК Код
 		|ИЗ
 		|	ВТ_HOBReceivablesSourceData КАК ВТ_HOBReceivablesSourceData
 		|		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Справочник.Организации КАК Организации
@@ -3491,6 +3486,15 @@
 	
 	Пока ВыборкаДетальныеЗаписи.Следующий() Цикл
 		
+		// { RGS AGorlenko 17.02.2020 18:39:15 - S-E-0001466-Временная заглушка для февраля 2020 года
+		Если ВыборкаДетальныеЗаписи.DocumentPresentation = "Операция международная МПГ00000150 от 01.02.2020 00:00:00" 
+				ИЛИ (ВыборкаДетальныеЗаписи.DocumentPresentation = "Операция международная МПГ00000122 от 01.02.2020 19:03:58" И ВыборкаДетальныеЗаписи.CustomerNumber = "0816015241") Тогда
+			
+			Продолжить;
+			
+		КонецЕсли;
+		// } RGS AGorlenko 17.02.2020 18:39:45 - S-E-0001466-Временная заглушка для февраля 2020 года
+		
 		КоличествоТранзакцийВФайле = КоличествоТранзакцийВФайле + 1;
 		
 		// { RGS AGorlenko 19.07.2017 16:40:30 - добавление фильтра незагружаемых данных
@@ -4190,6 +4194,14 @@
 	// } RGS AGorlenko 19.07.2017 16:40:47 - добавление фильтра незагружаемых данных
 	
 	Пока ВыборкаДетальныеЗаписи.Следующий() Цикл
+		
+		// { RGS AGorlenko1 17.02.2020 18:31:59 - S-E-0001466-Временная заглушка на "Операция международная МПГ00000150"
+		Если ВыборкаДетальныеЗаписи.DocumentPresentation = "Операция международная МПГ00000150 от 01.02.2020 00:00:00" Тогда
+			
+			Продолжить;
+			
+		КонецЕсли;
+		// } RGS AGorlenko1 17.02.2020 18:33:32 - S-E-0001466-Временная заглушка на "Операция международная МПГ00000150"//
 		
 		КоличествоТранзакцийВФайле = КоличествоТранзакцийВФайле + 1;
 		

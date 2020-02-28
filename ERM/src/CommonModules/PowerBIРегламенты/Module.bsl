@@ -439,7 +439,8 @@
 	ПроцессорВывода.УстановитьОбъект(ТЗ);
 	ПроцессорВывода.Вывести(ПроцессорКомпоновки);
 	
-	ТЗ.Свернуть("ПериодМесяц, Source, AccountБазовыйЭлемент, CompanyБазовыйЭлемент, Client, ClientID, EndClient, EndClientID, LegalEntity, Currency, LocationHFM, SegmentHFM, AU, Document", "AmountОборот, USDAmount");
+	//ТЗ.Свернуть("ПериодМесяц, Source, AccountБазовыйЭлемент, CompanyБазовыйЭлемент, Client, ClientID, EndClient, EndClientID, LegalEntity, Currency, LocationHFM, SegmentHFM, AU, Document", "AmountОборот, USDAmount");
+	ТЗ.Свернуть("ПериодМесяц, Source, AccountБазовыйЭлемент, CompanyБазовыйЭлемент, Client, ClientID, LegalEntity, Currency, LocationHFM, SegmentHFM, AU, Document", "AmountОборот, USDAmount");
 	
 	НЗ = ВнешниеИсточникиДанных.ERM_BI.Таблицы.dbo_BilledRevenue.СоздатьНаборЗаписей();
 	
@@ -473,12 +474,12 @@
 			Иначе
 				ЗаписьНабора.ClientID = NULL;
 			КонецЕсли;
-			ЗаписьНабора.EndClientNumber = СтрокаТЗ.EndClientID;
-			Если ЗначениеЗаполнено(СтрокаТЗ.EndClient) Тогда
-				ЗаписьНабора.EndClientID = СтрокаТЗ.EndClient.УникальныйИдентификатор();
-			Иначе
-				ЗаписьНабора.EndClientID = NULL;
-			КонецЕсли;
+			ЗаписьНабора.EndClientNumber = NULL;
+			//Если ЗначениеЗаполнено(СтрокаТЗ.EndClient) Тогда
+			//	ЗаписьНабора.EndClientID = СтрокаТЗ.EndClient.УникальныйИдентификатор();
+			//Иначе
+			ЗаписьНабора.EndClientID = NULL;
+			//КонецЕсли;
 			Если ЗначениеЗаполнено(СтрокаТЗ.Currency) Тогда
 				ЗаписьНабора.CurrencyID = СтрокаТЗ.Currency.УникальныйИдентификатор();
 			Иначе
@@ -757,7 +758,7 @@
 	ЗафиксироватьТранзакцию();
 	
 КонецПроцедуры
-
+ 
 Процедура PowerBIОтправкаДанных_DSO() Экспорт
 	
 	НачатьТранзакцию();
@@ -1024,11 +1025,11 @@
 			
 			ЗаписьНабора = НЗ.Добавить();
 			ЗаписьНабора.Period = СтрокаТЗ.ПериодМесяц;
-			Если СтрокаТЗ.ClosedAdvance Тогда
-				ЗаписьНабора.ReportType = "Advance";
-			Иначе
-				ЗаписьНабора.ReportType = "Postpayment";
-			КонецЕсли; 
+			//Если СтрокаТЗ.ClosedAdvance Тогда
+			//	ЗаписьНабора.ReportType = "Advance";
+			//Иначе
+			ЗаписьНабора.ReportType = "Postpayment";
+			//КонецЕсли; 
 			ЗаписьНабора.Source = Строка(СтрокаТЗ.Source);
 			ЗаписьНабора.ClientNumber = СтрокаТЗ.ClientID;
 			Если ЗначениеЗаполнено(СтрокаТЗ.Client) Тогда

@@ -2430,6 +2430,54 @@
         <autoMaxHeight>true</autoMaxHeight>
       </extInfo>
     </items>
+    <items xsi:type="form:FormField">
+      <name>FieldTicket</name>
+      <id>298</id>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <dataPath xsi:type="form:MultiLanguageDataPath">
+        <paths xsi:type="form:DataPath">
+          <segments>SalesOrders.FieldTicket</segments>
+        </paths>
+      </dataPath>
+      <extendedTooltip>
+        <name>FieldTicketРасширеннаяПодсказка</name>
+        <id>300</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <type>Label</type>
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+        <extInfo xsi:type="form:LabelDecorationExtInfo">
+          <horizontalAlign>Left</horizontalAlign>
+        </extInfo>
+      </extendedTooltip>
+      <contextMenu>
+        <name>FieldTicketКонтекстноеМеню</name>
+        <id>299</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <autoFill>true</autoFill>
+      </contextMenu>
+      <type>LabelField</type>
+      <editMode>Enter</editMode>
+      <showInHeader>true</showInHeader>
+      <headerHorizontalAlign>Left</headerHorizontalAlign>
+      <showInFooter>true</showInFooter>
+      <extInfo xsi:type="form:LabelFieldExtInfo">
+        <autoMaxWidth>true</autoMaxWidth>
+        <autoMaxHeight>true</autoMaxHeight>
+      </extInfo>
+    </items>
     <autoCommandBar>
       <name>SalesOrdersКоманднаяПанель</name>
       <id>92</id>
@@ -2866,7 +2914,8 @@
 	ВложенныйЗапрос.DateComment КАК DateComment,
 	ВЫРАЗИТЬ(ВложенныйЗапрос.ActionItem КАК СТРОКА(1024)) КАК ActionItem,
 	ВЫРАЗИТЬ(ВложенныйЗапрос.ProblemDetails КАК СТРОКА(1024)) КАК ProblemDetails,
-	ВложенныйЗапрос.WellData КАК WellData
+	ВложенныйЗапрос.WellData КАК WellData,
+	ВложенныйЗапрос.SalesOrder.FieldTicket КАК FieldTicket
 ИЗ
 	(ВЫБРАТЬ
 		UnbilledARОстатки.Client КАК Customer,
@@ -2983,7 +3032,7 @@
 				{(&amp;ПериодОстатков)},
 				SalesOrder ССЫЛКА Документ.SalesOrder
 					И ПОДСТРОКА(Account.Код, 1, 6) &lt;> &quot;209000&quot;
-					И Account.БазовыйЭлемент = &amp;HFMUnbilledAccount {(AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК UnbilledARОстатки
+					И Account.БазовыйЭлемент В (&amp;HFMUnbilledAccounts) {(AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК UnbilledARОстатки
 			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних({(&amp;ДатаКомментария)}, ) КАК SalesOrdersCommentsСрезПоследних
 			ПО UnbilledARОстатки.SalesOrder = SalesOrdersCommentsСрезПоследних.SalesOrder
 			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
@@ -3085,7 +3134,7 @@
 		КОНЕЦ,
 		&quot;&quot;
 	ИЗ
-		РегистрНакопления.ManualTransactions.Остатки({(&amp;ПериодОстатков)}, Account.БазовыйЭлемент = &amp;HFMUnbilledAccount {(AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК ManualTransactionsОстатки
+		РегистрНакопления.ManualTransactions.Остатки({(&amp;ПериодОстатков)}, Account.БазовыйЭлемент В (&amp;HFMUnbilledAccounts) {(AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК ManualTransactionsОстатки
 			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних({(&amp;ДатаКомментария)}, ) КАК SalesOrdersCommentsСрезПоследних
 			ПО ManualTransactionsОстатки.РучнаяКорректировка = SalesOrdersCommentsСрезПоследних.SalesOrder
 			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
@@ -3180,7 +3229,7 @@
 		КОНЕЦ,
 		&quot;&quot;
 	ИЗ
-		РегистрНакопления.UnallocatedCash.Остатки({(&amp;ПериодОстатков)}, Account.БазовыйЭлемент = &amp;HFMUnbilledAccount {(AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК UnallocatedCashОстатки
+		РегистрНакопления.UnallocatedCash.Остатки({(&amp;ПериодОстатков)}, Account.БазовыйЭлемент В (&amp;HFMUnbilledAccounts) {(AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.Родитель = &amp;GeoMarket) КАК Поле2}) КАК UnallocatedCashОстатки
 			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.SalesOrdersComments.СрезПоследних({(&amp;ДатаКомментария)}, ) КАК SalesOrdersCommentsСрезПоследних
 			ПО UnallocatedCashОстатки.CashBatch = SalesOrdersCommentsСрезПоследних.SalesOrder
 			ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаКурса)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
