@@ -749,6 +749,98 @@
 
 КонецПроцедуры
 
+// { RGS AGorlenko1 04.03.2020 14:40:25 - S-E-0001469-Процедуры для расчета и записи дат для Collection Target
+Процедура ЗаписатьДатыДляCollectionTargetПоИнвойсу(Документ, СтруктураДанныхКонтракта) Экспорт
+	
+		CollectionTriggerDate = РассчитатьДатуТриггераДляCollection(Документ, СтруктураДанныхКонтракта.Trigger);
+		
+		Если ЗначениеЗаполнено(CollectionTriggerDate) Тогда
+		
+			СтруктураДатДляCollectionTarget = РассчитатьDateFromИDateTo(Документ, СтруктураДанныхКонтракта, CollectionTriggerDate);
+			DateFrom = СтруктураДатДляCollectionTarget.DateFrom;
+			DateTo = СтруктураДатДляCollectionTarget.DateTo;
+			
+			РГСофт.ЗаписатьДанныеВРегистрДатДляCollection(Документ.Дата, Документ, Новый Структура("TriggerDate, DateFrom, DateTo", CollectionTriggerDate, DateFrom, DateTo));
+			
+		КонецЕсли;
+		
+КонецПроцедуры
+
+Функция РассчитатьDateFromИDateTo(Документ, СтруктураДанныхКонтракта, TriggerDate) Экспорт
+	
+	PTDaysFrom = СтруктураДанныхКонтракта.PTDaysFrom;
+	СрокОплаты = СтруктураДанныхКонтракта.СрокОплаты;
+	PTType = СтруктураДанныхКонтракта.PTType;
+	
+	Если ЗначениеЗаполнено(PTType) И Врег(PTType) = Врег("Business") Тогда
+		
+		Календарь = Документ.AU.ПодразделениеОрганизации.БазовыйЭлемент.GeoMarket.ManagementGeomarket.ПроизводственныйКалендарь;
+		
+		Если Календарь.Пустая() Тогда
+			
+			Календарь = КалендарныеГрафики.ОсновнойПроизводственныйКалендарь();
+			
+		КонецЕсли;
+		
+		DateFrom = КалендарныеГрафики.ДатаПоКалендарю(Календарь, TriggerDate, PTDaysFrom, Ложь);
+		DateTo = КалендарныеГрафики.ДатаПоКалендарю(Календарь, TriggerDate, СрокОплаты, Ложь);
+		
+	Иначе
+		
+		КоличествоСекундВСутках = 86400;
+		
+		DateFrom = TriggerDate + КоличествоСекундВСутках * PTDaysFrom;
+		DateTo = TriggerDate + КоличествоСекундВСутках * СрокОплаты;
+		
+	КонецЕсли;
+	
+	
+	СтруктураВозврат = Новый Структура("DateFrom, DateTo", DateFrom, DateTo);
+	
+	Возврат СтруктураВозврат;
+	
+КонецФункции
+
+Функция РассчитатьДатуТриггераДляCollection(Документ, Trigger) Экспорт
+	
+	Если Trigger = Справочники.TriggerTypes.SignatureDate
+		ИЛИ Trigger = Справочники.TriggerTypes.InvoiceDate
+		ИЛИ Trigger = Справочники.TriggerTypes.Prepayment
+		ИЛИ Trigger = Справочники.TriggerTypes.ShipmentDate Тогда
+		
+		CollectionTriggerDate = ?(ЗначениеЗаполнено(Документ.FiscalInvoiceDate), Документ.FiscalInvoiceDate, Документ.Дата);
+		
+	ИначеЕсли Trigger = Справочники.TriggerTypes.ReceptionDate И ЗначениеЗаполнено(Документ.ДатаВозвратаКС) Тогда
+		
+		CollectionTriggerDate = Документ.ДатаВозвратаКС;
+		
+	ИначеЕсли Trigger = Справочники.TriggerTypes.SubmissionDate И ЗначениеЗаполнено(Документ.ДатаОтправкиКС) Тогда
+		
+		CollectionTriggerDate = Документ.ДатаОтправкиКС;
+		
+	ИначеЕсли Trigger = Справочники.TriggerTypes.FirstDateOfNextMonth Тогда
+		
+		CollectionTriggerDate = ?(ЗначениеЗаполнено(Документ.FiscalInvoiceDate), НачалоМесяца(ДобавитьМесяц(Документ.FiscalInvoiceDate, 1)), НачалоМесяца(ДобавитьМесяц(Документ.Дата, 1)));
+		
+	ИначеЕсли Trigger = Справочники.TriggerTypes.FirstDayNextQuarter Тогда
+		
+		CollectionTriggerDate = ?(ЗначениеЗаполнено(Документ.FiscalInvoiceDate), НачалоКвартала(ДобавитьМесяц(Документ.FiscalInvoiceDate, 3)), НачалоКвартала(ДобавитьМесяц(Документ.Дата, 3)));
+		
+	ИначеЕсли Trigger = Справочники.TriggerTypes.SpecificDate И ЗначениеЗаполнено(Документ.TriggerDate) Тогда
+		
+		CollectionTriggerDate = Документ.TriggerDate;
+		
+	Иначе
+		
+		CollectionTriggerDate = Дата("00010101000000");
+		
+	КонецЕсли;
+	
+	Возврат CollectionTriggerDate;
+	
+КонецФункции
+// } RGS AGorlenko1 04.03.2020 14:41:17 - S-E-0001469-Процедуры для расчета и записи дат для Collection Target
+
 #Область PowerBI
 
 // Описание

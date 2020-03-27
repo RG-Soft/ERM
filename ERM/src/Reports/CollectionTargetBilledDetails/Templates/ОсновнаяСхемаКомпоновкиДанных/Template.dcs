@@ -1652,45 +1652,22 @@
 	ВТ_ДетальныеЗаписи.InvoiceAmount КАК InvoiceAmount,
 	ВТ_ДетальныеЗаписи.InvoiceContractTrigger КАК InvoiceContractTrigger,
 	ВЫБОР
-		КОГДА ВТ_ДетальныеЗаписи.ProblemTriggerDate &lt;&gt; ДАТАВРЕМЯ(1, 1, 1)
-			ТОГДА ВТ_ДетальныеЗаписи.ProblemTriggerDate
-		ИНАЧЕ ВЫБОР
-				КОГДА ВТ_ДетальныеЗаписи.InvoiceContractTrigger В (ЗНАЧЕНИЕ(Справочник.TriggerTypes.SignatureDate), ЗНАЧЕНИЕ(Справочник.TriggerTypes.InvoiceDate), ЗНАЧЕНИЕ(Справочник.TriggerTypes.Prepayment))
-					ТОГДА ВЫБОР
-							КОГДА ВТ_ДетальныеЗаписи.InvoiceFiscalInvoiceDate = ДАТАВРЕМЯ(1, 1, 1)
-								ТОГДА ВТ_ДетальныеЗаписи.InvoiceДата
-							ИНАЧЕ ВТ_ДетальныеЗаписи.InvoiceFiscalInvoiceDate
-						КОНЕЦ
-				КОГДА ВТ_ДетальныеЗаписи.InvoiceContractTrigger = ЗНАЧЕНИЕ(Справочник.TriggerTypes.ReceptionDate)
-					ТОГДА ВТ_ДетальныеЗаписи.InvoiceДатаВозвратаКС
-				КОГДА ВТ_ДетальныеЗаписи.InvoiceContractTrigger = ЗНАЧЕНИЕ(Справочник.TriggerTypes.SubmissionDate)
-					ТОГДА ВТ_ДетальныеЗаписи.InvoiceДатаОтправкиКС
-				КОГДА ВТ_ДетальныеЗаписи.InvoiceContractTrigger = ЗНАЧЕНИЕ(Справочник.TriggerTypes.FirstDateOfNextMonth)
-					ТОГДА ВЫБОР
-							КОГДА ВТ_ДетальныеЗаписи.InvoiceFiscalInvoiceDate = ДАТАВРЕМЯ(1, 1, 1)
-								ТОГДА НАЧАЛОПЕРИОДА(ДОБАВИТЬКДАТЕ(ВТ_ДетальныеЗаписи.InvoiceДата, МЕСЯЦ, 1), МЕСЯЦ)
-							ИНАЧЕ НАЧАЛОПЕРИОДА(ДОБАВИТЬКДАТЕ(ВТ_ДетальныеЗаписи.InvoiceFiscalInvoiceDate, МЕСЯЦ, 1), МЕСЯЦ)
-						КОНЕЦ
-				КОГДА ВТ_ДетальныеЗаписи.InvoiceContractTrigger = ЗНАЧЕНИЕ(Справочник.TriggerTypes.FirstDayNextQuarter)
-					ТОГДА ВЫБОР
-							КОГДА ВТ_ДетальныеЗаписи.InvoiceFiscalInvoiceDate = ДАТАВРЕМЯ(1, 1, 1)
-								ТОГДА НАЧАЛОПЕРИОДА(ДОБАВИТЬКДАТЕ(ВТ_ДетальныеЗаписи.InvoiceДата, КВАРТАЛ, 1), КВАРТАЛ)
-							ИНАЧЕ НАЧАЛОПЕРИОДА(ДОБАВИТЬКДАТЕ(ВТ_ДетальныеЗаписи.InvoiceFiscalInvoiceDate, КВАРТАЛ, 1), КВАРТАЛ)
-						КОНЕЦ
-				КОГДА ВТ_ДетальныеЗаписи.InvoiceContractTrigger = ЗНАЧЕНИЕ(Справочник.TriggerTypes.ShipmentDate)
-					ТОГДА ВЫБОР
-							КОГДА ВТ_ДетальныеЗаписи.InvoiceFiscalInvoiceDate = ДАТАВРЕМЯ(1, 1, 1)
-								ТОГДА ВТ_ДетальныеЗаписи.InvoiceДата
-							ИНАЧЕ ВТ_ДетальныеЗаписи.InvoiceFiscalInvoiceDate
-						КОНЕЦ
-				КОГДА ВТ_ДетальныеЗаписи.InvoiceContractTrigger = ЗНАЧЕНИЕ(Справочник.TriggerTypes.SpecificDate)
-					ТОГДА ВТ_ДетальныеЗаписи.InvoiceTriggerDate
-			КОНЕЦ
+		КОГДА InvoiceCollectionDatesСрезПоследних.TriggerDate ЕСТЬ NULL
+			ТОГДА ДАТАВРЕМЯ(1, 1, 1)
+		ИНАЧЕ InvoiceCollectionDatesСрезПоследних.TriggerDate
 	КОНЕЦ КАК InvoiceTriggerDate,
 	ВТ_ДетальныеЗаписи.InvoiceContractPTDaysFrom КАК InvoiceContractPTDaysFrom,
 	ВТ_ДетальныеЗаписи.InvoiceContractСрокОплаты КАК InvoiceContractСрокОплаты,
-	ВТ_ДетальныеЗаписи.InvoiceDueDateFrom КАК InvoiceDueDateFrom,
-	ВТ_ДетальныеЗаписи.InvoiceDueDateTo КАК InvoiceDueDateTo,
+	ВЫБОР
+		КОГДА InvoiceCollectionDatesСрезПоследних.DateFrom ЕСТЬ NULL
+			ТОГДА ДАТАВРЕМЯ(1, 1, 1)
+		ИНАЧЕ InvoiceCollectionDatesСрезПоследних.DateFrom
+	КОНЕЦ КАК InvoiceDueDateFrom,
+	ВЫБОР
+		КОГДА InvoiceCollectionDatesСрезПоследних.DateTo ЕСТЬ NULL
+			ТОГДА ДАТАВРЕМЯ(1, 1, 1)
+		ИНАЧЕ InvoiceCollectionDatesСрезПоследних.DateTo
+	КОНЕЦ КАК InvoiceDueDateTo,
 	ВТ_ДетальныеЗаписи.InvoiceStatusOfDispute КАК InvoiceStatusOfDispute,
 	ВТ_ДетальныеЗаписи.InvoiceDisputeDistributedDate КАК InvoiceDisputeDistributedDate,
 	ВТ_ДетальныеЗаписи.InvoiceDisputeCollectableDate КАК InvoiceDisputeCollectableDate,
@@ -1715,6 +1692,8 @@
 ПОМЕСТИТЬ ВТ_РассчитанныеРесурсыУровень0
 ИЗ
 	ВТ_ДетальныеЗаписи КАК ВТ_ДетальныеЗаписи
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.InvoiceCollectionDates.СрезПоследних({(&amp;КонецМесяцаФормированияОтчета)}, ) КАК InvoiceCollectionDatesСрезПоследних
+		ПО ВТ_ДетальныеЗаписи.Invoice = InvoiceCollectionDatesСрезПоследних.Invoice
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2386,13 +2365,11 @@
 	ВТ_РассчитанныеРесурсыУровень6.InvoiceDisputeDistributedDate КАК InvoiceDisputeDistributedDate,
 	ВТ_РассчитанныеРесурсыУровень6.InvoiceDisputeCollectableDate КАК InvoiceDisputeCollectableDate,
 	ВЫБОР
-		КОГДА ВТ_РассчитанныеРесурсыУровень6.Rate &lt;&gt; 0
-				И (ВТ_РассчитанныеРесурсыУровень6.OverdueDispute + ВТ_РассчитанныеРесурсыУровень6.OverdueNoFcst + ВТ_РассчитанныеРесурсыУровень6.UnderLitigation) / ВТ_РассчитанныеРесурсыУровень6.Rate &gt;= 100000
-				И (ВТ_РассчитанныеРесурсыУровень6.CustomerInputDetails = ""
-					ИЛИ ВТ_РассчитанныеРесурсыУровень6.SLBAssignedTo = ""
-					ИЛИ ВТ_РассчитанныеРесурсыУровень6.RWDTargetDate = ДАТАВРЕМЯ(1, 1, 1)
-					ИЛИ ВТ_РассчитанныеРесурсыУровень6.InvoiceStatusOfDispute = ЗНАЧЕНИЕ(Перечисление.StatusesOfDispute.ПустаяСсылка))
-			ТОГДА (ВТ_РассчитанныеРесурсыУровень6.OverdueDispute + ВТ_РассчитанныеРесурсыУровень6.OverdueNoFcst + ВТ_РассчитанныеРесурсыУровень6.UnderLitigation) / ВТ_РассчитанныеРесурсыУровень6.Rate
+		КОГДА ВТ_РассчитанныеРесурсыУровень6.CustomerInputDetails = ""
+				ИЛИ ВТ_РассчитанныеРесурсыУровень6.SLBAssignedTo = ""
+				ИЛИ ВТ_РассчитанныеРесурсыУровень6.RWDTargetDate = ДАТАВРЕМЯ(1, 1, 1)
+				ИЛИ ВТ_РассчитанныеРесурсыУровень6.InvoiceStatusOfDispute = ЗНАЧЕНИЕ(Перечисление.StatusesOfDispute.ПустаяСсылка)
+			ТОГДА ВТ_РассчитанныеРесурсыУровень6.OverdueDispute + ВТ_РассчитанныеРесурсыУровень6.OverdueNoFcst + ВТ_РассчитанныеРесурсыУровень6.UnderLitigation
 		ИНАЧЕ 0
 	КОНЕЦ КАК HVDisputeWithoutComments,
 	ВТ_РассчитанныеРесурсыУровень6.DateEntered КАК DateEntered,
@@ -2608,7 +2585,7 @@
 			ТОГДА 0
 		ИНАЧЕ РАЗНОСТЬДАТ(ВТ_РассчитанныеРесурсыУровень7.InvoiceDisputeCollectableDate, ВТ_РассчитанныеРесурсыУровень7.PaymentDate, ДЕНЬ)
 	КОНЕЦ КАК DTC,
-	ВТ_РассчитанныеРесурсыУровень7.HVDisputeWithoutComments КАК HVDisputeWithoutComments,
+	ВЫРАЗИТЬ(ВТ_РассчитанныеРесурсыУровень7.HVDisputeWithoutComments КАК ЧИСЛО(15, 2)) КАК HVDisputeWithoutComments,
 	ВТ_РассчитанныеРесурсыУровень7.DateEntered КАК DateEntered,
 	ВТ_РассчитанныеРесурсыУровень7.DateIdentified КАК DateIdentified,
 	ВТ_РассчитанныеРесурсыУровень7.InvoiceContractAmendmentName КАК InvoiceContractAmendmentName,
@@ -2745,6 +2722,18 @@
 	<totalField>
 		<dataPath>ИндикаторОшибки</dataPath>
 		<expression>Сумма(ИндикаторОшибки)</expression>
+	</totalField>
+	<totalField>
+		<dataPath>DTC</dataPath>
+		<expression>Среднее(DTC)</expression>
+	</totalField>
+	<totalField>
+		<dataPath>DTD</dataPath>
+		<expression>Среднее(DTD)</expression>
+	</totalField>
+	<totalField>
+		<dataPath>DTR</dataPath>
+		<expression>Среднее(DTR)</expression>
 	</totalField>
 	<parameter>
 		<name>Период</name>
@@ -2967,7 +2956,7 @@
 		<title xsi:type="v8:LocalStringType">
 			<v8:item>
 				<v8:lang>ru</v8:lang>
-				<v8:content>HFMBilled account</v8:content>
+				<v8:content>HFM Billed account</v8:content>
 			</v8:item>
 		</title>
 		<valueType>
@@ -3249,7 +3238,7 @@
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
-							<v8:content>Date From</v8:content>
+							<v8:content>Date from</v8:content>
 						</v8:item>
 					</dcsset:lwsTitle>
 				</dcsset:item>
@@ -3258,7 +3247,7 @@
 					<dcsset:lwsTitle>
 						<v8:item>
 							<v8:lang>ru</v8:lang>
-							<v8:content>Date To</v8:content>
+							<v8:content>Date to</v8:content>
 						</v8:item>
 					</dcsset:lwsTitle>
 				</dcsset:item>
@@ -3513,11 +3502,6 @@
 					</dcsset:userSettingPresentation>
 				</dcscor:item>
 				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-					<dcscor:use>false</dcscor:use>
-					<dcscor:parameter>СчетAR</dcscor:parameter>
-					<dcscor:value xsi:nil="true"/>
-				</dcscor:item>
-				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
 					<dcscor:parameter>ОбнулятьForecastCollectBefore10</dcscor:parameter>
 					<dcscor:value xsi:type="xs:boolean">false</dcscor:value>
 					<dcsset:userSettingID>16c049e0-9d3e-43b4-b20d-97e274e092f4</dcsset:userSettingID>
@@ -3573,6 +3557,40 @@
 							</dcscor:value>
 						</dcscor:item>
 					</dcsset:appearance>
+				</dcsset:item>
+				<dcsset:item>
+					<dcsset:selection>
+						<dcsset:item>
+							<dcsset:field>DTC</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>DTD</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>DTR</dcsset:field>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:field>HVDisputeWithoutComments</dcsset:field>
+						</dcsset:item>
+					</dcsset:selection>
+					<dcsset:filter/>
+					<dcsset:appearance>
+						<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+							<dcscor:parameter>Формат</dcscor:parameter>
+							<dcscor:value xsi:type="v8:LocalStringType">
+								<v8:item>
+									<v8:lang>ru</v8:lang>
+									<v8:content>ЧДЦ=2</v8:content>
+								</v8:item>
+							</dcscor:value>
+						</dcscor:item>
+					</dcsset:appearance>
+					<dcsset:useInGroup>DontUse</dcsset:useInGroup>
+					<dcsset:useInHierarchicalGroup>DontUse</dcsset:useInHierarchicalGroup>
+					<dcsset:useInFieldsHeader>DontUse</dcsset:useInFieldsHeader>
+					<dcsset:useInHeader>DontUse</dcsset:useInHeader>
+					<dcsset:useInParameters>DontUse</dcsset:useInParameters>
+					<dcsset:useInFilter>DontUse</dcsset:useInFilter>
 				</dcsset:item>
 			</dcsset:conditionalAppearance>
 			<dcsset:outputParameters>
