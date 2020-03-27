@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DataCompositionSchema xmlns="http://v8.1c.ru/8.1/data-composition-system/schema" xmlns:dcscom="http://v8.1c.ru/8.1/data-composition-system/common" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<dataSource>
+		<name>ИсточникДанных1</name>
+		<dataSourceType>Local</dataSourceType>
+	</dataSource>
+	<dataSet xsi:type="DataSetQuery">
+		<name>НаборДанных1</name>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Currency</dataPath>
+			<field>Currency</field>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Client</dataPath>
+			<field>Client</field>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Company</dataPath>
+			<field>Company</field>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Invoice</dataPath>
+			<field>Invoice</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Account</dataPath>
+			<field>Account</field>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>РучнаяКорректировка</dataPath>
+			<field>РучнаяКорректировка</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Source</dataPath>
+			<field>Source</field>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>AU</dataPath>
+			<field>AU</field>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>LegalEntity</dataPath>
+			<field>LegalEntity</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>ClientID</dataPath>
+			<field>ClientID</field>
+			<role>
+				<dcscom:dimension>true</dcscom:dimension>
+			</role>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Location</dataPath>
+			<field>Location</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>SubSubSegment</dataPath>
+			<field>SubSubSegment</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>SalesOrder</dataPath>
+			<field>SalesOrder</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>CashBatch</dataPath>
+			<field>CashBatch</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Memo</dataPath>
+			<field>Memo</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>Валюта</dataPath>
+			<field>Валюта</field>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>AmountОстаток</dataPath>
+			<field>AmountОстаток</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Amount остаток</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>USDAmountОстаток</dataPath>
+			<field>USDAmountОстаток</field>
+			<title xsi:type="v8:LocalStringType">
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>USDAmount остаток</v8:content>
+				</v8:item>
+			</title>
+		</field>
+		<field xsi:type="DataSetFieldField">
+			<dataPath>BDType</dataPath>
+			<field>BDType</field>
+		</field>
+		<dataSource>ИсточникДанных1</dataSource>
+		<query>ВЫБРАТЬ
+	BadDebtInitialBalance.Client КАК Client,
+	BadDebtInitialBalance.Company КАК Company,
+	BadDebtInitialBalance.Source КАК Source,
+	BadDebtInitialBalance.Account КАК Account,
+	BadDebtInitialBalance.Currency КАК Currency,
+	BadDebtInitialBalance.AU КАК AU,
+	ВЫБОР
+		КОГДА BadDebtInitialBalance.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+			ТОГДА BadDebtInitialBalance.LegalEntity
+		ИНАЧЕ BadDebtInitialBalance.Company.DefaultLegalEntity
+	КОНЕЦ КАК LegalEntity,
+	BadDebtInitialBalance.ClientID КАК ClientID,
+	BadDebtInitialBalance.CMBalance КАК AmountОстаток
+ПОМЕСТИТЬ ВТ_ДанныеРегистров
+ИЗ
+	РегистрСведений.BadDebtInitialBalance КАК BadDebtInitialBalance
+ГДЕ
+	BadDebtInitialBalance.Период &lt;= &amp;ДатаОстатков
+
+ОБЪЕДИНИТЬ ВСЕ
+
+ВЫБРАТЬ
+	UnbilledARОстатки.Client,
+	UnbilledARОстатки.Company,
+	UnbilledARОстатки.Source,
+	UnbilledARОстатки.Account,
+	UnbilledARОстатки.Currency,
+	UnbilledARОстатки.AU,
+	ВЫБОР
+		КОГДА UnbilledARОстатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+			ТОГДА UnbilledARОстатки.LegalEntity
+		ИНАЧЕ UnbilledARОстатки.Company.DefaultLegalEntity
+	КОНЕЦ,
+	UnbilledARОстатки.ClientID,
+	UnbilledARОстатки.AmountОстаток
+ИЗ
+	РегистрНакопления.UnbilledAR.Остатки(
+			{(&amp;ДатаОстатков)},
+			Account.БазовыйЭлемент.Код ПОДОБНО "209%"
+				ИЛИ Account.БазовыйЭлемент.Код ПОДОБНО "122%"
+				ИЛИ Account.БазовыйЭлемент.Код ПОДОБНО "123%") КАК UnbilledARОстатки
+
+ОБЪЕДИНИТЬ ВСЕ
+
+ВЫБРАТЬ
+	BilledARОстатки.Client,
+	BilledARОстатки.Company,
+	BilledARОстатки.Source,
+	BilledARОстатки.Account,
+	BilledARОстатки.Currency,
+	BilledARОстатки.AU,
+	ВЫБОР
+		КОГДА BilledARОстатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+			ТОГДА BilledARОстатки.LegalEntity
+		ИНАЧЕ BilledARОстатки.Company.DefaultLegalEntity
+	КОНЕЦ,
+	BilledARОстатки.ClientID,
+	BilledARОстатки.AmountОстаток
+ИЗ
+	РегистрНакопления.BilledAR.Остатки(
+			{(&amp;ДатаОстатков)},
+			Account.БазовыйЭлемент.Код ПОДОБНО "209%"
+				ИЛИ Account.БазовыйЭлемент.Код ПОДОБНО "122%"
+				ИЛИ Account.БазовыйЭлемент.Код ПОДОБНО "123%") КАК BilledARОстатки
+
+ОБЪЕДИНИТЬ ВСЕ
+
+ВЫБРАТЬ
+	UnallocatedCashОстатки.Client,
+	UnallocatedCashОстатки.Company,
+	UnallocatedCashОстатки.Source,
+	UnallocatedCashОстатки.Account,
+	UnallocatedCashОстатки.Currency,
+	UnallocatedCashОстатки.AU,
+	ВЫБОР
+		КОГДА UnallocatedCashОстатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+			ТОГДА UnallocatedCashОстатки.LegalEntity
+		ИНАЧЕ UnallocatedCashОстатки.Company.DefaultLegalEntity
+	КОНЕЦ,
+	UnallocatedCashОстатки.ClientID,
+	-UnallocatedCashОстатки.AmountОстаток
+ИЗ
+	РегистрНакопления.UnallocatedCash.Остатки(
+			{(&amp;ДатаОстатков)},
+			Account.БазовыйЭлемент.Код ПОДОБНО "209%"
+				ИЛИ Account.БазовыйЭлемент.Код ПОДОБНО "122%"
+				ИЛИ Account.БазовыйЭлемент.Код ПОДОБНО "123%") КАК UnallocatedCashОстатки
+
+ОБЪЕДИНИТЬ ВСЕ
+
+ВЫБРАТЬ
+	ManualTransactionsОстатки.Client,
+	ManualTransactionsОстатки.Company,
+	ManualTransactionsОстатки.Source,
+	ManualTransactionsОстатки.Account,
+	ManualTransactionsОстатки.Currency,
+	ManualTransactionsОстатки.AU,
+	ВЫБОР
+		КОГДА ManualTransactionsОстатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+			ТОГДА ManualTransactionsОстатки.LegalEntity
+		ИНАЧЕ ManualTransactionsОстатки.Company.DefaultLegalEntity
+	КОНЕЦ,
+	ManualTransactionsОстатки.ClientID,
+	ManualTransactionsОстатки.AmountОстаток
+ИЗ
+	РегистрНакопления.ManualTransactions.Остатки(
+			{(&amp;ДатаОстатков)},
+			Account.БазовыйЭлемент.Код ПОДОБНО "209%"
+				ИЛИ Account.БазовыйЭлемент.Код ПОДОБНО "122%"
+				ИЛИ Account.БазовыйЭлемент.Код ПОДОБНО "123%") КАК ManualTransactionsОстатки
+
+ОБЪЕДИНИТЬ ВСЕ
+
+ВЫБРАТЬ
+	UnallocatedMemoОстатки.Client,
+	UnallocatedMemoОстатки.Company,
+	UnallocatedMemoОстатки.Source,
+	UnallocatedMemoОстатки.Account,
+	UnallocatedMemoОстатки.Currency,
+	UnallocatedMemoОстатки.AU,
+	ВЫБОР
+		КОГДА UnallocatedMemoОстатки.LegalEntity &lt;&gt; ЗНАЧЕНИЕ(Справочник.LegalEntiites.ПустаяСсылка)
+			ТОГДА UnallocatedMemoОстатки.LegalEntity
+		ИНАЧЕ UnallocatedMemoОстатки.Company.DefaultLegalEntity
+	КОНЕЦ,
+	UnallocatedMemoОстатки.ClientID,
+	UnallocatedMemoОстатки.AmountОстаток
+ИЗ
+	РегистрНакопления.UnallocatedMemo.Остатки(
+			{(&amp;ДатаОстатков)},
+			Account.БазовыйЭлемент.Код ПОДОБНО "209%"
+				ИЛИ Account.БазовыйЭлемент.Код ПОДОБНО "122%"
+				ИЛИ Account.БазовыйЭлемент.Код ПОДОБНО "123%") КАК UnallocatedMemoОстатки
+;
+
+////////////////////////////////////////////////////////////////////////////////
+ВЫБРАТЬ
+	ВТ_ДанныеРегистров.Client КАК Client,
+	ВТ_ДанныеРегистров.Company КАК Company,
+	ВТ_ДанныеРегистров.Source КАК Source,
+	ВТ_ДанныеРегистров.Account КАК Account,
+	ВТ_ДанныеРегистров.AU КАК AU,
+	ВТ_ДанныеРегистров.Currency КАК Currency,
+	ВТ_ДанныеРегистров.LegalEntity КАК LegalEntity,
+	ВТ_ДанныеРегистров.ClientID КАК ClientID,
+	СУММА(ВТ_ДанныеРегистров.AmountОстаток) КАК AmountОстаток,
+	ВЫРАЗИТЬ(СУММА(ВЫБОР
+				КОГДА ВнутренниеКурсыВалютСрезПоследних.Курс ЕСТЬ NULL
+						ИЛИ ВнутренниеКурсыВалютСрезПоследних.Курс = 0
+					ТОГДА 0
+				ИНАЧЕ ВТ_ДанныеРегистров.AmountОстаток / ВнутренниеКурсыВалютСрезПоследних.Курс
+			КОНЕЦ) КАК ЧИСЛО(15, 2)) КАК USDAmountОстаток,
+	ВТ_ДанныеРегистров.AU.ПодразделениеОрганизации КАК Location,
+	ВТ_ДанныеРегистров.AU.Сегмент КАК SubSubSegment,
+	BadDebtTypes.BDType КАК BDType
+ИЗ
+	ВТ_ДанныеРегистров КАК ВТ_ДанныеРегистров
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ВнутренниеКурсыВалют.СрезПоследних({(&amp;ДатаОстатков)}, ) КАК ВнутренниеКурсыВалютСрезПоследних
+		ПО ВТ_ДанныеРегистров.Currency = ВнутренниеКурсыВалютСрезПоследних.Валюта
+		ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.BadDebtTypes КАК BadDebtTypes
+		ПО ВТ_ДанныеРегистров.Account = BadDebtTypes.Account
+			И ВТ_ДанныеРегистров.Source = BadDebtTypes.Source
+
+СГРУППИРОВАТЬ ПО
+	ВТ_ДанныеРегистров.Currency,
+	ВТ_ДанныеРегистров.AU,
+	ВТ_ДанныеРегистров.LegalEntity,
+	ВТ_ДанныеРегистров.Client,
+	ВТ_ДанныеРегистров.ClientID,
+	ВТ_ДанныеРегистров.Source,
+	ВТ_ДанныеРегистров.Account,
+	ВТ_ДанныеРегистров.Company,
+	ВТ_ДанныеРегистров.AU.ПодразделениеОрганизации,
+	ВТ_ДанныеРегистров.AU.Сегмент,
+	ВнутренниеКурсыВалютСрезПоследних.Курс,
+	BadDebtTypes.BDType
+
+ИМЕЮЩИЕ
+	СУММА(ВТ_ДанныеРегистров.AmountОстаток) &lt;&gt; 0</query>
+	</dataSet>
+	<totalField>
+		<dataPath>AmountОстаток</dataPath>
+		<expression>Сумма(AmountОстаток)</expression>
+	</totalField>
+	<totalField>
+		<dataPath>USDAmountОстаток</dataPath>
+		<expression>Сумма(USDAmountОстаток)</expression>
+	</totalField>
+	<parameter>
+		<name>Период</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Period</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>xs:dateTime</v8:Type>
+			<v8:DateQualifiers>
+				<v8:DateFractions>DateTime</v8:DateFractions>
+			</v8:DateQualifiers>
+		</valueType>
+		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
+		<useRestriction>false</useRestriction>
+		<inputParameters>
+			<dcscor:item>
+				<dcscor:parameter>ФорматРедактирования</dcscor:parameter>
+				<dcscor:value xsi:type="v8:LocalStringType">
+					<v8:item>
+						<v8:lang>ru</v8:lang>
+						<v8:content>ДФ=dd/MM/yy</v8:content>
+					</v8:item>
+				</dcscor:value>
+			</dcscor:item>
+		</inputParameters>
+	</parameter>
+	<parameter>
+		<name>ДатаОстатков</name>
+		<title xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>Дата остатков</v8:content>
+			</v8:item>
+		</title>
+		<valueType>
+			<v8:Type>xs:dateTime</v8:Type>
+			<v8:DateQualifiers>
+				<v8:DateFractions>DateTime</v8:DateFractions>
+			</v8:DateQualifiers>
+		</valueType>
+		<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
+		<useRestriction>false</useRestriction>
+		<expression>ДОБАВИТЬКДАТЕ(КонецПериода(&amp;Период,"ДЕНЬ") , "СЕКУНДА", 1)</expression>
+	</parameter>
+	<settingsVariant>
+		<dcsset:name>Основной</dcsset:name>
+		<dcsset:presentation xsi:type="xs:string">Основной</dcsset:presentation>
+		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+			<dcsset:selection>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Account.БазовыйЭлемент</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>HFM Account</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Source</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Company</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Account</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>AU</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Location.БазовыйЭлемент.GeoMarket.ManagementGeomarket</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Geomarket</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Location.БазовыйЭлемент.GeoMarket</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Sub Geo Market</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>SubSubSegment.БазовыйЭлемент.Родитель.Родитель</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Segment</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>ClientID</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Customer Code</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Client</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Customer Name</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Client.CRMID</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Customer CRM ID</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Currency</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>LegalEntity</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>BDType</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>AmountОстаток</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>CM Balance</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>USDAmountОстаток</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>USD CM Balance</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+			</dcsset:selection>
+			<dcsset:dataParameters>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>Период</dcscor:parameter>
+					<dcscor:value xsi:type="v8:StandardBeginningDate">
+						<v8:variant xsi:type="v8:StandardBeginningDateVariant">BeginningOfNextDay</v8:variant>
+					</dcscor:value>
+					<dcsset:userSettingID>cd76c13a-cb54-4d7b-9e19-7e680dcb7d6a</dcsset:userSettingID>
+				</dcscor:item>
+			</dcsset:dataParameters>
+			<dcsset:outputParameters>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>МакетОформления</dcscor:parameter>
+					<dcscor:value xsi:type="xs:string">Море</dcscor:value>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>РасположениеРеквизитов</dcscor:parameter>
+					<dcscor:value xsi:type="dcsset:DataCompositionAttributesPlacement">Separately</dcscor:value>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>ВертикальноеРасположениеОбщихИтогов</dcscor:parameter>
+					<dcscor:value xsi:type="dcscor:DataCompositionTotalPlacement">Begin</dcscor:value>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>ВыводитьЗаголовок</dcscor:parameter>
+					<dcscor:value xsi:type="dcsset:DataCompositionTextOutputType">DontOutput</dcscor:value>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:use>false</dcscor:use>
+					<dcscor:parameter>Заголовок</dcscor:parameter>
+					<dcscor:value xsi:type="v8:LocalStringType">
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Bad debts report</v8:content>
+						</v8:item>
+					</dcscor:value>
+				</dcscor:item>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>ВыводитьОтбор</dcscor:parameter>
+					<dcscor:value xsi:type="dcsset:DataCompositionTextOutputType">DontOutput</dcscor:value>
+				</dcscor:item>
+			</dcsset:outputParameters>
+			<dcsset:item xsi:type="dcsset:StructureItemGroup">
+				<dcsset:order>
+					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
+				</dcsset:order>
+				<dcsset:selection>
+					<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
+				</dcsset:selection>
+			</dcsset:item>
+		</dcsset:settings>
+	</settingsVariant>
+	<settingsVariant>
+		<dcsset:name>PowerBI</dcsset:name>
+		<dcsset:presentation xsi:type="v8:LocalStringType">
+			<v8:item>
+				<v8:lang>ru</v8:lang>
+				<v8:content>PowerBI</v8:content>
+			</v8:item>
+		</dcsset:presentation>
+		<dcsset:settings xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows">
+			<dcsset:selection>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Account.БазовыйЭлемент</dcsset:field>
+					<dcsset:lwsTitle>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Account</v8:content>
+						</v8:item>
+					</dcsset:lwsTitle>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Source</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Company</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>AU</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>ClientID</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Client</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>Currency</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>LegalEntity</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>AmountОстаток</dcsset:field>
+				</dcsset:item>
+				<dcsset:item xsi:type="dcsset:SelectedItemField">
+					<dcsset:field>USDAmountОстаток</dcsset:field>
+				</dcsset:item>
+			</dcsset:selection>
+			<dcsset:outputParameters>
+				<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+					<dcscor:parameter>ВертикальноеРасположениеОбщихИтогов</dcscor:parameter>
+					<dcscor:value xsi:type="dcscor:DataCompositionTotalPlacement">None</dcscor:value>
+				</dcscor:item>
+			</dcsset:outputParameters>
+			<dcsset:item xsi:type="dcsset:StructureItemGroup">
+				<dcsset:order>
+					<dcsset:item xsi:type="dcsset:OrderItemAuto"/>
+				</dcsset:order>
+				<dcsset:selection>
+					<dcsset:item xsi:type="dcsset:SelectedItemAuto"/>
+				</dcsset:selection>
+			</dcsset:item>
+		</dcsset:settings>
+	</settingsVariant>
+</DataCompositionSchema>
