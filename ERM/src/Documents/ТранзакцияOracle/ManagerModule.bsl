@@ -85,7 +85,9 @@
 	|	ТранзакцияOracle.LegalEntity КАК LegalEntity,
 	|	ТранзакцияOracle.CustomerNumber КАК CustomerNumber,
 	|	ТранзакцияOracle.EndCustomerNumber КАК EndCustomerNumber,
-	|	ПОДСТРОКА(ТранзакцияOracle.Account.Код,0,4) КАК Major
+	|	ПОДСТРОКА(ТранзакцияOracle.Account.Код, 0, 4) КАК Major,
+	|	ТранзакцияOracle.ПометкаУдаления КАК ПометкаУдаления,
+	|	ТранзакцияOracle.Reverse КАК Reverse
 	|ИЗ
 	|	Документ.ТранзакцияOracle КАК ТранзакцияOracle
 	|ГДЕ
